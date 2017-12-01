@@ -1,24 +1,10 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { DragDropContext } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
 import { Sheriff } from '../../../api/index';
 import {default as SheriffGrid} from '../components/SheriffGrid'
 import {getSheriffList} from '../actions'
 import { RootState } from '../../../store/reducers';
-
-// const getVisibleTodos = (todos:any, filter:string) => {
-//   switch (filter) {
-//     case 'SHOW_COMPLETED':
-//       return todos.filter((t:any) => t.completed)
-//     case 'SHOW_ACTIVE':
-//       return todos.filter((t:any) => !t.completed)
-//     case 'SHOW_ALL':
-//     default:
-//       return todos
-//   }
-// }
-
+import {sheriffs,isLoading} from '../selectors'
 
 export interface OnDutySheriffProps{
   getSheriffList:any;
@@ -48,11 +34,10 @@ class OnDutySheriffs extends React.Component<OnDutySheriffProps,any>{
   }
 }
 
-const mapStateToProps = (state:RootState) => {
-  const {sheriffs:{list:sheriffs,loading}} = state;
+const mapStateToProps = (state:RootState) => {  
   return {
-    sheriffs,
-    loading    
+    sheriffs:sheriffs(state),
+    loading:isLoading(state)    
   }
 }
 
@@ -68,4 +53,4 @@ const ConnectedOnDutySherrifs = connect(
   mapDispatchToProps
 )(OnDutySheriffs)
 
-export default DragDropContext(HTML5Backend)(ConnectedOnDutySherrifs);
+export default ConnectedOnDutySherrifs;

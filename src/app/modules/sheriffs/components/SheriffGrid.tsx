@@ -28,8 +28,8 @@ class SheriffGrid extends React.PureComponent<SherriffGridProps, any>{
                 <Grid>
                     <Row>
                         {sheriffs.map(sheriff => (
-                            <Col sm={6} md={3} lg={2}>
-                                <SheriffCard key={sheriff.badgeNumber} sheriff={sheriff} onClick={() => alert(sheriff.badgeNumber)} />
+                            <Col key={sheriff.badgeNumber} sm={6} md={3} lg={2}>
+                                <SheriffCard sheriff={sheriff} onClick={() => alert(sheriff.badgeNumber)} />
                             </Col>
                         ))}
                     </Row>

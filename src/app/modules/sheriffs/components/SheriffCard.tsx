@@ -1,21 +1,20 @@
 import * as React from 'react'
-import * as PropTypes from 'prop-types'
+// import * as PropTypes from 'prop-types'
 import ItemTypes from '../ItemTypes'
 import { DragSource } from 'react-dnd';
 import {
     //Label,
-    Button,
-    ButtonGroup,
     Panel,
     Image,
-    ListGroup,
-    ListGroupItem,
-    Glyphicon,
+    // ListGroup,
+    // ListGroupItem,
     Grid,
     Row,
     Col
 } from 'react-bootstrap'
-import { Sheriff, SheriffAbility } from '../../../api/index';
+import SheriffAbilityPile from '../../../components/SheriffAbilityPile'
+import AssignedTaskList from '../../tasks/containers/AssignedTaskList'
+import { Sheriff } from '../../../api/index';
 
 
 const sheriffSource: any = {
@@ -39,26 +38,7 @@ export interface SheriffCardProps {
     isDragging?: boolean;
 }
 
-class SheriffAbilityPile extends React.PureComponent<{ abilities: SheriffAbility }, any>{
-    render() {
-        const { abilities } = this.props;
-        let icons = [];
-        if (abilities && SheriffAbility.CanTransfer) {
-            icons.push(<Glyphicon glyph="road" />)
-        }
-        if (abilities && SheriffAbility.CourtAppearance) {
-            icons.push(<Glyphicon glyph="queen" />)
-        }
-        if (abilities && SheriffAbility.SignDocuments) {
-            icons.push(<Glyphicon glyph="pencil" />)
-        }
-        return (
-            <ButtonGroup bsSize="xsmall">
-                {icons.map(i=>(<Button disabled>{i}</Button>))}
-            </ButtonGroup>
-        );
-    }
-}
+
 
 class CardHeader extends React.PureComponent<{ sheriff: Sheriff }, any>{
     render() {
@@ -90,23 +70,25 @@ class CardHeader extends React.PureComponent<{ sheriff: Sheriff }, any>{
 
 class SheriffCard extends React.PureComponent<SheriffCardProps, any>{
 
-    static propTypes = {
-        onClick: PropTypes.func.isRequired,
-        completed: PropTypes.bool.isRequired,
-        text: PropTypes.string.isRequired
-    }
+    // static propTypes = {
+    //     onClick: PropTypes.func.isRequired,
+    //     completed: PropTypes.bool.isRequired,
+    //     text: PropTypes.string.isRequired
+    // }
+
     render() {
-        const { sheriff, connectDragSource } = this.props;
+        const { sheriff} = this.props;
 
 
-        return connectDragSource(
+        return (
             <div>
                 <Panel header={<CardHeader sheriff={sheriff} />} height={400}>
-                    <ListGroup>
+                    <AssignedTaskList sheriffId={sheriff.badgeNumber} />
+                    {/* <ListGroup>
                         <ListGroupItem bsStyle="success">Job 1</ListGroupItem>
                         <ListGroupItem bsStyle="warning">Job 2</ListGroupItem>
                         <ListGroupItem>Job 3</ListGroupItem>
-                    </ListGroup>
+                    </ListGroup> */}
                 </Panel>
             </div>
         )

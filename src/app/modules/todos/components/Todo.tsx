@@ -1,8 +1,12 @@
+///<reference path="../../../../libs/react-bootstrap.d.ts"/>
 import * as React from 'react'
 import * as PropTypes from 'prop-types'
 import ItemTypes from '../ItemTypes'
 import { DragSource } from 'react-dnd';
-import { Label,Badge } from 'react-bootstrap'
+import {
+    Label
+    // , Badge
+} from 'react-bootstrap'
 
 
 const todoSource: any = {
@@ -25,7 +29,7 @@ export interface TodoProps {
     text: string
     connectDragSource?: any
     isDragging?: boolean
-    id?:number
+    id?: number
 }
 
 class Todo extends React.PureComponent<TodoProps, any>{
@@ -36,7 +40,7 @@ class Todo extends React.PureComponent<TodoProps, any>{
         text: PropTypes.string.isRequired
     }
     render() {
-        const { onClick, completed, text, connectDragSource, isDragging,id } = this.props;
+        const { onClick, completed, text, connectDragSource, isDragging } = this.props;
         return connectDragSource(
             <div>
                 <h2>
@@ -47,7 +51,7 @@ class Todo extends React.PureComponent<TodoProps, any>{
                         }}>
                         {text}
                     </Label>
-                    <Badge bsStyle='danger'>{id}</Badge>
+                    {/* <Badge bsStyle='danger'>{id}</Badge> */}
                 </h2>
             </div>
         )

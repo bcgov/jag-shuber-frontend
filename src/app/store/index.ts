@@ -1,6 +1,6 @@
 import {createStore,applyMiddleware} from 'redux'
-import {default as thunk,ThunkAction} from 'redux-thunk'
-import reducers from './reducers'
+import {default as thunk,ThunkAction as _ThunkAction} from 'redux-thunk'
+import {default as reducers,RootState} from './reducers'
 import {default as api,API} from '../api'
 
 
@@ -36,7 +36,7 @@ const initialState:any = {
     }
 }
 
-export type ThunkAction<R,S> = ThunkAction<R,S,{api:API}>;
+export type ThunkAction = ()=>_ThunkAction<any,RootState,{api:API}>;
 
 const store = createStore(reducers,
     initialState,

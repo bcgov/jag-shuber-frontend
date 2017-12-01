@@ -1,6 +1,7 @@
-// import {randomDelay} from './PromiseExtensions'
+// import { randomDelay } from './PromiseExtensions'
+import { fetchRandomPeople } from './_randomPeople'
 
-export enum SheriffAbility{
+export enum SheriffAbility {
     None = 0,
     CanTransfer = 1 << 0,
     CourtAppearance = 1 << 1,
@@ -9,104 +10,110 @@ export enum SheriffAbility{
 }
 
 
-export interface Sheriff{
-    name:string
-    badgeNumber:number
-    imageUrl:string
-    abilities:SheriffAbility
+export interface Sheriff {
+    name: string
+    badgeNumber: number
+    imageUrl: string
+    abilities: SheriffAbility
 }
 
-export interface Name {
+export interface SheriffTask {
+    id: number;
     title: string;
-    first: string;
-    last: string;
+    description: string;
+    requiredAbilities: SheriffAbility;
+    sheriffIds: number[];
 }
 
-export interface Location {
-    street: string;
-    city: string;
-    state: string;
-    postcode: any;
+export interface API {
+    getSheriffs(): Promise<SheriffMap>;
+    getSheriffTasks(): Promise<SheriffTaskMap>;
 }
 
-export interface Login {
-    username: string;
-    password: string;
-    salt: string;
-    md5: string;
-    sha1: string;
-    sha256: string;
-}
+// type SheriffKey = Sheriff["badgeNumber"];
 
-export interface Id {
-    name: string;
-    value: string;
-}
+export type SheriffMap = {[key:number]:Sheriff}
 
-export interface Picture {
-    large: string;
-    medium: string;
-    thumbnail: string;
-}
+// type SheriffTaskKey = SheriffTask['id'];
+export type SheriffTaskMap = {[key:number]:SheriffTask}
 
-export interface ApiPerson {
-    gender: string;
-    name: Name;
-    location: Location;
-    email: string;
-    login: Login;
-    dob: string;
-    registered: string;
-    phone: string;
-    cell: string;
-    id: Id;
-    picture: Picture;
-    nat: string;
-}
-
-export interface Info {
-    seed: string;
-    results: number;
-    page: number;
-    version: string;
-}
-
-export interface APIPeopleResponse {
-    results: ApiPerson[];
-    info: Info;
-}
-
-export interface API{
-    getSheriffs():Promise<Sheriff[]>;
+function arrayToMap<T,TKey>(array: T[], keySelector: (t: T) => TKey) {
+    const mappedArray  = array.reduce<any>((map,i)=>{
+        map[keySelector(i)] = i;
+        return map;
+    },{});
+    return mappedArray;
 }
 
 
+class Client implements API {
 
-
-
-
-
-class Client implements API{
-    private static peopleUrl="https://randomuser.me/api/?seed=shuber&results=10&nat=us";
-
-
-    async getSheriffs():Promise<Sheriff[]>{
-        let response = await fetch(Client.peopleUrl,{method:'GET'});
-        let body :APIPeopleResponse  = await response.json();
-        
+    async getSheriffs(): Promise<SheriffMap> {
+        let people = await fetchRandomPeople();
         let badgeNumber = 0;
-        return body.results.map(p=>{
-            
-            let s:Sheriff = {
-                name:`${p.name.first} ${p.name.last}`,
-                badgeNumber:badgeNumber++,
-                imageUrl:p.picture.large,
-                abilities:SheriffAbility.All
+        const sheriffList = people.results.map(p => {
+            let s: Sheriff = {
+                name: `${p.name.first} ${p.name.last}`,
+                badgeNumber: badgeNumber++,
+                imageUrl: p.picture.large,
+                abilities: SheriffAbility.All
             };
             return s;
-        });      
-    }  
+        });
 
+        return arrayToMap(sheriffList,(s)=>s.badgeNumber) as SheriffMap;
+    }
+
+    async getSheriffTasks() : Promise<SheriffTaskMap> {
+        // await randomDelay(200, 1000);
+        const taskMap : SheriffTaskMap = arrayToMap(tasks,(t)=>t.id);
+        return Promise.resolve(taskMap);
+    }
 }
+
+const tasks: SheriffTask[] = [
+    {
+        id: 0,
+        title: 'Some Task 0 ',
+        description: 'A moderate task',
+        requiredAbilities: SheriffAbility.CanTransfer | SheriffAbility.CourtAppearance,
+        sheriffIds: []
+    },
+    {
+        id: 1,
+        title: 'Some Task 1',
+        description: 'A easy task',
+        requiredAbilities: SheriffAbility.CanTransfer,
+        sheriffIds: [3]
+    },
+    {
+        id: 2,
+        title: 'Some Task 2 ',
+        description: 'A moderate task',
+        requiredAbilities: SheriffAbility.CourtAppearance,
+        sheriffIds: [1]
+    },
+    {
+        id: 3,
+        title: 'Some Task 3',
+        description: 'A moderate task',
+        requiredAbilities: SheriffAbility.All,
+        sheriffIds: [0, 5]
+    },
+    {
+        id: 4,
+        title: 'Some Task 4 ',
+        description: 'A moderate task',
+        requiredAbilities: SheriffAbility.CanTransfer | SheriffAbility.CourtAppearance,
+        sheriffIds: []
+    },
+    {
+        id: 5,
+        title: 'Some Task 5 ',
+        description: 'A moderate task',
+        requiredAbilities: SheriffAbility.CanTransfer | SheriffAbility.CourtAppearance,
+        sheriffIds: []
+    },
+];
 
 export default new Client();
