@@ -1,7 +1,55 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 841.9 595.3">
-    <g fill="#61DAFB">
-        <path d="M666.3 296.5c0-32.5-40.7-63.3-103.1-82.4 14.4-63.6 8-114.2-20.2-130.4-6.5-3.8-14.1-5.6-22.4-5.6v22.3c4.6 0 8.3.9 11.4 2.6 13.6 7.8 19.5 37.5 14.9 75.7-1.1 9.4-2.9 19.3-5.1 29.4-19.6-4.8-41-8.5-63.5-10.9-13.5-18.5-27.5-35.3-41.6-50 32.6-30.3 63.2-46.9 84-46.9V78c-27.5 0-63.5 19.6-99.9 53.6-36.4-33.8-72.4-53.2-99.9-53.2v22.3c20.7 0 51.4 16.5 84 46.6-14 14.7-28 31.4-41.3 49.9-22.6 2.4-44 6.1-63.6 11-2.3-10-4-19.7-5.2-29-4.7-38.2 1.1-67.9 14.6-75.8 3-1.8 6.9-2.6 11.5-2.6V78.5c-8.4 0-16 1.8-22.6 5.6-28.1 16.2-34.4 66.7-19.9 130.1-62.2 19.2-102.7 49.9-102.7 82.3 0 32.5 40.7 63.3 103.1 82.4-14.4 63.6-8 114.2 20.2 130.4 6.5 3.8 14.1 5.6 22.5 5.6 27.5 0 63.5-19.6 99.9-53.6 36.4 33.8 72.4 53.2 99.9 53.2 8.4 0 16-1.8 22.6-5.6 28.1-16.2 34.4-66.7 19.9-130.1 62-19.1 102.5-49.9 102.5-82.3zm-130.2-66.7c-3.7 12.9-8.3 26.2-13.5 39.5-4.1-8-8.4-16-13.1-24-4.6-8-9.5-15.8-14.4-23.4 14.2 2.1 27.9 4.7 41 7.9zm-45.8 106.5c-7.8 13.5-15.8 26.3-24.1 38.2-14.9 1.3-30 2-45.2 2-15.1 0-30.2-.7-45-1.9-8.3-11.9-16.4-24.6-24.2-38-7.6-13.1-14.5-26.4-20.8-39.8 6.2-13.4 13.2-26.8 20.7-39.9 7.8-13.5 15.8-26.3 24.1-38.2 14.9-1.3 30-2 45.2-2 15.1 0 30.2.7 45 1.9 8.3 11.9 16.4 24.6 24.2 38 7.6 13.1 14.5 26.4 20.8 39.8-6.3 13.4-13.2 26.8-20.7 39.9zm32.3-13c5.4 13.4 10 26.8 13.8 39.8-13.1 3.2-26.9 5.9-41.2 8 4.9-7.7 9.8-15.6 14.4-23.7 4.6-8 8.9-16.1 13-24.1zM421.2 430c-9.3-9.6-18.6-20.3-27.8-32 9 .4 18.2.7 27.5.7 9.4 0 18.7-.2 27.8-.7-9 11.7-18.3 22.4-27.5 32zm-74.4-58.9c-14.2-2.1-27.9-4.7-41-7.9 3.7-12.9 8.3-26.2 13.5-39.5 4.1 8 8.4 16 13.1 24 4.7 8 9.5 15.8 14.4 23.4zM420.7 163c9.3 9.6 18.6 20.3 27.8 32-9-.4-18.2-.7-27.5-.7-9.4 0-18.7.2-27.8.7 9-11.7 18.3-22.4 27.5-32zm-74 58.9c-4.9 7.7-9.8 15.6-14.4 23.7-4.6 8-8.9 16-13 24-5.4-13.4-10-26.8-13.8-39.8 13.1-3.1 26.9-5.8 41.2-7.9zm-90.5 125.2c-35.4-15.1-58.3-34.9-58.3-50.6 0-15.7 22.9-35.6 58.3-50.6 8.6-3.7 18-7 27.7-10.1 5.7 19.6 13.2 40 22.5 60.9-9.2 20.8-16.6 41.1-22.2 60.6-9.9-3.1-19.3-6.5-28-10.2zM310 490c-13.6-7.8-19.5-37.5-14.9-75.7 1.1-9.4 2.9-19.3 5.1-29.4 19.6 4.8 41 8.5 63.5 10.9 13.5 18.5 27.5 35.3 41.6 50-32.6 30.3-63.2 46.9-84 46.9-4.5-.1-8.3-1-11.3-2.7zm237.2-76.2c4.7 38.2-1.1 67.9-14.6 75.8-3 1.8-6.9 2.6-11.5 2.6-20.7 0-51.4-16.5-84-46.6 14-14.7 28-31.4 41.3-49.9 22.6-2.4 44-6.1 63.6-11 2.3 10.1 4.1 19.8 5.2 29.1zm38.5-66.7c-8.6 3.7-18 7-27.7 10.1-5.7-19.6-13.2-40-22.5-60.9 9.2-20.8 16.6-41.1 22.2-60.6 9.9 3.1 19.3 6.5 28.1 10.2 35.4 15.1 58.3 34.9 58.3 50.6-.1 15.7-23 35.6-58.4 50.6zM320.8 78.4z"/>
-        <circle cx="420.9" cy="296.5" r="45.7"/>
-        <path d="M520.5 78.1z"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="726px" height="726px" viewBox="0 0 726 726" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 45 (43475) - http://www.bohemiancoding.com/sketch -->
+    <title>SheriffBadge</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <radialGradient cx="50%" cy="50%" fx="50%" fy="50%" r="68.2045248%" id="radialGradient-1">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#5F5F5F" offset="100%"></stop>
+        </radialGradient>
+        <circle id="path-2" cx="362.700079" cy="362.700079" r="353.191376"></circle>
+        <filter x="-4.5%" y="-4.5%" width="108.9%" height="108.9%" filterUnits="objectBoundingBox" id="filter-3">
+            <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="10.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <filter x="-8.6%" y="-8.6%" width="117.1%" height="117.1%" filterUnits="objectBoundingBox" id="filter-4">
+            <feGaussianBlur stdDeviation="39.5" in="SourceAlpha" result="shadowBlurInner1"></feGaussianBlur>
+            <feOffset dx="0" dy="0" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
+        </filter>
+        <radialGradient cx="50%" cy="54.1769114%" fx="50%" fy="54.1769114%" r="49.809617%" gradientTransform="translate(0.500000,0.541769),scale(0.953417,1.000000),rotate(87.145473),translate(-0.500000,-0.541769)" id="radialGradient-5">
+            <stop stop-color="#E2E2E2" offset="0%"></stop>
+            <stop stop-color="#9A9A9A" offset="100%"></stop>
+        </radialGradient>
+        <path d="M62.1368077,258.732634 L264.362481,228.275038 L355.843017,45.3139656 C350.599552,42.6871226 347,37.2639215 347,31 C347,22.163444 354.163444,15 363,15 C371.836556,15 379,22.163444 379,31 C379,37.2639215 375.400448,42.6871226 370.156983,45.3139656 L461.615048,228.230095 L663.890408,258.695175 C664.768365,252.896603 668.813813,247.797365 674.771156,245.861707 C683.17522,243.131061 692.201686,247.730275 694.932332,256.134339 C697.662978,264.538403 693.063764,273.564869 684.6597,276.295515 C678.702357,278.231174 672.432263,276.483658 668.313667,272.308565 L522.612186,415.814546 L556.144698,617.604073 C561.93077,616.647202 568.030546,618.918901 571.712387,623.986519 C576.906384,631.135443 575.321603,641.141358 568.172679,646.335355 C561.023755,651.529353 551.017841,649.944571 545.823843,642.795648 C542.142003,637.728029 541.866423,631.224803 544.564457,626.017611 L363.057925,531.793055 L181.506796,626.040762 C184.204829,631.247955 183.92925,637.75118 180.247409,642.818799 C175.053412,649.967723 165.047497,651.552504 157.898573,646.358507 C150.749649,641.164509 149.164868,631.158595 154.358865,624.009671 C158.040706,618.942052 164.140482,616.670353 169.926554,617.627224 L203.450829,415.887265 L57.713549,272.346024 C53.5949529,276.521117 47.3248595,278.268633 41.3675162,276.332975 C32.963452,273.602329 28.3642378,264.575863 31.0948838,256.171799 C33.8255298,247.767735 42.8519958,243.16852 51.25606,245.899166 C57.2134033,247.834825 61.2588515,252.934063 62.1368077,258.732634 Z" id="path-6"></path>
+        <filter x="-5.4%" y="-5.7%" width="110.8%" height="111.3%" filterUnits="objectBoundingBox" id="filter-7">
+            <feMorphology radius="0.5" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dx="0" dy="0" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="11.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <filter x="-4.3%" y="-4.5%" width="108.6%" height="109.0%" filterUnits="objectBoundingBox" id="filter-8">
+            <feGaussianBlur stdDeviation="4.5" in="SourceAlpha" result="shadowBlurInner1"></feGaussianBlur>
+            <feOffset dx="0" dy="0" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="SheriffBadge">
+            <g id="Oval">
+                <use fill="black" fill-opacity="1" filter="url(#filter-3)" xlink:href="#path-2"></use>
+                <use fill="url(#radialGradient-1)" fill-rule="evenodd" xlink:href="#path-2"></use>
+                <use fill="black" fill-opacity="1" filter="url(#filter-4)" xlink:href="#path-2"></use>
+            </g>
+            <g id="Combined-Shape">
+                <use fill="black" fill-opacity="1" filter="url(#filter-7)" xlink:href="#path-6"></use>
+                <use fill="url(#radialGradient-5)" fill-rule="evenodd" xlink:href="#path-6"></use>
+                <use fill="black" fill-opacity="1" filter="url(#filter-8)" xlink:href="#path-6"></use>
+            </g>
+        </g>
     </g>
 </svg>
