@@ -52,7 +52,7 @@ class TaskCard extends React.PureComponent<TaskCardProps, any>{
         return connectDragSource(
             <div>
                 <Panel bsStyle="primary">
-                    <h4>{title}</h4><br />
+                    <h4>{title}</h4>
                     <SheriffAbilityPile abilities={requiredAbilities} />
                 </Panel>
             </div>

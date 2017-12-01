@@ -20,7 +20,7 @@ export default class SheriffAbilityPile extends React.PureComponent<{ abilities:
         }
         return (
             <div style={{ whiteSpace:"nowrap",marginTop:5 }} >
-                {icons.map((i,k) => (<span key={k} style={{margin:5,opacity:0.8,fontSize:20}}> {i} </span> ))}
+                {icons.map((i,k) => (<span key={k} style={{margin:2,opacity:0.8,fontSize:18}}> {i} </span> ))}
             </div>
         );
     }

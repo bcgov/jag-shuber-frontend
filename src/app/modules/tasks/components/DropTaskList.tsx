@@ -40,13 +40,24 @@ class DropTaskList extends React.PureComponent<DropTaskListProps,{}>{
     render(){
         const {connectDropTarget,isOver,canDrop,...restProps} = this.props;
 
-        let borderColor = isOver ? (!canDrop ? 'red' : 'green') : 'black'
+        const isActive = isOver && canDrop;
+        let borderColor:string = 'transparent'
+        if(isActive){
+            borderColor = 'green'
+        }else if(canDrop){
+            borderColor = 'black'
+        }else if(isOver && !canDrop){
+            borderColor = 'red'
+            
+        }
+        //borderColor = isOver ? (!canDrop ? 'red' : 'green') : 'black'
         
         return connectDropTarget(
             <div style={{
                 position: 'relative',
                 minHeight:100,             
-                border: 'dashed 2px',
+                border: 'dashed',                
+                borderWidth:2,
                 borderColor:borderColor
             }}>
                 <TaskList {...restProps}/>
