@@ -10,7 +10,7 @@ export type ReducerCases<State> = {
   [T in IActionType]: (
     state: State,
     payload: IActionPayload<T>
-  ) => ReducerResponse<State>;
+  ) => State;
 };
 
 export function createReducer<State>(
