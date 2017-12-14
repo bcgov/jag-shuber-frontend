@@ -3,26 +3,45 @@ The frontend portion of the Sheriff Scheduling app (code named Shuber).
 
 ## Table of Contents
 
+- [Getting Started](#getting-started)
 - [Technology Stack Used](#technology-stack-used)
-- [Third Party Libraries Used](#third-party-libraries)
 - [Project Status](#project-status)
 - [Documentation](#documentation)
 - [Security](#security)
-- [Development](#development)
-  - [Folder Structure](#folder-structure)
-  - [Available Scripts](#available-scripts)
-    - [npm start](#npm-start)
-    - [npm test](#npm-test)
-    - [npm run build](#npm-run-build)
-    - [npm run eject](#npm-run-eject)
+- [Available Scripts](#available-scripts)
+  - [npm start](#npm-start)
+  - [npm test](#npm-test)
+  - [npm run build](#npm-run-build)
+  - [npm run eject](#npm-run-eject)
+- [Debugging in the Editor](#debugging-in-the-editor)
+- [Folder Structure](#folder-structure)
+- [Deployment](#openshift-deployment)
+- [Getting help or issues](#getting-help-or-reporting-an-issue)
+- [How to Contribute](#how-to-contribute)
+- [Third Party Libraries Used](#third-party-libraries)
+- [License](#license)
+
+
+## Getting Started
+
+* Developer Workstation Requirements/Setup
+    - [Node.js]
+    - [Yarn]
+    - [VS Code] and extensions (below)
+       - [Git Lens](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens)
+
+* Clone Repo
+* Run `yarn` or `npm install` in the root of the project to install dependencies
+* Run `yarn start` or `npm start` to start up the development server
+   - This should automatically open up a browser to [http://localhost:3000](http://localhost:3000)
+
+> See [Available Scripts](#available-scripts) for more info
 
 ## Technology Stack Used
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
-## Third-Party Libraries
- **Todo**
 ## Project Status
-
+**todo**
 ## Documnentation
 
 **Todo**
@@ -31,51 +50,13 @@ GitHub Pages (https://guides.github.com/features/pages/) are a neat way to docum
 ## Security
 
 Authentication, Authorization, Policies, etc
-
-## Folder Structure
-
-After creation, your project should look like this:
-
-```
-my-app/
-  README.md
-  node_modules/
-  package.json
-  public/
-    index.html
-    favicon.ico
-  src/
-    App.css
-    App.js
-    App.test.js
-    index.css
-    index.js
-    logo.svg
-```
-
-For the project to build, **these files must exist with exact filenames**:
-
-* `public/index.html` is the page template;
-* `src/index.js` is the JavaScript entry point.
-
-You can delete or rename the other files.
-
-You may create subdirectories inside `src`. For faster rebuilds, only files inside `src` are processed by Webpack.<br>
-You need to **put any JS and CSS files inside `src`**, otherwise Webpack won’t see them.
-
-Only files inside `public` can be used from `public/index.html`.<br>
-Read instructions below for using assets from JavaScript and HTML.
-
-You can, however, create more top-level directories.<br>
-They will not be included in the production build so you can use them for things like documentation.
-
 ## Available Scripts
 
-I have started using [yarn](https://yarnpkg.com/en/) for most of my packaging and script running needs.  However, you can also use npm if your inclined.  The following scripts are described from the **yarn** perspective.
+I have started using [Yarn][yarn] for most of my packaging and script running needs.  However, you can also use npm if your inclined.  The following scripts are described from the **yarn** perspective.
 
 In the project directory, you can run:
 
-## `yarn start`
+### `yarn start`
 
 Runs the app in the development mode.<br>
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -97,6 +78,54 @@ The build is minified and the filenames include the hashes.<br>
 Your app is ready to be deployed!
 
 See the section about [deployment](#deployment) for more information.
+
+## Debugging in the Editor
+
+### Visual Studio Code
+
+You would need to have the latest version of [VS Code](https://code.visualstudio.com) and VS Code [Chrome Debugger Extension](https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome) installed.
+
+The [`launch.json`](.vscode/launch.json) is already configured with a launch task that allows you to launch chrome in a debugging capacity and debug through code within the editor. 
+
+Start your app by running `yarn start`, and start debugging in VS Code by pressing `F5` or by clicking the green debug icon. You can now write code, set breakpoints, make changes to the code, and debug your newly modified code—all from your editor.
+
+## Folder Structure
+
+```
+.vscode/                  - VSCode Configuration
+
+config/                   - React/Babel/Typescript configuration
+└── jest                  - Jest testing configuration / transforms
+
+docs/                     - Project Documentation
+└── images        
+└── icons         
+
+openshift/                - OpenShift-specific files
+├── scripts               - helper scripts
+└── templates             - application templates
+
+config/                   - Public HTML Assets
+
+scripts/                  - Build, dev and test scripts
+
+src/
+└── app                   - Root of the front end application
+    └── api               - temporary location for mock api
+    └── components        - basic components
+    └── containers        - container components (i.e using redux/state)
+    └── infrastructure    - Utilities
+    └── modules           - modules represent domain specific components, containers and state
+        └── sheriffs      - deals with sheriffs
+        └── tasks         - deals with sheriff tasks
+    └── pages             - pages that can be accessed through navigation
+    └── store             - the redux store and root reducer setup
+└── libs                  - A place for holding additional typescript definition (d.ts) files 
+└── server                - Eventual resting place of a server for the frontend (if we create one)
+```
+## OpenShift Deployment
+
+See [OpenShift Readme](openshift/Readme.md)
 
 ## Supported Language Features and Polyfills
 
@@ -122,63 +151,6 @@ Note that **the project only includes a few ES6 [polyfills](https://en.wikipedia
 
 If you use any other ES6+ features that need **runtime support** (such as `Array.from()` or `Symbol`), make sure you are including the appropriate polyfills manually, or that the browsers you are targeting already support them.
 
-
-## Debugging in the Editor
-
-**This feature is currently only supported by [Visual Studio Code](https://code.visualstudio.com) and [WebStorm](https://www.jetbrains.com/webstorm/).**
-
-Visual Studio Code and WebStorm support debugging out of the box with Create React App. This enables you as a developer to write and debug your React code without leaving the editor, and most importantly it enables you to have a continuous development workflow, where context switching is minimal, as you don’t have to switch between tools.
-
-### Visual Studio Code
-
-You would need to have the latest version of [VS Code](https://code.visualstudio.com) and VS Code [Chrome Debugger Extension](https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome) installed.
-
-The [`launch.json`](.vscode/launch.json) is already configured with a launch task that allows you to launch chrome in a debugging capacity and debug through code within the editor. However, I will leave the block below which repr
-
-Then add the block below to your `launch.json` file and put it inside the `.vscode` folder in your app’s root directory.
-
-```json
-{
-  "version": "0.2.0",
-  "configurations": [{
-    "name": "Chrome",
-    "type": "chrome",
-    "request": "launch",
-    "url": "http://localhost:3000",
-    "webRoot": "${workspaceRoot}/src",
-    "userDataDir": "${workspaceRoot}/.vscode/chrome",
-    "sourceMapPathOverrides": {
-      "webpack:///src/*": "${webRoot}/*"
-    }
-  }]
-}
-```
-
->Note: the URL may be different if you've made adjustments via the [HOST or PORT environment variables](#advanced-configuration).
-
-Start your app by running `yarn start`, and start debugging in VS Code by pressing `F5` or by clicking the green debug icon. You can now write code, set breakpoints, make changes to the code, and debug your newly modified code—all from your editor.
-
-## Files in this repository
-
-```
-docs/           - Project Documentation
-└── images        
-└── icons         
-
-openshift/      - OpenShift-specific files
-├── scripts     - helper scripts
-└── templates   - application templates
-```
-
-## Deployment (Local Development)
-
-* Developer Workstation Requirements/Setup
-* Application Specific Setup
-
-## Deployment (OpenShift)
-
-See [OpenShift Readme](openshift/Readme.md)
-
 ## Getting Help or Reporting an Issue
 
 To report bugs/issues/feature requests, please file an [issue](https://github.com/bcgov/bcjustice-shuber-frontend/issues/).
@@ -189,6 +161,10 @@ If you would like to contribute, please see our [CONTRIBUTING](CONTRIBUTING.md) 
 
 Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). 
 By participating in this project you agree to abide by its terms.
+
+## Third-Party Libraries
+ **Todo**
+ Put links to third party libraries and licenses here
 
 ## License
 
@@ -205,3 +181,8 @@ By participating in this project you agree to abide by its terms.
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
+
+
+[Yarn]:https://yarnpkg.com/en/
+[VS Code]:https://code.visualstudio.com/
+[Node.js]:https://nodejs.org/en/
