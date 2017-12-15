@@ -15,7 +15,7 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import {
   Contact,
   Home,
-  Stuff
+  Settings
 } from './pages'
 
 import Footer from './components/Footer';
@@ -25,11 +25,11 @@ class Layout extends React.Component {
   render() {
     console.log(this.props);
     return (
-      <div className="App">
+      <div id="main-content" >
         <Navigation />
         <div id="topicTemplate" className="template container" style={{ marginTop: 5 }}>
           <Route exact path='/' component={Home} />
-          <Route path='/stuff' component={Stuff} />
+          <Route path='/settings' component={Settings} />
           <Route path='/contact' component={Contact} />
         </div>
         <Footer />
