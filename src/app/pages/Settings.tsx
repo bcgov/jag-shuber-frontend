@@ -1,12 +1,14 @@
 import * as React from "react";
-import SheriffForm from "../modules/sheriffs/components/SheriffForm";
+import CreateSheriffForm from "../modules/sheriffs/containers/CreateSheriffForm";
 
 class Settings extends React.PureComponent{
     render(){
         return (
             <div>
                 <h1>Settings</h1>
-                <SheriffForm />
+                <CreateSheriffForm onSubmit={(v:any)=>{
+                    console.log(v);
+                }}/>
             </div>
         );
     }
