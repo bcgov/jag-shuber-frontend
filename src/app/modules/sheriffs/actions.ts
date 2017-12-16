@@ -1,4 +1,5 @@
-import { Action } from 'redux'
+import { Action } from 'redux';
+import { ThunkAction } from '../../store';
 import { Sheriff } from "../../api/index";
 
 
@@ -9,7 +10,10 @@ import { Sheriff } from "../../api/index";
 type IActionMap = {
   "REQUEST_SHERIFF_LIST_BEGIN": null;
   "REQUEST_SHERIFF_LIST_FAIL": string;
-  "REQUEST_SHERIFF_LIST_SUCCESS": Sheriff[]
+  "REQUEST_SHERIFF_LIST_SUCCESS": Sheriff[];
+  "SHERIFF_BEGIN_CREATE": null;
+  "SHERIFF_CREATE_SUCCESS": Sheriff;
+  "SHERIFF_CREATE_FAIL": string;  
 }
 
 export type IActionType = keyof IActionMap;
@@ -45,3 +49,24 @@ export const getSheriffList = () => (async (dispatch: any, getState: any, { api 
 export const beginGetSheriffList = () => actionCreator("REQUEST_SHERIFF_LIST_BEGIN")(null);
 export const sheriffListFailed = actionCreator("REQUEST_SHERIFF_LIST_FAIL");
 export const sheriffListSuccess = actionCreator("REQUEST_SHERIFF_LIST_SUCCESS");
+
+// Action creator for creating a Sheriff
+export const createSheriff:ThunkAction = (newSheriff:Sheriff) => (async (dispatch, getState, { api }) => {
+  dispatch(beginCreateSheriff());
+  try {
+    let sheriff = await api.createSheriff(newSheriff);
+    dispatch(createSheriffSuccess(sheriff));
+  } catch (error) {
+    dispatch(createSheriffFailed(`Error creating sheriffs: '${error}'`));
+  }
+});
+
+export const beginCreateSheriff = () => actionCreator("SHERIFF_BEGIN_CREATE")(null);
+export const createSheriffSuccess = actionCreator("SHERIFF_CREATE_SUCCESS");
+export const createSheriffFailed = actionCreator("SHERIFF_CREATE_FAIL");
+
+
+
+
+
+

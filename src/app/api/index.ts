@@ -1,5 +1,5 @@
-// import { randomDelay } from './PromiseExtensions'
-import { fetchRandomPeople } from './_randomPeople'
+import { randomDelay } from './PromiseExtensions';
+import { fetchRandomPeople } from './_randomPeople';
 
 export enum SheriffAbility {
     None = 0,
@@ -28,6 +28,7 @@ export interface SheriffTask {
 export interface API {
     getSheriffs(): Promise<SheriffMap>;
     getSheriffTasks(): Promise<SheriffTaskMap>;
+    createSheriff(newSheriff:Sheriff): Promise<Sheriff>;
 }
 
 // type SheriffKey = Sheriff["badgeNumber"];
@@ -47,20 +48,22 @@ function arrayToMap<T,TKey>(array: T[], keySelector: (t: T) => TKey) {
 
 
 class Client implements API {
-
+   
     async getSheriffs(): Promise<SheriffMap> {
-        let people = await fetchRandomPeople();
-        let badgeNumber = 0;
-        const sheriffList = people.results.map(p => {
-            let s: Sheriff = {
-                name: `${p.name.first} ${p.name.last}`,
-                badgeNumber: badgeNumber++,
-                imageUrl: p.picture.large,
-                abilities: SheriffAbility.All
-            };
-            return s;
-        });
+        if(sheriffList.length==0){
+            let people = await fetchRandomPeople();
+            let badgeNumber = 0;
 
+            sheriffList = people.results.map(p => {
+                let s: Sheriff = {
+                    name: `${p.name.first} ${p.name.last}`,
+                    badgeNumber: badgeNumber++,
+                    imageUrl: p.picture.large,
+                    abilities: SheriffAbility.All
+                };
+                return s;
+            });
+        }
         return arrayToMap(sheriffList,(s)=>s.badgeNumber) as SheriffMap;
     }
 
@@ -69,7 +72,15 @@ class Client implements API {
         const taskMap : SheriffTaskMap = arrayToMap(tasks,(t)=>t.id);
         return Promise.resolve(taskMap);
     }
+
+    async createSheriff(newSheriff: Sheriff): Promise<Sheriff> {
+        await randomDelay();
+        sheriffList.push(newSheriff);
+        return newSheriff;
+    }
 }
+
+let sheriffList: Sheriff[] = [];
 
 const tasks: SheriffTask[] = [
     {

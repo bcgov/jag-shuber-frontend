@@ -1,59 +1,43 @@
 import * as React from 'react'
-import { Form } from 'react-bootstrap';
-import { FormControl } from 'react-bootstrap';
-import { ControlLabel } from 'react-bootstrap';
-import { FormGroup } from 'react-bootstrap';
-import { Button } from 'react-bootstrap';
+import { 
+    Form,
+    ControlLabel,
+    FormControl,
+    FormGroup 
+} from 'react-bootstrap';
+import { 
+   Field,
+   WrappedFieldProps
+} from 'redux-form';
 
 export interface SheriffFormProps {
+    handleSubmit:()=>void;
+}
 
+class BootstrapTextField extends React.PureComponent<WrappedFieldProps & {label:string}>{
+    render(){
+        const {input:{value, onChange}, label} = this.props;
+        return (
+            <FormGroup validationState='success'>
+                <ControlLabel>{label}</ControlLabel>
+                <FormControl type="text" placeholder={`Enter ${label}`} value={value} onChange={onChange} />
+            </FormGroup>
+        );
+    }
 }
 
 export default class SheriffForm extends React.Component<SheriffFormProps, any>{
-    constructor(props: SheriffFormProps) {
-        super(props);
-        this.state = {};
-    }
-
-    getValidationState(): 'success' | 'error' | 'warning' | undefined {
-        if (this.state.value) {
-            if (isNaN(this.state.value)) {
-                return 'error';
-            }
-            else {
-                return 'success';
-            }
-        }
-        return undefined;
-    }
-
-    handleChange(e: any) {
-        this.setState({ value: e.target.value });
-    }
 
     render() {
+        const {handleSubmit} = this.props;
         return (
             <div>
                 <h2>Add a Sheriff</h2>
-                <Form>
-                    <FormGroup controlId="formFirstName">
-                        <ControlLabel>First Name</ControlLabel>
-                        <FormControl type="text" placeholder="Enter First Name" />
-                    </FormGroup>
-
-                    <FormGroup controlId="formLastName">
-                        <ControlLabel>Last Name</ControlLabel>
-                        <FormControl type="text" placeholder="Enter Last Name" />
-                    </FormGroup>
-
-                    <FormGroup controlId="formBadgeNumber" validationState={this.getValidationState()}>
-                        <ControlLabel>Badge Number</ControlLabel>
-                        <FormControl type="text" value={this.state.badgeNumber} placeholder="Enter Badge Number" onChange={(e) => this.handleChange(e)} />
-                    </FormGroup>
-
-                    <Button type="submit">
-                        Save
-                    </Button>
+                <Form onSubmit={handleSubmit}>
+                    <Field name="firstName" component={BootstrapTextField} label="First Name"/>
+                    <Field name="lastName" component={BootstrapTextField} label="Last Name"/>
+                    <Field name="email" component={BootstrapTextField} label="Email"/>                    
+                    <button type="submit">Submit</button>
                 </Form>
             </div>
         );
