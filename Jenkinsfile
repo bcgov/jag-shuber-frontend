@@ -1,76 +1,66 @@
-node('maven') {
-
-    stage('checkout') {
-       echo "checking out source"
-       echo "Build: ${BUILD_ID}"
-       checkout scm   
-	  }
-
-    stage('code quality check') {
-       echo "Code Quality Check ...."
-    
-	     SONARQUBE_PWD = sh (
-             script: 'oc env dc/sonarqube --list | awk  -F  "=" \'/SONARQUBE_ADMINPW/{print $2}\'',
-             returnStdout: true
-           ).trim()
-           
-       SONARQUBE_URL = sh (
-             script: 'oc get routes -o wide --no-headers | awk \'/sonarqube/{ print match($0,/edge/) ?  "https://"$2 : "http://"$2 }\'',
-               returnStdout: true
-           ).trim()
-
-       dir('sonar-runner') {
-         sh returnStdout: true, script: "./gradlew sonarqube -Dsonar.host.url=${SONARQUBE_URL} -Dsonar.verbose=true --stacktrace --info  -Dsonar.sources=.."
-       }
-    }
-	
+node {
     stage('build') {
-	    echo "Building..."
-	    openshiftBuild bldCfg: '<name>', showBuildLogs: 'true'
-	    openshiftTag destStream: '<name>', verbose: 'true', destTag: '$BUILD_ID', srcStream: 'devxp', srcTag: 'latest'
-	    openshiftTag destStream: '<name>', verbose: 'true', destTag: 'dev', srcStream: 'devxp', srcTag: 'latest'
+        echo "Building..."
+        openshiftBuild bldCfg: 'client', showBuildLogs: 'true'
+        openshiftTag destStream: 'client', verbose: 'true', destTag: '$BUILD_ID', srcStream: 'client', srcTag: 'latest'
     }
+        
+    // stage('checkout for static code analysis') {
+    //     echo "checking out source"
+    //     echo "Build: ${BUILD_ID}"
+    //     checkout scm
+    // }
+
+  //   stage('code quality check') {
+  //       SONARQUBE_PWD = sh (
+  //           script: 'oc env dc/sonarqube --list | awk  -F  "=" \'/SONARQUBE_ADMINPW/{print $2}\'',
+  //           returnStdout: true
+  //       ).trim()
+  //       echo "SONARQUBE_PWD: ${SONARQUBE_PWD}"
+
+  //       SONARQUBE_URL = sh (
+  //           script: 'oc get routes -o wide --no-headers | awk \'/sonarqube/{ print match($0,/edge/) ?  "https://"$2 : "http://"$2 }\'',
+  //           returnStdout: true
+  //       ).trim()
+  //       echo "SONARQUBE_URL: ${SONARQUBE_URL}"
+
+	// //disable the functional test asoc  only there is only one test case available
+  //       dir('sonar-runner') {
+  //           //sh returnStdout: true, script: "./gradlew sonarqube -Dsonar.lanuage=js -Dsonar.projectKey=org.sonarqube:tfrs-client -Dsonar.projectName='TFRS Client Project'   -Dsonar.host.url=${SONARQUBE_URL} -Dsonar.verbose=true --stacktrace --info  -Dsonar.sources=client"
+  //       }
+  //   }
+
 	
-    stage('validation') {
-	    echo "Validation ...."
-        dir('functional-tests'){
-		  	TEST_USERNAME = sh (
-             script: 'oc env bc/devxp --list | awk  -F  "=" \'/TEST_USERNAME/{print $2}\'',
-             returnStdout: true
-           ).trim()
-			  
-	  		TEST_PASSWORD = sh (
-             script: 'oc env bc/devxp --list | awk  -F  "=" \'/TEST_PASSWORD/{print $2}\'',
-             returnStdout: true
-           ).trim()
-			  
-        sh "export TEST_USERNAME=${TEST_USERNAME}\nexport TEST_PASSWORD=${TEST_PASSWORD}\n./gradlew --debug --stacktrace phantomJsTest"
-      }
+//	stage('validation') {
+//        dir('functional-tests') {
+//			try {
+//				sh './gradlew --debug --stacktrace phantomJsTest'
+//			} catch(Throwable t) {
+//mail (from: "${env.EMAIL_FROM}", to: "${env.EMAIL_TO}", subject: "TFRS Client Pipeline '${env.JOB_NAME}' build ${env.BUILD_NUMBER} functional test failed", body: "See ${env.BUILD_URL} for details. ");
+//	                  throw t;
+//			} finally {
+//				archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/**/*'
+//			}
+//      }
+//    }
+}
+
+node{
+    stage('deploy-dev') {
+        echo "Deploying to dev..."
+        openshiftTag destStream: 'client', verbose: 'true', destTag: 'dev', srcStream: 'client', srcTag: 'latest'
     }
-	
-    // Archive the built artifacts
-    archive (allowEmptyArchive: true, includes: 'report/*.html')
-
 }
 
-stage('deploy-test') {
-  timeout(time: 10, unit: 'MINUTES') {
-      input message: "Deploy to test?", submitter: 'admin'
-  }
-  echo "Send email ...."
-  mail (to: 'user@domain', subject: "Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) promoted to test", body: "URL: ${env.BUILD_URL}.");
-  echo "Send code to test ...."
-  node('master'){
-     openshiftTag destStream: 'devxp', verbose: 'true', destTag: 'test', srcStream: 'devxp', srcTag: '$BUILD_ID'
-  }
-  echo "Stage deploy-test done"
-}
 
-stage('deploy-prod') {
-  timeout(time: 10, unit: 'MINUTES') {
-      input message: "Deploy to prod?", submitter: 'admin'
-  }
-  node('master'){
-     openshiftTag destStream: 'devxp', verbose: 'true', destTag: 'prod', srcStream: 'devxp', srcTag: '$BUILD_ID'
-  }
-}
+// stage('deploy-test') {
+//     node {
+//         openshiftTag destStream: 'client', verbose: 'true', destTag: 'test', srcStream: 'client', srcTag: '$BUILD_ID'
+//     }
+// }
+
+// stage('deploy-prod') {
+//     node {
+//         openshiftTag destStream: 'client', verbose: 'true', destTag: 'prod', srcStream: 'client', srcTag: '$BUILD_ID'
+//     }
+// }
