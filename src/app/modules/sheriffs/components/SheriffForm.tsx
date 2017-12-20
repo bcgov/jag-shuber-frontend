@@ -1,15 +1,7 @@
 import * as React from 'react'
-import { 
-    Form,
-    ControlLabel,
-    FormControl,
-    FormGroup 
-} from 'react-bootstrap';
-import { 
-   Field,
-   WrappedFieldProps
-} from 'redux-form';
-
+import { Form, ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
+import { Field, WrappedFieldProps } from 'redux-form';
+import SheriffQualificationsChecklist from './SheriffQualificationsChecklist';
 export interface SheriffFormProps {
     handleSubmit:()=>void;
 }
@@ -18,7 +10,19 @@ class BootstrapTextField extends React.PureComponent<WrappedFieldProps & {label:
     render(){
         const {input:{value, onChange}, label} = this.props;
         return (
-            <FormGroup validationState='success'>
+            <FormGroup /*validationState='success'*/>
+                <ControlLabel>{label}</ControlLabel>
+                <FormControl type="text" placeholder={`Enter ${label}`} value={value} onChange={onChange} />
+            </FormGroup>
+        );
+    }
+}
+
+class BootstrapNumberField extends React.PureComponent<WrappedFieldProps & {label:string}>{
+    render(){
+        const {input:{value, onChange}, label} = this.props;
+        return (
+            <FormGroup /*validationState='success'*/>
                 <ControlLabel>{label}</ControlLabel>
                 <FormControl type="text" placeholder={`Enter ${label}`} value={value} onChange={onChange} />
             </FormGroup>
@@ -30,14 +34,15 @@ export default class SheriffForm extends React.Component<SheriffFormProps, any>{
 
     render() {
         const {handleSubmit} = this.props;
+
         return (
             <div>
                 <h2>Add a Sheriff</h2>
                 <Form onSubmit={handleSubmit}>
-                    <Field name="firstName" component={BootstrapTextField} label="First Name"/>
-                    <Field name="lastName" component={BootstrapTextField} label="Last Name"/>
-                    <Field name="email" component={BootstrapTextField} label="Email"/>                    
-                    <button type="submit">Submit</button>
+                    <Field name="name" component={BootstrapTextField} label="Name"/>
+                    <Field name="badgeNumber" component={BootstrapNumberField} label="Badge Number"/>
+                    <Field name="abilities" component={SheriffQualificationsChecklist} label="Qualifications"/> 
+                    <button type="submit">Save</button>
                 </Form>
             </div>
         );

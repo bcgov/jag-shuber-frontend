@@ -64,7 +64,7 @@ export interface APIPeopleResponse {
 
 const peopleUrl = "https://randomuser.me/api/?seed=shuber&nat=us";
 
-export async function fetchRandomPeople(numPeople: number = 10) {
+export async function fetchRandomPeople(numPeople: number) {
     let response = await fetch(`${peopleUrl}&results=${numPeople}`, { method: 'GET' });
     let body: APIPeopleResponse = await response.json();
     return body;

@@ -51,7 +51,7 @@ export const sheriffListFailed = actionCreator("REQUEST_SHERIFF_LIST_FAIL");
 export const sheriffListSuccess = actionCreator("REQUEST_SHERIFF_LIST_SUCCESS");
 
 // Action creator for creating a Sheriff
-export const createSheriff:ThunkAction = (newSheriff:Sheriff) => (async (dispatch, getState, { api }) => {
+export const createSheriff:ThunkAction<Sheriff> = (newSheriff:Sheriff) => (async (dispatch, getState, { api }) => {
   dispatch(beginCreateSheriff());
   try {
     let sheriff = await api.createSheriff(newSheriff);

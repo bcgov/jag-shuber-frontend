@@ -1,14 +1,16 @@
-import * as React from "react";
-import CreateSheriffForm from "../modules/sheriffs/containers/CreateSheriffForm";
+import * as React from 'react';
+import CreateSheriffForm from '../modules/sheriffs/containers/CreateSheriffForm';
 
-class Settings extends React.PureComponent{
+export interface SettingsProps{
+
+}
+class Settings extends React.PureComponent<SettingsProps, any>{
     render(){
+       
         return (
             <div>
                 <h1>Settings</h1>
-                <CreateSheriffForm onSubmit={(v:any)=>{
-                    console.log(v);
-                }}/>
+                <CreateSheriffForm />
             </div>
         );
     }

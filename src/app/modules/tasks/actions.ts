@@ -33,7 +33,7 @@ function actionCreator<Type extends IActionType>(type: Type) {
 }
 
 // Action creator for getting Sheriff List
-export const getTasks: ThunkAction = () => (async (dispatch, getState, { api }) => {
+export const getTasks: ThunkAction<void> = () => (async (dispatch, getState, { api }) => {
   dispatch(beginGetTasks());
   try {
     let tasks = await api.getSheriffTasks();

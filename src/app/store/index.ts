@@ -36,7 +36,8 @@ const initialState:any = {
     }
 }
 
-export type ThunkAction = (args?:any)=>_ThunkAction<any,RootState,{api:API}>;
+//export type ThunkAction = ()=>_ThunkAction<any,RootState,{api:API}>;
+export type ThunkAction<T> = (args?:T)=>_ThunkAction<any,RootState,{api:API}>;
 
 let thisWindow:any = window;
 

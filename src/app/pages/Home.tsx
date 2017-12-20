@@ -11,11 +11,15 @@ class Home extends React.PureComponent {
         return (
             <Grid>
                 <Row>
-                    <Col lg={10}>
-                        <OnDutySheriffs />
-                    </Col>
-                    <Col lg={2}>
+                    <Col lg={3}>
+                        <h1>Unassigned Tasks</h1>
                         <UnassignedTaskList />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col lg={10}>
+                        <h1>Sheriffs</h1>
+                        <OnDutySheriffs />
                     </Col>
                 </Row>
             </Grid>

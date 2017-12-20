@@ -1,5 +1,5 @@
 import { randomDelay } from './PromiseExtensions';
-import { fetchRandomPeople } from './_randomPeople';
+import { fetchRandomPeople, ApiPerson } from './_randomPeople';
 
 export enum SheriffAbility {
     None = 0,
@@ -13,7 +13,7 @@ export enum SheriffAbility {
 export interface Sheriff {
     name: string
     badgeNumber: number
-    imageUrl: string
+    imageUrl?: string
     abilities: SheriffAbility
 }
 
@@ -51,7 +51,7 @@ class Client implements API {
    
     async getSheriffs(): Promise<SheriffMap> {
         if(sheriffList.length==0){
-            let people = await fetchRandomPeople();
+            let people = await fetchRandomPeople(5);
             let badgeNumber = 0;
 
             sheriffList = people.results.map(p => {
@@ -75,6 +75,14 @@ class Client implements API {
 
     async createSheriff(newSheriff: Sheriff): Promise<Sheriff> {
         await randomDelay();
+        
+        if(!newSheriff.imageUrl){
+            let randomNumber = Math.floor(Math.random() * 86) + 11; 
+            let randomSheriff = await fetchRandomPeople(randomNumber);
+            let person: ApiPerson = randomSheriff.results[randomNumber-1];
+            newSheriff.imageUrl=person.picture.large;
+        }
+
         sheriffList.push(newSheriff);
         return newSheriff;
     }
