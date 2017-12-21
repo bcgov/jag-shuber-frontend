@@ -6,7 +6,8 @@ import {
 } from 'react-bootstrap'
 
 import NavigationLink from './NavigationLink'
-const logo = require('../bc_logo_transparent.png');
+// const sheriffLogo = require('../logo.svg');
+// const bcLogo = require('../bc_logo_transparent.png');
 
 export interface NavigationProps {
 
@@ -19,8 +20,12 @@ export default class Navigation extends React.Component<NavigationProps, any>{
                 <Navbar>
                     <Navbar.Header>
                         <NavbarBrand href="https://gov.bc.ca">
-                            <img src={logo} className="App-logo" alt="logo" style={{ textAlign: 'left' }} />
+                            {/* <img src={bcLogo} alt="logo" className="App-logo" style={{ textAlign: 'left' }} /> */}
+                            SHUBER
+                            {/* <img src={sheriffLogo} alt="logo"  style={{ width: 50, textAlign: 'left' }} /> */}
                         </NavbarBrand>
+                        
+                        
                     </Navbar.Header>
                     <Nav bsStyle='tabs'>
                         <NavigationLink exactMatch to="/" label="Home" />

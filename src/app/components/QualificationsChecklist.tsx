@@ -3,7 +3,7 @@ import { WrappedFieldProps } from 'redux-form';
 import { FormGroup, ControlLabel, Checkbox } from 'react-bootstrap';
 
 
-export default class SheriffQualificationsChecklist extends React.PureComponent<WrappedFieldProps & {label:string}>{
+export default class QualificationsChecklist extends React.PureComponent<WrappedFieldProps & {label:string}>{
     render(){
         const {input:{value, onChange}, label} = this.props;
         return (

@@ -1,6 +1,6 @@
 import { Action } from 'redux'
 import { ThunkAction } from '../../store'
-import { SheriffTaskMap } from "../../api/index";
+import { SheriffTaskMap, SheriffTask } from "../../api/index";
 
 
 // The following gives us type-safe redux actions
@@ -10,8 +10,11 @@ import { SheriffTaskMap } from "../../api/index";
 type IActionMap = {
   "REQUEST_TASKS_BEGIN": null;
   "REQUEST_TASKS_FAIL": string;
-  "REQUEST_TASKS_SUCCESS": SheriffTaskMap,
-  "ASSIGN_TASK": { taskId: number, badgeNumber: number }
+  "REQUEST_TASKS_SUCCESS": SheriffTaskMap;
+  "ASSIGN_TASK": { taskId: number, badgeNumber: number };
+  "TASK_BEGIN_CREATE": null;
+  "TASK_CREATE_SUCCESS": SheriffTask; 
+  "TASK_CREATE_FAIL": string;
 }
 
 export type IActionType = keyof IActionMap;
@@ -32,7 +35,7 @@ function actionCreator<Type extends IActionType>(type: Type) {
     ({ type: type, payload: payload });
 }
 
-// Action creator for getting Sheriff List
+// Action creator for getting Task List
 export const getTasks: ThunkAction<void> = () => (async (dispatch, getState, { api }) => {
   dispatch(beginGetTasks());
   try {
@@ -47,3 +50,19 @@ export const assignTask = (taskId: number, badgeNumber: number) => actionCreator
 export const beginGetTasks = () => actionCreator("REQUEST_TASKS_BEGIN")(null);
 export const getTasksFailed = actionCreator("REQUEST_TASKS_FAIL");
 export const getTasksSuccess = actionCreator("REQUEST_TASKS_SUCCESS");
+
+//Action creator for creating a new task
+export const createTask: ThunkAction<SheriffTask> = (newTask: SheriffTask) => (async (dispatch, getState, { api }) =>{
+  dispatch(beginCreateTask());
+  try {
+    let task = await api.createTask(newTask);
+    dispatch(createTaskSuccess(task));
+  } catch (error) {
+    dispatch(createTaskFailed(`Error creating sheriffs: '${error}'`));
+  }
+});
+
+export const beginCreateTask = () => actionCreator("TASK_BEGIN_CREATE")(null);
+export const createTaskSuccess = actionCreator("TASK_CREATE_SUCCESS");
+export const createTaskFailed = actionCreator("TASK_CREATE_FAIL");
+

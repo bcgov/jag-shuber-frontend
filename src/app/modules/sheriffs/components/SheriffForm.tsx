@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Form, ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
 import { Field, WrappedFieldProps } from 'redux-form';
-import SheriffQualificationsChecklist from './SheriffQualificationsChecklist';
+import QualificationsChecklist from '../../../components/QualificationsChecklist';
 export interface SheriffFormProps {
     handleSubmit:()=>void;
 }
@@ -41,7 +41,7 @@ export default class SheriffForm extends React.Component<SheriffFormProps, any>{
                 <Form onSubmit={handleSubmit}>
                     <Field name="name" component={BootstrapTextField} label="Name"/>
                     <Field name="badgeNumber" component={BootstrapNumberField} label="Badge Number"/>
-                    <Field name="abilities" component={SheriffQualificationsChecklist} label="Qualifications"/> 
+                    <Field name="abilities" component={QualificationsChecklist} label="Qualifications"/> 
                     <button type="submit">Save</button>
                 </Form>
             </div>

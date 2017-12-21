@@ -46,13 +46,14 @@ class TaskCard extends React.PureComponent<TaskCardProps, any>{
 
     render() {
         const { task, connectDragSource } = this.props;
-        const { title, requiredAbilities } = task;
+        const { title, requiredAbilities, description } = task;
 
 
         return connectDragSource(
             <div>
                 <Panel bsStyle="primary">
-                    <h4>{title}</h4>
+                    <h3>{title}</h3>
+                    <h4>{description}</h4>
                     <SheriffAbilityPile abilities={requiredAbilities} />
                 </Panel>
             </div>

@@ -29,6 +29,7 @@ export interface API {
     getSheriffs(): Promise<SheriffMap>;
     getSheriffTasks(): Promise<SheriffTaskMap>;
     createSheriff(newSheriff:Sheriff): Promise<Sheriff>;
+    createTask(newTask:SheriffTask): Promise<SheriffTask>;
 }
 
 // type SheriffKey = Sheriff["badgeNumber"];
@@ -86,6 +87,14 @@ class Client implements API {
         sheriffList.push(newSheriff);
         return newSheriff;
     }
+
+    async createTask(newTask: SheriffTask) : Promise<SheriffTask> {
+        await randomDelay();
+        
+        tasks.push(newTask);
+
+        return newTask;
+    }
 }
 
 let sheriffList: Sheriff[] = [];
@@ -93,43 +102,43 @@ let sheriffList: Sheriff[] = [];
 const tasks: SheriffTask[] = [
     {
         id: 0,
-        title: 'Some Task 0 ',
-        description: 'A moderate task',
+        title: 'Court Security',
+        description: 'Courtroom 101 (10:00am)',
         requiredAbilities: SheriffAbility.CanTransfer | SheriffAbility.CourtAppearance,
         sheriffIds: []
     },
     {
         id: 1,
-        title: 'Some Task 1',
-        description: 'A easy task',
+        title: 'Escort Service',
+        description: 'Transfer from Location Y to Courthouse B',
         requiredAbilities: SheriffAbility.CanTransfer,
         sheriffIds: [3]
     },
     {
         id: 2,
-        title: 'Some Task 2 ',
-        description: 'A moderate task',
+        title: 'Documnent Service',
+        description: 'Serve documents A, B, and C',
         requiredAbilities: SheriffAbility.CourtAppearance,
         sheriffIds: [1]
     },
     {
         id: 3,
-        title: 'Some Task 3',
-        description: 'A moderate task',
+        title: 'Court Security',
+        description: 'Courtroom 101 (2:00pm)',
         requiredAbilities: SheriffAbility.All,
         sheriffIds: [0, 5]
     },
     {
         id: 4,
-        title: 'Some Task 4 ',
-        description: 'A moderate task',
+        title: 'Court Security',
+        description: 'Courtroom 102 (2:00pm)',
         requiredAbilities: SheriffAbility.CanTransfer | SheriffAbility.CourtAppearance,
         sheriffIds: []
     },
     {
         id: 5,
-        title: 'Some Task 5 ',
-        description: 'A moderate task',
+        title: 'Escort Service',
+        description: 'Transfer from Courthouse B to Location X',
         requiredAbilities: SheriffAbility.CanTransfer | SheriffAbility.CourtAppearance,
         sheriffIds: []
     },
