@@ -13,7 +13,7 @@ class Home extends React.PureComponent {
             <Grid>
                 <Row>
                     <Col lg={3}>
-                        <h1>Unassigned Tasks</h1>
+                        <h1>Outstanding Assignments</h1>
                         <UnassignedTaskList />
                     </Col>
                     <Col lg={7}>

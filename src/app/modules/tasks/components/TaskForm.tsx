@@ -10,17 +10,15 @@ export interface TaskFormProps {
 }
 
 export default class TaskForm extends React.Component<TaskFormProps, any>{
-
     render() {
        const {handleSubmit} = this.props;
-
         return (
             <div>
-                <h1> Add a New Task </h1>
+                <h1> Add a New Assignment </h1>
                 <Panel>
                 <Form onSubmit={handleSubmit}>
-                    <Field name="id" component={TextFormField} label="Task ID (temporary field)" validate={[required]}/>
-                    <Field name="title" component={TaskTypeSelector} label="Task Type"/>
+                    <Field name="id" component={TextFormField} label="Assignment ID (temporary field)" validate={[required]}/>
+                    <Field name="title" component={TaskTypeSelector} label="Assignment Type"/>
                     <Field name="description" component={TextFormField} label="Details"/>
                     <Field name="abilities" component={QualificationsChecklist} label="Required Qualifications"/> 
                     <button type="submit">Create Task</button>

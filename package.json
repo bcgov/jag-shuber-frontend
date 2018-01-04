@@ -106,7 +106,7 @@
     ],
     "globals": {
       "ts-jest": {
-        "tsConfigFile": "/Users/roughdraft/Projects/CGI/shuber/tsconfig.test.json"
+        "tsConfigFile": "tsconfig.test.json"
       }
     }
   },

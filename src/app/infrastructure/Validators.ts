@@ -1,5 +1,10 @@
 //const required = (value:any) => value ? undefined : 'Required'
 //const required = (value:any) => {}
+export const VALIDATOR_MESSAGES = {
+    INVALID_INTEGER : "Must be an integer."
+    
+}
+
 export function required(value:any){
     if(value){
         return undefined;
@@ -20,6 +25,18 @@ function maxLength (max:number){
  const maxNameLength = 15;
  export const maxLength15 = maxLength(maxNameLength);
  export const maxLength10 = maxLength(10);
+
+export const integer = (value:any) =>{ 
+    let invalidMessage = number(value);
+    if(!invalidMessage){
+        if(Math.floor(value)===value){
+            invalidMessage = undefined;
+        }else{
+             invalidMessage = VALIDATOR_MESSAGES.INVALID_INTEGER;
+        }
+    }
+    return invalidMessage;
+}
 
 export const number = (value:any) =>{ 
     return value && isNaN(Number(value)) ? 'Must be a number' : undefined;
