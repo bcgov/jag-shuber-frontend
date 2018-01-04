@@ -18,14 +18,12 @@ export default class Navigation extends React.Component<NavigationProps, any>{
         return (
             <div id="header-main" style={{ zIndex: 1000 }}>                
                 <Navbar>
-                    <Navbar.Header>
-                        <NavbarBrand href="https://gov.bc.ca">
+                    <Navbar.Header color="#003366" >
+                        <NavbarBrand href="https://gov.bc.ca" color="#003366">
                             {/* <img src={bcLogo} alt="logo" className="App-logo" style={{ textAlign: 'left' }} /> */}
-                            SHUBER
+                           SHUBER
                             {/* <img src={sheriffLogo} alt="logo"  style={{ width: 50, textAlign: 'left' }} /> */}
                         </NavbarBrand>
-                        
-                        
                     </Navbar.Header>
                     <Nav bsStyle='tabs'>
                         <NavigationLink exactMatch to="/" label="Home" />
@@ -35,6 +33,7 @@ export default class Navigation extends React.Component<NavigationProps, any>{
                     <Nav pullRight>
                         <NavigationLink exactMatch to="/" label="Home" /> 
                     </Nav>
+                    
                 </Navbar>
                 <div style={{ zIndex: 1000 }} className="navigationRibbon hidden-xs" role="navigation" />
             </div>

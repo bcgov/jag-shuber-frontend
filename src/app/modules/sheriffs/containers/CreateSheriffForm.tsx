@@ -25,7 +25,7 @@ const createSheriffFormFactory = reduxForm<SheriffFormProps, any>({
     onSubmit: (values:Sheriff|any, dispatch, props)=>{ 
         let newSherrif = Object.assign({},values, {abilities:SheriffAbility.All});
         dispatch(createSheriff(newSherrif));
-    }
+    } 
 });
 const ConnectedForm = createSheriffFormFactory(SheriffForm);
 

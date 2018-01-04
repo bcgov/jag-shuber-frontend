@@ -22,7 +22,7 @@ class Home extends React.PureComponent {
                 </Row>
                 <Row>
                     <Col lg={10}>
-                        <h1>Sheriffs</h1>
+                        <h1>On Duty Sheriffs</h1>
                         <OnDutySheriffs />
                     </Col>
                 </Row>

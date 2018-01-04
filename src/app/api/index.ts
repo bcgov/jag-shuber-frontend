@@ -116,7 +116,7 @@ const tasks: SheriffTask[] = [
     },
     {
         id: 2,
-        title: 'Documnent Service',
+        title: 'Document Service',
         description: 'Serve documents A, B, and C',
         requiredAbilities: SheriffAbility.CourtAppearance,
         sheriffIds: [1]
