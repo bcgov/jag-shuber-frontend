@@ -40,14 +40,14 @@ class TaskList extends  React.PureComponent<TaskListProps, any>{
 
     render() {
         const { tasks } = this.props;
-         return (
-                <ListGroup>
-                    {tasks.map(t => (
-                        <ListGroupItem key={t.id}>
-                            <TaskCard task={t} />
-                        </ListGroupItem>
-                    ))}
-                </ListGroup>
+         return ( 
+            <ListGroup>
+                {tasks.map(t => (
+                    <ListGroupItem key={t.id}>
+                        <TaskCard task={t} />
+                    </ListGroupItem>
+                ))}
+            </ListGroup>
         )
     }
 }

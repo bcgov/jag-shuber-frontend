@@ -19,6 +19,10 @@
   font-size: large;
 }
 
+.navbar-default .navbar-brand {
+  color: #003366;
+  font-weight: bold;
+}
 
 /* @keyframes App-logo-spin {
   from { transform: rotate(0deg); }

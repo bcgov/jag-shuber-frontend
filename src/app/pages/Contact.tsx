@@ -4,7 +4,7 @@ class Contact extends React.PureComponent{
     render(){
         return (
             <div>
-                <h2>CONTACT PAGE</h2>
+                <h1>CONTACT PAGE</h1>
             </div>
         );
     }

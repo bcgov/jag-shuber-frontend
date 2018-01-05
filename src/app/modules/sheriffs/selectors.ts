@@ -7,3 +7,4 @@ export const sheriffs = (state: RootState) => {
 }
 export const isLoading = (state: RootState) => state.sheriffs.loading;
 export const error = (state: RootState) => state.sheriffs.error;
+export const isSaving = (state:RootState) => state.sheriffs.saving;

@@ -30,6 +30,8 @@ export interface TaskState {
   map?: SheriffTaskMap;
   loading?: boolean;
   error?: string;
+  saving?: boolean;
+  successMessage?: string;
 }
 
 
@@ -42,6 +44,14 @@ const reducer = createReducer<TaskState>({
     let newMap = Object.assign({}, map);
     newMap[payload.taskId].sheriffIds = [payload.badgeNumber];
     return { map: newMap, ...rest };
+  },
+  TASK_BEGIN_CREATE: (state, payload) => (Object.assign({}, state, {saving: true })),
+  TASK_CREATE_FAIL: (state, payload) => ({ saving:false, error:payload }),
+  TASK_CREATE_SUCCESS: (state, payload) => {
+    const { map, ...rest } = state;
+    let newMap = Object.assign({}, map);
+    newMap[payload.id] = payload;
+    return { map: newMap, ...rest, saving:false, successMessage:'SAVED!' };
   }
 });
 

@@ -1,5 +1,5 @@
-// import { randomDelay } from './PromiseExtensions'
-import { fetchRandomPeople } from './_randomPeople'
+import { randomDelay } from './PromiseExtensions';
+import { fetchRandomPeople } from './_randomPeople';
 
 export enum SheriffAbility {
     None = 0,
@@ -13,7 +13,7 @@ export enum SheriffAbility {
 export interface Sheriff {
     name: string
     badgeNumber: number
-    imageUrl: string
+    imageUrl?: string
     abilities: SheriffAbility
 }
 
@@ -28,6 +28,8 @@ export interface SheriffTask {
 export interface API {
     getSheriffs(): Promise<SheriffMap>;
     getSheriffTasks(): Promise<SheriffTaskMap>;
+    createSheriff(newSheriff:Sheriff): Promise<Sheriff>;
+    createTask(newTask:SheriffTask): Promise<SheriffTask>;
 }
 
 // type SheriffKey = Sheriff["badgeNumber"];
@@ -47,20 +49,22 @@ function arrayToMap<T,TKey>(array: T[], keySelector: (t: T) => TKey) {
 
 
 class Client implements API {
-
+   
     async getSheriffs(): Promise<SheriffMap> {
-        let people = await fetchRandomPeople();
-        let badgeNumber = 0;
-        const sheriffList = people.results.map(p => {
-            let s: Sheriff = {
-                name: `${p.name.first} ${p.name.last}`,
-                badgeNumber: badgeNumber++,
-                imageUrl: p.picture.large,
-                abilities: SheriffAbility.All
-            };
-            return s;
-        });
+        if(sheriffList.length==0){
+            let people = await fetchRandomPeople(5);
+            let badgeNumber = 0;
 
+            sheriffList = people.results.map(p => {
+                let s: Sheriff = {
+                    name: `${p.name.first} ${p.name.last}`,
+                    badgeNumber: badgeNumber++,
+                    imageUrl: p.picture.large,
+                    abilities: SheriffAbility.All
+                };
+                return s;
+            });
+        }
         return arrayToMap(sheriffList,(s)=>s.badgeNumber) as SheriffMap;
     }
 
@@ -69,48 +73,71 @@ class Client implements API {
         const taskMap : SheriffTaskMap = arrayToMap(tasks,(t)=>t.id);
         return Promise.resolve(taskMap);
     }
+
+    async createSheriff(newSheriff: Sheriff): Promise<Sheriff> {
+        await randomDelay();
+        
+        //This is a hack to throw in random picture
+        if(!newSheriff.imageUrl){
+            let randomNumber = Math.floor(Math.random() * 86) + 11; 
+            newSheriff.imageUrl=`https://randomuser.me/api/portraits/men/${randomNumber}.jpg`;
+        }
+
+        sheriffList.push(newSheriff);
+        return newSheriff;
+    }
+
+    async createTask(newTask: SheriffTask) : Promise<SheriffTask> {
+        await randomDelay();
+        
+        tasks.push(newTask);
+
+        return newTask;
+    }
 }
+
+let sheriffList: Sheriff[] = [];
 
 const tasks: SheriffTask[] = [
     {
         id: 0,
-        title: 'Some Task 0 ',
-        description: 'A moderate task',
+        title: 'Court Security',
+        description: 'Courtroom 101 (10:00am)',
         requiredAbilities: SheriffAbility.CanTransfer | SheriffAbility.CourtAppearance,
         sheriffIds: []
     },
     {
         id: 1,
-        title: 'Some Task 1',
-        description: 'A easy task',
+        title: 'Escort Service',
+        description: 'Transfer from Location Y to Courthouse B',
         requiredAbilities: SheriffAbility.CanTransfer,
         sheriffIds: [3]
     },
     {
         id: 2,
-        title: 'Some Task 2 ',
-        description: 'A moderate task',
+        title: 'Document Service',
+        description: 'Serve documents A, B, and C',
         requiredAbilities: SheriffAbility.CourtAppearance,
         sheriffIds: [1]
     },
     {
         id: 3,
-        title: 'Some Task 3',
-        description: 'A moderate task',
+        title: 'Court Security',
+        description: 'Courtroom 101 (2:00pm)',
         requiredAbilities: SheriffAbility.All,
         sheriffIds: [0, 5]
     },
     {
         id: 4,
-        title: 'Some Task 4 ',
-        description: 'A moderate task',
+        title: 'Court Security',
+        description: 'Courtroom 102 (2:00pm)',
         requiredAbilities: SheriffAbility.CanTransfer | SheriffAbility.CourtAppearance,
         sheriffIds: []
     },
     {
         id: 5,
-        title: 'Some Task 5 ',
-        description: 'A moderate task',
+        title: 'Escort Service',
+        description: 'Transfer from Courthouse B to Location X',
         requiredAbilities: SheriffAbility.CanTransfer | SheriffAbility.CourtAppearance,
         sheriffIds: []
     },

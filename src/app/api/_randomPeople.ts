@@ -69,3 +69,6 @@ export async function fetchRandomPeople(numPeople: number = 10) {
     let body: APIPeopleResponse = await response.json();
     return body;
 }
+
+
+
