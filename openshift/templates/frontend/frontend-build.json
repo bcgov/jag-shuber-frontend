@@ -104,7 +104,7 @@
             "displayName": "Git Reference",
             "description": "The git reference or branch.",
             "required": true,
-            "value": "devops-deployment"
+            "value": "master"
         },
         {
             "name": "SOURCE_CONTEXT_DIR",
