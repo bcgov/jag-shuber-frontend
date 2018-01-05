@@ -3,13 +3,11 @@ import { default as SheriffForm, SheriffFormProps } from '../components/SheriffF
 import { createSheriff } from '../actions';
 import { SheriffAbility, Sheriff } from '../../../api/index';
 
-const createSheriffFormFactory = reduxForm<SheriffFormProps, any>({ 
+// wrapping generic sheriff form in redux-form
+export default reduxForm<SheriffFormProps, any>({ 
     form: 'CreateSheriff',  
     onSubmit: (values:Sheriff|any, dispatch, props)=>{ 
         let newSherrif = Object.assign({},values, {abilities:SheriffAbility.All});
         dispatch(createSheriff(newSherrif));
     } 
-});
-const ConnectedForm = createSheriffFormFactory(SheriffForm);
-
-export default ConnectedForm;
+})(SheriffForm);

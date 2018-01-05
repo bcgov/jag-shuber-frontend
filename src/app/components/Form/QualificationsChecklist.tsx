@@ -11,15 +11,15 @@ export default class QualificationsChecklist extends React.PureComponent<FormFie
                 <Checkbox onChange={onChange} value={value}>
                     Transfers
                 </Checkbox>
-                {' '}
+                
                 <Checkbox onChange={onChange} value={value}>
                     Court Appearances
                 </Checkbox>
-                {' '}
+                
                 <Checkbox onChange={onChange} value={value}>
                     Sign Documents
                 </Checkbox>
-                {' '}
+                
             </FormFieldWrapper>
 
         );

@@ -1,5 +1,5 @@
 import { randomDelay } from './PromiseExtensions';
-import { fetchRandomPeople, ApiPerson } from './_randomPeople';
+import { fetchRandomPeople } from './_randomPeople';
 
 export enum SheriffAbility {
     None = 0,
@@ -77,11 +77,10 @@ class Client implements API {
     async createSheriff(newSheriff: Sheriff): Promise<Sheriff> {
         await randomDelay();
         
+        //This is a hack to throw in random picture
         if(!newSheriff.imageUrl){
             let randomNumber = Math.floor(Math.random() * 86) + 11; 
-            let randomSheriff = await fetchRandomPeople(randomNumber);
-            let person: ApiPerson = randomSheriff.results[randomNumber-1];
-            newSheriff.imageUrl=person.picture.large;
+            newSheriff.imageUrl=`https://randomuser.me/api/portraits/men/${randomNumber}.jpg`;
         }
 
         sheriffList.push(newSheriff);

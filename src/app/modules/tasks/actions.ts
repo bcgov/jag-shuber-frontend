@@ -58,7 +58,7 @@ export const createTask: ThunkAction<SheriffTask> = (newTask: SheriffTask) => (a
     let task = await api.createTask(newTask);
     dispatch(createTaskSuccess(task));
   } catch (error) {
-    dispatch(createTaskFailed(`Error creating sheriffs: '${error}'`));
+    dispatch(createTaskFailed(`Error creating task: '${error}'`));
   }
 });
 
