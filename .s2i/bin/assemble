@@ -55,14 +55,11 @@ if [ -n "$NPM_MIRROR" ]; then
 	npm config set registry $NPM_MIRROR
 fi
 
-echo "---> Installing yarn"
-npm install -g yarn
-
 echo "---> Installing application dependencies"
-yarn
+npm install
 
 echo "---> Building application from source"
-yarn build
+npm run-script build
 
 # Fix source directory permissions
 fix-permissions ./
