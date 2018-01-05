@@ -11,6 +11,21 @@
             "url": "http://localhost:3000",
             "userDataDir": "${workspaceRoot}/.vscode/chrome",
             "webRoot": "${workspaceRoot}"
-        }
+        },
+        {
+            "name": "Debug Jest Tests",
+            "type": "node",
+            "request": "launch",
+            "runtimeExecutable": "node",
+            "runtimeArgs": [
+              "${workspaceRoot}/scripts/test",
+              "--runInBand",      
+              "--env=jsdom"        
+            ],
+            "sourceMaps": true,
+            "protocol": "inspector",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
+          }
     ]
 }
