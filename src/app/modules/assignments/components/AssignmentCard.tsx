@@ -1,19 +1,15 @@
 import * as React from 'react'
-// import * as PropTypes from 'prop-types'
 import ItemTypes from '../ItemTypes'
 import { DragSource } from 'react-dnd';
-import {
-    //Label,
-    Panel
-} from 'react-bootstrap'
+import { Panel } from 'react-bootstrap'
 import SheriffAbilityPile from '../../../components/SheriffAbilityPile'
-import { SheriffTask } from '../../../api/index';
+import { SheriffAssignment } from '../../../api/index';
 
-const taskSource: any = {
+const assignmentSource: any = {
     beginDrag(props: any) {
         return props;
     },
-    endDrag(props:TaskCardProps,monitor:any){
+    endDrag(props:AssignmentCardProps,monitor:any){
         const item = monitor.getItem();
         console.log(item);
     }
@@ -27,26 +23,19 @@ function collect(connect: any, monitor: any) {
 }
 
 
-export interface TaskCardProps {
+export interface AssignmentCardProps {
     onClick?: () => void;
-    task: SheriffTask;
+    assignment: SheriffAssignment;
     connectDragSource?: any;
     isDragging?: boolean;
 }
 
 
 
-class TaskCard extends React.PureComponent<TaskCardProps, any>{
-
-    // static propTypes = {
-    //     //onClick: PropTypes.func.isRequired,
-    //     completed: PropTypes.bool.isRequired,
-    //     text: PropTypes.string.isRequired
-    // }
-
+class AssignmentCard extends React.PureComponent<AssignmentCardProps, any>{
     render() {
-        const { task, connectDragSource } = this.props;
-        const { title, requiredAbilities, description } = task;
+        const { assignment, connectDragSource } = this.props;
+        const { title, requiredAbilities, description } = assignment;
 
 
         return connectDragSource(
@@ -63,4 +52,4 @@ class TaskCard extends React.PureComponent<TaskCardProps, any>{
     }
 }
 
-export default DragSource<TaskCardProps>(ItemTypes.TASK, taskSource, collect)(TaskCard)
+export default DragSource<AssignmentCardProps>(ItemTypes.ASSIGNMENT, assignmentSource, collect)(AssignmentCard)

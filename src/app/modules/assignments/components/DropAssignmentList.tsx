@@ -1,19 +1,19 @@
 import * as React from 'react'
-import {default as TaskList,TaskListProps} from './TaskList'
+import {default as AssignmentList, AssignmentListProps} from './AssignmentList'
 import ItemTypes from '../ItemTypes';
 import { DropTarget } from 'react-dnd';
-import { SheriffTask } from '../../../api/index';
+import { SheriffAssignment } from '../../../api/index';
 
 const listTarget = {
     canDrop(props: any,monitor:any) {
-        const {canDropTask=(t:SheriffTask)=>true} = props; 
-        return canDropTask(monitor.getItem());
+        const {canDropAssignment=(t:SheriffAssignment)=>true} = props; 
+        return canDropAssignment(monitor.getItem());
     },
     drop(props: any,monitor:any) {
-        const {onDropTask} = props;
-        if(onDropTask){
-            let {task} = monitor.getItem();
-            onDropTask(task);
+        const {onDropAssignment} = props;
+        if(onDropAssignment){
+            let {assignment} = monitor.getItem();
+            onDropAssignment(assignment);
         }        
     }
 };
@@ -26,16 +26,16 @@ function collect(connect: any, monitor: any) {
     };
 }
 
-export interface DropTaskListProps extends TaskListProps {
-    onDropTask?:(task:SheriffTask)=>void;
-    canDropTask?:(task:SheriffTask)=>void;
+export interface DropAssignmentListProps extends AssignmentListProps {
+    onDropAssignment?:(assignment:SheriffAssignment)=>void;
+    canDropAssignment?:(assignment:SheriffAssignment)=>boolean;
     connectDropTarget?: any;    
     isOver?: boolean;
     canDrop?: boolean;
 }
 
-@DropTarget<DropTaskListProps>(ItemTypes.TASK, listTarget, collect)
-class DropTaskList extends React.PureComponent<DropTaskListProps,{}>{
+@DropTarget<DropAssignmentListProps>(ItemTypes.ASSIGNMENT, listTarget, collect)
+class DropAssignmentList extends React.PureComponent<DropAssignmentListProps,{}>{
 
     render(){
         const {connectDropTarget,isOver,canDrop,...restProps} = this.props;
@@ -50,7 +50,6 @@ class DropTaskList extends React.PureComponent<DropTaskListProps,{}>{
             borderColor = 'red'
             
         }
-        //borderColor = isOver ? (!canDrop ? 'red' : 'green') : 'black'
         
         return connectDropTarget(
             <div style={{
@@ -60,7 +59,7 @@ class DropTaskList extends React.PureComponent<DropTaskListProps,{}>{
                 borderWidth:2,
                 borderColor:borderColor
             }}>
-                <TaskList {...restProps}/>
+                <AssignmentList {...restProps}/>
                 {/* {isOver && !canDrop && this.renderOverlay('red')}
                 {!isOver && canDrop && this.renderOverlay('yellow')}
                 {isOver && canDrop && this.renderOverlay('green')} */}
@@ -69,4 +68,4 @@ class DropTaskList extends React.PureComponent<DropTaskListProps,{}>{
     }
 }
 
-export default DropTaskList
+export default DropAssignmentList
