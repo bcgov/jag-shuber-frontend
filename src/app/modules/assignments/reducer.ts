@@ -3,7 +3,7 @@ import {
   IActionPayload,
   IAction
 } from './actions'
-import { SheriffTaskMap } from '../../api/index';
+import { SheriffAssignmentMap } from '../../api/index';
 
 export type ReducerResponse<State> = State;
 export type ReducerCases<State> = {
@@ -26,8 +26,8 @@ export function createReducer<State>(
   };
 }
 
-export interface TaskState {
-  map?: SheriffTaskMap;
+export interface AssignmentState {
+  map?: SheriffAssignmentMap;
   loading?: boolean;
   error?: string;
   saving?: boolean;
@@ -35,19 +35,19 @@ export interface TaskState {
 }
 
 
-const reducer = createReducer<TaskState>({
-  REQUEST_TASKS_BEGIN: (state, payload) => ({ loading: true }),
-  REQUEST_TASKS_FAIL: (state, payload) => ({ loading: false, error: payload }),
-  REQUEST_TASKS_SUCCESS: (state, payload) => ({ loading: false, map: payload }),
-  ASSIGN_TASK: (state, payload) => {
+const reducer = createReducer<AssignmentState>({
+  ASSIGNMENT_LIST_BEGIN: (state, payload) => ({ loading: true }),
+  ASSIGNMENT_LIST_FAIL: (state, payload) => ({ loading: false, error: payload }),
+  ASSIGNMENT_LIST_SUCCESS: (state, payload) => ({ loading: false, map: payload }),
+  ASSIGNMENT_LINK: (state, payload) => {
     const { map, ...rest } = state;
     let newMap = Object.assign({}, map);
-    newMap[payload.taskId].sheriffIds = [payload.badgeNumber];
+    newMap[payload.assignmentId].sheriffIds = [payload.badgeNumber];
     return { map: newMap, ...rest };
   },
-  TASK_BEGIN_CREATE: (state, payload) => (Object.assign({}, state, {saving: true })),
-  TASK_CREATE_FAIL: (state, payload) => ({ saving:false, error:payload }),
-  TASK_CREATE_SUCCESS: (state, payload) => {
+  ASSIGNMENT_CREATE_BEGIN: (state, payload) => (Object.assign({}, state, {saving: true })),
+  ASSIGNMENT_CREATE_FAIL: (state, payload) => ({ saving:false, error:payload }),
+  ASSIGNMENT_CREATE_SUCCESS: (state, payload) => {
     const { map, ...rest } = state;
     let newMap = Object.assign({}, map);
     newMap[payload.id] = payload;

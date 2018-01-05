@@ -1,0 +1,28 @@
+import { createSelector } from 'reselect'
+import { RootState } from '../../store/reducers';
+import { SheriffAssignment } from '../../api/index';
+
+export const allAssignments = (state: RootState) => {
+    const map = state.assignments.map || {};
+    const list: SheriffAssignment[] = Object.keys(map).map((k, i) => map[k]);
+    return list;
+}
+export const isLoading = (state: RootState) => state.assignments.loading;
+export const error = (state: RootState) => state.assignments.error;
+
+// Not Memoized since not sure which id is getting passed in
+export const linkedAssignments = (id?:number)=> (state:RootState)=>{
+    if(id==null){
+        return [];
+    }
+    return allAssignments(state).filter(t=>t.sheriffIds.indexOf(id)>=0);
+}
+
+export const unlinkedAssignments = createSelector(allAssignments,
+    assignments => {
+        let ts = assignments ? assignments.filter(t => {
+            return !t.sheriffIds || t.sheriffIds.length == 0
+        }) : []
+        return ts;
+    }
+)

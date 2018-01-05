@@ -1,19 +1,15 @@
-import * as React from 'react'
-// import * as PropTypes from 'prop-types'
-import ItemTypes from '../ItemTypes'
+import * as React from 'react';
+import ItemTypes from '../ItemTypes';
 import { DragSource } from 'react-dnd';
 import {
-    //Label,
     Panel,
     Image,
-    // ListGroup,
-    // ListGroupItem,
     Grid,
     Row,
     Col
-} from 'react-bootstrap'
-import SheriffAbilityPile from '../../../components/SheriffAbilityPile'
-import AssignedTaskList from '../../tasks/containers/AssignedTaskList'
+} from 'react-bootstrap';
+import SheriffAbilityPile from '../../../components/SheriffAbilityPile';
+import LinkedAssignmentList from '../../assignments/containers/LinkedAssignmentList';
 import { Sheriff } from '../../../api/index';
 
 
@@ -70,12 +66,6 @@ class CardHeader extends React.PureComponent<{ sheriff: Sheriff }, any>{
 
 class SheriffCard extends React.PureComponent<SheriffCardProps, any>{
 
-    // static propTypes = {
-    //     onClick: PropTypes.func.isRequired,
-    //     completed: PropTypes.bool.isRequired,
-    //     text: PropTypes.string.isRequired
-    // }
-
     render() {
         const { sheriff} = this.props;
 
@@ -83,12 +73,7 @@ class SheriffCard extends React.PureComponent<SheriffCardProps, any>{
         return (
             <div>
                 <Panel header={<CardHeader sheriff={sheriff} />} height={400}>
-                    <AssignedTaskList sheriffId={sheriff.badgeNumber} />
-                    {/* <ListGroup>
-                        <ListGroupItem bsStyle="success">Job 1</ListGroupItem>
-                        <ListGroupItem bsStyle="warning">Job 2</ListGroupItem>
-                        <ListGroupItem>Job 3</ListGroupItem>
-                    </ListGroup> */}
+                    <LinkedAssignmentList sheriffId={sheriff.badgeNumber} />
                 </Panel>
             </div>
         )

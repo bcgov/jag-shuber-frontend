@@ -5,8 +5,8 @@ import {
     Col
   } from 'react-bootstrap'
   import OnDutySheriffs from '../modules/sheriffs/containers/OnDutySheriffs';
-  import UnassignedTaskList from '../modules/tasks/containers/UnassignedTaskList';
-  import CreateTaskForm from '../modules/tasks/containers/CreateTaskForm';
+  import UnlinkedAssignmentList from '../modules/assignments/containers/UnlinkedAssignmentList';
+  import CreateAssignmentForm from '../modules/assignments/containers/CreateAssignmentForm';
 class Home extends React.PureComponent {
     render() {
         return (
@@ -14,10 +14,10 @@ class Home extends React.PureComponent {
                 <Row>
                     <Col lg={3}>
                         <h1>Outstanding Assignments</h1>
-                        <UnassignedTaskList />
+                        <UnlinkedAssignmentList />
                     </Col>
                     <Col lg={7}>
-                        <CreateTaskForm />
+                        <CreateAssignmentForm />
                     </Col>
                 </Row>
                 <Row>

@@ -17,7 +17,7 @@ export interface Sheriff {
     abilities: SheriffAbility
 }
 
-export interface SheriffTask {
+export interface SheriffAssignment {
     id: number;
     title: string;
     description: string;
@@ -27,17 +27,14 @@ export interface SheriffTask {
 
 export interface API {
     getSheriffs(): Promise<SheriffMap>;
-    getSheriffTasks(): Promise<SheriffTaskMap>;
+    getSheriffAssignments(): Promise<SheriffAssignmentMap>;
     createSheriff(newSheriff:Sheriff): Promise<Sheriff>;
-    createTask(newTask:SheriffTask): Promise<SheriffTask>;
+    createAssignment(newAssignment:SheriffAssignment): Promise<SheriffAssignment>;
 }
-
-// type SheriffKey = Sheriff["badgeNumber"];
 
 export type SheriffMap = {[key:number]:Sheriff}
 
-// type SheriffTaskKey = SheriffTask['id'];
-export type SheriffTaskMap = {[key:number]:SheriffTask}
+export type SheriffAssignmentMap = {[key:number]:SheriffAssignment}
 
 function arrayToMap<T,TKey>(array: T[], keySelector: (t: T) => TKey) {
     const mappedArray  = array.reduce<any>((map,i)=>{
@@ -68,10 +65,10 @@ class Client implements API {
         return arrayToMap(sheriffList,(s)=>s.badgeNumber) as SheriffMap;
     }
 
-    async getSheriffTasks() : Promise<SheriffTaskMap> {
+    async getSheriffAssignments() : Promise<SheriffAssignmentMap> {
         // await randomDelay(200, 1000);
-        const taskMap : SheriffTaskMap = arrayToMap(tasks,(t)=>t.id);
-        return Promise.resolve(taskMap);
+        const assignmentMap : SheriffAssignmentMap = arrayToMap(assignments,(t)=>t.id);
+        return Promise.resolve(assignmentMap);
     }
 
     async createSheriff(newSheriff: Sheriff): Promise<Sheriff> {
@@ -87,18 +84,18 @@ class Client implements API {
         return newSheriff;
     }
 
-    async createTask(newTask: SheriffTask) : Promise<SheriffTask> {
+    async createAssignment(newAssignment: SheriffAssignment) : Promise<SheriffAssignment> {
         await randomDelay();
         
-        tasks.push(newTask);
+        assignments.push(newAssignment);
 
-        return newTask;
+        return newAssignment;
     }
 }
 
 let sheriffList: Sheriff[] = [];
 
-const tasks: SheriffTask[] = [
+const assignments: SheriffAssignment[] = [
     {
         id: 0,
         title: 'Court Security',
