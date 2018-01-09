@@ -27,6 +27,8 @@
     "react-dnd": "^2.5.4",
     "react-dnd-html5-backend": "^2.5.4",
     "react-dom": "^16.1.1",
+    "react-image-upload": "0.0.1",
+    "react-images-upload": "^1.1.1",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
     "redux": "^3.7.2",
@@ -65,7 +67,7 @@
     "@types/react-dom": "^16.0.3",
     "@types/react-redux": "^5.0.13",
     "@types/react-router-dom": "^4.2.3",
-    "@types/redux-form": "^7.0.10"
+    "@types/redux-form": "^7.0.12"
   },
   "jest": {
     "mapCoverage": true,

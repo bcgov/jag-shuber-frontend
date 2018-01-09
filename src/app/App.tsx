@@ -5,7 +5,6 @@ import { Provider } from 'react-redux'
 import store from './store'
 import {
   Route,
-  // withRouter,
   BrowserRouter as Router
 } from "react-router-dom";
 
@@ -15,8 +14,8 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import {
   Contact,
   Home,
-  Settings,
-  Timeline
+  Timeline,
+  ManageSheriff
 } from './pages'
 
 import Footer from './components/Footer';
@@ -31,8 +30,8 @@ class Layout extends React.Component {
         </div>
         <div className="mainArea" style={{ marginTop: -5}}>
           <Route exact path='/' component={Home} />
-          <Route path='/settings' component={Settings} />
           <Route path='/timeline' component={Timeline} />
+          <Route path='/managesheriffs' component={ManageSheriff} />
           <Route path='/contact' component={Contact} />
         </div>
         <div className='footerArea'>
@@ -42,8 +41,6 @@ class Layout extends React.Component {
     );
   }
 }
-
-// const LayoutWithRouter = withRouter(Layout);
 
 class App extends React.Component {
   render() {

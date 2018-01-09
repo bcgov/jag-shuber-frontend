@@ -13,10 +13,17 @@ export enum SheriffAbility {
 type DateType = Date | number | moment.Moment;
 
 export interface Sheriff {
-    name: string
-    badgeNumber: number
-    imageUrl?: string
-    abilities: SheriffAbility
+    firstName: string;
+    lastName: string;
+    badgeNumber: number;
+    imageUrl?: string;
+    //making optional for now
+    abilities: SheriffAbility;
+    permanentWorksite?: string;
+    permanentLocation?: string;
+    currentWorksite?: string;
+    currentLocation?: string;
+
 }
 
 export interface SheriffAssignment {
@@ -58,7 +65,8 @@ class Client implements API {
 
             sheriffList = people.results.map(p => {
                 let s: Sheriff = {
-                    name: `${p.name.first} ${p.name.last}`,
+                    firstName: p.name.first, 
+                    lastName: p.name.last,
                     badgeNumber: badgeNumber++,
                     imageUrl: p.picture.large,
                     abilities: SheriffAbility.All

@@ -1,28 +1,109 @@
 import * as React from 'react';
-import { Form } from 'react-bootstrap';
-import { Field } from 'redux-form';
+import {
+    Form,
+    Image,
+    Button,
+    ListGroup,
+    ListGroupItem,
+    Glyphicon, 
+    Checkbox
+    //Col,
+    // Row
+} from 'react-bootstrap';
+import {
+    Field,
+    FieldArray
+    //WrappedFieldArrayProps, 
+    // WrappedFieldProps 
+} from 'redux-form';
 import { Validators } from '../../../infrastructure';
-import { TextFormField, QualificationsChecklist } from '../../../components/Form';
+import {
+    TextFormField,
+    TrainingTypeSelector,
+    QualificationsChecklist 
+} from '../../../components/Form';
+// import { ImgaeUploader } from 'react-images-upload';
 
 
 export interface SheriffFormProps {
-    handleSubmit:()=>void;
+    handleSubmit: () => void;
 }
 
+interface TrainingProps {
+    type?: string;
+
+}
+
+class TrainingFieldArray extends FieldArray<TrainingProps> {
+
+}
 
 export default class SheriffForm extends React.Component<SheriffFormProps, any>{
 
+    // private renderTraining({ fields }: WrappedFieldArrayProps<TrainingProps>) {
+    //     return (
+    //         <ul>
+    //             <li>
+    //                 <button type="button" onClick={() => fields.push({})}>Add Hobby</button>
+    //             </li>
+    //             {fields.map((hobby, index) =>
+    //                 <li key={index}>
+    //                     <button
+    //                         type="button"
+    //                         title="Remove Hobby"
+    //                         onClick={() => fields.remove(index)} />
+    //                     <Field
+    //                         name={hobby}
+    //                         type="text"
+    //                         component={TextFormField}
+    //                         label={`Hobby #${index + 1}`} />
+    //                 </li>
+    //             )}
+    //         </ul>
+    //     )
+    // }
+
     render() {
-        const {handleSubmit} = this.props;
+        const { handleSubmit } = this.props;
 
         return (
             <div>
-                <h2>Add a Sheriff</h2>
                 <Form onSubmit={handleSubmit}>
-                    <Field name="name" component={TextFormField} label="Name"/>
+                    <Field name="firstName" component={TextFormField} label="First Name" />
+                    <Field name="lastName" component={TextFormField} label="Last Name" />
                     <Field name="badgeNumber" component={TextFormField} label="Badge Number" validate={[Validators.number]} />
-                    <Field name="abilities" component={QualificationsChecklist} label="Qualifications" validate={[Validators.required]}/> 
-                    <button type="submit">Save</button>
+                    <Image responsive src="/thumbnail.png" circle />
+
+                    <h2>Worksite Details</h2>        
+                    <Field name="permanentWorksite" component={TextFormField} label="Permanent Worksite" />
+                    <Field name="permanentLocation" component={TextFormField} label="Permanent Location" />
+                    <Field name="currentWorksite" component={TextFormField} label="Current Worksite" />
+                    <Field name="currentLocation" component={TextFormField} label="Current Location" />
+                    
+                    <h2>Training</h2>
+                    <Field name="abilities" component={QualificationsChecklist} label="Abilities"/>
+                    <TrainingFieldArray name="training" component={(p) => {
+                        const { fields } = p;
+                        return (
+                            <ListGroup >
+                                <Button bsStyle="success" onClick={() => fields.push({})}>Add</Button>
+
+                                {fields.map((training, index) => {
+                                    return (
+                                        <ListGroupItem key={index}>
+                                            <Button bsStyle="danger" onClick={() => fields.remove(index)}><Glyphicon glyph="trash" /></Button>
+                                            <Field name={`trainignType_+${index}`} component={TrainingTypeSelector} label="Training Type" />
+                                            <Field name={`certificationDate_+${index}`} component={TextFormField} label="Certification Date" />
+                                            <Field name={`expiryDate_+${index}`} component={TextFormField} label="Expiry Date" />
+                                            <Checkbox>Training does not expire</Checkbox>
+                                        </ListGroupItem>)
+                                }
+                                )}
+                            </ListGroup>
+                        )
+                    }} />
+
+                    <Button type="submit" >Save</Button>
                 </Form>
             </div>
         );

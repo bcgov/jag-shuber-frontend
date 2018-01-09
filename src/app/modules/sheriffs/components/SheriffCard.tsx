@@ -19,7 +19,7 @@ export interface SheriffCardProps {
 
 class CardHeader extends React.PureComponent<{ sheriff: Sheriff }, any>{
     render() {
-        const { sheriff: { name, badgeNumber, imageUrl, abilities } } = this.props;
+        const { sheriff: { firstName, lastName, badgeNumber, imageUrl, abilities } } = this.props;
         return (
             <Grid fluid>
                 <Row>
@@ -27,7 +27,7 @@ class CardHeader extends React.PureComponent<{ sheriff: Sheriff }, any>{
                         <Image responsive src={imageUrl} circle />
                     </Col>
                     <Col>
-                        <h4>{name}</h4>
+                        <h4>{firstName} {lastName}</h4>
                     </Col>
                 </Row>
                 <Row>
