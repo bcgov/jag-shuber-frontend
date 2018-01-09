@@ -10,9 +10,10 @@ export default class TrainingTypeSelector extends React.PureComponent<FormFieldW
             <FormFieldWrapper {...this.props}>
                 <FormControl componentClass="select" value={value} onChange={onChange}>
                     <option value="No training type selected">{`Select ${label}`}</option>
-                    <option value="firearms">Firearms</option>
-                    <option value="escort">Prisoner Escort</option>
-                    <option value="seucrity">Court Security</option>
+                    <option value="fro">FRO - Forced Response Option</option>
+                    <option value="pistol">PISTOL</option>
+                    <option value="cid">CID - Critical Incident De-Escalation</option>
+                    <option value="cew">CEW - Conductive Energy Weapon</option>
                 </FormControl>
             </FormFieldWrapper>
         );

@@ -38,9 +38,14 @@ const reducer = createReducer<SheriffState>({
   REQUEST_SHERIFF_LIST_BEGIN: (state, payload) => ({ loading: true }),
   REQUEST_SHERIFF_LIST_FAIL: (state, payload) => ({ loading: false, error: payload }),
   REQUEST_SHERIFF_LIST_SUCCESS: (state, payload) => ({ loading: false, map: payload }),
-  SHERIFF_BEGIN_CREATE: (state, payload) => ({saving: true }),
+  SHERIFF_BEGIN_CREATE: (state, payload) => (Object.assign({}, state, {saving: true })),
   SHERIFF_CREATE_FAIL: (state, payload) => ({ saving:false, error:payload }),
-  SHERIFF_CREATE_SUCCESS: (state, payload) => ({saving:false, successMessage:'SAVED!'})
+  SHERIFF_CREATE_SUCCESS: (state, payload) => {
+    const { map, ...rest } = state;
+    let newMap = Object.assign({}, map);
+    newMap[payload.badgeNumber] = payload;
+    return { map: newMap, ...rest, saving:false, loading:false, successMessage:'SAVED!'};
+  }
 });
 
 export default reducer;

@@ -17,8 +17,12 @@ export interface Sheriff {
     lastName: string;
     badgeNumber: number;
     imageUrl?: string;
-    //making optional for now
     abilities: SheriffAbility;
+    training: [{
+        trainingType: string;
+        certificationDate: string;
+        expiryDate: string;
+    }];
     permanentWorksite?: string;
     permanentLocation?: string;
     currentWorksite?: string;
@@ -69,6 +73,13 @@ class Client implements API {
                     lastName: p.name.last,
                     badgeNumber: badgeNumber++,
                     imageUrl: p.picture.large,
+                    permanentLocation: "Permanent Location", 
+                    permanentWorksite: "Permanent Worksite", 
+                    currentLocation: "Current Location", 
+                    currentWorksite: "Current Worksite",
+                    training: [
+                        {certificationDate:"Certification Type", expiryDate:"Expiry Date", trainingType: "Trainging Type"}
+                    ],
                     abilities: SheriffAbility.All
                 };
                 return s;
@@ -87,9 +98,10 @@ class Client implements API {
         await randomDelay();
 
         //This is a hack to throw in random picture
-        if (!newSheriff.imageUrl) {
-            let randomNumber = Math.floor(Math.random() * 86) + 11;
-            newSheriff.imageUrl = `https://randomuser.me/api/portraits/men/${randomNumber}.jpg`;
+        if(!newSheriff.imageUrl){
+            //let randomNumber = Math.floor(Math.random() * 86) + 11; 
+            // newSheriff.imageUrl=`https://randomuser.me/api/portraits/men/${randomNumber}.jpg`;
+            newSheriff.imageUrl="/img/avatar.png"
         }
 
         sheriffList.push(newSheriff);

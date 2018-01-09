@@ -19,7 +19,7 @@ export interface SheriffCardProps {
 
 class CardHeader extends React.PureComponent<{ sheriff: Sheriff }, any>{
     render() {
-        const { sheriff: { firstName, lastName, badgeNumber, imageUrl, abilities } } = this.props;
+        const { sheriff: { firstName, lastName, badgeNumber, imageUrl, abilities, permanentLocation, permanentWorksite, currentWorksite, currentLocation, training } } = this.props;
         return (
             <Grid fluid>
                 <Row>
@@ -32,7 +32,32 @@ class CardHeader extends React.PureComponent<{ sheriff: Sheriff }, any>{
                 </Row>
                 <Row>
                     <Col xs={12}>
-                        Badge: #{badgeNumber}
+                        <b>Badge:</b> #{badgeNumber}
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xs={12}>
+                        <b>Perm Loc:</b> {permanentLocation}
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xs={12}>
+                        <b>Perm Worksite:</b> {permanentWorksite}
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xs={12}>
+                        <b>Curr Loc:</b> {currentLocation}
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xs={12}>
+                        <b>Curr Worksite:</b> {currentWorksite}
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xs={12}>
+                        <b>Training:</b> <h4> {training[0].trainingType} {training[0].certificationDate} {training[0].expiryDate}</h4>
                     </Col>
                 </Row>
                 <Row>
