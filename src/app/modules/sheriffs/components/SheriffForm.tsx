@@ -88,13 +88,13 @@ export default class SheriffForm extends React.Component<SheriffFormProps, any>{
                             <ListGroup >
                                 <Button bsStyle="success" onClick={() => fields.push({})}>Add</Button>
 
-                                {fields.map((training, index) => {
+                                {fields.map((trainingFieldName, index) => {
                                     return (
                                         <ListGroupItem key={index}>
                                             <Button bsStyle="danger" onClick={() => fields.remove(index)}><Glyphicon glyph="trash" /></Button>
-                                            <Field name={`trainignType_+${index}`} component={TrainingTypeSelector} label="Training Type" />
-                                            <Field name={`certificationDate_+${index}`} component={TextFormField} label="Certification Date" />
-                                            <Field name={`expiryDate_+${index}`} component={TextFormField} label="Expiry Date" />
+                                            <Field name={`${trainingFieldName}.trainingType`} component={TrainingTypeSelector} label="Training Type" />
+                                            <Field name={`${trainingFieldName}.certificationType`} component={TextFormField} label="Certification Date" />
+                                            <Field name={`${trainingFieldName}.expiryDate`} component={TextFormField} label="Expiry Date" />
                                             <Checkbox>Training does not expire</Checkbox>
                                         </ListGroupItem>)
                                 }
