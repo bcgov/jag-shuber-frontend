@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {default as CreateSheriffForm,SubmitButton} from '../modules/sheriffs/containers/CreateSheriffForm';
+import {default as CreateSheriffForm} from '../modules/sheriffs/containers/CreateSheriffForm';
 import { 
     Button, 
     Modal
@@ -48,7 +48,7 @@ class AddSheriffModal extends React.Component<AddSheriffModalProps, AddSheriffMo
                         <CreateSheriffForm onSubmitSuccess={()=>this.handleClose()}/>
 					</Modal.Body>
 					<Modal.Footer>
-                        <SubmitButton>Save</SubmitButton>
+                        <CreateSheriffForm.SubmitButton bsStyle="primary">Save</CreateSheriffForm.SubmitButton>
 						<Button onClick={() => this.handleClose()}>Close</Button>
 					</Modal.Footer>
 				</Modal>
