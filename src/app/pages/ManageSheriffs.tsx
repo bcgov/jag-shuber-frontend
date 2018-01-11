@@ -1,35 +1,75 @@
 import * as React from 'react';
-import CreateSheriffForm from '../modules/sheriffs/containers/CreateSheriffForm';
-import { Button } from 'react-bootstrap';
+import {default as CreateSheriffForm,SubmitButton} from '../modules/sheriffs/containers/CreateSheriffForm';
+import { 
+    Button, 
+    Modal
+} from 'react-bootstrap';
 import OnDutySheriffs from '../modules/sheriffs/containers/OnDutySheriffs';
-// import { Modal } from 'react-bootstrap';
 
+
+interface AddSheriffModalProps{
+    open?: boolean;
+}
+
+interface AddSheriffModalState{
+    showModal?: boolean;
+
+}
+
+class AddSheriffModal extends React.Component<AddSheriffModalProps, AddSheriffModalState>{
+    static defaultProps:AddSheriffModalProps = {
+        open: false
+    }
+
+    constructor(props: AddSheriffModalProps){
+        super(props);
+        this.state = { showModal: props.open };
+    }
+
+    handleShow(){
+        this.setState({ showModal: true })
+    }
+
+    handleClose(){
+        this.setState({ showModal: false })
+    }
+    render(){
+        return (
+			<div>			
+				<Button bsStyle="success" bsSize="large" onClick={() => this.handleShow()}>
+					Add a Sheriff
+				</Button>
+
+				<Modal show={this.state.showModal} onHide={() => this.handleClose()}>
+					<Modal.Header closeButton>
+						<Modal.Title>Add Sheriff</Modal.Title>
+					</Modal.Header>
+					<Modal.Body>
+                        <CreateSheriffForm onSubmitSuccess={()=>this.handleClose()}/>
+					</Modal.Body>
+					<Modal.Footer>
+                        <SubmitButton>Save</SubmitButton>
+						<Button onClick={() => this.handleClose()}>Close</Button>
+					</Modal.Footer>
+				</Modal>
+			</div>
+        );
+    }
+}
 export interface ManageSheriffsProps{
     
 }
+
+
 class ManageSheriffs extends React.PureComponent<ManageSheriffsProps, any>{
     render(){
-       const handleShow = () => {
-           this.setState({showModal: true});
-       };
         return (
             <div>
                 <h1>Manage Sheriffs</h1>
 
-                <h3>Add a Sheriff</h3>
-                <CreateSheriffForm />
-                
-                <h3>Your Team</h3>
                 <OnDutySheriffs />
-                <Button bsStyle="success" onClick={handleShow}>Add a Sheriff</Button>
-                
-                {/* <Modal show={this.setState.showModal}>
-                </Modal> */}
 
-                <br/>
-                <br/>
-                <br/>
-                
+                <AddSheriffModal />
             </div>
         );
     }

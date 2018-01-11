@@ -24,7 +24,7 @@ class CardHeader extends React.PureComponent<{ sheriff: Sheriff }, any>{
             <Grid fluid>
                 <Row>
                     <Col xs={12}>
-                        <Image responsive src={imageUrl} circle />
+                        <Image responsive src={imageUrl} circle onClick={()=>alert("hello")}/>
                     </Col>
                     <Col>
                         <h4>{firstName} {lastName}</h4>
@@ -57,7 +57,12 @@ class CardHeader extends React.PureComponent<{ sheriff: Sheriff }, any>{
                 </Row>
                 <Row>
                     <Col xs={12}>
-                        <b>Training:</b> <h4> {training[0].trainingType} {training[0].certificationDate} {training[0].expiryDate}</h4>
+                        <b>Training:</b> 
+                        {training.map(function(training, index){
+                            return(
+                            <p key={ index }>{training.trainingType} {training.certificationDate} {training.expiryDate}</p>
+                        );
+                        })}
                     </Col>
                 </Row>
                 <Row>
@@ -78,8 +83,12 @@ export default class SheriffCard extends React.PureComponent<SheriffCardProps, a
 
         return (
             <div>
-                <Panel header={<CardHeader sheriff={sheriff} />} height={400}>
-                    <LinkedAssignmentList sheriffId={sheriff.badgeNumber} />
+                {/* () => <CardHeader sheriff={sheriff} /> */}
+                <Panel header="text" height={400}>
+                    
+                        <CardHeader sheriff={sheriff}/>
+                        <LinkedAssignmentList sheriffId={sheriff.badgeNumber} />
+                   
                 </Panel>
             </div>
         )
