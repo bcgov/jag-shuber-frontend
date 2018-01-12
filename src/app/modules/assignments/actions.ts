@@ -12,8 +12,10 @@ type IActionMap = {
   "ASSIGNMENT_LIST_FAIL": string;
   "ASSIGNMENT_LIST_SUCCESS": SheriffAssignmentMap;
   "ASSIGNMENT_LINK": { assignmentId: number, badgeNumber: number };
+  "ASSIGNMENT_UNLINK": { assignmentId: number, badgeNumber: number };
+  "ASSIGNMENT_SWAP": { assignmentId: number, oldBadgeNumber: number, newBadgeNumber: number }; 
   "ASSIGNMENT_CREATE_BEGIN": null;
-  "ASSIGNMENT_CREATE_SUCCESS": SheriffAssignment; 
+  "ASSIGNMENT_CREATE_SUCCESS": SheriffAssignment;
   "ASSIGNMENT_CREATE_FAIL": string;
 }
 
@@ -46,13 +48,15 @@ export const getAssignments: ThunkAction<void> = () => (async (dispatch, getStat
   }
 });
 
+export const swapAssignment = (assignmentId: number, oldBadgeNumber: number, newBadgeNumber: number) => actionCreator("ASSIGNMENT_SWAP")({ assignmentId, oldBadgeNumber, newBadgeNumber })
 export const linkAssignment = (assignmentId: number, badgeNumber: number) => actionCreator("ASSIGNMENT_LINK")({ assignmentId, badgeNumber });
+export const unlinkAssignment = (assignmentId: number, badgeNumber: number) => actionCreator("ASSIGNMENT_UNLINK")({ assignmentId, badgeNumber });
 export const beginGetAssignments = () => actionCreator("ASSIGNMENT_LIST_BEGIN")(null);
 export const getAssignmentFailed = actionCreator("ASSIGNMENT_LIST_FAIL");
 export const getAssignmentSuccess = actionCreator("ASSIGNMENT_LIST_SUCCESS");
 
 //Action creator for creating a new assignment
-export const createAssignment: ThunkAction<SheriffAssignment> = (newAssignment: SheriffAssignment) => (async (dispatch, getState, { api }) =>{
+export const createAssignment: ThunkAction<SheriffAssignment> = (newAssignment: SheriffAssignment) => (async (dispatch, getState, { api }) => {
   dispatch(beginCreateAssignment());
   try {
     let assignment = await api.createAssignment(newAssignment);

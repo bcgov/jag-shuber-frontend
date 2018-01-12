@@ -15,7 +15,8 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import {
   Contact,
   Home,
-  Settings
+  Settings,
+  Timeline
 } from './pages'
 
 import Footer from './components/Footer';
@@ -23,16 +24,20 @@ import Navigation from './components/Navigation'
 
 class Layout extends React.Component {
   render() {
-    console.log(this.props);
     return (
-      <div id="main-content" >
-        <Navigation />
-        <div id="topicTemplate" className="template container" style={{ marginTop: 5 }}>
+      <div className="App">
+        <div className="headerArea">
+          <Navigation />
+        </div>
+        <div className="mainArea" style={{ marginTop: -5}}>
           <Route exact path='/' component={Home} />
           <Route path='/settings' component={Settings} />
+          <Route path='/timeline' component={Timeline} />
           <Route path='/contact' component={Contact} />
         </div>
+        <div className='footerArea'>
         <Footer />
+        </div>
       </div>
     );
   }

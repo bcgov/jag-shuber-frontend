@@ -7,17 +7,18 @@ import AssignmentCard from './AssignmentCard'
 import { SheriffAssignment } from '../../../api/index';
 
 export interface AssignmentListProps {
-    assignments: SheriffAssignment[]
+    assignments: SheriffAssignment[];
+    assignmentGroupId:number;
 }
 
 class AssignmentList extends  React.PureComponent<AssignmentListProps, any>{
     render() {
-        const { assignments } = this.props;
+        const { assignments, assignmentGroupId } = this.props;
          return ( 
             <ListGroup>
                 {assignments.map(t => (
                     <ListGroupItem key={t.id}>
-                        <AssignmentCard assignment={t} />
+                        <AssignmentCard assignment={t} currentGroupId={assignmentGroupId} />
                     </ListGroupItem>
                 ))}
             </ListGroup>
