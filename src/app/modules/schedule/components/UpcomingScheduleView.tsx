@@ -18,8 +18,8 @@ export default class UpcomingScheduleView extends React.Component<UpcomingSchedu
                 <Table responsive>
                     <thead>
                         <tr>
-                            <th>Day</th>
-                            <th>Shift</th>
+                            <th className="text-left">Day</th>
+                            <th className="text-left">Shift</th>
                         </tr>
                     </thead>
                     <tbody>

@@ -19,9 +19,9 @@ export default class SheriffProfile extends React.Component<OvertimeDetailsProps
                 <Table responsive>
                     <thead>
                         <tr>
-                            <th>Date</th>
-                            <th>Hours</th>
-                            <th>Status</th>
+                            <th className="text-left">Date</th>
+                            <th className="text-left">Hours</th>
+                            <th className="text-left"> Status</th>
                         </tr>
                     </thead>
                     <tbody>

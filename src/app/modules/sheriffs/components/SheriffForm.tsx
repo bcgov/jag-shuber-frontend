@@ -58,11 +58,9 @@ export default class SheriffForm extends React.Component<SheriffFormProps & Inje
                     <h3>Worksite Details</h3>
                     <Field name="permanentLocation" component={TextFormField} label="Permanent Location" />
                     <Field name="permanentWorksite" component={TextFormField} label="Permanent Worksite" />
-                    <Field name="currentWorksite" component={TextFormField} label="Current Worksite" />
                     <Field name="currentLocation" component={TextFormField} label="Current Location" />
-                    
-                    
-
+                    <Field name="currentWorksite" component={TextFormField} label="Current Worksite" />
+                   
                     <br />
                     <h3>Training</h3>
                     <TrainingFieldArray name="training" component={(p) => {

@@ -12,6 +12,23 @@ export enum SheriffAbility {
 
 type DateType = Date | number | moment.Moment;
 
+export const BLANK_SHERIFF:Sheriff = {
+    firstName: "",
+    lastName: "",
+    badgeNumber: -1,
+    imageUrl: "/img/avatar.png",
+    abilities: SheriffAbility.None,
+    training: [{
+        trainingType: "",
+        certificationDate: "",
+        expiryDate: "",
+    }],
+    permanentWorksite: "",
+    permanentLocation: "",
+    currentWorksite: "",
+    currentLocation: ""
+}
+
 export interface Sheriff {
     firstName: string;
     lastName: string;
@@ -78,7 +95,10 @@ class Client implements API {
                     currentLocation: "Current Location", 
                     currentWorksite: "Current Worksite",
                     training: [
-                        {certificationDate:"Certification Date", expiryDate:"Expiry Date", trainingType: "Trainging Type"}
+                        {certificationDate:"Mon Jan 20 2017", expiryDate:"Mon Jan 20 2018", trainingType:"FRO"}, 
+                        {certificationDate:"Mon Jan 20 2017", expiryDate:"Mon Jan 20 2018", trainingType:"PISTOL"},
+                        {certificationDate:"Mon Jan 20 2017", expiryDate:"Mon Jan 20 2018", trainingType:"CID"},
+                        {certificationDate:"Mon Jan 20 2017", expiryDate:"Mon Jan 20 2018", trainingType:"CEW"}
                     ],
                     abilities: SheriffAbility.All
                 };

@@ -11,7 +11,7 @@ import {
 } from 'react-bootstrap';
 import { Sheriff } from '../../../api/index';
 import { default as SheriffProfileView } from './SheriffProfileView';
-
+import { default as ViewSheriffProfileModal } from './ViewSheriffProfileModal';
 
 export interface SheriffCardProps {
     onClick: () => void;
@@ -45,9 +45,11 @@ class CardHeader extends React.PureComponent<{ sheriff: Sheriff }, any>{
                         <b>Badge Number:</b> #{badgeNumber}
                     </Col>
                 </Row>
+                
+                <ViewSheriffProfileModal sheriff={sheriff}/>
                 <Button><Glyphicon glyph="pencil" /></Button>
                 <OverlayTrigger trigger="focus" placement="right" overlay={showProfileDetails}>
-                    <Button><Glyphicon glyph="info-sign" /></Button>
+                    <Button><Glyphicon glyph="menu-right" /></Button>
                 </OverlayTrigger>
             </Grid>
 

@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { Sheriff } from '../../../api/index';
-import {
-    Table
-} from 'react-bootstrap';
-import OvertimeDetails from '../../overtime/components/OvertimeDetails';
+import OvertimeDetails from '../../overtime/components/OvertimeDetailsView';
 import UpcomingScheduleView from '../../schedule/components/UpcomingScheduleView';
+import TrainingDetailsView from '../../training/components/TrainingDetailsView';
+import WorksiteDetailsView from '../../worksite/components/WorksiteDetailsView';
 
 export interface SheriffProfileProps {
     sheriff: Sheriff;
@@ -12,50 +11,22 @@ export interface SheriffProfileProps {
 
 export default class SheriffProfile extends React.Component<SheriffProfileProps, any>{
     render() {
-        const { sheriff: { currentWorksite, currentLocation, permanentWorksite, permanentLocation, training } } = this.props;
+        const { sheriff } = this.props;
         return (
             <div>
-                <h3>Worksite Details</h3>
-                <Table responsive>
-                    <thead>
-                        <tr>
-                            <th> </th>
-                            <th>Worksite</th>
-                            <th>Location</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Permanent</strong></td>
-                            <td>{permanentWorksite}</td>
-                            <td>{permanentLocation}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Current</strong></td>
-                            <td>{currentWorksite}</td>
-                            <td>{currentLocation}</td>
-                        </tr>
-                    </tbody>
-                </Table>
+                <WorksiteDetailsView sheriff={ sheriff } />
+                
                 <br />
 
-                <h3>Training</h3>
-                {training.map(function (training, index) {
-                    return (
-                        <p key={index}>
-                            <strong>Type:</strong>{training.trainingType}<br />
-                            <strong>Certification:</strong>{training.certificationDate.toString().substring(0, 15)}<br />
-                            <strong>Expiry:</strong>{training.expiryDate.toString().substring(0, 15)}<br />
-                        </p>
-                    );
-                })}
-
+                <TrainingDetailsView sheriff={ sheriff } />
+                
                 <br />
+                
                 <UpcomingScheduleView />
 
                 <br />
+               
                 <OvertimeDetails />
-
             </div>
         );
     }
