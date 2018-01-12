@@ -69,17 +69,16 @@ export default class SheriffForm extends React.Component<SheriffFormProps & Inje
                             <ListGroup >
                                 {fields.map((trainingFieldName, index) => {
                                     return (
-                                        <ListGroupItem key={index}>
+                                        <ListGroupItem key={index}>              
+                                         <Button bsStyle="danger" onClick={() => fields.remove(index)} className="pull-right"><Glyphicon glyph="trash" /></Button><br/>                                                                     
                                             <Field name={`${trainingFieldName}.trainingType`} component={TrainingTypeSelector} label="Training Type " />
-
                                             <Field name={`${trainingFieldName}.certificationDate`} component={DateField} label="Certification Date" />
-
                                             <Field name={`${trainingFieldName}.expiryDate`} component={DateField} label="Expiry Date" />
-                                            <Button bsStyle="danger" onClick={() => fields.remove(index)}><Glyphicon glyph="trash" /></Button>
                                         </ListGroupItem>)
                                 }
                                 )}
-                                <Button onClick={() => fields.push({})}><Glyphicon glyph="plus" /></Button>
+                                <br/>
+                                <Button onClick={() => fields.push({})} ><Glyphicon glyph="plus" /></Button>
                             </ListGroup>
                         )
                     }} />

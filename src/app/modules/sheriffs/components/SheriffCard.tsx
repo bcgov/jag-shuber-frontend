@@ -32,9 +32,9 @@ class CardHeader extends React.PureComponent<{ sheriff: Sheriff }, any>{
         return (
 
             <Grid fluid>
-                <Row className="show-grid">
+                <Row>
                     <Col>
-                        <Image responsive src={imageUrl} circle />
+                        <Image responsive src={imageUrl} circle width="120" height="120" />
                     </Col>
                     <Col>
                         <h2>{firstName} {lastName}</h2>
@@ -52,6 +52,27 @@ class CardHeader extends React.PureComponent<{ sheriff: Sheriff }, any>{
                     <Button><Glyphicon glyph="menu-right" /></Button>
                 </OverlayTrigger>
             </Grid>
+            // <Table>
+            //     <tbody>
+            //         <tr>
+            //             <td>
+            //                 row 1 col 1
+            //             </td>
+            //             <td>
+            //                 row 1 col 2
+            //             </td>
+            //         </tr>
+            //         <tr>
+            //             <td>
+            //                 row 2 col 1
+            //             </td>
+            //             <td>
+            //                 row 2 col 2
+            //             </td>
+            //         </tr>
+            //     </tbody>
+            // </Table>
+
 
         );
     }
