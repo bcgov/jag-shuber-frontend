@@ -2,7 +2,7 @@ import { createSelector } from 'reselect'
 import { RootState } from '../../store/reducers';
 import { SheriffAssignment } from '../../api/index';
 
-export const allAssignments = (state: RootState) => {
+export const allAssignments = (state: RootState):SheriffAssignment[] => {
     const map = state.assignments.map || {};
     const list: SheriffAssignment[] = Object.keys(map).map((k, i) => map[k]);
     return list;

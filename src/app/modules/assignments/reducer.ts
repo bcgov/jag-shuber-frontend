@@ -42,7 +42,43 @@ const reducer = createReducer<AssignmentState>({
   ASSIGNMENT_LINK: (state, payload) => {
     const { map, ...rest } = state;
     let newMap = Object.assign({}, map);
-    newMap[payload.assignmentId].sheriffIds = [payload.badgeNumber];
+    let assignment = newMap[payload.assignmentId];
+    
+    // if null create array
+    if(!assignment.sheriffIds){
+      assignment.sheriffIds = [];
+    }
+
+    if(assignment.sheriffIds.indexOf(payload.badgeNumber)===-1){
+      assignment.sheriffIds.push(payload.badgeNumber);
+    }    
+    return { map: newMap, ...rest };
+  },
+  ASSIGNMENT_UNLINK: (state, payload) => {
+    const { map, ...rest } = state;
+    let newMap = Object.assign({}, map);
+    let assignment = newMap[payload.assignmentId];
+    let index = assignment.sheriffIds.indexOf(payload.badgeNumber);
+    if(index!==-1){
+      assignment.sheriffIds.splice(index,1);
+    }
+    return { map: newMap, ...rest };
+  },
+  ASSIGNMENT_SWAP: (state,payload)=>{
+    const { map, ...rest } = state;
+    let newMap = Object.assign({}, map);
+    let assignment = newMap[payload.assignmentId];
+    
+    // Remove old badge number if present
+    let index = assignment.sheriffIds.indexOf(payload.oldBadgeNumber);    
+    if(index!==-1){
+      assignment.sheriffIds.splice(index,1);
+    }
+
+    // Add new badge number if missing 
+    if(assignment.sheriffIds.indexOf(payload.newBadgeNumber)=== -1){
+      assignment.sheriffIds.push(payload.newBadgeNumber);
+    }    
     return { map: newMap, ...rest };
   },
   ASSIGNMENT_CREATE_BEGIN: (state, payload) => (Object.assign({}, state, {saving: true })),

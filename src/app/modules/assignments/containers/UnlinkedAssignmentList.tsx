@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { SheriffAssignment } from '../../../api/index';
-import AssignmentList from '../components/AssignmentList';
 import {getAssignments} from '../actions';
 import { RootState } from '../../../store/reducers';
 import {unlinkedAssignments,isLoading} from '../selectors';
+import DropAssignmentList from '../components/DropAssignmentList';
 
 
 export interface UnlinkedAssignmentListProps{
@@ -30,7 +30,7 @@ class UnassignedAssignmentList extends React.Component<UnlinkedAssignmentListPro
     };
     
     return (
-      <AssignmentList assignments={assignments}/>
+      <DropAssignmentList assignmentGroupId={-1} assignments={assignments}/>
     )
   }
 }

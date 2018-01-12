@@ -1,6 +1,4 @@
 import * as React from 'react';
-import ItemTypes from '../ItemTypes';
-import { DragSource } from 'react-dnd';
 import {
     Panel,
     Image,
@@ -12,29 +10,12 @@ import SheriffAbilityPile from '../../../components/SheriffAbilityPile';
 import LinkedAssignmentList from '../../assignments/containers/LinkedAssignmentList';
 import { Sheriff } from '../../../api/index';
 
-
-const sheriffSource: any = {
-    beginDrag(props: any) {
-        return props;
-    }
-}
-
-function collect(connect: any, monitor: any) {
-    return {
-        connectDragSource: connect.dragSource(),
-        isDragging: monitor.isDragging()
-    }
-}
-
-
 export interface SheriffCardProps {
     onClick: () => void;
     sheriff: Sheriff;
     connectDragSource?: any;
     isDragging?: boolean;
 }
-
-
 
 class CardHeader extends React.PureComponent<{ sheriff: Sheriff }, any>{
     render() {
@@ -64,7 +45,7 @@ class CardHeader extends React.PureComponent<{ sheriff: Sheriff }, any>{
     }
 }
 
-class SheriffCard extends React.PureComponent<SheriffCardProps, any>{
+export default class SheriffCard extends React.PureComponent<SheriffCardProps, any>{
 
     render() {
         const { sheriff} = this.props;
@@ -80,5 +61,3 @@ class SheriffCard extends React.PureComponent<SheriffCardProps, any>{
 
     }
 }
-
-export default DragSource<SheriffCardProps>(ItemTypes.SHERIFF, sheriffSource, collect)(SheriffCard)

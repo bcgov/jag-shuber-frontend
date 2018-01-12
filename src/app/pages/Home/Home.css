@@ -1,0 +1,21 @@
+.Home {
+    text-align: center;
+    display:grid;
+    grid-template-columns: 200px auto ;
+    grid-template-rows: auto auto;
+    grid-template-areas:  "tasks createTask"
+                          "sheriffs sheriffs"  
+  } 
+  
+  .taskArea {
+    grid-area: tasks;
+  }
+  
+  .createTaskArea{
+    grid-area: createTask;
+  }
+
+  .sheriffArea {
+    grid-area: sheriffs;
+  }
+  

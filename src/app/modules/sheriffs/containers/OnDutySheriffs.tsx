@@ -9,18 +9,20 @@ import {sheriffs,isLoading} from '../selectors'
 export interface OnDutySheriffProps{
   getSheriffList:any;
   sheriffs:Sheriff[]
-  loading:boolean
+  loading:boolean;
+  SheriffListComponent?:React.ReactType<{sheriffs?:Sheriff[]}>
 }
 
 
 class OnDutySheriffs extends React.Component<OnDutySheriffProps,any>{
+  
   componentWillMount(){
     const {getSheriffList} = this.props;
     getSheriffList();
   }
 
   render(){
-    const {sheriffs=[],loading=true} = this.props;
+    const {sheriffs=[],loading=true,SheriffListComponent=SheriffGrid} = this.props;
     
     if(loading){
       return (
@@ -29,7 +31,7 @@ class OnDutySheriffs extends React.Component<OnDutySheriffProps,any>{
     };
     
     return (
-      <SheriffGrid sheriffs={sheriffs}/>
+      <SheriffListComponent sheriffs={sheriffs}/>
     )
   }
 }
