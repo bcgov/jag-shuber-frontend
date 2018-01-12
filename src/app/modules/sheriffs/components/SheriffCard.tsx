@@ -1,14 +1,17 @@
 import * as React from 'react';
 import {
-    Panel,
     Image,
     Grid,
     Row,
-    Col
+    Col,
+    Popover,
+    OverlayTrigger,
+    Button,
+    Glyphicon
 } from 'react-bootstrap';
-import SheriffAbilityPile from '../../../components/SheriffAbilityPile';
-import LinkedAssignmentList from '../../assignments/containers/LinkedAssignmentList';
 import { Sheriff } from '../../../api/index';
+import { default as SheriffProfileView } from './SheriffProfileView';
+
 
 export interface SheriffCardProps {
     onClick: () => void;
@@ -18,59 +21,36 @@ export interface SheriffCardProps {
 }
 
 class CardHeader extends React.PureComponent<{ sheriff: Sheriff }, any>{
+
     render() {
-        const { sheriff: { firstName, lastName, badgeNumber, imageUrl, abilities, permanentLocation, permanentWorksite, currentWorksite, currentLocation, training } } = this.props;
+        const { sheriff, sheriff: { firstName, lastName, badgeNumber, imageUrl } } = this.props;
+        const showProfileDetails = (
+            <Popover id="popover-trigger-focus">
+               <SheriffProfileView sheriff={sheriff} />
+            </Popover>
+        );
         return (
+
             <Grid fluid>
-                <Row>
-                    <Col xs={12}>
-                        <Image responsive src={imageUrl} circle onClick={()=>alert("hello")}/>
+                <Row className="show-grid">
+                    <Col>
+                        <Image responsive src={imageUrl} circle />
                     </Col>
                     <Col>
-                        <h4>{firstName} {lastName}</h4>
+                        <h2>{firstName} {lastName}</h2>
                     </Col>
                 </Row>
                 <Row>
-                    <Col xs={12}>
-                        <b>Badge:</b> #{badgeNumber}
+                    <Col>
+                        <b>Badge Number:</b> #{badgeNumber}
                     </Col>
                 </Row>
-                <Row>
-                    <Col xs={12}>
-                        <b>Perm Loc:</b> {permanentLocation}
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={12}>
-                        <b>Perm Worksite:</b> {permanentWorksite}
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={12}>
-                        <b>Curr Loc:</b> {currentLocation}
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={12}>
-                        <b>Curr Worksite:</b> {currentWorksite}
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={12}>
-                        <b>Training:</b> 
-                        {training.map(function(training, index){
-                            return(
-                            <p key={ index }>{training.trainingType} {training.certificationDate} {training.expiryDate}</p>
-                        );
-                        })}
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={12}>
-                        <SheriffAbilityPile abilities={abilities} />
-                    </Col>
-                </Row>
+                <Button><Glyphicon glyph="pencil" /></Button>
+                <OverlayTrigger trigger="focus" placement="right" overlay={showProfileDetails}>
+                    <Button><Glyphicon glyph="info-sign" /></Button>
+                </OverlayTrigger>
             </Grid>
+
         );
     }
 }
@@ -78,18 +58,21 @@ class CardHeader extends React.PureComponent<{ sheriff: Sheriff }, any>{
 export default class SheriffCard extends React.PureComponent<SheriffCardProps, any>{
 
     render() {
-        const { sheriff} = this.props;
-
-
+        const { sheriff } = this.props;
+        
         return (
             <div>
-                {/* () => <CardHeader sheriff={sheriff} /> */}
-                <Panel header="text" height={400}>
-                    
-                        <CardHeader sheriff={sheriff}/>
-                        <LinkedAssignmentList sheriffId={sheriff.badgeNumber} />
-                   
-                </Panel>
+
+                {/* <Panel header="text" height={400}> */}
+
+                <CardHeader sheriff={sheriff} />
+
+
+
+                {/* </Panel> */}
+
+
+
             </div>
         )
 

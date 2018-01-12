@@ -6,7 +6,7 @@ import {getSheriffList} from '../actions'
 import { RootState } from '../../../store/reducers';
 import {sheriffs,isLoading} from '../selectors'
 
-export interface OnDutySheriffProps{
+export interface SheriffListProps{
   getSheriffList:any;
   sheriffs:Sheriff[]
   loading:boolean;
@@ -14,8 +14,7 @@ export interface OnDutySheriffProps{
 }
 
 
-class OnDutySheriffs extends React.Component<OnDutySheriffProps,any>{
-  
+class SheriffList extends React.Component<SheriffListProps,any>{
   componentWillMount(){
     const {getSheriffList} = this.props;
     getSheriffList();
@@ -49,10 +48,9 @@ const mapDispatchToProps = (dispatch:any) => {
   }
 }
 
-
 const ConnectedOnDutySherrifs = connect(
   mapStateToProps,
   mapDispatchToProps
-)(OnDutySheriffs)
+)(SheriffList)
 
 export default ConnectedOnDutySherrifs;

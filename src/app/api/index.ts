@@ -78,7 +78,7 @@ class Client implements API {
                     currentLocation: "Current Location", 
                     currentWorksite: "Current Worksite",
                     training: [
-                        {certificationDate:"Certification Type", expiryDate:"Expiry Date", trainingType: "Trainging Type"}
+                        {certificationDate:"Certification Date", expiryDate:"Expiry Date", trainingType: "Trainging Type"}
                     ],
                     abilities: SheriffAbility.All
                 };
@@ -98,12 +98,13 @@ class Client implements API {
         await randomDelay();
 
         //This is a hack to throw in random picture
+
         if(!newSheriff.imageUrl){
             //let randomNumber = Math.floor(Math.random() * 86) + 11; 
             // newSheriff.imageUrl=`https://randomuser.me/api/portraits/men/${randomNumber}.jpg`;
             newSheriff.imageUrl="/img/avatar.png"
         }
-
+       
         sheriffList.push(newSheriff);
         return newSheriff;
     }

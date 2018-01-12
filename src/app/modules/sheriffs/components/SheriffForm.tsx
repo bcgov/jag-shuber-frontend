@@ -6,9 +6,6 @@ import {
     ListGroup,
     ListGroupItem,
     Glyphicon
-    // Grid,
-    // Col
-    // Row
 } from 'react-bootstrap';
 import {
     Field,
@@ -18,8 +15,11 @@ import {
 import { Validators } from '../../../infrastructure';
 import {
     TextFormField,
-    TrainingTypeSelector
+    TrainingTypeSelector,
+    DateField
 } from '../../../components/Form';
+
+
 
 
 export interface SheriffFormProps {
@@ -54,12 +54,14 @@ export default class SheriffForm extends React.Component<SheriffFormProps & Inje
                     <Field name="badgeNumber" component={TextFormField} label="Badge Number" validate={[Validators.number, Validators.required]} />
 
                     <br />
+                    
                     <h3>Worksite Details</h3>
-
                     <Field name="permanentLocation" component={TextFormField} label="Permanent Location" />
+                    <Field name="permanentWorksite" component={TextFormField} label="Permanent Worksite" />
                     <Field name="currentWorksite" component={TextFormField} label="Current Worksite" />
                     <Field name="currentLocation" component={TextFormField} label="Current Location" />
-                    <Field name="permanentWorksite" component={TextFormField} label="Permanent Worksite" />
+                    
+                    
 
                     <br />
                     <h3>Training</h3>
@@ -72,9 +74,9 @@ export default class SheriffForm extends React.Component<SheriffFormProps & Inje
                                         <ListGroupItem key={index}>
                                             <Field name={`${trainingFieldName}.trainingType`} component={TrainingTypeSelector} label="Training Type " />
 
-                                            <Field name={`${trainingFieldName}.certificationDate`} component={TextFormField} label="Certification Date" />
+                                            <Field name={`${trainingFieldName}.certificationDate`} component={DateField} label="Certification Date" />
 
-                                            <Field name={`${trainingFieldName}.expiryDate`} component={TextFormField} label="Expiry Date" />
+                                            <Field name={`${trainingFieldName}.expiryDate`} component={DateField} label="Expiry Date" />
                                             <Button bsStyle="danger" onClick={() => fields.remove(index)}><Glyphicon glyph="trash" /></Button>
                                         </ListGroupItem>)
                                 }

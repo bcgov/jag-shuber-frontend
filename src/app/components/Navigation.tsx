@@ -1,9 +1,9 @@
-import * as React from 'react'
+import * as React from 'react';
 import {
     Nav
     , Navbar
     , NavbarBrand
-} from 'react-bootstrap'
+} from 'react-bootstrap';
 
 import NavigationLink from './NavigationLink'
 
