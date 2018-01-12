@@ -65,7 +65,6 @@
     "@types/react-dom": "^16.0.3",
     "@types/react-redux": "^5.0.13",
     "@types/react-router-dom": "^4.2.3",
-    "@types/react-virtualized": "^9.7.9",
     "@types/redux-form": "^7.0.10"
   },
   "jest": {
