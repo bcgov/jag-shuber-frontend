@@ -3,7 +3,7 @@ import { Panel } from 'react-bootstrap'
 import SheriffAbilityPile from '../../../components/SheriffAbilityPile'
 import { SheriffAssignment } from '../../../api/index';
 
-import { AssignmentDragSource } from '../../../containers/DragDrop';
+import AssignmentDragSource  from '../dragdrop/AssignmentDragSource';
 
 export interface AssignmentCardProps {
     onClick?: () => void;

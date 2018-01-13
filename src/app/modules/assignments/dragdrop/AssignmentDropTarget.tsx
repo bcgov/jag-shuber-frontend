@@ -1,6 +1,5 @@
 import * as React from 'react'
-import ItemTypes from './ItemTypes';
-import { targetFactory } from './factories'
+import { ItemTypes, targetFactory } from '../../../infrastructure/DragDrop';
 import { DraggedAssignment, AssignmentDropResult } from './AssignmentDragSource'
 import { CSSProperties } from 'react';
 

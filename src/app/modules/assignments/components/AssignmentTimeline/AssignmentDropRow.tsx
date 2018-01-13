@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { AssignmentDropTarget } from '../../../containers/DragDrop';
+import AssignmentDropTarget from '../../dragdrop/AssignmentDropTarget';
 
 
 export interface DroppableAssignmentRowProps {

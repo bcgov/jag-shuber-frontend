@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { default as AssignmentList, AssignmentListProps } from './AssignmentList'
-import { AssignmentDropTarget } from '../../../containers/DragDrop';
+import AssignmentDropTarget from '../dragdrop/AssignmentDropTarget';
 
 export interface DropAssignmentListProps extends AssignmentListProps {
 

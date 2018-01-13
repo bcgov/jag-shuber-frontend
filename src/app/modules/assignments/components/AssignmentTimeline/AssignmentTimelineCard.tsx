@@ -4,18 +4,17 @@ import * as React from 'react'
 //     Panel
 // } from 'react-bootstrap'
 // import SheriffAbilityPile from '../../../components/SheriffAbilityPile'
-import { SheriffAssignment } from '../../../api/index';
-import { AssignmentDragSource } from '../../../containers/DragDrop';
+import { SheriffAssignment } from '../../../../api/index';
+import AssignmentDragSource from '../../dragdrop/AssignmentDragSource';
 
-export interface TimelineCardProps {
+export interface AssignmentTimelineCardProps {
     onClick?: () => void;
     assignment: SheriffAssignment;
     currentGroupId: number;
     onDropped?: () => void;
 }
 
-
-class TimelineCard extends React.PureComponent<TimelineCardProps, any>{
+export default class AssignmentTimelineCard extends React.PureComponent<AssignmentTimelineCardProps, any>{
     render() {
         const { assignment, currentGroupId, onDropped } = this.props;
         const { title } = assignment;
@@ -29,5 +28,3 @@ class TimelineCard extends React.PureComponent<TimelineCardProps, any>{
         );
     }
 }
-
-export default TimelineCard

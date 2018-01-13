@@ -1,12 +1,14 @@
 
 import * as React from "react"
+import { OnDutyTimeline,OffDutyTimeline } from "../../modules/timeline";
+
 
 class TimelinePage extends React.PureComponent {
     render() {
         return (
-            
-           <div>
-            Temporarily Unavailable
+            <div>
+                <OnDutyTimeline />
+                <OffDutyTimeline />
             </div>
         );
     }

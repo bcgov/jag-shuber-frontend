@@ -2,7 +2,7 @@ import * as React from 'react'
 import { DropTarget, DropTargetSpec } from 'react-dnd';
 import { CSSProperties } from 'react';
 
-export function dropTargetFactory<TDrag, TDrop>(itemTypes: string | string[], styleOverride?: CSSProperties) {
+export default function dropTargetFactory<TDrag, TDrop>(itemTypes: string | string[], styleOverride?: CSSProperties) {
 
     const targetCallbacks: DropTargetSpec<GenericDropTargetProps> = {
         canDrop(props, monitor) {
