@@ -26,7 +26,8 @@ export const BLANK_SHERIFF: Sheriff = {
     permanentCourthouse: "",
     permanentRegion: "",
     currentCourthouse: "",
-    currentRegion: ""
+    currentRegion: "",
+    onDuty:false
 }
 
 export interface SheriffTraining {
@@ -46,7 +47,7 @@ export interface Sheriff {
     permanentRegion?: string;
     currentCourthouse?: string;
     currentRegion?: string;
-
+    onDuty:boolean;
 }
 
 export interface SheriffAssignment {
@@ -90,6 +91,7 @@ class Client implements API {
                 let s: Sheriff = {
                     firstName: p.name.first,
                     lastName: p.name.last,
+                    onDuty:Math.random()>0.3,
                     badgeNumber: badgeNumber++,
                     imageUrl: p.picture.large,
                     permanentRegion: "Perm Region",

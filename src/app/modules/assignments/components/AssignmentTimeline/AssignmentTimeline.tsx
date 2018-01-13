@@ -9,6 +9,7 @@ import AssignmentDropRowExtension from './AssignmentDropRowExtension';
 const UNASSIGNED_ID = -1;
 const UNASSIGNED_GROUP: TimelineSheriff = {
     id: UNASSIGNED_ID,
+    onDuty: true,
     badgeNumber: UNASSIGNED_ID,
     abilities: SheriffAbility.All,
     name: "",
@@ -21,15 +22,19 @@ type TimelineSheriff = ReactCalendarTimelineGroup & Sheriff;
 
 
 export interface AssignmentTimelineProps extends TimelineProps<SheriffAssignment, Sheriff> {
-    showUnlinkedAssignments?: boolean;    
+    showUnlinkedAssignments?: boolean;
 }
 
 export default class AssignmentTimeline extends Timeline<SheriffAssignment, Sheriff, AssignmentTimelineProps>{
 
     static defaultProps: Partial<AssignmentTimelineProps> = {
         showUnlinkedAssignments: true,
-        sideBarHeaderTitle:"Sheriffs",
-        sideBarHeaderComponent:(p:AssignmentTimelineProps)=>(<div style={{ paddingTop: "10%", paddingBottom: "10%", fontSize: 18, alignContent: "center" }}>{p.sideBarHeaderTitle}</div>)
+        sideBarHeaderTitle: "Sheriffs",
+        sideBarHeaderComponent: (p: AssignmentTimelineProps) => (
+            <div style={{ paddingTop: "10%", paddingBottom: "10%", fontSize: 18, alignContent: "center" }}>
+                {p.sideBarHeaderTitle}
+            </div>
+        )
     }
 
     static toUniqueId(id: number, groupId: number): number {

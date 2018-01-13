@@ -1,15 +1,12 @@
 
 import * as React from "react"
-import { OnDutyTimeline,OffDutyTimeline } from "../../modules/timeline";
+import DailyTimeline from "../../modules/timeline/containers/DailyTimeline";
 
 
 class TimelinePage extends React.PureComponent {
     render() {
         return (
-            <div>
-                <OnDutyTimeline />
-                <OffDutyTimeline />
-            </div>
+            <DailyTimeline/>
         );
     }
 }

@@ -1,3 +1,4 @@
-export default  {
-    ASSIGNMENT: 'SheriffAssignment'
+export default {
+    ASSIGNMENT: 'SheriffAssignment',
+    SHERIFF: "Sheriff"
 }

@@ -13,10 +13,11 @@ type TimelineItem<T> = TimelineItemProps & T;
 export interface TimelineProps<TItem, TGroup> {
     groups: TGroup[];
     items: TItem[];
-    showTime?:boolean
+    showTime?: boolean
     showHeader?: boolean;
     sideBarHeaderComponent?: (props: TimelineProps<TItem, TGroup>) => JSX.Element;
     sideBarHeaderTitle?: string;
+    sidebarWidth?:number
     visibleTimeStart?: any;
     visibleTimeEnd?: any;
     onVisibleTimeChange?: (visibleTime: { visibleTimeStart: any, visibleTimeEnd: any }) => void
@@ -62,40 +63,43 @@ export default abstract class Timeline<TItem, TGroup, TOwnProps={}> extends Reac
             visibleTimeStart = moment().subtract(2, 'hour'),
             visibleTimeEnd = moment().add(8, 'hour'),
             sideBarHeaderComponent = ({ sideBarHeaderTitle }: TimelineProps<TItem, TGroup>) => (
-                <div style={{paddingTop: "10%", paddingBottom: "10%", fontSize: 20, alignContent: "center" }}>{sideBarHeaderTitle}</div>
+                <div style={{ paddingTop: "10%", paddingBottom: "10%", fontSize: 20, alignContent: "center" }}>
+                    {sideBarHeaderTitle}
+                </div>
             ),
             showHeader = true,
-            showTime= true,
+            showTime = true,
+            sidebarWidth = 150,
             itemRenderer = (i: TimelineItem<TItem>) => this.renderItem(i),
-            groupRenderer = (g: TimelineGroup<TGroup>) => this.renderGroup(g)
+            groupRenderer = (g: TimelineGroup<TGroup>) => this.renderGroup(g),
         } = this.props;
 
-
         return (
-            <ReactTimeline
-                headerLabelGroupHeight={showHeader ? undefined : 0}
-                headerLabelHeight={showHeader && showTime ? undefined : 0}
-                groups={this.mapGroups(groups)}
-                items={this.mapItems(items)}
-                visibleTimeStart={visibleTimeStart}
-                visibleTimeEnd={visibleTimeEnd}
-                onTimeChange={onVisibleTimeChange}
-                canMove={false}
-                canResize={false}
-                canChangeGroup={false}                
-                stackItems={true}
-                lineHeight={40}
-                itemTouchSendsClick
-                sidebarContent={sideBarHeaderComponent(this.props)}
-                traditionalZoom
-                itemHeightRatio={0.90}
-                itemRenderer={({ item }: { item: TimelineItemProps & TItem }) => itemRenderer(item)}
-                groupRenderer={({ group }: { group: TimelineGroupProps & TGroup }) => groupRenderer(group)}
-                ref={(t) => this._timelineRef = t}
-            >
-                {this.getExtensions()}
-                {this.props.children}
-            </ReactTimeline>
+                <ReactTimeline
+                    headerLabelGroupHeight={showHeader ? undefined : 0}
+                    headerLabelHeight={showHeader && showTime ? undefined : 0}
+                    groups={this.mapGroups(groups)}
+                    items={this.mapItems(items)}
+                    visibleTimeStart={visibleTimeStart}
+                    visibleTimeEnd={visibleTimeEnd}
+                    onTimeChange={onVisibleTimeChange}
+                    canMove={false}
+                    canResize={false}
+                    canChangeGroup={false}
+                    stackItems={true}
+                    lineHeight={40}
+                    sidebarWidth={sidebarWidth}
+                    itemTouchSendsClick
+                    sidebarContent={sideBarHeaderComponent(this.props)}
+                    traditionalZoom
+                    itemHeightRatio={0.90}
+                    itemRenderer={({ item }: { item: TimelineItemProps & TItem }) => itemRenderer(item)}
+                    groupRenderer={({ group }: { group: TimelineGroupProps & TGroup }) => groupRenderer(group)}
+                    ref={(t) => this._timelineRef = t}
+                >
+                    {this.getExtensions()}
+                    {this.props.children}
+                </ReactTimeline>
         );
     }
 }

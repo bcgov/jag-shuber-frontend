@@ -98,7 +98,11 @@ declare module "react-calendar-timeline" {
         groupRenderer?:(props:{group:ReactCalendarTimelineGroup})=>React.ReactNode;
     }
 
-    let ReactCalendarTimeline : React.ClassicComponentClass<ReactCalendarTimelineProps>;
+    class ReactCalendarTimeline extends React.Component<ReactCalendarTimelineProps>{
+        static defaultProps:Partial<ReactCalendarTimelineProps>;        
+    }
+
+    // let ReactCalendarTimeline : React.ClassicComponentClass<ReactCalendarTimelineProps>;
     export default ReactCalendarTimeline;
 }
 
