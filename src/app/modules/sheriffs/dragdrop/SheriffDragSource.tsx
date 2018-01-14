@@ -1,6 +1,7 @@
 import { ItemTypes, sourceFactory } from '../../../infrastructure/DragDrop';
 // import * as actions from '../actions'
 import { connect } from 'react-redux';
+import { updateSheriff } from '../actions';
 
 export interface DraggedSheriff {
     badgeNumer: number;
@@ -32,24 +33,8 @@ const mapDispatchToProps = (dispatch: any, ownProps: AssignmentSourceFactoryProp
                 ownProps.endDrag(result);
             }
             if (result) {
-                //                const { dropEffect, sourceId, assignmentId, targetId } = result;
-
-                // // If coming from unassigned or copying the task
-                // if (sourceId == -1 || dropEffect == "copy") {
-                //     dispatch(actions.linkAssignment(assignmentId, targetId));
-                //     return;
-                // }
-
-                // // If moving to unassigned
-                // if (targetId == -1) {
-                //     dispatch(actions.unlinkAssignment(assignmentId, sourceId));
-                //     return;
-                // }
-
-                // // Otherwise, swap the sourceId with the targetId
-                // if (dropEffect == "move") {
-                //     dispatch(actions.swapAssignment(assignmentId, sourceId, targetId));
-                // }
+                const {dropEffect,...rest} = result;
+                dispatch(updateSheriff(rest));
             }
         }
     }

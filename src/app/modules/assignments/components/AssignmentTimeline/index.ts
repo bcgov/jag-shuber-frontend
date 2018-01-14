@@ -1,1 +1,1 @@
-export { default as AssignmentTimeline, AssignmentTimelineProps } from './AssignmentTimeline'
+export { default as AssignmentTimeline, AssignmentTimelineProps, UNASSIGNED_GROUP, UNASSIGNED_ID } from './AssignmentTimeline'

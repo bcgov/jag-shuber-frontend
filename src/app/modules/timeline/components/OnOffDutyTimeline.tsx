@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { AssignmentTimeline } from '../../assignments/components/AssignmentTimeline'
+import { AssignmentTimeline, UNASSIGNED_GROUP } from '../../assignments/components/AssignmentTimeline'
 import { Sheriff, SheriffAssignment } from '../../../api/index';
 import { ReactCalendarTimelineGroup } from 'react-calendar-timeline';
 import SheriffDragSource from '../../sheriffs/dragdrop/SheriffDragSource';
@@ -17,13 +17,21 @@ interface OnOffDutyTimelineProps {
 export default class OnOffDutyTimeline extends React.PureComponent<OnOffDutyTimelineProps> {
     static defaultProps = {
         sidebarWidth: 150,
-        showHeader: true
+        showHeader: true,        
     };
 
     renderGroup(group: ReactCalendarTimelineGroup & Sheriff) {
+        const isUnassignedGroup = group === UNASSIGNED_GROUP;
+
+        const content = (<div style={{ backgroundColor: "#DDD" }}>{group.title}</div>);
+
+        if (isUnassignedGroup) {
+            return content;
+        }
+
         return (
-            <SheriffDragSource onDuty badgeNumber={group.badgeNumber}>
-                <div>{group.title}</div>
+            <SheriffDragSource onDuty={this.props.onDuty} badgeNumber={group.badgeNumber}>
+                {content}
             </SheriffDragSource>
         )
     }
@@ -39,23 +47,34 @@ export default class OnOffDutyTimeline extends React.PureComponent<OnOffDutyTime
             ...rest } = this.props;
         return (
             <div style={{ position: 'relative' }}>
-                <SheriffDropTarget onDuty={onDuty} style={{
-                    position: 'absolute',
-                    width: sidebarWidth,
-                    height: "100%",
-                    minHeight: 40,
-                    top: 0,
-                    left: 0,
-                    float: 'left',
-                    opacity: 0.2,
-                    border:undefined
-                }}
-                    computeStyle={({ isActive, isOver, canDrop }) => (
-                        {
-                            backgroundColor: canDrop ? 'orange' : 'transparent',
+                <SheriffDropTarget
+                    onDuty={onDuty}
+                    style={{
+                        position: 'absolute',
+                        width: sidebarWidth,
+                        height: "100%",
+                        minHeight: 40,
+                        top: 0,
+                        left: 0,
+                        float: 'left',
+                        opacity: 0.2,
+                        border: undefined
+                    }}
+                    computeStyle={({ isActive, isOver, canDrop }) => {
+                        let backgroundColor = 'transparent'
+                        if (isActive) {
+                            backgroundColor = 'green'
+                        } else if (canDrop) {
+                            backgroundColor = 'lightGreen'
+                        } else if (isOver && !canDrop) {
+                            backgroundColor = '#FF000088'
+                        }
+
+                        return {
+                            backgroundColor,
                             zIndex: canDrop ? 1000 : undefined
                         }
-                    )}
+                    }}
                 />
                 <AssignmentTimeline
                     sidebarWidth={sidebarWidth}

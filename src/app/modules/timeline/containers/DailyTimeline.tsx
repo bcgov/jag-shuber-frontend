@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import { RootState } from '../../../store/reducers';
 import OnOffDutyTimeline from '../components/OnOffDutyTimeline';
 import { Sheriff, SheriffAssignment } from '../../../api/index';
+import './DailyTimeline.css'
 
 
 interface DailyTimelineProps {
@@ -19,6 +20,7 @@ interface DailyTimelineProps {
     onDutySheriffs: Sheriff[];
     offDutySheriffs: Sheriff[];
     assignments: SheriffAssignment[];
+    sideBarWidth?:number;
 }
 
 
@@ -32,23 +34,28 @@ class DailyTimeline extends React.Component<DailyTimelineProps>{
     }
 
     render() {
-        const { assignments, onDutySheriffs, offDutySheriffs,...rest } = this.props;
+        const { assignments, onDutySheriffs, offDutySheriffs,sideBarWidth=200, ...rest } = this.props;
         return (
             <div>
-                <OnOffDutyTimeline 
-                    onDuty={true} 
-                    sheriffs={onDutySheriffs} 
-                    assignments={assignments} 
+                <OnOffDutyTimeline
+                    onDuty={true}
+                    sheriffs={onDutySheriffs}
+                    assignments={assignments}
+                    sidebarWidth={sideBarWidth}
                     {...rest} />
-                <div style={{ padding: 10, background: "#88222222", textAlign: 'left' }}>
-                    <h3 style={{ margin: 0 }}>Off Duty</h3>
-                </div>
-                <OnOffDutyTimeline 
+
+                    <div  style={{ padding: 5,paddingTop:10, backgroundColor:"#88222222", textAlign: 'left' }}>
+                        <h3 style={{marginLeft: sideBarWidth/4 }}>Off Duty</h3>
+                    </div>
+
+
+                <OnOffDutyTimeline
                     showHeader={false}
                     sideBarHeaderTitle=""
-                    onDuty={false} 
-                    sheriffs={offDutySheriffs} 
-                    assignments={assignments} 
+                    onDuty={false}
+                    sheriffs={offDutySheriffs}
+                    assignments={assignments}
+                    sidebarWidth={sideBarWidth}
                     {...rest} />
             </div>
         )

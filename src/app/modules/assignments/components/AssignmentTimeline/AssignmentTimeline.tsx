@@ -6,8 +6,8 @@ import { default as AssignmentTimelineCard } from './AssignmentTimelineCard'
 import AssignmentDropRowExtension from './AssignmentDropRowExtension';
 
 // todo: find a better spot for this
-const UNASSIGNED_ID = -1;
-const UNASSIGNED_GROUP: TimelineSheriff = {
+export const UNASSIGNED_ID = -1;
+export const UNASSIGNED_GROUP: TimelineSheriff = {
     id: UNASSIGNED_ID,
     onDuty: true,
     badgeNumber: UNASSIGNED_ID,

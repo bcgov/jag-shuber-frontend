@@ -64,6 +64,7 @@ export interface API {
     getSheriffs(): Promise<SheriffMap>;
     getSheriffAssignments(): Promise<SheriffAssignmentMap>;
     createSheriff(newSheriff: Sheriff): Promise<Sheriff>;
+    updateSheriff(sheriffToUpdate: Partial<Sheriff>): Promise<Sheriff>;
     createAssignment(newAssignment: SheriffAssignment): Promise<SheriffAssignment>;
 }
 
@@ -131,6 +132,13 @@ class Client implements API {
 
         sheriffList.push(newSheriff);
         return newSheriff;
+    }
+
+    async updateSheriff(sheriffToUpdate:Partial<Sheriff>):Promise<Sheriff>{
+        const index = sheriffList.findIndex(s=>s.badgeNumber===sheriffToUpdate.badgeNumber);
+        await randomDelay();
+        sheriffList[index] = Object.assign({},sheriffList[index],sheriffToUpdate);
+        return sheriffList[index];
     }
 
     async createAssignment(newAssignment: SheriffAssignment): Promise<SheriffAssignment> {
