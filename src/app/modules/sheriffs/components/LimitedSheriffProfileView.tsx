@@ -1,15 +1,13 @@
 import * as React from 'react';
 import { Sheriff } from '../../../api/index';
-import OvertimeDetails from '../../overtime/components/OvertimeDetailsView';
 import UpcomingScheduleView from '../../schedule/components/UpcomingScheduleView';
-import TrainingDetailsView from '../../training/components/TrainingDetailsView';
 import WorksiteDetailsView from '../../worksite/components/WorksiteDetailsView';
 
-export interface SheriffProfileViewProps {
+export interface LimitedSheriffProfileViewProps {
     sheriff: Sheriff;
 }
 
-export default class SheriffProfileView extends React.Component<SheriffProfileViewProps, any>{
+export default class LimitedSheriffProfileView extends React.Component<LimitedSheriffProfileViewProps, any>{
     render() {
         const { sheriff } = this.props;
         return (
@@ -18,15 +16,7 @@ export default class SheriffProfileView extends React.Component<SheriffProfileVi
                 
                 <br />
 
-                <TrainingDetailsView sheriff={ sheriff } />
-                
-                <br />
-                
                 <UpcomingScheduleView />
-
-                <br />
-               
-                <OvertimeDetails />
             </div>
         );
     }

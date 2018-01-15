@@ -23,10 +23,10 @@ export const BLANK_SHERIFF:Sheriff = {
         certificationDate: "",
         expiryDate: "",
     }],
-    permanentWorksite: "",
-    permanentLocation: "",
-    currentWorksite: "",
-    currentLocation: ""
+    permanentCourthouse: "",
+    permanentRegion: "",
+    currentCourthouse: "",
+    currentRegion: ""
 }
 
 export interface Sheriff {
@@ -40,10 +40,10 @@ export interface Sheriff {
         certificationDate: string;
         expiryDate: string;
     }];
-    permanentWorksite?: string;
-    permanentLocation?: string;
-    currentWorksite?: string;
-    currentLocation?: string;
+    permanentCourthouse?: string;
+    permanentRegion?: string;
+    currentCourthouse?: string;
+    currentRegion?: string;
 
 }
 
@@ -90,10 +90,10 @@ class Client implements API {
                     lastName: p.name.last,
                     badgeNumber: badgeNumber++,
                     imageUrl: p.picture.large,
-                    permanentLocation: "Permanent Location", 
-                    permanentWorksite: "Permanent Worksite", 
-                    currentLocation: "Current Location", 
-                    currentWorksite: "Current Worksite",
+                    permanentRegion: "Perm Region", 
+                    permanentCourthouse: "Perm Courthouse", 
+                    currentRegion: "Curr Region", 
+                    currentCourthouse: "Curr Courthouse",
                     training: [
                         {certificationDate:"Mon Jan 20 2017", expiryDate:"Mon Jan 20 2018", trainingType:"FRO"}, 
                         {certificationDate:"Mon Jan 20 2017", expiryDate:"Mon Jan 20 2018", trainingType:"PISTOL"},

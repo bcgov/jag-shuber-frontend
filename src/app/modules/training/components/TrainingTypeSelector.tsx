@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { default as FormFieldWrapper, FormFieldWrapperProps } from './FormFieldWrapper';
+import { default as FormFieldWrapper, FormFieldWrapperProps } from '../../../components/Form/FormFieldWrapper';
 import { FormControl } from 'react-bootstrap';
 
 

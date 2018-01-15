@@ -10,23 +10,21 @@ import {
     Glyphicon
 } from 'react-bootstrap';
 import { Sheriff } from '../../../api/index';
-import { default as SheriffProfileView } from './SheriffProfileView';
 import { default as ViewSheriffProfileModal } from './ViewSheriffProfileModal';
+import { default as LimitedSheriffProfileView } from './LimitedSheriffProfileView';
 
 export interface SheriffCardProps {
     onClick: () => void;
     sheriff: Sheriff;
-    connectDragSource?: any;
-    isDragging?: boolean;
 }
 
-class CardHeader extends React.PureComponent<{ sheriff: Sheriff }, any>{
+export default class SheriffCard extends React.PureComponent<SheriffCardProps, any>{
 
     render() {
         const { sheriff, sheriff: { firstName, lastName, badgeNumber, imageUrl } } = this.props;
         const showProfileDetails = (
             <Popover id="popover-trigger-focus">
-               <SheriffProfileView sheriff={sheriff} />
+               <LimitedSheriffProfileView sheriff={sheriff} />
             </Popover>
         );
         return (
@@ -52,52 +50,7 @@ class CardHeader extends React.PureComponent<{ sheriff: Sheriff }, any>{
                     <Button><Glyphicon glyph="menu-right" /></Button>
                 </OverlayTrigger>
             </Grid>
-            // <Table>
-            //     <tbody>
-            //         <tr>
-            //             <td>
-            //                 row 1 col 1
-            //             </td>
-            //             <td>
-            //                 row 1 col 2
-            //             </td>
-            //         </tr>
-            //         <tr>
-            //             <td>
-            //                 row 2 col 1
-            //             </td>
-            //             <td>
-            //                 row 2 col 2
-            //             </td>
-            //         </tr>
-            //     </tbody>
-            // </Table>
-
 
         );
-    }
-}
-
-export default class SheriffCard extends React.PureComponent<SheriffCardProps, any>{
-
-    render() {
-        const { sheriff } = this.props;
-        
-        return (
-            <div>
-
-                {/* <Panel header="text" height={400}> */}
-
-                <CardHeader sheriff={sheriff} />
-
-
-
-                {/* </Panel> */}
-
-
-
-            </div>
-        )
-
     }
 }

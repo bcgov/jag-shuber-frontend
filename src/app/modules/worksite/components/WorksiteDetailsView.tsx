@@ -10,28 +10,28 @@ export interface TrainingDetailsViewProps {
 
 export default class WorksiteDetailsView extends React.Component<TrainingDetailsViewProps, any>{
     render() {
-        const { sheriff: { currentWorksite, currentLocation, permanentWorksite, permanentLocation } } = this.props;
+        const { sheriff: { currentCourthouse, currentRegion, permanentCourthouse, permanentRegion } } = this.props;
         return (
             <div>
-                <h3>Worksite Details</h3>
+                <h3>Region and Courthouse</h3>
                 <Table responsive>
                     <thead>
                         <tr>
                             <th> </th>
-                            <th className="text-left">Worksite</th>
-                            <th className="text-left">Location</th>
+                            <th className="text-left">Courthouse</th>
+                            <th className="text-left">Region</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td><strong>Permanent</strong></td>
-                            <td>{permanentWorksite}</td>
-                            <td>{permanentLocation}</td>
+                            <td>{permanentCourthouse}</td>
+                            <td>{permanentRegion}</td>
                         </tr>
                         <tr>
                             <td><strong>Current</strong></td>
-                            <td>{currentWorksite}</td>
-                            <td>{currentLocation}</td>
+                            <td>{currentCourthouse}</td>
+                            <td>{currentRegion}</td>
                         </tr>
                     </tbody>
                 </Table>

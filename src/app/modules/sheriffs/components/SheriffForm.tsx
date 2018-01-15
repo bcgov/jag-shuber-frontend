@@ -15,9 +15,11 @@ import {
 import { Validators } from '../../../infrastructure';
 import {
     TextFormField,
-    TrainingTypeSelector,
     DateField
 } from '../../../components/Form';
+import { default as TrainingTypeSelector } from '../../training/components/TrainingTypeSelector';
+import { default as RegionSelector } from '../../worksite/components/RegionSelector';
+import { default as CourthouseSelector } from '../../worksite/components/CourthouseSelector';
 
 
 
@@ -55,11 +57,11 @@ export default class SheriffForm extends React.Component<SheriffFormProps & Inje
 
                     <br />
                     
-                    <h3>Worksite Details</h3>
-                    <Field name="permanentLocation" component={TextFormField} label="Permanent Location" />
-                    <Field name="permanentWorksite" component={TextFormField} label="Permanent Worksite" />
-                    <Field name="currentLocation" component={TextFormField} label="Current Location" />
-                    <Field name="currentWorksite" component={TextFormField} label="Current Worksite" />
+                    <h3>Region and Courthouse</h3>
+                    <Field name="permanentRegion" component={RegionSelector} label="Permanent Region" />
+                    <Field name="permanentCourthouse" component={CourthouseSelector} label="Permanent Courthouse" />
+                    <Field name="currentRegion" component={RegionSelector} label="Current Region" />
+                    <Field name="currentCourthouse" component={CourthouseSelector} label="Current Courthouse" />
                    
                     <br />
                     <h3>Training</h3>
