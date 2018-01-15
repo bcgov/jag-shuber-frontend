@@ -1,63 +1,56 @@
 import * as React from 'react';
 import {
-    Panel,
     Image,
     Grid,
     Row,
-    Col
+    Col,
+    Popover,
+    OverlayTrigger,
+    Button,
+    Glyphicon
 } from 'react-bootstrap';
-import SheriffAbilityPile from '../../../components/SheriffAbilityPile';
-import LinkedAssignmentList from '../../assignments/containers/LinkedAssignmentList';
 import { Sheriff } from '../../../api/index';
+import { default as ViewSheriffProfileModal } from './ViewSheriffProfileModal';
+import { default as LimitedSheriffProfileView } from './LimitedSheriffProfileView';
 
 export interface SheriffCardProps {
     onClick: () => void;
     sheriff: Sheriff;
-    connectDragSource?: any;
-    isDragging?: boolean;
-}
-
-class CardHeader extends React.PureComponent<{ sheriff: Sheriff }, any>{
-    render() {
-        const { sheriff: { name, badgeNumber, imageUrl, abilities } } = this.props;
-        return (
-            <Grid fluid>
-                <Row>
-                    <Col xs={12}>
-                        <Image responsive src={imageUrl} circle />
-                    </Col>
-                    <Col>
-                        <h4>{name}</h4>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={12}>
-                        Badge: #{badgeNumber}
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={12}>
-                        <SheriffAbilityPile abilities={abilities} />
-                    </Col>
-                </Row>
-            </Grid>
-        );
-    }
 }
 
 export default class SheriffCard extends React.PureComponent<SheriffCardProps, any>{
 
     render() {
-        const { sheriff} = this.props;
-
-
+        const { sheriff, sheriff: { firstName, lastName, badgeNumber, imageUrl } } = this.props;
+        const showProfileDetails = (
+            <Popover id="popover-trigger-focus">
+               <LimitedSheriffProfileView sheriff={sheriff} />
+            </Popover>
+        );
         return (
-            <div>
-                <Panel header={<CardHeader sheriff={sheriff} />} height={400}>
-                    <LinkedAssignmentList sheriffId={sheriff.badgeNumber} />
-                </Panel>
-            </div>
-        )
 
+            <Grid fluid>
+                <Row>
+                    <Col>
+                        <Image responsive src={imageUrl} circle width="120" height="120" />
+                    </Col>
+                    <Col>
+                        <h2>{firstName} {lastName}</h2>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <b>Badge Number:</b> #{badgeNumber}
+                    </Col>
+                </Row>
+                
+                <ViewSheriffProfileModal sheriff={sheriff}/>
+                <Button><Glyphicon glyph="pencil" /></Button>
+                <OverlayTrigger trigger="focus" placement="right" overlay={showProfileDetails}>
+                    <Button><Glyphicon glyph="menu-right" /></Button>
+                </OverlayTrigger>
+            </Grid>
+
+        );
     }
 }

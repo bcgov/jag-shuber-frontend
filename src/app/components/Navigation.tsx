@@ -1,9 +1,9 @@
-import * as React from 'react'
+import * as React from 'react';
 import {
     Nav
     , Navbar
     , NavbarBrand
-} from 'react-bootstrap'
+} from 'react-bootstrap';
 
 import NavigationLink from './NavigationLink'
 
@@ -23,8 +23,8 @@ export default class Navigation extends React.Component<NavigationProps, any>{
                     </Navbar.Header>
                     <Nav bsStyle='tabs'>
                         <NavigationLink exactMatch to="/" label="Home" />
-                        <NavigationLink to="/settings" label="Settings" />
                         <NavigationLink to="/timeline" label="Timeline" />
+                        <NavigationLink to="/sheriffs/manage" label="Manage Sheriffs" />
                         <NavigationLink to="/contact" label="Contact" />                        
                     </Nav>
                     <Nav pullRight>

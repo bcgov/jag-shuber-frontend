@@ -1,11 +1,14 @@
-import * as React from 'react'
-// import * as PropTypes from 'prop-types'
-import { Grid, Row, Col } from 'react-bootstrap'
-import SheriffCard from './SheriffCard'
+import * as React from 'react';
+// import { Grid, Row } from 'react-bootstrap';
+import SheriffCard from './SheriffCard';
 import { Sheriff } from '../../../api/index';
 
+import { Grid } from 'react-bootstrap';
+import { Row } from 'react-bootstrap';
+import { Col } from 'react-bootstrap';
+
 export interface SherriffGridProps {
-    sheriffs: Sheriff[]
+    sheriffs: Sheriff[];
 }
 
 class SheriffGrid extends React.PureComponent<SherriffGridProps, any>{
@@ -27,4 +30,4 @@ class SheriffGrid extends React.PureComponent<SherriffGridProps, any>{
     }
 }
 
-export default SheriffGrid
+export default SheriffGrid;
