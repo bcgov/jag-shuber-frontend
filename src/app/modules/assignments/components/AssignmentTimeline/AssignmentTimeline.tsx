@@ -1,21 +1,21 @@
 import * as React from 'react'
 import { Timeline, TimelineProps } from "../../../../components/Timeline";
-import { SheriffAssignment, Sheriff, SheriffAbility } from "../../../../api/index";
+import { SheriffAssignment, Sheriff, SheriffAbility, BLANK_SHERIFF } from "../../../../api/index";
 import { ReactCalendarTimelineGroup, ReactCalendarTimelineItem } from "react-calendar-timeline";
 import { default as AssignmentTimelineCard } from './AssignmentTimelineCard'
 import AssignmentDropRowExtension from './AssignmentDropRowExtension';
+import { toTitleCase } from '../../../../infrastructure';
 
 // todo: find a better spot for this
 export const UNASSIGNED_ID = -1;
-export const UNASSIGNED_GROUP: TimelineSheriff = {
+
+export const UNASSIGNED_GROUP: TimelineSheriff = Object.assign({},BLANK_SHERIFF,{
     id: UNASSIGNED_ID,
     onDuty: true,
     badgeNumber: UNASSIGNED_ID,
     abilities: SheriffAbility.All,
-    name: "",
     title: "Unassigned"
-
-}
+});
 
 type TimelineAssignment = ReactCalendarTimelineItem & SheriffAssignment;
 type TimelineSheriff = ReactCalendarTimelineGroup & Sheriff;
@@ -110,8 +110,8 @@ export default class AssignmentTimeline extends Timeline<SheriffAssignment, Sher
 
     // Map a sheriff to a timeline group
     protected mapGroup(sheriff: Sheriff): TimelineSheriff {
-        const { badgeNumber: id, name: title } = sheriff;
-        return Object.assign({}, { id, title }, sheriff);
+        const { badgeNumber: id, firstName,lastName} = sheriff;
+        return Object.assign({}, { id, title:toTitleCase(`${firstName} ${lastName}`)}, sheriff);
     }
 
     // Map a group of sheriffs to timeline groups
