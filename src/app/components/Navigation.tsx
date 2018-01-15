@@ -23,9 +23,8 @@ export default class Navigation extends React.Component<NavigationProps, any>{
                     </Navbar.Header>
                     <Nav bsStyle='tabs'>
                         <NavigationLink exactMatch to="/" label="Home" />
-                        <NavigationLink to="/settings" label="Settings" />
                         <NavigationLink to="/timeline" label="Timeline" />
-                        <NavigationLink to="managesheriffs" label="Manage Sheriffs" />
+                        <NavigationLink to="/sheriffs/manage" label="Manage Sheriffs" />
                         <NavigationLink to="/contact" label="Contact" />                        
                     </Nav>
                     <Nav pullRight>

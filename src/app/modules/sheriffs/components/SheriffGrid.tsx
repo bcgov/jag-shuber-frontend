@@ -25,22 +25,6 @@ class SheriffGrid extends React.PureComponent<SherriffGridProps, any>{
                         ))}
                     </Row>
                 </Grid>
-                {/* <ListGroup>
-                        {sheriffs.map(sheriff => (
-                            <ListGroupItem key={sheriff.badgeNumber} >
-                                <SheriffCard sheriff={sheriff} onClick={() => alert(sheriff.badgeNumber)} />
-                            </ListGroupItem>
-                        ))}
-                </ListGroup> */}
-                {/* <Grid >
-                   
-                        {sheriffs.map(sheriff => (
-                            <Row key={sheriff.badgeNumber} >
-                                <SheriffCard sheriff={sheriff} onClick={() => alert(sheriff.badgeNumber)} />
-                            </Row>
-                        ))}
-                    
-                </Grid> */}
             </div>
         )
     }

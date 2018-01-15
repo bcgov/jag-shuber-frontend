@@ -12,7 +12,7 @@ export enum SheriffAbility {
 
 type DateType = Date | number | moment.Moment;
 
-export const BLANK_SHERIFF:Sheriff = {
+export const BLANK_SHERIFF: Sheriff = {
     firstName: "",
     lastName: "",
     badgeNumber: -1,
@@ -29,17 +29,19 @@ export const BLANK_SHERIFF:Sheriff = {
     currentRegion: ""
 }
 
+export interface SheriffTraining {
+    trainingType: string;
+    certificationDate: string;
+    expiryDate: string;
+}
+
 export interface Sheriff {
     firstName: string;
     lastName: string;
     badgeNumber: number;
     imageUrl?: string;
     abilities: SheriffAbility;
-    training: [{
-        trainingType: string;
-        certificationDate: string;
-        expiryDate: string;
-    }];
+    training: SheriffTraining[];
     permanentCourthouse?: string;
     permanentRegion?: string;
     currentCourthouse?: string;
@@ -86,19 +88,19 @@ class Client implements API {
 
             sheriffList = people.results.map(p => {
                 let s: Sheriff = {
-                    firstName: p.name.first, 
+                    firstName: p.name.first,
                     lastName: p.name.last,
                     badgeNumber: badgeNumber++,
                     imageUrl: p.picture.large,
-                    permanentRegion: "Perm Region", 
-                    permanentCourthouse: "Perm Courthouse", 
-                    currentRegion: "Curr Region", 
+                    permanentRegion: "Perm Region",
+                    permanentCourthouse: "Perm Courthouse",
+                    currentRegion: "Curr Region",
                     currentCourthouse: "Curr Courthouse",
                     training: [
-                        {certificationDate:"Mon Jan 20 2017", expiryDate:"Mon Jan 20 2018", trainingType:"FRO"}, 
-                        {certificationDate:"Mon Jan 20 2017", expiryDate:"Mon Jan 20 2018", trainingType:"PISTOL"},
-                        {certificationDate:"Mon Jan 20 2017", expiryDate:"Mon Jan 20 2018", trainingType:"CID"},
-                        {certificationDate:"Mon Jan 20 2017", expiryDate:"Mon Jan 20 2018", trainingType:"CEW"}
+                        { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "FRO" },
+                        { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "PISTOL" },
+                        { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CID" },
+                        { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CEW" }
                     ],
                     abilities: SheriffAbility.All
                 };
@@ -119,12 +121,12 @@ class Client implements API {
 
         //This is a hack to throw in random picture
 
-        if(!newSheriff.imageUrl){
+        if (!newSheriff.imageUrl) {
             //let randomNumber = Math.floor(Math.random() * 86) + 11; 
             // newSheriff.imageUrl=`https://randomuser.me/api/portraits/men/${randomNumber}.jpg`;
-            newSheriff.imageUrl="/img/avatar.png"
+            newSheriff.imageUrl = "/img/avatar.png"
         }
-       
+
         sheriffList.push(newSheriff);
         return newSheriff;
     }

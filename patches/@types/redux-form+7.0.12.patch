@@ -1,0 +1,12 @@
+patch-package
+--- a/node_modules/@types/redux-form/lib/FieldArray.d.ts
++++ b/node_modules/@types/redux-form/lib/FieldArray.d.ts
+@@ -3,7 +3,7 @@ import { Validator } from "../index";
+ 
+ interface BaseFieldArrayProps<P = {}> {
+     name: string;
+-    component: ComponentType<P>;
++    component: ComponentType<WrappedFieldArrayProps<P>>;
+     validate?: Validator | Validator[];
+     warn?: Validator | Validator[];
+     withRef?: boolean;

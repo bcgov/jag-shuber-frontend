@@ -21,15 +21,13 @@
     "postcss-loader": "2.0.6",
     "promise": "8.0.1",
     "react": "^16.1.1",
-    "react-calendar-timeline": "^0.15.2",
     "react-bootstrap": "^0.32.0",
+    "react-calendar-timeline": "^0.15.2",
     "react-datetime": "^2.11.1",
     "react-dev-utils": "^4.0.1",
     "react-dnd": "^2.5.4",
     "react-dnd-html5-backend": "^2.5.4",
     "react-dom": "^16.1.1",
-    "react-image-upload": "0.0.1",
-    "react-images-upload": "^1.1.1",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
     "redux": "^3.7.2",
@@ -54,7 +52,8 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js --env=jsdom"
+    "test": "node scripts/test.js --env=jsdom",
+    "prepare": "patch-package"
   },
   "devDependencies": {
     "@types/jest": "^21.1.8",
@@ -69,7 +68,9 @@
     "@types/react-dom": "^16.0.3",
     "@types/react-redux": "^5.0.13",
     "@types/react-router-dom": "^4.2.3",
-    "@types/redux-form": "^7.0.12"
+    "@types/redux-form": "^7.0.12",
+    "patch-package": "^5.0.0",
+    "postinstall-prepare": "^1.0.1"
   },
   "jest": {
     "mapCoverage": true,

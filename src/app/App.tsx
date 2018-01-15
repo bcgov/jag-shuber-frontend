@@ -31,7 +31,7 @@ class Layout extends React.Component {
         <div className="mainArea" style={{ marginTop: -5}}>
           <Route exact path='/' component={Home} />
           <Route path='/timeline' component={Timeline} />
-          <Route path='/managesheriffs' component={ManageSheriff} />
+          <Route path='/sheriffs/manage' component={ManageSheriff} />
           <Route path='/contact' component={Contact} />
         </div>
         <div className='footerArea'>
