@@ -3,7 +3,7 @@ import './Home.css'
 // import {
 //     Panel
 // } from 'react-bootstrap'
-import OnDutySheriffs from '../../modules/sheriffs/containers/OnDutySheriffs';
+import SheriffList from '../../modules/sheriffs/containers/SheriffList';
 import UnlinkedAssignmentList from '../../modules/assignments/containers/UnlinkedAssignmentList';
 import CreateAssignmentForm from '../../modules/assignments/containers/CreateAssignmentForm';
 class Home extends React.PureComponent {
@@ -17,7 +17,7 @@ class Home extends React.PureComponent {
                     <CreateAssignmentForm />
                 </div>
                 <div className='sheriffArea'>
-                    <OnDutySheriffs />
+                    <SheriffList />
                 </div>
             </div>
         );
