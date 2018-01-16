@@ -1,5 +1,4 @@
 import { ItemTypes, sourceFactory } from '../../../infrastructure/DragDrop';
-// import * as actions from '../actions'
 import { connect } from 'react-redux';
 import { updateSheriff } from '../actions';
 
