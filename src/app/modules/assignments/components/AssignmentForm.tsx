@@ -7,10 +7,10 @@ import {
 import {
     TextFormField,
     RequiredTrainingChecklist,
-    AssignmentTypeSelector,
     DateTimeField,
     NumberOfSheriffsSelector,
-    CheckboxField
+    CheckboxField,
+    TextArea
 } from '../../../components/Form';
 import { Validators } from '../../../infrastructure';
 
@@ -21,7 +21,6 @@ class GateSecurityFields extends React.Component<GateSecurityFieldsProps, any>{
     render() {
         return (
             <div>
-                <h3>Gate Security Fields</h3>
                 <Field name="gateNumber" component={TextFormField} label="Gate Number" />
             </div>
         );
@@ -35,7 +34,6 @@ class EscortServiceFields extends React.Component<EscortServiceFieldsProps, any>
     render() {
         return (
             <div>
-                <h3>Escort Service Fields</h3>
                 <Field name="pickupLocation" component={TextFormField} label="Pick-Up Location" />
                 <Field name="dropoffLocation" component={TextFormField} label="Drop-Off Location" />
             </div>
@@ -50,9 +48,8 @@ class CourtSecurityFields extends React.Component<CourtSecurityFieldsProps, any>
     render() {
         return (
             <div>
-                <h3>Court Security Fields</h3>
                 <Field name="courtRoom" component={TextFormField} label="Court Room" />
-                <Field name="assignmentCourt" component={CheckboxField} label="Assignment Court" />
+                <Field name="assignmentCourt" component={CheckboxField} value="tesing this value" label="Assignment Court" />
             </div>
         );
     }
@@ -61,24 +58,34 @@ class CourtSecurityFields extends React.Component<CourtSecurityFieldsProps, any>
 export interface AssignmentFormProps {
     handleSubmit?: () => void;
     onSubmitSuccess?: () => void;
+    showCourtSecurityFields?: boolean;
+    showDocumentSericesFields?: boolean;
+    showEscortServicesFields?: boolean;
+    showGateSecurityFields?: boolean;
+    showOtherAssignmentFields?: boolean;
+
 }
 
 export default class AssignmentForm extends React.Component<AssignmentFormProps & InjectedFormProps<any,AssignmentFormProps>, any>{
 
     render() {
-        const { handleSubmit } = this.props;
+        const { handleSubmit, showCourtSecurityFields, showDocumentSericesFields, showEscortServicesFields, showGateSecurityFields, showOtherAssignmentFields } = this.props;
         return (
             <div>
+                { showCourtSecurityFields && <h1> Court Security </h1> }
+                { showDocumentSericesFields && <h1> Document Services </h1> } 
+                { showEscortServicesFields && <h1> Escort Services </h1> }
+                { showGateSecurityFields && <h1> Gate Security </h1> }
+                { showOtherAssignmentFields && <h1> Other Assignment </h1>}
                 <Form onSubmit={handleSubmit}>
-                    <Field name="assignmentType" component={AssignmentTypeSelector} label="Assignment Type"  validate={[Validators.required]} />
+                    { showCourtSecurityFields && <CourtSecurityFields /> }
+                    { showEscortServicesFields && <EscortServiceFields />}
+                    { showGateSecurityFields && <GateSecurityFields /> }
                     <Field name="startTime" component={DateTimeField} label="Start Time" validate={[Validators.required]}/>
                     <Field name="endTime" component={DateTimeField} label="End Time" validate={[Validators.required]}/>
                     <Field name="abilities" component={RequiredTrainingChecklist} label="Required Qualifications" />
                     <Field name="sherrifsRequired" component={NumberOfSheriffsSelector} label="Number of Sheriffs Required"/>
-                    <Field name="notes" component={TextFormField} label="Notes" />
-                    <CourtSecurityFields />
-                    <EscortServiceFields />
-                    <GateSecurityFields />
+                    <Field name="notes" component={TextArea} label="Notes" />
                 </Form>
 
             </div>

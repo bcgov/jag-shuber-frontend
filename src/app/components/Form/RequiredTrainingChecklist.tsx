@@ -4,6 +4,7 @@ import { default as FormFieldWrapper, FormFieldWrapperProps } from './FormFieldW
 import { TRAINING_TYPES } from '../../api';
 
 
+
 export default class RequiredTrainingChecklist extends React.PureComponent<FormFieldWrapperProps>{
     render(){
         const {input:{value, onChange}} = this.props;
@@ -17,7 +18,7 @@ export default class RequiredTrainingChecklist extends React.PureComponent<FormF
                     {TRAINING_TYPES.CID}
                 </Checkbox>
                 
-                <Checkbox onChange={onChange} value={value}>
+                <Checkbox  onChange={onChange} value={value}>
                     {TRAINING_TYPES.FRO}
                 </Checkbox>
 

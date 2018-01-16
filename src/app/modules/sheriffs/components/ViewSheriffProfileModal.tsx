@@ -36,7 +36,7 @@ export default class ViewSheriffProfileModal extends React.Component<ViewSheriff
         this.setState({ showModal: false })
     }
     render(){
-        const {sheriff, sheriff:{firstName, lastName}} = this.props;
+        const {sheriff, sheriff:{firstName, lastName, badgeNumber}} = this.props;
         return (
 			<div>			
 				<Button onClick={() => this.handleShow()}>
@@ -45,7 +45,7 @@ export default class ViewSheriffProfileModal extends React.Component<ViewSheriff
 
 				<Modal show={this.state.showModal} onHide={() => this.handleClose()}>
 					<Modal.Header closeButton>
-						<Modal.Title>{firstName} {lastName}</Modal.Title>
+						<Modal.Title>{firstName} {lastName} #{badgeNumber}</Modal.Title>
 					</Modal.Header>
 					<Modal.Body>
                         <SheriffProfileView sheriff={sheriff}/>

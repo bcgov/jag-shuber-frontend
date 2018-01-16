@@ -1,5 +1,5 @@
 import { randomDelay } from './PromiseExtensions';
-import { fetchRandomPeople } from './_randomPeople';
+// import { fetchRandomPeople } from './_randomPeople';
 import * as moment from 'moment';
 
 export enum SheriffAbility {
@@ -11,6 +11,14 @@ export enum SheriffAbility {
 }
 
 type DateType = Date | number | moment.Moment;
+
+export const ASSIGNMENT_TYPES = {
+    courtSecurity: "Court Security",
+    documentServices: "Document Services",
+    escortServices: "Escort Services",
+    gateSecurity: "Gate Security",
+    other: "Other"
+}
 
 export const BLANK_SHERIFF: Sheriff = {
     firstName: "",
@@ -48,7 +56,7 @@ export interface Sheriff {
     lastName: string;
     badgeNumber: number;
     imageUrl?: string;
-    abilities: SheriffAbility;
+    abilities?: SheriffAbility;
     training: SheriffTraining[];
     permanentCourthouse?: string;
     permanentRegion?: string;
@@ -65,7 +73,16 @@ export interface SheriffAssignment {
     sheriffIds: number[];
     startTime: DateType,
     endTime: DateType,
-    sherrifsRequired: number | string
+    sherrifsRequired: number | string,
+    //attributes for gate security assignments
+    gateNumber?: number | string, 
+    //attributes for escort security assignments
+    pickupLocation?: string,
+    dropoffLocation?: string,
+    //attributes court security assignments
+    courtRoom?: string, 
+    assignmentCourt?: boolean
+
 }
 
 export interface API {
@@ -92,32 +109,31 @@ function arrayToMap<T, TKey>(array: T[], keySelector: (t: T) => TKey) {
 class Client implements API {
 
     async getSheriffs(): Promise<SheriffMap> {
-        if (sheriffList.length == 0) {
-            let people = await fetchRandomPeople(5);
-            let badgeNumber = 0;
+        // if (sheriffList.length == 0) {
+        //     let people = await fetchRandomPeople(5);
+        //     let badgeNumber = 0;
 
-            sheriffList = people.results.map(p => {
-                let s: Sheriff = {
-                    firstName: p.name.first,
-                    lastName: p.name.last,
-                    onDuty:Math.random()>0.3,
-                    badgeNumber: badgeNumber++,
-                    imageUrl: p.picture.large,
-                    permanentRegion: "Perm Region",
-                    permanentCourthouse: "Perm Courthouse",
-                    currentRegion: "Curr Region",
-                    currentCourthouse: "Curr Courthouse",
-                    training: [
-                        { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "FRO" },
-                        { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "PISTOL" },
-                        { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CID" },
-                        { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CEW" }
-                    ],
-                    abilities: SheriffAbility.All
-                };
-                return s;
-            });
-        }
+        //     sheriffList = people.results.map(p => {
+        //         let s: Sheriff = {
+        //             firstName: p.name.first,
+        //             lastName: p.name.last,
+        //             badgeNumber: badgeNumber++,
+        //             imageUrl: p.picture.large,
+        //             permanentRegion: "Perm Region",
+        //             permanentCourthouse: "Perm Courthouse",
+        //             currentRegion: "Curr Region",
+        //             currentCourthouse: "Curr Courthouse",
+        //             training: [
+        //                 { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "FRO" },
+        //                 { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "PISTOL" },
+        //                 { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CID" },
+        //                 { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CEW" }
+        //             ],
+        //             abilities: SheriffAbility.All
+        //         };
+        //         return s;
+        //     });
+        // }
         return arrayToMap(sheriffList, (s) => s.badgeNumber) as SheriffMap;
     }
 
@@ -151,14 +167,117 @@ class Client implements API {
     async createAssignment(newAssignment: SheriffAssignment): Promise<SheriffAssignment> {
         await randomDelay();
         //This is a hack to create a unique id for a new assignment
-        newAssignment.id = assignments.length; 
+        newAssignment.id = assignments.length;
         assignments.push(newAssignment);
 
         return newAssignment;
     }
 }
 
-let sheriffList: Sheriff[] = [];
+let sheriffList: Sheriff[] = [
+    {
+        firstName: "Garfield",
+        lastName: "Shirley",
+        badgeNumber: 969,
+        imageUrl: '/img/garfield_shirley.jpg',
+        permanentRegion: "Van Centre",
+        permanentCourthouse: "Vancouver - 222 Main",
+        currentRegion: "Van Centre",
+        currentCourthouse: "Vancouver - 222 Main",
+        training: [
+            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "FRO" },
+            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "PISTOL" },
+            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CID" },
+            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CEW" }
+        ],
+        abilities: SheriffAbility.All
+    },
+    {
+        firstName: "Jaqueline",
+        lastName: "Jackson",
+        badgeNumber: 204,
+        imageUrl: '/img/jaqueline_jackson.jpg',
+        permanentRegion: "Interior",
+        permanentCourthouse: "Kamloops",
+        currentRegion: "Interior",
+        currentCourthouse: "Kamloops",
+        training: [
+            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "FRO" },
+            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "PISTOL" },
+            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CID" },
+            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CEW" }
+        ],
+        abilities: SheriffAbility.All
+    },
+    {
+        firstName: "Landon",
+        lastName: "Bludnell",
+        badgeNumber: 790,
+        imageUrl: '/img/landon_bludnell.jpg',
+        permanentRegion: "Northern",
+        permanentCourthouse: "Prince George",
+        currentRegion: "Northern",
+        currentCourthouse: "Prince George",
+        training: [
+            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "FRO" },
+            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "PISTOL" },
+            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CID" },
+            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CEW" }
+        ],
+        abilities: SheriffAbility.All
+    },
+    {
+        firstName: "Rob",
+        lastName: "Lucas",
+        badgeNumber: 987,
+        imageUrl: '/img/rob_lucas.jpg',
+        permanentRegion: "Fraser",
+        permanentCourthouse: "New Westminster",
+        currentRegion: "Fraser",
+        currentCourthouse: "New Westminster",
+        training: [
+            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "FRO" },
+            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "PISTOL" },
+            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CID" },
+            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CEW" }
+        ],
+        abilities: SheriffAbility.All
+    },
+    {
+        firstName: "Steve",
+        lastName: "Gill",
+        badgeNumber: 932,
+        imageUrl: '/img/steve_gill.jpg',
+        permanentRegion: "Fraser",
+        permanentCourthouse: "Surrey",
+        currentRegion: "Fraser",
+        currentCourthouse: "Surrey",
+        training: [
+            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "FRO" },
+            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "PISTOL" },
+            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CID" },
+            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CEW" }
+        ],
+        abilities: SheriffAbility.All
+    },
+    {
+        firstName: "Steve",
+        lastName: "Jervis",
+        badgeNumber: 579,
+        imageUrl: '/img/steve_jervis.jpg',
+        permanentRegion: "Van Centre",
+        permanentCourthouse: "Vancouver - VLC",
+        currentRegion: "Van Centre",
+        currentCourthouse: "Vancouver - VLC",
+        training: [
+            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "FRO" },
+            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "PISTOL" },
+            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CID" },
+            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CEW" }
+        ],
+        abilities: SheriffAbility.All
+    }
+];
 
 const assignments: SheriffAssignment[] = [
     {
@@ -168,7 +287,7 @@ const assignments: SheriffAssignment[] = [
         requiredAbilities: SheriffAbility.CanTransfer | SheriffAbility.CourtAppearance,
         sheriffIds: [],
         startTime: moment().add(2, 'hour'),
-        endTime: moment().add(3, 'hour'), 
+        endTime: moment().add(3, 'hour'),
         sherrifsRequired: 1
     },
     {
@@ -178,7 +297,7 @@ const assignments: SheriffAssignment[] = [
         requiredAbilities: SheriffAbility.CanTransfer,
         sheriffIds: [3],
         startTime: moment().add(3, 'hour'),
-        endTime: moment().add(4, 'hour'), 
+        endTime: moment().add(4, 'hour'),
         sherrifsRequired: 1
     },
     {
@@ -188,7 +307,7 @@ const assignments: SheriffAssignment[] = [
         requiredAbilities: SheriffAbility.CourtAppearance,
         sheriffIds: [1],
         startTime: moment().add(4, 'hour'),
-        endTime: moment().add(5, 'hour'), 
+        endTime: moment().add(5, 'hour'),
         sherrifsRequired: 1
     },
     {
@@ -198,7 +317,7 @@ const assignments: SheriffAssignment[] = [
         requiredAbilities: SheriffAbility.All,
         sheriffIds: [0, 4],
         startTime: moment().add(2, 'hour'),
-        endTime: moment().add(3, 'hour'), 
+        endTime: moment().add(3, 'hour'),
         sherrifsRequired: 1
     },
     {
@@ -208,7 +327,7 @@ const assignments: SheriffAssignment[] = [
         requiredAbilities: SheriffAbility.CanTransfer | SheriffAbility.CourtAppearance,
         sheriffIds: [],
         startTime: moment().add(1, 'hour'),
-        endTime: moment().add(2, 'hour'), 
+        endTime: moment().add(2, 'hour'),
         sherrifsRequired: 1
     },
     {
@@ -218,7 +337,7 @@ const assignments: SheriffAssignment[] = [
         requiredAbilities: SheriffAbility.CanTransfer | SheriffAbility.CourtAppearance,
         sheriffIds: [],
         startTime: moment().add(6, 'hour'),
-        endTime: moment().add(7, 'hour'), 
+        endTime: moment().add(7, 'hour'),
         sherrifsRequired: 1
     },
 ];

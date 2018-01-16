@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { reduxForm, ConfigProps } from 'redux-form';
 import { default as AssignmentForm, AssignmentFormProps } from '../components/AssignmentForm';
-import { SheriffAssignment, SheriffAbility } from '../../../api/index';
+import { SheriffAssignment, SheriffAbility, ASSIGNMENT_TYPES } from '../../../api/index';
 import { createAssignment } from '../actions';
 import { default as FormSubmitButton, SubmitButtonProps } from '../../../components/Form/SubmitButton'
 
@@ -10,7 +10,21 @@ import { default as FormSubmitButton, SubmitButtonProps } from '../../../compone
 const formConfig: ConfigProps<any, AssignmentFormProps> = { 
     form: 'CreateAssignment',
     onSubmit: (values:SheriffAssignment|any, dispatch, props) =>{
-        let newAssignment = Object.assign({}, values, {requiredAbilities:SheriffAbility.All}, {sheriffIds:[]})
+        const { showCourtSecurityFields, showEscortServicesFields, showDocumentSericesFields, showGateSecurityFields } = props;
+        let assignmentType = "";
+        if(showCourtSecurityFields){
+            assignmentType = ASSIGNMENT_TYPES.courtSecurity;
+        }else if(showEscortServicesFields){
+            assignmentType = ASSIGNMENT_TYPES.escortServices;
+        }else if(showDocumentSericesFields){
+            assignmentType = ASSIGNMENT_TYPES.documentServices;
+        }else if (showGateSecurityFields){
+            assignmentType = ASSIGNMENT_TYPES.gateSecurity;
+        }else{
+            assignmentType = ASSIGNMENT_TYPES.other;
+        }
+
+        let newAssignment = Object.assign({}, values, {requiredAbilities:SheriffAbility.All}, {sheriffIds:[]}, {assignmentType: assignmentType});
         dispatch(createAssignment(newAssignment));
     } 
 };
