@@ -21,9 +21,6 @@ import { default as TrainingTypeSelector } from '../../training/components/Train
 import { default as RegionSelector } from '../../worksite/components/RegionSelector';
 import { default as CourthouseSelector } from '../../worksite/components/CourthouseSelector';
 
-
-
-
 export interface SheriffFormProps {
     handleSubmit?: () => void;
     onSubmitSuccess?: () => void;
@@ -31,14 +28,11 @@ export interface SheriffFormProps {
 
 interface TrainingProps {
     type?: string;
-
 }
 
 class TrainingFieldArray extends FieldArray<TrainingProps> {
 
 }
-
-
 
 export default class SheriffForm extends React.Component<SheriffFormProps & InjectedFormProps<any,SheriffFormProps>, any>{
 

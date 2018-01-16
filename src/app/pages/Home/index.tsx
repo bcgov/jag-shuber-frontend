@@ -2,7 +2,9 @@ import * as React from "react";
 import './Home.css';
 import SheriffList from '../../modules/sheriffs/containers/SheriffList';
 import UnlinkedAssignmentList from '../../modules/assignments/containers/UnlinkedAssignmentList';
-import CreateAssignmentForm from '../../modules/assignments/containers/CreateAssignmentForm';
+// import CreateAssignmentForm from '../../modules/assignments/containers/CreateAssignmentForm';
+import { default as AddAssignmentModal } from '../../modules/assignments/components/AddAssignmentModal';
+
 class Home extends React.PureComponent {
     render() {
         return (
@@ -11,7 +13,7 @@ class Home extends React.PureComponent {
                     <UnlinkedAssignmentList />
                 </div>
                 <div className='createTaskArea'>
-                    <CreateAssignmentForm />
+                    <AddAssignmentModal />
                 </div>
                 <div className='sheriffArea'>
                     <SheriffList />

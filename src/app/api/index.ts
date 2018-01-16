@@ -30,6 +30,13 @@ export const BLANK_SHERIFF: Sheriff = {
     onDuty:false
 }
 
+export const TRAINING_TYPES = {
+    FRO: "FRO - Forced Response Option",
+    PISTOL: "PISTOL",
+    CID: "CID - Critical Incident De-Escalation",
+    CEW: "CEW - Conductive Energy Weapon"
+}
+
 export interface SheriffTraining {
     trainingType: string;
     certificationDate: string;
@@ -52,12 +59,13 @@ export interface Sheriff {
 
 export interface SheriffAssignment {
     id: number;
-    title: string;
-    description: string;
+    assignmentType: string;
+    notes: string;
     requiredAbilities: SheriffAbility;
     sheriffIds: number[];
     startTime: DateType,
-    endTime: DateType
+    endTime: DateType,
+    sherrifsRequired: number | string
 }
 
 export interface API {
@@ -122,8 +130,7 @@ class Client implements API {
     async createSheriff(newSheriff: Sheriff): Promise<Sheriff> {
         await randomDelay();
 
-        //This is a hack to throw in random picture
-
+        //This is a hack to throw in a profile picture
         if (!newSheriff.imageUrl) {
             //let randomNumber = Math.floor(Math.random() * 86) + 11; 
             // newSheriff.imageUrl=`https://randomuser.me/api/portraits/men/${randomNumber}.jpg`;
@@ -143,7 +150,8 @@ class Client implements API {
 
     async createAssignment(newAssignment: SheriffAssignment): Promise<SheriffAssignment> {
         await randomDelay();
-
+        //This is a hack to create a unique id for a new assignment
+        newAssignment.id = assignments.length; 
         assignments.push(newAssignment);
 
         return newAssignment;
@@ -155,57 +163,63 @@ let sheriffList: Sheriff[] = [];
 const assignments: SheriffAssignment[] = [
     {
         id: 0,
-        title: 'Court Security',
-        description: 'Courtroom 101 (10:00am)',
+        assignmentType: 'Court Security',
+        notes: 'Courtroom 101 (10:00am)',
         requiredAbilities: SheriffAbility.CanTransfer | SheriffAbility.CourtAppearance,
         sheriffIds: [],
         startTime: moment().add(2, 'hour'),
-        endTime: moment().add(3, 'hour')
+        endTime: moment().add(3, 'hour'), 
+        sherrifsRequired: 1
     },
     {
         id: 1,
-        title: 'Escort Service',
-        description: 'Transfer from Location Y to Courthouse B',
+        assignmentType: 'Escort Service',
+        notes: 'Transfer from Location Y to Courthouse B',
         requiredAbilities: SheriffAbility.CanTransfer,
         sheriffIds: [3],
         startTime: moment().add(3, 'hour'),
-        endTime: moment().add(4, 'hour')
+        endTime: moment().add(4, 'hour'), 
+        sherrifsRequired: 1
     },
     {
         id: 2,
-        title: 'Document Service',
-        description: 'Serve documents A, B, and C',
+        assignmentType: 'Document Service',
+        notes: 'Serve documents A, B, and C',
         requiredAbilities: SheriffAbility.CourtAppearance,
         sheriffIds: [1],
         startTime: moment().add(4, 'hour'),
-        endTime: moment().add(5, 'hour')
+        endTime: moment().add(5, 'hour'), 
+        sherrifsRequired: 1
     },
     {
         id: 3,
-        title: 'Court Security',
-        description: 'Courtroom 101 (2:00pm)',
+        assignmentType: 'Court Security',
+        notes: 'Courtroom 101 (2:00pm)',
         requiredAbilities: SheriffAbility.All,
         sheriffIds: [0, 4],
         startTime: moment().add(2, 'hour'),
-        endTime: moment().add(3, 'hour')
+        endTime: moment().add(3, 'hour'), 
+        sherrifsRequired: 1
     },
     {
         id: 4,
-        title: 'Court Security',
-        description: 'Courtroom 102 (2:00pm)',
+        assignmentType: 'Court Security',
+        notes: 'Courtroom 102 (2:00pm)',
         requiredAbilities: SheriffAbility.CanTransfer | SheriffAbility.CourtAppearance,
         sheriffIds: [],
         startTime: moment().add(1, 'hour'),
-        endTime: moment().add(2, 'hour')
+        endTime: moment().add(2, 'hour'), 
+        sherrifsRequired: 1
     },
     {
         id: 5,
-        title: 'Escort Service',
-        description: 'Transfer from Courthouse B to Location X',
+        assignmentType: 'Escort Service',
+        notes: 'Transfer from Courthouse B to Location X',
         requiredAbilities: SheriffAbility.CanTransfer | SheriffAbility.CourtAppearance,
         sheriffIds: [],
         startTime: moment().add(6, 'hour'),
-        endTime: moment().add(7, 'hour')
+        endTime: moment().add(7, 'hour'), 
+        sherrifsRequired: 1
     },
 ];
 

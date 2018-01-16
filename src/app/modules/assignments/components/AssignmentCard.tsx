@@ -13,13 +13,13 @@ export interface AssignmentCardProps {
 
 export default class AssignmentCard extends React.PureComponent<AssignmentCardProps, any>{
     render() {
-        const { currentGroupId,assignment: { title, requiredAbilities, id, description } } = this.props;
+        const { currentGroupId,assignment: { assignmentType, requiredAbilities, id, notes } } = this.props;
 
         return (
             <AssignmentDragSource id={id} currentGroupId={currentGroupId} >
                 <Panel bsStyle="primary">
-                    <h3>{title}</h3>
-                    <h4>{description}</h4>
+                    <h3>{assignmentType}</h3>
+                    <h4>{notes}</h4>
                     <SheriffAbilityPile abilities={requiredAbilities} />
                 </Panel>
             </AssignmentDragSource>

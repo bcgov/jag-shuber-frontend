@@ -11,8 +11,10 @@ export default class AssignmentTypeSelector extends React.PureComponent<FormFiel
                 <FormControl componentClass="select" value={value} onChange={onChange}>
                     <option value="No assignment type selected">{`Select ${label}`}</option>
                     <option value="Court Security">Court Security</option>
-                    <option value="Escort Services">Escort Services</option>
                     <option value="Document Services">Document Services</option>
+                    <option value="Escort Services">Escort Services</option>
+                    <option value="Gate Security">Gate Security</option>
+                    <option value="Other">Other</option>
                 </FormControl>
             </FormFieldWrapper>
         );
