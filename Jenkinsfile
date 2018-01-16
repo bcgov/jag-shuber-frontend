@@ -67,7 +67,7 @@ if( DEBUG || triggerBuild(CONTEXT_DIRECTORY) ) {
   }
   
   stage('build ' + BUILD_CONFIG) {
-    node{
+    node('nodejs'){
       echo "Building: " + BUILD_CONFIG
       openshiftBuild bldCfg: BUILD_CONFIG, showBuildLogs: 'true'
       
