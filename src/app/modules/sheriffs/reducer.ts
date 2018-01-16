@@ -30,6 +30,7 @@ export interface SheriffState {
   loading?: boolean;
   error?: string;
   saving?: boolean;
+  updating?:boolean
   successMessage?: string;
 }
 
@@ -45,7 +46,13 @@ const reducer = createReducer<SheriffState>({
     let newMap = Object.assign({}, map);
     newMap[payload.badgeNumber] = payload;
     return { map: newMap, ...rest, saving:false, loading:false, successMessage:'SAVED!'};
-  }
+  },
+  SHERIFF_UPDATE_SUCCESS: (state,payload)=>{
+    const newMap = Object.assign({},state.map);
+    newMap[payload.badgeNumber]=payload;
+    return {updating:false,map:newMap};
+  },
+  SHERIFF_UPDATE_FAIL: (state,payload)=>({updating:false,error:payload})
 });
 
 export default reducer;

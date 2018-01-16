@@ -1,0 +1,48 @@
+.react-calendar-timeline .rct-sidebar .rct-sidebar-header{
+    background: #003366;
+    text-align: center;
+}
+
+.react-calendar-timeline .rct-sidebar .rct-sidebar-row{
+    padding:0px;
+}
+
+.react-calendar-timeline .rct-sidebar .rct-sidebar-row > div{
+    padding-left:10px;
+}
+
+.react-calendar-timeline .rct-horizontal-lines .rct-hl-even{
+    background:#FFFFFF22;
+}
+
+.react-calendar-timeline .rct-sidebar .rct-sidebar-row.rct-sidebar-row-even
+{
+    background: #FFFFFF;
+}
+
+.react-calendar-timeline .rct-sidebar .rct-sidebar-row.rct-sidebar-row-odd{
+    background: #EEE;
+}
+
+.react-calendar-timeline .rct-horizontal-lines .rct-hl-odd{
+    background:#DDDDDD77;
+}
+
+
+.react-calendar-timeline .rct-header .rct-label-group{
+    background: #003366;
+}
+
+.react-calendar-timeline .rct-items .rct-item {
+    padding:0;
+}
+
+.react-calendar-timeline .rct-items .rct-item.selected {
+    background:transparent;
+    border:2px dashed #000;
+}
+
+.react-calendar-timeline .rct-items .rct-item .rct-item-overflow .rct-item-content{
+    padding:0;
+    width:100%;
+}

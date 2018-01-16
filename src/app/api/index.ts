@@ -26,7 +26,8 @@ export const BLANK_SHERIFF: Sheriff = {
     permanentCourthouse: "",
     permanentRegion: "",
     currentCourthouse: "",
-    currentRegion: ""
+    currentRegion: "",
+    onDuty:false
 }
 
 export interface SheriffTraining {
@@ -46,7 +47,7 @@ export interface Sheriff {
     permanentRegion?: string;
     currentCourthouse?: string;
     currentRegion?: string;
-
+    onDuty:boolean;
 }
 
 export interface SheriffAssignment {
@@ -63,6 +64,7 @@ export interface API {
     getSheriffs(): Promise<SheriffMap>;
     getSheriffAssignments(): Promise<SheriffAssignmentMap>;
     createSheriff(newSheriff: Sheriff): Promise<Sheriff>;
+    updateSheriff(sheriffToUpdate: Partial<Sheriff>): Promise<Sheriff>;
     createAssignment(newAssignment: SheriffAssignment): Promise<SheriffAssignment>;
 }
 
@@ -90,6 +92,7 @@ class Client implements API {
                 let s: Sheriff = {
                     firstName: p.name.first,
                     lastName: p.name.last,
+                    onDuty:Math.random()>0.3,
                     badgeNumber: badgeNumber++,
                     imageUrl: p.picture.large,
                     permanentRegion: "Perm Region",
@@ -129,6 +132,13 @@ class Client implements API {
 
         sheriffList.push(newSheriff);
         return newSheriff;
+    }
+
+    async updateSheriff(sheriffToUpdate:Partial<Sheriff>):Promise<Sheriff>{
+        const index = sheriffList.findIndex(s=>s.badgeNumber===sheriffToUpdate.badgeNumber);
+        await randomDelay();
+        sheriffList[index] = Object.assign({},sheriffList[index],sheriffToUpdate);
+        return sheriffList[index];
     }
 
     async createAssignment(newAssignment: SheriffAssignment): Promise<SheriffAssignment> {

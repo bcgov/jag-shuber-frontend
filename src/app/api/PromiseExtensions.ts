@@ -14,6 +14,6 @@ export function delay(ms:number):Promise<void>{
 
 
 export function randomDelay(minMs=10,maxMs=500):Promise<void>{
-    const delayMs = Math.random()*(maxMs-minMs)+minMs;
+    const delayMs = 0;//Math.random()*(maxMs-minMs)+minMs;
     return delay(delayMs);
 }

@@ -1,6 +1,5 @@
-import ItemTypes from './ItemTypes';
-import { sourceFactory } from './factories'
-import { actions } from '../../modules/assignments'
+import { ItemTypes, sourceFactory } from '../../../infrastructure/DragDrop';
+import * as actions from '../actions'
 import { connect } from 'react-redux';
 
 export interface DraggedAssignment {

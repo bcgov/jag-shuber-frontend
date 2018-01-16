@@ -1,12 +1,53 @@
 .App {
   height:100vh;
+  display:grid;  
+  grid-template-columns: 100vw;
+  grid-template-rows: 70px auto 44px;
+  grid-template-areas:  
+  "header"
+  "content"
+  "footer"
+}
+
+.headerArea .header-main{
+  z-Index: 1000  
+}
+
+#header-main .logo{
   text-align: center;
-  display:grid;
-  grid-template-columns: auto;
-  grid-template-rows: 64px auto 44px;
-  grid-template-areas:  "header"
-                        "content"
-                        "footer"
+  position:absolute;
+  width:120px;
+  z-index: 100;
+  margin:5px 15px;  
+}
+
+#header-main .logo img{
+  width:100%;
+}
+
+@media(min-width:768px){
+  #header-main .logo{
+    left:0;
+  }
+
+  #header-main{
+    padding-top:5px;
+  } 
+
+  .navbar{
+    margin-left:150px;
+    margin-right:5px; 
+  }
+}
+
+@media(max-width:768px){
+  #header-main .logo{
+    right:0px;
+  }
+
+  .App{
+    grid-template-rows: 116px auto 44px;
+  }
 }
 
 .headerArea {
@@ -28,7 +69,7 @@
 }
 
 .App-header {
-  background-color: #0a163e;
+  background-color: #0a163e;  
   height: 150px;
   padding: 20px;
   color: white;
@@ -43,12 +84,23 @@
   font-weight: bold;
 }
 
+.navbar{
+  margin-bottom:5px;
+}
+
 .App-content{
   height:100%
 }
 
 body{
   width:100%;
+}
+
+.unselectable{
+  -webkit-user-select: none; /* Safari */        
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
 }
 
 

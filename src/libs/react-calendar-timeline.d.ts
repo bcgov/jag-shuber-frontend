@@ -61,6 +61,8 @@ declare module "react-calendar-timeline" {
         keys?:ReactCalendarTimelineKeys;
         sidebarContent?:React.ReactNode;
         sidebarWidth?: number;
+        rightSidebarContent?:React.ReactNode;
+        rightSidebarWidth?: number;
         dragSnap?: number;
         minResizeWidth?: number;
         fixedHeader?: "fixed" | "none";
@@ -79,6 +81,8 @@ declare module "react-calendar-timeline" {
         stackItems?: boolean;
         traditionalZoom?: boolean;
         itemTouchSendsClick?: boolean;
+        headerLabelFormats?:HeaderLabelFormats;
+        subHeaderLabelFormats?:HeaderLabelFormats;
         onItemMove?(itemId:any, dragTime:any, newGroupOrder:any): any;
         onItemResize?(itemId:any, newResizeEnd:any): any;
         onItemSelect?(itemId:any): any;
@@ -98,7 +102,30 @@ declare module "react-calendar-timeline" {
         groupRenderer?:(props:{group:ReactCalendarTimelineGroup})=>React.ReactNode;
     }
 
-    let ReactCalendarTimeline : React.ClassicComponentClass<ReactCalendarTimelineProps>;
+    export interface HeaderLabelFormats{
+        yearShort:string;
+        yearLong: string;
+        monthShort: string;
+        monthMedium: string;
+        monthMediumLong: string;
+        monthLong:string;
+        dayShort: string;
+        dayLong: string;
+        hourShort: string;
+        hourMedium:string;
+        hourMediumLong: string;
+        hourLong: string;
+        time:string;
+    }
+
+    class ReactCalendarTimeline extends React.Component<ReactCalendarTimelineProps>{
+        static defaultProps:Partial<ReactCalendarTimelineProps>;        
+    }
+
+    export const defaultHeaderLabelFormats:HeaderLabelFormats;
+    export const defaultSubHeaderLabelFormats:HeaderLabelFormats;
+
+    // let ReactCalendarTimeline : React.ClassicComponentClass<ReactCalendarTimelineProps>;
     export default ReactCalendarTimeline;
 }
 
@@ -106,6 +133,7 @@ declare module "react-calendar-timeline" {
 declare module 'react-calendar-timeline/lib'{
     export {
         default,
+        HeaderLabelFormats,
         ReactCalendarTimelineExtension,
         ReactCalendarTimelineGroup,
         ReactCalendarTimelineItem

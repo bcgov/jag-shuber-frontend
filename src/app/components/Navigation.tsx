@@ -14,7 +14,11 @@ export interface NavigationProps {
 export default class Navigation extends React.Component<NavigationProps, any>{
     render() {
         return (
-            <div id="header-main" style={{ zIndex: 1000,marginBottom:10 }}>                
+            <div id="header-main">
+                <span className="logo">
+                    <img className="hidden-xs" src="/img/bc_logo_transparent.png" />
+                    <img className="visible-xs" src="/img/bc_logo_transparent-dark.png" />
+                </span>                
                 <Navbar>
                     <Navbar.Header color="#003366" >
                         <NavbarBrand href="https://gov.bc.ca" color="#003366">
@@ -27,9 +31,9 @@ export default class Navigation extends React.Component<NavigationProps, any>{
                         <NavigationLink to="/sheriffs/manage" label="Manage Sheriffs" />
                         <NavigationLink to="/contact" label="Contact" />                        
                     </Nav>
-                    <Nav pullRight>
+                    {/* <Nav pullRight>
                         <NavigationLink exactMatch to="/" label="Home" /> 
-                    </Nav>
+                    </Nav> */}
                     
                 </Navbar>
                 <div style={{ zIndex: 1000 }} className="navigationRibbon hidden-xs" role="navigation" />

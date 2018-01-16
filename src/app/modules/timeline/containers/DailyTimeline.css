@@ -1,0 +1,7 @@
+.dimmed{
+    opacity:.6;
+}
+
+.dimmed:hover{
+    opacity:1.0;
+}
