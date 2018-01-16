@@ -28,7 +28,7 @@ class Layout extends React.Component {
         <div className="headerArea">
           <Navigation />
         </div>
-        <div className="mainArea" style={{ marginTop: -5}}>
+        <div className="mainArea">
           <Route exact path='/' component={Home} />
           <Route path='/timeline' component={Timeline} />
           <Route path='/sheriffs/manage' component={ManageSheriff} />

@@ -31,7 +31,7 @@ export default class AssignmentTimeline extends Timeline<SheriffAssignment, Sher
         showUnlinkedAssignments: true,
         sideBarHeaderTitle: "Sheriffs",
         sideBarHeaderComponent: (p: AssignmentTimelineProps) => (
-            <div style={{ paddingTop: "10%", paddingBottom: "10%", fontSize: 18, alignContent: "center" }}>
+            <div style={{paddingTop:10, fontSize: 18, alignContent: "center" }}>
                 {p.sideBarHeaderTitle}
             </div>
         )

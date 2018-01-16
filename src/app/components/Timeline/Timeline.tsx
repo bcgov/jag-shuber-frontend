@@ -1,6 +1,7 @@
 import * as React from 'react'
 import {
     default as ReactTimeline,
+    // HeaderLabelFormats,
     ReactCalendarTimelineGroup as TimelineGroupProps,
     ReactCalendarTimelineItem as TimelineItemProps
 } from 'react-calendar-timeline/lib'
@@ -17,7 +18,7 @@ export interface TimelineProps<TItem, TGroup> {
     showHeader?: boolean;
     sideBarHeaderComponent?: (props: TimelineProps<TItem, TGroup>) => JSX.Element;
     sideBarHeaderTitle?: string;
-    sidebarWidth?:number
+    sidebarWidth?: number
     visibleTimeStart?: any;
     visibleTimeEnd?: any;
     onVisibleTimeChange?: (visibleTime: { visibleTimeStart: any, visibleTimeEnd: any }) => void
@@ -56,6 +57,11 @@ export default abstract class Timeline<TItem, TGroup, TOwnProps={}> extends Reac
     }
 
     render() {
+        const headerLabelFormats= Object.assign({},
+            ReactTimeline.defaultProps.headerLabelFormats,
+            {
+                dayLong: 'dddd LL',
+            });
         const {
             groups = [],
             items = [],
@@ -63,7 +69,7 @@ export default abstract class Timeline<TItem, TGroup, TOwnProps={}> extends Reac
             visibleTimeStart = moment().subtract(2, 'hour'),
             visibleTimeEnd = moment().add(8, 'hour'),
             sideBarHeaderComponent = ({ sideBarHeaderTitle }: TimelineProps<TItem, TGroup>) => (
-                <div style={{ paddingTop: "10%", paddingBottom: "10%", fontSize: 20, alignContent: "center" }}>
+                <div style={{ fontSize: 20, alignContent: "center" }}>
                     {sideBarHeaderTitle}
                 </div>
             ),
@@ -75,31 +81,32 @@ export default abstract class Timeline<TItem, TGroup, TOwnProps={}> extends Reac
         } = this.props;
 
         return (
-                <ReactTimeline
-                    headerLabelGroupHeight={showHeader ? undefined : 0}
-                    headerLabelHeight={showHeader && showTime ? undefined : 0}
-                    groups={this.mapGroups(groups)}
-                    items={this.mapItems(items)}
-                    visibleTimeStart={visibleTimeStart}
-                    visibleTimeEnd={visibleTimeEnd}
-                    onTimeChange={onVisibleTimeChange}
-                    canMove={false}
-                    canResize={false}
-                    canChangeGroup={false}
-                    stackItems={true}
-                    lineHeight={40}
-                    sidebarWidth={sidebarWidth}
-                    itemTouchSendsClick
-                    sidebarContent={sideBarHeaderComponent(this.props)}                    
-                    traditionalZoom
-                    itemHeightRatio={0.90}
-                    itemRenderer={({ item }: { item: TimelineItemProps & TItem }) => itemRenderer(item)}
-                    groupRenderer={({ group }: { group: TimelineGroupProps & TGroup }) => groupRenderer(group)}
-                    ref={(t) => this._timelineRef = t}
-                >
-                    {this.getExtensions()}
-                    {this.props.children}
-                </ReactTimeline>
+            <ReactTimeline
+                headerLabelGroupHeight={showHeader ? undefined : 0}
+                headerLabelHeight={showHeader && showTime ? undefined : 0}
+                groups={this.mapGroups(groups)}
+                items={this.mapItems(items)}
+                headerLabelFormats={headerLabelFormats}
+                visibleTimeStart={visibleTimeStart}
+                visibleTimeEnd={visibleTimeEnd}
+                onTimeChange={onVisibleTimeChange}
+                canMove={false}
+                canResize={false}
+                canChangeGroup={false}
+                stackItems={true}
+                lineHeight={40}
+                sidebarWidth={sidebarWidth}
+                itemTouchSendsClick
+                sidebarContent={sideBarHeaderComponent(this.props)}
+                traditionalZoom
+                itemHeightRatio={0.90}
+                itemRenderer={({ item }: { item: TimelineItemProps & TItem }) => itemRenderer(item)}
+                groupRenderer={({ group }: { group: TimelineGroupProps & TGroup }) => groupRenderer(group)}
+                ref={(t) => this._timelineRef = t}
+            >
+                {this.getExtensions()}
+                {this.props.children}
+            </ReactTimeline>
         );
     }
 }

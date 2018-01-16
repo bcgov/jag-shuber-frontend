@@ -11,6 +11,7 @@ import { RootState } from '../../../store/reducers';
 import OnOffDutyTimeline from '../components/OnOffDutyTimeline';
 import { Sheriff, SheriffAssignment } from '../../../api/index';
 import './DailyTimeline.css'
+import { Glyphicon } from 'react-bootstrap';
 
 
 interface DailyTimelineProps {
@@ -44,8 +45,12 @@ class DailyTimeline extends React.Component<DailyTimelineProps>{
                     sidebarWidth={sideBarWidth}
                     {...rest} />
 
-                <div className="bg-danger text-danger" style={{ paddingBottom: 8, paddingTop: 13, textAlign: 'left' }}>
-                    <h3 style={{ marginLeft: sideBarWidth / 4 }}>Off Duty</h3>
+                <div style={{ display: 'flex', backgroundColor: "#003366", color: "#fff", paddingTop: 10,paddingBottom:10, fontSize: 18 }}>
+                    <div style={{ width: sideBarWidth, textAlign: "center" }} >
+                        Off Duty
+                        <Glyphicon style={{marginLeft:10}} glyph="arrow-down" />
+                    </div>
+                    <div />
                 </div>
 
                 <OnOffDutyTimeline
