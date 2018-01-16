@@ -90,7 +90,7 @@ export default abstract class Timeline<TItem, TGroup, TOwnProps={}> extends Reac
                     lineHeight={40}
                     sidebarWidth={sidebarWidth}
                     itemTouchSendsClick
-                    sidebarContent={sideBarHeaderComponent(this.props)}
+                    sidebarContent={sideBarHeaderComponent(this.props)}                    
                     traditionalZoom
                     itemHeightRatio={0.90}
                     itemRenderer={({ item }: { item: TimelineItemProps & TItem }) => itemRenderer(item)}

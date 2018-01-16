@@ -17,13 +17,17 @@ export interface AssignmentTimelineCardProps {
 export default class AssignmentTimelineCard extends React.PureComponent<AssignmentTimelineCardProps, any>{
     render() {
         const { assignment, currentGroupId, onDropped } = this.props;
-        const { title } = assignment;
+        const { title,description } = assignment;
 
         return (
-            <AssignmentDragSource endDrag={() => onDropped && onDropped()} id={assignment.id} currentGroupId={currentGroupId}>
-                <div style={{ backgroundColor: "#228877", width: "100%" }}>
-                    {title}
-                </div>
+            <AssignmentDragSource                 
+                id={assignment.id} 
+                currentGroupId={currentGroupId}
+                endDrag={() => onDropped && onDropped()}>
+                    <div style={{ lineHeight:"15px", backgroundColor: "#228877", width: "100%",height:"100%",position:"absolute" }}>
+                        {title}<br/>
+                        <i>{description}</i>
+                    </div>
             </AssignmentDragSource>
         );
     }

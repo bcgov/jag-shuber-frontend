@@ -20,7 +20,7 @@ interface DailyTimelineProps {
     onDutySheriffs: Sheriff[];
     offDutySheriffs: Sheriff[];
     assignments: SheriffAssignment[];
-    sideBarWidth?:number;
+    sideBarWidth?: number;
 }
 
 
@@ -34,7 +34,7 @@ class DailyTimeline extends React.Component<DailyTimelineProps>{
     }
 
     render() {
-        const { assignments, onDutySheriffs, offDutySheriffs,sideBarWidth=200, ...rest } = this.props;
+        const { assignments, onDutySheriffs, offDutySheriffs, sideBarWidth = 200, ...rest } = this.props;
         return (
             <div>
                 <OnOffDutyTimeline
@@ -44,10 +44,9 @@ class DailyTimeline extends React.Component<DailyTimelineProps>{
                     sidebarWidth={sideBarWidth}
                     {...rest} />
 
-                    <div  style={{ padding: 5,paddingTop:10, backgroundColor:"#88222222", textAlign: 'left' }}>
-                        <h3 style={{marginLeft: sideBarWidth/4 }}>Off Duty</h3>
-                    </div>
-
+                <div className="bg-danger text-danger" style={{ paddingBottom: 8, paddingTop: 13, textAlign: 'left' }}>
+                    <h3 style={{ marginLeft: sideBarWidth / 4 }}>Off Duty</h3>
+                </div>
 
                 <OnOffDutyTimeline
                     showHeader={false}

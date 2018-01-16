@@ -61,6 +61,8 @@ declare module "react-calendar-timeline" {
         keys?:ReactCalendarTimelineKeys;
         sidebarContent?:React.ReactNode;
         sidebarWidth?: number;
+        rightSidebarContent?:React.ReactNode;
+        rightSidebarWidth?: number;
         dragSnap?: number;
         minResizeWidth?: number;
         fixedHeader?: "fixed" | "none";

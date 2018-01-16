@@ -17,20 +17,25 @@ interface OnOffDutyTimelineProps {
 export default class OnOffDutyTimeline extends React.PureComponent<OnOffDutyTimelineProps> {
     static defaultProps = {
         sidebarWidth: 150,
-        showHeader: true,        
+        showHeader: true,
     };
 
     renderGroup(group: ReactCalendarTimelineGroup & Sheriff) {
         const isUnassignedGroup = group === UNASSIGNED_GROUP;
 
-        const content = (<div style={{ backgroundColor: "#DDD" }}>{group.title}</div>);
+        const content = (<div className={isUnassignedGroup ? "text-danger bg-warning" : ""}>{group.title}</div>);
 
         if (isUnassignedGroup) {
             return content;
         }
 
         return (
-            <SheriffDragSource onDuty={this.props.onDuty} badgeNumber={group.badgeNumber}>
+            <SheriffDragSource
+                 onDuty={this.props.onDuty} 
+                 badgeNumber={group.badgeNumber}
+                 style={{
+                     backgroundColor:"#222222"
+                 }}>
                 {content}
             </SheriffDragSource>
         )

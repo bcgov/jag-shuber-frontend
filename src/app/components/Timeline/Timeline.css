@@ -2,6 +2,28 @@
     background: #002663;
 }
 
+.react-calendar-timeline .rct-sidebar .rct-sidebar-row{
+    padding:0px;
+}
+
+.react-calendar-timeline .rct-horizontal-lines .rct-hl-even{
+    background:#FFFFFF22;
+}
+
+.react-calendar-timeline .rct-sidebar .rct-sidebar-row.rct-sidebar-row-even
+{
+    background: #FFFFFF;
+}
+
+.react-calendar-timeline .rct-sidebar .rct-sidebar-row.rct-sidebar-row-odd{
+    background: #EEE;
+}
+
+.react-calendar-timeline .rct-horizontal-lines .rct-hl-odd{
+    background:#DDDDDD77;
+}
+
+
 .react-calendar-timeline .rct-header .rct-label-group{
     background: #002663;
 }
