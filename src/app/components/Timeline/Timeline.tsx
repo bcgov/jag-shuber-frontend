@@ -18,7 +18,8 @@ export interface TimelineProps<TItem, TGroup> {
     showHeader?: boolean;
     sideBarHeaderComponent?: (props: TimelineProps<TItem, TGroup>) => JSX.Element;
     sideBarHeaderTitle?: string;
-    sidebarWidth?: number
+    sidebarWidth?: number;
+    lineHeight?: number;
     visibleTimeStart?: any;
     visibleTimeEnd?: any;
     onVisibleTimeChange?: (visibleTime: { visibleTimeStart: any, visibleTimeEnd: any }) => void
@@ -57,7 +58,7 @@ export default abstract class Timeline<TItem, TGroup, TOwnProps={}> extends Reac
     }
 
     render() {
-        const headerLabelFormats= Object.assign({},
+        const headerLabelFormats = Object.assign({},
             ReactTimeline.defaultProps.headerLabelFormats,
             {
                 dayLong: 'dddd LL',
@@ -76,6 +77,7 @@ export default abstract class Timeline<TItem, TGroup, TOwnProps={}> extends Reac
             showHeader = true,
             showTime = true,
             sidebarWidth = 150,
+            lineHeight = 60,
             itemRenderer = (i: TimelineItem<TItem>) => this.renderItem(i),
             groupRenderer = (g: TimelineGroup<TGroup>) => this.renderGroup(g),
         } = this.props;
@@ -94,7 +96,7 @@ export default abstract class Timeline<TItem, TGroup, TOwnProps={}> extends Reac
                 canResize={false}
                 canChangeGroup={false}
                 stackItems={true}
-                lineHeight={40}
+                lineHeight={lineHeight}
                 sidebarWidth={sidebarWidth}
                 itemTouchSendsClick
                 sidebarContent={sideBarHeaderComponent(this.props)}

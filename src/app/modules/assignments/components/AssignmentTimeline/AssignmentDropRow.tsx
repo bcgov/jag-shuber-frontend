@@ -33,15 +33,20 @@ class DroppableAssignmentRow extends React.PureComponent<DroppableAssignmentRowP
                 }}
                 computeStyle={({isActive,isOver,canDrop})=>{
                     let backgroundColor = 'transparent'
+                    let zIndex=70;
                     if (isActive) {
+                        zIndex=90;
                         backgroundColor = 'green'
                     } else if (canDrop) {
                         backgroundColor = 'lightGreen'
+                        zIndex=90;
                     } else if (isOver && !canDrop) {
                         backgroundColor = '#FF000088'
+                        zIndex=90;
                     }
                     return {
-                        backgroundColor
+                        backgroundColor,
+                        zIndex
                     };
                 }}
             >
