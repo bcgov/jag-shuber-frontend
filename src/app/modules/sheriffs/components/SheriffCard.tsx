@@ -21,7 +21,7 @@ export interface SheriffCardProps {
 export default class SheriffCard extends React.PureComponent<SheriffCardProps, any>{
 
     render() {
-        const { sheriff, sheriff: { firstName, lastName, badgeNumber, imageUrl } } = this.props;
+        const { sheriff, sheriff: { badgeNumber, imageUrl } } = this.props;
         const showProfileDetails = (
             <Popover id="popover-trigger-focus">
                <LimitedSheriffProfileView sheriff={sheriff} />
@@ -33,9 +33,8 @@ export default class SheriffCard extends React.PureComponent<SheriffCardProps, a
                 <Row>
                     <Col>
                         <Image responsive src={imageUrl} circle width="120" height="120" />
-                    </Col>
-                    <Col>
-                        <h2>{firstName} {lastName}</h2>
+                    
+                        <ViewSheriffProfileModal sheriff={sheriff}/>
                     </Col>
                 </Row>
                 <Row>
@@ -43,12 +42,12 @@ export default class SheriffCard extends React.PureComponent<SheriffCardProps, a
                         <b>Badge Number:</b> #{badgeNumber}
                     </Col>
                 </Row>
+                <Row>
                 
-                <ViewSheriffProfileModal sheriff={sheriff}/>
-                <Button><Glyphicon glyph="pencil" /></Button>
                 <OverlayTrigger trigger="focus" placement="right" overlay={showProfileDetails}>
                     <Button><Glyphicon glyph="menu-right" /></Button>
                 </OverlayTrigger>
+                </Row>
             </Grid>
 
         );

@@ -109,31 +109,7 @@ function arrayToMap<T, TKey>(array: T[], keySelector: (t: T) => TKey) {
 class Client implements API {
 
     async getSheriffs(): Promise<SheriffMap> {
-        // if (sheriffList.length == 0) {
-        //     let people = await fetchRandomPeople(5);
-        //     let badgeNumber = 0;
-
-        //     sheriffList = people.results.map(p => {
-        //         let s: Sheriff = {
-        //             firstName: p.name.first,
-        //             lastName: p.name.last,
-        //             badgeNumber: badgeNumber++,
-        //             imageUrl: p.picture.large,
-        //             permanentRegion: "Perm Region",
-        //             permanentCourthouse: "Perm Courthouse",
-        //             currentRegion: "Curr Region",
-        //             currentCourthouse: "Curr Courthouse",
-        //             training: [
-        //                 { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "FRO" },
-        //                 { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "PISTOL" },
-        //                 { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CID" },
-        //                 { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CEW" }
-        //             ],
-        //             abilities: SheriffAbility.All
-        //         };
-        //         return s;
-        //     });
-        // }
+        
         return arrayToMap(sheriffList, (s) => s.badgeNumber) as SheriffMap;
     }
 
@@ -289,47 +265,52 @@ const assignments: SheriffAssignment[] = [
     {
         id: 0,
         assignmentType: 'Court Security',
-        notes: 'Courtroom 101 (10:00am)',
+        courtRoom: 'Courtroom 101',
+        assignmentCourt: true,
         requiredAbilities: SheriffAbility.CanTransfer | SheriffAbility.CourtAppearance,
         sheriffIds: [],
         startTime: moment().add(2, 'hour'),
         endTime: moment().add(3, 'hour'),
-        sherrifsRequired: 1
+        sherrifsRequired: 1,
+        notes: 'My notes on the file.'
     },
     {
         id: 1,
-        assignmentType: 'Escort Services',
-        notes: 'Transfer from Location Y to Courthouse B',
+        assignmentType: ASSIGNMENT_TYPES.escortServices,
+        pickupLocation: 'Courthouse A',
+        dropoffLocation: 'Location Z',
+        notes: 'My notes on this escort.',
         requiredAbilities: SheriffAbility.CanTransfer,
-        sheriffIds: [3],
+        sheriffIds: [],
         startTime: moment().add(3, 'hour'),
         endTime: moment().add(4, 'hour'),
         sherrifsRequired: 1
     },
     {
         id: 2,
-        assignmentType: 'Document Services',
+        assignmentType: ASSIGNMENT_TYPES.documentServices,
         notes: 'Serve documents A, B, and C',
         requiredAbilities: SheriffAbility.CourtAppearance,
-        sheriffIds: [1],
+        sheriffIds: [],
         startTime: moment().add(4, 'hour'),
         endTime: moment().add(5, 'hour'),
         sherrifsRequired: 1
     },
     {
         id: 3,
-        assignmentType: 'Court Security',
-        notes: 'Courtroom 101 (2:00pm)',
+        assignmentType: ASSIGNMENT_TYPES.other,
+        notes: 'Attending co-design session for SHUBER',
         requiredAbilities: SheriffAbility.All,
-        sheriffIds: [0, 4],
+        sheriffIds: [],
         startTime: moment().add(2, 'hour'),
         endTime: moment().add(3, 'hour'),
         sherrifsRequired: 1
     },
     {
         id: 4,
-        assignmentType: 'Court Security',
-        notes: 'Courtroom 102 (2:00pm)',
+        assignmentType: ASSIGNMENT_TYPES.gateSecurity,
+        gateNumber: 10,
+        notes: 'My notes on this gate',
         requiredAbilities: SheriffAbility.CanTransfer | SheriffAbility.CourtAppearance,
         sheriffIds: [],
         startTime: moment().add(1, 'hour'),
@@ -338,14 +319,16 @@ const assignments: SheriffAssignment[] = [
     },
     {
         id: 5,
-        assignmentType: 'Escort Services',
-        notes: 'Transfer from Courthouse B to Location X',
+        assignmentType: ASSIGNMENT_TYPES.courtSecurity,
+        courtRoom: 'Courtroom 202',
+        assignmentCourt: false,
         requiredAbilities: SheriffAbility.CanTransfer | SheriffAbility.CourtAppearance,
         sheriffIds: [],
-        startTime: moment().add(6, 'hour'),
-        endTime: moment().add(7, 'hour'),
-        sherrifsRequired: 1
-    },
+        startTime: moment().add(2, 'hour'),
+        endTime: moment().add(3, 'hour'),
+        sherrifsRequired: 1,
+        notes: 'My notes on the file.'
+    }
 ];
 
 export default new Client();

@@ -39,15 +39,20 @@ export default class ViewSheriffProfileModal extends React.Component<ViewSheriff
         const {sheriff, sheriff:{firstName, lastName, badgeNumber}} = this.props;
         return (
 			<div>			
-				<Button onClick={() => this.handleShow()}>
-                    <Glyphicon glyph="info-sign" />
+				<Button bsStyle="link" bsSize="large" style={{color: "#494949"}} onClick={() => this.handleShow()}>
+                    {/* <Glyphicon glyph="info-sign" /> */}
+                    {firstName} {lastName}
 				</Button>
 
 				<Modal show={this.state.showModal} onHide={() => this.handleClose()}>
 					<Modal.Header closeButton>
 						<Modal.Title>{firstName} {lastName} #{badgeNumber}</Modal.Title>
+                        
 					</Modal.Header>
 					<Modal.Body>
+                    <Button className="pull-right"><Glyphicon glyph="pencil" /></Button>
+                    <br/>
+                    <br/>
                         <SheriffProfileView sheriff={sheriff}/>
 					</Modal.Body>
 					<Modal.Footer>

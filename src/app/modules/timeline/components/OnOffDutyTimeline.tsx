@@ -30,7 +30,7 @@ export default class OnOffDutyTimeline extends React.PureComponent<OnOffDutyTime
         const isUnassignedGroup = group === UNASSIGNED_GROUP;
 
         if (isUnassignedGroup) {
-            return <div className="text-danger bg-warning" >{group.title}</div>;
+            return <div className="text-danger bg-warning" ><strong>{group.title}</strong></div>;
         }
 
         const showProfileDetails = (
