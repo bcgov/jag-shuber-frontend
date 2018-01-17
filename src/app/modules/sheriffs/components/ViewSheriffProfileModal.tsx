@@ -41,7 +41,7 @@ export default class ViewSheriffProfileModal extends React.Component<ViewSheriff
         return (
 			<div>			
 				<Button bsStyle="link" bsSize="large" style={{color: "#494949"}} onClick={() => this.handleShow()}>
-                    <Image responsive src={imageUrl} circle width="120" height="120" />
+                    <Image src={imageUrl} circle width="120" height="120" /><br/>
                     {firstName} {lastName} <br/> #{badgeNumber} 
 				</Button>
 
@@ -50,7 +50,7 @@ export default class ViewSheriffProfileModal extends React.Component<ViewSheriff
 						<Modal.Title>{firstName} {lastName} #{badgeNumber}</Modal.Title>
 					</Modal.Header>
 					<Modal.Body>
-                    <Button className="pull-right"><Glyphicon glyph="pencil" /></Button>
+                    <Button className="pull-right" onClick={()=>alert('This is how you will edit a profile.')}><Glyphicon glyph="pencil" /></Button>
                     <br/>
                     <br/>
                         <SheriffProfileView sheriff={sheriff}/>

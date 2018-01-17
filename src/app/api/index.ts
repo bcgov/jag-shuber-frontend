@@ -203,7 +203,7 @@ let sheriffList: Sheriff[] = [
             { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CEW" }
         ],
         abilities: SheriffAbility.All,
-        onDuty: true
+        onDuty: false
     },
     {
         firstName: "Rob",
@@ -239,7 +239,7 @@ let sheriffList: Sheriff[] = [
             { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CEW" }
         ],
         abilities: SheriffAbility.All,
-        onDuty: true
+        onDuty: false
     },
     {
         firstName: "Steve",

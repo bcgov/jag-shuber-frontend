@@ -12,8 +12,6 @@ import {
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import {
-  Contact,
-  Home,
   Timeline,
   ManageSheriff
 } from './pages'
@@ -29,10 +27,8 @@ class Layout extends React.Component {
           <Navigation />
         </div>
         <div className="mainArea">
-          <Route exact path='/' component={Home} />
-          <Route path='/timeline' component={Timeline} />
+          <Route exact path='/' component={Timeline} />
           <Route path='/sheriffs/manage' component={ManageSheriff} />
-          <Route path='/contact' component={Contact} />
         </div>
         <div className='footerArea'>
         <Footer />

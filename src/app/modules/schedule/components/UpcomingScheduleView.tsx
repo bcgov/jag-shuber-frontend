@@ -2,18 +2,19 @@ import * as React from 'react';
 import { 
     Table
 } from 'react-bootstrap';
+import { default as ScheduleSummary } from './ScheduleSummaryView';
+import { Sheriff } from '../../../api/index';
 
 export interface UpcomingScheduleViewProps {
-    
+    sheriff: Sheriff;
 }
 
 export default class UpcomingScheduleView extends React.Component<UpcomingScheduleViewProps, any>{
     render() {
-        
+        const { sheriff } = this.props;
         return (
             <div>
-                <h3>Schedule</h3>
-                <strong className="text-success">On Duty Now</strong> - Off duty at 7:00 PM 
+                <ScheduleSummary sheriff ={ sheriff } />
                 
                 <Table responsive>
                     <thead>

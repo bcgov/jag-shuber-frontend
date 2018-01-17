@@ -51,7 +51,7 @@ export default class AssignmentTimelineCard extends React.PureComponent<Assignme
                 endDrag={() => onDropped && onDropped()}>
                     <div style={{ lineHeight:"15px", backgroundColor, width: "100%",height:"100%",position:"absolute" }}>
                         <OverlayTrigger trigger="focus" placement="right" overlay={showAssignmentDetails}>
-                            <Button style={{color:"#FFF", padding:0}} bsStyle="link" bsSize="small"><strong>{assignmentType}</strong></Button>
+                            <Button style={{color:"#FFF", padding:0}} bsStyle="link" bsSize="medium"><strong>{assignmentType}</strong></Button>
                         </OverlayTrigger>{assignmentCourt && <Glyphicon glyph="asterisk"/>}<br/>
                         <i>{courtRoom} {gateNumber}</i>
                     </div>

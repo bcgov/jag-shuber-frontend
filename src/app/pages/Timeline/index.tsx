@@ -1,7 +1,7 @@
 import * as React from "react"
 import DailyTimeline from "../../modules/timeline/containers/DailyTimeline";
-import { Button } from 'react-bootstrap'
-
+import { default as AddAssignmentModal } from '../../modules/assignments/components/AddAssignmentModal';
+import { Glyphicon } from "react-bootstrap";
 class TimelinePage extends React.PureComponent {
     render() {
         return (
@@ -27,7 +27,17 @@ class TimelinePage extends React.PureComponent {
                         <h3 style={{lineHeight:"60px",padding:0,margin:0,color: "#FFF" }}>Tools</h3>
                     </div>
                     <div style={{ flex: "1 1 auto", padding: 10, textAlign: "center" }}>
-                        <Button block bsStyle="primary">Test Button</Button>
+                        <AddAssignmentModal />
+                    </div>
+                    <div style={{
+                        background: "#003366",
+                        flex: "0 0 auto",
+                        border: "0px",
+                        color: "#FFF",
+                        textAlign: 'left',
+                        padding: "20px"                        
+                    }}>
+                        <Glyphicon glyph="asterisk"/> = Assignment Court
                     </div>
                 </div>
             </div>

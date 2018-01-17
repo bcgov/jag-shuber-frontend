@@ -4,8 +4,7 @@ import {
 } from 'react-bootstrap'
 import {
     Link,
-    Route,
-    // withRouter
+    Route
 } from 'react-router-dom'
 
 interface NavigationLinkProps{
