@@ -190,7 +190,8 @@ let sheriffList: Sheriff[] = [
             { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CID" },
             { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CEW" }
         ],
-        abilities: SheriffAbility.All
+        abilities: SheriffAbility.All,
+        onDuty: true
     },
     {
         firstName: "Jaqueline",
@@ -207,7 +208,8 @@ let sheriffList: Sheriff[] = [
             { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CID" },
             { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CEW" }
         ],
-        abilities: SheriffAbility.All
+        abilities: SheriffAbility.All,
+        onDuty: true
     },
     {
         firstName: "Landon",
@@ -224,7 +226,8 @@ let sheriffList: Sheriff[] = [
             { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CID" },
             { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CEW" }
         ],
-        abilities: SheriffAbility.All
+        abilities: SheriffAbility.All,
+        onDuty: true
     },
     {
         firstName: "Rob",
@@ -241,7 +244,8 @@ let sheriffList: Sheriff[] = [
             { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CID" },
             { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CEW" }
         ],
-        abilities: SheriffAbility.All
+        abilities: SheriffAbility.All,
+        onDuty: true
     },
     {
         firstName: "Steve",
@@ -258,7 +262,8 @@ let sheriffList: Sheriff[] = [
             { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CID" },
             { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CEW" }
         ],
-        abilities: SheriffAbility.All
+        abilities: SheriffAbility.All,
+        onDuty: true
     },
     {
         firstName: "Steve",
@@ -275,7 +280,8 @@ let sheriffList: Sheriff[] = [
             { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CID" },
             { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CEW" }
         ],
-        abilities: SheriffAbility.All
+        abilities: SheriffAbility.All,
+        onDuty: true
     }
 ];
 
