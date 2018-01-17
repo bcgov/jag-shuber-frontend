@@ -298,7 +298,7 @@ const assignments: SheriffAssignment[] = [
     },
     {
         id: 1,
-        assignmentType: 'Escort Service',
+        assignmentType: 'Escort Services',
         notes: 'Transfer from Location Y to Courthouse B',
         requiredAbilities: SheriffAbility.CanTransfer,
         sheriffIds: [3],
@@ -308,7 +308,7 @@ const assignments: SheriffAssignment[] = [
     },
     {
         id: 2,
-        assignmentType: 'Document Service',
+        assignmentType: 'Document Services',
         notes: 'Serve documents A, B, and C',
         requiredAbilities: SheriffAbility.CourtAppearance,
         sheriffIds: [1],
@@ -338,7 +338,7 @@ const assignments: SheriffAssignment[] = [
     },
     {
         id: 5,
-        assignmentType: 'Escort Service',
+        assignmentType: 'Escort Services',
         notes: 'Transfer from Courthouse B to Location X',
         requiredAbilities: SheriffAbility.CanTransfer | SheriffAbility.CourtAppearance,
         sheriffIds: [],

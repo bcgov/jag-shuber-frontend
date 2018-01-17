@@ -35,6 +35,8 @@
 
 .react-calendar-timeline .rct-items .rct-item {
     padding:0;
+    border:2px solid transparent;
+    background:transparent;
 }
 
 .react-calendar-timeline .rct-items .rct-item.selected {
