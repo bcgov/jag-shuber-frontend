@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {
-    Image,
     Grid,
     Row,
     Col,
@@ -21,7 +20,7 @@ export interface SheriffCardProps {
 export default class SheriffCard extends React.PureComponent<SheriffCardProps, any>{
 
     render() {
-        const { sheriff, sheriff: { badgeNumber, imageUrl } } = this.props;
+        const { sheriff } = this.props;
         const showProfileDetails = (
             <Popover id="popover-trigger-focus">
                <LimitedSheriffProfileView sheriff={sheriff} />
@@ -31,19 +30,16 @@ export default class SheriffCard extends React.PureComponent<SheriffCardProps, a
 
             <Grid fluid>
                 <Row>
-                    <Col>
-                        <Image responsive src={imageUrl} circle width="120" height="120" />
-                    
+                    <Col>                    
                         <ViewSheriffProfileModal sheriff={sheriff}/>
                     </Col>
                 </Row>
-                <Row>
+                {/* <Row>
                     <Col>
                         <b>Badge Number:</b> #{badgeNumber}
-                    </Col>
-                </Row>
+                    </Col>s
+                </Row> */}
                 <Row>
-                
                 <OverlayTrigger trigger="focus" placement="right" overlay={showProfileDetails}>
                     <Button><Glyphicon glyph="menu-right" /></Button>
                 </OverlayTrigger>

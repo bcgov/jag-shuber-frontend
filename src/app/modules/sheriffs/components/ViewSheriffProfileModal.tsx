@@ -2,7 +2,8 @@ import * as React from 'react';
 import {
     Button,
     Glyphicon, 
-    Modal
+    Modal, 
+    Image
 } from 'react-bootstrap';
 import { Sheriff, BLANK_SHERIFF } from '../../../api/index';
 import { default as SheriffProfileView } from './SheriffProfileView';
@@ -36,18 +37,17 @@ export default class ViewSheriffProfileModal extends React.Component<ViewSheriff
         this.setState({ showModal: false })
     }
     render(){
-        const {sheriff, sheriff:{firstName, lastName, badgeNumber}} = this.props;
+        const {sheriff, sheriff:{firstName, lastName, badgeNumber, imageUrl}} = this.props;
         return (
 			<div>			
 				<Button bsStyle="link" bsSize="large" style={{color: "#494949"}} onClick={() => this.handleShow()}>
-                    {/* <Glyphicon glyph="info-sign" /> */}
-                    {firstName} {lastName}
+                    <Image responsive src={imageUrl} circle width="120" height="120" />
+                    {firstName} {lastName} <br/> #{badgeNumber} 
 				</Button>
 
 				<Modal show={this.state.showModal} onHide={() => this.handleClose()}>
 					<Modal.Header closeButton>
 						<Modal.Title>{firstName} {lastName} #{badgeNumber}</Modal.Title>
-                        
 					</Modal.Header>
 					<Modal.Body>
                     <Button className="pull-right"><Glyphicon glyph="pencil" /></Button>
