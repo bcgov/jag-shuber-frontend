@@ -4,6 +4,12 @@ import { Sheriff, SheriffAssignment } from '../../../api/index';
 import { ReactCalendarTimelineGroup } from 'react-calendar-timeline';
 import SheriffDragSource from '../../sheriffs/dragdrop/SheriffDragSource';
 import SheriffDropTarget from '../../sheriffs/dragdrop/SheriffDropTarget';
+import { Popover } from 'react-bootstrap';
+import { OverlayTrigger } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
+import { Glyphicon } from 'react-bootstrap';
+import { default as LimitedSheriffProfileView } from '../../sheriffs/components/LimitedSheriffProfileView';
+
 
 interface OnOffDutyTimelineProps {
     sidebarWidth?: number,
@@ -23,12 +29,16 @@ export default class OnOffDutyTimeline extends React.PureComponent<OnOffDutyTime
     renderGroup(group: ReactCalendarTimelineGroup & Sheriff) {
         const isUnassignedGroup = group === UNASSIGNED_GROUP;
 
-        const content = (<div className={isUnassignedGroup ? "text-danger bg-warning" : ""}>{group.title}</div>);
-
         if (isUnassignedGroup) {
-            return content;
+            return <div className="text-danger bg-warning" ><strong>{group.title}</strong></div>;
         }
 
+        const showProfileDetails = (
+            <Popover id="popover-trigger-focus">
+               <LimitedSheriffProfileView sheriff={group}/>
+            </Popover>
+        );
+        
         return (
             <SheriffDragSource
                  onDuty={this.props.onDuty} 
@@ -36,7 +46,12 @@ export default class OnOffDutyTimeline extends React.PureComponent<OnOffDutyTime
                  style={{
                      backgroundColor:"#222222"
                  }}>
-                {content}
+                <div>                
+                    <strong>{group.title}</strong> #{group.badgeNumber} 
+                    <OverlayTrigger trigger="focus" placement="right" overlay={showProfileDetails}>
+                    <Button bsStyle="link" bsSize="small"><Glyphicon glyph="info-sign" /></Button>
+                </OverlayTrigger>
+                </div>
             </SheriffDragSource>
         )
     }
@@ -58,7 +73,7 @@ export default class OnOffDutyTimeline extends React.PureComponent<OnOffDutyTime
                         position: 'absolute',
                         width: sidebarWidth,
                         height: "100%",
-                        minHeight: 40,
+                        minHeight: 100,
                         top: 0,
                         left: 0,
                         float: 'left',

@@ -37,31 +37,32 @@ class DailyTimeline extends React.Component<DailyTimelineProps>{
     render() {
         const { assignments, onDutySheriffs, offDutySheriffs, sideBarWidth = 200, ...rest } = this.props;
         return (
-            <div>
-                <OnOffDutyTimeline
-                    onDuty={true}
-                    sheriffs={onDutySheriffs}
-                    assignments={assignments}
-                    sidebarWidth={sideBarWidth}
-                    {...rest} />
+            
+                <div style={{}}>
+                    <OnOffDutyTimeline
+                        onDuty={true}
+                        sheriffs={onDutySheriffs}
+                        assignments={assignments}
+                        sidebarWidth={sideBarWidth}
+                        {...rest} />
 
-                <div style={{ display: 'flex', backgroundColor: "#003366", color: "#fff", paddingTop: 10,paddingBottom:10, fontSize: 18 }}>
-                    <div style={{ width: sideBarWidth, textAlign: "center" }} >
-                        Off Duty
-                        <Glyphicon style={{marginLeft:10}} glyph="arrow-down" />
+                    <div style={{ display: 'flex', backgroundColor: "#003366", color: "#fff", paddingTop: 10,paddingBottom:10, fontSize: 18 }}>
+                        <div style={{ width: sideBarWidth, textAlign: "center" }} >
+                            Off Duty
+                            <Glyphicon style={{marginLeft:10}} glyph="arrow-down" />
+                        </div>
+                        <div />
                     </div>
-                    <div />
-                </div>
 
-                <OnOffDutyTimeline
-                    showHeader={false}
-                    sideBarHeaderTitle=""
-                    onDuty={false}
-                    sheriffs={offDutySheriffs}
-                    assignments={assignments}
-                    sidebarWidth={sideBarWidth}
-                    {...rest} />
-            </div>
+                    <OnOffDutyTimeline
+                        showHeader={false}
+                        sideBarHeaderTitle=""
+                        onDuty={false}
+                        sheriffs={offDutySheriffs}
+                        assignments={assignments}
+                        sidebarWidth={sideBarWidth}
+                        {...rest} />
+                </div>
         )
     }
 

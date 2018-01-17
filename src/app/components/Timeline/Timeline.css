@@ -35,14 +35,19 @@
 
 .react-calendar-timeline .rct-items .rct-item {
     padding:0;
+    border:2px solid transparent;
+    background:transparent;
+    
 }
 
 .react-calendar-timeline .rct-items .rct-item.selected {
     background:transparent;
     border:2px dashed #000;
+    
 }
 
 .react-calendar-timeline .rct-items .rct-item .rct-item-overflow .rct-item-content{
     padding:0;
     width:100%;
+
 }

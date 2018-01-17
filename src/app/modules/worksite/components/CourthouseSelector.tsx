@@ -15,6 +15,7 @@ export default class CourthouseSelector extends React.PureComponent<FormFieldWra
                     <option value="Courtenay">Courtenay</option>
                     <option value="Duncan">Duncan</option>
                     <option value="Gold River">Gold River</option>
+                    <option value="Kamloops">Kamloops</option>
                     <option value="Nanaimo">Nanaimo</option>
                     <option value="New Westminster">New Westminster</option>
                     <option value="North Vancouver">North Vancouver</option>
@@ -22,10 +23,12 @@ export default class CourthouseSelector extends React.PureComponent<FormFieldWra
                     <option value="Port Coquitlam">Port Coquitlam</option>
                     <option value="Port Hardy">Port Hardy</option>
                     <option value="Powell River">Powell River</option>
+                    <option value="Prince George">Prince George</option>
                     <option value="Richmond">Richmond</option>
                     <option value="Surrey">Surrey</option>
                     <option value="Sidney">Sidney</option>
-                    <option value="Vancouver">Vancouver</option>
+                    <option value="Vancouver - 222 Main">Vancouver - 222 Main</option>
+                    <option value="Vancouver - VLC">Vancouver - VLC</option>
                     <option value="Vancouver Robson Square">Vancouver Robson Square</option>
                     <option value="Victoria">Victoria</option>
                 </FormControl>

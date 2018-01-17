@@ -18,7 +18,7 @@ export default class SheriffProfileView extends React.Component<SheriffProfileVi
                 <br />
                 <TrainingDetailsView sheriff={ sheriff } />           
                 <br />
-                <UpcomingScheduleView />
+                <UpcomingScheduleView sheriff={ sheriff } />
                 <br />
                 <OvertimeDetails />
             </div>
