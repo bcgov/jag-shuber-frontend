@@ -87,7 +87,6 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
                     <Field name="sherrifsRequired" component={NumberOfSheriffsSelector} label="Number of Sheriffs Required"/>
                     <Field name="notes" component={TextArea} label="Notes" />
                 </Form>
-
             </div>
         );
 
