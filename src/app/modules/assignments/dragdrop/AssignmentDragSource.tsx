@@ -35,20 +35,25 @@ const mapDispatchToProps = (dispatch: any, ownProps: AssignmentSourceFactoryProp
             if (result) {
                 const { dropEffect, sourceId, assignmentId, targetId } = result;
 
+                // This case doesn't make sense, copying a task into unassigned
+                if(targetId === -1 && dropEffect === "copy"){
+                    return;
+                }
+
                 // If coming from unassigned or copying the task
-                if (sourceId == -1 || dropEffect == "copy") {
+                if (sourceId === -1 || dropEffect == "copy") {
                     dispatch(actions.linkAssignment(assignmentId, targetId));
                     return;
                 }
 
                 // If moving to unassigned
-                if (targetId == -1) {
+                if (targetId === -1) {
                     dispatch(actions.unlinkAssignment(assignmentId, sourceId));
                     return;
                 }
 
                 // Otherwise, swap the sourceId with the targetId
-                if (dropEffect == "move") {
+                if (dropEffect === "move") {
                     dispatch(actions.swapAssignment(assignmentId, sourceId, targetId));
                 }
             }
