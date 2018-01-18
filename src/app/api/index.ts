@@ -284,7 +284,7 @@ const assignments: SheriffAssignment[] = [
         sheriffIds: [],
         startTime: moment().add(3, 'hour'),
         endTime: moment().add(4, 'hour'),
-        sherrifsRequired: 1
+        sherrifsRequired: 3
     },
     {
         id: 2,
