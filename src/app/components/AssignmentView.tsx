@@ -25,23 +25,23 @@ export default class AssignmentView extends React.Component<AssignmentViewProps,
                 <strong>End Time: </strong>{assignment.endTime.toString().substring(0, 24)}
                 <br />
                 <br />
-                { assignment.assignmentType === ASSIGNMENT_TYPES.courtSecurity && 
+                {assignment.assignmentType === ASSIGNMENT_TYPES.courtSecurity &&
                     <div>
-                        <strong>Court Room: </strong>{assignment.courtRoom}<br/>
-                        <strong>Assignment Court: </strong>{assignment.assignmentCourt && <Glyphicon glyph="ok" className="text-success"/> || <Glyphicon glyph="remove" className="text-danger"/>} 
-                    </div> }
+                        <strong>Court Room: </strong>{assignment.courtRoom}<br />
+                        <strong>Assignment Court: </strong>{assignment.assignmentCourt && <Glyphicon glyph="ok" className="text-success" /> || <Glyphicon glyph="remove" className="text-danger" />}
+                    </div>}
 
-                { assignment.assignmentType === ASSIGNMENT_TYPES.escortServices && 
+                {assignment.assignmentType === ASSIGNMENT_TYPES.escortServices &&
                     <div>
-                        <strong>Pickup Location: </strong>{assignment.pickupLocation}<br/>
+                        <strong>Pickup Location: </strong>{assignment.pickupLocation}<br />
                         <strong>Dropoff Location: </strong>{assignment.dropoffLocation}
-                    </div> }
+                    </div>}
 
-                { assignment.assignmentType === ASSIGNMENT_TYPES.gateSecurity && 
+                {assignment.assignmentType === ASSIGNMENT_TYPES.gateSecurity &&
                     <div>
                         <strong>Gate Number: </strong>{assignment.gateNumber}
-                    </div> }
-                <br/>
+                    </div>}
+                <br />
                 <strong>Sheriffs Required: </strong> <Badge>{assignment.sherrifsRequired}</Badge>
                 <br />
                 <br />
@@ -55,44 +55,21 @@ export default class AssignmentView extends React.Component<AssignmentViewProps,
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>
-                                {TRAINING_TYPES.CEW}
-                            </td>
-                            <td>
-                                <Glyphicon glyph="ok" className="text-success" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                {TRAINING_TYPES.CID}
-                            </td>
-                            <td>
-                                <Glyphicon glyph="ok" className="text-success" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                {TRAINING_TYPES.FRO}
-                            </td>
-                            <td>
-                                <Glyphicon glyph="ok" className="text-success" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                {TRAINING_TYPES.PISTOL}
-                            </td>
-                            <td>
-                                <Glyphicon glyph="ok" className="text-success" />
-                            </td>
-                        </tr>
+                        {Object.keys(TRAINING_TYPES).map((k, i) =>
+                            <tr key={k}>
+                                <td>
+                                    {TRAINING_TYPES[k]}
+                                </td>
+                                <td>
+                                    <Glyphicon glyph="ok" className="text-success" />
+                                </td>
+                            </tr>)}
                     </tbody>
                 </Table>
 
-                <h3>Notes</h3>
-                {assignment.notes}
+                    <h3>Notes</h3>
+                    {assignment.notes}
             </div>
-        );
+            );
     }
 }

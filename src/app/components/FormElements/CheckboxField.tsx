@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Checkbox } from 'react-bootstrap';
-import { default as FormFieldWrapperNoControlLabel, FormFieldWrapperNoControlLabelProps } from './FormFieldWrapperNoControlLabel';
+import { default as FormFieldWrapperNoControlLabel, FormFieldWrapperProps } from './FormFieldWrapperNoControlLabel';
 
 
-export default class BootstrapCheckboxField extends React.PureComponent<FormFieldWrapperNoControlLabelProps>{
+export default class BootstrapCheckboxField extends React.PureComponent<FormFieldWrapperProps>{
     render(){
         const {input:{value, onChange}, label} = this.props;
         return (

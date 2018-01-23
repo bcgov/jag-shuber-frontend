@@ -11,10 +11,7 @@ export default class TrainingTypeSelector extends React.PureComponent<FormFieldW
             <FormFieldWrapper {...this.props}>
                 <FormControl componentClass="select" value={value} onChange={onChange}>
                     <option value="No training type selected">{`Select ${label}`}</option>
-                    <option value="CEW">{TRAINING_TYPES.CEW}</option>
-                    <option value="CID">{TRAINING_TYPES.CID}</option>
-                    <option value="FRO">{TRAINING_TYPES.FRO}</option>
-                    <option value="PISTOL">{TRAINING_TYPES.PISTOL}</option>
+                    {Object.keys(TRAINING_TYPES).map((k, i)=><option value={k}>{TRAINING_TYPES[k]}</option>)}
                 </FormControl>
             </FormFieldWrapper>
         );

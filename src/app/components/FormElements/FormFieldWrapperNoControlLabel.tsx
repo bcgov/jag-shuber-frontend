@@ -2,11 +2,11 @@ import * as React from 'react';
 import { FormGroup, HelpBlock } from "react-bootstrap";
 import { WrappedFieldProps } from 'redux-form';
 
-export interface FormFieldWrapperNoControlLabelProps extends WrappedFieldProps{
+export interface FormFieldWrapperProps extends WrappedFieldProps{
     label:string;
 }
 
-export default class FormFieldWrapperNoControlLabel extends React.PureComponent<FormFieldWrapperNoControlLabelProps>{
+export default class FormFieldWrapperNoControlLabel extends React.PureComponent<FormFieldWrapperProps>{
     render(){
         const {meta:{touched, error, warning}} = this.props;
         const {children} = this.props;

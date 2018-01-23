@@ -12,10 +12,7 @@ import RequiredTrainingChecklist from './FormElements/RequiredTrainingChecklist'
 import NumberOfSheriffsSelector from './FormElements/NumberOfSheriffsSelector';
 import TextArea from './FormElements/TextArea';
 
-interface GateSecurityFieldsProps{
-
-}
-class GateSecurityFields extends React.Component<GateSecurityFieldsProps, any>{
+class GateSecurityFields extends React.PureComponent<any>{
     render() {
         return (
             <div>
@@ -25,10 +22,8 @@ class GateSecurityFields extends React.Component<GateSecurityFieldsProps, any>{
     }
 }
 
-interface EscortServiceFieldsProps{
 
-}
-class EscortServiceFields extends React.Component<EscortServiceFieldsProps, any>{
+class EscortServiceFields extends React.PureComponent<any>{
     render() {
         return (
             <div>
@@ -38,11 +33,8 @@ class EscortServiceFields extends React.Component<EscortServiceFieldsProps, any>
         );
     }
 }
-interface CourtSecurityFieldsProps{
 
-}
-
-class CourtSecurityFields extends React.Component<CourtSecurityFieldsProps, any>{
+class CourtSecurityFields extends React.PureComponent<any>{
     render() {
         return (
             <div>
