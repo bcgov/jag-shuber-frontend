@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@storybook/addon-knobs": "^3.3.10",
     "autoprefixer": "7.1.2",
     "bootstrap": "^3.3.7",
     "case-sensitive-paths-webpack-plugin": "2.1.1",
@@ -53,9 +54,16 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
-    "prepare": "patch-package"
+    "prepare": "patch-package",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^3.3.10",
+    "@storybook/addon-links": "^3.3.10",
+    "@storybook/addon-options": "^3.3.10",
+    "@storybook/addons": "^3.3.10",
+    "@storybook/react": "^3.3.10",
     "@types/jest": "^21.1.8",
     "@types/moment": "^2.13.0",
     "@types/node": "^8.0.53",
@@ -69,6 +77,11 @@
     "@types/react-redux": "^5.0.13",
     "@types/react-router-dom": "^4.2.3",
     "@types/redux-form": "^7.0.12",
+    "@types/storybook__addon-actions": "^3.0.1",
+    "@types/storybook__addon-knobs": "^3.2.1",
+    "@types/storybook__addon-links": "^3.0.2",
+    "@types/storybook__react": "^3.0.6",
+    "babel-core": "^6.26.0",
     "patch-package": "^5.0.0",
     "postinstall-prepare": "^1.0.1"
   },
