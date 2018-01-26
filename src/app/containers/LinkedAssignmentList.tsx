@@ -2,35 +2,35 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { SheriffAssignment } from '../api/index';
 import DropAssignmentList from '../components/DropAssignmentList';
-import { RootState } from '../store/reducers';
-import {linkedAssignments} from '../modules/assignments/selectors';
+import { RootState } from '../store';
+import { linkedAssignments } from '../modules/assignments/selectors';
 
 
-export interface LinkedAssignmentListProps{
-  assignments?:SheriffAssignment[];
-  sheriffId:number;
+export interface LinkedAssignmentListProps {
+  assignments?: SheriffAssignment[];
+  sheriffId: number;
 }
 
 
-class LinkedAssignmentList extends React.PureComponent<LinkedAssignmentListProps,any>{
-  render(){
-    const {sheriffId,assignments=[]} = this.props;    
+class LinkedAssignmentList extends React.PureComponent<LinkedAssignmentListProps, any>{
+  render() {
+    const { sheriffId, assignments = [] } = this.props;
     return (
-      <DropAssignmentList assignmentGroupId={sheriffId} assignments={assignments}/>
+      <DropAssignmentList assignmentGroupId={sheriffId} assignments={assignments} />
     )
   }
 }
 
-const mapStateToProps = (state:RootState,props:LinkedAssignmentListProps) => {  
-  const {sheriffId} = props;
+const mapStateToProps = (state: RootState, props: LinkedAssignmentListProps) => {
+  const { sheriffId } = props;
   return {
-    assignments:linkedAssignments(sheriffId)(state),
+    assignments: linkedAssignments(sheriffId)(state),
     sheriffId
   }
 }
 
 
-const ConnectedLinkedAssignmentList = connect<LinkedAssignmentListProps,{},LinkedAssignmentListProps>(
+const ConnectedLinkedAssignmentList = connect<LinkedAssignmentListProps, {}, LinkedAssignmentListProps>(
   mapStateToProps
 )(LinkedAssignmentList)
 

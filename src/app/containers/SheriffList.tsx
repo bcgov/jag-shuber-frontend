@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { Sheriff } from '../api/index';
-import { RootState } from '../store/reducers';
+import { RootState } from '../store';
 import {default as SheriffGrid} from '../components/SheriffGrid'
 import {getSheriffList} from '../modules/sheriffs/actions'
 import {sheriffs,isLoading} from '../modules/sheriffs/selectors'

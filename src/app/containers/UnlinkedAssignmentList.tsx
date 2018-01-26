@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { SheriffAssignment } from '../api/index';
 import {getAssignments} from '../modules/assignments/actions';
-import { RootState } from '../store/reducers';
+import { RootState } from '../store';
 import {unlinkedAssignments,isLoading} from '../modules/assignments/selectors';
 import DropAssignmentList from '../components/DropAssignmentList';
 

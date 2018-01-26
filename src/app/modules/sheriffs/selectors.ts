@@ -1,5 +1,5 @@
 import {createSelector} from 'reselect'
-import { RootState } from '../../store/reducers';
+import { RootState } from '../../store';
 import { Sheriff } from '../../api/index';
 
 export const sheriffs = (state: RootState) : Sheriff[] => {

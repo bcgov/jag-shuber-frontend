@@ -7,7 +7,7 @@ import { offDutySheriffs, onDutySheriffs } from '../../modules/sheriffs/selector
 import { getAssignments } from '../../modules/assignments/actions';
 import { updateVisibleTime } from '../../modules/timeline/actions';
 import { connect } from 'react-redux';
-import { RootState } from '../../store/reducers';
+import { RootState } from '../../store';
 import OnOffDutyTimeline from '../../components/OnOffDutyTimeline';
 import { Sheriff, SheriffAssignment } from '../../api/index';
 import './DailyTimeline.css'
