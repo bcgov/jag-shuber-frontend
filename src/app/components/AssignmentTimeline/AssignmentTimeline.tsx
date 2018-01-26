@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Timeline, TimelineProps } from "../Timeline";
+import { default as Timeline, TimelineProps } from "../Timeline/Timeline";
 import { SheriffAssignment, Sheriff, SheriffAbility, BLANK_SHERIFF } from "../../api/index";
 import { ReactCalendarTimelineGroup, ReactCalendarTimelineItem } from "react-calendar-timeline";
 import { default as AssignmentTimelineCard } from './AssignmentTimelineCard'

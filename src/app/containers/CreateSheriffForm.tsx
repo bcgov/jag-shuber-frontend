@@ -3,7 +3,7 @@ import { reduxForm, ConfigProps } from 'redux-form';
 import { default as SheriffForm, SheriffFormProps } from '../components/SheriffForm';
 import { createSheriff } from '../modules/sheriffs/actions';
 import { SheriffAbility, Sheriff } from '../api/index';
-import { default as FormSubmitButton, SubmitButtonProps } from '../components/Form/SubmitButton'
+import { default as FormSubmitButton, SubmitButtonProps } from '../components/FormElements/SubmitButton'
 
 
 

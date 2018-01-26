@@ -4,15 +4,13 @@ import {
     Field, 
     InjectedFormProps
 } from 'redux-form';
-import {
-    TextFormField,
-    RequiredTrainingChecklist,
-    DateTimeField,
-    NumberOfSheriffsSelector,
-    CheckboxField,
-    TextArea
-} from './Form';
 import { Validators } from '../infrastructure';
+import TextField from './FormElements/TextField';
+import CheckboxField from './FormElements/CheckboxField';
+import DateTimeField from './FormElements/DateTimeField';
+import RequiredTrainingChecklist from './FormElements/RequiredTrainingChecklist';
+import NumberOfSheriffsSelector from './FormElements/NumberOfSheriffsSelector';
+import TextArea from './FormElements/TextArea';
 
 interface GateSecurityFieldsProps{
 
@@ -21,7 +19,7 @@ class GateSecurityFields extends React.Component<GateSecurityFieldsProps, any>{
     render() {
         return (
             <div>
-                <Field name="gateNumber" component={TextFormField} label="Gate Number" />
+                <Field name="gateNumber" component={TextField} label="Gate Number" />
             </div>
         );
     }
@@ -34,8 +32,8 @@ class EscortServiceFields extends React.Component<EscortServiceFieldsProps, any>
     render() {
         return (
             <div>
-                <Field name="pickupLocation" component={TextFormField} label="Pick-Up Location" />
-                <Field name="dropoffLocation" component={TextFormField} label="Drop-Off Location" />
+                <Field name="pickupLocation" component={TextField} label="Pick-Up Location" />
+                <Field name="dropoffLocation" component={TextField} label="Drop-Off Location" />
             </div>
         );
     }
@@ -48,7 +46,7 @@ class CourtSecurityFields extends React.Component<CourtSecurityFieldsProps, any>
     render() {
         return (
             <div>
-                <Field name="courtRoom" component={TextFormField} label="Court Room" />
+                <Field name="courtRoom" component={TextField} label="Court Room" />
                 <Field name="assignmentCourt" component={CheckboxField} value="tesing this value" label="Assignment Court" />
             </div>
         );

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AssignmentTimelineProps } from '../../components/AssignmentTimeline'
+import { AssignmentTimelineProps } from '../../components/AssignmentTimeline/AssignmentTimeline'
 import { getSheriffList } from '../../modules/sheriffs/actions';
 import { visibleTime } from '../../modules/timeline/selectors';
 import { allAssignments } from '../../modules/assignments/selectors';

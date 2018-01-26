@@ -1,9 +1,9 @@
 import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
 import { default as thunk, ThunkAction as _ThunkAction } from 'redux-thunk'
 import { default as api, API } from './api'
-import { reducer as sheriffReducer, State as SheriffState } from './modules/sheriffs';
-import { reducer as assignmentReducer, State as AssignmentState } from './modules/assignments';
-import { reducer as timelineReducer, State as TimelineState } from './modules/timeline';
+import { default as sheriffReducer, SheriffState } from './modules/sheriffs/reducer';
+import { default as assignmentReducer, AssignmentState } from './modules/assignments/reducer';
+import { default as timelineReducer, TimelineState } from './modules/timeline/reducer';
 import { reducer as formReducer } from 'redux-form';
 
 export type ThunkAction<T> = (args?: T) => _ThunkAction<any, RootState, { api: API }>;

@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { default as FormFieldWrapper, FormFieldWrapperProps } from './Form/FormFieldWrapper';
+import { default as FormFieldWrapper, FormFieldWrapperProps } from './FormFieldWrapper';
 import { FormControl } from 'react-bootstrap';
-import { TRAINING_TYPES } from '../api';
+import { TRAINING_TYPES } from '../../api';
 
 
 export default class TrainingTypeSelector extends React.PureComponent<FormFieldWrapperProps>{

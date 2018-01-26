@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { AssignmentTimeline, UNASSIGNED_GROUP } from './AssignmentTimeline'
+import { default as AssignmentTimeline, UNASSIGNED_GROUP } from './AssignmentTimeline/AssignmentTimeline'
 import { Sheriff, SheriffAssignment } from '../api/index';
 import { ReactCalendarTimelineGroup } from 'react-calendar-timeline';
 import SheriffDragSource from '../containers/SheriffDragSource';

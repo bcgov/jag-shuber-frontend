@@ -3,7 +3,7 @@ import {
     ReactCalendarTimelineExtension as TimelineExtensionProps,
     ReactCalendarTimelineGroup,
 } from 'react-calendar-timeline/lib'
-import { TimelineExtension } from "../Timeline";
+import TimelineExtension from "../Timeline/TimelineExtension";
 import AssignmentRow from './AssignmentDropRow';
 
 

@@ -13,13 +13,11 @@ import {
     InjectedFormProps
 } from 'redux-form';
 import { Validators } from '../infrastructure';
-import {
-    TextFormField,
-    DateField
-} from './Form';
-import { default as TrainingTypeSelector } from './TrainingTypeSelector';
-import { default as RegionSelector } from './RegionSelector';
-import { default as CourthouseSelector } from './CourthouseSelector';
+import RegionSelector from './FormElements/RegionSelector';
+import CourthouseSelector from './FormElements/CourthouseSelector';
+import TextField from './FormElements/TextField';
+import TrainingTypeSelector from './FormElements/TrainingTypeSelector';
+import DateField from './FormElements/DateField';
 
 export interface SheriffFormProps {
     handleSubmit?: () => void;
@@ -45,9 +43,9 @@ export default class SheriffForm extends React.Component<SheriffFormProps & Inje
 
                     <Image responsive src="/img/avatar.png" circle width="150" height="150" />
                     <br />
-                    <Field name="firstName" component={TextFormField} label="First Name" validate={[Validators.required]} />
-                    <Field name="lastName" component={TextFormField} label="Last Name" validate={[Validators.required]} />
-                    <Field name="badgeNumber" component={TextFormField} label="Badge Number" validate={[Validators.number, Validators.required]} />
+                    <Field name="firstName" component={TextField} label="First Name" validate={[Validators.required]} />
+                    <Field name="lastName" component={TextField} label="Last Name" validate={[Validators.required]} />
+                    <Field name="badgeNumber" component={TextField} label="Badge Number" validate={[Validators.number, Validators.required]} />
 
                     <br />
                     

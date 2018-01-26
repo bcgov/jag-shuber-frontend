@@ -3,7 +3,7 @@ import { reduxForm, ConfigProps } from 'redux-form';
 import { default as AssignmentForm, AssignmentFormProps } from '../components/AssignmentForm';
 import { SheriffAssignment, SheriffAbility, ASSIGNMENT_TYPES } from '../api/index';
 import { createAssignment } from '../modules/assignments/actions';
-import { default as FormSubmitButton, SubmitButtonProps } from '../components/Form/SubmitButton'
+import { default as FormSubmitButton, SubmitButtonProps } from '../components/FormElements/SubmitButton'
 
 
 // wrapping generic assignment form in redux-form
