@@ -1,6 +1,7 @@
-import { ItemTypes, sourceFactory } from '../infrastructure/DragDrop';
 import * as actions from '../modules/assignments/actions'
 import { connect } from 'react-redux';
+import dragSourceFactory from '../infrastructure/DragDrop/dragSourceFactory';
+import ItemTypes from '../infrastructure/DragDrop/ItemTypes';
 
 export interface DraggedAssignment {
     id: number;
@@ -21,7 +22,7 @@ interface AssignmentSourceFactoryProps {
     endDrag?: (result?: AssignmentDropResult) => void;
 }
 
-const AssignmentSourceFactory = sourceFactory<AssignmentSourceFactoryProps, DraggedAssignment, AssignmentDropResult>(ItemTypes.ASSIGNMENT);
+const AssignmentSourceFactory = dragSourceFactory<AssignmentSourceFactoryProps, DraggedAssignment, AssignmentDropResult>(ItemTypes.ASSIGNMENT);
 
 const mapDispatchToProps = (dispatch: any, ownProps: AssignmentSourceFactoryProps) => {
     return {

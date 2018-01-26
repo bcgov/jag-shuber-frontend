@@ -1,6 +1,7 @@
-import { ItemTypes, sourceFactory } from '../infrastructure/DragDrop';
 import { connect } from 'react-redux';
 import { updateSheriff } from '../modules/sheriffs/actions';
+import dragSourceFactory from '../infrastructure/DragDrop/dragSourceFactory';
+import ItemTypes from '../infrastructure/DragDrop/ItemTypes';
 
 export interface DraggedSheriff {
     badgeNumer: number;
@@ -20,7 +21,7 @@ interface AssignmentSourceFactoryProps {
     endDrag?: (result?: SheriffDropResult) => void;
 }
 
-const AssignmentSourceFactory = sourceFactory<AssignmentSourceFactoryProps, DraggedSheriff, SheriffDropResult>(ItemTypes.SHERIFF);
+const AssignmentSourceFactory = dragSourceFactory<AssignmentSourceFactoryProps, DraggedSheriff, SheriffDropResult>(ItemTypes.SHERIFF);
 
 const mapDispatchToProps = (dispatch: any, ownProps: AssignmentSourceFactoryProps) => {
     return {

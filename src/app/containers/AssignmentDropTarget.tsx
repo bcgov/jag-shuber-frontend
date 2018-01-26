@@ -1,9 +1,11 @@
 import * as React from 'react'
-import { ItemTypes, targetFactory } from '../infrastructure/DragDrop';
 import { DraggedAssignment, AssignmentDropResult } from './AssignmentDragSource'
 import { CSSProperties } from 'react';
+import dropTargetFactory from '../infrastructure/DragDrop/dropTargetFactory';
+import ItemTypes from '../infrastructure/DragDrop/ItemTypes';
 
-const GenericAssignmentDropTarget = targetFactory<DraggedAssignment, AssignmentDropResult>(ItemTypes.ASSIGNMENT);
+
+const GenericAssignmentDropTarget = dropTargetFactory<DraggedAssignment, AssignmentDropResult>(ItemTypes.ASSIGNMENT);
 
 interface AssignmentDropTargetProps {
     targetId: number;

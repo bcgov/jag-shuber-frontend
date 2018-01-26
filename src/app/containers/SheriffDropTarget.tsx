@@ -1,9 +1,10 @@
 import * as React from 'react'
-import { ItemTypes, targetFactory } from '../infrastructure/DragDrop';
 import { SheriffDropResult, DraggedSheriff } from './SheriffDragSource'
 import { CSSProperties } from 'react';
+import dropTargetFactory from '../infrastructure/DragDrop/dropTargetFactory';
+import ItemTypes from '../infrastructure/DragDrop/ItemTypes';
 
-const GenericAssignmentDropTarget = targetFactory<DraggedSheriff, SheriffDropResult>(ItemTypes.SHERIFF);
+const GenericAssignmentDropTarget = dropTargetFactory<DraggedSheriff, SheriffDropResult>(ItemTypes.SHERIFF);
 
 interface SheriffDropTargetProps {
     onDuty: boolean;
