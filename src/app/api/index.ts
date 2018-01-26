@@ -366,22 +366,22 @@ const assignments: SheriffAssignment[] = [
         assignmentCourt: true,
         requiredAbilities: SheriffAbility.CanTransfer | SheriffAbility.CourtAppearance,
         sheriffIds: [],
-        startTime: moment().add(2, 'hour'),
-        endTime: moment().add(3, 'hour'),
+        startTime: moment().startOf('day').add(9, 'hours'),
+        endTime: moment().startOf('day').add(12, 'hours'),
         sherrifsRequired: 1,
         notes: 'My notes on the file.'
     },
     {
         id: 1,
         assignmentType: ASSIGNMENT_TYPES.escortServices,
-        pickupLocation: 'Courthouse A',
-        dropoffLocation: 'Location Z',
+        pickupLocation: 'Location Z',
+        dropoffLocation: 'Courthouse A',
         notes: 'My notes on this escort.',
         requiredAbilities: SheriffAbility.CanTransfer,
         sheriffIds: [],
-        startTime: moment().add(3, 'hour'),
-        endTime: moment().add(4, 'hour'),
-        sherrifsRequired: 3
+        startTime: moment().startOf('day').add(8, 'hours'),
+        endTime: moment().startOf('day').add(9, 'hours'),
+        sherrifsRequired: 1
     },
     {
         id: 2,
@@ -389,8 +389,8 @@ const assignments: SheriffAssignment[] = [
         notes: 'Serve documents A, B, and C',
         requiredAbilities: SheriffAbility.CourtAppearance,
         sheriffIds: [],
-        startTime: moment().add(4, 'hour'),
-        endTime: moment().add(5, 'hour'),
+        startTime: moment().startOf('day').add(9, 'hours'),
+        endTime: moment().startOf('day').add(16, 'hours'),
         sherrifsRequired: 1
     },
     {
@@ -406,26 +406,73 @@ const assignments: SheriffAssignment[] = [
     {
         id: 4,
         assignmentType: ASSIGNMENT_TYPES.gateSecurity,
-        gateNumber: 10,
+        gateNumber: 1,
         notes: 'My notes on this gate',
         requiredAbilities: SheriffAbility.CanTransfer | SheriffAbility.CourtAppearance,
         sheriffIds: [],
-        startTime: moment().add(1, 'hour'),
-        endTime: moment().add(2, 'hour'),
+        startTime: moment().startOf('day').add(9, 'hours'),
+        endTime: moment().startOf('day').add(12.5, 'hours'),
         sherrifsRequired: 1
     },
     {
         id: 5,
         assignmentType: ASSIGNMENT_TYPES.courtSecurity,
-        courtRoom: 'Courtroom 202',
+        courtRoom: 'Courtroom 102',
         assignmentCourt: false,
         requiredAbilities: SheriffAbility.CanTransfer | SheriffAbility.CourtAppearance,
         sheriffIds: [],
-        startTime: moment().add(2, 'hour'),
-        endTime: moment().add(3, 'hour'),
+        startTime: moment().startOf('day').add(9, 'hours'),
+        endTime: moment().startOf('day').add(12, 'hours'),
         sherrifsRequired: 1,
         notes: 'My notes on the file.'
-    }
+    },
+    {
+        id: 6,
+        assignmentType: ASSIGNMENT_TYPES.courtSecurity,
+        courtRoom: 'Courtroom 101',
+        assignmentCourt: false,
+        requiredAbilities: SheriffAbility.CanTransfer | SheriffAbility.CourtAppearance,
+        sheriffIds: [],
+        startTime: moment().startOf('day').add(13, 'hours'),
+        endTime: moment().startOf('day').add(16, 'hours'),
+        sherrifsRequired: 1,
+        notes: 'My notes on the file.'
+    },
+    {
+        id: 7,
+        assignmentType: ASSIGNMENT_TYPES.courtSecurity,
+        courtRoom: 'Courtroom 102',
+        assignmentCourt: false,
+        requiredAbilities: SheriffAbility.CanTransfer | SheriffAbility.CourtAppearance,
+        sheriffIds: [],
+        startTime: moment().startOf('day').add(13, 'hours'),
+        endTime: moment().startOf('day').add(16, 'hours'),
+        sherrifsRequired: 1,
+        notes: 'My notes on the file.'
+    },
+    {
+        id: 8,
+        assignmentType: ASSIGNMENT_TYPES.gateSecurity,
+        gateNumber: 1,
+        notes: 'My notes on this gate',
+        requiredAbilities: SheriffAbility.CanTransfer | SheriffAbility.CourtAppearance,
+        sheriffIds: [],
+        startTime: moment().startOf('day').add(12.5, 'hours'),
+        endTime: moment().startOf('day').add(16, 'hours'),
+        sherrifsRequired: 1
+    },
+    {
+        id: 9,
+        assignmentType: ASSIGNMENT_TYPES.escortServices,
+        pickupLocation: 'Courthouse A',
+        dropoffLocation: 'Location Z',
+        notes: 'My notes on this escort.',
+        requiredAbilities: SheriffAbility.CanTransfer,
+        sheriffIds: [],
+        startTime: moment().startOf('day').add(16, 'hours'),
+        endTime: moment().startOf('day').add(17, 'hours'),
+        sherrifsRequired: 1
+    },
 ];
 
 export default new Client();
