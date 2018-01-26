@@ -7,13 +7,13 @@ setOptions({
   goFullScreen: false,
   showStoriesPanel: true,
   showAddonPanel: true,
-  showSearchBox: true,
+  showSearchBox: false,
   addonPanelInRight: true,
-  sortStoriesByKind: false,
-  hierarchySeparator: null,
+  sortStoriesByKind: true,
+  hierarchySeparator: /\//,
   hierarchyRootSeparator: null,
   sidebarAnimations: true,
-  selectedAddonPanel: undefined
+  selectedAddonPanel: 'storybooks/storybook-addon-knobs'
 });
 
 
