@@ -12,12 +12,12 @@ import {
     FieldArray,
     InjectedFormProps
 } from 'redux-form';
-import { Validators } from '../infrastructure';
 import RegionSelector from './FormElements/RegionSelector';
 import CourthouseSelector from './FormElements/CourthouseSelector';
 import TextField from './FormElements/TextField';
 import TrainingTypeSelector from './FormElements/TrainingTypeSelector';
 import DateField from './FormElements/DateField';
+import * as Validators from '../infrastructure/Validators'
 
 export interface SheriffFormProps {
     handleSubmit?: () => void;

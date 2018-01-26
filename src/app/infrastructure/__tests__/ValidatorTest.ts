@@ -1,4 +1,4 @@
-import { Validators } from "../index";
+import * as Validators from "../Validators";
 
 
 describe('Integer Validator', () => {

@@ -4,7 +4,7 @@ import {
     Field, 
     InjectedFormProps
 } from 'redux-form';
-import { Validators } from '../infrastructure';
+import * as Validators from '../infrastructure/Validators';
 import TextField from './FormElements/TextField';
 import CheckboxField from './FormElements/CheckboxField';
 import DateTimeField from './FormElements/DateTimeField';

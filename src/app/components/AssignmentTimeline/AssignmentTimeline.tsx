@@ -4,12 +4,12 @@ import { SheriffAssignment, Sheriff, SheriffAbility, BLANK_SHERIFF } from "../..
 import { ReactCalendarTimelineGroup, ReactCalendarTimelineItem } from "react-calendar-timeline";
 import { default as AssignmentTimelineCard } from './AssignmentTimelineCard'
 import AssignmentDropRowExtension from './AssignmentDropRowExtension';
-import { toTitleCase } from '../../infrastructure';
+import toTitleCase from '../../infrastructure/toTitleCase';
 
 // todo: find a better spot for this
 export const UNASSIGNED_ID = -1;
 
-export const UNASSIGNED_GROUP: TimelineSheriff = Object.assign({},BLANK_SHERIFF,{
+export const UNASSIGNED_GROUP: TimelineSheriff = Object.assign({}, BLANK_SHERIFF, {
     id: UNASSIGNED_ID,
     onDuty: true,
     badgeNumber: UNASSIGNED_ID,
@@ -31,7 +31,7 @@ export default class AssignmentTimeline extends Timeline<SheriffAssignment, Sher
         showUnlinkedAssignments: true,
         sideBarHeaderTitle: "Sheriffs",
         sideBarHeaderComponent: (p: AssignmentTimelineProps) => (
-            <div style={{paddingTop:10, fontSize: 18, alignContent: "center" }}>
+            <div style={{ paddingTop: 10, fontSize: 18, alignContent: "center" }}>
                 {p.sideBarHeaderTitle}
             </div>
         )
@@ -110,8 +110,8 @@ export default class AssignmentTimeline extends Timeline<SheriffAssignment, Sher
 
     // Map a sheriff to a timeline group
     protected mapGroup(sheriff: Sheriff): TimelineSheriff {
-        const { badgeNumber: id, firstName,lastName} = sheriff;
-        return Object.assign({}, { id, title:toTitleCase(`${firstName} ${lastName}`)}, sheriff);
+        const { badgeNumber: id, firstName, lastName } = sheriff;
+        return Object.assign({}, { id, title: toTitleCase(`${firstName} ${lastName}`) }, sheriff);
     }
 
     // Map a group of sheriffs to timeline groups
