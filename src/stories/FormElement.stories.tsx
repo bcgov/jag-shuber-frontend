@@ -4,8 +4,9 @@ import { action } from '@storybook/addon-actions';
 import { withKnobs,text } from '@storybook/addon-knobs';
 // import { linkTo } from '@storybook/addon-links';
 
-import { AssignmentTypeSelector,RequiredTrainingChecklist } from '../app/components/Form';
 import { WrappedFieldProps, WrappedFieldInputProps, WrappedFieldMetaProps } from 'redux-form';
+import AssignmentTypeSelector from '../app/components/FormElements/AssignmentTypeSelector';
+import RequiredTrainingChecklist from '../app/components/FormElements/RequiredTrainingChecklist';
 
 function generateFieldProps(inputOverrides: Partial<WrappedFieldInputProps> = {}, metaOverrides: Partial<WrappedFieldMetaProps> = {}): WrappedFieldProps {
   const defaultProps: WrappedFieldProps = {
