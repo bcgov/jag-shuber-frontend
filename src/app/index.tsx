@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { render } from 'react-dom';
-import App from './App';
 import { unregister } from './registerServiceWorker';
-import './index.css';
-
+import store from './store'
+import { Provider } from 'react-redux';
+import RootLayout from './RootLayout';
 
 render(
-  <App />
+  <Provider store={store}>
+    <RootLayout />
+  </Provider>
   ,
   document.getElementById('root') as HTMLElement
 );

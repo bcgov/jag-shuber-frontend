@@ -1,5 +1,4 @@
 import * as React from 'react'
-// import { Glyphicon } from 'react-bootstrap';
 
 class BackToTopButton extends React.PureComponent {
     scrollToTop(){

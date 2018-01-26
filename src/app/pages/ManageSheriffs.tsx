@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { default as AddSheriffModal } from '../modules/sheriffs/components/AddSheriffModal';
-import SheriffList from '../modules/sheriffs/containers/SheriffList';
+import { default as AddSheriffModal } from '../containers/AddSheriffModal';
+import SheriffList from '../containers/SheriffList';
 import { Well } from 'react-bootstrap';
 
 export interface ManageSheriffsProps{

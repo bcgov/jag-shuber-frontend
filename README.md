@@ -123,6 +123,31 @@ src/
 └── libs                  - A place for holding additional typescript definition (d.ts) files 
 └── server                - Eventual resting place of a server for the frontend (if we create one)
 ```
+
+## Conventions
+
+### No `Index.ts` files
+- In this projet we do not use `index.ts` files as they are another thing for developers to remember to do
+
+### Imports
+
+when importing many things from an external library, place each import on its own line; this makes imports easier to comment out when debugging / testing an idea.
+
+```ts
+import {
+    Glyphicon,
+    Button,
+    Image
+} from 'react-bootstrap'
+```
+vs
+```ts
+import {Glyphicon, Button, Image} from 'react-bootstrap'
+```
+
+### Components
+
+Components are defined as visual pieces that do not 
 ## OpenShift Deployment
 
 See [OpenShift Readme](openshift/Readme.md)
