@@ -1,8 +1,6 @@
 # Shuber Frontend
 The frontend portion of the Sheriff Scheduling app (code named Shuber).
 
-![Build Status](https://jenkins-jag-shuber-tools.pathfinder.gov.bc.ca/buildStatus/icon?job=jag-shuber-tools-frontend-pipeline)
-
 ## Table of Contents
 
 - [Getting Started](#getting-started)
