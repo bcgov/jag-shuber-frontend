@@ -38,8 +38,8 @@ class CourtSecurityFields extends React.PureComponent<any>{
     render() {
         return (
             <div>
-                <Field name="courtRoom" component={TextField} label="Court Room" />
-                <Field name="assignmentCourt" component={CheckboxField} value="tesing this value" label="Assignment Court" />
+                <Field name="courtRoom"  component={TextField} label="Court Room" />
+                <Field name="assignmentCourt" component={CheckboxField} label="Assignment Court" />
             </div>
         );
     }

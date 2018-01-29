@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { storiesOf } from '../../utils';
-import { text,boolean } from '@storybook/addon-knobs';
+import { text, boolean } from '@storybook/addon-knobs';
 import {
   fieldProps,
   warningFieldProps,
