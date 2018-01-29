@@ -54,7 +54,9 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
-    "prepare": "patch-package"
+    "prepare": "patch-package",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^3.3.10",
@@ -81,8 +83,7 @@
     "@types/storybook__react": "^3.0.6",
     "babel-core": "^6.26.0",
     "patch-package": "^5.0.0",
-    "postinstall-prepare": "^1.0.1",
-    "babel-core": "^6.26.0"
+    "postinstall-prepare": "^1.0.1"
   },
   "jest": {
     "mapCoverage": true,
