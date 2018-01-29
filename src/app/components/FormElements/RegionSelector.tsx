@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { default as FormFieldWrapper, FormFieldWrapperProps } from './FormFieldWrapper';
 import { FormControl } from 'react-bootstrap';
-import { REGION } from '../../../api'
+import { REGION } from '../../api';
 
 
 export default class RegionSelector extends React.PureComponent<FormFieldWrapperProps>{

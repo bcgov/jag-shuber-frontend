@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { default as FormFieldWrapper, FormFieldWrapperProps } from './FormFieldWrapper';
 import { FormControl } from 'react-bootstrap';
-import { COURTHOUSES } from '../../../api'
+import { COURTHOUSES } from '../../api';
 
 
 export default class CourthouseSelector extends React.PureComponent<FormFieldWrapperProps>{
