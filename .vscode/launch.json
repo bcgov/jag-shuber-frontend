@@ -13,6 +13,14 @@
             "webRoot": "${workspaceRoot}"
         },
         {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Debug Stories",
+            "url": "http://localhost:6006",
+            "userDataDir": "${workspaceRoot}/.vscode/chrome",
+            "webRoot": "${workspaceRoot}"
+        },
+        {
             "name": "Debug Jest Tests",
             "type": "node",
             "request": "launch",
