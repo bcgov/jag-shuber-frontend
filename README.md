@@ -9,10 +9,6 @@ The frontend portion of the Sheriff Scheduling app (code named Shuber).
 - [Documentation](#documentation)
 - [Security](#security)
 - [Available Scripts](#available-scripts)
-  - [npm start](#npm-start)
-  - [npm test](#npm-test)
-  - [npm run build](#npm-run-build)
-  - [npm run eject](#npm-run-eject)
 - [Debugging in the Editor](#debugging-in-the-editor)
 - [Folder Structure](#folder-structure)
 - [Deployment](#openshift-deployment)
@@ -78,6 +74,10 @@ The build is minified and the filenames include the hashes.<br>
 Your app is ready to be deployed!
 
 See the section about [deployment](#deployment) for more information.
+
+### `yarn storybook`
+
+Starts the Storybook dev server which operates on [http://localhost:6006](http://localhost:6006)
 
 ## Debugging in the Editor
 
