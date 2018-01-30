@@ -4,7 +4,6 @@ import {
     Button, 
     Modal
 } from 'react-bootstrap';
-// import { Glyphicon } from 'react-bootstrap';
 
 
 export interface AddSheriffModalProps{

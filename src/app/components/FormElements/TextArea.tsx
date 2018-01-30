@@ -4,12 +4,12 @@ import { FormControl } from 'react-bootstrap';
 
 
 
-export default class BootstrapTextArea extends React.PureComponent<FormFieldWrapperProps>{
+export default class TextArea extends React.PureComponent<FormFieldWrapperProps>{
     render(){
         const {input:{value, onChange}, label} = this.props;
         return (
             <FormFieldWrapper {...this.props}>
-                <FormControl componentClass="textarea" placeholder={`Enter ${label}`} value={value} onChange={onChange} />
+                <FormControl  componentClass="textarea" placeholder={`Enter ${label}`} value={value} onChange={onChange} />
             </FormFieldWrapper>
         );
     }
