@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Sheriff } from '../api/index';
 import {
     Table
 } from 'react-bootstrap';
@@ -7,12 +6,15 @@ import CourthouseCard from './CourthouseCard';
 import RegionCard from './RegionCard';
 
 export interface SheriffLocationDetailsProps {
-    sheriff: Sheriff;
+    currentCourthouse?: string,
+    currentRegion?: string,
+    permanentCourthouse?: string,
+    permanentRegion?: string
 }
 
 export default class SheriffLocationDetails extends React.Component<SheriffLocationDetailsProps, any>{
     render() {
-        const { sheriff: { currentCourthouse, currentRegion, permanentCourthouse, permanentRegion } } = this.props;
+        const { currentCourthouse, currentRegion, permanentCourthouse, permanentRegion } = this.props;
         return (
             <div>
                 <h3>Region and Courthouse</h3>

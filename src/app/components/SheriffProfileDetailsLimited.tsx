@@ -10,14 +10,19 @@ export interface SheriffProfileDetailsLimitedProps {
 
 export default class SheriffProfileDetailsimited extends React.Component<SheriffProfileDetailsLimitedProps, any>{
     render() {
-        const { sheriff, sheriff:{onDuty} } = this.props;
+        const { sheriff:{onDuty, training, currentCourthouse, currentRegion, permanentCourthouse, permanentRegion} } = this.props;
         return (
             <div>
-                <SheriffLocationDetails sheriff={ sheriff } />
+                <SheriffLocationDetails 
+                    currentCourthouse={currentCourthouse} 
+                    currentRegion={currentRegion} 
+                    permanentCourthouse={permanentCourthouse} 
+                    permanentRegion={permanentRegion}  
+                />
                 <br />
                 <SheriffDutyStatus onDuty ={ onDuty } />
                 <br /><br/>
-                <SheriffTrainingDetails sheriff={ sheriff } isSummary />
+                <SheriffTrainingDetails training ={ training } isSummary />
 
             </div>
         );

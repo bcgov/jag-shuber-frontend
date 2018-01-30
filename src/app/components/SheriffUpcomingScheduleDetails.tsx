@@ -3,15 +3,14 @@ import {
     Table
 } from 'react-bootstrap';
 import SheriffDutyStatus from './SheriffDutyStatus';
-import { Sheriff } from '../api';
 
 export interface SheriffUpcomingScheduleDetailsProps {
-    sheriff: Sheriff;
+    onDuty: boolean;
 }
 
 export default class SheriffUpcomingScheduleDetails extends React.Component<SheriffUpcomingScheduleDetailsProps, any>{
     render() {
-        const { sheriff:{onDuty} } = this.props;
+        const { onDuty } = this.props;
         return (
             <div>
                 <SheriffDutyStatus onDuty ={ onDuty } />

@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { Sheriff } from '../api/index';
+import { SheriffTraining } from '../api/index';
 import {
     Table,
     Glyphicon
 } from 'react-bootstrap';
 
 export interface SheriffTrainingDetailsProps {
-    sheriff: Sheriff;
+    training: SheriffTraining[];
     isSummary?: boolean;
 }
 
@@ -16,7 +16,7 @@ export default class SheriffTrainingDetails extends React.Component<SheriffTrain
     }
     
     render() {
-        const { sheriff: { training = [] }, isSummary = false} = this.props;
+        const { training = [], isSummary = false} = this.props;
         return (
             <div>
                 <h3>Training</h3>

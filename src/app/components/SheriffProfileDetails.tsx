@@ -11,14 +11,19 @@ export interface SheriffProfileDetailsProps {
 
 export default class SheriffProfileDetails extends React.Component<SheriffProfileDetailsProps, any>{
     render() {
-        const { sheriff } = this.props;
+        const { sheriff:{onDuty, training, currentCourthouse, currentRegion, permanentCourthouse, permanentRegion} } = this.props;
         return (
             <div>
-                <SheriffLocationDetails sheriff={ sheriff } />
+                <SheriffLocationDetails 
+                    currentCourthouse={currentCourthouse} 
+                    currentRegion={currentRegion} 
+                    permanentCourthouse={permanentCourthouse} 
+                    permanentRegion={permanentRegion} 
+                />
                 <br />
-                <SheriffTrainingDetails sheriff={ sheriff } />           
+                <SheriffTrainingDetails training={ training } />           
                 <br />
-                <SheriffUpcomingSchedule sheriff={ sheriff } />
+                <SheriffUpcomingSchedule onDuty={ onDuty } />
                 <br />
                 <SheriffOvertimeStatus />
             </div>
