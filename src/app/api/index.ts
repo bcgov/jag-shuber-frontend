@@ -37,14 +37,14 @@ export const BLANK_SHERIFF: Sheriff = {
     onDuty:false
 }
 
-export const TRAINING_TYPES = {
+export const TRAINING_TYPES:{[key:string]:string} = {
     FRO: "FRO - Forced Response Option",
     PISTOL: "PISTOL",
     CID: "CID - Critical Incident De-Escalation",
     CEW: "CEW - Conductive Energy Weapon"
 }
 
-export const COURTHOUSES = {
+export const COURTHOUSES:{[key:string]:string} = {
     ABBOTSFORD: "Abbotsford",
     ALEXISCREEK: "Alexis Creek",
     ANAHIMLAKE: "Anahim Lake",
@@ -134,7 +134,7 @@ export const COURTHOUSES = {
     WILLIAMSLAKE: "Williams Lake"
 }
 
-export const REGION = {
+export const REGION:{[key:string]:string} = {
     FRASER: "Fraser",
     INTERIOR: "Interior",
     NORTHERN: "Northern",

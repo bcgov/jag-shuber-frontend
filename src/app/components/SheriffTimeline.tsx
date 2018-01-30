@@ -1,6 +1,5 @@
 
 import * as React from 'react'
-// import * as PropTypes from 'prop-types'
 import { Grid, Row, Col } from 'react-bootstrap'
 import SheriffCard from './SheriffCard'
 import { Sheriff } from '../api/index';

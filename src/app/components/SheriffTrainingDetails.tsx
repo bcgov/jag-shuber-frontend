@@ -5,12 +5,12 @@ import {
     Glyphicon
 } from 'react-bootstrap';
 
-export interface SheriffTrainingViewProps {
+export interface SheriffTrainingDetailsProps {
     sheriff: Sheriff;
     isSummary?: boolean;
 }
 
-export default class SheriffTrainingView extends React.Component<SheriffTrainingViewProps, any>{
+export default class SheriffTrainingDetails extends React.Component<SheriffTrainingDetailsProps, any>{
    trainingStatusStyle():string { 
         return "text-success";
     }

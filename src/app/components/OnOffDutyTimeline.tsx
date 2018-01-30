@@ -8,7 +8,7 @@ import { Popover } from 'react-bootstrap';
 import { OverlayTrigger } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import { Glyphicon } from 'react-bootstrap';
-import { default as SheriffProfileViewLimited } from './SheriffProfileViewLimited';
+import SheriffProfileViewLimited  from './SheriffProfileDetailsLimited';
 
 
 interface OnOffDutyTimelineProps {

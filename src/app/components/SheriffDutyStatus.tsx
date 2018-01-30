@@ -1,13 +1,12 @@
 import * as React from 'react';
-import { Sheriff } from '../api/index';
 
-export interface SheriffScheduleStatusProps {
-    sheriff: Sheriff;
+export interface SheriffDutyStatusProps {
+    onDuty: boolean;
 }
 
-export default class SheriffScheduleStatus extends React.Component<SheriffScheduleStatusProps, any>{
+export default class SheriffDutyStatus extends React.PureComponent<SheriffDutyStatusProps, any>{
     render() {
-        const{ sheriff: {onDuty} } = this.props;
+        const{ onDuty } = this.props;
         return (
             <div>
                 <h3>Schedule</h3>

@@ -3,12 +3,13 @@ import { Sheriff } from '../api/index';
 import {
     Table
 } from 'react-bootstrap';
+import CourthouseCard from './CourthouseCard';
 
-export interface SheriffWorksiteDetailsViewProps {
+export interface SheriffLocationDetailsProps {
     sheriff: Sheriff;
 }
 
-export default class SheriffWorksiteDetailsView extends React.Component<SheriffWorksiteDetailsViewProps, any>{
+export default class SheriffLocationDetails extends React.Component<SheriffLocationDetailsProps, any>{
     render() {
         const { sheriff: { currentCourthouse, currentRegion, permanentCourthouse, permanentRegion } } = this.props;
         return (
@@ -25,12 +26,12 @@ export default class SheriffWorksiteDetailsView extends React.Component<SheriffW
                     <tbody>
                         <tr>
                             <td><strong>Permanent</strong></td>
-                            <td>{permanentCourthouse}</td>
+                            <td><CourthouseCard id={permanentCourthouse}/></td>
                             <td>{permanentRegion}</td>
                         </tr>
                         <tr>
                             <td><strong>Current</strong></td>
-                            <td>{currentCourthouse}</td>
+                            <td><CourthouseCard id={currentCourthouse}/></td>
                             <td>{currentRegion}</td>
                         </tr>
                     </tbody>

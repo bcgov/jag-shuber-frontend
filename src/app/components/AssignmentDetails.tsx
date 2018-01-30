@@ -10,11 +10,11 @@ import {
     Badge
 } from 'react-bootstrap';
 
-export interface AssignmentViewProps {
+export interface AssignmentDetailsProps {
     assignment: SheriffAssignment;
 }
 
-export default class AssignmentView extends React.Component<AssignmentViewProps, any>{
+export default class AssignmentDetails extends React.Component<AssignmentDetailsProps, any>{
     render() {
         const { assignment } = this.props;
         return (

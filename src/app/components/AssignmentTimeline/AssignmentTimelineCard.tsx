@@ -10,7 +10,7 @@ import {
     Button,
     Glyphicon
 } from 'react-bootstrap';
-import { default as AssignmentView } from '../AssignmentView';
+import AssignmentDetails from '../AssignmentDetails';
 
 export interface AssignmentTimelineCardProps {
     onClick?: () => void;
@@ -25,7 +25,7 @@ export default class AssignmentTimelineCard extends React.PureComponent<Assignme
 
         const showAssignmentDetails = (
             <Popover id="popover-trigger-focus">
-                <AssignmentView assignment={assignment} />
+                <AssignmentDetails assignment={assignment} />
             </Popover>
         );
 

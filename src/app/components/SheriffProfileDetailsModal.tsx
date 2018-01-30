@@ -5,26 +5,26 @@ import {
     Modal, 
     Image
 } from 'react-bootstrap';
-import { Sheriff, BLANK_SHERIFF } from '../api/index';
-import { default as SheriffProfileView } from './SheriffProfileView';
+import { Sheriff, BLANK_SHERIFF } from '../api';
+import SheriffProfileDetails  from './SheriffProfileDetails';
 
-export interface SheriffProfileViewModalProps{
+export interface SheriffProfileDetailsModalProps{
     open?: boolean;
     sheriff: Sheriff;
 }
 
-export interface SheriffProfileViewModalState{
+export interface SheriffProfileDetailsModalState{
     showModal?: boolean;
 
 }
 
-export default class SheriffProfileViewModal extends React.Component<SheriffProfileViewModalProps, SheriffProfileViewModalState>{
-    static defaultProps:SheriffProfileViewModalProps = {
+export default class SheriffProfileDetailsModal extends React.Component<SheriffProfileDetailsModalProps, SheriffProfileDetailsModalState>{
+    static defaultProps:SheriffProfileDetailsModalProps = {
         open: false, 
         sheriff: BLANK_SHERIFF
     }
 
-    constructor(props: SheriffProfileViewModalProps){
+    constructor(props: SheriffProfileDetailsModalProps){
         super(props);
         this.state = { showModal: props.open };
     }
@@ -53,7 +53,7 @@ export default class SheriffProfileViewModal extends React.Component<SheriffProf
                     <Button className="pull-right" onClick={()=>alert('This is how you will edit a profile.')}><Glyphicon glyph="pencil" /></Button>
                     <br/>
                     <br/>
-                        <SheriffProfileView sheriff={sheriff}/>
+                        <SheriffProfileDetails sheriff={sheriff}/>
 					</Modal.Body>
 					<Modal.Footer>
 						<Button onClick={() => this.handleClose()}>Close</Button>

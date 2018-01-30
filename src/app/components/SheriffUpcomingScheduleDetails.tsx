@@ -2,19 +2,19 @@ import * as React from 'react';
 import { 
     Table
 } from 'react-bootstrap';
-import SheriffScheduleStatus from './SheriffScheduleStatus';
-import { Sheriff } from '../api/index';
+import SheriffDutyStatus from './SheriffDutyStatus';
+import { Sheriff } from '../api';
 
-export interface SheriffUpcomingScheduleViewProps {
+export interface SheriffUpcomingScheduleDetailsProps {
     sheriff: Sheriff;
 }
 
-export default class SheriffUpcomingScheduleView extends React.Component<SheriffUpcomingScheduleViewProps, any>{
+export default class SheriffUpcomingScheduleDetails extends React.Component<SheriffUpcomingScheduleDetailsProps, any>{
     render() {
-        const { sheriff } = this.props;
+        const { sheriff:{onDuty} } = this.props;
         return (
             <div>
-                <SheriffScheduleStatus sheriff ={ sheriff } />
+                <SheriffDutyStatus onDuty ={ onDuty } />
                 
                 <Table responsive>
                     <thead>
