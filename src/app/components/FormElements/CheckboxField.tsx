@@ -7,7 +7,7 @@ export default class CheckboxField extends React.PureComponent<FormFieldWrapperP
     render(){
         const {input:{value, onChange}, label} = this.props;
         return (
-            <FormFieldWrapper {...this.props} showControlLabel={false}> 
+            <FormFieldWrapper {...this.props} showLabel={false}> 
                 <Checkbox onChange={onChange} value={value}>
                     {label}
                 </Checkbox>

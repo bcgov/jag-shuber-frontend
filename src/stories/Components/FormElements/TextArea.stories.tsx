@@ -14,15 +14,15 @@ storiesOf('Components/Form Elements')
   .add('Text Area', () =>
     <StoryPage title="Text Area">
       <StorySection title="Normal">
-        <TextArea showControlLabel={boolean('Show Label',true)} label={text('Label', 'Some Text')} {...fieldProps} />
+        <TextArea showLabel={boolean('Show Label',true)} label={text('Label', 'Some Text')} {...fieldProps} />
       </StorySection>
 
       <StorySection title="Warning">
-        <TextArea showControlLabel={boolean('Show Label',true)} label={text('Label', 'Some Text')} {...warningFieldProps} />
+        <TextArea showLabel={boolean('Show Label',true)} label={text('Label', 'Some Text')} {...warningFieldProps} />
       </StorySection>
 
       <StorySection title="Error">
-        <TextArea showControlLabel={boolean('Show Label',true)} label={text('Label', 'Some Text')} {...errorFieldProps} />
+        <TextArea showLabel={boolean('Show Label',true)} label={text('Label', 'Some Text')} {...errorFieldProps} />
       </StorySection>
     </StoryPage>
   );
