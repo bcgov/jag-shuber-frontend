@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Sheriff } from '../api/index';
-import OvertimeDetails from './OvertimeDetailsView';
-import UpcomingScheduleView from './UpcomingScheduleView';
-import TrainingDetailsView from './TrainingDetailsView';
-import WorksiteDetailsView from './WorksiteDetailsView';
+import SheriffOvertimeView from './SheriffOvertimeView';
+import SheriffUpcomingSchedule from './SheriffUpcomingScheduleView';
+import SheriffTrainingView from './SheriffTrainingView';
+import SheriffWorksiteDetailsView from './SheriffWorksiteDetailsView';
 
 export interface SheriffProfileViewProps {
     sheriff: Sheriff;
@@ -14,13 +14,13 @@ export default class SheriffProfileView extends React.Component<SheriffProfileVi
         const { sheriff } = this.props;
         return (
             <div>
-                <WorksiteDetailsView sheriff={ sheriff } />
+                <SheriffWorksiteDetailsView sheriff={ sheriff } />
                 <br />
-                <TrainingDetailsView sheriff={ sheriff } />           
+                <SheriffTrainingView sheriff={ sheriff } />           
                 <br />
-                <UpcomingScheduleView sheriff={ sheriff } />
+                <SheriffUpcomingSchedule sheriff={ sheriff } />
                 <br />
-                <OvertimeDetails />
+                <SheriffOvertimeView />
             </div>
         );
     }

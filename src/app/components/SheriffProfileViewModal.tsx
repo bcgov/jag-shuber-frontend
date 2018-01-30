@@ -8,23 +8,23 @@ import {
 import { Sheriff, BLANK_SHERIFF } from '../api/index';
 import { default as SheriffProfileView } from './SheriffProfileView';
 
-export interface ViewSheriffProfileModalProps{
+export interface SheriffProfileViewModalProps{
     open?: boolean;
     sheriff: Sheriff;
 }
 
-export interface ViewSheriffProfileModalState{
+export interface SheriffProfileViewModalState{
     showModal?: boolean;
 
 }
 
-export default class ViewSheriffProfileModal extends React.Component<ViewSheriffProfileModalProps, ViewSheriffProfileModalState>{
-    static defaultProps:ViewSheriffProfileModalProps = {
+export default class SheriffProfileViewModal extends React.Component<SheriffProfileViewModalProps, SheriffProfileViewModalState>{
+    static defaultProps:SheriffProfileViewModalProps = {
         open: false, 
         sheriff: BLANK_SHERIFF
     }
 
-    constructor(props: ViewSheriffProfileModalProps){
+    constructor(props: SheriffProfileViewModalProps){
         super(props);
         this.state = { showModal: props.open };
     }

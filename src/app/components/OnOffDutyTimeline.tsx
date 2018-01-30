@@ -8,7 +8,7 @@ import { Popover } from 'react-bootstrap';
 import { OverlayTrigger } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import { Glyphicon } from 'react-bootstrap';
-import { default as LimitedSheriffProfileView } from './LimitedSheriffProfileView';
+import { default as SheriffProfileViewLimited } from './SheriffProfileViewLimited';
 
 
 interface OnOffDutyTimelineProps {
@@ -35,7 +35,7 @@ export default class OnOffDutyTimeline extends React.PureComponent<OnOffDutyTime
 
         const showProfileDetails = (
             <Popover id="popover-trigger-focus">
-               <LimitedSheriffProfileView sheriff={group}/>
+               <SheriffProfileViewLimited sheriff={group}/>
             </Popover>
         );
         

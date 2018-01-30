@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Sheriff } from '../api/index';
-import { default as ViewSheriffProfileModal } from './ViewSheriffProfileModal';
+import { default as SheriffProfileViewModal } from './SheriffProfileViewModal';
 
 export interface SheriffCardProps {
     onClick: () => void;
@@ -12,7 +12,7 @@ export default class SheriffCard extends React.PureComponent<SheriffCardProps, a
     render() {
         const { sheriff } = this.props;
         return (
-            <ViewSheriffProfileModal sheriff={sheriff} />
+            <SheriffProfileViewModal sheriff={sheriff} />
         );
     }
 }

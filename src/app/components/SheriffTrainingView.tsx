@@ -5,18 +5,18 @@ import {
     Glyphicon
 } from 'react-bootstrap';
 
-export interface TrainingDetailsViewProps {
+export interface SheriffTrainingViewProps {
     sheriff: Sheriff;
-    isLimited?: boolean;
+    isSummary?: boolean;
 }
 
-export default class TrainingDetailsView extends React.Component<TrainingDetailsViewProps, any>{
+export default class SheriffTrainingView extends React.Component<SheriffTrainingViewProps, any>{
    trainingStatusStyle():string { 
         return "text-success";
     }
     
     render() {
-        const { sheriff: { training = [] }, isLimited = false} = this.props;
+        const { sheriff: { training = [] }, isSummary = false} = this.props;
         return (
             <div>
                 <h3>Training</h3>
@@ -25,8 +25,8 @@ export default class TrainingDetailsView extends React.Component<TrainingDetails
                         <thead>
                             <tr >
                                 <th className="text-left">Type</th>
-                                { !isLimited && <th className="text-left">Cert</th>}
-                                { !isLimited && <th className="text-left">Expiry</th>}
+                                { !isSummary && <th className="text-left">Cert</th>}
+                                { !isSummary && <th className="text-left">Expiry</th>}
                                 <th className="text-left">Status</th>
                             </tr>
                         </thead>
@@ -35,8 +35,8 @@ export default class TrainingDetailsView extends React.Component<TrainingDetails
                         return (
                             <tr key={index}>
                                 <td>{training.trainingType}</td>
-                                { !isLimited && <td>{training.certificationDate.toString().substring(3, 15)}</td>}
-                                { !isLimited && <td>{training.expiryDate.toString().substring(3, 15)}</td>}
+                                { !isSummary && <td>{training.certificationDate.toString().substring(3, 15)}</td>}
+                                { !isSummary && <td>{training.expiryDate.toString().substring(3, 15)}</td>}
                                 <td><Glyphicon glyph="ok" className="text-success" /></td>
                             </tr>
                         );

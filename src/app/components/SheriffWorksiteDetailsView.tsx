@@ -4,11 +4,11 @@ import {
     Table
 } from 'react-bootstrap';
 
-export interface TrainingDetailsViewProps {
+export interface SheriffWorksiteDetailsViewProps {
     sheriff: Sheriff;
 }
 
-export default class WorksiteDetailsView extends React.Component<TrainingDetailsViewProps, any>{
+export default class SheriffWorksiteDetailsView extends React.Component<SheriffWorksiteDetailsViewProps, any>{
     render() {
         const { sheriff: { currentCourthouse, currentRegion, permanentCourthouse, permanentRegion } } = this.props;
         return (
