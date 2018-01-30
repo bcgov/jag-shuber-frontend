@@ -9,7 +9,9 @@ export default class CourthouseCard extends React.PureComponent<CourthouseCardPr
     render() {
         const { id } = this.props;
         return (
-             id && COURTHOUSES[id] 
+            <div>
+                {id && COURTHOUSES[id]}
+            </div>
         );
     }
 }
