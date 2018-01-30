@@ -4,6 +4,7 @@ import {
     Table
 } from 'react-bootstrap';
 import CourthouseCard from './CourthouseCard';
+import RegionCard from './RegionCard';
 
 export interface SheriffLocationDetailsProps {
     sheriff: Sheriff;
@@ -27,12 +28,12 @@ export default class SheriffLocationDetails extends React.Component<SheriffLocat
                         <tr>
                             <td><strong>Permanent</strong></td>
                             <td><CourthouseCard id={permanentCourthouse}/></td>
-                            <td>{permanentRegion}</td>
+                            <td><RegionCard id={permanentRegion} /></td>
                         </tr>
                         <tr>
                             <td><strong>Current</strong></td>
                             <td><CourthouseCard id={currentCourthouse}/></td>
-                            <td>{currentRegion}</td>
+                            <td><RegionCard id={currentRegion} /></td>
                         </tr>
                     </tbody>
                 </Table>
