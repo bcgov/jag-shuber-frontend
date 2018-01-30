@@ -2,15 +2,15 @@ import * as React from 'react'
 import {
     default as AssignmentList,
     AssignmentListProps
-} from './AssignmentList'
+} from '../components/AssignmentList'
 import AssignmentDropTarget from '../containers/AssignmentDropTarget';
 
-export interface DropAssignmentListProps extends AssignmentListProps {
+export interface AssignmentDropListProps extends AssignmentListProps {
 
 }
 
 
-class DropAssignmentList extends React.PureComponent<DropAssignmentListProps, {}>{
+class AssignmentDropList extends React.PureComponent<AssignmentDropListProps, {}>{
     render() {
         const { assignmentGroupId, ...restProps } = this.props;
         return (
@@ -21,4 +21,4 @@ class DropAssignmentList extends React.PureComponent<DropAssignmentListProps, {}
     }
 }
 
-export default DropAssignmentList
+export default AssignmentDropList

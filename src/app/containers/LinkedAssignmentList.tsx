@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { SheriffAssignment } from '../api/index';
-import DropAssignmentList from '../components/DropAssignmentList';
+import AssignmentDropList from './AssignmentDropList';
 import { RootState } from '../store';
 import { linkedAssignments } from '../modules/assignments/selectors';
 
@@ -16,7 +16,7 @@ class LinkedAssignmentList extends React.PureComponent<LinkedAssignmentListProps
   render() {
     const { sheriffId, assignments = [] } = this.props;
     return (
-      <DropAssignmentList assignmentGroupId={sheriffId} assignments={assignments} />
+      <AssignmentDropList assignmentGroupId={sheriffId} assignments={assignments} />
     )
   }
 }
