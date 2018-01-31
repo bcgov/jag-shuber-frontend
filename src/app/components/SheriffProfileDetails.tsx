@@ -4,28 +4,29 @@ import SheriffOvertimeStatus from './SheriffOvertimeStatus';
 import SheriffUpcomingSchedule from './SheriffUpcomingScheduleDetails';
 import SheriffTrainingDetails from './SheriffTrainingDetails';
 import SheriffLocationDetails from './SheriffLocationDetails';
+import SheriffDutyStatus from './SheriffDutyStatus';
 
 export interface SheriffProfileDetailsProps {
     sheriff: Sheriff;
+    isCompactView?: boolean;
 }
 
 export default class SheriffProfileDetails extends React.Component<SheriffProfileDetailsProps, any>{
     render() {
-        const { sheriff:{onDuty, training, currentCourthouse, currentRegion, permanentCourthouse, permanentRegion} } = this.props;
+        const { isCompactView, sheriff:{onDuty, training, currentLocation, permanentLocation} } = this.props;
         return (
             <div>
                 <SheriffLocationDetails 
-                    currentCourthouse={currentCourthouse} 
-                    currentRegion={currentRegion} 
-                    permanentCourthouse={permanentCourthouse} 
-                    permanentRegion={permanentRegion} 
+                    currentLocation={currentLocation} 
+                    permanentLocation={permanentLocation}  
                 />
                 <br />
-                <SheriffTrainingDetails training={ training } />           
+                <SheriffTrainingDetails training={ training } isCompactView={isCompactView}/>           
                 <br />
-                <SheriffUpcomingSchedule onDuty={ onDuty } />
+                {!isCompactView && <SheriffUpcomingSchedule onDuty={ onDuty } /> }
+                {isCompactView && <SheriffDutyStatus onDuty ={ onDuty } />}
                 <br />
-                <SheriffOvertimeStatus />
+                {!isCompactView && <SheriffOvertimeStatus />}
             </div>
         );
     }

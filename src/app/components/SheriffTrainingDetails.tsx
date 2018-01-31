@@ -7,7 +7,7 @@ import {
 
 export interface SheriffTrainingDetailsProps {
     training: SheriffTraining[];
-    isSummary?: boolean;
+    isCompactView?: boolean;
 }
 
 export default class SheriffTrainingDetails extends React.Component<SheriffTrainingDetailsProps, any>{
@@ -16,7 +16,7 @@ export default class SheriffTrainingDetails extends React.Component<SheriffTrain
     }
     
     render() {
-        const { training = [], isSummary = false} = this.props;
+        const { training = [], isCompactView = false} = this.props;
         return (
             <div>
                 <h3>Training</h3>
@@ -25,8 +25,8 @@ export default class SheriffTrainingDetails extends React.Component<SheriffTrain
                         <thead>
                             <tr >
                                 <th className="text-left">Type</th>
-                                { !isSummary && <th className="text-left">Cert</th>}
-                                { !isSummary && <th className="text-left">Expiry</th>}
+                                { !isCompactView && <th className="text-left">Cert</th>}
+                                { !isCompactView && <th className="text-left">Expiry</th>}
                                 <th className="text-left">Status</th>
                             </tr>
                         </thead>
@@ -35,8 +35,8 @@ export default class SheriffTrainingDetails extends React.Component<SheriffTrain
                         return (
                             <tr key={index}>
                                 <td>{training.trainingType}</td>
-                                { !isSummary && <td>{training.certificationDate.toString().substring(3, 15)}</td>}
-                                { !isSummary && <td>{training.expiryDate.toString().substring(3, 15)}</td>}
+                                { !isCompactView && <td>{training.certificationDate.toString().substring(3, 15)}</td>}
+                                { !isCompactView && <td>{training.expiryDate.toString().substring(3, 15)}</td>}
                                 <td><Glyphicon glyph="ok" className="text-success" /></td>
                             </tr>
                         );
