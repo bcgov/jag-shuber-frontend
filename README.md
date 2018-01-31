@@ -38,7 +38,7 @@ The frontend portion of the Sheriff Scheduling System (code named Shuber).
 ## Developing Features
 The following process should be used when developing a feature
 * Create a Branch - a branch should be created for any new piece of work
-    - Switch to the branch you would like to branch from (e.g. master)
+    - Switch to the branch you would like to branch from (e.g. master) and sync that branch
     - Create a new branch, named for the feture you are working on using kabob case (_e.g._ my-new-branch)
 * Commit and Sync Often
     - When working on your branch, commit and sync your changes to github often
@@ -55,7 +55,8 @@ The following process should be used when developing a feature
     -  Force Push the rebase onto your remote brach
         - Run `git push -f`
     -  Create a Pull Request for your branch from GitHub, add at least one reviewer
-* Make any suggested updates from PR and commit changes
+* Review comments on PR, make any changes, and commit
+    - mark comments as reviewed/addressed, by reacting with the `thumbsup` emoji
 * Merge branch into master and delete branch
 * From VS Code, prune your branches
     - Run `git prune`
@@ -89,7 +90,13 @@ import {Glyphicon, Button, Image} from 'react-bootstrap'
 ### Components
 
 * Components are visual representations of business objects and data, and should not contain state (_i.e._ should be "dumb components")
+* Components live in the Components direcotry, and should only be placed in a folder (by the same name as the compoent) if the component requires its own style sheet or contributing compoenets. 
 * Components should be named using the following convention: _domain_component description, where _domain_ is a major business domain for the application (_e.g._ Assignment, Sheriff, Courthouse, Region, etc.); this will help to group related components.
+
+### Containers
+* Containers are higher level components that wire state from Redux into regular Components. 
+* Containers live in the Container directory.
+* Containers should be named using the same convention as Components (see above).
 ## Documentation
 * [React-Bootstrap Components](https://react-bootstrap.github.io/components/alerts/)
 * [Bootstrap CSS](https://bootstrapcreative.com/resources/bootstrap-3-css-classes-index/)
