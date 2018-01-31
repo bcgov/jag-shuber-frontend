@@ -6,7 +6,7 @@ import {
 } from 'react-bootstrap';
 
 
-export default class SheriffOvertimeStatus extends React.PureComponent<any>{
+export default class SheriffOvertimeStatus extends React.PureComponent{
     render() {
         
         return (

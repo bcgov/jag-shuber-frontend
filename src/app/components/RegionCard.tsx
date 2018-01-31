@@ -1,16 +1,21 @@
 import * as React from 'react';
-import { REGION } from '../api'
+import { 
+    REGIONS,
+    SheriffLocation, 
+    BLANK_SHERIFF_LOCATION
+} from '../api'
 
-export interface CourthouseCardProps {
-    id?: string | number;
+export interface RegionCardProps {
+    location?: SheriffLocation;
 }
 
-export default class CourthouseCard extends React.PureComponent<CourthouseCardProps, any> {
+export default class RegionCard extends React.PureComponent<RegionCardProps, any> {
     render() {
-        const { id } = this.props;
+        const { location=BLANK_SHERIFF_LOCATION } = this.props;
+        const { regionId } = location;
         return (
             <div>
-                {id && REGION[id]}
+                {regionId && REGIONS[regionId]}
             </div>
         );
     }
