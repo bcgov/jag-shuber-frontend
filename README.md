@@ -1,13 +1,12 @@
 # Shuber Frontend
-The frontend portion of the Sheriff Scheduling app (code named Shuber).
+The frontend portion of the Sheriff Scheduling System (code named Shuber).
 
 ## Table of Contents
 
 - [Getting Started](#getting-started)
-- [Technology Stack Used](#technology-stack-used)
-- [Project Status](#project-status)
+- [Developing Features](#developing-features)
+- [Conventions](#conventions)
 - [Documentation](#documentation)
-- [Security](#security)
 - [Available Scripts](#available-scripts)
 - [Debugging in the Editor](#debugging-in-the-editor)
 - [Folder Structure](#folder-structure)
@@ -20,35 +19,85 @@ The frontend portion of the Sheriff Scheduling app (code named Shuber).
 
 ## Getting Started
 
-* Developer Workstation Requirements/Setup
+### Developer Workstation Setup
+* Install the following:
     - [Node.js]
     - [Yarn]
     - [VS Code] and extensions (below)
        - [Git Lens](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens)
 
 * Clone Repo
-* Run `yarn` or `npm install` in the root of the project to install dependencies
-* Run `yarn start` or `npm start` to start up the development server
-   - This should automatically open up a browser to [http://localhost:3000](http://localhost:3000)
+* Install Dependencies
+    - Run `yarn` or `npm install` in the root of the project
+* Start Development Server
+    - Run `yarn start` or `npm start` 
+    - This should automatically open up a browser to [http://localhost:3000](http://localhost:3000)
 
 > See [Available Scripts](#available-scripts) for more info
 
-## Technology Stack Used
-This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
+## Developing Features
+The following process should be used when developing a feature
+* Create a Branch - a branch should be created for any new piece of work
+    - Switch to the branch you would like to branch from (e.g. master)
+    - Create a new branch, named for the feture you are working on using kabob case (_e.g._ my-new-branch)
+* Commit and Sync Often
+    - When working on your branch, commit and sync your changes to github often
+    - Try to logicially group and name your commits; this makes it easier for the PR
+* Create a Pull Request (PR)
+    - Sync your local master with origin
+    - Switch to your working branch
+    - Rebase your working branch (_e.g._ my-new-branch) against master 
+        - Ensure all changes have been comitted and synchronized
+        - Run `git rebase master`
+        - Resolve any conflicts
+        - Run `git rebase --continue`
+        - Continue to resolve the conflicts and continue the rebase, until no conflicts remain (NOTE: the rebase can be ended at any time by running `git rebase --abort`)
+    -  Force Push the rebase onto your remote brach
+        - Run `git push -f`
+    -  Create a Pull Request for your branch from GitHub, add at least one reviewer
+* Make any suggested updates from PR and commit changes
+* Merge branch into master and delete branch
+* From VS Code, prune your branches
+    - Run `git prune`
+* From VS Code, delete your local branch  
+    - Switch to a non-working branch (_e.g._ master) 
+    - Hit `Ctrl+Shift+P`
+    - Start typing `Git: Delete Branch` and select the option when it appears
+    - Select your working branch to delete it
 
-## Project Status
-**todo**
-## Documnentation
+## Conventions
 
-**Todo**
-GitHub Pages (https://guides.github.com/features/pages/) are a neat way to document you application/project.
+### `Index.ts` Files
+- To reduce the complexity of project structure, this projet does not use `index.ts` files.
 
-## Security
+### Imports
 
-Authentication, Authorization, Policies, etc
+When importing more than one item from an external library, place each import on its own line; this makes imports easier to comment out when debugging / testing an idea.
+
+```ts
+import {
+    Glyphicon,
+    Button,
+    Image
+} from 'react-bootstrap'
+```
+vs
+```ts
+import {Glyphicon, Button, Image} from 'react-bootstrap'
+```
+
+### Components
+
+* Components are visual representations of business objects and data, and should not contain state (_i.e._ should be "dumb components")
+* Components should be named using the following convention: _domain_component description, where _domain_ is a major business domain for the application (_e.g._ Assignment, Sheriff, Courthouse, Region, etc.); this will help to group related components.
+## Documentation
+* [React-Bootstrap Components](https://react-bootstrap.github.io/components/alerts/)
+* [Bootstrap CSS](https://bootstrapcreative.com/resources/bootstrap-3-css-classes-index/)
+* [Redux Forms](https://redux-form.com/7.2.0/docs/gettingstarted.md/)
+
 ## Available Scripts
 
-I have started using [Yarn][yarn] for most of my packaging and script running needs.  However, you can also use npm if your inclined.  The following scripts are described from the **yarn** perspective.
+[Yarn][yarn] or npm can be user for packaging and script running needs; yarn has become the perferred method, as such the following scripts are described from the **yarn** perspective.
 
 In the project directory, you can run:
 
@@ -83,7 +132,7 @@ Starts the Storybook dev server which operates on [http://localhost:6006](http:/
 
 ### Visual Studio Code
 
-You would need to have the latest version of [VS Code](https://code.visualstudio.com) and VS Code [Chrome Debugger Extension](https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome) installed.
+Ensure the latest version of [VS Code](https://code.visualstudio.com) and VS Code [Chrome Debugger Extension](https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome) is installed.
 
 The [`launch.json`](.vscode/launch.json) is already configured with a launch task that allows you to launch chrome in a debugging capacity and debug through code within the editor. 
 
@@ -124,30 +173,6 @@ src/
 └── server                - Eventual resting place of a server for the frontend (if we create one)
 ```
 
-## Conventions
-
-### No `Index.ts` files
-- In this projet we do not use `index.ts` files as they are another thing for developers to remember to do
-
-### Imports
-
-when importing many things from an external library, place each import on its own line; this makes imports easier to comment out when debugging / testing an idea.
-
-```ts
-import {
-    Glyphicon,
-    Button,
-    Image
-} from 'react-bootstrap'
-```
-vs
-```ts
-import {Glyphicon, Button, Image} from 'react-bootstrap'
-```
-
-### Components
-
-Components are defined as visual pieces that do not 
 ## OpenShift Deployment
 
 See [OpenShift Readme](openshift/Readme.md)
