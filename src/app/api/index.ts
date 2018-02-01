@@ -1,6 +1,10 @@
 import { randomDelay } from './PromiseExtensions';
 import * as moment from 'moment';
 
+
+type DateType = Date | number | moment.Moment;
+type StringMap = {[key:string]:string};
+
 export enum SheriffAbility {
     None = 0,
     CanTransfer = 1 << 0,
@@ -9,8 +13,6 @@ export enum SheriffAbility {
     All = CanTransfer | CourtAppearance | SignDocuments
 }
 
-type DateType = Date | number | moment.Moment;
-
 export const ASSIGNMENT_TYPES = {
     courtSecurity: "Court Security",
     documentServices: "Document Services",
@@ -18,6 +20,12 @@ export const ASSIGNMENT_TYPES = {
     gateSecurity: "Gate Security",
     other: "Other"
 }
+
+export const BLANK_SHERIFF_LOCATION: SheriffLocation = {
+    courthouseId: "",
+    regionId: ""
+}
+
 
 export const BLANK_SHERIFF: Sheriff = {
     firstName: "",
@@ -30,21 +38,20 @@ export const BLANK_SHERIFF: Sheriff = {
         certificationDate: "",
         expiryDate: "",
     }],
-    permanentCourthouse: "",
-    permanentRegion: "",
-    currentCourthouse: "",
-    currentRegion: "",
+    permanentLocation: BLANK_SHERIFF_LOCATION,
+    currentLocation: BLANK_SHERIFF_LOCATION,
     onDuty:false
 }
 
-export const TRAINING_TYPES = {
+
+export const TRAINING_TYPES: StringMap = {
     FRO: "FRO - Forced Response Option",
     PISTOL: "PISTOL",
     CID: "CID - Critical Incident De-Escalation",
     CEW: "CEW - Conductive Energy Weapon"
 }
 
-export const COURTHOUSES = {
+export const COURTHOUSES: StringMap = {
     ABBOTSFORD: "Abbotsford",
     ALEXISCREEK: "Alexis Creek",
     ANAHIMLAKE: "Anahim Lake",
@@ -134,7 +141,7 @@ export const COURTHOUSES = {
     WILLIAMSLAKE: "Williams Lake"
 }
 
-export const REGION = {
+export const REGIONS: StringMap = {
     FRASER: "Fraser",
     INTERIOR: "Interior",
     NORTHERN: "Northern",
@@ -148,6 +155,11 @@ export interface SheriffTraining {
     expiryDate: string;
 }
 
+export interface SheriffLocation{
+    courthouseId: string;
+    regionId: string;
+}
+
 export interface Sheriff {
     firstName: string;
     lastName: string;
@@ -155,10 +167,8 @@ export interface Sheriff {
     imageUrl?: string;
     abilities?: SheriffAbility;
     training: SheriffTraining[];
-    permanentCourthouse?: string;
-    permanentRegion?: string;
-    currentCourthouse?: string;
-    currentRegion?: string;
+    permanentLocation?: SheriffLocation;
+    currentLocation?: SheriffLocation;
     onDuty:boolean;
 }
 
@@ -253,10 +263,8 @@ let sheriffList: Sheriff[] = [
         lastName: "Shirley",
         badgeNumber: 969,
         imageUrl: '/img/garfield_shirley.jpg',
-        permanentRegion: "Van Centre",
-        permanentCourthouse: "Vancouver - 222 Main",
-        currentRegion: "Van Centre",
-        currentCourthouse: "Vancouver - 222 Main",
+        permanentLocation: { courthouseId: "VANCOUVER", regionId: "VANCENTRE"},
+        currentLocation: {courthouseId: "VANCOUVER", regionId: "VANCENTRE"},
         training: [
             { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "FRO" },
             { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "PISTOL" },
@@ -271,10 +279,8 @@ let sheriffList: Sheriff[] = [
         lastName: "Jackson",
         badgeNumber: 204,
         imageUrl: '/img/jaqueline_jackson.jpg',
-        permanentRegion: "Interior",
-        permanentCourthouse: "Kamloops",
-        currentRegion: "Interior",
-        currentCourthouse: "Kamloops",
+        permanentLocation: { courthouseId: "KAMLOOPS", regionId: "INTERIOR"},
+        currentLocation: {courthouseId: "KAMLOOPS", regionId: "INTERIOR"},
         training: [
             { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "FRO" },
             { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "PISTOL" },
@@ -289,10 +295,8 @@ let sheriffList: Sheriff[] = [
         lastName: "Bludnell",
         badgeNumber: 790,
         imageUrl: '/img/landon_bludnell.jpg',
-        permanentRegion: "Northern",
-        permanentCourthouse: "Prince George",
-        currentRegion: "Northern",
-        currentCourthouse: "Prince George",
+        permanentLocation: { courthouseId: "PRINCEGEORGE", regionId: "NORTHERN"},
+        currentLocation: {courthouseId: "PRINCEGEORGE", regionId: "NORTHERN"},
         training: [
             { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "FRO" },
             { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "PISTOL" },
@@ -307,10 +311,8 @@ let sheriffList: Sheriff[] = [
         lastName: "Lucas",
         badgeNumber: 987,
         imageUrl: '/img/rob_lucas.jpg',
-        permanentRegion: "Fraser",
-        permanentCourthouse: "New Westminster",
-        currentRegion: "Fraser",
-        currentCourthouse: "New Westminster",
+        permanentLocation: { courthouseId: "NEWWESTMINSTER", regionId: "FRASER"},
+        currentLocation: {courthouseId: "NEWWESTMINSTER", regionId: "FRASER"},
         training: [
             { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "FRO" },
             { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "PISTOL" },
@@ -325,10 +327,8 @@ let sheriffList: Sheriff[] = [
         lastName: "Gill",
         badgeNumber: 932,
         imageUrl: '/img/steve_gill.jpg',
-        permanentRegion: "Fraser",
-        permanentCourthouse: "Surrey",
-        currentRegion: "Fraser",
-        currentCourthouse: "Surrey",
+        permanentLocation: { courthouseId: "SURREY", regionId: "FRASER"},
+        currentLocation: {courthouseId: "SURREY", regionId: "FRASER"},
         training: [
             { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "FRO" },
             { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "PISTOL" },
@@ -343,10 +343,8 @@ let sheriffList: Sheriff[] = [
         lastName: "Jervis",
         badgeNumber: 579,
         imageUrl: '/img/steve_jervis.jpg',
-        permanentRegion: "Van Centre",
-        permanentCourthouse: "Vancouver - VLC",
-        currentRegion: "Van Centre",
-        currentCourthouse: "Vancouver - VLC",
+        permanentLocation: { courthouseId: "VLC", regionId: "VANCENTRE"},
+        currentLocation: {courthouseId: "VLC", regionId: "VANCENTRE"},
         training: [
             { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "FRO" },
             { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "PISTOL" },

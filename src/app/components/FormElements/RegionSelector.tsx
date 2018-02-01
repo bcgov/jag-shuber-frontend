@@ -1,19 +1,14 @@
 import * as React from 'react';
-import { default as FormFieldWrapper, FormFieldWrapperProps } from './FormFieldWrapper';
-import { FormControl } from 'react-bootstrap';
-import { REGION } from '../../api';
+import { FormFieldWrapperProps } from './FormFieldWrapper';
+import { REGIONS } from '../../api';
+import Selector from './Selector';
 
 
 export default class RegionSelector extends React.PureComponent<FormFieldWrapperProps>{
-    render(){
-        const { input:{value, onChange}, label} = this.props;
+    render(){        
+        const data = Object.keys(REGIONS).map((key, index)=>({key, value:REGIONS[key]}));
         return (
-            <FormFieldWrapper {...this.props}>
-                <FormControl componentClass="select" value={value} onChange={onChange}>
-                    <option value="No region selected">{`Select ${label}`}</option>
-                    {Object.keys(REGION).map((k, i)=><option value={REGION[k]}>{REGION[k]}</option>)}
-                </FormControl>
-            </FormFieldWrapper>
+            <Selector data={data} {...this.props}/>
         );
     }
 }

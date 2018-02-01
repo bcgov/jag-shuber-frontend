@@ -1,16 +1,22 @@
 import * as React from 'react';
-import { Sheriff } from '../api/index';
 import {
     Table
 } from 'react-bootstrap';
+import CourthouseCard from './CourthouseCard';
+import RegionCard from './RegionCard';
+import { 
+    SheriffLocation,
+    BLANK_SHERIFF_LOCATION
+} from '../api';
 
-export interface TrainingDetailsViewProps {
-    sheriff: Sheriff;
+export interface SheriffLocationDetailsProps {
+    currentLocation?: SheriffLocation,
+    permanentLocation?: SheriffLocation
 }
 
-export default class WorksiteDetailsView extends React.Component<TrainingDetailsViewProps, any>{
+export default class SheriffLocationDetails extends React.Component<SheriffLocationDetailsProps, any>{
     render() {
-        const { sheriff: { currentCourthouse, currentRegion, permanentCourthouse, permanentRegion } } = this.props;
+        const { currentLocation=BLANK_SHERIFF_LOCATION, permanentLocation=BLANK_SHERIFF_LOCATION  } = this.props;
         return (
             <div>
                 <h3>Region and Courthouse</h3>
@@ -25,13 +31,13 @@ export default class WorksiteDetailsView extends React.Component<TrainingDetails
                     <tbody>
                         <tr>
                             <td><strong>Permanent</strong></td>
-                            <td>{permanentCourthouse}</td>
-                            <td>{permanentRegion}</td>
+                            <td><CourthouseCard location={permanentLocation}/></td>
+                            <td><RegionCard location={permanentLocation} /></td>
                         </tr>
                         <tr>
                             <td><strong>Current</strong></td>
-                            <td>{currentCourthouse}</td>
-                            <td>{currentRegion}</td>
+                            <td><CourthouseCard location={currentLocation}/></td>
+                            <td><RegionCard location={currentLocation} /></td>
                         </tr>
                     </tbody>
                 </Table>

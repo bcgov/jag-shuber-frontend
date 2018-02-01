@@ -9,7 +9,7 @@ import {
 import SheriffAbilityPile from './SheriffAbilityPile'
 import { SheriffAssignment } from '../api/index';
 import AssignmentDragSource  from '../containers/AssignmentDragSource';
-import { default as AssignmentView } from './AssignmentView';
+import AssignmentDetails  from './AssignmentDetails';
 
 export interface AssignmentCardProps {
     onClick?: () => void;
@@ -22,7 +22,7 @@ export default class AssignmentCard extends React.PureComponent<AssignmentCardPr
         const { currentGroupId, assignment: { assignmentType, requiredAbilities, id, notes }, assignment } = this.props;
         const showAssignmentDetails = (
             <Popover id="popover-trigger-focus">
-               <AssignmentView assignment={assignment} />
+               <AssignmentDetails assignment={assignment} />
             </Popover>
         );
         return (

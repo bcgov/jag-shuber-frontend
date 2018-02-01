@@ -5,11 +5,8 @@ import {
     Badge
 } from 'react-bootstrap';
 
-export interface OvertimeDetailsProps {
-    
-}
 
-export default class SheriffProfile extends React.Component<OvertimeDetailsProps, any>{
+export default class SheriffOvertimeStatus extends React.PureComponent{
     render() {
         
         return (

@@ -4,7 +4,7 @@ import { SheriffAssignment } from '../api/index';
 import {getAssignments} from '../modules/assignments/actions';
 import { RootState } from '../store';
 import {unlinkedAssignments,isLoading} from '../modules/assignments/selectors';
-import DropAssignmentList from '../components/DropAssignmentList';
+import AssignmentDropList from './AssignmentDropList';
 
 
 export interface UnlinkedAssignmentListProps{
@@ -30,7 +30,7 @@ class UnassignedAssignmentList extends React.Component<UnlinkedAssignmentListPro
     };
     
     return (
-      <DropAssignmentList assignmentGroupId={-1} assignments={assignments}/>
+      <AssignmentDropList assignmentGroupId={-1} assignments={assignments}/>
     )
   }
 }

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import SheriffCard from './SheriffCard';
-import { Sheriff } from '../api/index';
+import { Sheriff } from '../api';
 
 export interface SherriffGridProps {
     sheriffs: Sheriff[];
