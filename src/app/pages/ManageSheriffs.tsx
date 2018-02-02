@@ -21,7 +21,6 @@ class ManageSheriffs extends React.PureComponent<ManageSheriffsProps, any>{
                 <div style={{textAlign:"right"}}>
                 <AddSheriffModal />
                 </div>
-
             </Well>
             </div>
         );
