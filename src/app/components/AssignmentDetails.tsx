@@ -2,7 +2,7 @@ import * as React from 'react';
 import {
     SheriffAssignment,
     TRAINING_TYPES,
-    ASSIGNMENT_TYPES
+    WORK_SECTIONS
 } from '../api/index';
 import {
     Table,
@@ -16,33 +16,32 @@ export interface AssignmentDetailsProps {
 
 export default class AssignmentDetails extends React.Component<AssignmentDetailsProps, any>{
     render() {
-        const { assignment } = this.props;
+        const { assignment : {startTime, endTime, workSectionId, title, assignmentCourt, pickupLocation, dropoffLocation, sherrifsRequired, gateNumber, notes } } = this.props;
         return (
             <div>
-                <h2>{assignment.assignmentType}</h2>
-                <strong>Start Time: </strong>{assignment.startTime.toString().substring(0, 24)}
+                <h2>{title}</h2>
+                <strong>Start Time: </strong>{startTime.toString().substring(0, 24)}
                 <br />
-                <strong>End Time: </strong>{assignment.endTime.toString().substring(0, 24)}
+                <strong>End Time: </strong>{endTime.toString().substring(0, 24)}
                 <br />
                 <br />
-                {assignment.assignmentType === ASSIGNMENT_TYPES.courtSecurity &&
+                {WORK_SECTIONS[workSectionId] === WORK_SECTIONS.COURT &&
                     <div>
-                        <strong>Court Room: </strong>{assignment.courtRoom}<br />
-                        <strong>Assignment Court: </strong>{assignment.assignmentCourt && <Glyphicon glyph="ok" className="text-success" /> || <Glyphicon glyph="remove" className="text-danger" />}
+                        <strong>Assignment Court: </strong>{assignmentCourt && <Glyphicon glyph="ok" className="text-success" /> || <Glyphicon glyph="remove" className="text-danger" />}
                     </div>}
 
-                {assignment.assignmentType === ASSIGNMENT_TYPES.escortServices &&
+                {WORK_SECTIONS[workSectionId] === WORK_SECTIONS.ESCORTS &&
                     <div>
-                        <strong>Pickup Location: </strong>{assignment.pickupLocation}<br />
-                        <strong>Dropoff Location: </strong>{assignment.dropoffLocation}
+                        <strong>Pickup Location: </strong>{pickupLocation}<br />
+                        <strong>Dropoff Location: </strong>{dropoffLocation}
                     </div>}
 
-                {assignment.assignmentType === ASSIGNMENT_TYPES.gateSecurity &&
+                {WORK_SECTIONS[workSectionId] === WORK_SECTIONS.GATES &&
                     <div>
-                        <strong>Gate Number: </strong>{assignment.gateNumber}
+                        <strong>Gate Number: </strong>{gateNumber}
                     </div>}
                 <br />
-                <strong>Sheriffs Required: </strong> <Badge>{assignment.sherrifsRequired}</Badge>
+                <strong>Sheriffs Required: </strong> <Badge>{sherrifsRequired}</Badge>
                 <br />
                 <br />
 
@@ -68,7 +67,7 @@ export default class AssignmentDetails extends React.Component<AssignmentDetails
                 </Table>
 
                     <h3>Notes</h3>
-                    {assignment.notes}
+                    {notes}
             </div>
             );
     }

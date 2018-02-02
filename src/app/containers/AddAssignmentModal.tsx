@@ -6,7 +6,7 @@ import {
     DropdownButton,
     MenuItem
 } from 'react-bootstrap';
-import { ASSIGNMENT_TYPES } from '../api'
+import { WORK_SECTIONS } from '../api'
 
 
 export interface AddAssignmentModalProps{
@@ -32,14 +32,14 @@ export default class AddAssignmentModal extends React.Component<AddAssignmentMod
         this.state = { showModal: props.isOpen };
     }
 
-    handleShow(assignmentTypeKey:string){
+    handleShow(workSiteId:string){
         this.setState({ 
             showModal: true, 
-            showCourtSecurityFields: assignmentTypeKey === "courtSecurity",
-            showDocumentSericesFields: assignmentTypeKey === "documentServices",
-            showEscortServicesFields: assignmentTypeKey === "escortServices",
-            showGateSecurityFields: assignmentTypeKey === "gateSecurity",
-            showOtherAssignmentFields: assignmentTypeKey === "other"
+            showCourtSecurityFields: WORK_SECTIONS[workSiteId] === WORK_SECTIONS.COURT,
+            showDocumentSericesFields: WORK_SECTIONS[workSiteId] === WORK_SECTIONS.DOCUMENTS,
+            showEscortServicesFields: WORK_SECTIONS[workSiteId] === WORK_SECTIONS.ESCORTS,
+            showGateSecurityFields: WORK_SECTIONS[workSiteId] === WORK_SECTIONS.GATES,
+            showOtherAssignmentFields: WORK_SECTIONS[workSiteId] === WORK_SECTIONS.OTHER
         })
     }
 
@@ -53,9 +53,9 @@ export default class AddAssignmentModal extends React.Component<AddAssignmentMod
 			<div>	
                 <DropdownButton bsStyle="success" id="task-type-dropdown" title="Add Assignment" >
                     {
-                        Object.keys(ASSIGNMENT_TYPES).map((k, i)=>{
+                        Object.keys(WORK_SECTIONS).map((k, i)=>{
                             return(
-                                <MenuItem onSelect={() => this.handleShow(k)}>{ASSIGNMENT_TYPES[k]}</MenuItem>
+                                <MenuItem onSelect={() => this.handleShow(k)}>{WORK_SECTIONS[k]}</MenuItem>
                             );
                         })
                     }

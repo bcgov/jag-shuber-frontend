@@ -13,6 +13,19 @@ export enum SheriffAbility {
     All = CanTransfer | CourtAppearance | SignDocuments
 }
 
+export enum DaysOfWeek {
+    None = 0,
+    Monday = 1 << 0,
+    Tuesday = 1 << 1,
+    Wednesday = 1 << 2,
+    Thursday = 1 << 3, 
+    Friday = 1 << 4, 
+    Saturday = 1 << 5,
+    Sunday = 1 << 6,
+    Everyday = Monday | Tuesday | Wednesday | Thursday | Friday | Saturday | Sunday,
+    Weekdays = Monday | Tuesday | Wednesday | Thursday | Friday
+}
+
 export const ASSIGNMENT_TYPES = {
     courtSecurity: "Court Security",
     documentServices: "Document Services",
@@ -149,6 +162,14 @@ export const REGIONS: StringMap = {
     VANISLAND: "Vancouver Island"
 }
 
+export const WORK_SECTIONS: StringMap = {
+    COURT: "Court",
+    JAIL: "Jail",
+    ESCORTS: "Escorts",
+    DOCUMENTS: "Documents",
+    OTHER: "Other"
+}
+
 export interface SheriffTraining {
     trainingType: string;
     certificationDate: string;
@@ -172,24 +193,37 @@ export interface Sheriff {
     onDuty:boolean;
 }
 
+export interface DaysAndTimes { 
+    startTime: DateType; 
+    endTime: DateType; 
+    days: DaysOfWeek;
+}
+
+export interface SheriffAssignmentTemplate {
+    assignmentTemplate: SheriffAssignment;
+    schedule: DaysAndTimes;
+}
+
 export interface SheriffAssignment {
     id: number;
-    assignmentType: string;
-    notes: string;
-    requiredAbilities: SheriffAbility;
+    title: string;
+    workSectionId: string;
+    notes?: string;
+    requiredAbilities?: SheriffAbility;
     sheriffIds: number[];
-    startTime: DateType,
-    endTime: DateType,
-    sherrifsRequired: number | string,
-    //attributes for gate security assignments
-    gateNumber?: number | string, 
-    //attributes for escort security assignments
-    pickupLocation?: string,
-    dropoffLocation?: string,
-    //attributes court security assignments
-    courtRoom?: string, 
-    assignmentCourt?: boolean
+    startTime: DateType;
+    endTime: DateType;
+    sherrifsRequired: number | string;
 
+    //attributes for gate security assignments
+    gateNumber?: number | string;
+
+    //attributes for escort security assignments
+    pickupLocation?: string;
+    dropoffLocation?: string;
+
+    //attributes court security assignments 
+    assignmentCourt?: boolean
 }
 
 export interface API {
@@ -310,7 +344,7 @@ let sheriffList: Sheriff[] = [
         firstName: "Rob",
         lastName: "Lucas",
         badgeNumber: 987,
-        imageUrl: '/img/rob_lucas.jpg',
+        imageUrl: '/img/rob_lucas.jpg', 
         permanentLocation: { courthouseId: "NEWWESTMINSTER", regionId: "FRASER"},
         currentLocation: {courthouseId: "NEWWESTMINSTER", regionId: "FRASER"},
         training: [
@@ -359,10 +393,9 @@ let sheriffList: Sheriff[] = [
 const assignments: SheriffAssignment[] = [
     {
         id: 0,
-        assignmentType: 'Court Security',
-        courtRoom: 'Courtroom 101',
+        title: 'Courtroom 101',
+        workSectionId: 'COURT',
         assignmentCourt: true,
-        requiredAbilities: SheriffAbility.CanTransfer | SheriffAbility.CourtAppearance,
         sheriffIds: [],
         startTime: moment().startOf('day').add(9, 'hours'),
         endTime: moment().startOf('day').add(12, 'hours'),
@@ -371,11 +404,11 @@ const assignments: SheriffAssignment[] = [
     },
     {
         id: 1,
-        assignmentType: ASSIGNMENT_TYPES.escortServices,
+        title: 'Escorts',
+        workSectionId: 'ESCORTS',
         pickupLocation: 'Location Z',
         dropoffLocation: 'Courthouse A',
         notes: 'My notes on this escort.',
-        requiredAbilities: SheriffAbility.CanTransfer,
         sheriffIds: [],
         startTime: moment().startOf('day').add(8, 'hours'),
         endTime: moment().startOf('day').add(9, 'hours'),
@@ -383,9 +416,9 @@ const assignments: SheriffAssignment[] = [
     },
     {
         id: 2,
-        assignmentType: ASSIGNMENT_TYPES.documentServices,
+        title: 'Document Service',
+        workSectionId: 'DOCUMENTS',
         notes: 'Serve documents A, B, and C',
-        requiredAbilities: SheriffAbility.CourtAppearance,
         sheriffIds: [],
         startTime: moment().startOf('day').add(9, 'hours'),
         endTime: moment().startOf('day').add(16, 'hours'),
@@ -393,31 +426,20 @@ const assignments: SheriffAssignment[] = [
     },
     {
         id: 3,
-        assignmentType: ASSIGNMENT_TYPES.other,
-        notes: 'Attending co-design session for SHUBER',
-        requiredAbilities: SheriffAbility.All,
-        sheriffIds: [],
-        startTime: moment().add(2, 'hour'),
-        endTime: moment().add(3, 'hour'),
-        sherrifsRequired: 1
-    },
-    {
-        id: 4,
-        assignmentType: ASSIGNMENT_TYPES.gateSecurity,
+        title: 'Gate Secturity',
+        workSectionId: 'GATES',
         gateNumber: 1,
         notes: 'My notes on this gate',
-        requiredAbilities: SheriffAbility.CanTransfer | SheriffAbility.CourtAppearance,
         sheriffIds: [],
         startTime: moment().startOf('day').add(9, 'hours'),
         endTime: moment().startOf('day').add(12.5, 'hours'),
         sherrifsRequired: 1
     },
     {
-        id: 5,
-        assignmentType: ASSIGNMENT_TYPES.courtSecurity,
-        courtRoom: 'Courtroom 102',
+        id: 4,
+        title: 'Courtroom 102',
+        workSectionId: 'COURT',
         assignmentCourt: false,
-        requiredAbilities: SheriffAbility.CanTransfer | SheriffAbility.CourtAppearance,
         sheriffIds: [],
         startTime: moment().startOf('day').add(9, 'hours'),
         endTime: moment().startOf('day').add(12, 'hours'),
@@ -425,11 +447,21 @@ const assignments: SheriffAssignment[] = [
         notes: 'My notes on the file.'
     },
     {
-        id: 6,
-        assignmentType: ASSIGNMENT_TYPES.courtSecurity,
-        courtRoom: 'Courtroom 101',
+        id: 5,
+        title: 'Courtroom 103',
+        workSectionId: 'COURT',
         assignmentCourt: false,
-        requiredAbilities: SheriffAbility.CanTransfer | SheriffAbility.CourtAppearance,
+        sheriffIds: [],
+        startTime: moment().startOf('day').add(13, 'hours'),
+        endTime: moment().startOf('day').add(16, 'hours'),
+        sherrifsRequired: 1,
+        notes: 'My notes on the file.'
+    },
+    {
+        id: 6,
+        title: 'Courtroom 104',
+        workSectionId: 'COURT',
+        assignmentCourt: false,
         sheriffIds: [],
         startTime: moment().startOf('day').add(13, 'hours'),
         endTime: moment().startOf('day').add(16, 'hours'),
@@ -438,34 +470,22 @@ const assignments: SheriffAssignment[] = [
     },
     {
         id: 7,
-        assignmentType: ASSIGNMENT_TYPES.courtSecurity,
-        courtRoom: 'Courtroom 102',
-        assignmentCourt: false,
-        requiredAbilities: SheriffAbility.CanTransfer | SheriffAbility.CourtAppearance,
-        sheriffIds: [],
-        startTime: moment().startOf('day').add(13, 'hours'),
-        endTime: moment().startOf('day').add(16, 'hours'),
-        sherrifsRequired: 1,
-        notes: 'My notes on the file.'
-    },
-    {
-        id: 8,
-        assignmentType: ASSIGNMENT_TYPES.gateSecurity,
+        title: 'Gate Secturity',
+        workSectionId: 'GATES',
         gateNumber: 1,
         notes: 'My notes on this gate',
-        requiredAbilities: SheriffAbility.CanTransfer | SheriffAbility.CourtAppearance,
         sheriffIds: [],
         startTime: moment().startOf('day').add(12.5, 'hours'),
         endTime: moment().startOf('day').add(16, 'hours'),
         sherrifsRequired: 1
     },
     {
-        id: 9,
-        assignmentType: ASSIGNMENT_TYPES.escortServices,
+        id: 8,
+        title: 'Escorts',
+        workSectionId: 'ESCORTS',
         pickupLocation: 'Courthouse A',
         dropoffLocation: 'Location Z',
         notes: 'My notes on this escort.',
-        requiredAbilities: SheriffAbility.CanTransfer,
         sheriffIds: [],
         startTime: moment().startOf('day').add(16, 'hours'),
         endTime: moment().startOf('day').add(17, 'hours'),
