@@ -40,7 +40,7 @@ export default class AssignmentDetails extends React.Component<AssignmentDetails
                 <strong>End Time: </strong><DateDisplay date={endTime}/>
                 <br />
                 <br />
-                {WORK_SECTIONS[workSectionId] === WORK_SECTIONS.COURT &&
+                {WORK_SECTIONS[workSectionId] === WORK_SECTIONS.COURTS &&
                     <div>
                         <strong>Assignment Court: </strong>{assignmentCourt && <Glyphicon glyph="ok" className="text-success" /> || <Glyphicon glyph="remove" className="text-danger" />}
                     </div>}

@@ -16,7 +16,7 @@ class DefaultAssignments extends React.PureComponent {
                     </div>
                     <AssignmentDefaultList />
                     <div style={{ textAlign: "right" }}>
-                        <AddAssignmentModal />
+                        <AddAssignmentModal isDefaultTemplate />
                     </div>
                 </Well>
             </div>

@@ -9,7 +9,7 @@ export default class NumberOfSheriffsSelector extends React.PureComponent<FormFi
         return (
             <FormFieldWrapper {...this.props}>
                 <FormControl componentClass="select" value={value} onChange={onChange}>
-                    <option value="No Sheriffs Selected">{`Select ${label}`}</option>
+                    <option>{`Select ${label}`}</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>

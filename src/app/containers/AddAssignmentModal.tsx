@@ -11,6 +11,7 @@ import { WORK_SECTIONS } from '../api'
 
 export interface AddAssignmentModalProps{
     isOpen?: boolean;
+    isDefaultTemplate?: boolean;
 }
 
 export interface AddAssignmentModalState{
@@ -24,7 +25,8 @@ export interface AddAssignmentModalState{
 
 export default class AddAssignmentModal extends React.Component<AddAssignmentModalProps, AddAssignmentModalState>{
     static defaultProps:AddAssignmentModalProps = {
-        isOpen: false
+        isOpen: false,
+        isDefaultTemplate: false    
     }
 
     constructor(props: AddAssignmentModalProps){
@@ -34,8 +36,8 @@ export default class AddAssignmentModal extends React.Component<AddAssignmentMod
 
     handleShow(workSiteId:string){
         this.setState({ 
-            showModal: true, 
-            showCourtSecurityFields: WORK_SECTIONS[workSiteId] === WORK_SECTIONS.COURT,
+            showModal: true,
+            showCourtSecurityFields: WORK_SECTIONS[workSiteId] === WORK_SECTIONS.COURTS,
             showDocumentSericesFields: WORK_SECTIONS[workSiteId] === WORK_SECTIONS.DOCUMENTS,
             showEscortServicesFields: WORK_SECTIONS[workSiteId] === WORK_SECTIONS.ESCORTS,
             showGateSecurityFields: WORK_SECTIONS[workSiteId] === WORK_SECTIONS.GATES,
@@ -49,6 +51,7 @@ export default class AddAssignmentModal extends React.Component<AddAssignmentMod
 
     render(){
         const { showModal, showCourtSecurityFields, showDocumentSericesFields, showEscortServicesFields, showGateSecurityFields, showOtherAssignmentFields } = this.state;
+        const { isDefaultTemplate } = this.props;
         return (
 			<div>	
                 <DropdownButton bsStyle="success" id="task-type-dropdown" title="Add Assignment" >
@@ -72,6 +75,7 @@ export default class AddAssignmentModal extends React.Component<AddAssignmentMod
                             showEscortServicesFields={showEscortServicesFields}
                             showGateSecurityFields={showGateSecurityFields}
                             showOtherAssignmentFields={showOtherAssignmentFields}
+                            isDefaultTemplate = {isDefaultTemplate}
                             onSubmitSuccess={()=>this.handleClose()}
                         />
 					</Modal.Body>

@@ -162,13 +162,23 @@ export const REGIONS: StringMap = {
 }
 
 export const WORK_SECTIONS: StringMap = {
-    COURT: "Court",
+    COURTS: "Courts",
     JAIL: "Jail",
     ESCORTS: "Escorts",
     DOCUMENTS: "Documents",
     OTHER: "Other"
 }
 
+export const COURTROOMS: StringMap = {
+    101: "Courtroom 101",
+    102: "Courtroom 102",
+    103: "Courtroom 103",
+    104: "Courtroom 104",
+    201: "Courtroom 201",
+    202: "Courtroom 202",
+    203: "Courtroom 203",
+    204: "Courtroom 204"
+}
 export interface SheriffTraining {
     trainingType: string;
     certificationDate: string;
@@ -229,7 +239,7 @@ export const DEFAULT_ASSIGNMENTS: SheriffAssignmentTemplate[] = [
     {
         assignmentTemplate: {
             title: 'Courtroom 101',
-            workSectionId: 'COURT',
+            workSectionId: 'COURTS',
             sherrifsRequired: 2
         },
         recurrenceInfo: [
@@ -248,7 +258,7 @@ export const DEFAULT_ASSIGNMENTS: SheriffAssignmentTemplate[] = [
     {
         assignmentTemplate: {
             title: 'Courtroom 102',
-            workSectionId: 'COURT',
+            workSectionId: 'COURTS',
             sherrifsRequired: 1
         },
         recurrenceInfo: [
@@ -434,7 +444,7 @@ const assignments: SheriffAssignment[] = [
     {
         id: 0,
         title: 'Courtroom 101',
-        workSectionId: 'COURT',
+        workSectionId: 'COURTS',
         assignmentCourt: true,
         sheriffIds: [],
         startTime: moment().startOf('day').add(9, 'hours'),
@@ -478,7 +488,7 @@ const assignments: SheriffAssignment[] = [
     {
         id: 4,
         title: 'Courtroom 102',
-        workSectionId: 'COURT',
+        workSectionId: 'COURTS',
         assignmentCourt: false,
         sheriffIds: [],
         startTime: moment().startOf('day').add(9, 'hours'),
@@ -489,7 +499,7 @@ const assignments: SheriffAssignment[] = [
     {
         id: 5,
         title: 'Courtroom 103',
-        workSectionId: 'COURT',
+        workSectionId: 'COURTS',
         assignmentCourt: false,
         sheriffIds: [],
         startTime: moment().startOf('day').add(13, 'hours'),
@@ -500,7 +510,7 @@ const assignments: SheriffAssignment[] = [
     {
         id: 6,
         title: 'Courtroom 104',
-        workSectionId: 'COURT',
+        workSectionId: 'COURTS',
         assignmentCourt: false,
         sheriffIds: [],
         startTime: moment().startOf('day').add(13, 'hours'),
