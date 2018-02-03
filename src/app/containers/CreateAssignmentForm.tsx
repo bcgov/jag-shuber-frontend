@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { reduxForm, ConfigProps } from 'redux-form';
 import { default as AssignmentForm, AssignmentFormProps } from '../components/AssignmentForm';
-import { SheriffAssignment, SheriffAbility, ASSIGNMENT_TYPES } from '../api/index';
+import { SheriffAssignment, SheriffAbility, WORK_SECTIONS } from '../api/index';
 import { createAssignment } from '../modules/assignments/actions';
 import { default as FormSubmitButton, SubmitButtonProps } from '../components/FormElements/SubmitButton'
 
@@ -13,15 +13,15 @@ const formConfig: ConfigProps<any, AssignmentFormProps> = {
         const { showCourtSecurityFields, showEscortServicesFields, showDocumentSericesFields, showGateSecurityFields } = props;
         let assignmentType = "";
         if(showCourtSecurityFields){
-            assignmentType = ASSIGNMENT_TYPES.courtSecurity;
+            assignmentType = WORK_SECTIONS.courtSecurity;
         }else if(showEscortServicesFields){
-            assignmentType = ASSIGNMENT_TYPES.escortServices;
+            assignmentType = WORK_SECTIONS.escortServices;
         }else if(showDocumentSericesFields){
-            assignmentType = ASSIGNMENT_TYPES.documentServices;
+            assignmentType = WORK_SECTIONS.documentServices;
         }else if (showGateSecurityFields){
-            assignmentType = ASSIGNMENT_TYPES.gateSecurity;
+            assignmentType = WORK_SECTIONS.gateSecurity;
         }else{
-            assignmentType = ASSIGNMENT_TYPES.other;
+            assignmentType = WORK_SECTIONS.other;
         }
 
         let newAssignment = Object.assign({}, values, {requiredAbilities:SheriffAbility.All}, {sheriffIds:[]}, {assignmentType: assignmentType});

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {
     SheriffAssignment,
-    ASSIGNMENT_TYPES
+    WORK_SECTIONS
 } from '../../api/index';
 import AssignmentDragSource from '../../containers/AssignmentDragSource';
 import {
@@ -21,7 +21,7 @@ export interface AssignmentTimelineCardProps {
 export default class AssignmentTimelineCard extends React.PureComponent<AssignmentTimelineCardProps, any>{
     render() {
         const { assignment, currentGroupId, onDropped } = this.props;
-        const { assignmentType, courtRoom, gateNumber, assignmentCourt,sheriffIds=[],sherrifsRequired=1 } = assignment;
+        const { title, workSectionId, gateNumber, assignmentCourt,sheriffIds=[],sherrifsRequired=1 } = assignment;
 
         const showAssignmentDetails = (
             <Popover id="popover-trigger-focus">
@@ -31,13 +31,13 @@ export default class AssignmentTimelineCard extends React.PureComponent<Assignme
 
 
         let backgroundColor = "";
-        if (assignmentType === ASSIGNMENT_TYPES.courtSecurity) {
+        if (WORK_SECTIONS[workSectionId] === WORK_SECTIONS.COURT) {
             backgroundColor = "#008080";
-        } else if (assignmentType === ASSIGNMENT_TYPES.escortServices) {
+        } else if (WORK_SECTIONS[workSectionId] === WORK_SECTIONS.ESCORTS) {
             backgroundColor = "#993399";
-        } else if (assignmentType === ASSIGNMENT_TYPES.documentServices) {
+        } else if (WORK_SECTIONS[workSectionId] === WORK_SECTIONS.DOCUMENTS) {
             backgroundColor = "#990000";
-        } else if (assignmentType === ASSIGNMENT_TYPES.gateSecurity) {
+        } else if (WORK_SECTIONS[workSectionId] === WORK_SECTIONS.GATES) {
             backgroundColor = "#e65c00";
         } else {
             backgroundColor = "#0066cc";
@@ -53,11 +53,11 @@ export default class AssignmentTimelineCard extends React.PureComponent<Assignme
                 <div style={{ display: 'flex',justifyContent:'space-between', flexFlow: 'column nowrap', lineHeight: "15px", backgroundColor, width: "100%", height: "100%", position: "absolute" }}>
                     <div style={{ flex: '1' }}>
                         <OverlayTrigger trigger="focus" placement="right" overlay={showAssignmentDetails}>
-                            <Button style={{ color: "#FFF", padding: 0 }} bsStyle="link" bsSize="medium"><strong>{assignmentType} {assignmentCourt && <Glyphicon glyph="asterisk" />}</strong></Button>
+                            <Button style={{ color: "#FFF", padding: 0 }} bsStyle="link" bsSize="medium"><strong>{title} {assignmentCourt && <Glyphicon glyph="asterisk" />}</strong></Button>
                         </OverlayTrigger>
                     </div>
                     <div style={{ flex: '1' }}>
-                        <i>{courtRoom} {gateNumber}</i>
+                        <i>{gateNumber}</i>
                     </div>
                     <div style={{position:"absolute",right:2,bottom:0}}>
                         {   progressValue >= 100 

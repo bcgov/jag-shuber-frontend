@@ -4,6 +4,7 @@ import {
     Table,
     Glyphicon
 } from 'react-bootstrap';
+import DateDisplay from './DateDisplay';
 
 export interface SheriffTrainingDetailsProps {
     training: SheriffTraining[];
@@ -33,14 +34,14 @@ export default class SheriffTrainingDetails extends React.Component<SheriffTrain
                         <tbody>
                         {training.map(function (training, index) {
                         return (
-                            <tr key={index}>
-                                <td>{training.trainingType}</td>
-                                { !isCompactView && <td>{training.certificationDate.toString().substring(3, 15)}</td>}
-                                { !isCompactView && <td>{training.expiryDate.toString().substring(3, 15)}</td>}
-                                <td><Glyphicon glyph="ok" className="text-success" /></td>
-                            </tr>
-                        );
-                })}
+                                <tr key={index}>
+                                    <td>{training.trainingType}</td>
+                                    { !isCompactView && <td><DateDisplay date={training.certificationDate} format="MMM D YYYY"/></td>}
+                                    { !isCompactView && <td><DateDisplay date={training.expiryDate} format="MMM DD YYYY"/></td>}
+                                    <td><Glyphicon glyph="ok" className="text-success" /></td>
+                                </tr>
+                            );
+                        })}
                     </tbody>
                 </Table> )}
                 {  training.length == 0 && (

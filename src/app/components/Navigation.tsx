@@ -1,11 +1,12 @@
 import * as React from 'react';
 import {
-    Nav
-    , Navbar
-    , NavbarBrand
+    Nav, 
+    Navbar,
+    NavbarBrand
 } from 'react-bootstrap';
 
 import NavigationLink from './NavigationLink'
+
 
 export interface NavigationProps {
 
@@ -28,7 +29,8 @@ export default class Navigation extends React.Component<NavigationProps, any>{
                     </Navbar.Header>
                     <Nav bsStyle='tabs'>
                         <NavigationLink exactMatch to="/" label="Timeline" />
-                        <NavigationLink to="/sheriffs/manage" label="Manage Sheriffs" />                        
+                        <NavigationLink to="/sheriffs/manage" label="Manage Sheriffs" />   
+                        <NavigationLink to="/assignments/manage/default" label="Manage Default Assignments" /> 
                     </Nav>
                 </Navbar>
                 
