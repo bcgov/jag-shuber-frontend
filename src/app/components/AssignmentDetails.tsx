@@ -9,6 +9,7 @@ import {
     Glyphicon,
     Badge
 } from 'react-bootstrap';
+import DateDisplay from './DateDisplay';
 
 export interface AssignmentDetailsProps {
     assignment: SheriffAssignment;
@@ -16,13 +17,27 @@ export interface AssignmentDetailsProps {
 
 export default class AssignmentDetails extends React.Component<AssignmentDetailsProps, any>{
     render() {
-        const { assignment : {startTime, endTime, workSectionId, title, assignmentCourt, pickupLocation, dropoffLocation, sherrifsRequired, gateNumber, notes } } = this.props;
+        const {
+            assignment: {
+                startTime,
+                endTime,
+                workSectionId,
+                title,
+                assignmentCourt,
+                pickupLocation,
+                dropoffLocation,
+                sherrifsRequired,
+                gateNumber,
+                notes
+            }
+        } = this.props;
+
         return (
             <div>
                 <h2>{title}</h2>
-                <strong>Start Time: </strong>{startTime.toString().substring(0, 24)}
+                <strong>Start Time: </strong><DateDisplay date={startTime}/>
                 <br />
-                <strong>End Time: </strong>{endTime.toString().substring(0, 24)}
+                <strong>End Time: </strong><DateDisplay date={endTime}/>
                 <br />
                 <br />
                 {WORK_SECTIONS[workSectionId] === WORK_SECTIONS.COURT &&
@@ -66,9 +81,9 @@ export default class AssignmentDetails extends React.Component<AssignmentDetails
                     </tbody>
                 </Table>
 
-                    <h3>Notes</h3>
-                    {notes}
+                <h3>Notes</h3>
+                {notes}
             </div>
-            );
+        );
     }
 }

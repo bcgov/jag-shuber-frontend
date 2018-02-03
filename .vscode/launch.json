@@ -24,8 +24,9 @@
             "name": "Debug Jest Tests",
             "type": "node",
             "request": "launch",
-            "program": "${workspaceRoot}/scripts/test",
-            "args": [
+            "runtimeExecutable": "node",
+            "runtimeArgs": [
+              "${workspaceRoot}/scripts/test",
               "--runInBand",      
               "--env=jsdom"        
             ],
