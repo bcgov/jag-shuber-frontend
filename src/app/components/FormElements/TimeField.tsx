@@ -3,13 +3,16 @@ import { default as FormFieldWrapper, FormFieldWrapperProps } from './FormFieldW
 import * as DateTime from 'react-datetime';
 import 'react-datetime/css/react-datetime.css';
 
+export interface TimeFieldProps {
+    defaultValue?: string;
+}
 
-export default class TimeField extends React.PureComponent<FormFieldWrapperProps>{
+export default class TimeField extends React.PureComponent<FormFieldWrapperProps & TimeFieldProps>{
     render(){
-        const {input:{value, onChange}} = this.props;
+        const {input:{value, onChange}, defaultValue="12:00 p"} = this.props;
         return (
             <FormFieldWrapper {...this.props}>
-                <DateTime dateFormat={false} closeOnSelect={true} value={value} onChange={onChange}/>
+                <DateTime dateFormat={false} closeOnSelect={true} value={value} onChange={onChange} defaultValue={defaultValue}/>
             </FormFieldWrapper>
         );
     }

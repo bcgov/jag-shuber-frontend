@@ -2,7 +2,7 @@ import { randomDelay } from './PromiseExtensions';
 import * as moment from 'moment';
 
 
-export type DateType = Date | number | moment.Moment | string;
+export type DateType = Date | moment.Moment | string;
 type StringMap = { [key: string]: string };
 
 export enum SheriffAbility {

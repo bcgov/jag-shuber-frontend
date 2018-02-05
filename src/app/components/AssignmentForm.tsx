@@ -107,8 +107,8 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
                                                 <ListGroupItem key={index}>
                                                     <Button bsStyle="danger" onClick={() => fields.remove(index)} className="pull-right"><Glyphicon glyph="trash" /></Button><br />
                                                     <Field name={`${recurrenceInfoFieldName}.days`} component={DaysOfWeekChecklist} label="Days" />
-                                                    <Field name={`${recurrenceInfoFieldName}.startTime`} component={TimeField} label="Start Time" />
-                                                    <Field name={`${recurrenceInfoFieldName}.endTime`} component={TimeField} label="End Time" />
+                                                    <Field name={`${recurrenceInfoFieldName}.startTime`} component={TimeField} label="Start Time" defaultValue="09:00 a" />
+                                                    <Field name={`${recurrenceInfoFieldName}.endTime`} component={TimeField} label="End Time" defaultValue="05:00 p" />
                                                 </ListGroupItem>)
                                         }
                                         )}
