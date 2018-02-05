@@ -35,9 +35,9 @@ export default class AssignmentDetails extends React.Component<AssignmentDetails
         return (
             <div>
                 <h2>{title}</h2>
-                <strong>Start Time: </strong><DateDisplay date={startTime}/>
+                <strong>Start Time: </strong><DateDisplay date={startTime} showMonth showDay showYear showTime/>
                 <br />
-                <strong>End Time: </strong><DateDisplay date={endTime}/>
+                <strong>End Time: </strong><DateDisplay date={endTime} showMonth showDay showYear showTime/>
                 <br />
                 <br />
                 {WORK_SECTIONS[workSectionId] === WORK_SECTIONS.COURTS &&

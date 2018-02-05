@@ -36,8 +36,8 @@ export default class SheriffTrainingDetails extends React.Component<SheriffTrain
                         return (
                                 <tr key={index}>
                                     <td>{training.trainingType}</td>
-                                    { !isCompactView && <td><DateDisplay date={training.certificationDate} format="MMM D YYYY"/></td>}
-                                    { !isCompactView && <td><DateDisplay date={training.expiryDate} format="MMM DD YYYY"/></td>}
+                                    { !isCompactView && <td><DateDisplay date={training.certificationDate} showMonth showDay showYear/></td>}
+                                    { !isCompactView && <td><DateDisplay date={training.expiryDate} showMonth showDay showYear/></td>}
                                     <td><Glyphicon glyph="ok" className="text-success" /></td>
                                 </tr>
                             );
