@@ -11,8 +11,8 @@ export default class DaysOfWeekChecklist extends React.PureComponent<FormFieldWr
         const { input: { onChange } } = this.props;
         return (
             <FormFieldWrapper {...this.props}>
-                {EnumUtils.getEnumKeysAsStrings(DaysOfWeek).map((k) =>
-                    <Checkbox onChange={onChange} value={k}>{k}</Checkbox>)}
+                <br/>{EnumUtils.getEnumKeysAsStrings(DaysOfWeek).map((k) =>
+                    <Checkbox inline onChange={onChange} value={k}>{k}</Checkbox>)} {' '}
             </FormFieldWrapper>
 
         );
