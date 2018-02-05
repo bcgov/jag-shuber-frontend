@@ -42,7 +42,7 @@ describe('displayEnum() ', () => {
 })
 
 describe('getEnumKeysAsStrings()', () => {
-    const util = EnumUtils.getEnumKeysAsStrings;
+    const util = EnumUtils.getEnumKeyLabels;
     it('Should return a list of enum keys as strings', () => {
         expect(util(TestDaysOfWeek)).toEqual(["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun", "Everyday", "Weekdays"]);
     })

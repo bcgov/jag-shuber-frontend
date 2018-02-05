@@ -16,6 +16,6 @@ export function displayEnum(theEnum: any, enumValue: any): string[] {
     }
 }
 
-export function getEnumKeysAsStrings(theEnum: any): string[] {
+export function getEnumKeyLabels(theEnum: any): string[] {
     return Object.keys(theEnum).filter(key => !isNaN(Number(theEnum[key])));
 }
