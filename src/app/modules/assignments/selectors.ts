@@ -26,3 +26,5 @@ export const unlinkedAssignments = createSelector(allAssignments,
         return ts;
     }
 )
+
+export const allAssignmentTemplates = (state:RootState) => state.assignments.templates;

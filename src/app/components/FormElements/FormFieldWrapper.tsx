@@ -14,7 +14,7 @@ export default class FormFieldWrapper extends React.PureComponent<FormFieldWrapp
         const validationState = touched ? (error ? 'error' : (warning ? 'warning' : undefined)) : undefined;
 
         return (
-            <FormGroup validationState={validationState}>
+            <FormGroup validationState={validationState} >
                 { showLabel && <ControlLabel>{label}</ControlLabel> }
                 {children}
                 {touched && (

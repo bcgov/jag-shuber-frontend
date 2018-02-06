@@ -1,7 +1,11 @@
 import * as React from 'react';
+import * as moment from 'moment';
 import { reduxForm, ConfigProps } from 'redux-form';
 import { default as AssignmentForm, AssignmentFormProps } from '../components/AssignmentForm';
-import { SheriffAssignment, SheriffAbility, WORK_SECTIONS } from '../api/index';
+import { 
+    SheriffAssignment, 
+    SheriffAbility
+} from '../api/index';
 import { createAssignment } from '../modules/assignments/actions';
 import { default as FormSubmitButton, SubmitButtonProps } from '../components/FormElements/SubmitButton'
 
@@ -9,22 +13,18 @@ import { default as FormSubmitButton, SubmitButtonProps } from '../components/Fo
 // wrapping generic assignment form in redux-form
 const formConfig: ConfigProps<any, AssignmentFormProps> = { 
     form: 'CreateAssignment',
-    onSubmit: (values:SheriffAssignment|any, dispatch, props) =>{
-        const { showCourtSecurityFields, showEscortServicesFields, showDocumentSericesFields, showGateSecurityFields } = props;
-        let assignmentType = "";
-        if(showCourtSecurityFields){
-            assignmentType = WORK_SECTIONS.courtSecurity;
-        }else if(showEscortServicesFields){
-            assignmentType = WORK_SECTIONS.escortServices;
-        }else if(showDocumentSericesFields){
-            assignmentType = WORK_SECTIONS.documentServices;
-        }else if (showGateSecurityFields){
-            assignmentType = WORK_SECTIONS.gateSecurity;
-        }else{
-            assignmentType = WORK_SECTIONS.other;
+    initialValues: {
+        assignment:{
+            startTime: moment(),
+            endTime: moment()
         }
+    },
+    onSubmit: (values:{assignment: SheriffAssignment}, dispatch, props) =>{
+        const { workSectionId } = props;
 
-        let newAssignment = Object.assign({}, values, {requiredAbilities:SheriffAbility.All}, {sheriffIds:[]}, {assignmentType: assignmentType});
+        let newAssignment = Object.assign({}, values.assignment,
+            {requiredAbilities:SheriffAbility.All, sheriffIds:[], workSectionId}, 
+        );
         dispatch(createAssignment(newAssignment));
     } 
 };

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {default as CreateAssignmentForm} from '../containers/CreateAssignmentForm';
 import { 
     Button, 
     Modal, 
@@ -7,7 +6,8 @@ import {
     MenuItem
 } from 'react-bootstrap';
 import { WORK_SECTIONS } from '../api'
-
+import CreateAssignmentTemplateForm from './CreateAssignmentTemplateForm';
+import {default as CreateAssignmentForm} from '../containers/CreateAssignmentForm';
 
 export interface AddAssignmentModalProps{
     isOpen?: boolean;
@@ -16,11 +16,7 @@ export interface AddAssignmentModalProps{
 
 export interface AddAssignmentModalState{
     showModal?: boolean;
-    showCourtSecurityFields?: boolean;
-    showDocumentSericesFields?: boolean;
-    showEscortServicesFields?: boolean;
-    showGateSecurityFields?: boolean;
-    showOtherAssignmentFields?: boolean;
+    workSectionId?: string;
 }
 
 export default class AddAssignmentModal extends React.Component<AddAssignmentModalProps, AddAssignmentModalState>{
@@ -34,14 +30,10 @@ export default class AddAssignmentModal extends React.Component<AddAssignmentMod
         this.state = { showModal: props.isOpen };
     }
 
-    handleShow(workSiteId:string){
+    handleShow(workSectionId:string){
         this.setState({ 
             showModal: true,
-            showCourtSecurityFields: WORK_SECTIONS[workSiteId] === WORK_SECTIONS.COURTS,
-            showDocumentSericesFields: WORK_SECTIONS[workSiteId] === WORK_SECTIONS.DOCUMENTS,
-            showEscortServicesFields: WORK_SECTIONS[workSiteId] === WORK_SECTIONS.ESCORTS,
-            showGateSecurityFields: WORK_SECTIONS[workSiteId] === WORK_SECTIONS.GATES,
-            showOtherAssignmentFields: WORK_SECTIONS[workSiteId] === WORK_SECTIONS.OTHER
+            workSectionId: workSectionId
         })
     }
 
@@ -50,8 +42,13 @@ export default class AddAssignmentModal extends React.Component<AddAssignmentMod
     }
 
     render(){
-        const { showModal, showCourtSecurityFields, showDocumentSericesFields, showEscortServicesFields, showGateSecurityFields, showOtherAssignmentFields } = this.state;
+        const { showModal, workSectionId } = this.state;
         const { isDefaultTemplate } = this.props;
+        const formProps =  {
+            workSectionId,
+            isDefaultTemplate,
+            onSubmitSuccess: ()=>this.handleClose()
+        }
         return (
 			<div>	
                 <DropdownButton bsStyle="success" id="task-type-dropdown" title="Add Assignment" >
@@ -69,18 +66,12 @@ export default class AddAssignmentModal extends React.Component<AddAssignmentMod
 						<Modal.Title>Add Assignment</Modal.Title>
 					</Modal.Header>
 					<Modal.Body>
-                        <CreateAssignmentForm 
-                            showCourtSecurityFields={showCourtSecurityFields} 
-                            showDocumentSericesFields={showDocumentSericesFields}
-                            showEscortServicesFields={showEscortServicesFields}
-                            showGateSecurityFields={showGateSecurityFields}
-                            showOtherAssignmentFields={showOtherAssignmentFields}
-                            isDefaultTemplate = {isDefaultTemplate}
-                            onSubmitSuccess={()=>this.handleClose()}
-                        />
+                        {isDefaultTemplate && <CreateAssignmentTemplateForm {...formProps}/>}
+                        {!isDefaultTemplate && <CreateAssignmentForm {...formProps} />}                        
 					</Modal.Body>
 					<Modal.Footer>
-                        <CreateAssignmentForm.SubmitButton bsStyle="primary">Save</CreateAssignmentForm.SubmitButton>
+                        {!isDefaultTemplate && <CreateAssignmentForm.SubmitButton bsStyle="primary">Save</CreateAssignmentForm.SubmitButton>}
+                        {isDefaultTemplate && <CreateAssignmentTemplateForm.SubmitButton bsStyle="primary">Save</CreateAssignmentTemplateForm.SubmitButton>}
 						<Button onClick={() => this.handleClose()}>Close</Button>
 					</Modal.Footer>
 				</Modal>

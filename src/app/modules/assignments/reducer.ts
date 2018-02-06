@@ -3,7 +3,7 @@ import {
   IActionPayload,
   IAction
 } from './actions'
-import { SheriffAssignmentMap } from '../../api/index';
+import { SheriffAssignmentMap, SheriffAssignmentTemplate } from '../../api/index';
 
 export type ReducerResponse<State> = State;
 export type ReducerCases<State> = {
@@ -28,6 +28,7 @@ export function createReducer<State>(
 
 export interface AssignmentState {
   map?: SheriffAssignmentMap;
+  templates?: SheriffAssignmentTemplate[];
   loading?: boolean;
   error?: string;
   saving?: boolean;
@@ -35,7 +36,11 @@ export interface AssignmentState {
 }
 
 
+
 const reducer = createReducer<AssignmentState>({
+  ASSIGNMENT_TEMPLATE_LIST_BEGIN: (state, payload) => ({ loading: true }),
+  ASSIGNMENT_TEMPLATE_LIST_FAIL: (state, payload) => ({ loading: false, error: payload }),
+  ASSIGNMENT_TEMPLATE_LIST_SUCCESS: (state, payload) => ({ loading: false, templates: payload.slice() }),
   ASSIGNMENT_LIST_BEGIN: (state, payload) => ({ loading: true }),
   ASSIGNMENT_LIST_FAIL: (state, payload) => ({ loading: false, error: payload }),
   ASSIGNMENT_LIST_SUCCESS: (state, payload) => ({ loading: false, map: payload }),
@@ -88,6 +93,14 @@ const reducer = createReducer<AssignmentState>({
     let newMap = Object.assign({}, map);
     newMap[payload.id] = payload;
     return { map: newMap, ...rest, saving:false, successMessage:'SAVED!' };
+  },
+  ASSIGNMENT_TEMPLATE_CREATE_BEGIN: (state, payload) => (Object.assign({}, state, {saving: true })),
+  ASSIGNMENT_TEMPLATE_CREATE_FAIL: (state, payload) => ({ saving:false, error:payload }),
+  ASSIGNMENT_TEMPLATE_CREATE_SUCCESS: (state, payload) => {
+    const { templates=[], ...rest } = state;
+    let newTemplates = templates.slice();
+    newTemplates.push(payload);
+    return { templates: newTemplates, ...rest, saving:false, successMessage:'SAVED!' };
   }
 });
 

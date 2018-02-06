@@ -3,8 +3,7 @@ import { default as FormFieldWrapper, FormFieldWrapperProps } from './FormFieldW
 import { FormControl } from 'react-bootstrap';
 
 
-
-export default class BootstrapTextField extends React.PureComponent<FormFieldWrapperProps>{
+export default class TextField extends React.PureComponent<FormFieldWrapperProps>{
     render(){
         const {input:{value, onChange}, label} = this.props;
         return (
