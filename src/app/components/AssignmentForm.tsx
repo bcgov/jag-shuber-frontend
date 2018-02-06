@@ -1,16 +1,24 @@
 import * as React from 'react'
-import { Form } from 'react-bootstrap';
-import { 
-    Field, 
+import {
+    Form,
+    Button,
+    ListGroup,
+    ListGroupItem,
+    Glyphicon
+} from 'react-bootstrap';
+import {
+    Field,
+    FieldArray,
     InjectedFormProps
 } from 'redux-form';
 import * as Validators from '../infrastructure/Validators';
 import TextField from './FormElements/TextField';
-import CheckboxField from './FormElements/CheckboxField';
 import DateTimeField from './FormElements/DateTimeField';
 import RequiredTrainingChecklist from './FormElements/RequiredTrainingChecklist';
-import NumberOfSheriffsSelector from './FormElements/NumberOfSheriffsSelector';
 import TextArea from './FormElements/TextArea';
+import CourtroomSelector from './FormElements/CourtroomSelector';
+import DaysOfWeekChecklist from './FormElements/DaysOfWeekChecklist';
+import TimeField from './FormElements/TimeField';
 
 class GateSecurityFields extends React.PureComponent<any>{
     render() {
@@ -38,16 +46,23 @@ class CourtSecurityFields extends React.PureComponent<any>{
     render() {
         return (
             <div>
-                <Field name="courtRoom"  component={TextField} label="Court Room" />
-                <Field name="assignmentCourt" component={CheckboxField} label="Assignment Court" />
+                <Field name="courtRoom" component={CourtroomSelector} label="Courtroom" />
+                {/* <Field name="assignmentCourt" component={CheckboxField} label="Assignment Court" /> */}
             </div>
         );
     }
 }
 
+interface RecurrenceProps {
+    type?: string;
+}
+class RecurrenceFieldArray extends FieldArray<RecurrenceProps> {
+
+}
 export interface AssignmentFormProps {
     handleSubmit?: () => void;
     onSubmitSuccess?: () => void;
+    isDefaultTemplate?: boolean;
     showCourtSecurityFields?: boolean;
     showDocumentSericesFields?: boolean;
     showEscortServicesFields?: boolean;
@@ -56,26 +71,55 @@ export interface AssignmentFormProps {
 
 }
 
-export default class AssignmentForm extends React.Component<AssignmentFormProps & InjectedFormProps<any,AssignmentFormProps>, any>{
+export default class AssignmentForm extends React.Component<AssignmentFormProps & InjectedFormProps<any, AssignmentFormProps>, any>{
 
     render() {
-        const { handleSubmit, showCourtSecurityFields, showDocumentSericesFields, showEscortServicesFields, showGateSecurityFields, showOtherAssignmentFields } = this.props;
+        const { handleSubmit, showCourtSecurityFields, showDocumentSericesFields, showEscortServicesFields, showGateSecurityFields, showOtherAssignmentFields, isDefaultTemplate } = this.props;
         return (
             <div>
-                { showCourtSecurityFields && <h1> Court Security </h1> }
-                { showDocumentSericesFields && <h1> Document Services </h1> } 
-                { showEscortServicesFields && <h1> Escort Services </h1> }
-                { showGateSecurityFields && <h1> Gate Security </h1> }
-                { showOtherAssignmentFields && <h1> Other Assignment </h1>}
+                {showCourtSecurityFields && <h1> Courts</h1>}
+                {showDocumentSericesFields && <h1> Document Services </h1>}
+                {showEscortServicesFields && <h1> Escorts</h1>}
+                {showGateSecurityFields && <h1> Gates</h1>}
+                {showOtherAssignmentFields && <h1> Other Assignment </h1>}
                 <Form onSubmit={handleSubmit}>
-                    { showCourtSecurityFields && <CourtSecurityFields /> }
-                    { showEscortServicesFields && <EscortServiceFields />}
-                    { showGateSecurityFields && <GateSecurityFields /> }
-                    <Field name="startTime" component={DateTimeField} label="Start Time" validate={[Validators.required]}/>
-                    <Field name="endTime" component={DateTimeField} label="End Time" validate={[Validators.required]}/>
-                    <Field name="abilities" component={RequiredTrainingChecklist} label="Required Qualifications" />
-                    <Field name="sherrifsRequired" component={NumberOfSheriffsSelector} label="Number of Sheriffs Required"/>
-                    <Field name="notes" component={TextArea} label="Notes" />
+                    {showCourtSecurityFields && <CourtSecurityFields />}
+                    {showEscortServicesFields && <EscortServiceFields />}
+                    {showGateSecurityFields && <GateSecurityFields />}
+                    <Field name="sherrifsRequired" component={TextField} label="Number of Sheriffs Required" validate={[Validators.required, Validators.integer]} />
+                    {!isDefaultTemplate &&
+                        <div>
+                            <Field name="startTime" component={DateTimeField} label="Start Time" validate={[Validators.required]} />
+                            <Field name="endTime" component={DateTimeField} label="End Time" validate={[Validators.required]} />
+                            <Field name="abilities" component={RequiredTrainingChecklist} label="Required Qualifications" />
+                            <Field name="notes" component={TextArea} label="Notes" />
+                        </div>
+                    }
+                    {isDefaultTemplate &&
+                        <div>
+                            <strong>Days &amp; Times</strong>
+                            <RecurrenceFieldArray name="recurrenceInfo" component={(p) => {
+                                const { fields } = p;
+                                return (
+                                    <ListGroup >
+                                        {fields.map((recurrenceInfoFieldName, index) => {
+                                            return (
+                                                <ListGroupItem key={index}>
+                                                    <Button bsStyle="danger" onClick={() => fields.remove(index)} className="pull-right"><Glyphicon glyph="trash" /></Button><br />
+                                                    <Field name={`${recurrenceInfoFieldName}.days`} component={DaysOfWeekChecklist} label="Days" />
+                                                    <Field name={`${recurrenceInfoFieldName}.startTime`} component={TimeField} label="Start Time" defaultValue="09:00 a" />
+                                                    <Field name={`${recurrenceInfoFieldName}.endTime`} component={TimeField} label="End Time" defaultValue="05:00 p" />
+                                                </ListGroupItem>)
+                                        }
+                                        )}
+                                        <br />
+                                        <Button onClick={() => fields.push({})} ><Glyphicon glyph="plus" /></Button>
+                                    </ListGroup>
+                                )
+                            }} />
+                        </div>
+                    }
+
                 </Form>
             </div>
         );

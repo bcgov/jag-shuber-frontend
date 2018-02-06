@@ -31,7 +31,7 @@ export default class AssignmentTimelineCard extends React.PureComponent<Assignme
 
 
         let backgroundColor = "";
-        if (WORK_SECTIONS[workSectionId] === WORK_SECTIONS.COURT) {
+        if (WORK_SECTIONS[workSectionId] === WORK_SECTIONS.COURTS) {
             backgroundColor = "#008080";
         } else if (WORK_SECTIONS[workSectionId] === WORK_SECTIONS.ESCORTS) {
             backgroundColor = "#993399";

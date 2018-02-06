@@ -6,14 +6,34 @@ import {
 
 export interface DateDisplayProps {
     date: DateType;
-    format?: string;
+    showDay?: boolean;
+    showMonth?: boolean;
+    showYear?: boolean;
+    showTime?: boolean;
 }
 
 export default class DateDisplay extends React.PureComponent<DateDisplayProps> {
-  render() {
-      const { date, format = "dddd, MMMM D YYYY, h:mm:ss a" } = this.props;
-    return (
-        moment(date).format(format)
-    );
-  }
+    render() {
+        const { date, showMonth=false, showDay=false, showYear=false, showTime=false } = this.props;
+        
+        let dateFormats = [];
+        if (showMonth) {
+            dateFormats.push("MMM");
+        }
+        if (showDay) {
+            dateFormats.push("D");
+        }
+        if (showYear) {
+            dateFormats.push("YYYY");
+        }
+        if (showTime) {
+            dateFormats.push("H:mm");       
+        }
+        
+        const dateFormat = dateFormats.join(" ");
+
+        return (
+            moment(date).format(dateFormat)
+        );
+    }
 }

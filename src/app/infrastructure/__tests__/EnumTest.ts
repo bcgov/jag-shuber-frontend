@@ -34,5 +34,16 @@ describe('displayEnum() ', () => {
             TestDaysOfWeek.Thu | TestDaysOfWeek.Fri | TestDaysOfWeek.Sat | TestDaysOfWeek.Sun)).toEqual(["Everyday"]);
         expect(util(TestDaysOfWeek, TestDaysOfWeek.Mon | TestDaysOfWeek.Tue | TestDaysOfWeek.Wed |
             TestDaysOfWeek.Thu | TestDaysOfWeek.Fri)).toEqual(["Weekdays"]);
+        expect(util(TestDaysOfWeek, TestDaysOfWeek.Mon | TestDaysOfWeek.Tue | TestDaysOfWeek.Wed |
+            TestDaysOfWeek.Thu | TestDaysOfWeek.Weekdays)).toEqual(["Weekdays"]);
+        expect(util(TestDaysOfWeek, TestDaysOfWeek.Mon | TestDaysOfWeek.Tue | TestDaysOfWeek.Wed |
+            TestDaysOfWeek.Thu | TestDaysOfWeek.Everyday)).toEqual(["Everyday"]);
+    })
+})
+
+describe('getEnumKeysAsStrings()', () => {
+    const util = EnumUtils.getEnumKeyLabels;
+    it('Should return a list of enum keys as strings', () => {
+        expect(util(TestDaysOfWeek)).toEqual(["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun", "Everyday", "Weekdays"]);
     })
 })

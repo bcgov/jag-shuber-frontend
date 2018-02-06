@@ -14,10 +14,11 @@ class DefaultAssignments extends React.PureComponent {
                     <div style={{ flex: "1", alignSelf: "center", paddingBottom: 15 }}>
                         <h1>Manage Default Assignments</h1>
                     </div>
-                    <AssignmentDefaultList />
                     <div style={{ textAlign: "right" }}>
-                        <AddAssignmentModal />
-                    </div>
+                        <AddAssignmentModal isDefaultTemplate />
+                    </div> <br/>
+                    <AssignmentDefaultList />
+                   
                 </Well>
             </div>
         );
