@@ -337,8 +337,22 @@ class Client implements API {
             }
         }
 
+        //add default recurrence value if nothing was selected or partial value was selected
         if(!newTemplate.recurrenceInfo){
             newTemplate.recurrenceInfo = [DEFAULT_RECURRENCE];
+        }
+        else{
+            newTemplate.recurrenceInfo.forEach(element => {
+                if(!element.startTime){
+                    element.startTime = DEFAULT_RECURRENCE.startTime;
+                }
+                if(!element.endTime){
+                    element.endTime = DEFAULT_RECURRENCE.endTime;
+                }
+                if(!element.days){
+                    element.days = DEFAULT_RECURRENCE.days;
+                }
+            });
         }
 
         defaultAssignmentTemplates.push(newTemplate);

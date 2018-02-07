@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as moment from 'moment';
 import { reduxForm, ConfigProps } from 'redux-form';
 import { default as AssignmentForm, AssignmentFormProps } from '../components/AssignmentForm';
 import { 
@@ -13,12 +12,6 @@ import { default as FormSubmitButton, SubmitButtonProps } from '../components/Fo
 // wrapping generic assignment form in redux-form
 const formConfig: ConfigProps<any, AssignmentFormProps> = { 
     form: 'CreateAssignment',
-    initialValues: {
-        assignment:{
-            startTime: moment(),
-            endTime: moment()
-        }
-    },
     onSubmit: (values:{assignment: SheriffAssignment}, dispatch, props) =>{
         const { workSectionId } = props;
 
