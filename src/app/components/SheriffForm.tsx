@@ -50,10 +50,10 @@ export default class SheriffForm extends React.Component<SheriffFormProps & Inje
                     <br />
                     
                     <h3>Region and Courthouse</h3>
-                    <Field name="permanentRegion" component={RegionSelector} label="Permanent Region" />
-                    <Field name="permanentCourthouse" component={CourthouseSelector} label="Permanent Courthouse" />
-                    <Field name="currentRegion" component={RegionSelector} label="Current Region" />
-                    <Field name="currentCourthouse" component={CourthouseSelector} label="Current Courthouse" />
+                    <Field name="permanentLocation.regionId" component={RegionSelector} label="Permanent Region" />
+                    <Field name="permanentLocation.courthouseId" component={CourthouseSelector} label="Permanent Courthouse" />
+                    <Field name="currentLocation.regionId" component={RegionSelector} label="Current Region" />
+                    <Field name="currentLocation.courthouseId" component={CourthouseSelector} label="Current Courthouse" />
                    
                     <br />
                     <h3>Training</h3>
