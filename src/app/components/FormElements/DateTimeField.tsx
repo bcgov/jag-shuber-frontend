@@ -14,9 +14,11 @@ export default class DateTimeField extends React.PureComponent<FormFieldWrapperP
     onChange(ev:any){
         let newValue = ev;
         if(moment.isMoment(ev)){
-            newValue = ev.toISOString();
+            if(ev.isValid()) {
+                newValue = ev.toISOString();
+                this.props.input.onChange(newValue);
+            }    
         }
-        this.props.input.onChange(newValue);
     }
 
     render(){
