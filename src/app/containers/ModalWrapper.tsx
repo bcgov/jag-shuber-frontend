@@ -14,7 +14,7 @@ export interface ModalWrapperProps {
     showButton?: (context:ModalWrapperContext)=>React.ReactNode;
     title: string;
     body: (context:ModalWrapperContext)=>React.ReactNode;
-    footerComponent?: React.ReactNode;
+    footerComponent?: React.ReactNode | ((context:ModalWrapperContext)=>React.ReactNode);
 
 }
 
@@ -60,7 +60,7 @@ export default class ModalWrapper extends React.Component<ModalWrapperProps, Mod
                         {body(context)}
                     </Modal.Body>
                     <Modal.Footer>
-                        {footerComponent}
+                        {typeof footerComponent==="function" ? footerComponent(context) : footerComponent}
                         <Button onClick={() => this.handleClose()}>Close</Button>
                     </Modal.Footer>
                 </Modal>

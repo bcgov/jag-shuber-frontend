@@ -8,6 +8,7 @@ import {
     SheriffAssignmentTemplate
 } from '../api';
 import AssignmentEditModal from '../containers/AssignmentEditModal';
+import AssignmentDeleteModal from '../containers/AssignmentDeleteModal';
 
 export interface AssignmentDefaultListProps {
     templates: SheriffAssignmentTemplate[];
@@ -41,7 +42,8 @@ export default class AssignmentDefaultList extends React.PureComponent<Assignmen
                                             {template.recurrenceInfo.map((recurrence) => <AssignmentDefaultRecurrenceDetails data={recurrence} />)}
                                         </td>
                                         <td>{template.assignment.sherrifsRequired}</td>
-                                        <td><AssignmentEditModal templateId={template.id}/></td>
+                                        <td className="text-right"><AssignmentEditModal templateId={template.id}/></td> 
+                                        <td className="text-left"><AssignmentDeleteModal templateId={template.id}/></td>
                                     </tr>
                                 );
                             })}

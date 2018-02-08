@@ -29,6 +29,9 @@ type IActionMap = {
   "ASSIGNMENT_TEMPLATE_EDIT_BEGIN": null;
   "ASSIGNMENT_TEMPLATE_EDIT_SUCCESS": SheriffAssignmentTemplate;
   "ASSIGNMENT_TEMPLATE_EDIT_FAIL": string;
+  "ASSIGNMENT_TEMPLATE_DELETE_BEGIN": null;
+  "ASSIGNMENT_TEMPLATE_DELETE_SUCCESS": number;
+  "ASSIGNMENT_TEMPLATE_DELETE_FAIL": string;
 }
 
 export type IActionType = keyof IActionMap;
@@ -120,10 +123,25 @@ export const editAssignmentTemplate: ThunkAction<SheriffAssignmentTemplate> = (u
     let assignmentTemplate = await api.editAssignmentTemplate(updatedAssignmentTemplate);
     dispatch(editAssignmentTemplateSuccess(assignmentTemplate));
   } catch (error) {
-    dispatch(createAssignmentTemplateFailed(`Error saving updates assignment template: '${error}'`));
+    dispatch(editAssignmentTemplateFailed(`Error saving updates assignment template: '${error}'`));
   }
 });
 
 export const beginEditAssignmentTemplate = () => actionCreator("ASSIGNMENT_TEMPLATE_EDIT_BEGIN")(null);
 export const editAssignmentTemplateSuccess = actionCreator("ASSIGNMENT_TEMPLATE_EDIT_SUCCESS");
 export const editAssignmentTemplateFailed = actionCreator("ASSIGNMENT_TEMPLATE_EDIT_FAIL");
+
+//Action creator for deleting an exisitng assignment template
+export const deleteAssignmentTemplate: ThunkAction<number> = (templateIdToDelete: number) => (async (dispatch, getState, { api }) => {
+  dispatch(beginDeleteAssignmentTemplate());
+  try {
+    let assignmentTemplateId = await api.deleteAssignmentTemplate(templateIdToDelete);
+    dispatch(deleteAssignmentTemplateSuccess(assignmentTemplateId));
+  } catch (error) {
+    dispatch(deleteAssignmentTemplateFailed(`Error deleting assignment template: '${error}'`));
+  }
+});
+
+export const beginDeleteAssignmentTemplate = () => actionCreator("ASSIGNMENT_TEMPLATE_DELETE_BEGIN")(null);
+export const deleteAssignmentTemplateSuccess = actionCreator("ASSIGNMENT_TEMPLATE_DELETE_SUCCESS");
+export const deleteAssignmentTemplateFailed = actionCreator("ASSIGNMENT_TEMPLATE_DELETE_FAIL");

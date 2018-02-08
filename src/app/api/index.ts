@@ -253,6 +253,7 @@ export interface API {
     getAssignmentTemplates(): Promise<SheriffAssignmentTemplate[]>;
     createAssignmentTemplate(newAssignmentTemplate: Partial<SheriffAssignmentTemplate>): Promise<SheriffAssignmentTemplate>;
     editAssignmentTemplate(updatedAssignmentTemplate: SheriffAssignmentTemplate): Promise<SheriffAssignmentTemplate>;
+    deleteAssignmentTemplate(templateIdToBeDeleted: number): Promise<number>;
 }
 
 export type SheriffMap = { [key: number]: Sheriff }
@@ -269,7 +270,7 @@ function arrayToMap<T, TKey>(array: T[], keySelector: (t: T) => TKey) {
 
 
 class Client implements API {
-
+    
     async getSheriffs(): Promise<SheriffMap> {
         return arrayToMap(sheriffList, (s) => s.badgeNumber) as SheriffMap;
     }
@@ -367,8 +368,9 @@ class Client implements API {
         let assignment = newTemplate.assignment;
 
         //This is a hack to create a unique id for a new assignment template
-        newTemplate.id = defaultAssignmentTemplates.length;
-        assignment.id = defaultAssignmentTemplates.length;
+        newTemplate.id = ASSIGNMENT_TEMPLATE_ID;
+        assignment.id = ASSIGNMENT_TEMPLATE_ID;
+        ASSIGNMENT_TEMPLATE_ID++;
 
         assignment.title = this.setAssignmentTemplateTitle(assignment);
 
@@ -390,6 +392,12 @@ class Client implements API {
         
         defaultAssignmentTemplates[updatedAssignmentTemplate.id] = updatedAssignmentTemplate;
         return updatedAssignmentTemplate;
+    }
+
+    async deleteAssignmentTemplate(templateIdToBeDeleted: number): Promise<number> {
+        const templateIndex = defaultAssignmentTemplates.findIndex((value) => value.id==templateIdToBeDeleted);
+        defaultAssignmentTemplates.splice(templateIndex, 1);
+        return templateIdToBeDeleted;
     }
 }
 
@@ -649,6 +657,8 @@ const defaultAssignmentTemplates: SheriffAssignmentTemplate[] = [
         ]
     }
 ];
+
+let ASSIGNMENT_TEMPLATE_ID:number = 10;
 
 
 export default new Client();

@@ -109,6 +109,15 @@ const reducer = createReducer<AssignmentState>({
     templates[payload.id] = payload;
     let newTemplates = templates.slice();
     return { templates: newTemplates, ...rest, saving:false, successMessage:'SAVED!' };
+  },
+  ASSIGNMENT_TEMPLATE_DELETE_BEGIN: (state, payload) => (Object.assign({}, state, {saving: true })),
+  ASSIGNMENT_TEMPLATE_DELETE_FAIL: (state, payload) => ({ saving:false, error:payload }),
+  ASSIGNMENT_TEMPLATE_DELETE_SUCCESS: (state, payload) => {
+    const { templates=[], ...rest } = state;
+    const templateIndex = templates.findIndex((value) => value.id==payload);
+    let newTemplates = templates.slice();
+    newTemplates.splice(templateIndex, 1);
+    return { templates: newTemplates, ...rest, saving:false, successMessage:'DELETED!' };
   }
 });
 
