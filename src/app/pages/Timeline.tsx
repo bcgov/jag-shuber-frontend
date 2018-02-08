@@ -1,6 +1,6 @@
 import * as React from "react"
 import DailyTimeline from "../containers/DailyTimeline/DailyTimeline";
-import { default as AddAssignmentModal } from '../containers/AddAssignmentModal';
+import { default as AssignmentAddModal } from '../containers/AssignmentAddModal';
 import { Glyphicon } from "react-bootstrap";
 class TimelinePage extends React.PureComponent {
     render() {
@@ -27,7 +27,7 @@ class TimelinePage extends React.PureComponent {
                         <h3 style={{lineHeight:"60px",padding:0,margin:0,color: "#FFF" }}>Tools</h3>
                     </div>
                     <div style={{ flex: "1 1 auto", padding: 10, textAlign: "center" }}>
-                        <AddAssignmentModal />
+                        <AssignmentAddModal />
                     </div>
                     <div style={{
                         background: "#003366",
