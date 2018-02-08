@@ -17,6 +17,6 @@ const formConfig: ConfigProps<any,SheriffFormProps> = {
 
 // Here we create a class that extends the configured sheriff form so that we
 // can add a static SubmitButton member to it to make the API cleaner
-export default class CreateSheriffForm extends reduxForm(formConfig)(SheriffForm){
+export default class SheriffCreateForm extends reduxForm(formConfig)(SheriffForm){
     static SubmitButton = (props: Partial<SubmitButtonProps>) => <FormSubmitButton {...props} formName={formConfig.form} />;
 }
