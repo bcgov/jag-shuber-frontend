@@ -1,6 +1,9 @@
 import { Action } from 'redux'
 import { ThunkAction } from '../../store'
-import { SheriffAssignmentMap, SheriffAssignment } from "../../api/index";
+import { SheriffAssignmentMap,
+  SheriffAssignment,
+  SheriffAssignmentTemplate 
+} from "../../api/index";
 
 
 // The following gives us type-safe redux actions
@@ -17,6 +20,12 @@ type IActionMap = {
   "ASSIGNMENT_CREATE_BEGIN": null;
   "ASSIGNMENT_CREATE_SUCCESS": SheriffAssignment;
   "ASSIGNMENT_CREATE_FAIL": string;
+  "ASSIGNMENT_TEMPLATE_LIST_BEGIN": null;
+  "ASSIGNMENT_TEMPLATE_LIST_FAIL": string;
+  "ASSIGNMENT_TEMPLATE_LIST_SUCCESS": SheriffAssignmentTemplate[];
+  "ASSIGNMENT_TEMPLATE_CREATE_BEGIN": null;
+  "ASSIGNMENT_TEMPLATE_CREATE_SUCCESS": SheriffAssignmentTemplate;
+  "ASSIGNMENT_TEMPLATE_CREATE_FAIL": string;
 }
 
 export type IActionType = keyof IActionMap;
@@ -70,3 +79,33 @@ export const beginCreateAssignment = () => actionCreator("ASSIGNMENT_CREATE_BEGI
 export const createAssignmentSuccess = actionCreator("ASSIGNMENT_CREATE_SUCCESS");
 export const createAssignmentFailed = actionCreator("ASSIGNMENT_CREATE_FAIL");
 
+// Action creator for getting Assignemnt Template List
+export const getAssignmentTemplates: ThunkAction<void> = () => (async (dispatch, getState, { api }) => {
+  dispatch(beginGetAssignmentTemplates());
+  try {
+    let assignments = await api.getAssignmentTemplates();
+    dispatch(getAssignmentTemplatesSuccess(assignments));
+  } catch (error) {
+    dispatch(getAssignmentTemplatesFailed(`Error getting assignments: '${error}'`));
+  }
+});
+
+export const beginGetAssignmentTemplates = () => actionCreator("ASSIGNMENT_TEMPLATE_LIST_BEGIN")(null);
+export const getAssignmentTemplatesFailed = actionCreator("ASSIGNMENT_TEMPLATE_LIST_FAIL");
+export const getAssignmentTemplatesSuccess = actionCreator("ASSIGNMENT_TEMPLATE_LIST_SUCCESS"); 
+
+
+//Action creator for creating a new assignment template
+export const createAssignmentTemplate: ThunkAction<SheriffAssignmentTemplate> = (newAssignmentTemplate: SheriffAssignmentTemplate) => (async (dispatch, getState, { api }) => {
+  dispatch(beginCreateAssignmentTemplate());
+  try {
+    let assignmentTemplate = await api.createAssignmentTemplate(newAssignmentTemplate);
+    dispatch(createAssignmentTemplateSuccess(assignmentTemplate));
+  } catch (error) {
+    dispatch(createAssignmentTemplateFailed(`Error creating assignment template: '${error}'`));
+  }
+});
+
+export const beginCreateAssignmentTemplate = () => actionCreator("ASSIGNMENT_TEMPLATE_CREATE_BEGIN")(null);
+export const createAssignmentTemplateSuccess = actionCreator("ASSIGNMENT_TEMPLATE_CREATE_SUCCESS");
+export const createAssignmentTemplateFailed = actionCreator("ASSIGNMENT_TEMPLATE_CREATE_FAIL");

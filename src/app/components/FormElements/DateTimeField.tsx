@@ -4,16 +4,26 @@ import { default as FormFieldWrapper, FormFieldWrapperProps } from './FormFieldW
 import * as DateTime from 'react-datetime';
 import 'react-datetime/css/react-datetime.css';
 
-export interface DateTimeFieldProps {
-    defaultValue?: string;
+export interface DateTimeFieldProps{
+    showDate?: boolean;
+    showTime?: boolean;
+    closeOnSelect?: boolean;
 }
 
-export default class DateTimeield extends React.PureComponent<FormFieldWrapperProps & DateTimeFieldProps>{
+export default class DateTimeField extends React.PureComponent<FormFieldWrapperProps & DateTimeFieldProps>{
+    onChange(ev:any){
+        let newValue = ev;
+        if(moment.isMoment(ev)){
+            newValue = ev.toISOString();
+        }
+        this.props.input.onChange(newValue);
+    }
+
     render(){
-        const {input:{value, onChange}, defaultValue=moment().startOf('day').add(9, 'hours')} = this.props;
+        const {input:{value}, showDate=true, showTime=true, closeOnSelect=false} = this.props;
         return (
             <FormFieldWrapper {...this.props}>
-                <DateTime  dateFormat="MMM DD YYYY" closeOnSelect={false} value={value} onChange={onChange} defaultValue={defaultValue}/>
+                <DateTime  dateFormat={showDate && "MMM DD YYYY"} timeFormat={showTime} closeOnSelect={closeOnSelect} value={moment(value)} onChange={(e)=>this.onChange(e)} />
             </FormFieldWrapper>
         );
     }

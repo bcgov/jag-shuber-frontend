@@ -3,7 +3,7 @@ import {
     Well
 } from 'react-bootstrap';
 import AddAssignmentModal from '../containers/AddAssignmentModal';
-import AssignmentDefaultList from '../components/AssignmentDefaultList';
+import AssignmentTemplateList from '../containers/AssignmentTemplateList';
 
 class DefaultAssignments extends React.PureComponent {
     render() {
@@ -17,7 +17,7 @@ class DefaultAssignments extends React.PureComponent {
                     <div style={{ textAlign: "right" }}>
                         <AddAssignmentModal isDefaultTemplate />
                     </div> <br/>
-                    <AssignmentDefaultList />
+                    <AssignmentTemplateList />
                    
                 </Well>
             </div>

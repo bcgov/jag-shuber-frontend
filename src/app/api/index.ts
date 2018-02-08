@@ -166,7 +166,14 @@ export const WORK_SECTIONS: StringMap = {
     JAIL: "Jail",
     ESCORTS: "Escorts",
     DOCUMENTS: "Documents",
+    GATES: "Gates",
     OTHER: "Other"
+}
+
+const DEFAULT_RECURRENCE: RecurrenceInfo = {
+    days: DaysOfWeek.Weekdays,
+    startTime: moment().hour(9).minute(0),
+    endTime: moment().hour(5).minute(0)
 }
 
 export const COURTROOMS: StringMap = {
@@ -203,12 +210,13 @@ export interface Sheriff {
 }
 
 export interface RecurrenceInfo {
-    startTime: string;
-    endTime: string;
+    startTime: DateType;
+    endTime: DateType;
     days: DaysOfWeek;
 }
 
 export interface SheriffAssignmentTemplate {
+    id?: number;
     assignmentTemplate: Partial<SheriffAssignment>;
     recurrenceInfo: RecurrenceInfo[];
 }
@@ -235,53 +243,14 @@ export interface SheriffAssignment {
     assignmentCourt?: boolean
 }
 
-export const DEFAULT_ASSIGNMENTS: SheriffAssignmentTemplate[] = [
-    {
-        assignmentTemplate: {
-            title: 'Courtroom 101',
-            workSectionId: 'COURTS',
-            sherrifsRequired: 2
-        },
-        recurrenceInfo: [
-            {
-                startTime: "09:00",
-                endTime: "12:00",
-                days: DaysOfWeek.Mon | DaysOfWeek.Wed | DaysOfWeek.Fri
-            },
-            {
-                startTime: "13:00",
-                endTime: "16:00",
-                days: DaysOfWeek.Mon | DaysOfWeek.Wed | DaysOfWeek.Fri
-            }
-        ]
-    },
-    {
-        assignmentTemplate: {
-            title: 'Courtroom 102',
-            workSectionId: 'COURTS',
-            sherrifsRequired: 1
-        },
-        recurrenceInfo: [
-            {
-                startTime: "09:00",
-                endTime: "12:00",
-                days: DaysOfWeek.Weekdays
-            },
-            {
-                startTime: "13:00",
-                endTime: "16:00",
-                days: DaysOfWeek.Weekdays
-            }
-        ]
-    }
-];
-
 export interface API {
     getSheriffs(): Promise<SheriffMap>;
     getSheriffAssignments(): Promise<SheriffAssignmentMap>;
     createSheriff(newSheriff: Sheriff): Promise<Sheriff>;
     updateSheriff(sheriffToUpdate: Partial<Sheriff>): Promise<Sheriff>;
     createAssignment(newAssignment: SheriffAssignment): Promise<SheriffAssignment>;
+    getAssignmentTemplates(): Promise<SheriffAssignmentTemplate[]>;
+    createAssignmentTemplate(newAssignmentTemplate:SheriffAssignmentTemplate): Promise<SheriffAssignmentTemplate>;
 }
 
 export type SheriffMap = { [key: number]: Sheriff }
@@ -300,7 +269,6 @@ function arrayToMap<T, TKey>(array: T[], keySelector: (t: T) => TKey) {
 class Client implements API {
 
     async getSheriffs(): Promise<SheriffMap> {
-
         return arrayToMap(sheriffList, (s) => s.badgeNumber) as SheriffMap;
     }
 
@@ -308,6 +276,10 @@ class Client implements API {
         // await randomDelay(200, 1000);
         const assignmentMap: SheriffAssignmentMap = arrayToMap(assignments, (t) => t.id);
         return Promise.resolve(assignmentMap);
+    }
+
+    async getAssignmentTemplates(): Promise<SheriffAssignmentTemplate[]> {
+        return defaultAssignmentTemplates;
     }
 
     async createSheriff(newSheriff: Sheriff): Promise<Sheriff> {
@@ -335,9 +307,56 @@ class Client implements API {
         await randomDelay();
         //This is a hack to create a unique id for a new assignment
         newAssignment.id = assignments.length;
+        //set the assignment title
+        if (WORK_SECTIONS[newAssignment.workSectionId] === WORK_SECTIONS.COURTS) {
+            newAssignment.title = COURTROOMS[newAssignment.title];
+        }
+        else {
+            newAssignment.title = WORK_SECTIONS[newAssignment.workSectionId];
+        }
         assignments.push(newAssignment);
 
         return newAssignment;
+    }
+
+    async createAssignmentTemplate(newTemplate: SheriffAssignmentTemplate): Promise<SheriffAssignmentTemplate> {
+        await randomDelay();
+        let assignment = newTemplate.assignmentTemplate;
+
+        //This is a hack to create a unique id for a new assignment template
+        newTemplate.id = defaultAssignmentTemplates.length;
+        assignment.id = defaultAssignmentTemplates.length;        
+
+        // set the assignment template title
+        if (assignment.workSectionId) {
+            if (WORK_SECTIONS[assignment.workSectionId] === WORK_SECTIONS.COURTS && assignment.title) {
+                newTemplate.assignmentTemplate.title = COURTROOMS[assignment.title];
+            }
+            else {
+                newTemplate.assignmentTemplate.title = WORK_SECTIONS[assignment.workSectionId];
+            }
+        }
+
+        //add default recurrence value if nothing was selected or partial value was selected
+        if(!newTemplate.recurrenceInfo){
+            newTemplate.recurrenceInfo = [DEFAULT_RECURRENCE];
+        }
+        else{
+            newTemplate.recurrenceInfo.forEach(element => {
+                if(!element.startTime){
+                    element.startTime = DEFAULT_RECURRENCE.startTime;
+                }
+                if(!element.endTime){
+                    element.endTime = DEFAULT_RECURRENCE.endTime;
+                }
+                if(!element.days){
+                    element.days = DEFAULT_RECURRENCE.days;
+                }
+            });
+        }
+
+        defaultAssignmentTemplates.push(newTemplate);
+        return newTemplate;
     }
 }
 
@@ -443,7 +462,7 @@ let sheriffList: Sheriff[] = [
 const assignments: SheriffAssignment[] = [
     {
         id: 0,
-        title: 'Courtroom 101',
+        title: COURTROOMS[101],
         workSectionId: 'COURTS',
         assignmentCourt: true,
         sheriffIds: [],
@@ -487,7 +506,7 @@ const assignments: SheriffAssignment[] = [
     },
     {
         id: 4,
-        title: 'Courtroom 102',
+        title: COURTROOMS[102],
         workSectionId: 'COURTS',
         assignmentCourt: false,
         sheriffIds: [],
@@ -498,7 +517,7 @@ const assignments: SheriffAssignment[] = [
     },
     {
         id: 5,
-        title: 'Courtroom 103',
+        title: COURTROOMS[103],
         workSectionId: 'COURTS',
         assignmentCourt: false,
         sheriffIds: [],
@@ -509,7 +528,7 @@ const assignments: SheriffAssignment[] = [
     },
     {
         id: 6,
-        title: 'Courtroom 104',
+        title: COURTROOMS[104],
         workSectionId: 'COURTS',
         assignmentCourt: false,
         sheriffIds: [],
@@ -542,5 +561,8 @@ const assignments: SheriffAssignment[] = [
         sherrifsRequired: 1
     },
 ];
+
+const defaultAssignmentTemplates: SheriffAssignmentTemplate[] = [];
+
 
 export default new Client();

@@ -1,4 +1,5 @@
-import * as React from 'react'
+import * as React from 'react';
+import * as moment from 'moment';
 import {
     Form,
     Button,
@@ -13,18 +14,21 @@ import {
 } from 'redux-form';
 import * as Validators from '../infrastructure/Validators';
 import TextField from './FormElements/TextField';
-import DateTimeField from './FormElements/DateTimeField';
+import * as DateTimeFieldConst from './FormElements/DateTimeFieldConst';
 import RequiredTrainingChecklist from './FormElements/RequiredTrainingChecklist';
 import TextArea from './FormElements/TextArea';
 import CourtroomSelector from './FormElements/CourtroomSelector';
 import DaysOfWeekChecklist from './FormElements/DaysOfWeekChecklist';
-import TimeField from './FormElements/TimeField';
+import {
+    WORK_SECTIONS,
+    DateType
+} from '../api';
 
 class GateSecurityFields extends React.PureComponent<any>{
     render() {
         return (
             <div>
-                <Field name="gateNumber" component={TextField} label="Gate Number" />
+                <Field name="assignment.gateNumber" component={TextField} label="Gate Number" />
             </div>
         );
     }
@@ -35,8 +39,8 @@ class EscortServiceFields extends React.PureComponent<any>{
     render() {
         return (
             <div>
-                <Field name="pickupLocation" component={TextField} label="Pick-Up Location" />
-                <Field name="dropoffLocation" component={TextField} label="Drop-Off Location" />
+                <Field name="assignment.pickupLocation" component={TextField} label="Pick-Up Location" />
+                <Field name="assignment.dropoffLocation" component={TextField} label="Drop-Off Location" />
             </div>
         );
     }
@@ -46,8 +50,7 @@ class CourtSecurityFields extends React.PureComponent<any>{
     render() {
         return (
             <div>
-                <Field name="courtRoom" component={CourtroomSelector} label="Courtroom" />
-                {/* <Field name="assignmentCourt" component={CheckboxField} label="Assignment Court" /> */}
+                <Field name="assignment.title" component={CourtroomSelector} label="Courtroom"  validate={[Validators.required]}/>
             </div>
         );
     }
@@ -55,71 +58,128 @@ class CourtSecurityFields extends React.PureComponent<any>{
 
 interface RecurrenceProps {
     type?: string;
+    startTime?: DateType;
+    endTime?: DateType;
 }
 class RecurrenceFieldArray extends FieldArray<RecurrenceProps> {
 
 }
+
 export interface AssignmentFormProps {
     handleSubmit?: () => void;
     onSubmitSuccess?: () => void;
     isDefaultTemplate?: boolean;
-    showCourtSecurityFields?: boolean;
-    showDocumentSericesFields?: boolean;
-    showEscortServicesFields?: boolean;
-    showGateSecurityFields?: boolean;
-    showOtherAssignmentFields?: boolean;
-
+    workSectionId?: string;
 }
 
-export default class AssignmentForm extends React.Component<AssignmentFormProps & InjectedFormProps<any, AssignmentFormProps>, any>{
 
-    render() {
-        const { handleSubmit, showCourtSecurityFields, showDocumentSericesFields, showEscortServicesFields, showGateSecurityFields, showOtherAssignmentFields, isDefaultTemplate } = this.props;
+export default class AssignmentForm extends React.Component<AssignmentFormProps & InjectedFormProps<any, AssignmentFormProps>, any>{
+    private renderHeading() {
+        const { workSectionId = "OTHER" } = this.props;
+        let heading = "Other"
+        switch (WORK_SECTIONS[workSectionId]) {
+            case WORK_SECTIONS.COURTS:
+                heading = "Courts";
+                break;
+            case WORK_SECTIONS.JAIL:
+                heading = "Jail";
+                break;
+            case WORK_SECTIONS.ESCORTS:
+                heading = "Escorts";
+                break;
+            case WORK_SECTIONS.GATES:
+                heading = "Gates";
+                break;
+            case WORK_SECTIONS.DOCUMENTS:
+                heading = "Document Service";
+                break;
+        }
+        return <h1>{heading}</h1>;
+    }
+
+    private renderWorkSectionFields() {
+        const { workSectionId = "OTHER" } = this.props;
+        let returnFields;
+        switch (WORK_SECTIONS[workSectionId]) {
+            case WORK_SECTIONS.COURTS:
+                returnFields = <CourtSecurityFields />;
+                break;
+            case WORK_SECTIONS.ESCORTS:
+                returnFields = <EscortServiceFields />;
+                break;
+            case WORK_SECTIONS.GATES:
+                returnFields = <GateSecurityFields />;
+                break;
+            default:
+                returnFields = "";
+                break;
+        }
+        return returnFields;
+    }
+
+    private renderAssignmentTemplateFields() {
+        const { isDefaultTemplate } = this.props;
+        if (isDefaultTemplate) {
+            return (
+                <div>
+                    <strong>Days &amp; Times</strong>
+                    <RecurrenceFieldArray name="template.recurrenceInfo" component={(p) => {
+                        const { fields } = p;
+                        return (
+                            <ListGroup >
+                                {fields.map((recurrenceInfoFieldName, index) => {
+                                    return (
+                                        <ListGroupItem key={index}>
+                                            <Button bsStyle="danger" onClick={() => fields.remove(index)} className="pull-right"><Glyphicon glyph="trash" /></Button><br />
+                                            <Field name={`${recurrenceInfoFieldName}.days`} component={DaysOfWeekChecklist} label="Days" />
+                                            <Field name={`${recurrenceInfoFieldName}.startTime`} component={DateTimeFieldConst.TimeField} label="Start Time" />
+                                            <Field name={`${recurrenceInfoFieldName}.endTime`} component={DateTimeFieldConst.TimeField} label="End Time" />
+                                        </ListGroupItem>)
+                                }
+                                )}
+                                <br />
+                                <Button onClick={() => fields.push({
+                                     startTime: moment().hour(9).minute(0), 
+                                     endTime: moment().hour(17).minute(0)
+                                    })} >
+                                    <Glyphicon glyph="plus" />
+                                </Button>
+                            </ListGroup>
+                        )
+                    }} />
+                </div>
+
+            )
+        }
+        return "";
+    }
+
+    private renderAssignmentFields() {
+        const { isDefaultTemplate } = this.props;
         return (
             <div>
-                {showCourtSecurityFields && <h1> Courts</h1>}
-                {showDocumentSericesFields && <h1> Document Services </h1>}
-                {showEscortServicesFields && <h1> Escorts</h1>}
-                {showGateSecurityFields && <h1> Gates</h1>}
-                {showOtherAssignmentFields && <h1> Other Assignment </h1>}
-                <Form onSubmit={handleSubmit}>
-                    {showCourtSecurityFields && <CourtSecurityFields />}
-                    {showEscortServicesFields && <EscortServiceFields />}
-                    {showGateSecurityFields && <GateSecurityFields />}
-                    <Field name="sherrifsRequired" component={TextField} label="Number of Sheriffs Required" validate={[Validators.required, Validators.integer]} />
-                    {!isDefaultTemplate &&
-                        <div>
-                            <Field name="startTime" component={DateTimeField} label="Start Time" validate={[Validators.required]} />
-                            <Field name="endTime" component={DateTimeField} label="End Time" validate={[Validators.required]} />
-                            <Field name="abilities" component={RequiredTrainingChecklist} label="Required Qualifications" />
-                            <Field name="notes" component={TextArea} label="Notes" />
-                        </div>
-                    }
-                    {isDefaultTemplate &&
-                        <div>
-                            <strong>Days &amp; Times</strong>
-                            <RecurrenceFieldArray name="recurrenceInfo" component={(p) => {
-                                const { fields } = p;
-                                return (
-                                    <ListGroup >
-                                        {fields.map((recurrenceInfoFieldName, index) => {
-                                            return (
-                                                <ListGroupItem key={index}>
-                                                    <Button bsStyle="danger" onClick={() => fields.remove(index)} className="pull-right"><Glyphicon glyph="trash" /></Button><br />
-                                                    <Field name={`${recurrenceInfoFieldName}.days`} component={DaysOfWeekChecklist} label="Days" />
-                                                    <Field name={`${recurrenceInfoFieldName}.startTime`} component={TimeField} label="Start Time" defaultValue="09:00 a" />
-                                                    <Field name={`${recurrenceInfoFieldName}.endTime`} component={TimeField} label="End Time" defaultValue="05:00 p" />
-                                                </ListGroupItem>)
-                                        }
-                                        )}
-                                        <br />
-                                        <Button onClick={() => fields.push({})} ><Glyphicon glyph="plus" /></Button>
-                                    </ListGroup>
-                                )
-                            }} />
-                        </div>
-                    }
+                {!isDefaultTemplate &&
+                    <div>
+                        <Field name="assignment.startTime" component={DateTimeFieldConst.DateAndTimeField} label="Start Time" validate={[Validators.required]} />
+                        <Field name="assignment.endTime" component={DateTimeFieldConst.DateAndTimeField} label="End Time" validate={[Validators.required]} />
+                        <Field name="assignment.abilities" component={RequiredTrainingChecklist} label="Required Qualifications" />
+                    </div>
+                }
+                <Field name="assignment.sherrifsRequired" component={TextField} label="Number of Sheriffs Required" validate={[Validators.required, Validators.integer]} />
+                {!isDefaultTemplate && <Field name="assignment.notes" component={TextArea} label="Notes" />}
+            </div>
+        );
+    }
 
+    render() {
+        const { handleSubmit } = this.props;
+        return (
+            <div>
+                {this.renderHeading()}
+                <Form onSubmit={handleSubmit}>
+                    {this.renderWorkSectionFields()}
+                    {this.renderAssignmentFields()}
+                    {this.renderAssignmentTemplateFields()}
                 </Form>
             </div>
         );

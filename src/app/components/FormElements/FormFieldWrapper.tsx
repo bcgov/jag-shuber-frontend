@@ -3,7 +3,7 @@ import { FormGroup, ControlLabel, HelpBlock } from "react-bootstrap";
 import { WrappedFieldProps } from 'redux-form';
 
 export interface FormFieldWrapperProps extends WrappedFieldProps{
-    label:string;
+    label?:string;
     showLabel?: boolean;
 }
 
@@ -14,7 +14,7 @@ export default class FormFieldWrapper extends React.PureComponent<FormFieldWrapp
         const validationState = touched ? (error ? 'error' : (warning ? 'warning' : undefined)) : undefined;
 
         return (
-            <FormGroup validationState={validationState}>
+            <FormGroup validationState={validationState} >
                 { showLabel && <ControlLabel>{label}</ControlLabel> }
                 {children}
                 {touched && (

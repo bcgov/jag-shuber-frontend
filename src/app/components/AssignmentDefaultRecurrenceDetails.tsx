@@ -4,6 +4,7 @@ import {
     RecurrenceInfo,
     DaysOfWeek 
 } from '../api';
+import DateDisplay from './DateDisplay';
 
 
 export interface AssignmentDefaultRecurrenceDetailsProps {
@@ -17,7 +18,7 @@ export default class AssignmentDefaultRecurrenceDetails extends React.PureCompon
         
         return (
             <div>
-                <strong>{days}</strong> - {data.startTime} to {data.endTime} <br />
+                <strong>{days}</strong> - <DateDisplay date={data.startTime} showTime /> to <DateDisplay date={data.endTime} showTime /> <br />
             </div>
         );
     }
