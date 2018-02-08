@@ -17,7 +17,7 @@ import CourthouseSelector from './FormElements/CourthouseSelector';
 import TextField from './FormElements/TextField';
 import TrainingTypeSelector from './FormElements/TrainingTypeSelector';
 import * as Validators from '../infrastructure/Validators'
-import DateTimeField from './FormElements/DateTimeField';
+import * as DateTimeFieldConst from '../components/FormElements/DateTimeFieldConst';
 
 export interface SheriffFormProps {
     handleSubmit?: () => void;
@@ -66,8 +66,8 @@ export default class SheriffForm extends React.Component<SheriffFormProps & Inje
                                         <ListGroupItem key={index}>              
                                          <Button bsStyle="danger" onClick={() => fields.remove(index)} className="pull-right"><Glyphicon glyph="trash" /></Button><br/>                                                                     
                                             <Field name={`${trainingFieldName}.trainingType`} component={TrainingTypeSelector} label="Training Type " />
-                                            <Field name={`${trainingFieldName}.certificationDate`} component={(f)=><DateTimeField showDate showTime={false} closeOnSelect={true} {...f}/>} label="Certification Date" />
-                                            <Field name={`${trainingFieldName}.expiryDate`} component={(f)=><DateTimeField showDate showTime={false} closeOnSelect={true} {...f}/>} label="Expiry Date" />
+                                            <Field name={`${trainingFieldName}.certificationDate`} component={DateTimeFieldConst.DateField} label="Certification Date" />
+                                            <Field name={`${trainingFieldName}.expiryDate`} component={DateTimeFieldConst.DateField} label="Expiry Date" />
                                         </ListGroupItem>)
                                 }
                                 )}

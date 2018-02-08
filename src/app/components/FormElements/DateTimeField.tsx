@@ -20,7 +20,7 @@ export default class DateTimeField extends React.PureComponent<FormFieldWrapperP
     }
 
     render(){
-        const {input:{value}, showDate, showTime, closeOnSelect} = this.props;
+        const {input:{value}, showDate=true, showTime=true, closeOnSelect=false} = this.props;
         return (
             <FormFieldWrapper {...this.props}>
                 <DateTime  dateFormat={showDate && "MMM DD YYYY"} timeFormat={showTime} closeOnSelect={closeOnSelect} value={moment(value)} onChange={(e)=>this.onChange(e)} />

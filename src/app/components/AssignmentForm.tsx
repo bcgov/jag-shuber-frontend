@@ -14,7 +14,7 @@ import {
 } from 'redux-form';
 import * as Validators from '../infrastructure/Validators';
 import TextField from './FormElements/TextField';
-import DateTimeField from './FormElements/DateTimeField';
+import * as DateTimeFieldConst from './FormElements/DateTimeFieldConst';
 import RequiredTrainingChecklist from './FormElements/RequiredTrainingChecklist';
 import TextArea from './FormElements/TextArea';
 import CourtroomSelector from './FormElements/CourtroomSelector';
@@ -132,8 +132,8 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
                                         <ListGroupItem key={index}>
                                             <Button bsStyle="danger" onClick={() => fields.remove(index)} className="pull-right"><Glyphicon glyph="trash" /></Button><br />
                                             <Field name={`${recurrenceInfoFieldName}.days`} component={DaysOfWeekChecklist} label="Days" />
-                                            <Field name={`${recurrenceInfoFieldName}.startTime`} component={(f)=><DateTimeField showDate={false} showTime closeOnSelect={false} {...f}/>} label="Start Time" />
-                                            <Field name={`${recurrenceInfoFieldName}.endTime`} component={(f)=><DateTimeField showDate={false} showTime closeOnSelect={false} {...f}/>} label="End Time" />
+                                            <Field name={`${recurrenceInfoFieldName}.startTime`} component={DateTimeFieldConst.TimeField} label="Start Time" />
+                                            <Field name={`${recurrenceInfoFieldName}.endTime`} component={DateTimeFieldConst.TimeField} label="End Time" />
                                         </ListGroupItem>)
                                 }
                                 )}
@@ -160,8 +160,8 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
             <div>
                 {!isDefaultTemplate &&
                     <div>
-                        <Field name="assignment.startTime" component={(f)=><DateTimeField showDate showTime closeOnSelect={false} {...f}/>} label="Start Time" validate={[Validators.required]} />
-                        <Field name="assignment.endTime" component={(f)=><DateTimeField showDate showTime closeOnSelect={false} {...f}/>} label="End Time" validate={[Validators.required]} />
+                        <Field name="assignment.startTime" component={DateTimeFieldConst.DateAndTimeField} label="Start Time" validate={[Validators.required]} />
+                        <Field name="assignment.endTime" component={DateTimeFieldConst.DateAndTimeField} label="End Time" validate={[Validators.required]} />
                         <Field name="assignment.abilities" component={RequiredTrainingChecklist} label="Required Qualifications" />
                     </div>
                 }
