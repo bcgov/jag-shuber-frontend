@@ -26,6 +26,9 @@ type IActionMap = {
   "ASSIGNMENT_TEMPLATE_CREATE_BEGIN": null;
   "ASSIGNMENT_TEMPLATE_CREATE_SUCCESS": SheriffAssignmentTemplate;
   "ASSIGNMENT_TEMPLATE_CREATE_FAIL": string;
+  "ASSIGNMENT_TEMPLATE_EDIT_BEGIN": null;
+  "ASSIGNMENT_TEMPLATE_EDIT_SUCCESS": SheriffAssignmentTemplate;
+  "ASSIGNMENT_TEMPLATE_EDIT_FAIL": string;
 }
 
 export type IActionType = keyof IActionMap;
@@ -96,7 +99,7 @@ export const getAssignmentTemplatesSuccess = actionCreator("ASSIGNMENT_TEMPLATE_
 
 
 //Action creator for creating a new assignment template
-export const createAssignmentTemplate: ThunkAction<SheriffAssignmentTemplate> = (newAssignmentTemplate: SheriffAssignmentTemplate) => (async (dispatch, getState, { api }) => {
+export const createAssignmentTemplate: ThunkAction<Partial<SheriffAssignmentTemplate>> = (newAssignmentTemplate: Partial<SheriffAssignmentTemplate>) => (async (dispatch, getState, { api }) => {
   dispatch(beginCreateAssignmentTemplate());
   try {
     let assignmentTemplate = await api.createAssignmentTemplate(newAssignmentTemplate);
@@ -109,3 +112,18 @@ export const createAssignmentTemplate: ThunkAction<SheriffAssignmentTemplate> = 
 export const beginCreateAssignmentTemplate = () => actionCreator("ASSIGNMENT_TEMPLATE_CREATE_BEGIN")(null);
 export const createAssignmentTemplateSuccess = actionCreator("ASSIGNMENT_TEMPLATE_CREATE_SUCCESS");
 export const createAssignmentTemplateFailed = actionCreator("ASSIGNMENT_TEMPLATE_CREATE_FAIL");
+
+//Action creator for editing an exisitng assignment template
+export const editAssignmentTemplate: ThunkAction<SheriffAssignmentTemplate> = (updatedAssignmentTemplate: SheriffAssignmentTemplate) => (async (dispatch, getState, { api }) => {
+  dispatch(beginCreateAssignmentTemplate());
+  try {
+    let assignmentTemplate = await api.editAssignmentTemplate(updatedAssignmentTemplate);
+    dispatch(editAssignmentTemplateSuccess(assignmentTemplate));
+  } catch (error) {
+    dispatch(createAssignmentTemplateFailed(`Error saving updates assignment template: '${error}'`));
+  }
+});
+
+export const beginEditAssignmentTemplate = () => actionCreator("ASSIGNMENT_TEMPLATE_EDIT_BEGIN")(null);
+export const editAssignmentTemplateSuccess = actionCreator("ASSIGNMENT_TEMPLATE_EDIT_SUCCESS");
+export const editAssignmentTemplateFailed = actionCreator("ASSIGNMENT_TEMPLATE_EDIT_FAIL");

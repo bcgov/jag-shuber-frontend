@@ -50,7 +50,7 @@ class CourtSecurityFields extends React.PureComponent<any>{
     render() {
         return (
             <div>
-                <Field name="assignment.title" component={CourtroomSelector} label="Courtroom"  validate={[Validators.required]}/>
+                <Field name="assignment.courtroomId" component={CourtroomSelector} label="Courtroom"  validate={[Validators.required]}/>
             </div>
         );
     }
@@ -75,7 +75,7 @@ export interface AssignmentFormProps {
 
 export default class AssignmentForm extends React.Component<AssignmentFormProps & InjectedFormProps<any, AssignmentFormProps>, any>{
     private renderHeading() {
-        const { workSectionId = "OTHER" } = this.props;
+        const { workSectionId = "OTHER" } = this.props.initialValues.assignment;
         let heading = "Other"
         switch (WORK_SECTIONS[workSectionId]) {
             case WORK_SECTIONS.COURTS:
@@ -98,7 +98,7 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
     }
 
     private renderWorkSectionFields() {
-        const { workSectionId = "OTHER" } = this.props;
+        const { workSectionId = "OTHER" } = this.props.initialValues.assignment;
         let returnFields;
         switch (WORK_SECTIONS[workSectionId]) {
             case WORK_SECTIONS.COURTS:
@@ -123,7 +123,7 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
             return (
                 <div>
                     <strong>Days &amp; Times</strong>
-                    <RecurrenceFieldArray name="template.recurrenceInfo" component={(p) => {
+                    <RecurrenceFieldArray name="recurrenceInfo" component={(p) => {
                         const { fields } = p;
                         return (
                             <ListGroup >

@@ -13,7 +13,7 @@ export default class Selector extends React.PureComponent<FormFieldWrapperProps 
             <FormFieldWrapper {...this.props}>
                 <FormControl componentClass="select" value={value} onChange={onChange}>
                     <option>{`Select ${label}`}</option>
-                    {data.map((keyValue, index)=><option value={keyValue.key}>{keyValue.value}</option>)}
+                    {data.map((keyValue, index)=><option selected={value===keyValue.key} value={keyValue.key}>{keyValue.value}</option>)}
                 </FormControl>
             </FormFieldWrapper>
         );

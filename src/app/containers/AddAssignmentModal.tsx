@@ -6,8 +6,8 @@ import {
     MenuItem
 } from 'react-bootstrap';
 import { WORK_SECTIONS } from '../api'
-import CreateAssignmentTemplateForm from './CreateAssignmentTemplateForm';
-import {default as CreateAssignmentForm} from '../containers/CreateAssignmentForm';
+import AssignmentTemplateCreateForm from './AssignmentTemplateCreateForm';
+import {default as AssignmentCreateForm} from '../containers/AssignmentCreateForm';
 
 export interface AddAssignmentModalProps{
     isOpen?: boolean;
@@ -66,12 +66,12 @@ export default class AddAssignmentModal extends React.Component<AddAssignmentMod
 						<Modal.Title>Add Assignment</Modal.Title>
 					</Modal.Header>
 					<Modal.Body>
-                        {isDefaultTemplate && <CreateAssignmentTemplateForm {...formProps}/>}
-                        {!isDefaultTemplate && <CreateAssignmentForm {...formProps} />}                        
+                        {isDefaultTemplate && <AssignmentTemplateCreateForm {...formProps}/>}
+                        {!isDefaultTemplate && <AssignmentCreateForm {...formProps} />}                        
 					</Modal.Body>
 					<Modal.Footer>
-                        {!isDefaultTemplate && <CreateAssignmentForm.SubmitButton bsStyle="primary">Save</CreateAssignmentForm.SubmitButton>}
-                        {isDefaultTemplate && <CreateAssignmentTemplateForm.SubmitButton bsStyle="primary">Save</CreateAssignmentTemplateForm.SubmitButton>}
+                        {!isDefaultTemplate && <AssignmentCreateForm.SubmitButton bsStyle="primary">Save</AssignmentCreateForm.SubmitButton>}
+                        {isDefaultTemplate && <AssignmentTemplateCreateForm.SubmitButton bsStyle="primary">Save</AssignmentTemplateCreateForm.SubmitButton>}
 						<Button onClick={() => this.handleClose()}>Close</Button>
 					</Modal.Footer>
 				</Modal>
