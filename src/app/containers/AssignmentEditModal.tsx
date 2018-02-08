@@ -6,11 +6,11 @@ import {
 import AssignmentTemplateEditForm from './AssignmentTemplateEditForm';
 import ModalWrapper from './ModalWrapper';
 
-export interface EditAssignmentModalProps {
+export interface AssignmentEditModalProps {
     templateId: number;
 }
 
-export default class AssignmentEditModal extends React.Component<EditAssignmentModalProps>{
+export default class AssignmentEditModal extends React.Component<AssignmentEditModalProps>{
     render() {
         const { templateId } = this.props;
         
@@ -18,7 +18,7 @@ export default class AssignmentEditModal extends React.Component<EditAssignmentM
             <div>                
                 <ModalWrapper
                     title="Edit Assignment"
-                    showButton={(handleOpen)=><Button bsSize="xsmall" onClick={handleOpen}><Glyphicon  glyph="pencil" /></Button>}
+                    showButton={({handleShow})=><Button bsSize="xsmall" onClick={()=>handleShow()}><Glyphicon  glyph="pencil" /></Button>}
                     body={({handleClose})=><AssignmentTemplateEditForm id={templateId} onSubmitSuccess={handleClose}/>}
                     footerComponent = {<AssignmentTemplateEditForm.SubmitButton bsStyle="primary">Save</AssignmentTemplateEditForm.SubmitButton>}
                 />

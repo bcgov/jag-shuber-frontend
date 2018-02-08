@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Sheriff } from '../api/index';
-import SheriffProfileDetailsModal from './SheriffProfileDetailsModal';
+import SheriffProfileDetailsModal from '../containers/SheriffProfileDetailsModal';
 
 export interface SheriffCardProps {
     onClick: () => void;

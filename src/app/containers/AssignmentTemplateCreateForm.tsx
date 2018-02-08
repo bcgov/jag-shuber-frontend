@@ -23,7 +23,8 @@ const formConfig: ConfigProps<any, AssignmentFormProps> = {
 
 const mapStateToProps = (state: RootState, props: AssignmentFormProps) => {
     return {
-        initialValues: {assignment: {workSectionId: props.workSectionId}}
+        initialValues: {assignment: {workSectionId: props.workSectionId}},
+        isDefaultTemplate: true
     }
 }
 

@@ -286,7 +286,7 @@ class Client implements API {
 
     async createSheriff(newSheriff: Sheriff): Promise<Sheriff> {
         await randomDelay();
-
+    
         //This is a hack to throw in a profile picture
         if (!newSheriff.imageUrl) {
             //let randomNumber = Math.floor(Math.random() * 86) + 11; 

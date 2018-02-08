@@ -4,16 +4,16 @@ import {
     Button
 } from 'react-bootstrap';
 
-export interface ShowButtonProps {
+export interface ModalWrapperContext {
     handleClose: ()=>void;
-    handleShow: ()=>void;
+    handleShow: (context?:any)=>void;
 }
 
 export interface ModalWrapperProps {
     isOpen?: boolean;
-    showButton?: (handleShow:()=>void)=>React.ReactNode;
+    showButton?: (context:ModalWrapperContext)=>React.ReactNode;
     title: string;
-    body: (props:{handleShow:()=>void, handleClose:()=>void})=>React.ReactNode;
+    body: (context:ModalWrapperContext)=>React.ReactNode;
     footerComponent?: React.ReactNode;
 
 }
@@ -25,7 +25,7 @@ export interface ModalWrapperState {
 export default class ModalWrapper extends React.Component<ModalWrapperProps, ModalWrapperState>{
     static defaultProps = {
         isOpen: false,
-        showButton:(h:any)=><Button onClick={h}>Show</Button>
+        showButton:({handleShow}:ModalWrapperContext)=><Button onClick={handleShow}>Show</Button>
     }
 
     constructor(props: ModalWrapperProps) {
@@ -33,9 +33,11 @@ export default class ModalWrapper extends React.Component<ModalWrapperProps, Mod
         this.state = { showModal: props.isOpen };
     }
 
-    handleShow() {
+    handleShow(extraState?:any) {
         this.setState({
-            showModal: true
+            showModal: true,
+            ...extraState
+            
         })
     }
 
@@ -44,18 +46,18 @@ export default class ModalWrapper extends React.Component<ModalWrapperProps, Mod
     }
 
     render() {
-        const { showModal } = this.state;
+        const { showModal, ...restState } = this.state;
         const { title, showButton=ModalWrapper.defaultProps.showButton, body, footerComponent } = this.props;
-        const handlers = {handleClose:()=>this.handleClose(), handleShow:()=>this.handleShow()}
+        const context = {handleClose:()=>this.handleClose(), handleShow:(extraState?:any)=>this.handleShow(extraState), ...restState}
         return (
             <div>
-                {showButton(handlers.handleShow)}
+                {showButton(context)}
                 <Modal show={showModal} onHide={() => this.handleClose()}>
                     <Modal.Header closeButton>
                         <Modal.Title>{title}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        {body(handlers)}
+                        {body(context)}
                     </Modal.Body>
                     <Modal.Footer>
                         {footerComponent}
