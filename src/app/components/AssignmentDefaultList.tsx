@@ -7,6 +7,8 @@ import {
     WORK_SECTIONS,
     SheriffAssignmentTemplate
 } from '../api';
+import AssignmentEditModal from '../containers/AssignmentEditModal';
+import AssignmentDeleteModal from '../containers/AssignmentDeleteModal';
 
 export interface AssignmentDefaultListProps {
     templates: SheriffAssignmentTemplate[];
@@ -21,7 +23,7 @@ export default class AssignmentDefaultList extends React.PureComponent<Assignmen
                     <span className="text-danger">No default assignments recorded. </span>
                 )}
                 {templates.length > 0 && (
-                    <Table responsive>
+                    <Table responsive striped>
                         <thead>
                             <tr>
                                 <th className="text-left">Assignment</th>
@@ -31,15 +33,17 @@ export default class AssignmentDefaultList extends React.PureComponent<Assignmen
                             </tr>
                         </thead>
                         <tbody>
-                            {templates.map((assignment) => {
+                            {templates.map((template) => {
                                 return (
                                     <tr>
-                                        <td><strong>{assignment.assignmentTemplate.title}</strong></td>
-                                        <td>{assignment.assignmentTemplate.workSectionId && WORK_SECTIONS[assignment.assignmentTemplate.workSectionId]}</td>
+                                        <td><strong>{template.assignment.title}</strong></td>
+                                        <td>{template.assignment.workSectionId && WORK_SECTIONS[template.assignment.workSectionId]}</td>
                                         <td>
-                                            {assignment.recurrenceInfo.map((recurrence) => <AssignmentDefaultRecurrenceDetails data={recurrence} />)}
+                                            {template.recurrenceInfo.map((recurrence) => <AssignmentDefaultRecurrenceDetails data={recurrence} />)}
                                         </td>
-                                        <td>{assignment.assignmentTemplate.sherrifsRequired}</td>
+                                        <td>{template.assignment.sherrifsRequired}</td>
+                                        <td className="text-right"><AssignmentEditModal templateId={template.id}/></td> 
+                                        <td className="text-left"><AssignmentDeleteModal templateId={template.id}/></td>
                                     </tr>
                                 );
                             })}

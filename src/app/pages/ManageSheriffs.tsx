@@ -1,14 +1,9 @@
 import * as React from 'react';
-import { default as AddSheriffModal } from '../containers/AddSheriffModal';
+import { default as SheriffAddModal } from '../containers/SheriffAddModal';
 import SheriffList from '../containers/SheriffList';
 import { Well } from 'react-bootstrap';
 
-export interface ManageSheriffsProps{
-    
-}
-
-
-class ManageSheriffs extends React.PureComponent<ManageSheriffsProps, any>{
+class ManageSheriffs extends React.PureComponent{
     render(){
         return (
             <div style={{display: "flex", justifyContent:"center"}}>
@@ -19,7 +14,7 @@ class ManageSheriffs extends React.PureComponent<ManageSheriffsProps, any>{
                 <SheriffList />
                 <br/>
                 <div style={{textAlign:"right"}}>
-                <AddSheriffModal />
+                <SheriffAddModal />
                 </div>
             </Well>
             </div>

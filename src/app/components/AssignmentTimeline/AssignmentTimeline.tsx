@@ -1,4 +1,5 @@
 import * as React from 'react'
+import * as moment from 'moment';
 import { default as Timeline, TimelineProps } from "../Timeline/Timeline";
 import { SheriffAssignment, Sheriff, SheriffAbility, BLANK_SHERIFF } from "../../api/index";
 import { ReactCalendarTimelineGroup, ReactCalendarTimelineItem } from "react-calendar-timeline";
@@ -53,10 +54,19 @@ export default class AssignmentTimeline extends Timeline<SheriffAssignment, Sher
         throw new Error("Method not implemented.");
     }
 
+    protected ensureMoment(dateTime:any):moment.Moment{
+        if(!moment.isMoment(dateTime)){
+            return moment(dateTime);
+        }
+        return dateTime;
+    }
+
     // Map a group of assignments to timeline items
     protected mapItems(assignments: SheriffAssignment[]): TimelineAssignment[] {
         const assignmentItems = assignments.reduce<TimelineAssignment[]>((flattened, assignment, index) => {
-            const { id, sheriffIds = [], startTime: start_time, endTime: end_time } = assignment;
+            const { id, sheriffIds = [], startTime, endTime } = assignment;
+            const start_time = this.ensureMoment(startTime);
+            const end_time = this.ensureMoment(endTime);
             // If no id's, it's unassigned
             if (sheriffIds.length == 0) {
                 flattened.push({ group: UNASSIGNED_ID, start_time, end_time, ...assignment } as TimelineAssignment);

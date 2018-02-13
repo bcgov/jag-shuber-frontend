@@ -50,7 +50,7 @@ class CourtSecurityFields extends React.PureComponent<any>{
     render() {
         return (
             <div>
-                <Field name="assignment.title" component={CourtroomSelector} label="Courtroom"  validate={[Validators.required]}/>
+                <Field name="assignment.courtroomId" component={CourtroomSelector} label="Courtroom"  validate={[Validators.required]}/>
             </div>
         );
     }
@@ -75,30 +75,34 @@ export interface AssignmentFormProps {
 
 export default class AssignmentForm extends React.Component<AssignmentFormProps & InjectedFormProps<any, AssignmentFormProps>, any>{
     private renderHeading() {
-        const { workSectionId = "OTHER" } = this.props;
         let heading = "Other"
-        switch (WORK_SECTIONS[workSectionId]) {
-            case WORK_SECTIONS.COURTS:
-                heading = "Courts";
-                break;
-            case WORK_SECTIONS.JAIL:
-                heading = "Jail";
-                break;
-            case WORK_SECTIONS.ESCORTS:
-                heading = "Escorts";
-                break;
-            case WORK_SECTIONS.GATES:
-                heading = "Gates";
-                break;
-            case WORK_SECTIONS.DOCUMENTS:
-                heading = "Document Service";
-                break;
+        if(this.props.initialValues && this.props.initialValues.assignment){
+            const { workSectionId = "OTHER" } = this.props.initialValues.assignment;
+       
+            switch (WORK_SECTIONS[workSectionId]) {
+                case WORK_SECTIONS.COURTS:
+                    heading = "Courts";
+                    break;
+                case WORK_SECTIONS.JAIL:
+                    heading = "Jail";
+                    break;
+                case WORK_SECTIONS.ESCORTS:
+                    heading = "Escorts";
+                    break;
+                case WORK_SECTIONS.GATES:
+                    heading = "Gates";
+                    break;
+                case WORK_SECTIONS.DOCUMENTS:
+                    heading = "Document Service";
+                    break;
+            }
         }
+       
         return <h1>{heading}</h1>;
     }
 
     private renderWorkSectionFields() {
-        const { workSectionId = "OTHER" } = this.props;
+        const { workSectionId = "OTHER" } = this.props.initialValues.assignment;
         let returnFields;
         switch (WORK_SECTIONS[workSectionId]) {
             case WORK_SECTIONS.COURTS:
@@ -123,7 +127,7 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
             return (
                 <div>
                     <strong>Days &amp; Times</strong>
-                    <RecurrenceFieldArray name="template.recurrenceInfo" component={(p) => {
+                    <RecurrenceFieldArray name="recurrenceInfo" component={(p) => {
                         const { fields } = p;
                         return (
                             <ListGroup >

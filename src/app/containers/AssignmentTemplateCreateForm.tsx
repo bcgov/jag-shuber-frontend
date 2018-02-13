@@ -8,23 +8,31 @@ import {
 } from '../api/index';
 import { createAssignmentTemplate } from '../modules/assignments/actions';
 import { default as FormSubmitButton, SubmitButtonProps } from '../components/FormElements/SubmitButton'
+import { connect } from 'react-redux';
+import { RootState } from '../store';
 
 
 // wrapping generic assignment form in redux-form
 const formConfig: ConfigProps<any, AssignmentFormProps> = {
     form: 'CreateAssignmentTemplate',
-    onSubmit: (values: { assignment: SheriffAssignment, template: { recurrenceInfo: RecurrenceInfo[] } }, dispatch, props) => {
-        const { workSectionId = "OTHER" } = props;
-        const { assignment, template} = values;
-        assignment.workSectionId = workSectionId;
-        let newAssignmentTemplate = Object.assign({}, { assignmentTemplate: assignment, ...template });
+    onSubmit: (values: { assignment: SheriffAssignment, recurrenceInfo: RecurrenceInfo[] }, dispatch, props) => {
+        let newAssignmentTemplate = Object.assign({}, { ...values });
         dispatch(createAssignmentTemplate(newAssignmentTemplate));
     }
 };
 
+const mapStateToProps = (state: RootState, props: AssignmentFormProps) => {
+    return {
+        initialValues: {assignment: {workSectionId: props.workSectionId}},
+        isDefaultTemplate: true
+    }
+}
+
+
+
 // Here we create a class that extends the configured assignment form so that we
 // can add a static SubmitButton member to it to make the API cleaner
-export default class CreateAssignmentTemplateForm extends reduxForm(formConfig)(AssignmentForm) {
+export default class AssignmentTemplateCreateForm extends connect<any, {}, AssignmentFormProps>(mapStateToProps)(reduxForm(formConfig)(AssignmentForm)) {
     static SubmitButton = (props: Partial<SubmitButtonProps>) => <FormSubmitButton {...props} formName={formConfig.form} />;
 }
 

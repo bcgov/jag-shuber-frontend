@@ -173,7 +173,7 @@ export const WORK_SECTIONS: StringMap = {
 const DEFAULT_RECURRENCE: RecurrenceInfo = {
     days: DaysOfWeek.Weekdays,
     startTime: moment().hour(9).minute(0),
-    endTime: moment().hour(5).minute(0)
+    endTime: moment().hour(17).minute(0)
 }
 
 export const COURTROOMS: StringMap = {
@@ -216,8 +216,8 @@ export interface RecurrenceInfo {
 }
 
 export interface SheriffAssignmentTemplate {
-    id?: number;
-    assignmentTemplate: Partial<SheriffAssignment>;
+    id: number;
+    assignment: Partial<SheriffAssignment>;
     recurrenceInfo: RecurrenceInfo[];
 }
 
@@ -240,7 +240,8 @@ export interface SheriffAssignment {
     dropoffLocation?: string;
 
     //attributes court security assignments 
-    assignmentCourt?: boolean
+    courtroomId?: number;
+    assignmentCourt?: boolean;
 }
 
 export interface API {
@@ -250,7 +251,9 @@ export interface API {
     updateSheriff(sheriffToUpdate: Partial<Sheriff>): Promise<Sheriff>;
     createAssignment(newAssignment: SheriffAssignment): Promise<SheriffAssignment>;
     getAssignmentTemplates(): Promise<SheriffAssignmentTemplate[]>;
-    createAssignmentTemplate(newAssignmentTemplate:SheriffAssignmentTemplate): Promise<SheriffAssignmentTemplate>;
+    createAssignmentTemplate(newAssignmentTemplate: Partial<SheriffAssignmentTemplate>): Promise<SheriffAssignmentTemplate>;
+    editAssignmentTemplate(updatedAssignmentTemplate: SheriffAssignmentTemplate): Promise<SheriffAssignmentTemplate>;
+    deleteAssignmentTemplate(templateIdToBeDeleted: number): Promise<number>;
 }
 
 export type SheriffMap = { [key: number]: Sheriff }
@@ -267,7 +270,7 @@ function arrayToMap<T, TKey>(array: T[], keySelector: (t: T) => TKey) {
 
 
 class Client implements API {
-
+    
     async getSheriffs(): Promise<SheriffMap> {
         return arrayToMap(sheriffList, (s) => s.badgeNumber) as SheriffMap;
     }
@@ -284,7 +287,7 @@ class Client implements API {
 
     async createSheriff(newSheriff: Sheriff): Promise<Sheriff> {
         await randomDelay();
-
+    
         //This is a hack to throw in a profile picture
         if (!newSheriff.imageUrl) {
             //let randomNumber = Math.floor(Math.random() * 86) + 11; 
@@ -307,56 +310,80 @@ class Client implements API {
         await randomDelay();
         //This is a hack to create a unique id for a new assignment
         newAssignment.id = assignments.length;
+        
         //set the assignment title
-        if (WORK_SECTIONS[newAssignment.workSectionId] === WORK_SECTIONS.COURTS) {
-            newAssignment.title = COURTROOMS[newAssignment.title];
-        }
-        else {
-            newAssignment.title = WORK_SECTIONS[newAssignment.workSectionId];
-        }
+        newAssignment.title = this.getAssignmentTitle(newAssignment);
+        
         assignments.push(newAssignment);
 
         return newAssignment;
     }
 
-    async createAssignmentTemplate(newTemplate: SheriffAssignmentTemplate): Promise<SheriffAssignmentTemplate> {
-        await randomDelay();
-        let assignment = newTemplate.assignmentTemplate;
+    private getAssignmentTitle(assignment: Partial<SheriffAssignment>): string {
 
-        //This is a hack to create a unique id for a new assignment template
-        newTemplate.id = defaultAssignmentTemplates.length;
-        assignment.id = defaultAssignmentTemplates.length;        
-
-        // set the assignment template title
         if (assignment.workSectionId) {
-            if (WORK_SECTIONS[assignment.workSectionId] === WORK_SECTIONS.COURTS && assignment.title) {
-                newTemplate.assignmentTemplate.title = COURTROOMS[assignment.title];
+            if (WORK_SECTIONS[assignment.workSectionId] === WORK_SECTIONS.COURTS && assignment.courtroomId) {
+                return COURTROOMS[assignment.courtroomId];
             }
             else {
-                newTemplate.assignmentTemplate.title = WORK_SECTIONS[assignment.workSectionId];
+                return WORK_SECTIONS[assignment.workSectionId];
             }
         }
+        else {
+            return "Assignment Title";
+        }
+
+    }
+
+    private createFilledRecurrenceInfo(recurrenceInfo?:  RecurrenceInfo[]): RecurrenceInfo[] {
+        if (!recurrenceInfo || recurrenceInfo.length === 0) {
+            return [DEFAULT_RECURRENCE];
+        }
+        else {
+            return recurrenceInfo.map(r=>Object.assign({}, DEFAULT_RECURRENCE, r));    
+        }
+    }
+
+    async createAssignmentTemplate(newTemplate: Partial<SheriffAssignmentTemplate>): Promise<SheriffAssignmentTemplate> {
+        await randomDelay();
+
+        if (!newTemplate || !newTemplate.assignment) {
+            throw new Error("Incomplete new assignment template.")
+        }
+
+        let assignment = newTemplate.assignment;
+
+        //This is a hack to create a unique id for a new assignment template
+        newTemplate.id = ASSIGNMENT_TEMPLATE_ID;
+        assignment.id = ASSIGNMENT_TEMPLATE_ID;
+        ASSIGNMENT_TEMPLATE_ID++;
+
+        assignment.title = this.getAssignmentTitle(assignment);
 
         //add default recurrence value if nothing was selected or partial value was selected
-        if(!newTemplate.recurrenceInfo){
-            newTemplate.recurrenceInfo = [DEFAULT_RECURRENCE];
-        }
-        else{
-            newTemplate.recurrenceInfo.forEach(element => {
-                if(!element.startTime){
-                    element.startTime = DEFAULT_RECURRENCE.startTime;
-                }
-                if(!element.endTime){
-                    element.endTime = DEFAULT_RECURRENCE.endTime;
-                }
-                if(!element.days){
-                    element.days = DEFAULT_RECURRENCE.days;
-                }
-            });
-        }
+        newTemplate.recurrenceInfo = this.createFilledRecurrenceInfo(newTemplate.recurrenceInfo);
 
-        defaultAssignmentTemplates.push(newTemplate);
-        return newTemplate;
+        defaultAssignmentTemplates.push(newTemplate as SheriffAssignmentTemplate);
+        return newTemplate as SheriffAssignmentTemplate;
+    }
+
+    async editAssignmentTemplate(updatedAssignmentTemplate: SheriffAssignmentTemplate): Promise<SheriffAssignmentTemplate> {
+        await randomDelay();
+        let assignment = updatedAssignmentTemplate.assignment;
+        
+        assignment.title =  this.getAssignmentTitle(assignment);
+        
+        //add default recurrence value if nothing was selected or partial value was selected
+        updatedAssignmentTemplate.recurrenceInfo = this.createFilledRecurrenceInfo(updatedAssignmentTemplate.recurrenceInfo);
+        
+        defaultAssignmentTemplates[updatedAssignmentTemplate.id] = updatedAssignmentTemplate;
+        return updatedAssignmentTemplate;
+    }
+
+    async deleteAssignmentTemplate(templateIdToBeDeleted: number): Promise<number> {
+        const templateIndex = defaultAssignmentTemplates.findIndex((value) => value.id==templateIdToBeDeleted);
+        defaultAssignmentTemplates.splice(templateIndex, 1);
+        return templateIdToBeDeleted;
     }
 }
 
@@ -562,7 +589,62 @@ const assignments: SheriffAssignment[] = [
     },
 ];
 
-const defaultAssignmentTemplates: SheriffAssignmentTemplate[] = [];
+const defaultAssignmentTemplates: SheriffAssignmentTemplate[] = [
+    {
+        id: 0,
+        assignment: {
+            id: 0,
+            title: COURTROOMS[101],
+            sherrifsRequired: 1,
+            courtroomId: 101,
+            workSectionId: 'COURTS'
+        },
+        recurrenceInfo: [
+            DEFAULT_RECURRENCE
+        ]
+    },
+    {
+        id: 1,
+        assignment: {
+            id: 1,
+            title: COURTROOMS[102],
+            sherrifsRequired: 1,
+            courtroomId: 102,
+            workSectionId: 'COURTS'
+        },
+        recurrenceInfo: [
+            DEFAULT_RECURRENCE
+        ]
+    },
+    {
+        id: 2,
+        assignment: {
+            id: 2,
+            title: COURTROOMS[103],
+            sherrifsRequired: 1,
+            courtroomId: 103,
+            workSectionId: 'COURTS'
+        },
+        recurrenceInfo: [
+            DEFAULT_RECURRENCE
+        ]
+    },
+    {
+        id: 3,
+        assignment: {
+            id: 3,
+            title: COURTROOMS[104],
+            sherrifsRequired: 1,
+            courtroomId: 104,
+            workSectionId: 'COURTS'
+        },
+        recurrenceInfo: [
+            DEFAULT_RECURRENCE
+        ]
+    }
+];
+
+let ASSIGNMENT_TEMPLATE_ID:number = 10;
 
 
 export default new Client();
