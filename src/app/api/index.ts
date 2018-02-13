@@ -310,19 +310,16 @@ class Client implements API {
         await randomDelay();
         //This is a hack to create a unique id for a new assignment
         newAssignment.id = assignments.length;
+        
         //set the assignment title
-        if (WORK_SECTIONS[newAssignment.workSectionId] === WORK_SECTIONS.COURTS && newAssignment.courtroomId) {
-            newAssignment.title = COURTROOMS[newAssignment.courtroomId];
-        }
-        else {
-            newAssignment.title = WORK_SECTIONS[newAssignment.workSectionId];
-        }
+        newAssignment.title = this.getAssignmentTitle(newAssignment);
+        
         assignments.push(newAssignment);
 
         return newAssignment;
     }
 
-    private setAssignmentTemplateTitle(assignment: Partial<SheriffAssignment>): string {
+    private getAssignmentTitle(assignment: Partial<SheriffAssignment>): string {
 
         if (assignment.workSectionId) {
             if (WORK_SECTIONS[assignment.workSectionId] === WORK_SECTIONS.COURTS && assignment.courtroomId) {
@@ -333,28 +330,17 @@ class Client implements API {
             }
         }
         else {
-            return "Assignment Template";
+            return "Assignment Title";
         }
 
     }
 
-    private setAssignmentTemplateDefaultRecurrenceInfo(template: Partial<SheriffAssignmentTemplate>): RecurrenceInfo[] {
-        if (!template.recurrenceInfo || template.recurrenceInfo.length === 0) {
+    private createFilledRecurrenceInfo(recurrenceInfo?:  RecurrenceInfo[]): RecurrenceInfo[] {
+        if (!recurrenceInfo || recurrenceInfo.length === 0) {
             return [DEFAULT_RECURRENCE];
         }
         else {
-            template.recurrenceInfo.forEach(element => {
-                if (!element.startTime) {
-                    element.startTime = DEFAULT_RECURRENCE.startTime;
-                }
-                if (!element.endTime) {
-                    element.endTime = DEFAULT_RECURRENCE.endTime;
-                }
-                if (!element.days) {
-                    element.days = DEFAULT_RECURRENCE.days;
-                }
-            });
-            return template.recurrenceInfo;
+            return recurrenceInfo.map(r=>Object.assign({}, DEFAULT_RECURRENCE, r));    
         }
     }
 
@@ -372,10 +358,10 @@ class Client implements API {
         assignment.id = ASSIGNMENT_TEMPLATE_ID;
         ASSIGNMENT_TEMPLATE_ID++;
 
-        assignment.title = this.setAssignmentTemplateTitle(assignment);
+        assignment.title = this.getAssignmentTitle(assignment);
 
         //add default recurrence value if nothing was selected or partial value was selected
-        newTemplate.recurrenceInfo = this.setAssignmentTemplateDefaultRecurrenceInfo(newTemplate);
+        newTemplate.recurrenceInfo = this.createFilledRecurrenceInfo(newTemplate.recurrenceInfo);
 
         defaultAssignmentTemplates.push(newTemplate as SheriffAssignmentTemplate);
         return newTemplate as SheriffAssignmentTemplate;
@@ -385,10 +371,10 @@ class Client implements API {
         await randomDelay();
         let assignment = updatedAssignmentTemplate.assignment;
         
-        assignment.title =  this.setAssignmentTemplateTitle(assignment);
+        assignment.title =  this.getAssignmentTitle(assignment);
         
         //add default recurrence value if nothing was selected or partial value was selected
-        updatedAssignmentTemplate.recurrenceInfo = this.setAssignmentTemplateDefaultRecurrenceInfo(updatedAssignmentTemplate);
+        updatedAssignmentTemplate.recurrenceInfo = this.createFilledRecurrenceInfo(updatedAssignmentTemplate.recurrenceInfo);
         
         defaultAssignmentTemplates[updatedAssignmentTemplate.id] = updatedAssignmentTemplate;
         return updatedAssignmentTemplate;

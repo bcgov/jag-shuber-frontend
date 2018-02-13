@@ -75,25 +75,29 @@ export interface AssignmentFormProps {
 
 export default class AssignmentForm extends React.Component<AssignmentFormProps & InjectedFormProps<any, AssignmentFormProps>, any>{
     private renderHeading() {
-        const { workSectionId = "OTHER" } = this.props.initialValues.assignment;
         let heading = "Other"
-        switch (WORK_SECTIONS[workSectionId]) {
-            case WORK_SECTIONS.COURTS:
-                heading = "Courts";
-                break;
-            case WORK_SECTIONS.JAIL:
-                heading = "Jail";
-                break;
-            case WORK_SECTIONS.ESCORTS:
-                heading = "Escorts";
-                break;
-            case WORK_SECTIONS.GATES:
-                heading = "Gates";
-                break;
-            case WORK_SECTIONS.DOCUMENTS:
-                heading = "Document Service";
-                break;
+        if(this.props.initialValues && this.props.initialValues.assignment){
+            const { workSectionId = "OTHER" } = this.props.initialValues.assignment;
+       
+            switch (WORK_SECTIONS[workSectionId]) {
+                case WORK_SECTIONS.COURTS:
+                    heading = "Courts";
+                    break;
+                case WORK_SECTIONS.JAIL:
+                    heading = "Jail";
+                    break;
+                case WORK_SECTIONS.ESCORTS:
+                    heading = "Escorts";
+                    break;
+                case WORK_SECTIONS.GATES:
+                    heading = "Gates";
+                    break;
+                case WORK_SECTIONS.DOCUMENTS:
+                    heading = "Document Service";
+                    break;
+            }
         }
+       
         return <h1>{heading}</h1>;
     }
 

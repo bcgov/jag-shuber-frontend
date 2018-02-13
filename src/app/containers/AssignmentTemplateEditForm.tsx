@@ -32,7 +32,8 @@ const mapStateToProps = (state: RootState, props: AssignmentTemplateEditFormProp
         const initialTemplate = state.assignments.templates[props.id];
         return {
             initialValues: initialTemplate, 
-            workSectionId: initialTemplate.assignment.workSectionId
+            workSectionId: initialTemplate.assignment.workSectionId,
+            isDefaultTemplate: true
         }
     }
     else{
@@ -44,9 +45,6 @@ const mapStateToProps = (state: RootState, props: AssignmentTemplateEditFormProp
 // can add a static SubmitButton member to it to make the API cleaner
 export default class AssignmentTemplateEditForm extends connect<any, {}, AssignmentTemplateEditFormProps>(mapStateToProps)(reduxForm(formConfig)(AssignmentForm)) {
     static SubmitButton = (props: Partial<SubmitButtonProps>) => <FormSubmitButton {...props} formName={formConfig.form} />;
-    static defaultProps:Partial<AssignmentFormProps> = {
-        isDefaultTemplate: true
-    }
 }
 
 

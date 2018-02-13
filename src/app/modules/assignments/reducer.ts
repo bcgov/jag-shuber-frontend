@@ -106,8 +106,8 @@ const reducer = createReducer<AssignmentState>({
   ASSIGNMENT_TEMPLATE_EDIT_FAIL: (state, payload) => ({ saving:false, error:payload }),
   ASSIGNMENT_TEMPLATE_EDIT_SUCCESS: (state, payload) => {
     const { templates=[], ...rest } = state;
-    templates[payload.id] = payload;
     let newTemplates = templates.slice();
+    newTemplates[payload.id] = payload;
     return { templates: newTemplates, ...rest, saving:false, successMessage:'SAVED!' };
   },
   ASSIGNMENT_TEMPLATE_DELETE_BEGIN: (state, payload) => (Object.assign({}, state, {saving: true })),
