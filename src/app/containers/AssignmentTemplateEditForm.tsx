@@ -29,7 +29,8 @@ export interface AssignmentTemplateEditFormProps extends AssignmentFormProps{
 
 const mapStateToProps = (state: RootState, props: AssignmentTemplateEditFormProps) => {
     if (state && state.assignments && state.assignments.templates) {
-        const initialTemplate = state.assignments.templates[props.id];
+        const initialTemplateIndex = state.assignments.templates.findIndex((value) => value.id==props.id);
+        const initialTemplate = state.assignments.templates[initialTemplateIndex];
         return {
             initialValues: initialTemplate, 
             workSectionId: initialTemplate.assignment.workSectionId,
