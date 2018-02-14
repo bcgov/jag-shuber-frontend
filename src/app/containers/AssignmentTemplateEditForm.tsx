@@ -12,34 +12,35 @@ import { editAssignmentTemplate } from '../modules/assignments/actions';
 import { default as FormSubmitButton, SubmitButtonProps } from '../components/FormElements/SubmitButton'
 import { connect } from 'react-redux';
 import { RootState } from '../store';
+import { getAssignmentTemplate } from '../modules/assignments/selectors';
 
 
 // wrapping generic assignment form in redux-form
 const formConfig: ConfigProps<any, AssignmentFormProps> = {
     form: 'EditAssignmentTemplate',
-    onSubmit: (values: {id:number, assignment: SheriffAssignment, recurrenceInfo: RecurrenceInfo[] }, dispatch, props) => {
+    onSubmit: (values: { id: number, assignment: SheriffAssignment, recurrenceInfo: RecurrenceInfo[] }, dispatch, props) => {
         let updatedAssignmentTemplate = Object.assign({}, { ...values });
         dispatch(editAssignmentTemplate(updatedAssignmentTemplate));
     }
 };
 
-export interface AssignmentTemplateEditFormProps extends AssignmentFormProps{
+export interface AssignmentTemplateEditFormProps extends AssignmentFormProps {
     id: number;
 }
 
 const mapStateToProps = (state: RootState, props: AssignmentTemplateEditFormProps) => {
-    if (state && state.assignments && state.assignments.templates) {
-        const initialTemplateIndex = state.assignments.templates.findIndex((value) => value.id==props.id);
-        const initialTemplate = state.assignments.templates[initialTemplateIndex];
+    const initialTemplate = getAssignmentTemplate(props.id)(state);
+    if (initialTemplate) {
         return {
-            initialValues: initialTemplate, 
+            initialValues: initialTemplate,
             workSectionId: initialTemplate.assignment.workSectionId,
             isDefaultTemplate: true
         }
     }
-    else{
-        return {};
+    else {
+        return {}
     }
+
 }
 
 // Here we create a class that extends the configured assignment form so that we
