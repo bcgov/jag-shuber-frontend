@@ -2,6 +2,8 @@ import * as moment from 'moment';
 
 export type DateType = Date | moment.Moment | string;
 export type StringMap = { [key: string]: string };
+export type IdType = number;
+
 
 export enum SheriffAbility {
     None = 0,
@@ -45,7 +47,6 @@ export const BLANK_SHERIFF: Sheriff = {
     onDuty: false
 }
 
-
 export const DEFAULT_RECURRENCE: RecurrenceInfo = {
     days: DaysOfWeek.Weekdays,
     startTime: moment().hour(9).minute(0),
@@ -82,32 +83,37 @@ export interface RecurrenceInfo {
 }
 
 export interface SheriffAssignmentTemplate {
-    id: number;
-    assignment: Partial<SheriffAssignment>;
+    id: IdType;
+    assignmentId: IdType;
+    sherrifsRequired: number;
     recurrenceInfo: RecurrenceInfo[];
 }
 
 export interface SheriffAssignment {
-    id: number;
+    id: IdType;
     title: string;
     workSectionId: string;
-    notes?: string;
-    requiredAbilities?: SheriffAbility;
-    sheriffIds: number[];
-    startTime: DateType;
-    endTime: DateType;
-    sherrifsRequired: number | string;
-
     //attributes for gate security assignments
-    gateNumber?: number | string;
-
+    gateNumber?: IdType
+    
     //attributes for escort security assignments
     pickupLocation?: string;
     dropoffLocation?: string;
 
     //attributes court security assignments 
-    courtroomId?: number;
+    courtroomId?: IdType;
     assignmentCourt?: boolean;
+}
+
+export interface AssignmentDuty {
+    id:IdType;
+    assignmentId:IdType;    
+    requiredAbilities?: SheriffAbility;
+    startTime: DateType;
+    endTime: DateType;
+    sheriffIds: IdType[];
+    sherrifsRequired: number;
+    notes?: string;
 }
 
 export interface API {
@@ -119,7 +125,7 @@ export interface API {
     getAssignmentTemplates(): Promise<SheriffAssignmentTemplate[]>;
     createAssignmentTemplate(newAssignmentTemplate: Partial<SheriffAssignmentTemplate>): Promise<SheriffAssignmentTemplate>;
     editAssignmentTemplate(updatedAssignmentTemplate: SheriffAssignmentTemplate): Promise<SheriffAssignmentTemplate>;
-    deleteAssignmentTemplate(templateIdToBeDeleted: number): Promise<number>;
+    deleteAssignmentTemplate(templateIdToBeDeleted: IdType): Promise<number>;
 }
 
 export type SheriffMap = { [key: number]: Sheriff }

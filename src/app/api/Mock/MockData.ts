@@ -1,10 +1,11 @@
-import { 
-    StringMap, 
-    Sheriff, 
-    SheriffAssignment, 
-    SheriffAbility, 
-    SheriffAssignmentTemplate, 
-    DEFAULT_RECURRENCE 
+import {
+    StringMap,
+    Sheriff,
+    SheriffAssignment,
+    SheriffAbility,
+    SheriffAssignmentTemplate,
+    DEFAULT_RECURRENCE,
+    AssignmentDuty
 } from "../Api";
 import * as moment from 'moment';
 
@@ -240,158 +241,106 @@ export const sheriffList: Sheriff[] = [
     }
 ];
 
+
 export const assignments: SheriffAssignment[] = [
     {
         id: 0,
         title: COURTROOMS[101],
         workSectionId: 'COURTS',
         assignmentCourt: true,
-        sheriffIds: [],
-        startTime: moment().startOf('day').add(9, 'hours'),
-        endTime: moment().startOf('day').add(12, 'hours'),
-        sherrifsRequired: 1,
-        notes: 'My notes on the file.'
+        courtroomId: 101
     },
     {
         id: 1,
-        title: 'Escorts',
-        workSectionId: 'ESCORTS',
-        pickupLocation: 'Location Z',
-        dropoffLocation: 'Courthouse A',
-        notes: 'My notes on this escort.',
-        sheriffIds: [],
-        startTime: moment().startOf('day').add(8, 'hours'),
-        endTime: moment().startOf('day').add(9, 'hours'),
-        sherrifsRequired: 1
-    },
-    {
-        id: 2,
-        title: 'Document Service',
-        workSectionId: 'DOCUMENTS',
-        notes: 'Serve documents A, B, and C',
-        sheriffIds: [],
-        startTime: moment().startOf('day').add(9, 'hours'),
-        endTime: moment().startOf('day').add(16, 'hours'),
-        sherrifsRequired: 1
-    },
-    {
-        id: 3,
-        title: 'Gate Secturity',
-        workSectionId: 'GATES',
-        gateNumber: 1,
-        notes: 'My notes on this gate',
-        sheriffIds: [],
-        startTime: moment().startOf('day').add(9, 'hours'),
-        endTime: moment().startOf('day').add(12.5, 'hours'),
-        sherrifsRequired: 1
-    },
-    {
-        id: 4,
         title: COURTROOMS[102],
         workSectionId: 'COURTS',
         assignmentCourt: false,
-        sheriffIds: [],
-        startTime: moment().startOf('day').add(9, 'hours'),
-        endTime: moment().startOf('day').add(12, 'hours'),
-        sherrifsRequired: 1,
-        notes: 'My notes on the file.'
+        courtroomId: 102
     },
     {
-        id: 5,
+        id: 2,
         title: COURTROOMS[103],
         workSectionId: 'COURTS',
         assignmentCourt: false,
-        sheriffIds: [],
-        startTime: moment().startOf('day').add(13, 'hours'),
-        endTime: moment().startOf('day').add(16, 'hours'),
-        sherrifsRequired: 1,
-        notes: 'My notes on the file.'
+        courtroomId: 103
+    },
+    {
+        id: 3,
+        title: COURTROOMS[104],
+        workSectionId: 'COURTS',
+        assignmentCourt: true,
+        courtroomId: 104
+    },
+    {
+        id: 4,
+        title: COURTROOMS[201],
+        workSectionId: 'COURTS',
+        assignmentCourt: true,
+        courtroomId: 201
+    },
+    {
+        id: 5,
+        title: 'Document Service',
+        workSectionId: 'DOCUMENTS',
     },
     {
         id: 6,
-        title: COURTROOMS[104],
-        workSectionId: 'COURTS',
-        assignmentCourt: false,
-        sheriffIds: [],
-        startTime: moment().startOf('day').add(13, 'hours'),
-        endTime: moment().startOf('day').add(16, 'hours'),
-        sherrifsRequired: 1,
-        notes: 'My notes on the file.'
+        title: 'Escorts',
+        workSectionId: 'ESCORTS',
+        pickupLocation: 'Location Z',
+        dropoffLocation: 'Courthouse A'
     },
     {
         id: 7,
         title: 'Gate Secturity',
         workSectionId: 'GATES',
-        gateNumber: 1,
-        notes: 'My notes on this gate',
-        sheriffIds: [],
-        startTime: moment().startOf('day').add(12.5, 'hours'),
-        endTime: moment().startOf('day').add(16, 'hours'),
-        sherrifsRequired: 1
-    },
-    {
-        id: 8,
-        title: 'Escorts',
-        workSectionId: 'ESCORTS',
-        pickupLocation: 'Courthouse A',
-        dropoffLocation: 'Location Z',
-        notes: 'My notes on this escort.',
-        sheriffIds: [],
-        startTime: moment().startOf('day').add(16, 'hours'),
-        endTime: moment().startOf('day').add(17, 'hours'),
-        sherrifsRequired: 1
-    },
+        gateNumber: 1
+    }
 ];
+
+
+
+export const assignmentDuties: AssignmentDuty[] = [
+    {
+        id:0,
+        assignmentId:0,
+        sheriffIds: [],
+        startTime: moment().startOf('day').add(9, 'hours'),
+        endTime: moment().startOf('day').add(12, 'hours'),
+        sherrifsRequired: 1,
+        notes: 'My notes on the file.'
+    }
+]
 
 export const defaultAssignmentTemplates: SheriffAssignmentTemplate[] = [
     {
         id: 0,
-        assignment: {
-            id: 0,
-            title: COURTROOMS[101],
-            sherrifsRequired: 1,
-            courtroomId: 101,
-            workSectionId: 'COURTS'
-        },
+        assignmentId:assignments[0].id,
+        sherrifsRequired:1,
         recurrenceInfo: [
             DEFAULT_RECURRENCE
         ]
     },
     {
         id: 1,
-        assignment: {
-            id: 1,
-            title: COURTROOMS[102],
-            sherrifsRequired: 1,
-            courtroomId: 102,
-            workSectionId: 'COURTS'
-        },
+        assignmentId:assignments[1].id,
+        sherrifsRequired:1,
         recurrenceInfo: [
             DEFAULT_RECURRENCE
         ]
     },
     {
         id: 2,
-        assignment: {
-            id: 2,
-            title: COURTROOMS[103],
-            sherrifsRequired: 1,
-            courtroomId: 103,
-            workSectionId: 'COURTS'
-        },
+        assignmentId:assignments[2].id,
+        sherrifsRequired:1,
         recurrenceInfo: [
             DEFAULT_RECURRENCE
         ]
     },
     {
         id: 3,
-        assignment: {
-            id: 3,
-            title: COURTROOMS[104],
-            sherrifsRequired: 1,
-            courtroomId: 104,
-            workSectionId: 'COURTS'
-        },
+        assignmentId:assignments[3].id,
+        sherrifsRequired:1,
         recurrenceInfo: [
             DEFAULT_RECURRENCE
         ]
