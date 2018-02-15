@@ -50,7 +50,7 @@ class CourtSecurityFields extends React.PureComponent<any>{
     render() {
         return (
             <div>
-                <Field name="assignment.courtroomId" component={CourtroomSelector} label="Courtroom"  validate={[Validators.required]}/>
+                <Field name="assignment.courtroomId" component={CourtroomSelector} label="Courtroom" validate={[Validators.required]} />
             </div>
         );
     }
@@ -76,9 +76,9 @@ export interface AssignmentFormProps {
 export default class AssignmentForm extends React.Component<AssignmentFormProps & InjectedFormProps<any, AssignmentFormProps>, any>{
     private renderHeading() {
         let heading = "Other"
-        if(this.props.initialValues && this.props.initialValues.assignment){
+        if (this.props.initialValues && this.props.initialValues.assignment) {
             const { workSectionId = "OTHER" } = this.props.initialValues.assignment;
-       
+
             switch (WORK_SECTIONS[workSectionId]) {
                 case WORK_SECTIONS.COURTS:
                     heading = "Courts";
@@ -97,26 +97,31 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
                     break;
             }
         }
-       
+
         return <h1>{heading}</h1>;
     }
 
     private renderWorkSectionFields() {
-        const { workSectionId = "OTHER" } = this.props.initialValues.assignment;
         let returnFields;
-        switch (WORK_SECTIONS[workSectionId]) {
-            case WORK_SECTIONS.COURTS:
-                returnFields = <CourtSecurityFields />;
-                break;
-            case WORK_SECTIONS.ESCORTS:
-                returnFields = <EscortServiceFields />;
-                break;
-            case WORK_SECTIONS.GATES:
-                returnFields = <GateSecurityFields />;
-                break;
-            default:
-                returnFields = "";
-                break;
+        if (this.props.initialValues && this.props.initialValues.assignment) {
+            const { workSectionId = "OTHER" } = this.props.initialValues.assignment;
+            switch (WORK_SECTIONS[workSectionId]) {
+                case WORK_SECTIONS.COURTS:
+                    returnFields = <CourtSecurityFields />;
+                    break;
+                case WORK_SECTIONS.ESCORTS:
+                    returnFields = <EscortServiceFields />;
+                    break;
+                case WORK_SECTIONS.GATES:
+                    returnFields = <GateSecurityFields />;
+                    break;
+                default:
+                    returnFields = "";
+                    break;
+            }
+        }
+        else{
+            returnFields="";
         }
         return returnFields;
     }
@@ -143,9 +148,9 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
                                 )}
                                 <br />
                                 <Button onClick={() => fields.push({
-                                     startTime: moment().hour(9).minute(0), 
-                                     endTime: moment().hour(17).minute(0)
-                                    })} >
+                                    startTime: moment().hour(9).minute(0),
+                                    endTime: moment().hour(17).minute(0)
+                                })} >
                                     <Glyphicon glyph="plus" />
                                 </Button>
                             </ListGroup>

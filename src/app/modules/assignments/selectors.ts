@@ -30,7 +30,7 @@ export const unlinkedAssignments = createSelector(allAssignments,
 export const allAssignmentTemplates = (state:RootState) => state.assignments.templates;
 
 export const getAssignmentTemplate = (id?:number) => (state:RootState) => {
-    if(state && id){
+    if(state && id != null){
         const assignmentTemplates = allAssignmentTemplates(state);
         if(assignmentTemplates){
             return assignmentTemplates.find((value) => value.id==id);
