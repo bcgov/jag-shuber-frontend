@@ -30,7 +30,6 @@ if (!process.env.CI ){
 }
 
 let p = jest.run(argv);
-console.log(p);
 if(openCoverage){
   openBrowser(`file:///${paths.testCoveragePath}/lcov-report/index.html`)
 }
