@@ -1,5 +1,6 @@
 'use strict';
-
+const openBrowser = require('react-dev-utils/openBrowser');
+const paths = require('../config/paths');
 // Do this as the first thing so that any code reading it knows the right env.
 process.env.BABEL_ENV = 'test';
 process.env.NODE_ENV = 'test';
@@ -19,9 +20,16 @@ const jest = require('jest');
 const argv = process.argv.slice(2);
 
 // Watch unless on CI or in coverage mode
-if (!process.env.CI && argv.indexOf('--coverage') < 0) {
-  argv.push('--watch');
+let openCoverage = false;
+if (!process.env.CI ){
+  if(argv.indexOf('--coverage') < 0) {
+    argv.push('--watch');
+  }else{
+    openCoverage = true;
+  }
 }
 
-
-jest.run(argv);
+let p = jest.run(argv);
+if(openCoverage){
+  openBrowser(`file:///${paths.testCoveragePath}/lcov-report/index.html`)
+}

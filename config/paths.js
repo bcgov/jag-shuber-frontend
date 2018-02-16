@@ -53,5 +53,6 @@ module.exports = {
   appTsConfig: resolveApp('tsconfig.json'),
   publicUrl: getPublicUrl(resolveApp('package.json')),
   servedPath: getServedPath(resolveApp('package.json')),
-  storiesPath: resolveApp('src/stories')  
+  storiesPath: resolveApp('src/stories'),
+  testCoveragePath: resolveApp('coverage')
 };

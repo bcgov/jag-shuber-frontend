@@ -14,4 +14,8 @@ describe('toTitleCase() ', () => {
     it('Should convert mixed to titleCase', () => {
         expect(toTitleCase("heLLo World tHis iS TITLE cAsE")).toEqual(expected);        
     });
+
+    it('Should not fail if given no argument', () => {
+        expect(toTitleCase()).toEqual('');        
+    });
 })
