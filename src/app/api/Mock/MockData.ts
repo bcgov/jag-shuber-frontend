@@ -2,8 +2,7 @@ import {
     Assignment,
     AssignmentDuty, 
     StringMap, 
-    AssignmentTemplate
-    SheriffAssignmentTemplate, 
+    AssignmentTemplate, 
     DEFAULT_RECURRENCE, 
     TrainingType,
     Courthouse,
@@ -151,7 +150,6 @@ export const sheriffList: Sheriff[] = [
             { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CID" },
             { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CEW" }
         ],
-        abilities: SheriffAbility.All,
         onDuty: true
     },
     {
@@ -167,7 +165,6 @@ export const sheriffList: Sheriff[] = [
             { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CID" },
             { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CEW" }
         ],
-        abilities: SheriffAbility.All,
         onDuty: true
     },
     {
@@ -183,7 +180,6 @@ export const sheriffList: Sheriff[] = [
             { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CID" },
             { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CEW" }
         ],
-        abilities: SheriffAbility.All,
         onDuty: false
     },
     {
@@ -199,7 +195,6 @@ export const sheriffList: Sheriff[] = [
             { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CID" },
             { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CEW" }
         ],
-        abilities: SheriffAbility.All,
         onDuty: true
     },
     {
@@ -215,7 +210,6 @@ export const sheriffList: Sheriff[] = [
             { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CID" },
             { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CEW" }
         ],
-        abilities: SheriffAbility.All,
         onDuty: false
     },
     {
@@ -231,7 +225,6 @@ export const sheriffList: Sheriff[] = [
             { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CID" },
             { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CEW" }
         ],
-        abilities: SheriffAbility.All,
         onDuty: true
     }
 ];
@@ -242,36 +235,41 @@ export const assignments: Assignment[] = [
         id: 0,
         title: COURTROOMS[101],
         workSectionId: 'COURTS',
-        assignmentCourt: true,
-        courtroomId: 101
+        location:{
+            courtroomId: 101
+        }
     },
     {
         id: 1,
         title: COURTROOMS[102],
         workSectionId: 'COURTS',
-        assignmentCourt: false,
-        courtroomId: 102
+        location:{
+            courtroomId: 102
+        }
     },
     {
         id: 2,
         title: COURTROOMS[103],
         workSectionId: 'COURTS',
-        assignmentCourt: false,
-        courtroomId: 103
+        location:{
+            courtroomId: 103
+        }
     },
     {
         id: 3,
         title: COURTROOMS[104],
         workSectionId: 'COURTS',
-        assignmentCourt: true,
-        courtroomId: 104
+        location:{
+            courtroomId: 104
+        }
     },
     {
         id: 4,
         title: COURTROOMS[201],
         workSectionId: 'COURTS',
-        assignmentCourt: true,
-        courtroomId: 201
+        location:{
+            courtroomId: 201
+        }
     },
     {
         id: 5,
@@ -281,19 +279,14 @@ export const assignments: Assignment[] = [
     {
         id: 6,
         title: 'Escorts',
-        workSectionId: 'ESCORTS',
-        pickupLocation: 'Location Z',
-        dropoffLocation: 'Courthouse A'
+        workSectionId: 'ESCORTS'
     },
     {
         id: 7,
         title: 'Gate Secturity',
-        workSectionId: 'GATES',
-        gateNumber: 1
+        workSectionId: 'GATES'
     }
 ];
-
-
 
 export const assignmentDuties: AssignmentDuty[] = [
     {
@@ -303,15 +296,17 @@ export const assignmentDuties: AssignmentDuty[] = [
         startDateTime: moment().startOf('day').add(9, 'hours'),
         endDateTime: moment().startOf('day').add(12, 'hours'),
         sherrifsRequired: 1,
-        notes: 'My notes on the file.'
+        extraDetails:{
+            notes: 'My notes on the file.'
+        }        
     }
 ]
 
-export const defaultAssignmentTemplates: SheriffAssignmentTemplate[] = [
+export const defaultAssignmentTemplates: AssignmentTemplate[] = [
     {
         id: 0,
         assignmentId: assignments[0].id,
-        recurrenceInfo: [AssignmentTemplate
+        recurrenceInfo: [
             DEFAULT_RECURRENCE
         ]
     },

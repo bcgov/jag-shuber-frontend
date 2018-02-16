@@ -80,7 +80,7 @@ export interface Assignment {
 }
 
 export interface AssignmentDutyDetails {
-    notes?: string;    
+    notes?: string;
 }
 
 export interface AssignmentDuty {
@@ -131,15 +131,29 @@ export interface Courtroom {
 }
 
 export interface API {
+    // Sheriffs
     getSheriffs(): Promise<SheriffMap>;
-    getSheriffAssignments(): Promise<SheriffAssignmentMap>;
     createSheriff(newSheriff: Sheriff): Promise<Sheriff>;
     updateSheriff(sheriffToUpdate: Partial<Sheriff>): Promise<Sheriff>;
-    createAssignment(newAssignment: Assignment): Promise<Assignment>;
+
+    // Assignments
+    getAssignments(): Promise<Assignment[]>;
+    createAssignment(assignment: Partial<Assignment>): Promise<Assignment>;
+    updateAssignment(assignment: Partial<Assignment>): Promise<Assignment>;
+    deleteAssignment(assignmentId: IdType): Promise<void>;
+
+    // Assignment Duties
+    getAssignmentDuties(): Promise<AssignmentDuty[]>;
+    createAssignmentDuty(duty: Partial<AssignmentDuty>): Promise<AssignmentDuty>;
+    updateAssignmentDuty(duty: Partial<AssignmentDuty>): Promise<AssignmentDuty>;
+    deleteAssignmentDuty(dutyId: IdType): Promise<void>;
+
+    // AssignmentTemplates
     getAssignmentTemplates(): Promise<AssignmentTemplate[]>;
-    createAssignmentTemplate(newAssignmentTemplate: Partial<AssignmentTemplate>): Promise<AssignmentTemplate>;
-    editAssignmentTemplate(updatedAssignmentTemplate: AssignmentTemplate): Promise<AssignmentTemplate>;
-    deleteAssignmentTemplate(templateIdToBeDeleted: IdType): Promise<number>;
+    createAssignmentTemplate(template: Partial<AssignmentTemplate>): Promise<AssignmentTemplate>;
+    updateAssignmentTemplate(template: Partial<AssignmentTemplate>): Promise<AssignmentTemplate>;
+    deleteAssignmentTemplate(templateId: IdType): Promise<void>;
+
     getTrainingTypes(): Promise<TrainingType[]>;
     getAllCourthouses(): Promise<Courthouse[]>;
     getCourthousesByRegion(regionId: number): Promise<Courthouse[]>;
