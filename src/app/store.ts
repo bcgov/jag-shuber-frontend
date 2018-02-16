@@ -6,7 +6,13 @@ import { default as assignmentReducer, AssignmentState } from './modules/assignm
 import { default as timelineReducer, TimelineState } from './modules/timeline/reducer';
 import { reducer as formReducer } from 'redux-form';
 
-export type ThunkAction<T> = (args?: T) => _ThunkAction<any, RootState, { api: API }>;
+export interface ThunkExtra{
+    api:API;
+}
+
+export type ThunkAction<T> = (args?: T) => _ThunkAction<any, RootState, ThunkExtra>;
+
+
 
 export interface RootState {
     sheriffs: SheriffState;
