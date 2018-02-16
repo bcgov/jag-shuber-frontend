@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { SheriffAssignmentTemplate } from '../api/index';
+import { AssignmentTemplate } from '../api/index';
 import { RootState } from '../store';
 import {getAssignmentTemplates} from '../modules/assignments/actions'
 import {allAssignmentTemplates, isLoading} from '../modules/assignments/selectors'
@@ -8,7 +8,7 @@ import AssignmentDefaultList from '../components/AssignmentDefaultList';
 
 export interface AssignmentTemplateListProps{
   getAssignmentTemplates:any;
-  templates:SheriffAssignmentTemplate[]
+  templates:AssignmentTemplate[]
   loading:boolean;
 }
 

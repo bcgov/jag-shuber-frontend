@@ -5,13 +5,13 @@ import {
 import AssignmentDefaultRecurrenceDetails from './AssignmentDefaultRecurrenceDetails';
 import {
     WORK_SECTIONS,
-    SheriffAssignmentTemplate
+    AssignmentTemplate
 } from '../api';
 import AssignmentEditModal from '../containers/AssignmentEditModal';
 import AssignmentDeleteModal from '../containers/AssignmentDeleteModal';
 
 export interface AssignmentDefaultListProps {
-    templates: SheriffAssignmentTemplate[];
+    templates: AssignmentTemplate[];
 }
 
 export default class AssignmentDefaultList extends React.PureComponent<AssignmentDefaultListProps> {

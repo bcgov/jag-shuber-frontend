@@ -42,7 +42,7 @@ export const DEFAULT_RECURRENCE: RecurrenceInfo = {
     days: DaysOfWeek.Weekdays,
     startTime: moment().hour(9).minute(0),
     endTime: moment().hour(17).minute(0),
-    sheriffsRequired:1
+    sheriffsRequired: 1
 }
 
 export interface SheriffTraining {
@@ -67,48 +67,45 @@ export interface Sheriff {
     onDuty: boolean;
 }
 
-export interface RecurrenceInfo {
-    startTime: DateType;
-    endTime: DateType;
-    days: DaysOfWeek;
-    sheriffsRequired:number;
-}
 
-export interface SheriffAssignmentTemplate {
-    id: IdType;
-    assignmentId: IdType;
-    recurrenceInfo: RecurrenceInfo[];
+export interface AssignmentLocation {
+    courtroomId?: IdType;
 }
 
 export interface Assignment {
     id: IdType;
     title: string;
     workSectionId: string;
-    
-    // todo: The following should probably go into a Location type object
-    //attributes for gate security assignments
-    gateNumber?: IdType
+    location?: AssignmentLocation;
+}
 
-    //attributes for escort security assignments
-    pickupLocation?: string;
-    dropoffLocation?: string;
-
-    //attributes court security assignments 
-    courtroomId?: IdType;
-
-    // Todo: This is likely a flag that should be attached to the AssignmentDuty somehow
-    assignmentCourt?: boolean;
+export interface AssignmentDutyDetails {
+    notes?: string;    
 }
 
 export interface AssignmentDuty {
-    id:IdType;
-    assignmentId:IdType;    
+    id: IdType;
+    assignmentId: IdType;
     startDateTime: DateType;
     endDateTime: DateType;
     sheriffIds: IdType[];
     sherrifsRequired: number;
-    notes?: string;
+    extraDetails?: AssignmentDutyDetails;
 }
+
+export interface RecurrenceInfo {
+    startTime: DateType;
+    endTime: DateType;
+    days: DaysOfWeek;
+    sheriffsRequired: number;
+}
+
+export interface AssignmentTemplate {
+    id: IdType;
+    assignmentId: IdType;
+    recurrenceInfo: RecurrenceInfo[];
+}
+
 export interface TrainingType {
     id: number;
     title: string;
@@ -121,8 +118,8 @@ export interface Courthouse {
     regionId: number;
 }
 
-export interface Region { 
-    id: number; 
+export interface Region {
+    id: number;
     name: string;
 }
 
@@ -139,9 +136,9 @@ export interface API {
     createSheriff(newSheriff: Sheriff): Promise<Sheriff>;
     updateSheriff(sheriffToUpdate: Partial<Sheriff>): Promise<Sheriff>;
     createAssignment(newAssignment: Assignment): Promise<Assignment>;
-    getAssignmentTemplates(): Promise<SheriffAssignmentTemplate[]>;
-    createAssignmentTemplate(newAssignmentTemplate: Partial<SheriffAssignmentTemplate>): Promise<SheriffAssignmentTemplate>;
-    editAssignmentTemplate(updatedAssignmentTemplate: SheriffAssignmentTemplate): Promise<SheriffAssignmentTemplate>;
+    getAssignmentTemplates(): Promise<AssignmentTemplate[]>;
+    createAssignmentTemplate(newAssignmentTemplate: Partial<AssignmentTemplate>): Promise<AssignmentTemplate>;
+    editAssignmentTemplate(updatedAssignmentTemplate: AssignmentTemplate): Promise<AssignmentTemplate>;
     deleteAssignmentTemplate(templateIdToBeDeleted: IdType): Promise<number>;
     getTrainingTypes(): Promise<TrainingType[]>;
     getAllCourthouses(): Promise<Courthouse[]>;

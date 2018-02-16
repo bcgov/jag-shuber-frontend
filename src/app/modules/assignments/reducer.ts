@@ -3,7 +3,7 @@ import {
   IActionPayload,
   IAction
 } from './actions'
-import { SheriffAssignmentMap, SheriffAssignmentTemplate } from '../../api/index';
+import { SheriffAssignmentMap, AssignmentTemplate } from '../../api/index';
 
 export type ReducerResponse<State> = State;
 export type ReducerCases<State> = {
@@ -28,7 +28,7 @@ export function createReducer<State>(
 
 export interface AssignmentState {
   map?: SheriffAssignmentMap;
-  templates?: SheriffAssignmentTemplate[];
+  templates?: AssignmentTemplate[];
   loading?: boolean;
   error?: string;
   saving?: boolean;

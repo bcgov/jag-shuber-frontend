@@ -2,7 +2,7 @@ import { Action } from 'redux'
 import { ThunkAction } from '../../store'
 import { SheriffAssignmentMap,
   Assignment,
-  SheriffAssignmentTemplate 
+  AssignmentTemplate 
 } from "../../api/index";
 
 
@@ -22,12 +22,12 @@ type IActionMap = {
   "ASSIGNMENT_CREATE_FAIL": string;
   "ASSIGNMENT_TEMPLATE_LIST_BEGIN": null;
   "ASSIGNMENT_TEMPLATE_LIST_FAIL": string;
-  "ASSIGNMENT_TEMPLATE_LIST_SUCCESS": SheriffAssignmentTemplate[];
+  "ASSIGNMENT_TEMPLATE_LIST_SUCCESS": AssignmentTemplate[];
   "ASSIGNMENT_TEMPLATE_CREATE_BEGIN": null;
-  "ASSIGNMENT_TEMPLATE_CREATE_SUCCESS": SheriffAssignmentTemplate;
+  "ASSIGNMENT_TEMPLATE_CREATE_SUCCESS": AssignmentTemplate;
   "ASSIGNMENT_TEMPLATE_CREATE_FAIL": string;
   "ASSIGNMENT_TEMPLATE_EDIT_BEGIN": null;
-  "ASSIGNMENT_TEMPLATE_EDIT_SUCCESS": SheriffAssignmentTemplate;
+  "ASSIGNMENT_TEMPLATE_EDIT_SUCCESS": AssignmentTemplate;
   "ASSIGNMENT_TEMPLATE_EDIT_FAIL": string;
   "ASSIGNMENT_TEMPLATE_DELETE_BEGIN": null;
   "ASSIGNMENT_TEMPLATE_DELETE_SUCCESS": number;
@@ -102,7 +102,7 @@ export const getAssignmentTemplatesSuccess = actionCreator("ASSIGNMENT_TEMPLATE_
 
 
 //Action creator for creating a new assignment template
-export const createAssignmentTemplate: ThunkAction<Partial<SheriffAssignmentTemplate>> = (newAssignmentTemplate: Partial<SheriffAssignmentTemplate>) => (async (dispatch, getState, { api }) => {
+export const createAssignmentTemplate: ThunkAction<Partial<AssignmentTemplate>> = (newAssignmentTemplate: Partial<AssignmentTemplate>) => (async (dispatch, getState, { api }) => {
   dispatch(beginCreateAssignmentTemplate());
   try {
     let assignmentTemplate = await api.createAssignmentTemplate(newAssignmentTemplate);
@@ -117,7 +117,7 @@ export const createAssignmentTemplateSuccess = actionCreator("ASSIGNMENT_TEMPLAT
 export const createAssignmentTemplateFailed = actionCreator("ASSIGNMENT_TEMPLATE_CREATE_FAIL");
 
 //Action creator for editing an exisitng assignment template
-export const editAssignmentTemplate: ThunkAction<SheriffAssignmentTemplate> = (updatedAssignmentTemplate: SheriffAssignmentTemplate) => (async (dispatch, getState, { api }) => {
+export const editAssignmentTemplate: ThunkAction<AssignmentTemplate> = (updatedAssignmentTemplate: AssignmentTemplate) => (async (dispatch, getState, { api }) => {
   dispatch(beginCreateAssignmentTemplate());
   try {
     let assignmentTemplate = await api.editAssignmentTemplate(updatedAssignmentTemplate);

@@ -2,7 +2,7 @@ import {
     API, 
     SheriffMap,
     SheriffAssignmentMap,
-    SheriffAssignmentTemplate,
+    AssignmentTemplate,
     Sheriff,
     Assignment,
     DEFAULT_RECURRENCE,
@@ -40,7 +40,7 @@ export default class Client implements API {
         return Promise.resolve(assignmentMap);
     }
 
-    async getAssignmentTemplates(): Promise<SheriffAssignmentTemplate[]> {
+    async getAssignmentTemplates(): Promise<AssignmentTemplate[]> {
         return defaultAssignmentTemplates;
     }
 
@@ -103,7 +103,7 @@ export default class Client implements API {
         }
     }
 
-    async createAssignmentTemplate(newTemplate: Partial<SheriffAssignmentTemplate>): Promise<SheriffAssignmentTemplate> {
+    async createAssignmentTemplate(newTemplate: Partial<AssignmentTemplate>): Promise<AssignmentTemplate> {
         await randomDelay();
 
         if (!newTemplate || !newTemplate.assignment) {
@@ -120,11 +120,11 @@ export default class Client implements API {
         //add default recurrence value if nothing was selected or partial value was selected
         newTemplate.recurrenceInfo = this.createFilledRecurrenceInfo(newTemplate.recurrenceInfo);
 
-        defaultAssignmentTemplates.push(newTemplate as SheriffAssignmentTemplate);
-        return newTemplate as SheriffAssignmentTemplate;
+        defaultAssignmentTemplates.push(newTemplate as AssignmentTemplate);
+        return newTemplate as AssignmentTemplate;
     }
 
-    async editAssignmentTemplate(updatedAssignmentTemplate: SheriffAssignmentTemplate): Promise<SheriffAssignmentTemplate> {
+    async editAssignmentTemplate(updatedAssignmentTemplate: AssignmentTemplate): Promise<AssignmentTemplate> {
         await randomDelay();
         let assignment = updatedAssignmentTemplate.assignment;
         

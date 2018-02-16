@@ -2,7 +2,7 @@ import {
     Assignment,
     AssignmentDuty, 
     StringMap, 
-    Sheriff, 
+    AssignmentTemplate
     SheriffAssignmentTemplate, 
     DEFAULT_RECURRENCE, 
     TrainingType,
@@ -311,7 +311,7 @@ export const defaultAssignmentTemplates: SheriffAssignmentTemplate[] = [
     {
         id: 0,
         assignmentId: assignments[0].id,
-        recurrenceInfo: [
+        recurrenceInfo: [AssignmentTemplate
             DEFAULT_RECURRENCE
         ]
     },
