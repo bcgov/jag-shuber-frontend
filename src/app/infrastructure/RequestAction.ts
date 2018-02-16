@@ -1,4 +1,7 @@
-import { ThunkAction, ThunkExtra } from "../store";
+import { 
+    ThunkAction, 
+    ThunkExtra 
+} from "../store";
 import { AnyAction } from "redux";
 import { Dispatch } from "react-redux";
 

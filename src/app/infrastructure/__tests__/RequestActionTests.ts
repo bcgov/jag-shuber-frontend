@@ -1,10 +1,12 @@
 import { registerMiddlewares } from 'redux-actions-assertions';
 import thunk from 'redux-thunk';
-import RequestAction, { RequestActionState } from "../RequestAction";
+import {
+    default as RequestAction,
+    RequestActionState
+} from "../RequestAction";
 import * as fetchMock from 'fetch-mock';
 import { API } from '../../api';
 import { AnyAction } from 'redux';
-import { Action } from 'redux';
 
 registerMiddlewares([thunk]);
 
@@ -121,7 +123,7 @@ describe('RequestAction.actionCreator', () => {
     })
 })
 
-describe('RequestAction Reducers',()=>{
+describe('RequestAction Reducers', () => {
     it('Standard RequestAction.reducer Should return initial state', () => {
         expect(listRequest.reducer(undefined, { type: "SOME_ACTION" })).toEqual(undefined);
     });
