@@ -88,7 +88,7 @@ export default abstract class RequestAction<TRequest, TResponse, TState extends 
     }
 
     protected mergeRequestActionState(moduleState: TState, newState: Partial<RequestActionState<TResponse>>): TState {
-        let newModuleState = (moduleState || {}) as any
+        let newModuleState = { ...(moduleState || {}) as any }
         const currentActionState = newModuleState[this.actionName] || {};
         newModuleState[this.actionName] = { ...currentActionState, ...newState };
         return newModuleState as TState
