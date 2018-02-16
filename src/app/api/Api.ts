@@ -109,6 +109,29 @@ export interface AssignmentDuty {
     sherrifsRequired: number;
     notes?: string;
 }
+export interface TrainingType {
+    id: number;
+    title: string;
+    abbreviation: string;
+}
+
+export interface Courthouse {
+    id: number;
+    name: string;
+    regionId: number;
+}
+
+export interface Region { 
+    id: number; 
+    name: string;
+}
+
+export interface Courtroom {
+    id: number;
+    courthouseId: number;
+    number: number;
+    name: string;
+}
 
 export interface API {
     getSheriffs(): Promise<SheriffMap>;
@@ -120,6 +143,12 @@ export interface API {
     createAssignmentTemplate(newAssignmentTemplate: Partial<SheriffAssignmentTemplate>): Promise<SheriffAssignmentTemplate>;
     editAssignmentTemplate(updatedAssignmentTemplate: SheriffAssignmentTemplate): Promise<SheriffAssignmentTemplate>;
     deleteAssignmentTemplate(templateIdToBeDeleted: IdType): Promise<number>;
+    getTrainingTypes(): Promise<TrainingType[]>;
+    getAllCourthouses(): Promise<Courthouse[]>;
+    getCourthousesByRegion(regionId: number): Promise<Courthouse[]>;
+    getRegions(): Promise<Region[]>;
+    getAllCourtrooms(): Promise<Courtroom[]>;
+    getCourtroomsByCourthouse(courthouseId: number): Promise<Courtroom[]>;
 }
 
 

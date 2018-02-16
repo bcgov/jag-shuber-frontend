@@ -6,15 +6,23 @@ import {
     Sheriff,
     Assignment,
     DEFAULT_RECURRENCE,
-    RecurrenceInfo
+    RecurrenceInfo,
+    TrainingType,
+    Courthouse,
+    Courtroom,
+    Region
 } from "../Api";
 import arrayToMap from '../../infrastructure/arrayToMap'
 import { 
     sheriffList, 
     assignments, 
     defaultAssignmentTemplates,
+    training,
+    courthouses,
     WORK_SECTIONS,
-    COURTROOMS
+    COURTROOMS,
+    courtrooms,
+    regions
 } from "./MockData";
 import { randomDelay } from "../PromiseExtensions";
 
@@ -134,4 +142,29 @@ export default class Client implements API {
         defaultAssignmentTemplates.splice(templateIndex, 1);
         return templateIdToBeDeleted;
     }
+
+    async getTrainingTypes(): Promise<TrainingType[]> {
+        return training;
+    }
+
+    async getAllCourthouses(): Promise<Courthouse[]> {
+        return courthouses;
+    }
+
+    async getCourthousesByRegion(regionId: number): Promise<Courthouse[]> {
+        throw new Error("Method not implemented.");
+    }
+    
+    async getRegions(): Promise<Region[]> {
+        return regions;
+    }
+    
+    async getAllCourtrooms(): Promise<Courtroom[]> {
+        return courtrooms;
+    }
+    
+    async getCourtroomsByCourthouse(courthouseId: number): Promise<Courtroom[]> {
+        throw new Error("Method not implemented.");
+    }
+
 }

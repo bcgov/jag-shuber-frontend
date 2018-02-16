@@ -14,6 +14,10 @@ export {
     DaysOfWeek,
     DEFAULT_RECURRENCE,
     RecurrenceInfo,
+    TrainingType,
+    Courthouse,
+    Region, 
+    Courtroom,
     API
 } from './Api'
 
