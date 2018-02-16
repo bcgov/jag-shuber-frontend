@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { SheriffAssignment } from '../api/index';
+import { Assignment } from '../api/index';
 import {getAssignments} from '../modules/assignments/actions';
 import { RootState } from '../store';
 import {unlinkedAssignments,isLoading} from '../modules/assignments/selectors';
@@ -9,7 +9,7 @@ import AssignmentDropList from './AssignmentDropList';
 
 export interface UnlinkedAssignmentListProps{
   getAssignmentList:any;
-  assignments:SheriffAssignment[];
+  assignments:Assignment[];
   loading:boolean;
 }
 

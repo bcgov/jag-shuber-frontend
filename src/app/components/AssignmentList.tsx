@@ -4,10 +4,10 @@ import {
     ListGroupItem
 } from 'react-bootstrap'
 import AssignmentCard from './AssignmentCard'
-import { SheriffAssignment } from '../api/index';
+import { Assignment } from '../api/index';
 
 export interface AssignmentListProps {
-    assignments: SheriffAssignment[];
+    assignments: Assignment[];
     assignmentGroupId:number;
 }
 

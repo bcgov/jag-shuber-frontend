@@ -3,7 +3,7 @@ import * as React from 'react';
 import { reduxForm, ConfigProps } from 'redux-form';
 import { default as AssignmentForm, AssignmentFormProps } from '../components/AssignmentForm';
 import {
-    SheriffAssignment,
+    Assignment,
     RecurrenceInfo
 } from '../api/index';
 import { createAssignmentTemplate } from '../modules/assignments/actions';
@@ -15,7 +15,7 @@ import { RootState } from '../store';
 // wrapping generic assignment form in redux-form
 const formConfig: ConfigProps<any, AssignmentFormProps> = {
     form: 'CreateAssignmentTemplate',
-    onSubmit: (values: { assignment: SheriffAssignment, recurrenceInfo: RecurrenceInfo[] }, dispatch, props) => {
+    onSubmit: (values: { assignment: Assignment, recurrenceInfo: RecurrenceInfo[] }, dispatch, props) => {
         let newAssignmentTemplate = Object.assign({}, { ...values });
         dispatch(createAssignmentTemplate(newAssignmentTemplate));
     }

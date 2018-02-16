@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-    SheriffAssignment,
+    Assignment,
     TRAINING_TYPES,
     WORK_SECTIONS
 } from '../api/index';
@@ -12,7 +12,7 @@ import {
 import DateDisplay from './DateDisplay';
 
 export interface AssignmentDetailsProps {
-    assignment: SheriffAssignment;
+    assignment: Assignment;
 }
 
 export default class AssignmentDetails extends React.Component<AssignmentDetailsProps, any>{

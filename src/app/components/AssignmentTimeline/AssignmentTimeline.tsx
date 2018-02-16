@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as moment from 'moment';
 import { default as Timeline, TimelineProps } from "../Timeline/Timeline";
-import { SheriffAssignment, Sheriff, SheriffAbility, BLANK_SHERIFF } from "../../api/index";
+import { Assignment, Sheriff, SheriffAbility, BLANK_SHERIFF } from "../../api/index";
 import { ReactCalendarTimelineGroup, ReactCalendarTimelineItem } from "react-calendar-timeline";
 import { default as AssignmentTimelineCard } from './AssignmentTimelineCard'
 import AssignmentDropRowExtension from './AssignmentDropRowExtension';
@@ -18,15 +18,15 @@ export const UNASSIGNED_GROUP: TimelineSheriff = Object.assign({}, BLANK_SHERIFF
     title: "Unassigned"
 });
 
-type TimelineAssignment = ReactCalendarTimelineItem & SheriffAssignment;
+type TimelineAssignment = ReactCalendarTimelineItem & Assignment;
 type TimelineSheriff = ReactCalendarTimelineGroup & Sheriff;
 
 
-export interface AssignmentTimelineProps extends TimelineProps<SheriffAssignment, Sheriff> {
+export interface AssignmentTimelineProps extends TimelineProps<Assignment, Sheriff> {
     showUnlinkedAssignments?: boolean;
 }
 
-export default class AssignmentTimeline extends Timeline<SheriffAssignment, Sheriff, AssignmentTimelineProps>{
+export default class AssignmentTimeline extends Timeline<Assignment, Sheriff, AssignmentTimelineProps>{
 
     static defaultProps: Partial<AssignmentTimelineProps> = {
         showUnlinkedAssignments: true,
@@ -49,7 +49,7 @@ export default class AssignmentTimeline extends Timeline<SheriffAssignment, Sher
     }
 
     // Map an assignment to a timeline item
-    protected mapItem(assignment: SheriffAssignment): TimelineAssignment {
+    protected mapItem(assignment: Assignment): TimelineAssignment {
         // Since We're over riding the method that uses this, we don't need it
         throw new Error("Method not implemented.");
     }
@@ -62,7 +62,7 @@ export default class AssignmentTimeline extends Timeline<SheriffAssignment, Sher
     }
 
     // Map a group of assignments to timeline items
-    protected mapItems(assignments: SheriffAssignment[]): TimelineAssignment[] {
+    protected mapItems(assignments: Assignment[]): TimelineAssignment[] {
         const assignmentItems = assignments.reduce<TimelineAssignment[]>((flattened, assignment, index) => {
             const { id, sheriffIds = [], startTime, endTime } = assignment;
             const start_time = this.ensureMoment(startTime);

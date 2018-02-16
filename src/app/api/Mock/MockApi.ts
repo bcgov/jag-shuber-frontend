@@ -4,7 +4,7 @@ import {
     SheriffAssignmentMap,
     SheriffAssignmentTemplate,
     Sheriff,
-    SheriffAssignment,
+    Assignment,
     DEFAULT_RECURRENCE,
     RecurrenceInfo
 } from "../Api";
@@ -57,7 +57,7 @@ export default class Client implements API {
         return sheriffList[index];
     }
 
-    async createAssignment(newAssignment: SheriffAssignment): Promise<SheriffAssignment> {
+    async createAssignment(newAssignment: Assignment): Promise<Assignment> {
         await randomDelay();
         //This is a hack to create a unique id for a new assignment
         newAssignment.id = assignments.length;
@@ -70,7 +70,7 @@ export default class Client implements API {
         return newAssignment;
     }
 
-    private getAssignmentTitle(assignment: Partial<SheriffAssignment>): string {
+    private getAssignmentTitle(assignment: Partial<Assignment>): string {
 
         if (assignment.workSectionId) {
             if (WORK_SECTIONS[assignment.workSectionId] === WORK_SECTIONS.COURTS && assignment.courtroomId) {

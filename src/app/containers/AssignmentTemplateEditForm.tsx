@@ -5,7 +5,7 @@ import {
 } from 'redux-form';
 import { default as AssignmentForm, AssignmentFormProps } from '../components/AssignmentForm';
 import {
-    SheriffAssignment,
+    Assignment,
     RecurrenceInfo
 } from '../api/index';
 import { editAssignmentTemplate } from '../modules/assignments/actions';
@@ -18,7 +18,7 @@ import { getAssignmentTemplate } from '../modules/assignments/selectors';
 // wrapping generic assignment form in redux-form
 const formConfig: ConfigProps<any, AssignmentFormProps> = {
     form: 'EditAssignmentTemplate',
-    onSubmit: (values: { id: number, assignment: SheriffAssignment, recurrenceInfo: RecurrenceInfo[] }, dispatch, props) => {
+    onSubmit: (values: { id: number, assignment: Assignment, recurrenceInfo: RecurrenceInfo[] }, dispatch, props) => {
         let updatedAssignmentTemplate = Object.assign({}, { ...values });
         dispatch(editAssignmentTemplate(updatedAssignmentTemplate));
     }

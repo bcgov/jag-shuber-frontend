@@ -6,13 +6,13 @@ import {
     Glyphicon,
     Popover 
 } from 'react-bootstrap'
-import { SheriffAssignment } from '../api/index';
+import { Assignment } from '../api/index';
 import AssignmentDragSource  from '../containers/AssignmentDragSource';
 import AssignmentDetails  from './AssignmentDetails';
 
 export interface AssignmentCardProps {
     onClick?: () => void;
-    assignment: SheriffAssignment;
+    assignment: Assignment;
     currentGroupId: number;
 }
 

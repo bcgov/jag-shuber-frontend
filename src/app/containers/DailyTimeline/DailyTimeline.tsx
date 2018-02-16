@@ -9,7 +9,7 @@ import { updateVisibleTime } from '../../modules/timeline/actions';
 import { connect } from 'react-redux';
 import { RootState } from '../../store';
 import OnOffDutyTimeline from '../../components/OnOffDutyTimeline';
-import { Sheriff, SheriffAssignment } from '../../api/index';
+import { Sheriff, Assignment } from '../../api/index';
 import './DailyTimeline.css'
 import { Glyphicon } from 'react-bootstrap';
 
@@ -20,7 +20,7 @@ interface DailyTimelineProps {
     onVisibleTimeChange?: (start: any, end: any) => void
     onDutySheriffs: Sheriff[];
     offDutySheriffs: Sheriff[];
-    assignments: SheriffAssignment[];
+    assignments: Assignment[];
     sideBarWidth?: number;
 }
 

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {
-    SheriffAssignment,
+    Assignment,
     WORK_SECTIONS
 } from '../../api/index';
 import AssignmentDragSource from '../../containers/AssignmentDragSource';
@@ -14,7 +14,7 @@ import AssignmentDetails from '../AssignmentDetails';
 
 export interface AssignmentTimelineCardProps {
     onClick?: () => void;
-    assignment: SheriffAssignment;
+    assignment: Assignment;
     currentGroupId: number;
     onDropped?: () => void;
 }

@@ -1,7 +1,7 @@
 export {
     Sheriff,
     SheriffAbility,
-    SheriffAssignment,
+    Assignment,
     SheriffAssignmentMap,
     SheriffAssignmentTemplate,
     SheriffLocation,

@@ -1,8 +1,7 @@
 import {
     StringMap,
     Sheriff,
-    SheriffAssignment,
-    SheriffAbility,
+    Assignment,
     SheriffAssignmentTemplate,
     DEFAULT_RECURRENCE,
     AssignmentDuty
@@ -242,7 +241,7 @@ export const sheriffList: Sheriff[] = [
 ];
 
 
-export const assignments: SheriffAssignment[] = [
+export const assignments: Assignment[] = [
     {
         id: 0,
         title: COURTROOMS[101],
@@ -302,11 +301,11 @@ export const assignments: SheriffAssignment[] = [
 
 export const assignmentDuties: AssignmentDuty[] = [
     {
-        id:0,
-        assignmentId:0,
+        id: 0,
+        assignmentId: assignments[0].id,
         sheriffIds: [],
-        startTime: moment().startOf('day').add(9, 'hours'),
-        endTime: moment().startOf('day').add(12, 'hours'),
+        startDateTime: moment().startOf('day').add(9, 'hours'),
+        endDateTime: moment().startOf('day').add(12, 'hours'),
         sherrifsRequired: 1,
         notes: 'My notes on the file.'
     }
@@ -315,32 +314,28 @@ export const assignmentDuties: AssignmentDuty[] = [
 export const defaultAssignmentTemplates: SheriffAssignmentTemplate[] = [
     {
         id: 0,
-        assignmentId:assignments[0].id,
-        sherrifsRequired:1,
+        assignmentId: assignments[0].id,
         recurrenceInfo: [
             DEFAULT_RECURRENCE
         ]
     },
     {
         id: 1,
-        assignmentId:assignments[1].id,
-        sherrifsRequired:1,
+        assignmentId: assignments[1].id,
         recurrenceInfo: [
             DEFAULT_RECURRENCE
         ]
     },
     {
         id: 2,
-        assignmentId:assignments[2].id,
-        sherrifsRequired:1,
+        assignmentId: assignments[2].id,
         recurrenceInfo: [
             DEFAULT_RECURRENCE
         ]
     },
     {
         id: 3,
-        assignmentId:assignments[3].id,
-        sherrifsRequired:1,
+        assignmentId: assignments[3].id,
         recurrenceInfo: [
             DEFAULT_RECURRENCE
         ]

@@ -1,7 +1,7 @@
 import { Action } from 'redux'
 import { ThunkAction } from '../../store'
 import { SheriffAssignmentMap,
-  SheriffAssignment,
+  Assignment,
   SheriffAssignmentTemplate 
 } from "../../api/index";
 
@@ -18,7 +18,7 @@ type IActionMap = {
   "ASSIGNMENT_UNLINK": { assignmentId: number, badgeNumber: number };
   "ASSIGNMENT_SWAP": { assignmentId: number, oldBadgeNumber: number, newBadgeNumber: number }; 
   "ASSIGNMENT_CREATE_BEGIN": null;
-  "ASSIGNMENT_CREATE_SUCCESS": SheriffAssignment;
+  "ASSIGNMENT_CREATE_SUCCESS": Assignment;
   "ASSIGNMENT_CREATE_FAIL": string;
   "ASSIGNMENT_TEMPLATE_LIST_BEGIN": null;
   "ASSIGNMENT_TEMPLATE_LIST_FAIL": string;
@@ -71,7 +71,7 @@ export const getAssignmentFailed = actionCreator("ASSIGNMENT_LIST_FAIL");
 export const getAssignmentSuccess = actionCreator("ASSIGNMENT_LIST_SUCCESS");
 
 //Action creator for creating a new assignment
-export const createAssignment: ThunkAction<SheriffAssignment> = (newAssignment: SheriffAssignment) => (async (dispatch, getState, { api }) => {
+export const createAssignment: ThunkAction<Assignment> = (newAssignment: Assignment) => (async (dispatch, getState, { api }) => {
   dispatch(beginCreateAssignment());
   try {
     let assignment = await api.createAssignment(newAssignment);

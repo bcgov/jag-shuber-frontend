@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { default as AssignmentTimeline, UNASSIGNED_GROUP } from './AssignmentTimeline/AssignmentTimeline'
-import { Sheriff, SheriffAssignment } from '../api/index';
+import { Sheriff, Assignment } from '../api/index';
 import { ReactCalendarTimelineGroup } from 'react-calendar-timeline';
 import SheriffDragSource from '../containers/SheriffDragSource';
 import SheriffDropTarget from '../containers/SheriffDropTarget';
@@ -15,7 +15,7 @@ interface OnOffDutyTimelineProps {
     sidebarWidth?: number,
     onDuty: boolean
     sheriffs: Sheriff[];
-    assignments: SheriffAssignment[];
+    assignments: Assignment[];
     showHeader?: boolean;
     sideBarHeaderTitle?: string;
 }

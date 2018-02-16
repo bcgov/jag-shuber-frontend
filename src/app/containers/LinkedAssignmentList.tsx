@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { SheriffAssignment } from '../api/index';
+import { Assignment } from '../api/index';
 import AssignmentDropList from './AssignmentDropList';
 import { RootState } from '../store';
 import { linkedAssignments } from '../modules/assignments/selectors';
 
 
 export interface LinkedAssignmentListProps {
-  assignments?: SheriffAssignment[];
+  assignments?: Assignment[];
   sheriffId: number;
 }
 

@@ -1,10 +1,10 @@
 import { createSelector } from 'reselect'
 import { RootState } from '../../store';
-import { SheriffAssignment } from '../../api/index';
+import { Assignment } from '../../api/index';
 
-export const allAssignments = (state: RootState):SheriffAssignment[] => {
+export const allAssignments = (state: RootState):Assignment[] => {
     const map = state.assignments.map || {};
-    const list: SheriffAssignment[] = Object.keys(map).map((k, i) => map[k]);
+    const list: Assignment[] = Object.keys(map).map((k, i) => map[k]);
     return list;
 }
 export const isLoading = (state: RootState) => state.assignments.loading;

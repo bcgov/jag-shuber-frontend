@@ -2,7 +2,7 @@ import * as React from 'react';
 import { reduxForm, ConfigProps } from 'redux-form';
 import { default as AssignmentForm, AssignmentFormProps } from '../components/AssignmentForm';
 import { 
-    SheriffAssignment, 
+    Assignment, 
     SheriffAbility
 } from '../api/index';
 import { createAssignment } from '../modules/assignments/actions';
@@ -14,7 +14,7 @@ import { RootState } from '../store';
 // wrapping generic assignment form in redux-form
 const formConfig: ConfigProps<any, AssignmentFormProps> = { 
     form: 'CreateAssignment',
-    onSubmit: (values:{assignment: SheriffAssignment}, dispatch, props) =>{
+    onSubmit: (values:{assignment: Assignment}, dispatch, props) =>{
         let newAssignment = Object.assign({}, values.assignment,
             {requiredAbilities:SheriffAbility.All, sheriffIds:[]}, 
         );
