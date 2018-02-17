@@ -4,14 +4,15 @@ import {
 } from "../store";
 import { AnyAction } from "redux";
 import { Dispatch } from "react-redux";
+import { Reducer } from "redux";
 
 export interface RequestActionState<T> {
-    isBusy: boolean;
+    isBusy?: boolean;
     error?: string;
-    data: T;
+    data?: T;
 }
 
-export default abstract class RequestAction<TRequest, TResponse, TState extends {}>{
+export default abstract class RequestAction<TRequest, TResponse, TModuleState extends {}>{
     public actionNames: { begin: string, success: string, fail: string }
     private beginAction: { type: string };
 
@@ -59,8 +60,8 @@ export default abstract class RequestAction<TRequest, TResponse, TState extends 
         dispatch(this.getSuccessAction(response));
     }
 
-    public reducer(moduleState: TState | undefined, action: AnyAction): TState | undefined {
-        let newState = (moduleState || undefined) as TState;
+    private _reducer(moduleState: TModuleState | undefined, action: AnyAction): TModuleState | undefined {
+        let newState = (moduleState || undefined) as TModuleState;
 
         switch (action.type) {
             case this.actionNames.begin:
@@ -75,29 +76,33 @@ export default abstract class RequestAction<TRequest, TResponse, TState extends 
             default:
                 break;
         }
-        return newState as TState;
+        return newState as TModuleState;
     }
 
-    protected reduceBegin(moduleState: any, action: AnyAction): TState {
+    get reducer() : Reducer<TModuleState>{
+        return this._reducer.bind(this);
+    }
+
+    protected reduceBegin(moduleState: any, action: AnyAction): TModuleState {
         return this.mergeRequestActionState(moduleState, { error: undefined, isBusy: true })
     }
 
-    protected reduceFailure(moduleState: TState, action: AnyAction): TState {
+    protected reduceFailure(moduleState: TModuleState, action: AnyAction): TModuleState {
         return this.mergeRequestActionState(moduleState, { error: action.payload, isBusy: false })
     }
 
-    protected reduceSuccess(moduleState: TState, action: AnyAction): TState {
+    protected reduceSuccess(moduleState: TModuleState, action: AnyAction): TModuleState {
         return this.mergeRequestActionState(moduleState, { data: action.payload, error: undefined, isBusy: false })
     }
 
-    protected mergeRequestActionState(moduleState: TState, newState: Partial<RequestActionState<TResponse>>): TState {
+    protected mergeRequestActionState(moduleState: TModuleState, newState: Partial<RequestActionState<TResponse>>): TModuleState {
         let newModuleState = { ...(moduleState || {}) as any }
         const currentActionState = newModuleState[this.actionName] || {};
         newModuleState[this.actionName] = { ...currentActionState, ...newState };
-        return newModuleState as TState
+        return newModuleState as TModuleState
     }
 
-    protected selectRequestActionState(moduleState: TState): RequestActionState<TResponse> | undefined {
+    protected selectRequestActionState(moduleState: TModuleState): RequestActionState<TResponse> | undefined {
         const { actionName } = this;
         if (moduleState && moduleState[actionName]) {
             return moduleState[actionName] as RequestActionState<TResponse>;

@@ -1,7 +1,7 @@
 import {
     API,
     SheriffMap,
-    SheriffAssignmentMap,
+    AssignmentMap,
     AssignmentTemplate,
     Sheriff,
     Assignment,

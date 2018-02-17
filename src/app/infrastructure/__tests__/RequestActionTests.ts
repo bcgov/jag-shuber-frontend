@@ -7,6 +7,9 @@ import {
 import * as fetchMock from 'fetch-mock';
 import { API } from '../../api';
 import { AnyAction } from 'redux';
+import { combineReducers } from 'redux';
+import { Reducer } from 'redux';
+import NestedReducer from '../NestedReducer';
 
 registerMiddlewares([thunk]);
 
@@ -125,35 +128,35 @@ describe('RequestAction.actionCreator', () => {
 
 describe('RequestAction Reducers', () => {
     it('Standard RequestAction.reducer Should return initial state', () => {
-        expect(listRequest.reducer(undefined, { type: "SOME_ACTION" })).toEqual(undefined);
+        expect(listRequest.reducer({}, { type: "SOME_ACTION" })).toEqual({});
     });
 
     it('Standard RequestAction.reducer Should handle BEGIN', () => {
-        expect(listRequest.reducer(undefined, actions.listBegin)).toEqual({ list: { isBusy: true } });
+        expect(listRequest.reducer({}, actions.listBegin)).toEqual({ list: { isBusy: true } });
     });
 
     it('Standard RequestAction.reducer Should handle FAIL', () => {
-        expect(listRequest.reducer(undefined, actions.listFail)).toEqual({ list: { isBusy: false, error: actions.listFail.payload } });
+        expect(listRequest.reducer({}, actions.listFail)).toEqual({ list: { isBusy: false, error: actions.listFail.payload } });
     });
 
     it('Standard RequestAction.reducer Should handle SUCCESS', () => {
-        expect(listRequest.reducer(undefined, actions.listSuccess)).toEqual({ list: { isBusy: false, data: actions.listSuccess.payload } });
+        expect(listRequest.reducer({}, actions.listSuccess)).toEqual({ list: { isBusy: false, data: actions.listSuccess.payload } });
     });
 
     it('Custom RequestAction.reducer Should return initial state', () => {
-        expect(createRequest.reducer(undefined, { type: "SOME_ACTION" })).toEqual(undefined);
+        expect(createRequest.reducer({}, { type: "SOME_ACTION" })).toEqual({});
     });
 
     it('Custom RequestAction.reducer Should handle BEGIN', () => {
-        expect(createRequest.reducer(undefined, actions.createBegin)).toEqual({ create: { isBusy: true } });
+        expect(createRequest.reducer({}, actions.createBegin)).toEqual({ create: { isBusy: true } });
     });
 
     it('Custom RequestAction.reducer Should handle FAIL', () => {
-        expect(createRequest.reducer(undefined, actions.createFail)).toEqual({ create: { isBusy: false, error: actions.createFail.payload } });
+        expect(createRequest.reducer({}, actions.createFail)).toEqual({ create: { isBusy: false, error: actions.createFail.payload } });
     });
 
     it('Custom RequestAction.reducer Should handle SUCCESS', () => {
-        expect(createRequest.reducer(undefined, actions.createSuccess)).toEqual(
+        expect(createRequest.reducer({}, actions.createSuccess)).toEqual(
             {
                 create: {
                     isBusy: false
@@ -172,23 +175,16 @@ describe('Nested RequestAction Reducers', () => {
         widgets?: WidgetRootState
     }
     let initialState: TestRootState;
-    const listReducer = listRequest.reducer.bind(listRequest);
-    const createReducer = createRequest.reducer.bind(createRequest);
+    const listReducer = listRequest.reducer;
+    const createReducer = createRequest.reducer;
 
-    function getRootReducer(nestedReducers: ((moduleState: WidgetRootState | undefined, action: any) => WidgetRootState | undefined)[]) {
-        return (state = initialState, action: any) => {
-            let nestedWidgetState = nestedReducers.reduce((val, fn) => {
-                let newVal = fn(val, action);
-                return { ...val, ...newVal }
-            }, { ...state.widgets });
-            let newState: TestRootState = {
-                ...state,
-                widgets: {
-                    ...nestedWidgetState
-                }
-            }
-            return newState;
-        }
+    function getRootReducer(nestedReducers: Reducer<WidgetRootState>[]) {
+        let nestedReducer = new NestedReducer(nestedReducers);
+        return combineReducers({
+            widgets: nestedReducer.reducer,
+            auth: (state, action) => state || {},
+            something: (state, action) => state || {}
+        });
     }
 
     beforeEach(() => {
@@ -206,7 +202,7 @@ describe('Nested RequestAction Reducers', () => {
                 }
             }
         }
-    });
+    }); 
 
     it('Standard nested RequestAction.reducer should handle begin', () => {
         let nestedReducers = [listReducer];
@@ -216,7 +212,7 @@ describe('Nested RequestAction Reducers', () => {
                 isBusy: true
             }
         };
-        expect(rootReducer(undefined, actions.listBegin)).toEqual(
+        expect(rootReducer(initialState, actions.listBegin)).toEqual(
             {
                 ...initialState,
                 widgets: {
@@ -236,7 +232,7 @@ describe('Nested RequestAction Reducers', () => {
                 error: actions.listFail.payload
             }
         };
-        expect(rootReducer(undefined, actions.listFail)).toEqual(
+        expect(rootReducer(initialState, actions.listFail)).toEqual(
             {
                 ...initialState,
                 widgets: {
@@ -256,7 +252,7 @@ describe('Nested RequestAction Reducers', () => {
                 data: actions.listSuccess.payload
             }
         };
-        expect(rootReducer(undefined, actions.listSuccess)).toEqual(
+        expect(rootReducer(initialState, actions.listSuccess)).toEqual(
             {
                 ...initialState,
                 widgets: {
@@ -275,7 +271,7 @@ describe('Nested RequestAction Reducers', () => {
                 isBusy: true
             }
         };
-        expect(rootReducer(undefined, actions.createBegin)).toEqual(
+        expect(rootReducer(initialState, actions.createBegin)).toEqual(
             {
                 ...initialState,
                 widgets: {
@@ -295,7 +291,7 @@ describe('Nested RequestAction Reducers', () => {
                 error: actions.listFail.payload
             }
         };
-        expect(rootReducer(undefined, actions.createFail)).toEqual(
+        expect(rootReducer(initialState, actions.createFail)).toEqual(
             {
                 ...initialState,
                 widgets: {
@@ -318,7 +314,7 @@ describe('Nested RequestAction Reducers', () => {
             }
 
         };
-        expect(rootReducer(undefined, actions.createSuccess)).toEqual(
+        expect(rootReducer(initialState, actions.createSuccess)).toEqual(
             {
                 ...initialState,
                 widgets: {
@@ -333,7 +329,7 @@ describe('Nested RequestAction Reducers', () => {
         let nestedReducers = [createReducer, listReducer];
         let rootReducer = getRootReducer(nestedReducers);
 
-        let state = initialState;
+        let state: any = initialState;
         // First, begin create action
         let expectedWidgetState: any = {
             create: {
@@ -372,7 +368,7 @@ describe('Nested RequestAction Reducers', () => {
         let nestedReducers = [createReducer, listReducer];
         let rootReducer = getRootReducer(nestedReducers);
 
-        let state = initialState;
+        let state: any = initialState;
 
         // First, List Fail action
         let expectedWidgetState: any = {
@@ -414,7 +410,7 @@ describe('Nested RequestAction Reducers', () => {
         let nestedReducers = [createReducer, listReducer];
         let rootReducer = getRootReducer(nestedReducers);
 
-        let state = initialState;
+        let state: any = initialState;
 
         // First, List Success action
         let expectedWidgetState: any = {

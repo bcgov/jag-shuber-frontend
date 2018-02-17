@@ -4,7 +4,9 @@ export type DateType = Date | moment.Moment | string;
 export type StringMap = { [key: string]: string };
 export type IdType = number;
 export type SheriffMap = { [key: number]: Sheriff }
-export type SheriffAssignmentMap = { [key: number]: Assignment }
+export type AssignmentMap = { [key: number]: Assignment }
+export type AssignmentDutyMap = { [key: number]: AssignmentDuty }
+export type AssignmentTemplateMap = { [key: number]: AssignmentTemplate }
 
 export enum DaysOfWeek {
     Mon = 1 << 0,

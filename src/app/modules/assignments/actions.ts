@@ -1,6 +1,6 @@
 import { Action } from 'redux'
 import { ThunkAction } from '../../store'
-import { SheriffAssignmentMap,
+import { AssignmentMap,
   Assignment,
   AssignmentTemplate 
 } from "../../api/index";
@@ -11,9 +11,9 @@ import { SheriffAssignmentMap,
 // Todo: Would be great to make this more generic and factor it out into infrastructure, leaving as is for now
 
 type IActionMap = {
-  "ASSIGNMENT_LIST_BEGIN": null;
-  "ASSIGNMENT_LIST_FAIL": string;
-  "ASSIGNMENT_LIST_SUCCESS": SheriffAssignmentMap;
+  // "ASSIGNMENT_LIST_BEGIN": null;
+  // "ASSIGNMENT_LIST_FAIL": string;
+  // "ASSIGNMENT_LIST_SUCCESS": AssignmentMap;
   "ASSIGNMENT_LINK": { assignmentId: number, badgeNumber: number };
   "ASSIGNMENT_UNLINK": { assignmentId: number, badgeNumber: number };
   "ASSIGNMENT_SWAP": { assignmentId: number, oldBadgeNumber: number, newBadgeNumber: number }; 
@@ -52,23 +52,11 @@ function actionCreator<Type extends IActionType>(type: Type) {
     ({ type: type, payload: payload });
 }
 
-// Action creator for getting Assignemnt List
-export const getAssignments: ThunkAction<void> = () => (async (dispatch, getState, { api }) => {
-  dispatch(beginGetAssignments());
-  try {
-    let assignments = await api.getSheriffAssignments();
-    dispatch(getAssignmentSuccess(assignments));
-  } catch (error) {
-    dispatch(getAssignmentFailed(`Error getting assignments: '${error}'`));
-  }
-});
+
 
 export const swapAssignment = (assignmentId: number, oldBadgeNumber: number, newBadgeNumber: number) => actionCreator("ASSIGNMENT_SWAP")({ assignmentId, oldBadgeNumber, newBadgeNumber })
 export const linkAssignment = (assignmentId: number, badgeNumber: number) => actionCreator("ASSIGNMENT_LINK")({ assignmentId, badgeNumber });
 export const unlinkAssignment = (assignmentId: number, badgeNumber: number) => actionCreator("ASSIGNMENT_UNLINK")({ assignmentId, badgeNumber });
-export const beginGetAssignments = () => actionCreator("ASSIGNMENT_LIST_BEGIN")(null);
-export const getAssignmentFailed = actionCreator("ASSIGNMENT_LIST_FAIL");
-export const getAssignmentSuccess = actionCreator("ASSIGNMENT_LIST_SUCCESS");
 
 //Action creator for creating a new assignment
 export const createAssignment: ThunkAction<Assignment> = (newAssignment: Assignment) => (async (dispatch, getState, { api }) => {
