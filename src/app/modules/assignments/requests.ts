@@ -1,4 +1,3 @@
-import createAssignmentRequest = State: AssignmentModuleState, action: { type: string, payload: Assignment }): AssignmentModuleState.createAssignmentRequest;
 import {
     default as RequestAction,
     RequestActionState
@@ -14,7 +13,6 @@ import { ThunkExtra } from "../../store";
 import arrayToMap from "../../infrastructure/arrayToMap";
 import { IdType } from "../../api/Api";
 
-
 export interface AssignmentModuleState {
     assignmentMap?: RequestActionState<AssignmentMap>;
     createAssignment?: RequestActionState<Assignment>;
@@ -25,8 +23,7 @@ export interface AssignmentModuleState {
     deleteTemplate?: RequestActionState<void>;
     dutyMap?: RequestActionState<AssignmentDutyMap>;
 }
-
-const STATE_KEY: string = "assignments";
+export const STATE_KEY: string = "assignments";
 
 // Assignment Map Request
 class AssignmentMapRequest extends RequestAction<void, AssignmentMap, AssignmentModuleState> {

@@ -1,14 +1,30 @@
 import {
   assignmentMapRequest,
-  AssignmentModuleState
+  assignmentTemplateMapRequest,
+  createAssignmentRequest,
+  createAssignmentTemplateRequest,
+  deleteAssignmentTemplateRequest,
+  updateAssignmentRequest,
+  updateAssignmentTemplateRequest,
+  AssignmentModuleState as ModuleState,
+  STATE_KEY as state_key
 } from './requests'
 import NestedReducer from '../../infrastructure/NestedReducer';
 
 const nestedReducer = new NestedReducer([
-  assignmentMapRequest.reducer
+  assignmentMapRequest.reducer,
+  assignmentTemplateMapRequest.reducer,
+  createAssignmentRequest.reducer,
+  createAssignmentTemplateRequest.reducer,
+  deleteAssignmentTemplateRequest.reducer,
+  updateAssignmentRequest.reducer,
+  updateAssignmentTemplateRequest.reducer
 ]);
 
+export interface AssignmentModuleState extends ModuleState{}
+export const STATE_KEY = state_key;
 export default nestedReducer.reducer;
+
 
 
 

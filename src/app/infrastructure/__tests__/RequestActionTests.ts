@@ -202,7 +202,7 @@ describe('Nested RequestAction Reducers', () => {
                 }
             }
         }
-    }); 
+    });
 
     it('Standard nested RequestAction.reducer should handle begin', () => {
         let nestedReducers = [listReducer];
@@ -478,7 +478,6 @@ describe('RequestAction.selectors', () => {
         })).toEqual(true);
     })
 
-
     it('getData should select data', () => {
         expect(listRequest.getData({
             widgets: {
@@ -515,5 +514,69 @@ describe('RequestAction.selectors', () => {
 });
 
 
+describe('RequestAction.selectors should work with function pointers', () => {
+
+    let selectors = {
+        getIsBusy: listRequest.getIsBusy,
+        getError: listRequest.getError,
+        getData: listRequest.getData
+    }
+
+    it('getIsBusy should select loading state', () => {
+        expect(selectors.getIsBusy({
+            widgets: {
+                list:
+                    {
+                        isBusy: false,
+                        data: []
+                    }
+            }
+        })).toEqual(false);
+
+        expect(selectors.getIsBusy({
+            widgets: {
+                list:
+                    {
+                        isBusy: true,
+                        data: []
+                    }
+            }
+        })).toEqual(true);
+    })
+
+    it('getData should select data', () => {
+        expect(selectors.getData({
+            widgets: {
+                list:
+                    {
+                        isBusy: false,
+                        data: widgets
+                    }
+            }
+        })).toEqual(widgets);
+    });
+
+    it('getData should return undefined if data is undefined', () => {
+        expect(selectors.getData({})).toEqual(undefined);
+    });
+
+    it('getError should select error', () => {
+        const errorMsg = "Some Error message";
+        expect(selectors.getError({
+            widgets: {
+                list:
+                    {
+                        error: errorMsg,
+                        isBusy: false,
+                        data: []
+                    }
+            }
+        })).toEqual(errorMsg);
+    });
+
+    it('getError should return undefined if there is no root state', () => {
+        expect(selectors.getError({})).toEqual(undefined);
+    });
+});
 
 

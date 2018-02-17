@@ -119,19 +119,31 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
         }
     }
 
-    public getIsBusy(state: any): boolean {
+    private  _getIsBusy(state: any): boolean {
         let requestState = this.selectRequestActionStateFromRootState(state);
         return requestState && requestState.isBusy === true ? true : false;
     }
 
-    public getError(state: any): string | undefined {
+    get getIsBusy(){
+        return this._getIsBusy.bind(this);
+    }
+
+    private _getError(state: any): string | undefined {
         let requestState = this.selectRequestActionStateFromRootState(state);
         return requestState ? requestState.error : undefined;
     }
 
-    public getData(state: any): TResponse | undefined {
+    get getError(){
+        return this._getError.bind(this);
+    }
+
+    private _getData(state: any): TResponse | undefined {
         let requestState = this.selectRequestActionStateFromRootState(state);
         return requestState ? requestState.data : undefined;
+    }
+
+    get getData(){
+        return this._getData.bind(this);
     }
 }
 

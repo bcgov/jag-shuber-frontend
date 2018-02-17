@@ -4,13 +4,13 @@ import {
     WORK_SECTIONS
 } from '../../api/index';
 import AssignmentDragSource from '../../containers/AssignmentDragSource';
-import {
-    OverlayTrigger,
-    Popover,
-    Button,
-    Glyphicon
-} from 'react-bootstrap';
-import AssignmentDetails from '../AssignmentDetails';
+// import {
+//     OverlayTrigger,
+//     Popover,
+//     Button,
+//     Glyphicon
+// } from 'react-bootstrap';
+// import AssignmentDetails from '../AssignmentDetails';
 
 export interface AssignmentTimelineCardProps {
     onClick?: () => void;
@@ -21,13 +21,13 @@ export interface AssignmentTimelineCardProps {
 export default class AssignmentTimelineCard extends React.PureComponent<AssignmentTimelineCardProps, any>{
     render() {
         const { assignment, currentGroupId, onDropped } = this.props;
-        const { title, workSectionId, gateNumber, assignmentCourt,sheriffIds=[],sherrifsRequired=1 } = assignment;
+        const { title, workSectionId } = assignment;
 
-        const showAssignmentDetails = (
-            <Popover id="popover-trigger-focus">
-                <AssignmentDetails assignment={assignment} />
-            </Popover>
-        );
+        // const showAssignmentDetails = (
+        //     <Popover id="popover-trigger-focus">
+        //         <AssignmentDetails assignment={assignment} />
+        //     </Popover>
+        // );
 
 
         let backgroundColor = "";
@@ -42,21 +42,22 @@ export default class AssignmentTimelineCard extends React.PureComponent<Assignme
         } else {
             backgroundColor = "#0066cc";
         }
-         
-        const progressValue = (sheriffIds.length / Number(sherrifsRequired))*100;
+
+        // const progressValue = (sheriffIds.length / Number(sherrifsRequired))*100;
 
         return (
             <AssignmentDragSource
                 id={assignment.id}
                 currentGroupId={currentGroupId}
                 endDrag={() => onDropped && onDropped()}>
-                <div style={{ display: 'flex',justifyContent:'space-between', flexFlow: 'column nowrap', lineHeight: "15px", backgroundColor, width: "100%", height: "100%", position: "absolute" }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', flexFlow: 'column nowrap', lineHeight: "15px", backgroundColor, width: "100%", height: "100%", position: "absolute" }}>
                     <div style={{ flex: '1' }}>
-                        <OverlayTrigger trigger="focus" placement="right" overlay={showAssignmentDetails}>
+                        {title}
+                        {/* <OverlayTrigger trigger="focus" placement="right" overlay={showAssignmentDetails}>
                             <Button style={{ color: "#FFF", padding: 0 }} bsStyle="link" bsSize="medium"><strong>{title} {assignmentCourt && <Glyphicon glyph="asterisk" />}</strong></Button>
-                        </OverlayTrigger>
+                        </OverlayTrigger> */}
                     </div>
-                    <div style={{ flex: '1' }}>
+                    {/* <div style={{ flex: '1' }}>
                         <i>{gateNumber}</i>
                     </div>
                     <div style={{position:"absolute",right:2,bottom:0}}>
@@ -64,7 +65,7 @@ export default class AssignmentTimelineCard extends React.PureComponent<Assignme
                             ? <Glyphicon glyph="ok"/> 
                             : <span>{sheriffIds.length}/{Number(sherrifsRequired)}</span>
                         }
-                    </div>
+                    </div> */}
                 </div>
             </AssignmentDragSource>
         );

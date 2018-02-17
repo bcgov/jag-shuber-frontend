@@ -8,7 +8,6 @@ import {
     Assignment,
     RecurrenceInfo
 } from '../api/index';
-import { editAssignmentTemplate } from '../modules/assignments/actions';
 import { default as FormSubmitButton, SubmitButtonProps } from '../components/FormElements/SubmitButton'
 import { connect } from 'react-redux';
 import { RootState } from '../store';
@@ -19,8 +18,9 @@ import { getAssignmentTemplate } from '../modules/assignments/selectors';
 const formConfig: ConfigProps<any, AssignmentFormProps> = {
     form: 'EditAssignmentTemplate',
     onSubmit: (values: { id: number, assignment: Assignment, recurrenceInfo: RecurrenceInfo[] }, dispatch, props) => {
-        let updatedAssignmentTemplate = Object.assign({}, { ...values });
-        dispatch(editAssignmentTemplate(updatedAssignmentTemplate));
+        // let updatedAssignmentTemplate = Object.assign({}, { ...values });
+        alert('// todo: FIXME');
+        // dispatch(editAssignmentTemplate(updatedAssignmentTemplate));
     }
 };
 
@@ -33,7 +33,8 @@ const mapStateToProps = (state: RootState, props: AssignmentTemplateEditFormProp
     if (initialTemplate) {
         return {
             initialValues: initialTemplate,
-            workSectionId: initialTemplate.assignment.workSectionId,
+            // workSectionId: initialTemplate.assignment.workSectionId,
+            workSectionId:0,    // todo: FIXME            
             isDefaultTemplate: true
         }
     }

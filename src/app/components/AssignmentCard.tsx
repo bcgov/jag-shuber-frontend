@@ -18,7 +18,7 @@ export interface AssignmentCardProps {
 
 export default class AssignmentCard extends React.PureComponent<AssignmentCardProps, any>{
     render() {
-        const { currentGroupId, assignment: { title, id, notes }, assignment } = this.props;
+        const { currentGroupId, assignment: { title, id }, assignment } = this.props;
         const showAssignmentDetails = (
             <Popover id="popover-trigger-focus">
                <AssignmentDetails assignment={assignment} />
@@ -28,7 +28,7 @@ export default class AssignmentCard extends React.PureComponent<AssignmentCardPr
             <AssignmentDragSource id={id} currentGroupId={currentGroupId} >
                 <Panel bsStyle="primary">
                     <h3>{title}</h3>
-                    <h4>{notes}</h4>
+                    {/* <h4>{notes}</h4> */}
                     <OverlayTrigger trigger="focus" placement="right" overlay={showAssignmentDetails}>
                         <Button><Glyphicon glyph="menu-right" /></Button>
                     </OverlayTrigger>

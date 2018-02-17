@@ -4,7 +4,7 @@ import {
 } from 'react-bootstrap';
 import AssignmentDefaultRecurrenceDetails from './AssignmentDefaultRecurrenceDetails';
 import {
-    WORK_SECTIONS,
+    // WORK_SECTIONS,
     AssignmentTemplate
 } from '../api';
 import AssignmentEditModal from '../containers/AssignmentEditModal';
@@ -36,12 +36,12 @@ export default class AssignmentDefaultList extends React.PureComponent<Assignmen
                             {templates.map((template) => {
                                 return (
                                     <tr>
-                                        <td><strong>{template.assignment.title}</strong></td>
-                                        <td>{template.assignment.workSectionId && WORK_SECTIONS[template.assignment.workSectionId]}</td>
+                                        {/* <td><strong>{template.assignment.title}</strong></td> */}
+                                        {/* <td>{template.assignment.workSectionId && WORK_SECTIONS[template.assignment.workSectionId]}</td> */}
                                         <td>
                                             {template.recurrenceInfo.map((recurrence) => <AssignmentDefaultRecurrenceDetails data={recurrence} />)}
                                         </td>
-                                        <td>{template.assignment.sherrifsRequired}</td>
+                                        {/* <td>{template.assignment.sherrifsRequired}</td> */}
                                         <td className="text-right"><AssignmentEditModal templateId={template.id}/></td> 
                                         <td className="text-left"><AssignmentDeleteModal templateId={template.id}/></td>
                                     </tr>

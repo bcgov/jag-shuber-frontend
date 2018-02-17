@@ -6,7 +6,7 @@ import {
     Assignment,
     RecurrenceInfo
 } from '../api/index';
-import { createAssignmentTemplate } from '../modules/assignments/actions';
+// import { createAssignmentTemplate } from '../modules/assignments/actions';
 import { default as FormSubmitButton, SubmitButtonProps } from '../components/FormElements/SubmitButton'
 import { connect } from 'react-redux';
 import { RootState } from '../store';
@@ -16,8 +16,9 @@ import { RootState } from '../store';
 const formConfig: ConfigProps<any, AssignmentFormProps> = {
     form: 'CreateAssignmentTemplate',
     onSubmit: (values: { assignment: Assignment, recurrenceInfo: RecurrenceInfo[] }, dispatch, props) => {
-        let newAssignmentTemplate = Object.assign({}, { ...values });
-        dispatch(createAssignmentTemplate(newAssignmentTemplate));
+        // let newAssignmentTemplate = Object.assign({}, { ...values });
+        // dispatch(createAssignmentTemplate(newAssignmentTemplate));
+        alert('// todo: FIXME');
     }
 };
 

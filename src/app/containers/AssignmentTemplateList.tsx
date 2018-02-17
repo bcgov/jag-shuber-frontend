@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { AssignmentTemplate } from '../api/index';
 import { RootState } from '../store';
 import {getAssignmentTemplates} from '../modules/assignments/actions'
-import {allAssignmentTemplates, isLoading} from '../modules/assignments/selectors'
+import {allAssignmentTemplates, isLoadingAssignments} from '../modules/assignments/selectors'
 import AssignmentDefaultList from '../components/AssignmentDefaultList';
 
 export interface AssignmentTemplateListProps{
@@ -37,7 +37,7 @@ class AssignmentTemplateList extends React.Component<AssignmentTemplateListProps
 const mapStateToProps = (state:RootState) => {  
   return {
     templates:allAssignmentTemplates(state),
-    loading:isLoading(state)    
+    loading:isLoadingAssignments(state)    
   }
 }
 

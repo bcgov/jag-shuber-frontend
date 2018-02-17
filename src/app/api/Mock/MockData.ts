@@ -1,6 +1,7 @@
 import {
     Assignment,
     AssignmentDuty, 
+    Sheriff,
     StringMap, 
     AssignmentTemplate, 
     DEFAULT_RECURRENCE, 
