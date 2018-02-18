@@ -1,52 +1,59 @@
 import * as React from 'react';
 import { AssignmentTimelineProps } from '../../components/AssignmentTimeline/AssignmentTimeline'
-import { getSheriffList } from '../../modules/sheriffs/actions';
 import { visibleTime } from '../../modules/timeline/selectors';
-import { allAssignments } from '../../modules/assignments/selectors';
-import { offDutySheriffs, onDutySheriffs } from '../../modules/sheriffs/selectors';
-import { getAssignments } from '../../modules/assignments/actions';
+import { allAssignments, allAssignmentDuties } from '../../modules/assignments/selectors';
+import { getAssignments, getAssignmentDuties } from '../../modules/assignments/actions';
 import { updateVisibleTime } from '../../modules/timeline/actions';
 import { connect } from 'react-redux';
 import { RootState } from '../../store';
-import OnOffDutyTimeline from '../../components/OnOffDutyTimeline';
-import { Sheriff, Assignment } from '../../api/index';
+import AssignmentTimeline from '../../components/AssignmentTimeline/AssignmentTimeline';
+import { Assignment, AssignmentDuty } from '../../api/index';
 import './DailyTimeline.css'
-import { Glyphicon } from 'react-bootstrap';
+// import { Glyphicon } from 'react-bootstrap';
 
 
 interface DailyTimelineProps {
-    getSheriffs?: () => void;
+    getAssignmentDuties?: () => void;
     getAssignments?: () => void;
     onVisibleTimeChange?: (start: any, end: any) => void
-    onDutySheriffs: Sheriff[];
-    offDutySheriffs: Sheriff[];
+    assignmentDuties: AssignmentDuty[];
     assignments: Assignment[];
     sideBarWidth?: number;
 }
 
-
-
 class DailyTimeline extends React.Component<DailyTimelineProps>{
 
     componentWillMount() {
-        const { getSheriffs, getAssignments } = this.props;
-        getSheriffs && getSheriffs();
+        const { getAssignmentDuties, getAssignments } = this.props;
+        getAssignmentDuties && getAssignmentDuties();
         getAssignments && getAssignments();
     }
 
-    render() {
-        const { assignments, onDutySheriffs, offDutySheriffs, sideBarWidth = 200, ...rest } = this.props;
-        return (
-            
-                <div style={{}}>
-                    <OnOffDutyTimeline
-                        onDuty={true}
-                        sheriffs={onDutySheriffs}
-                        assignments={assignments}
-                        sidebarWidth={sideBarWidth}
-                        {...rest} />
+    onVisibleTimeChange(visibleTime:{visibleTimeStart:any,visibleTimeEnd:any}){
+        const {onVisibleTimeChange} = this.props;
+        const {visibleTimeStart,visibleTimeEnd} = visibleTime;
+        onVisibleTimeChange && onVisibleTimeChange(visibleTimeStart,visibleTimeEnd);
+    }
 
-                    <div style={{ display: 'flex', backgroundColor: "#003366", color: "#fff", paddingTop: 10,paddingBottom:10, fontSize: 18 }}>
+    render() {
+        const {
+            assignments = [],
+            assignmentDuties = [],
+            sideBarWidth = 200,
+            onVisibleTimeChange,
+            ...rest
+        } = this.props;
+        return (
+
+            <div style={{}}>
+                <AssignmentTimeline
+                    items={assignmentDuties}
+                    groups={assignments}
+                    sidebarWidth={sideBarWidth}
+                    onVisibleTimeChange={(t)=>this.onVisibleTimeChange(t)}
+                    {...rest} />
+
+                {/* <div style={{ display: 'flex', backgroundColor: "#003366", color: "#fff", paddingTop: 10,paddingBottom:10, fontSize: 18 }}>
                         <div style={{ width: sideBarWidth, textAlign: "center" }} >
                             Off Duty
                             <Glyphicon style={{marginLeft:10}} glyph="arrow-down" />
@@ -54,15 +61,15 @@ class DailyTimeline extends React.Component<DailyTimelineProps>{
                         <div />
                     </div>
 
-                    <OnOffDutyTimeline
+                    <AssignmentTimeline
                         showHeader={false}
                         sideBarHeaderTitle=""
                         onDuty={false}
                         sheriffs={offDutySheriffs}
                         assignments={assignments}
                         sidebarWidth={sideBarWidth}
-                        {...rest} />
-                </div>
+                        {...rest} /> */}
+            </div>
         )
     }
 
@@ -72,19 +79,18 @@ const mapStateToProps = (state: RootState, props: AssignmentTimelineProps) => {
     const { visibleTimeStart, visibleTimeEnd } = visibleTime(state);
 
     return {
-        offDutySheriffs: offDutySheriffs(state),
-        onDutySheriffs: onDutySheriffs(state),
+        assignmentDuties: allAssignmentDuties(state),
         assignments: allAssignments(state),
         visibleTimeStart,
         visibleTimeEnd
     };
 }
 
-const mapDispatcToProps: Partial<DailyTimelineProps> = {
+const mapDispatchToProps: Partial<DailyTimelineProps> = {
     onVisibleTimeChange: updateVisibleTime,
     getAssignments: getAssignments,
-    getSheriffs: getSheriffList
+    getAssignmentDuties: getAssignmentDuties
 }
 
-export default connect<DailyTimelineProps>(mapStateToProps, mapDispatcToProps)(DailyTimeline);
+export default connect<DailyTimelineProps>(mapStateToProps, mapDispatchToProps)(DailyTimeline);
 

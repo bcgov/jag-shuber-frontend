@@ -1,35 +1,44 @@
 import * as React from 'react'
 import * as moment from 'moment';
-import { default as Timeline, TimelineProps } from "../Timeline/Timeline";
-import { Assignment, Sheriff, BLANK_SHERIFF } from "../../api/index";
-import { ReactCalendarTimelineGroup, ReactCalendarTimelineItem } from "react-calendar-timeline";
-import { default as AssignmentTimelineCard } from './AssignmentTimelineCard'
-import AssignmentDropRowExtension from './AssignmentDropRowExtension';
-import toTitleCase from '../../infrastructure/toTitleCase';
+import {
+    default as Timeline,
+    TimelineProps
+} from "../Timeline/Timeline";
+import {
+    Assignment,
+    AssignmentDuty
+} from "../../api/index";
+import {
+    ReactCalendarTimelineGroup,
+    ReactCalendarTimelineItem
+} from "react-calendar-timeline";
+// import { default as AssignmentTimelineCard } from './AssignmentTimelineCard'
+// import AssignmentDropRowExtension from './AssignmentDropRowExtension';
+// import toTitleCase from '../../infrastructure/toTitleCase';
+
 
 // todo: find a better spot for this
-export const UNASSIGNED_ID = -1;
+// export const UNASSIGNED_ID = -1;
 
-export const UNASSIGNED_GROUP: TimelineSheriff = Object.assign({}, BLANK_SHERIFF, {
-    id: UNASSIGNED_ID,
-    onDuty: true,
-    badgeNumber: UNASSIGNED_ID,
-    title: "Unassigned"
-});
+// export const UNASSIGNED_GROUP: TimelineSheriff = Object.assign({}, BLANK_SHERIFF, {
+//     id: UNASSIGNED_ID,
+//     onDuty: true,
+//     badgeNumber: UNASSIGNED_ID,
+//     title: "Unassigned"
+// });
 
-type TimelineAssignment = ReactCalendarTimelineItem & Assignment;
-type TimelineSheriff = ReactCalendarTimelineGroup & Sheriff;
+type TimelineAssignment = ReactCalendarTimelineGroup & Assignment;
+type TimelineAssignmentDuty = ReactCalendarTimelineItem & AssignmentDuty;
 
 
-export interface AssignmentTimelineProps extends TimelineProps<Assignment, Sheriff> {
-    showUnlinkedAssignments?: boolean;
+export interface AssignmentTimelineProps extends TimelineProps<AssignmentDuty, Assignment> {
+
 }
 
-export default class AssignmentTimeline extends Timeline<Assignment, Sheriff, AssignmentTimelineProps>{
+export default class AssignmentTimeline extends Timeline<AssignmentDuty, Assignment, AssignmentTimelineProps>{
 
     static defaultProps: Partial<AssignmentTimelineProps> = {
-        showUnlinkedAssignments: true,
-        sideBarHeaderTitle: "Sheriffs",
+        sideBarHeaderTitle: "Assignments",
         sideBarHeaderComponent: (p: AssignmentTimelineProps) => (
             <div style={{ paddingTop: 10, fontSize: 18, alignContent: "center" }}>
                 {p.sideBarHeaderTitle}
@@ -47,14 +56,22 @@ export default class AssignmentTimeline extends Timeline<Assignment, Sheriff, As
         return Math.floor(uniqueId);
     }
 
-    // Map an assignment to a timeline item
-    protected mapItem(assignment: Assignment): TimelineAssignment {
-        // Since We're over riding the method that uses this, we don't need it
-        throw new Error("Method not implemented.");
+    // Maps a duty to an item that can be displayed by the timeline
+    protected mapItem(duty: AssignmentDuty): TimelineAssignmentDuty {
+        const { assignmentId, startDateTime, endDateTime } = duty;
+        const start_time = this.ensureMoment(startDateTime);
+        const end_time = this.ensureMoment(endDateTime);
+        return {
+            ...duty,
+            title: "Hello",
+            group: assignmentId,
+            start_time,
+            end_time
+        }
     }
 
-    protected ensureMoment(dateTime:any):moment.Moment{
-        if(!moment.isMoment(dateTime)){
+    protected ensureMoment(dateTime: any): moment.Moment {
+        if (!moment.isMoment(dateTime)) {
             return moment(dateTime);
         }
         return dateTime;
@@ -94,52 +111,49 @@ export default class AssignmentTimeline extends Timeline<Assignment, Sheriff, As
     // This method is a fix since we're using a different drag and drop framework
     // we need to manually reset the state of the timeline's view after dragging 
     // since some of the events get missed with the drag & drop
-    private itemDropped() {
-        if (this._timelineRef) {
-            this._timelineRef.setState({ isDragging: false, dragStartPosition: null, dragLastPosition: null });
-        }
-    }
+    // private itemDropped() {
+    //     if (this._timelineRef) {
+    //         this._timelineRef.setState({ isDragging: false, dragStartPosition: null, dragLastPosition: null });
+    //     }
+    // }
 
-    protected renderItem(item: TimelineAssignment) {
-        const { group, id, ...rest } = item;
-
-        // Here we get our assignment id back from the unique ItemId
-        const assignment = Object.assign(
-            {
-                id: AssignmentTimeline.itemIdFromUniqueId(id)
-            },
-            rest);
+    protected renderItem(item: TimelineAssignmentDuty) {
+        const { id, title } = item;
+        const backgroundColor = "#008866"
         return (
-            <AssignmentTimelineCard
-                onDropped={() => this.itemDropped()}
-                assignment={assignment}
-                currentGroupId={group} />
-        );
-    }
-
-    // Map a sheriff to a timeline group
-    protected mapGroup(sheriff: Sheriff): TimelineSheriff {
-        const { badgeNumber: id, firstName, lastName } = sheriff;
-        return Object.assign({}, { id, title: toTitleCase(`${firstName} ${lastName}`) }, sheriff);
-    }
-
-    // Map a group of sheriffs to timeline groups
-    protected mapGroups(groups: Sheriff[]): TimelineSheriff[] {
-        const mappedGroups = super.mapGroups(groups);
-        if (this.props.showUnlinkedAssignments) {
-            mappedGroups.unshift(UNASSIGNED_GROUP);
-        }
-        return mappedGroups;
-    }
-
-    protected renderGroup(group: TimelineSheriff) {
-        return super.renderGroup(group);
-    }
-    protected getExtensions() {
-        return (
-            <AssignmentDropRowExtension />
+            <div key={id} style={{ display: 'flex', justifyContent: 'space-between', flexFlow: 'column nowrap', lineHeight: "15px", backgroundColor, width: "100%", height: "100%", position: "absolute" }}>
+                <div style={{ flex: '1' }}>
+                    {title}
+                    {/* <OverlayTrigger trigger="focus" placement="right" overlay={showAssignmentDetails}>
+                <Button style={{ color: "#FFF", padding: 0 }} bsStyle="link" bsSize="medium"><strong>{title} {assignmentCourt && <Glyphicon glyph="asterisk" />}</strong></Button>
+            </OverlayTrigger> */}
+                </div>
+                {/* <div style={{ flex: '1' }}>
+            <i>{gateNumber}</i>
+        </div>
+        <div style={{position:"absolute",right:2,bottom:0}}>
+            {   progressValue >= 100 
+                ? <Glyphicon glyph="ok"/> 
+                : <span>{sheriffIds.length}/{Number(sherrifsRequired)}</span>
+            }
+        </div> */}
+            </div>
         )
     }
+
+    // Maps an assignment to a timeline group, nothing needed :)
+    protected mapGroup(assignment: Assignment): TimelineAssignment {
+        return assignment;
+    }
+
+    protected renderGroup(group: TimelineAssignment) {
+        return super.renderGroup(group);
+    }
+    // protected getExtensions() {
+    //     return (
+    //         <AssignmentDropRowExtension />
+    //     )
+    // }
 
 }
 

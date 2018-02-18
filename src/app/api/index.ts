@@ -22,7 +22,8 @@ export {
     Courthouse,
     Region, 
     Courtroom,
-    API
+    API,
+    IdType
 } from './Api'
 
 // Todo: We need to create reducers for the following

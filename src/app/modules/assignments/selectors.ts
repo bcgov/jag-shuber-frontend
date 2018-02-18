@@ -1,29 +1,32 @@
 import { createSelector } from 'reselect'
 import { RootState } from '../../store';
-import * as requests from './requests'
+import * as assignmentRequests from './requests/assignments'
+import * as assignmentDutyRequests from './requests/assignmentDuties'
+import * as assignmentTemplateRequests from './requests/assignmentTemplates'
 import {
     Assignment,
-    AssignmentTemplate
+    AssignmentTemplate,
+    AssignmentDuty
 } from '../../api/Api';
 
 // Assignments
 export const allAssignments = (state: RootState): Assignment[] => {
-    const map = requests.assignmentMapRequest.getData(state) || {};
+    const map = assignmentRequests.assignmentMapRequest.getData(state) || {};
     const list: Assignment[] = Object.keys(map).map((k, i) => map[k]);
     return list;
 }
-export const isLoadingAssignments = requests.assignmentMapRequest.getIsBusy;
-export const assignmentsError = requests.assignmentMapRequest.getError;
+export const isLoadingAssignments = assignmentRequests.assignmentMapRequest.getIsBusy;
+export const assignmentsError = assignmentRequests.assignmentMapRequest.getError;
 
 
 // Assignment Template
 export const allAssignmentTemplates = (state: RootState): AssignmentTemplate[] => {
-    const map = requests.assignmentTemplateMapRequest.getData(state) || {};
+    const map = assignmentTemplateRequests.assignmentTemplateMapRequest.getData(state) || {};
     const list: AssignmentTemplate[] = Object.keys(map).map((k, i) => map[k]);
     return list;
 }
-export const isLoadingAssignmentTemplates = requests.assignmentTemplateMapRequest.getIsBusy;
-export const templatesError = requests.assignmentTemplateMapRequest.getError;
+export const isLoadingAssignmentTemplates = assignmentTemplateRequests.assignmentTemplateMapRequest.getIsBusy;
+export const templatesError = assignmentTemplateRequests.assignmentTemplateMapRequest.getError;
 
 export const getAssignmentTemplate = (id?: number) => (state: RootState) => {
     if (state && id != null) {
@@ -35,6 +38,14 @@ export const getAssignmentTemplate = (id?: number) => (state: RootState) => {
     return null;
 }
 
+// Assignments
+export const allAssignmentDuties = (state: RootState): AssignmentDuty[] => {
+    const map = assignmentDutyRequests.assignmentDutyMapRequest.getData(state) || {};
+    const list: AssignmentDuty[] = Object.keys(map).map((k, i) => map[k]);
+    return list;
+}
+export const isLoadingAssignmentDuties = assignmentDutyRequests.assignmentDutyMapRequest.getIsBusy;
+export const assignmentDutiesError = assignmentDutyRequests.assignmentDutyMapRequest.getError;
 
 // Not Memoized since not sure which id is getting passed in
 export const linkedAssignments = (id?: number) => (state: RootState) => {

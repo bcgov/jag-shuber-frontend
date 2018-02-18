@@ -1,25 +1,27 @@
-import { ThunkAction } from '../../store'
-import {
+import * as assignmentRequests from './requests/assignments'
+import * as assignmentDutyRequests from './requests/assignmentDuties'
+import * as assignmentTemplateRequests from './requests/assignmentTemplates'
 
-} from "../../api/index";
-import * as requests from './requests';
-import {
-  AssignmentTemplate,
-  Assignment
-} from '../../api/Api';
 
 
 // Assignments
-export const getAssignments: ThunkAction<void> = requests.assignmentMapRequest.actionCreator;
-export const createAssignment: ThunkAction<Partial<Assignment>> = requests.createAssignmentRequest.actionCreator;
-export const editAssignment: ThunkAction<Assignment> = requests.updateAssignmentRequest.actionCreator;
-
+export const getAssignments = assignmentRequests.assignmentMapRequest.actionCreator;
+export const createAssignment= assignmentRequests.createAssignmentRequest.actionCreator;
+export const editAssignment= assignmentRequests.updateAssignmentRequest.actionCreator;
+export const deleteAssignment = assignmentRequests.deleteAssignmentRequest.actionCreator;
 
 // Assignment Templates
-export const getAssignmentTemplates: ThunkAction<void> = requests.assignmentTemplateMapRequest.actionCreator;
-export const createAssignmentTemplate: ThunkAction<Partial<AssignmentTemplate>> = requests.createAssignmentTemplateRequest.actionCreator;
-export const editAssignmentTemplate: ThunkAction<AssignmentTemplate> = requests.updateAssignmentTemplateRequest.actionCreator;
-export const deleteAssignmentTemplate: ThunkAction<Number> = requests.deleteAssignmentTemplateRequest.actionCreator;
+export const getAssignmentTemplates = assignmentTemplateRequests.assignmentTemplateMapRequest.actionCreator;
+export const createAssignmentTemplate = assignmentTemplateRequests.createAssignmentTemplateRequest.actionCreator;
+export const editAssignmentTemplate  = assignmentTemplateRequests.updateAssignmentTemplateRequest.actionCreator;
+export const deleteAssignmentTemplate = assignmentTemplateRequests.deleteAssignmentTemplateRequest.actionCreator;
+
+// Assignment Duties
+export const getAssignmentDuties = assignmentDutyRequests.assignmentDutyMapRequest.actionCreator;
+export const createAssignmentDuty = assignmentDutyRequests.createAssignmentDutyRequest.actionCreator;
+export const editAssignmentDuty = assignmentDutyRequests.updateAssignmentDutyRequest.actionCreator;
+export const deleteAssignmentDuty = assignmentDutyRequests.deleteAssignmentDutyRequest.actionCreator;
+
 
 
 // todo: the following

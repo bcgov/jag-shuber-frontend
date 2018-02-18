@@ -11,7 +11,7 @@ import Footer from './components/Footer';
 import Navigation from './components/Navigation'
 import './assets/styles/Glyphicons.css'
 import './index.css';
-// import Timeline from './pages/Timeline';
+import Timeline from './pages/Timeline';
 import ManageSheriffs from './pages/ManageSheriffs';
 import DefaultAssignments from './pages/DefaultAssignments';
 
@@ -24,7 +24,7 @@ class Layout extends React.PureComponent {
             <Navigation />
           </div>
           <div className="mainArea">
-            {/* <Route exact path='/' component={Timeline} /> */}
+            <Route exact path='/' component={Timeline} />
             <Route path='/sheriffs/manage' component={ManageSheriffs} />
             <Route path='/assignments/manage/default' component={DefaultAssignments} />
           </div>

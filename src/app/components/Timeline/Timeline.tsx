@@ -27,19 +27,23 @@ export interface TimelineProps<TItem, TGroup> {
     itemRenderer?: (item: TimelineItem<TItem>) => React.ReactNode;
 }
 
-export default abstract class Timeline<TItem, TGroup, TOwnProps={}> extends React.PureComponent<TimelineProps<TItem, TGroup> & TOwnProps> {
+export default class Timeline<TItem, TGroup, TOwnProps={}> extends React.PureComponent<TimelineProps<TItem, TGroup> & TOwnProps> {
     protected _timelineRef: any;
 
-    protected mapGroups(groups: TGroup[]): TimelineGroup<TGroup>[] {
-        return groups ? groups.map(this.mapGroup) : [];
+    protected mapGroups(groups: TGroup[]): TimelineGroup<TGroup>[] {       
+        return groups ? groups.map(this.mapGroup.bind(this)) : [];
     }
 
     protected mapItems(items: TItem[]): TimelineItem<TItem>[] {
-        return items ? items.map(this.mapItem) : [];
+        return items ? items.map(this.mapItem.bind(this)) : [];
     }
 
-    protected abstract mapGroup(group: TGroup): TimelineGroup<TGroup>;
-    protected abstract mapItem(item: TItem): TimelineItem<TItem>;
+    protected mapGroup(group: TGroup): TimelineGroup<TGroup>{
+        return group as TimelineGroup<TGroup>;
+    }
+    protected mapItem(item: TItem): TimelineItem<TItem>{
+        return item as TimelineItem<TItem>;
+    }
 
     protected renderGroup({ title }: (TimelineGroupProps & TGroup)): React.ReactNode {
         return (
