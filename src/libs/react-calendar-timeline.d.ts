@@ -46,7 +46,11 @@ declare module "react-calendar-timeline" {
         groupTops:number[];
         dimensionItems:{
             id:number;
-            dimensions:{width:number;height:number}
+            dimensions:{
+                width:number;
+                height:number;
+                left:number;
+            }
         }[]
         selected:number[];
         timeSteps:number[];

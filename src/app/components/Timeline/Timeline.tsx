@@ -7,6 +7,7 @@ import {
 } from 'react-calendar-timeline/lib'
 import * as moment from 'moment'
 import "./Timeline.css"
+import TimelineCard from './TimelineCard';
 
 type TimelineGroup<T> = TimelineGroupProps & T;
 type TimelineItem<T> = TimelineItemProps & T;
@@ -45,15 +46,24 @@ export default class Timeline<TItem, TGroup, TOwnProps={}> extends React.PureCom
         return item as TimelineItem<TItem>;
     }
 
-    protected renderGroup({ title }: (TimelineGroupProps & TGroup)): React.ReactNode {
-        return (
-            <div>{title}</div>
-        )
+    protected renderGroup(group: (TimelineGroupProps & TGroup)): React.ReactNode {
+        const { groupRenderer } = this.props;
+        const { title = "Untitled" } = group;
+        if (groupRenderer) {
+            return groupRenderer(group);
+        } else {
+            return (
+                <div>{title}</div>
+            )
+        }
     }
 
-    protected renderItem({ title }: (TimelineItemProps & TItem)): React.ReactNode {
+    protected renderItem(item: (TimelineItemProps & TItem)): React.ReactNode {
+        const { itemRenderer = ({ title }: TimelineItemProps & TItem) => <div>{title}</div> } = this.props;
         return (
-            <div>{title}</div>
+            <TimelineCard>
+                {itemRenderer(item)}
+            </TimelineCard>
         )
     }
 
@@ -81,9 +91,7 @@ export default class Timeline<TItem, TGroup, TOwnProps={}> extends React.PureCom
             showHeader = true,
             showTime = true,
             sidebarWidth = 150,
-            lineHeight = 60,
-            itemRenderer = (i: TimelineItem<TItem>) => this.renderItem(i),
-            groupRenderer = (g: TimelineGroup<TGroup>) => this.renderGroup(g),
+            lineHeight = 60
         } = this.props;
 
         return (
@@ -106,8 +114,8 @@ export default class Timeline<TItem, TGroup, TOwnProps={}> extends React.PureCom
                 sidebarContent={sideBarHeaderComponent(this.props)}
                 traditionalZoom
                 itemHeightRatio={0.90}
-                itemRenderer={({ item }: { item: TimelineItemProps & TItem }) => itemRenderer(item)}
-                groupRenderer={({ group }: { group: TimelineGroupProps & TGroup }) => groupRenderer(group)}
+                itemRenderer={({ item }: { item: TimelineItemProps & TItem }) => this.renderItem(item)}
+                groupRenderer={({ group }: { group: TimelineGroupProps & TGroup }) => this.renderGroup(group)}
                 ref={(t) => this._timelineRef = t}
             >
                 {this.getExtensions()}

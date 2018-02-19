@@ -296,7 +296,18 @@ export const assignmentDuties: AssignmentDuty[] = [
         sheriffIds: [],
         startDateTime: moment().startOf('day').add(16, 'hours'),
         endDateTime: moment().startOf('day').add(18, 'hours'),
-        sherrifsRequired: 1,
+        sheriffsRequired: 1,
+        extraDetails:{
+            notes: 'My notes on the file.'
+        }        
+    },
+    {
+        id: 1,
+        assignmentId: assignments[1].id,
+        sheriffIds: [579],
+        startDateTime: moment().startOf('day').add(14, 'hours'),
+        endDateTime: moment().startOf('day').add(18, 'hours'),
+        sheriffsRequired: 1,
         extraDetails:{
             notes: 'My notes on the file.'
         }        

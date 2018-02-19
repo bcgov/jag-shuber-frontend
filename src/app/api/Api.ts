@@ -91,7 +91,7 @@ export interface AssignmentDuty {
     startDateTime: DateType;
     endDateTime: DateType;
     sheriffIds: IdType[];
-    sherrifsRequired: number;
+    sheriffsRequired: number;
     extraDetails?: AssignmentDutyDetails;
 }
 

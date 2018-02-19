@@ -21,6 +21,7 @@ import {
 } from '../../api/index';
 import * as moment from 'moment'
 import './DailyTimeline.css'
+import AssignmentDutyCard from '../../components/AssignmentDutyCard';
 // import { Glyphicon } from 'react-bootstrap';
 
 
@@ -79,6 +80,7 @@ class DailyTimeline extends React.Component<DailyTimelineProps & DailyTimelineSt
                     groups={assignments}
                     sidebarWidth={sideBarWidth}
                     onVisibleTimeChange={(s, e) => this.onVisibleTimeChange(s, e)}
+                    itemRenderer={(d) => <AssignmentDutyCard title={d.title} duty={d} />}
                     {...rest}
                 />
             </div>
