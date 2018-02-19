@@ -5,3 +5,12 @@
 .dimmed:hover{
     opacity:1.0;
 }
+
+.dailyTimeline .react-calendar-timeline .rct-items .rct-item.selected {
+    background: transparent;
+    border: 0px;
+}
+
+/* .dailyTimeline .react-calendar-timeline .rct-items .rct-item {
+    cursor:default;
+} */

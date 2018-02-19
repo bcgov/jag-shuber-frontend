@@ -73,7 +73,7 @@ class DailyTimeline extends React.Component<DailyTimelineProps & DailyTimelineSt
             ...rest
         } = this.props;
         return (
-            <div style={{}}>
+            <div className="dailyTimeline">
                 <AssignmentTimeline
                     items={assignmentDuties}
                     groups={assignments}
