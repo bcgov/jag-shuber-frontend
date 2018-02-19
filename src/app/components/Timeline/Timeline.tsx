@@ -22,7 +22,7 @@ export interface TimelineProps<TItem, TGroup> {
     lineHeight?: number;
     visibleTimeStart?: any;
     visibleTimeEnd?: any;
-    onVisibleTimeChange?: (visibleTime: { visibleTimeStart: any, visibleTimeEnd: any }) => void
+    onVisibleTimeChange?: (visibleTimeStart: number, visibleTimeEnd: number) => void
     groupRenderer?: (group: (TimelineGroup<TGroup>)) => React.ReactNode;
     itemRenderer?: (item: TimelineItem<TItem>) => React.ReactNode;
 }
@@ -30,7 +30,7 @@ export interface TimelineProps<TItem, TGroup> {
 export default class Timeline<TItem, TGroup, TOwnProps={}> extends React.PureComponent<TimelineProps<TItem, TGroup> & TOwnProps> {
     protected _timelineRef: any;
 
-    protected mapGroups(groups: TGroup[]): TimelineGroup<TGroup>[] {       
+    protected mapGroups(groups: TGroup[]): TimelineGroup<TGroup>[] {
         return groups ? groups.map(this.mapGroup.bind(this)) : [];
     }
 
@@ -38,10 +38,10 @@ export default class Timeline<TItem, TGroup, TOwnProps={}> extends React.PureCom
         return items ? items.map(this.mapItem.bind(this)) : [];
     }
 
-    protected mapGroup(group: TGroup): TimelineGroup<TGroup>{
+    protected mapGroup(group: TGroup): TimelineGroup<TGroup> {
         return group as TimelineGroup<TGroup>;
     }
-    protected mapItem(item: TItem): TimelineItem<TItem>{
+    protected mapItem(item: TItem): TimelineItem<TItem> {
         return item as TimelineItem<TItem>;
     }
 

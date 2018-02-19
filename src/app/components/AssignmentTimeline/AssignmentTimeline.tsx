@@ -17,19 +17,8 @@ import {
 // import toTitleCase from '../../infrastructure/toTitleCase';
 
 
-// todo: find a better spot for this
-// export const UNASSIGNED_ID = -1;
-
-// export const UNASSIGNED_GROUP: TimelineSheriff = Object.assign({}, BLANK_SHERIFF, {
-//     id: UNASSIGNED_ID,
-//     onDuty: true,
-//     badgeNumber: UNASSIGNED_ID,
-//     title: "Unassigned"
-// });
-
 type TimelineAssignment = ReactCalendarTimelineGroup & Assignment;
 type TimelineAssignmentDuty = ReactCalendarTimelineItem & AssignmentDuty;
-
 
 export interface AssignmentTimelineProps extends TimelineProps<AssignmentDuty, Assignment> {
 
@@ -44,16 +33,6 @@ export default class AssignmentTimeline extends Timeline<AssignmentDuty, Assignm
                 {p.sideBarHeaderTitle}
             </div>
         )
-    }
-
-    static toUniqueId(id: number, groupId: number): number {
-        // In order to have a unique id for the numbers, we create a number in the form
-        // {assignmentId}.{sheriffId}
-        return Number(`${id}.${groupId}`);
-    }
-
-    static itemIdFromUniqueId(uniqueId: number) {
-        return Math.floor(uniqueId);
     }
 
     // Maps a duty to an item that can be displayed by the timeline
@@ -77,46 +56,7 @@ export default class AssignmentTimeline extends Timeline<AssignmentDuty, Assignm
         return dateTime;
     }
 
-    // Map a group of assignments to timeline items
-    // protected mapItems(assignments: Assignment[]): TimelineAssignment[] {
-    //     const assignmentItems = assignments.reduce<TimelineAssignment[]>((flattened, assignment, index) => {
-    //         const { id, sheriffIds = [], startTime, endTime } = assignment;
-    //         const start_time = this.ensureMoment(startTime);
-    //         const end_time = this.ensureMoment(endTime);
-    //         // If no id's, it's unassigned
-    //         if (sheriffIds.length == 0) {
-    //             flattened.push({ group: UNASSIGNED_ID, start_time, end_time, ...assignment } as TimelineAssignment);
-    //         } else {
-    //             // Here we map the multiple sheriffs that are linked with an assignment
-    //             // To different items that will be displayed on the Timeline
-    //             sheriffIds.map<TimelineAssignment>((gid) =>
-    //                 Object.assign({},
-    //                     assignment,
-    //                     {
-    //                         id: AssignmentTimeline.toUniqueId(id, gid),
-    //                         group: gid,
-    //                         start_time,
-    //                         end_time
-    //                     })
-    //             ).forEach(item => {
-    //                 flattened.push(item)
-    //             });
-    //         }
-    //         return flattened;
-    //     }, [])
-
-    //     return assignmentItems;
-    // }
-
-    // This method is a fix since we're using a different drag and drop framework
-    // we need to manually reset the state of the timeline's view after dragging 
-    // since some of the events get missed with the drag & drop
-    // private itemDropped() {
-    //     if (this._timelineRef) {
-    //         this._timelineRef.setState({ isDragging: false, dragStartPosition: null, dragLastPosition: null });
-    //     }
-    // }
-
+    
     protected renderItem(item: TimelineAssignmentDuty) {
         const { id, title } = item;
         const backgroundColor = "#008866"

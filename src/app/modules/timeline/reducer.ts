@@ -32,10 +32,9 @@ export interface TimelineState {
 
 
 const reducer = createReducer<TimelineState>({
-  TIMELINE_UPDATE_VISIBLETIME: (state, { visibleTimeStart, visibleTimeEnd }) =>{
-    return(
-     Object.assign({}, state, { visibleTimeStart, visibleTimeEnd })
-  )}
+  TIMELINE_UPDATE_VISIBLETIME: (state, { visibleTimeStart, visibleTimeEnd }) => {
+    return { ...state, visibleTimeStart, visibleTimeEnd }
+  }
 });
 
 export default reducer;
