@@ -10,7 +10,8 @@ import {
     Courthouse,
     Courtroom,
     Region,
-    AssignmentDuty
+    AssignmentDuty,
+    IdType
 } from "../Api";
 import arrayToMap from '../../infrastructure/arrayToMap'
 import {
@@ -67,8 +68,6 @@ export default class NewClient implements API {
 
         //This is a hack to throw in a profile picture
         if (!newSheriff.imageUrl) {
-            //let randomNumber = Math.floor(Math.random() * 86) + 11; 
-            // newSheriff.imageUrl=`https://randomuser.me/api/portraits/men/${randomNumber}.jpg`;
             newSheriff.imageUrl = "/img/avatar.png"
         }
 
@@ -97,8 +96,18 @@ export default class NewClient implements API {
     async updateAssignment(assignment: Partial<Assignment>): Promise<Assignment> {
         throw new Error("Method not implemented.");
     }
-    async deleteAssignment(assignmentId: number): Promise<void> {
-        throw new Error("Method not implemented.");
+    async deleteAssignment(assignmentId: number): Promise<IdType> {
+        if (assignmentId == null ) {
+            throw new Error("No ID specified");
+        }
+
+        const assignmentIndex = assignments.findIndex((value) => value.id == assignmentId);
+        if (assignmentIndex < 0) {
+            throw Error(`No template could be located for ${assignmentId}`)
+        }
+
+        assignments.splice(assignmentIndex, 1);
+        return assignmentId;
     }
     async getAssignmentDuties(): Promise<AssignmentDuty[]> {
         return assignmentDuties;
@@ -115,20 +124,20 @@ export default class NewClient implements API {
     async getAssignmentTemplates(): Promise<AssignmentTemplate[]> {
         return defaultAssignmentTemplates;
     }
-    async createAssignmentTemplate(newTemplate: Partial<AssignmentTemplate>): Promise<AssignmentTemplate> {
+    async createAssignmentTemplate(newAssignmentTemplate: Partial<AssignmentTemplate>): Promise<AssignmentTemplate> {
         await randomDelay();
 
-        if (!newTemplate || !newTemplate.assignmentId) {
+        if (!newAssignmentTemplate || !newAssignmentTemplate.assignmentId) {
             throw new Error("Incomplete new assignment template.")
         }
 
         //This is a hack to create a unique id for a new assignment template
-        newTemplate.id = this.getId();
+        newAssignmentTemplate.id = this.getId();
 
         //add default recurrence value if nothing was selected or partial value was selected
-        newTemplate.recurrenceInfo = createFilledRecurrenceInfo(newTemplate.recurrenceInfo);
-        defaultAssignmentTemplates.push(newTemplate as AssignmentTemplate);
-        return newTemplate as AssignmentTemplate;
+        newAssignmentTemplate.recurrenceInfo = createFilledRecurrenceInfo(newAssignmentTemplate.recurrenceInfo);
+        defaultAssignmentTemplates.push(newAssignmentTemplate as AssignmentTemplate);
+        return newAssignmentTemplate as AssignmentTemplate;
     }
     async updateAssignmentTemplate(template: Partial<AssignmentTemplate>): Promise<AssignmentTemplate> {
         await randomDelay();

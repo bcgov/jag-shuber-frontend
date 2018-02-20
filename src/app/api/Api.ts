@@ -79,6 +79,7 @@ export interface Assignment {
     title: string;
     workSectionId: string;
     location?: AssignmentLocation;
+    recurrenceInfo?: RecurrenceInfo[];
 }
 
 export interface AssignmentDutyDetails {
@@ -142,7 +143,7 @@ export interface API {
     getAssignments(): Promise<Assignment[]>;
     createAssignment(assignment: Partial<Assignment>): Promise<Assignment>;
     updateAssignment(assignment: Partial<Assignment>): Promise<Assignment>;
-    deleteAssignment(assignmentId: IdType): Promise<void>;
+    deleteAssignment(assignmentId: IdType): Promise<IdType>;
 
     // Assignment Duties
     getAssignmentDuties(): Promise<AssignmentDuty[]>;

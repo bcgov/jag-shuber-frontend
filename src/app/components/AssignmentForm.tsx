@@ -15,8 +15,8 @@ import {
 import * as Validators from '../infrastructure/Validators';
 import TextField from './FormElements/TextField';
 import * as DateTimeFieldConst from './FormElements/DateTimeFieldConst';
-import RequiredTrainingChecklist from './FormElements/RequiredTrainingChecklist';
-import TextArea from './FormElements/TextArea';
+// import RequiredTrainingChecklist from './FormElements/RequiredTrainingChecklist';
+// import TextArea from './FormElements/TextArea';
 import CourtroomSelector from './FormElements/CourtroomSelector';
 import DaysOfWeekChecklist from './FormElements/DaysOfWeekChecklist';
 import {
@@ -24,33 +24,33 @@ import {
     DateType
 } from '../api';
 
-class GateSecurityFields extends React.PureComponent<any>{
-    render() {
-        return (
-            <div>
-                <Field name="assignment.gateNumber" component={TextField} label="Gate Number" />
-            </div>
-        );
-    }
-}
+// class GateSecurityFields extends React.PureComponent<any>{
+//     render() {
+//         return (
+//             <div>
+//                 <Field name="assignment.gateNumber" component={TextField} label="Gate Number" />
+//             </div>
+//         );
+//     }
+// }
 
 
-class EscortServiceFields extends React.PureComponent<any>{
-    render() {
-        return (
-            <div>
-                <Field name="assignment.pickupLocation" component={TextField} label="Pick-Up Location" />
-                <Field name="assignment.dropoffLocation" component={TextField} label="Drop-Off Location" />
-            </div>
-        );
-    }
-}
+// class EscortServiceFields extends React.PureComponent<any>{
+//     render() {
+//         return (
+//             <div>
+//                 {/* <Field name="assignment.pickupLocation" component={TextField} label="Pick-Up Location" />
+//                 <Field name="assignment.dropoffLocation" component={TextField} label="Drop-Off Location" /> */}
+//             </div>
+//         );
+//     }
+// }
 
 class CourtSecurityFields extends React.PureComponent<any>{
     render() {
         return (
             <div>
-                <Field name="assignment.courtroomId" component={CourtroomSelector} label="Courtroom" validate={[Validators.required]} />
+                <Field name="location.courtroomId" component={CourtroomSelector} label="Courtroom" validate={[Validators.required]} />
             </div>
         );
     }
@@ -76,8 +76,8 @@ export interface AssignmentFormProps {
 export default class AssignmentForm extends React.Component<AssignmentFormProps & InjectedFormProps<any, AssignmentFormProps>, any>{
     private renderHeading() {
         let heading = "Other"
-        if (this.props.initialValues && this.props.initialValues.assignment) {
-            const { workSectionId = "OTHER" } = this.props.initialValues.assignment;
+        if (this.props.initialValues && this.props.initialValues) {
+            const { workSectionId = "OTHER" } = this.props.initialValues;
 
             switch (WORK_SECTIONS[workSectionId]) {
                 case WORK_SECTIONS.COURTS:
@@ -103,18 +103,18 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
 
     private renderWorkSectionFields() {
         let returnFields;
-        if (this.props.initialValues && this.props.initialValues.assignment) {
-            const { workSectionId = "OTHER" } = this.props.initialValues.assignment;
+        if (this.props.initialValues && this.props.initialValues) {
+            const { workSectionId = "OTHER" } = this.props.initialValues;
             switch (WORK_SECTIONS[workSectionId]) {
                 case WORK_SECTIONS.COURTS:
                     returnFields = <CourtSecurityFields />;
                     break;
-                case WORK_SECTIONS.ESCORTS:
-                    returnFields = <EscortServiceFields />;
-                    break;
-                case WORK_SECTIONS.GATES:
-                    returnFields = <GateSecurityFields />;
-                    break;
+                // case WORK_SECTIONS.ESCORTS:
+                //     returnFields = <EscortServiceFields />;
+                //     break;
+                // case WORK_SECTIONS.GATES:
+                //     returnFields = <GateSecurityFields />;
+                //     break;
                 default:
                     returnFields = "";
                     break;
@@ -143,6 +143,7 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
                                             <Field name={`${recurrenceInfoFieldName}.days`} component={DaysOfWeekChecklist} label="Days" />
                                             <Field name={`${recurrenceInfoFieldName}.startTime`} component={DateTimeFieldConst.TimeField} label="Start Time" />
                                             <Field name={`${recurrenceInfoFieldName}.endTime`} component={DateTimeFieldConst.TimeField} label="End Time" />
+                                            <Field name={`${recurrenceInfoFieldName}.sheriffsRequired`} component={TextField} label="Number of Sheriffs Required" validate={[Validators.required, Validators.integer]} />
                                         </ListGroupItem>)
                                 }
                                 )}
@@ -163,22 +164,22 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
         return "";
     }
 
-    private renderAssignmentFields() {
-        const { isDefaultTemplate } = this.props;
-        return (
-            <div>
-                {!isDefaultTemplate &&
-                    <div>
-                        <Field name="assignment.startTime" component={DateTimeFieldConst.DateAndTimeField} label="Start Time" validate={[Validators.required]} />
-                        <Field name="assignment.endTime" component={DateTimeFieldConst.DateAndTimeField} label="End Time" validate={[Validators.required]} />
-                        <Field name="assignment.abilities" component={RequiredTrainingChecklist} label="Required Qualifications" />
-                    </div>
-                }
-                <Field name="assignment.sherrifsRequired" component={TextField} label="Number of Sheriffs Required" validate={[Validators.required, Validators.integer]} />
-                {!isDefaultTemplate && <Field name="assignment.notes" component={TextArea} label="Notes" />}
-            </div>
-        );
-    }
+    // private renderAssignmentFields() {
+    //     const { isDefaultTemplate } = this.props;
+    //     return (
+    //         <div>
+    //             {!isDefaultTemplate &&
+    //                 <div>
+    //                     <Field name="assignment.startTime" component={DateTimeFieldConst.DateAndTimeField} label="Start Time" validate={[Validators.required]} />
+    //                     <Field name="assignment.endTime" component={DateTimeFieldConst.DateAndTimeField} label="End Time" validate={[Validators.required]} />
+    //                     <Field name="assignment.abilities" component={RequiredTrainingChecklist} label="Required Qualifications" />
+    //                 </div>
+    //             }
+    //             <Field name="assignment.sherrifsRequired" component={TextField} label="Number of Sheriffs Required" validate={[Validators.required, Validators.integer]} />
+    //             {!isDefaultTemplate && <Field name="assignment.notes" component={TextArea} label="Notes" />}
+    //         </div>
+    //     );
+    // }
 
     render() {
         const { handleSubmit } = this.props;
@@ -187,7 +188,7 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
                 {this.renderHeading()}
                 <Form onSubmit={handleSubmit}>
                     {this.renderWorkSectionFields()}
-                    {this.renderAssignmentFields()}
+                    {/* {this.renderAssignmentFields()} */}
                     {this.renderAssignmentTemplateFields()}
                 </Form>
             </div>

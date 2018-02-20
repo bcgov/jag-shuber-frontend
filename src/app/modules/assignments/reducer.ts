@@ -1,6 +1,6 @@
 import * as assignmentRequests from './requests/assignments'
 import * as assignmentDutyRequests from './requests/assignmentDuties'
-import * as assignmentTemplateRequests from './requests/assignmentTemplates'
+// import * as assignmentTemplateRequests from './requests/assignmentTemplates'
 
 import NestedReducer from '../../infrastructure/NestedReducer';
 
@@ -23,10 +23,10 @@ const nestedReducer = new NestedReducer([
   assignmentDutyRequests.deleteAssignmentDutyRequest.reducer,
 
   // Templates
-  assignmentTemplateRequests.assignmentTemplateMapRequest.reducer,
-  assignmentTemplateRequests.createAssignmentTemplateRequest.reducer,
-  assignmentTemplateRequests.updateAssignmentTemplateRequest.reducer,
-  assignmentTemplateRequests.deleteAssignmentTemplateRequest.reducer,
+  // assignmentTemplateRequests.assignmentTemplateMapRequest.reducer,
+  // assignmentTemplateRequests.createAssignmentTemplateRequest.reducer,
+  // assignmentTemplateRequests.updateAssignmentTemplateRequest.reducer,
+  // assignmentTemplateRequests.deleteAssignmentTemplateRequest.reducer,
 ]);
 
 const reducer = nestedReducer.reducer;

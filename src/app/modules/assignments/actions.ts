@@ -1,6 +1,6 @@
 import * as assignmentRequests from './requests/assignments'
 import * as assignmentDutyRequests from './requests/assignmentDuties'
-import * as assignmentTemplateRequests from './requests/assignmentTemplates'
+// import * as assignmentTemplateRequests from './requests/assignmentTemplates'
 
 
 
@@ -11,10 +11,10 @@ export const editAssignment= assignmentRequests.updateAssignmentRequest.actionCr
 export const deleteAssignment = assignmentRequests.deleteAssignmentRequest.actionCreator;
 
 // Assignment Templates
-export const getAssignmentTemplates = assignmentTemplateRequests.assignmentTemplateMapRequest.actionCreator;
-export const createAssignmentTemplate = assignmentTemplateRequests.createAssignmentTemplateRequest.actionCreator;
-export const editAssignmentTemplate  = assignmentTemplateRequests.updateAssignmentTemplateRequest.actionCreator;
-export const deleteAssignmentTemplate = assignmentTemplateRequests.deleteAssignmentTemplateRequest.actionCreator;
+// export const getAssignmentTemplates = assignmentTemplateRequests.assignmentTemplateMapRequest.actionCreator;
+// export const createAssignmentTemplate = assignmentTemplateRequests.createAssignmentTemplateRequest.actionCreator;
+// export const editAssignmentTemplate  = assignmentTemplateRequests.updateAssignmentTemplateRequest.actionCreator;
+// export const deleteAssignment = assignmentTemplateRequests.deleteAssignmentTemplateRequest.actionCreator;
 
 // Assignment Duties
 export const getAssignmentDuties = assignmentDutyRequests.assignmentDutyMapRequest.actionCreator;

@@ -238,7 +238,10 @@ export const assignments: Assignment[] = [
         workSectionId: 'COURTS',
         location:{
             courtroomId: 101
-        }
+        }, 
+        recurrenceInfo: [
+            DEFAULT_RECURRENCE
+        ]
     },
     {
         id: 1,
@@ -246,7 +249,10 @@ export const assignments: Assignment[] = [
         workSectionId: 'COURTS',
         location:{
             courtroomId: 102
-        }
+        }, 
+        recurrenceInfo: [
+            DEFAULT_RECURRENCE
+        ]
     },
     {
         id: 2,
@@ -254,7 +260,10 @@ export const assignments: Assignment[] = [
         workSectionId: 'COURTS',
         location:{
             courtroomId: 103
-        }
+        }, 
+        recurrenceInfo: [
+            DEFAULT_RECURRENCE
+        ]
     },
     {
         id: 3,
@@ -262,7 +271,10 @@ export const assignments: Assignment[] = [
         workSectionId: 'COURTS',
         location:{
             courtroomId: 104
-        }
+        }, 
+        recurrenceInfo: [
+            DEFAULT_RECURRENCE
+        ]
     },
     {
         id: 4,
@@ -270,12 +282,15 @@ export const assignments: Assignment[] = [
         workSectionId: 'COURTS',
         location:{
             courtroomId: 201
-        }
+        }, 
+        recurrenceInfo: [
+            DEFAULT_RECURRENCE
+        ]
     },
     {
         id: 5,
         title: 'Document Service',
-        workSectionId: 'DOCUMENTS',
+        workSectionId: 'DOCUMENTS'
     },
     {
         id: 6,
@@ -319,6 +334,8 @@ export const defaultAssignmentTemplates: AssignmentTemplate[] = [
         id: 0,
         assignmentId: assignments[0].id,
         recurrenceInfo: [
+            DEFAULT_RECURRENCE, 
+            DEFAULT_RECURRENCE, 
             DEFAULT_RECURRENCE
         ]
     },
