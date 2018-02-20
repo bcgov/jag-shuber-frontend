@@ -2,48 +2,57 @@ import { createSelector } from 'reselect'
 import { RootState } from '../../store';
 import * as assignmentRequests from './requests/assignments'
 import * as assignmentDutyRequests from './requests/assignmentDuties'
-import * as assignmentTemplateRequests from './requests/assignmentTemplates'
+// import * as assignmentTemplateRequests from './requests/assignmentTemplates'
 import {
     Assignment,
-    AssignmentTemplate,
-    AssignmentDuty
+    AssignmentDuty,
+    IdType,
+    AssignmentMap
 } from '../../api/Api';
+import { AssignmentDutyMap } from '../../api';
 
 // Assignments
-export const allAssignments = (state: RootState): Assignment[] => {
-    const map = assignmentRequests.assignmentMapRequest.getData(state) || {};
-    const list: Assignment[] = Object.keys(map).map((k, i) => map[k]);
-    return list;
-}
+export const allAssignments = createSelector(assignmentRequests.assignmentMapRequest.getData,
+    (map: AssignmentMap = {}): Assignment[] => {
+        const list: Assignment[] = Object.keys(map).map((k, i) => map[k]);
+        return list;
+    });
 export const isLoadingAssignments = assignmentRequests.assignmentMapRequest.getIsBusy;
 export const assignmentsError = assignmentRequests.assignmentMapRequest.getError;
 
-
-// Assignment Template
-export const allAssignmentTemplates = (state: RootState): AssignmentTemplate[] => {
-    const map = assignmentTemplateRequests.assignmentTemplateMapRequest.getData(state) || {};
-    const list: AssignmentTemplate[] = Object.keys(map).map((k, i) => map[k]);
-    return list;
-}
-export const isLoadingAssignmentTemplates = assignmentTemplateRequests.assignmentTemplateMapRequest.getIsBusy;
-export const templatesError = assignmentTemplateRequests.assignmentTemplateMapRequest.getError;
-
-export const getAssignmentTemplate = (id?: number) => (state: RootState) => {
+export const getAssignment = (id?: IdType) => (state: RootState) => {
     if (state && id != null) {
-        const assignmentTemplates = allAssignmentTemplates(state);
-        if (assignmentTemplates) {
-            return assignmentTemplates.find((value) => value.id == id);
-        }
+        const map = assignmentRequests.assignmentMapRequest.getData(state);
+        return map[id];
     }
     return null;
 }
 
+// Assignment Template
+// export const allAssignmentTemplates = (state: RootState): AssignmentTemplate[] => {
+//     const map = assignmentTemplateRequests.assignmentTemplateMapRequest.getData(state) || {};
+//     const list: AssignmentTemplate[] = Object.keys(map).map((k, i) => map[k]);
+//     return list;
+// }
+// export const isLoadingAssignmentTemplates = assignmentTemplateRequests.assignmentTemplateMapRequest.getIsBusy;
+// export const templatesError = assignmentTemplateRequests.assignmentTemplateMapRequest.getError;
+
+// export const getAssignmentTemplate = (id?: number) => (state: RootState) => {
+//     if (state && id != null) {
+//         const assignmentTemplates = allAssignmentTemplates(state);
+//         if (assignmentTemplates) {
+//             return assignmentTemplates.find((value) => value.id == id);
+//         }
+//     }
+//     return null;
+// }
+
 // Assignments
-export const allAssignmentDuties = (state: RootState): AssignmentDuty[] => {
-    const map = assignmentDutyRequests.assignmentDutyMapRequest.getData(state) || {};
-    const list: AssignmentDuty[] = Object.keys(map).map((k, i) => map[k]);
-    return list;
-}
+export const allAssignmentDuties = createSelector(assignmentDutyRequests.assignmentDutyMapRequest.getData,
+    (map: AssignmentDutyMap = {}): AssignmentDuty[] => {
+        const list: AssignmentDuty[] = Object.keys(map).map((k, i) => map[k]);
+        return list;
+    });
 export const isLoadingAssignmentDuties = assignmentDutyRequests.assignmentDutyMapRequest.getIsBusy;
 export const assignmentDutiesError = assignmentDutyRequests.assignmentDutyMapRequest.getError;
 

@@ -5,6 +5,7 @@ import {
     DaysOfWeek 
 } from '../api';
 import DateDisplay from './DateDisplay';
+import { Badge } from 'react-bootstrap';
 
 
 export interface AssignmentDefaultRecurrenceDetailsProps {
@@ -13,12 +14,14 @@ export interface AssignmentDefaultRecurrenceDetailsProps {
 
 export default class AssignmentDefaultRecurrenceDetails extends React.PureComponent<AssignmentDefaultRecurrenceDetailsProps, any> {
     render() {
-        const { data } = this.props;
-        const days = EnumUtils.displayEnum(DaysOfWeek, data.days).join(", ");
+        const { data: {days, startTime, endTime, sheriffsRequired} } = this.props;
+        const dayDisplay = EnumUtils.displayEnum(DaysOfWeek, days).join(", ");
         
         return (
             <div>
-                <strong>{days}</strong> - <DateDisplay date={data.startTime} showTime /> to <DateDisplay date={data.endTime} showTime /> <br />
+                <strong>{dayDisplay}</strong> - <DateDisplay date={startTime} showTime /> to <DateDisplay date={endTime} showTime /> {' '} 
+                <Badge>{sheriffsRequired}</Badge>
+                <br />
             </div>
         );
     }

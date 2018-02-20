@@ -78,12 +78,38 @@ class UpdateAssignmentRequest extends CreateAssignmentRequest {
 export const updateAssignmentRequest = new UpdateAssignmentRequest();
 
 // Assignment Delete
-class DeleteAssignmentRequest extends RequestAction<IdType, void, AssignmentModuleState> {
+class DeleteAssignmentRequest extends RequestAction<IdType, IdType, AssignmentModuleState> {
     constructor(namespace = STATE_KEY, actionName = "deleteAssignment") {
         super(namespace, actionName);
     }
-    public async  doWork(request: number, { api }: ThunkExtra): Promise<void> {
-        await api.deleteAssignment(request);
+    public async doWork(request: number, { api }: ThunkExtra): Promise<IdType> {
+        let assignmentIdToDelete = await api.deleteAssignment(request);
+        return assignmentIdToDelete;
+    }
+    reduceSuccess(moduleState: AssignmentModuleState, action: { type: string, payload: IdType }): AssignmentModuleState {
+        // Call the super's reduce success and pull out our state and
+        // the assignmentMap state
+        const {
+            assignmentMap: {
+                data: currentMap = {},
+                ...restMap
+            } = {},
+            ...restState
+        } = super.reduceSuccess(moduleState, action);
+ 
+        // Create a new map and remove the assignment from it
+        const newMap = { ...currentMap };
+        delete newMap[action.payload];
+        
+        // Merge the state back together with the original in a new object
+        const newState: Partial<AssignmentModuleState> = {
+            ...restState,
+            assignmentMap: {
+                ...restMap,
+                data: newMap
+            }
+        }
+        return newState;
     }
 }
 
