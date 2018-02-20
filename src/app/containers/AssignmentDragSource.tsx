@@ -1,4 +1,4 @@
-import * as actions from '../modules/assignments/actions'
+// import * as actions from '../modules/assignments/actions'
 import { connect } from 'react-redux';
 import dragSourceFactory from '../infrastructure/DragDrop/dragSourceFactory';
 import ItemTypes from '../infrastructure/DragDrop/ItemTypes';
@@ -35,27 +35,28 @@ const mapDispatchToProps = (dispatch: any, ownProps: AssignmentSourceFactoryProp
             }
             if (result) {
                 const { dropEffect, sourceId, assignmentId, targetId } = result;
-
+                console.log('dropping',assignmentId);
                 // This case doesn't make sense, copying a task into unassigned
                 if(targetId === -1 && dropEffect === "copy"){
                     return;
                 }
 
+                // todo: FIXME
                 // If coming from unassigned or copying the task
                 if (sourceId === -1 || dropEffect == "copy") {
-                    dispatch(actions.linkAssignment(assignmentId, targetId));
+                    // dispatch(actions.linkAssignment(assignmentId, targetId));
                     return;
                 }
 
                 // If moving to unassigned
                 if (targetId === -1) {
-                    dispatch(actions.unlinkAssignment(assignmentId, sourceId));
+                    // dispatch(actions.unlinkAssignment(assignmentId, sourceId));
                     return;
                 }
 
                 // Otherwise, swap the sourceId with the targetId
                 if (dropEffect === "move") {
-                    dispatch(actions.swapAssignment(assignmentId, sourceId, targetId));
+                    // dispatch(actions.swapAssignment(assignmentId, sourceId, targetId));
                 }
             }
         }

@@ -7,6 +7,7 @@ import {
 } from 'react-calendar-timeline/lib'
 import * as moment from 'moment'
 import "./Timeline.css"
+import TimelineCard from './TimelineCard';
 
 type TimelineGroup<T> = TimelineGroupProps & T;
 type TimelineItem<T> = TimelineItemProps & T;
@@ -22,34 +23,48 @@ export interface TimelineProps<TItem, TGroup> {
     lineHeight?: number;
     visibleTimeStart?: any;
     visibleTimeEnd?: any;
-    onVisibleTimeChange?: (visibleTime: { visibleTimeStart: any, visibleTimeEnd: any }) => void
+    onVisibleTimeChange?: (visibleTimeStart: number, visibleTimeEnd: number) => void
     groupRenderer?: (group: (TimelineGroup<TGroup>)) => React.ReactNode;
     itemRenderer?: (item: TimelineItem<TItem>) => React.ReactNode;
+    itemHeightRatio?:number;
 }
 
-export default abstract class Timeline<TItem, TGroup, TOwnProps={}> extends React.PureComponent<TimelineProps<TItem, TGroup> & TOwnProps> {
+export default class Timeline<TItem, TGroup, TOwnProps={}> extends React.PureComponent<TimelineProps<TItem, TGroup> & TOwnProps> {
     protected _timelineRef: any;
 
     protected mapGroups(groups: TGroup[]): TimelineGroup<TGroup>[] {
-        return groups ? groups.map(this.mapGroup) : [];
+        return groups ? groups.map(this.mapGroup.bind(this)) : [];
     }
 
     protected mapItems(items: TItem[]): TimelineItem<TItem>[] {
-        return items ? items.map(this.mapItem) : [];
+        return items ? items.map(this.mapItem.bind(this)) : [];
     }
 
-    protected abstract mapGroup(group: TGroup): TimelineGroup<TGroup>;
-    protected abstract mapItem(item: TItem): TimelineItem<TItem>;
-
-    protected renderGroup({ title }: (TimelineGroupProps & TGroup)): React.ReactNode {
-        return (
-            <div>{title}</div>
-        )
+    protected mapGroup(group: TGroup): TimelineGroup<TGroup> {
+        return group as TimelineGroup<TGroup>;
+    }
+    protected mapItem(item: TItem): TimelineItem<TItem> {
+        return item as TimelineItem<TItem>;
     }
 
-    protected renderItem({ title }: (TimelineItemProps & TItem)): React.ReactNode {
+    protected renderGroup(group: (TimelineGroupProps & TGroup)): React.ReactNode {
+        const { groupRenderer } = this.props;
+        const { title = "Untitled" } = group;
+        if (groupRenderer) {
+            return groupRenderer(group);
+        } else {
+            return (
+                <div>{title}</div>
+            )
+        }
+    }
+
+    protected renderItem(item: (TimelineItemProps & TItem)): React.ReactNode {
+        const { itemRenderer = ({ title }: TimelineItemProps & TItem) => <div>{title}</div> } = this.props;
         return (
-            <div>{title}</div>
+            <TimelineCard>
+                {itemRenderer(item)}
+            </TimelineCard>
         )
     }
 
@@ -78,8 +93,7 @@ export default abstract class Timeline<TItem, TGroup, TOwnProps={}> extends Reac
             showTime = true,
             sidebarWidth = 150,
             lineHeight = 60,
-            itemRenderer = (i: TimelineItem<TItem>) => this.renderItem(i),
-            groupRenderer = (g: TimelineGroup<TGroup>) => this.renderGroup(g),
+            itemHeightRatio = 0.9
         } = this.props;
 
         return (
@@ -101,9 +115,9 @@ export default abstract class Timeline<TItem, TGroup, TOwnProps={}> extends Reac
                 itemTouchSendsClick
                 sidebarContent={sideBarHeaderComponent(this.props)}
                 traditionalZoom
-                itemHeightRatio={0.90}
-                itemRenderer={({ item }: { item: TimelineItemProps & TItem }) => itemRenderer(item)}
-                groupRenderer={({ group }: { group: TimelineGroupProps & TGroup }) => groupRenderer(group)}
+                itemHeightRatio={itemHeightRatio}
+                itemRenderer={({ item }: { item: TimelineItemProps & TItem }) => this.renderItem(item)}
+                groupRenderer={({ group }: { group: TimelineGroupProps & TGroup }) => this.renderGroup(group)}
                 ref={(t) => this._timelineRef = t}
             >
                 {this.getExtensions()}

@@ -1,41 +1,33 @@
 import * as React from 'react';
 import {
-    SheriffAssignment,
+    Assignment,
     TRAINING_TYPES,
-    WORK_SECTIONS
+    // WORK_SECTIONS
 } from '../api/index';
 import {
     Table,
     Glyphicon,
-    Badge
+    // Badge
 } from 'react-bootstrap';
-import DateDisplay from './DateDisplay';
+// import DateDisplay from './DateDisplay';
 
 export interface AssignmentDetailsProps {
-    assignment: SheriffAssignment;
+    assignment: Assignment;
 }
 
 export default class AssignmentDetails extends React.Component<AssignmentDetailsProps, any>{
     render() {
         const {
             assignment: {
-                startTime,
-                endTime,
-                workSectionId,
+                // workSectionId,
                 title,
-                assignmentCourt,
-                pickupLocation,
-                dropoffLocation,
-                sherrifsRequired,
-                gateNumber,
-                notes
             }
         } = this.props;
 
         return (
             <div>
                 <h2>{title}</h2>
-                <strong>Start Time: </strong><DateDisplay date={startTime} showMonth showDay showYear showTime/>
+                {/* <strong>Start Time: </strong><DateDisplay date={startTime} showMonth showDay showYear showTime/>
                 <br />
                 <strong>End Time: </strong><DateDisplay date={endTime} showMonth showDay showYear showTime/>
                 <br />
@@ -58,7 +50,7 @@ export default class AssignmentDetails extends React.Component<AssignmentDetails
                 <br />
                 <strong>Sheriffs Required: </strong> <Badge>{sherrifsRequired}</Badge>
                 <br />
-                <br />
+                <br /> */}
 
                 <h3>Required Qualifications</h3>
                 <Table responsive>
@@ -81,8 +73,8 @@ export default class AssignmentDetails extends React.Component<AssignmentDetails
                     </tbody>
                 </Table>
 
-                <h3>Notes</h3>
-                {notes}
+                {/* <h3>Notes</h3>
+                {notes} */}
             </div>
         );
     }

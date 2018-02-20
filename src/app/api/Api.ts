@@ -2,14 +2,10 @@ import * as moment from 'moment';
 
 export type DateType = Date | moment.Moment | string;
 export type StringMap = { [key: string]: string };
-
-export enum SheriffAbility {
-    None = 0,
-    CanTransfer = 1 << 0,
-    CourtAppearance = 1 << 1,
-    SignDocuments = 1 << 2,
-    All = CanTransfer | CourtAppearance | SignDocuments
-}
+export type IdType = number;
+export type SheriffMap = { [key: number]: Sheriff }
+export type AssignmentMap = { [key: number]: Assignment }
+export type AssignmentDutyMap = { [key: number]: AssignmentDuty }
 
 export enum DaysOfWeek {
     Mon = 1 << 0,
@@ -28,13 +24,11 @@ export const BLANK_SHERIFF_LOCATION: SheriffLocation = {
     regionId: ""
 }
 
-
 export const BLANK_SHERIFF: Sheriff = {
     firstName: "",
     lastName: "",
     badgeNumber: -1,
     imageUrl: "/img/avatar.png",
-    abilities: SheriffAbility.None,
     training: [{
         trainingType: "",
         certificationDate: "",
@@ -45,12 +39,20 @@ export const BLANK_SHERIFF: Sheriff = {
     onDuty: false
 }
 
-
-export const DEFAULT_RECURRENCE: RecurrenceInfo = {
-    days: DaysOfWeek.Weekdays,
-    startTime: moment().hour(9).minute(0),
-    endTime: moment().hour(17).minute(0)
-}
+export const DEFAULT_RECURRENCE: RecurrenceInfo[] = [
+    {
+        days: DaysOfWeek.Weekdays,
+        startTime: moment().hour(9).minute(0),
+        endTime: moment().hour(12).minute(0),
+        sheriffsRequired: 1
+    },
+    {
+        days: DaysOfWeek.Weekdays,
+        startTime: moment().hour(13).minute(0),
+        endTime: moment().hour(17).minute(0),
+        sheriffsRequired: 1
+    }
+];
 
 export interface SheriffTraining {
     trainingType: string;
@@ -68,60 +70,94 @@ export interface Sheriff {
     lastName: string;
     badgeNumber: number;
     imageUrl?: string;
-    abilities?: SheriffAbility;
     training: SheriffTraining[];
     permanentLocation?: SheriffLocation;
     currentLocation?: SheriffLocation;
     onDuty: boolean;
 }
 
+
+export interface AssignmentLocation {
+    courtroomId?: IdType;
+}
+
+export interface Assignment {
+    id: IdType;
+    title: string;
+    workSectionId: string;
+    location?: AssignmentLocation;
+    recurrenceInfo?: RecurrenceInfo[];
+}
+
+export interface AssignmentDutyDetails {
+    notes?: string;
+}
+
+export interface AssignmentDuty {
+    id: IdType;
+    assignmentId: IdType;
+    startDateTime: DateType;
+    endDateTime: DateType;
+    sheriffIds: IdType[];
+    sheriffsRequired: number;
+    extraDetails?: AssignmentDutyDetails;
+}
+
 export interface RecurrenceInfo {
     startTime: DateType;
     endTime: DateType;
     days: DaysOfWeek;
+    sheriffsRequired: number;
 }
 
-export interface SheriffAssignmentTemplate {
-    id: number;
-    assignment: Partial<SheriffAssignment>;
-    recurrenceInfo: RecurrenceInfo[];
-}
-
-export interface SheriffAssignment {
+export interface TrainingType {
     id: number;
     title: string;
-    workSectionId: string;
-    notes?: string;
-    requiredAbilities?: SheriffAbility;
-    sheriffIds: number[];
-    startTime: DateType;
-    endTime: DateType;
-    sherrifsRequired: number | string;
+    abbreviation: string;
+}
 
-    //attributes for gate security assignments
-    gateNumber?: number | string;
+export interface Courthouse {
+    id: number;
+    name: string;
+    regionId: number;
+}
 
-    //attributes for escort security assignments
-    pickupLocation?: string;
-    dropoffLocation?: string;
+export interface Region {
+    id: number;
+    name: string;
+}
 
-    //attributes court security assignments 
-    courtroomId?: number;
-    assignmentCourt?: boolean;
+export interface Courtroom {
+    id: number;
+    courthouseId: number;
+    number: number;
+    name: string;
 }
 
 export interface API {
+    // Sheriffs
     getSheriffs(): Promise<SheriffMap>;
-    getSheriffAssignments(): Promise<SheriffAssignmentMap>;
     createSheriff(newSheriff: Sheriff): Promise<Sheriff>;
     updateSheriff(sheriffToUpdate: Partial<Sheriff>): Promise<Sheriff>;
-    createAssignment(newAssignment: SheriffAssignment): Promise<SheriffAssignment>;
-    getAssignmentTemplates(): Promise<SheriffAssignmentTemplate[]>;
-    createAssignmentTemplate(newAssignmentTemplate: Partial<SheriffAssignmentTemplate>): Promise<SheriffAssignmentTemplate>;
-    editAssignmentTemplate(updatedAssignmentTemplate: SheriffAssignmentTemplate): Promise<SheriffAssignmentTemplate>;
-    deleteAssignmentTemplate(templateIdToBeDeleted: number): Promise<number>;
+
+    // Assignments
+    getAssignments(): Promise<Assignment[]>;
+    createAssignment(assignment: Partial<Assignment>): Promise<Assignment>;
+    updateAssignment(assignment: Partial<Assignment>): Promise<Assignment>;
+    deleteAssignment(assignmentId: IdType): Promise<void>;
+
+    // Assignment Duties
+    getAssignmentDuties(): Promise<AssignmentDuty[]>;
+    createAssignmentDuty(duty: Partial<AssignmentDuty>): Promise<AssignmentDuty>;
+    updateAssignmentDuty(duty: Partial<AssignmentDuty>): Promise<AssignmentDuty>;
+    deleteAssignmentDuty(dutyId: IdType): Promise<void>;
+
+    getTrainingTypes(): Promise<TrainingType[]>;
+    getAllCourthouses(): Promise<Courthouse[]>;
+    getCourthousesByRegion(regionId: number): Promise<Courthouse[]>;
+    getRegions(): Promise<Region[]>;
+    getAllCourtrooms(): Promise<Courtroom[]>;
+    getCourtroomsByCourthouse(courthouseId: number): Promise<Courtroom[]>;
 }
 
-export type SheriffMap = { [key: number]: Sheriff }
 
-export type SheriffAssignmentMap = { [key: number]: SheriffAssignment }

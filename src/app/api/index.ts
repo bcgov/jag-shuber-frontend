@@ -1,9 +1,11 @@
 export {
     Sheriff,
-    SheriffAbility,
-    SheriffAssignment,
-    SheriffAssignmentMap,
-    SheriffAssignmentTemplate,
+    Assignment,
+    AssignmentMap,
+    AssignmentDuty,
+    AssignmentDutyDetails,
+    AssignmentDutyMap,
+    AssignmentLocation,
     SheriffLocation,
     SheriffMap,
     SheriffTraining,
@@ -14,7 +16,12 @@ export {
     DaysOfWeek,
     DEFAULT_RECURRENCE,
     RecurrenceInfo,
-    API
+    TrainingType,
+    Courthouse,
+    Region, 
+    Courtroom,
+    API,
+    IdType
 } from './Api'
 
 // Todo: We need to create reducers for the following

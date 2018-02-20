@@ -2,30 +2,30 @@ import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
 import { default as thunk, ThunkAction as _ThunkAction } from 'redux-thunk'
 import { default as api, API } from './api'
 import { default as sheriffReducer, SheriffState } from './modules/sheriffs/reducer';
-import { default as assignmentReducer, AssignmentState } from './modules/assignments/reducer';
+import { default as assignmentReducer, AssignmentModuleState, STATE_KEY as AssignmentModuleStateKey } from './modules/assignments/reducer';
 import { default as timelineReducer, TimelineState } from './modules/timeline/reducer';
 import { reducer as formReducer } from 'redux-form';
 
-export interface ThunkExtra{
-    api:API;
+export interface ThunkExtra {
+    api: API;
 }
 
 export type ThunkAction<T> = (args?: T) => _ThunkAction<any, RootState, ThunkExtra>;
 
-
-
 export interface RootState {
     sheriffs: SheriffState;
-    assignments: AssignmentState;
+    assignments: AssignmentModuleState;
     timeline: TimelineState;
 }
 
-const rootReducer = combineReducers({
+const reducers = {
     sheriffs: sheriffReducer,
-    assignments: assignmentReducer,
     timeline: timelineReducer,
     form: formReducer
-});
+}
+reducers[AssignmentModuleStateKey] = assignmentReducer;
+
+const rootReducer = combineReducers(reducers);
 
 let thisWindow: any = window;
 
