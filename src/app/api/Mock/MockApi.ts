@@ -109,7 +109,8 @@ export default class NewClient implements API {
         return assignmentId;
     }
     async getAssignmentDuties(): Promise<AssignmentDuty[]> {
-        return assignmentDuties;
+        let returnVal = assignmentDuties;
+        return returnVal;
     }
     async createAssignmentDuty(duty: Partial<AssignmentDuty>): Promise<AssignmentDuty> {
         throw new Error("Method not implemented.");

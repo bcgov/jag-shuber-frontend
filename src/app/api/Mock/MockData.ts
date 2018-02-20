@@ -1,10 +1,9 @@
 import {
     Assignment,
-    AssignmentDuty, 
+    AssignmentDuty,
     Sheriff,
-    StringMap, 
-    // AssignmentTemplate, 
-    DEFAULT_RECURRENCE, 
+    StringMap,
+    DEFAULT_RECURRENCE,
     TrainingType,
     Courthouse,
     Courtroom,
@@ -236,587 +235,550 @@ export const assignments: Assignment[] = [
         id: 0,
         title: COURTROOMS[101],
         workSectionId: 'COURTS',
-        location:{
+        location: {
             courtroomId: 101
-        }, 
-        recurrenceInfo: [
-            DEFAULT_RECURRENCE
-        ]
+        },
+        recurrenceInfo: DEFAULT_RECURRENCE
     },
     {
         id: 1,
         title: COURTROOMS[102],
         workSectionId: 'COURTS',
-        location:{
+        location: {
             courtroomId: 102
-        }, 
-        recurrenceInfo: [
-            DEFAULT_RECURRENCE
-        ]
+        },
+        recurrenceInfo: DEFAULT_RECURRENCE
     },
     {
         id: 2,
         title: COURTROOMS[103],
         workSectionId: 'COURTS',
-        location:{
+        location: {
             courtroomId: 103
-        }, 
-        recurrenceInfo: [
-            DEFAULT_RECURRENCE
-        ]
+        },
+        recurrenceInfo: DEFAULT_RECURRENCE
     },
     {
         id: 3,
         title: COURTROOMS[104],
         workSectionId: 'COURTS',
-        location:{
+        location: {
             courtroomId: 104
-        }, 
-        recurrenceInfo: [
-            DEFAULT_RECURRENCE
-        ]
+        },
+        recurrenceInfo: DEFAULT_RECURRENCE
     },
     {
         id: 4,
         title: COURTROOMS[201],
         workSectionId: 'COURTS',
-        location:{
+        location: {
             courtroomId: 201
-        }, 
-        recurrenceInfo: [
-            DEFAULT_RECURRENCE
-        ]
+        },
+        recurrenceInfo: DEFAULT_RECURRENCE
     },
     {
         id: 5,
         title: 'Document Service',
-        workSectionId: 'DOCUMENTS'
+        workSectionId: 'DOCUMENTS',
+        recurrenceInfo: DEFAULT_RECURRENCE
     },
     {
         id: 6,
         title: 'Escorts',
-        workSectionId: 'ESCORTS'
+        workSectionId: 'ESCORTS',
+        recurrenceInfo: DEFAULT_RECURRENCE
     },
     {
         id: 7,
         title: 'Gate Secturity',
-        workSectionId: 'GATES'
+        workSectionId: 'GATES',
+        recurrenceInfo: DEFAULT_RECURRENCE
     }
 ];
 
-export const assignmentDuties: AssignmentDuty[] = [
-    {
-        id: 0,
-        assignmentId: assignments[0].id,
-        sheriffIds: [],
-        startDateTime: moment().startOf('day').add(16, 'hours'),
-        endDateTime: moment().startOf('day').add(18, 'hours'),
-        sheriffsRequired: 1,
-        extraDetails:{
-            notes: 'My notes on the file.'
-        }        
-    },
-    {
-        id: 1,
-        assignmentId: assignments[1].id,
-        sheriffIds: [579],
-        startDateTime: moment().startOf('day').add(14, 'hours'),
-        endDateTime: moment().startOf('day').add(18, 'hours'),
-        sheriffsRequired: 1,
-        extraDetails:{
-            notes: 'My notes on the file.'
-        }        
-    }
-]
+function createAssignmentDuties(): AssignmentDuty[] {
+    let duties: AssignmentDuty[] = [];
+    let incrementingId = 0;
 
-// export const assignmentTemplates: AssignmentTemplate[] = [
-//     {
-//         id: 0,
-//         assignmentId: assignments[0].id,
-//         recurrenceInfo: [
-//             DEFAULT_RECURRENCE, 
-//             DEFAULT_RECURRENCE, 
-//             DEFAULT_RECURRENCE
-//         ]
-//     },
-//     {
-//         id: 1,
-//         assignmentId: assignments[1].id,
-//         recurrenceInfo: [
-//             DEFAULT_RECURRENCE
-//         ]
-//     },
-//     {
-//         id: 2,
-//         assignmentId: assignments[2].id,
-//         recurrenceInfo: [
-//             DEFAULT_RECURRENCE
-//         ]
-//     },
-//     {
-//         id: 3,
-//         assignmentId: assignments[3].id,
-//         recurrenceInfo: [
-//             DEFAULT_RECURRENCE
-//         ]
-//     }
-// ];
+    assignments.forEach(assignment => {
+        if (assignment.recurrenceInfo) {
+            assignment.recurrenceInfo.forEach(item => {
+                
+                let duty: AssignmentDuty = {
+                    id: incrementingId,
+                    assignmentId: assignment.id,
+                    sheriffIds: [],
+                    startDateTime: moment(item.startTime),
+                    endDateTime: moment(item.endTime),
+                    sheriffsRequired: item.sheriffsRequired
+                }
+                duties.push(duty);
+                incrementingId++;
+            });
+        }
+       
+    });
+
+    return duties;
+}
+
+export const assignmentDuties: AssignmentDuty[] = createAssignmentDuties();
 
 export const training: TrainingType[] = [
     {
-        id: 0, 
+        id: 0,
         title: "FRO - Forced Response Option",
         abbreviation: "FRO"
     },
     {
-        id: 1, 
+        id: 1,
         title: "PISTOL",
         abbreviation: "PISTOL"
     },
     {
-        id: 2, 
+        id: 2,
         title: "CID - Critical Incident De-Escalation",
         abbreviation: "CID"
     },
     {
-        id: 3, 
+        id: 3,
         title: "CEW - Conductive Energy Weapon",
         abbreviation: "CEW"
     },
 ];
 
 export const courthouses: Courthouse[] = [
-    { 
+    {
         id: 0,
         name: "Abbotsford",
         regionId: 0
     },
-    { 
+    {
         id: 1,
         name: "Alexis Creek",
         regionId: 0
     },
-    { 
+    {
         id: 2,
         name: "Anahim Lake",
         regionId: 0
     },
-    { 
+    {
         id: 3,
         name: "Ashcroft",
         regionId: 0
     },
-    { 
+    {
         id: 4,
         name: "Atlin",
         regionId: 0
     },
-    { 
+    {
         id: 5,
         name: "Bella Bella",
         regionId: 0
     },
-    { 
+    {
         id: 6,
         name: "Bella Coola",
         regionId: 0
     },
-    { 
+    {
         id: 7,
         name: "Burns Lake",
         regionId: 0
     },
-    { 
+    {
         id: 8,
         name: "Campbell River",
         regionId: 0
     },
-    { 
+    {
         id: 9,
         name: "Castlegar",
         regionId: 0
     },
-    { 
+    {
         id: 10,
         name: "Chase",
         regionId: 0
     },
-    { 
+    {
         id: 11,
         name: "Chetwynd",
         regionId: 0
     },
-    { 
+    {
         id: 12,
         name: "Chilliwack",
         regionId: 0
     },
-    { 
+    {
         id: 13,
         name: "Clearwater",
         regionId: 0
     },
-   { 
-       id: 14,
-       name:  "Courtenay",
-       regionId: 0
+    {
+        id: 14,
+        name: "Courtenay",
+        regionId: 0
     },
-    { 
+    {
         id: 15,
         name: "Cranbrook",
         regionId: 0
     },
-    { 
+    {
         id: 16,
         name: "Creston",
         regionId: 0
     },
-    { 
+    {
         id: 17,
         name: "Dease Lake",
         regionId: 0
     },
-    { 
+    {
         id: 18,
         name: "Downtown Community Court",
         regionId: 0
     },
-    { 
+    {
         id: 19,
         name: "Duncan",
         regionId: 0
     },
-    { 
+    {
         id: 20,
         name: "Fernie",
         regionId: 0
     },
-    { 
+    {
         id: 21,
         name: "Fort St. James",
         regionId: 0
     },
-    { 
+    {
         id: 22,
         name: "Fort St. John",
         regionId: 0
     },
-    { 
+    {
         id: 23,
         name: "Fort Ware (Kwadacha)",
         regionId: 0
     },
-    { 
+    {
         id: 24,
         name: "Fraser Lake",
         regionId: 0
     },
-    { 
+    {
         id: 25,
         name: "Ganges",
         regionId: 0
     },
-    { 
+    {
         id: 26,
         name: "Golden",
         regionId: 0
     },
-    { 
+    {
         id: 27,
         name: "Gold River",
         regionId: 0
     },
-    { 
+    {
         id: 28,
         name: "Good Hope Lake",
         regionId: 0
     },
-    { 
+    {
         id: 29,
         name: "Grand Forks",
         regionId: 0
     },
-    { 
+    {
         id: 30,
         name: "Hazelton",
         regionId: 0
     },
-    { 
+    {
         id: 31,
         name: "Houston",
         regionId: 0
     },
-    { 
+    {
         id: 32,
         name: "Hudson's Hope",
         regionId: 0
     },
-    { 
+    {
         id: 33,
         name: "Invermere",
         regionId: 0
     },
-    { 
+    {
         id: 34,
         name: "Kamloops",
         regionId: 0
     },
-    { 
+    {
         id: 35,
         name: "Kelowna",
         regionId: 0
     },
-    { 
+    {
         id: 36,
         name: "Kitimat",
         regionId: 0
     },
-    { 
+    {
         id: 37,
         name: "Klemtu",
         regionId: 0
     },
-    { 
+    {
         id: 38,
         name: "Lilloet",
         regionId: 0
     },
-    { 
+    {
         id: 39,
         name: "Lower Post",
         regionId: 0
     },
-    { 
+    {
         id: 40,
         name: "Mackenzie",
         regionId: 0
     },
-    { 
+    {
         id: 41,
         name: "Masset",
         regionId: 0
     },
-    { 
+    {
         id: 42,
         name: "McBride",
         regionId: 0
     },
-    { 
+    {
         id: 43,
         name: "Merritt",
         regionId: 0
     },
-    { 
+    {
         id: 44,
         name: "Nakusp",
         regionId: 0
     },
-    { 
+    {
         id: 45,
         name: "Nanaimo",
         regionId: 0
     },
-    { 
+    {
         id: 46,
         name: "Nelson",
         regionId: 0
     },
-    { 
+    {
         id: 47,
         name: "New Aiyansh",
         regionId: 0
     },
-    { 
+    {
         id: 48,
         name: "New Westminster",
         regionId: 0
     },
-    { 
+    {
         id: 49,
         name: "North Vancouver",
         regionId: 0
     },
-    { 
+    {
         id: 50,
         name: "100 Mile House",
         regionId: 0
     },
-    { 
+    {
         id: 51,
         name: "Pemberton",
         regionId: 0
     },
-    { 
+    {
         id: 52,
         name: "Penticton",
         regionId: 0
     },
-    { 
+    {
         id: 53,
         name: "Port Alberni",
         regionId: 0
     },
-    { 
+    {
         id: 54,
         name: "Port Coquitlam",
         regionId: 0
     },
-    { 
+    {
         id: 54,
         name: "Port Hardy",
         regionId: 0
     },
-    { 
+    {
         id: 55,
         name: "Powell River",
         regionId: 0
     },
-    { 
+    {
         id: 56,
         name: "Prince George",
         regionId: 0
     },
-    { 
+    {
         id: 57,
         name: "Prince Rupert",
         regionId: 0
     },
-    { 
+    {
         id: 58,
         name: "Princeton",
         regionId: 0
     },
-    { 
+    {
         id: 59,
         name: "Queen Charlotte",
         regionId: 0
     },
-    { 
+    {
         id: 60,
         name: "Quesnel",
         regionId: 0
     },
-    { 
+    {
         id: 61,
         name: "Revelstoke",
         regionId: 0
     },
-    { 
+    {
         id: 62,
         name: "Richmond",
         regionId: 0
     },
-    { 
+    {
         id: 63,
         name: "Rossland",
         regionId: 0
     },
-    { 
+    {
         id: 64,
         name: "Salmon Arm",
         regionId: 0
     },
-    { 
+    {
         id: 65,
         name: "Sechelt",
         regionId: 0
     },
-    { 
+    {
         id: 66,
         name: "Sidney",
         regionId: 0
     },
-    { 
+    {
         id: 67,
         name: "Smithers",
         regionId: 0
     },
-    { 
+    {
         id: 68,
         name: "Sparwood",
         regionId: 0
     },
-    { 
+    {
         id: 69,
         name: "Stewart",
         regionId: 0
     },
-    { 
+    {
         id: 70,
         name: "Surrey",
         regionId: 0
     },
-    { 
+    {
         id: 71,
         name: "Tahsis",
         regionId: 0
     },
-    { 
+    {
         id: 72,
         name: "Terrace",
         regionId: 0
     },
-    { 
+    {
         id: 73,
         name: "Tofino",
         regionId: 0
     },
-    { 
+    {
         id: 74,
         name: "Tsay Keh Dene (Ingenika)",
         regionId: 0
     },
-    { 
+    {
         id: 75,
         name: "Tumbler Ridge",
         regionId: 0
     },
-    { 
+    {
         id: 76,
         name: "Ucluelet",
         regionId: 0
     },
-    { 
+    {
         id: 77,
         name: "Valemont",
         regionId: 0
     },
-    { 
+    {
         id: 78,
         name: "Vancouver - VLC",
         regionId: 0
     },
-    { 
+    {
         id: 79,
         name: "Vancouver - 222 Main",
         regionId: 0
     },
-    { 
+    {
         id: 80,
         name: "Vancouver - Robson Square",
         regionId: 0
     },
-    { 
+    {
         id: 81,
         name: "Vanderhoof",
         regionId: 0
     },
-    { 
+    {
         id: 82,
         name: "Vernon",
         regionId: 0
     },
-    { 
+    {
         id: 83,
         name: "Victoria",
         regionId: 0
     },
-    { 
+    {
         id: 84,
         name: "Western Communities",
         regionId: 0
     },
-    { 
+    {
         id: 85,
         name: "Williams Lake",
         regionId: 0
@@ -825,73 +787,73 @@ export const courthouses: Courthouse[] = [
 
 export const regions: Region[] = [
     {
-        id: 0, 
+        id: 0,
         name: "Fraser"
     },
     {
-        id: 1, 
+        id: 1,
         name: "Interior"
     },
     {
-        id: 2, 
+        id: 2,
         name: "Northern"
     },
     {
-        id: 3, 
+        id: 3,
         name: "Van Centre"
     },
     {
-        id: 4, 
+        id: 4,
         name: "Vancouver Island"
     }
 ];
 
 export const courtrooms: Courtroom[] = [
     {
-        id: 0, 
-        courthouseId: 79, 
+        id: 0,
+        courthouseId: 79,
         number: 101,
         name: "Courtroom 101"
     },
     {
-        id: 1, 
-        courthouseId: 79, 
+        id: 1,
+        courthouseId: 79,
         number: 102,
         name: "Courtroom 102"
     },
     {
-        id: 2, 
-        courthouseId: 79, 
+        id: 2,
+        courthouseId: 79,
         number: 103,
         name: "Courtroom 103"
     },
     {
-        id: 3, 
-        courthouseId: 79, 
+        id: 3,
+        courthouseId: 79,
         number: 104,
         name: "Courtroom 104"
     },
     {
         id: 4,
-        courthouseId: 79, 
+        courthouseId: 79,
         number: 201,
         name: "Courtroom 201"
     },
     {
-        id: 5, 
-        courthouseId: 79, 
+        id: 5,
+        courthouseId: 79,
         number: 202,
         name: "Courtroom 202"
     },
     {
-        id: 6, 
-        courthouseId: 79, 
+        id: 6,
+        courthouseId: 79,
         number: 203,
         name: "Courtroom 203"
     },
     {
-        id: 7, 
-        courthouseId: 79, 
+        id: 7,
+        courthouseId: 79,
         number: 204,
         name: "Courtroom 204"
     }

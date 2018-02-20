@@ -39,12 +39,20 @@ export const BLANK_SHERIFF: Sheriff = {
     onDuty: false
 }
 
-export const DEFAULT_RECURRENCE: RecurrenceInfo = {
-    days: DaysOfWeek.Weekdays,
-    startTime: moment().hour(9).minute(0),
-    endTime: moment().hour(17).minute(0),
-    sheriffsRequired: 1
-}
+export const DEFAULT_RECURRENCE: RecurrenceInfo[] = [
+    {
+        days: DaysOfWeek.Weekdays,
+        startTime: moment().hour(9).minute(0),
+        endTime: moment().hour(12).minute(0),
+        sheriffsRequired: 1
+    },
+    {
+        days: DaysOfWeek.Weekdays,
+        startTime: moment().hour(13).minute(0),
+        endTime: moment().hour(17).minute(0),
+        sheriffsRequired: 1
+    }
+];
 
 export interface SheriffTraining {
     trainingType: string;
