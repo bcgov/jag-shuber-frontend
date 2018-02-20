@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Sheriff } from '../api/index';
-import {
-    Image
-} from 'react-bootstrap'
+import { 
+    ListGroupItem
+} from 'react-bootstrap';
 
 export interface SheriffListCardProps {
     onClick?: () => void;
@@ -11,11 +11,12 @@ export interface SheriffListCardProps {
 export default class SheriffListCard extends React.PureComponent<SheriffListCardProps, any>{
     render() {
         const { sheriff } = this.props;
-        const { imageUrl, firstName, lastName, badgeNumber } = sheriff;
+        const { firstName, lastName } = sheriff;
         return (
-            <div style={{width:200}}>
-                <Image src={imageUrl} circle width="50" height="50" />
-                {firstName} {lastName} <br /> #{badgeNumber}
+            <div style={{width:200, paddingTop:2, paddingRight:2, paddingLeft:2}}>
+                <ListGroupItem style={{borderColor:'#002663', borderWidth:3}} >
+                    <h3>{lastName}, {firstName.charAt(0)}</h3>                 
+                </ListGroupItem>
             </div>
         );
     }

@@ -4,6 +4,7 @@ import TimelineToolsPanel from "../components/TimelineToolsPanel";
 import SheriffList from "../containers/SheriffList";
 import { Sheriff } from "../api";
 import SheriffListCard from "../components/SheriffListCard";
+import { ListGroup } from "react-bootstrap";
 
 
 class TimelinePage extends React.PureComponent {
@@ -14,7 +15,9 @@ class TimelinePage extends React.PureComponent {
                     <DailyTimeline />
                 </div>
                 <TimelineToolsPanel titleText="Sheriffs" legendChildren={<div>Hello Legend</div>}>
-                    <SheriffList SheriffRenderer={(s:Sheriff)=><SheriffListCard sheriff={s}/>}/>
+                    <ListGroup>
+                        <SheriffList SheriffRenderer={(s:Sheriff)=><SheriffListCard sheriff={s}/>}/>
+                    </ListGroup>
                 </TimelineToolsPanel>
             </div>
         );

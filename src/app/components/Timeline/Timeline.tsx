@@ -26,6 +26,7 @@ export interface TimelineProps<TItem, TGroup> {
     onVisibleTimeChange?: (visibleTimeStart: number, visibleTimeEnd: number) => void
     groupRenderer?: (group: (TimelineGroup<TGroup>)) => React.ReactNode;
     itemRenderer?: (item: TimelineItem<TItem>) => React.ReactNode;
+    itemHeightRatio?:number;
 }
 
 export default class Timeline<TItem, TGroup, TOwnProps={}> extends React.PureComponent<TimelineProps<TItem, TGroup> & TOwnProps> {
@@ -91,7 +92,8 @@ export default class Timeline<TItem, TGroup, TOwnProps={}> extends React.PureCom
             showHeader = true,
             showTime = true,
             sidebarWidth = 150,
-            lineHeight = 60
+            lineHeight = 60,
+            itemHeightRatio = 0.9
         } = this.props;
 
         return (
@@ -113,7 +115,7 @@ export default class Timeline<TItem, TGroup, TOwnProps={}> extends React.PureCom
                 itemTouchSendsClick
                 sidebarContent={sideBarHeaderComponent(this.props)}
                 traditionalZoom
-                itemHeightRatio={0.90}
+                itemHeightRatio={itemHeightRatio}
                 itemRenderer={({ item }: { item: TimelineItemProps & TItem }) => this.renderItem(item)}
                 groupRenderer={({ group }: { group: TimelineGroupProps & TGroup }) => this.renderGroup(group)}
                 ref={(t) => this._timelineRef = t}

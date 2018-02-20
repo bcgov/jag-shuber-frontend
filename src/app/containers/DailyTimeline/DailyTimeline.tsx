@@ -81,6 +81,7 @@ class DailyTimeline extends React.Component<DailyTimelineProps & DailyTimelineSt
                     sidebarWidth={sideBarWidth}
                     onVisibleTimeChange={(s, e) => this.onVisibleTimeChange(s, e)}
                     itemRenderer={(d) => <AssignmentDutyCard title={d.title} duty={d} />}
+                    itemHeightRatio = {0.95}
                     {...rest}
                 />
             </div>

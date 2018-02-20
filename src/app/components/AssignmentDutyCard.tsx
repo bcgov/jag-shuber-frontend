@@ -14,21 +14,21 @@ export interface AssignmentDutyCardProps {
 
 export default class AssignmentDutyCard extends React.PureComponent<AssignmentDutyCardProps, any>{
     render() {
-        const { title, duty } = this.props;
+        const { duty } = this.props;
         const { sheriffIds, sheriffsRequired } = duty;
 
         const progressValue = (sheriffIds.length / Number(sheriffsRequired)) * 100;
 
         // todo: create util for getting background color from duty details
-        const backgroundColor = 'darkorange'
+        const backgroundColor = '#96c0e6';
         return (
             <div style={{ backgroundColor, flex: '1' }}>
-                <div style={{ flex: '1' }}>
+                {/* <div style={{ flex: '1' }}>
                     {title}
                 </div>
                 <div style={{ flex: '1' }}>
                     <i>Faces<br />Here?</i>
-                </div>
+                </div> */}
                 {/* // todo Create component for the following? */}
                 <div style={{ position: "absolute", right: 2, bottom: 0 }}>
                     {progressValue >= 100

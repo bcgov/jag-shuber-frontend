@@ -23,7 +23,7 @@ type TimelineAssignment = ReactCalendarTimelineGroup & Assignment;
 type TimelineAssignmentDuty = ReactCalendarTimelineItem & AssignmentDuty;
 
 export interface AssignmentTimelineProps extends TimelineProps<AssignmentDuty, Assignment> {
-
+    
 }
 
 export default class AssignmentTimeline extends Timeline<AssignmentDuty, Assignment, AssignmentTimelineProps>{
