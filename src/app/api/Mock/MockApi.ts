@@ -7,8 +7,7 @@ import {
     Courthouse,
     Courtroom,
     Region,
-    AssignmentDuty,
-    IdType
+    AssignmentDuty
 } from "../Api";
 import arrayToMap from '../../infrastructure/arrayToMap'
 import {
@@ -95,7 +94,7 @@ export default class NewClient implements API {
         assignments[index] = assignmentToUpdate;
         return assignmentToUpdate;
     }
-    async deleteAssignment(assignmentId: number): Promise<IdType> {
+    async deleteAssignment(assignmentId: number): Promise<void> {
         if (assignmentId == null ) {
             throw new Error("No ID specified");
         }
@@ -106,7 +105,6 @@ export default class NewClient implements API {
         }
 
         assignments.splice(assignmentIndex, 1);
-        return assignmentId;
     }
     async getAssignmentDuties(): Promise<AssignmentDuty[]> {
         let returnVal = assignmentDuties;

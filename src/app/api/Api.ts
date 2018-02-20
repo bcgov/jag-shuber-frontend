@@ -144,7 +144,7 @@ export interface API {
     getAssignments(): Promise<Assignment[]>;
     createAssignment(assignment: Partial<Assignment>): Promise<Assignment>;
     updateAssignment(assignment: Partial<Assignment>): Promise<Assignment>;
-    deleteAssignment(assignmentId: IdType): Promise<IdType>;
+    deleteAssignment(assignmentId: IdType): Promise<void>;
 
     // Assignment Duties
     getAssignmentDuties(): Promise<AssignmentDuty[]>;

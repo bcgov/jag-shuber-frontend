@@ -82,10 +82,12 @@ class DeleteAssignmentRequest extends RequestAction<IdType, IdType, AssignmentMo
     constructor(namespace = STATE_KEY, actionName = "deleteAssignment") {
         super(namespace, actionName);
     }
-    public async doWork(request: number, { api }: ThunkExtra): Promise<IdType> {
-        let assignmentIdToDelete = await api.deleteAssignment(request);
+    
+    public async doWork(assignmentIdToDelete: number, { api }: ThunkExtra): Promise<IdType> {
+        await api.deleteAssignment(assignmentIdToDelete);
         return assignmentIdToDelete;
     }
+
     reduceSuccess(moduleState: AssignmentModuleState, action: { type: string, payload: IdType }): AssignmentModuleState {
         // Call the super's reduce success and pull out our state and
         // the assignmentMap state
