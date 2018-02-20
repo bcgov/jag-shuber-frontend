@@ -6,7 +6,6 @@ export type IdType = number;
 export type SheriffMap = { [key: number]: Sheriff }
 export type AssignmentMap = { [key: number]: Assignment }
 export type AssignmentDutyMap = { [key: number]: AssignmentDuty }
-export type AssignmentTemplateMap = { [key: number]: AssignmentTemplate }
 
 export enum DaysOfWeek {
     Mon = 1 << 0,
@@ -103,12 +102,6 @@ export interface RecurrenceInfo {
     sheriffsRequired: number;
 }
 
-export interface AssignmentTemplate {
-    id: IdType;
-    assignmentId: IdType;
-    recurrenceInfo: RecurrenceInfo[];
-}
-
 export interface TrainingType {
     id: number;
     title: string;
@@ -150,12 +143,6 @@ export interface API {
     createAssignmentDuty(duty: Partial<AssignmentDuty>): Promise<AssignmentDuty>;
     updateAssignmentDuty(duty: Partial<AssignmentDuty>): Promise<AssignmentDuty>;
     deleteAssignmentDuty(dutyId: IdType): Promise<void>;
-
-    // AssignmentTemplates
-    getAssignmentTemplates(): Promise<AssignmentTemplate[]>;
-    createAssignmentTemplate(template: Partial<AssignmentTemplate>): Promise<AssignmentTemplate>;
-    updateAssignmentTemplate(template: Partial<AssignmentTemplate>): Promise<AssignmentTemplate>;
-    deleteAssignmentTemplate(templateId: IdType): Promise<void>;
 
     getTrainingTypes(): Promise<TrainingType[]>;
     getAllCourthouses(): Promise<Courthouse[]>;

@@ -6,8 +6,6 @@ export {
     AssignmentDutyDetails,
     AssignmentDutyMap,
     AssignmentLocation,
-    AssignmentTemplateMap,
-    AssignmentTemplate,    
     SheriffLocation,
     SheriffMap,
     SheriffTraining,
