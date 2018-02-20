@@ -4,7 +4,7 @@ import { default as AssignmentForm, AssignmentFormProps } from '../components/As
 import {
     Assignment
 } from '../api/index';
-import { createAssignment } from '../modules/assignments/actions';
+// import { createAssignment } from '../modules/assignments/actions';
 import { default as FormSubmitButton, SubmitButtonProps } from '../components/FormElements/SubmitButton'
 import { connect } from 'react-redux';
 import { RootState } from '../store';
@@ -14,14 +14,15 @@ import { RootState } from '../store';
 const formConfig: ConfigProps<any, AssignmentFormProps> = {
     form: 'CreateAssignment',
     onSubmit: (values: { assignment: Assignment }, dispatch, props) => {
-        let newAssignment = { ...values.assignment, sheriffIds: [] }
-        dispatch(createAssignment(newAssignment));
+        alert('TODO: Fix Me - waiting on more details on assignments');
+        // let newAssignment = { ...values.assignment, sheriffIds: [] }
+        // dispatch(createAssignment(newAssignment));
     }
 };
 
 const mapStateToProps = (state: RootState, props: AssignmentFormProps) => {
     return {
-        initialValues: { assignment: { workSectionId: props.workSectionId } },
+        initialValues: {workSectionId: props.workSectionId},
         isDefaultTemplate: false
     }
 }
