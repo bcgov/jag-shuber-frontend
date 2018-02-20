@@ -17,7 +17,7 @@ import arrayToMap from '../../infrastructure/arrayToMap'
 import {
     sheriffList,
     assignments,
-    defaultAssignmentTemplates,
+    assignmentTemplates,
     training,
     courthouses,
     WORK_SECTIONS,
@@ -94,7 +94,21 @@ export default class NewClient implements API {
         return newAssignment;
     }
     async updateAssignment(assignment: Partial<Assignment>): Promise<Assignment> {
-        throw new Error("Method not implemented.");
+        await randomDelay();
+        if (assignment.id == null) {
+            throw Error("No Template Id Specified");
+        }
+        let assignmentToUpdate = assignment as Assignment;
+        //add default recurrence value if nothing was selected or partial value was selected
+        // assignmentToUpdate.recurrenceInfo = createFilledRecurrenceInfo(assignmentToUpdate.recurrenceInfo);
+
+        let index = assignments.findIndex(a => a.id == assignmentToUpdate.id);
+        if (index < 0) {
+            throw Error(`No assignment could be located for ${assignmentToUpdate.id}`)
+        }
+
+        assignments[index] = assignmentToUpdate;
+        return assignmentToUpdate;
     }
     async deleteAssignment(assignmentId: number): Promise<IdType> {
         if (assignmentId == null ) {
@@ -122,7 +136,7 @@ export default class NewClient implements API {
         throw new Error("Method not implemented.");
     }
     async getAssignmentTemplates(): Promise<AssignmentTemplate[]> {
-        return defaultAssignmentTemplates;
+        return assignmentTemplates;
     }
     async createAssignmentTemplate(newAssignmentTemplate: Partial<AssignmentTemplate>): Promise<AssignmentTemplate> {
         await randomDelay();
@@ -136,37 +150,37 @@ export default class NewClient implements API {
 
         //add default recurrence value if nothing was selected or partial value was selected
         newAssignmentTemplate.recurrenceInfo = createFilledRecurrenceInfo(newAssignmentTemplate.recurrenceInfo);
-        defaultAssignmentTemplates.push(newAssignmentTemplate as AssignmentTemplate);
+        assignmentTemplates.push(newAssignmentTemplate as AssignmentTemplate);
         return newAssignmentTemplate as AssignmentTemplate;
     }
     async updateAssignmentTemplate(template: Partial<AssignmentTemplate>): Promise<AssignmentTemplate> {
         await randomDelay();
-        if (!template.id) {
+        if (template.id == null) {
             throw Error("No Template Id Specified");
         }
         let templateToUpdate = template as AssignmentTemplate;
         //add default recurrence value if nothing was selected or partial value was selected
         templateToUpdate.recurrenceInfo = createFilledRecurrenceInfo(templateToUpdate.recurrenceInfo);
 
-        let index = defaultAssignmentTemplates.findIndex(t => t.id == templateToUpdate.id);
+        let index = assignments.findIndex(t => t.id == templateToUpdate.id);
         if (index < 0) {
             throw Error(`No template could be located for ${templateToUpdate.id}`)
         }
 
-        defaultAssignmentTemplates[index] = templateToUpdate;
+        assignmentTemplates[index] = templateToUpdate;
         return templateToUpdate;
     }
     async deleteAssignmentTemplate(templateId: number): Promise<void> {
-        if (!templateId) {
+        if (templateId == null) {
             throw new Error("No id Specified");
         }
 
-        const templateIndex = defaultAssignmentTemplates.findIndex((value) => value.id == templateId);
+        const templateIndex = assignments.findIndex((value) => value.id == templateId);
         if (templateIndex < 0) {
             throw Error(`No template could be located for ${templateId}`)
         }
 
-        defaultAssignmentTemplates.splice(templateIndex, 1);
+        assignments.splice(templateIndex, 1);
     }
     async getTrainingTypes(): Promise<TrainingType[]> {
         return training;

@@ -8,6 +8,7 @@ import { default as FormSubmitButton, SubmitButtonProps } from '../components/Fo
 import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { getAssignment } from '../modules/assignments/selectors';
+import { editAssignment } from '../modules/assignments/actions'
 import { IdType } from '../api';
 
 
@@ -15,9 +16,9 @@ import { IdType } from '../api';
 const formConfig: ConfigProps<any, AssignmentFormProps> = {
     form: 'EditAssignment',
     onSubmit: (values, dispatch, props) => {
-        // let updatedAssignmentTemplate = Object.assign({}, { ...values });
-        alert('// todo: FIXME');
-        // dispatch(editAssignmentTemplate(updatedAssignmentTemplate));
+        let updatedAssignment = Object.assign({}, { ...values });
+        // alert('// todo: FIXME');
+        dispatch(editAssignment(updatedAssignment));
     }
 };
 
@@ -29,9 +30,7 @@ const mapStateToProps = (state: RootState, props: AssignmentEditFormProps) => {
     const initialAssignment = getAssignment(props.id)(state);
     if (initialAssignment) {
         return {
-            initialValues: initialAssignment,
-            // workSectionId: initialTemplate.assignment.workSectionId,
-            // workSectionId:0,    // todo: FIXME            
+            initialValues: initialAssignment,        
             isDefaultTemplate: true
         }
     }

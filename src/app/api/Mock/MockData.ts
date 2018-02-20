@@ -329,7 +329,7 @@ export const assignmentDuties: AssignmentDuty[] = [
     }
 ]
 
-export const defaultAssignmentTemplates: AssignmentTemplate[] = [
+export const assignmentTemplates: AssignmentTemplate[] = [
     {
         id: 0,
         assignmentId: assignments[0].id,
