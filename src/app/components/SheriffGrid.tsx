@@ -2,22 +2,25 @@ import * as React from 'react';
 import SheriffCard from './SheriffCard';
 import { Sheriff } from '../api';
 
-export interface SherriffGridProps {
+export interface SheriffGridProps {
     sheriffs: Sheriff[];
+    SheriffRenderer?: React.ReactType<Sheriff>;
 }
 
-class SheriffGrid extends React.PureComponent<SherriffGridProps, any>{
+class SheriffGrid extends React.PureComponent<SheriffGridProps, any>{
     render() {
-        const { sheriffs } = this.props;
+        const {
+            sheriffs,
+            SheriffRenderer
+        } = this.props;
         return (
-            <div style={{ display: "flex", flexFlow:"row wrap", justifyContent:"space-around"}}>
-
+            <div style={{ display: "flex", flexFlow: "row wrap", justifyContent: "space-around" }}>
                 {sheriffs.map(sheriff => (
-                    <div key={sheriff.badgeNumber} style={{flex:"1 1 auto"}}>
-                    <SheriffCard sheriff={sheriff} onClick={() => alert(sheriff.badgeNumber)} />
+                    <div key={sheriff.badgeNumber}>
+                        {SheriffRenderer && <SheriffRenderer {...sheriff} />}
+                        {!SheriffRenderer && <SheriffCard sheriff={sheriff} onClick={() => alert(sheriff.badgeNumber)} />}
                     </div>
                 ))}
-
             </div>
         )
     }
