@@ -3,24 +3,27 @@ import {
     Button,
     Glyphicon
 } from 'react-bootstrap';
-import AssignmentTemplateEditForm from './AssignmentTemplateEditForm';
+import AssignmentEditForm from './AssignmentEditForm';
 import ModalWrapper from './ModalWrapper';
 
 export interface AssignmentEditModalProps {
-    templateId: number;
+    assignmentId: number;
 }
 
-export default class AssignmentEditModal extends React.Component<AssignmentEditModalProps>{
+export default class AssignmentEditModal extends React.PureComponent<AssignmentEditModalProps>{
     render() {
-        const { templateId } = this.props;
+        const { assignmentId } = this.props;
         
         return (
             <div>                
                 <ModalWrapper
                     title="Edit Assignment"
                     showButton={({handleShow})=><Button bsSize="xsmall" onClick={()=>handleShow()}><Glyphicon  glyph="pencil" /></Button>}
-                    body={({handleClose})=><AssignmentTemplateEditForm id={templateId} onSubmitSuccess={handleClose}/>}
-                    footerComponent = {<AssignmentTemplateEditForm.SubmitButton bsStyle="primary">Save</AssignmentTemplateEditForm.SubmitButton>}
+                    body={({handleClose})=>{
+                        return (
+                            <AssignmentEditForm id={assignmentId} onSubmitSuccess={handleClose}/>
+                        )}}
+                    footerComponent = {<AssignmentEditForm.SubmitButton bsStyle="primary">Save</AssignmentEditForm.SubmitButton>}
                 />
             </div>
         );

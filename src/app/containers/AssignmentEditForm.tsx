@@ -4,49 +4,45 @@ import {
     ConfigProps
 } from 'redux-form';
 import { default as AssignmentForm, AssignmentFormProps } from '../components/AssignmentForm';
-import {
-    Assignment,
-    RecurrenceInfo
-} from '../api/index';
 import { default as FormSubmitButton, SubmitButtonProps } from '../components/FormElements/SubmitButton'
 import { connect } from 'react-redux';
 import { RootState } from '../store';
-import { getAssignmentTemplate } from '../modules/assignments/selectors';
+import { getAssignment } from '../modules/assignments/selectors';
+import { IdType } from '../api';
 
 
 // wrapping generic assignment form in redux-form
 const formConfig: ConfigProps<any, AssignmentFormProps> = {
-    form: 'EditAssignmentTemplate',
-    onSubmit: (values: { id: number, assignment: Assignment, recurrenceInfo: RecurrenceInfo[] }, dispatch, props) => {
+    form: 'EditAssignment',
+    onSubmit: (values, dispatch, props) => {
         // let updatedAssignmentTemplate = Object.assign({}, { ...values });
         alert('// todo: FIXME');
         // dispatch(editAssignmentTemplate(updatedAssignmentTemplate));
     }
 };
 
-export interface AssignmentTemplateEditFormProps extends AssignmentFormProps {
-    id: number;
+export interface AssignmentEditFormProps extends AssignmentFormProps {
+    id: IdType;
 }
 
-const mapStateToProps = (state: RootState, props: AssignmentTemplateEditFormProps) => {
-    const initialTemplate = getAssignmentTemplate(props.id)(state);
-    if (initialTemplate) {
+const mapStateToProps = (state: RootState, props: AssignmentEditFormProps) => {
+    const initialAssignment = getAssignment(props.id)(state);
+    if (initialAssignment) {
         return {
-            initialValues: initialTemplate,
+            initialValues: initialAssignment,
             // workSectionId: initialTemplate.assignment.workSectionId,
-            workSectionId:0,    // todo: FIXME            
+            // workSectionId:0,    // todo: FIXME            
             isDefaultTemplate: true
         }
     }
     else {
         return {}
     }
-
 }
 
 // Here we create a class that extends the configured assignment form so that we
 // can add a static SubmitButton member to it to make the API cleaner
-export default class AssignmentTemplateEditForm extends connect<any, {}, AssignmentTemplateEditFormProps>(mapStateToProps)(reduxForm(formConfig)(AssignmentForm)) {
+export default class AssignmentEditForm extends connect<any, {}, AssignmentEditFormProps>(mapStateToProps)(reduxForm(formConfig)(AssignmentForm)) {
     static SubmitButton = (props: Partial<SubmitButtonProps>) => <FormSubmitButton {...props} formName={formConfig.form} />;
 }
 
