@@ -3,7 +3,7 @@ import {
     AssignmentDuty, 
     Sheriff,
     StringMap, 
-    AssignmentTemplate, 
+    // AssignmentTemplate, 
     DEFAULT_RECURRENCE, 
     TrainingType,
     Courthouse,
@@ -329,38 +329,38 @@ export const assignmentDuties: AssignmentDuty[] = [
     }
 ]
 
-export const assignmentTemplates: AssignmentTemplate[] = [
-    {
-        id: 0,
-        assignmentId: assignments[0].id,
-        recurrenceInfo: [
-            DEFAULT_RECURRENCE, 
-            DEFAULT_RECURRENCE, 
-            DEFAULT_RECURRENCE
-        ]
-    },
-    {
-        id: 1,
-        assignmentId: assignments[1].id,
-        recurrenceInfo: [
-            DEFAULT_RECURRENCE
-        ]
-    },
-    {
-        id: 2,
-        assignmentId: assignments[2].id,
-        recurrenceInfo: [
-            DEFAULT_RECURRENCE
-        ]
-    },
-    {
-        id: 3,
-        assignmentId: assignments[3].id,
-        recurrenceInfo: [
-            DEFAULT_RECURRENCE
-        ]
-    }
-];
+// export const assignmentTemplates: AssignmentTemplate[] = [
+//     {
+//         id: 0,
+//         assignmentId: assignments[0].id,
+//         recurrenceInfo: [
+//             DEFAULT_RECURRENCE, 
+//             DEFAULT_RECURRENCE, 
+//             DEFAULT_RECURRENCE
+//         ]
+//     },
+//     {
+//         id: 1,
+//         assignmentId: assignments[1].id,
+//         recurrenceInfo: [
+//             DEFAULT_RECURRENCE
+//         ]
+//     },
+//     {
+//         id: 2,
+//         assignmentId: assignments[2].id,
+//         recurrenceInfo: [
+//             DEFAULT_RECURRENCE
+//         ]
+//     },
+//     {
+//         id: 3,
+//         assignmentId: assignments[3].id,
+//         recurrenceInfo: [
+//             DEFAULT_RECURRENCE
+//         ]
+//     }
+// ];
 
 export const training: TrainingType[] = [
     {
