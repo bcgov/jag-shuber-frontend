@@ -84,6 +84,7 @@ export interface AssignmentLocation {
 export interface Assignment {
     id: IdType;
     title: string;
+    facilityId: IdType;
     workSectionId: string;
     location?: AssignmentLocation;
     recurrenceInfo?: RecurrenceInfo[];

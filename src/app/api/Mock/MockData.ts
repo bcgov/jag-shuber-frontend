@@ -235,6 +235,7 @@ export const assignments: Assignment[] = [
         id: 0,
         title: COURTROOMS[101],
         workSectionId: 'COURTS',
+        facilityId: 1,
         location: {
             courtroomId: 101
         },
@@ -244,6 +245,7 @@ export const assignments: Assignment[] = [
         id: 1,
         title: COURTROOMS[102],
         workSectionId: 'COURTS',
+        facilityId: 1,
         location: {
             courtroomId: 102
         },
@@ -253,6 +255,7 @@ export const assignments: Assignment[] = [
         id: 2,
         title: COURTROOMS[103],
         workSectionId: 'COURTS',
+        facilityId: 1,
         location: {
             courtroomId: 103
         },
@@ -262,6 +265,7 @@ export const assignments: Assignment[] = [
         id: 3,
         title: COURTROOMS[104],
         workSectionId: 'COURTS',
+        facilityId: 1,
         location: {
             courtroomId: 104
         },
@@ -271,6 +275,7 @@ export const assignments: Assignment[] = [
         id: 4,
         title: COURTROOMS[201],
         workSectionId: 'COURTS',
+        facilityId: 1,
         location: {
             courtroomId: 201
         },
@@ -280,18 +285,21 @@ export const assignments: Assignment[] = [
         id: 5,
         title: 'Document Service',
         workSectionId: 'DOCUMENTS',
+        facilityId: 1,
         recurrenceInfo: DEFAULT_RECURRENCE
     },
     {
         id: 6,
         title: 'Escorts',
         workSectionId: 'ESCORTS',
+        facilityId: 1,
         recurrenceInfo: DEFAULT_RECURRENCE
     },
     {
         id: 7,
         title: 'Gate Secturity',
         workSectionId: 'GATES',
+        facilityId: 1,
         recurrenceInfo: DEFAULT_RECURRENCE
     }
 ];

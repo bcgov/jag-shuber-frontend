@@ -75,6 +75,7 @@ export default class NewClient implements API {
         let newAssignment = assignment as Assignment;
         newAssignment.id = this.getId();
         newAssignment.title = getAssignmentTitle(assignment);
+        newAssignment.facilityId = 1; //hard coded for now - will eventually need to tie to the user and their facility
         assignments.push(newAssignment);
 
         return newAssignment;
