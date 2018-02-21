@@ -19,6 +19,7 @@ import * as DateTimeFieldConst from './FormElements/DateTimeFieldConst';
 // import TextArea from './FormElements/TextArea';
 import CourtroomSelector from './FormElements/CourtroomSelector';
 import DaysOfWeekChecklist from './FormElements/DaysOfWeekChecklist';
+import JailRolesSelector from './FormElements/JailRoleSelector';
 import {
     WORK_SECTIONS,
     DateType
@@ -46,7 +47,17 @@ import {
 //     }
 // }
 
-class CourtSecurityFields extends React.PureComponent<any>{
+class JailFeilds extends React.PureComponent{
+    render(){
+        return (
+            <div>
+                <Field name="extraDetails.jailRoleId" component={JailRolesSelector} label="Assignment" validate={[Validators.required]} /> 
+            </div>
+        )
+    }
+}
+
+class CourtSecurityFields extends React.PureComponent{
     render() {
         return (
             <div>
@@ -108,6 +119,9 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
             switch (WORK_SECTIONS[workSectionId]) {
                 case WORK_SECTIONS.COURTS:
                     returnFields = <CourtSecurityFields />;
+                    break;
+                case WORK_SECTIONS.JAIL: 
+                    returnFields = <JailFeilds />
                     break;
                 // case WORK_SECTIONS.ESCORTS:
                 //     returnFields = <EscortServiceFields />;
