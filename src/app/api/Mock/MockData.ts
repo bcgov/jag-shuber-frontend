@@ -136,6 +136,13 @@ export const COURTROOMS: StringMap = {
     204: "Courtroom 204"
 }
 
+export const JAIL_ROLES: StringMap = {
+    1: "Sergeant",
+    2: "Deputy Sergeant", 
+    3: "Control",
+    4: "Pre-Trial"
+}
+
 export const sheriffList: Sheriff[] = [
     {
         firstName: "Garfield",
