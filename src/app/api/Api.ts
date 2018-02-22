@@ -3,9 +3,11 @@ import * as moment from 'moment';
 export type DateType = Date | moment.Moment | string;
 export type StringMap = { [key: string]: string };
 export type IdType = number;
-export type SheriffMap = { [key: number]: Sheriff }
-export type AssignmentMap = { [key: number]: Assignment }
-export type AssignmentDutyMap = { [key: number]: AssignmentDuty }
+export type SheriffMap = { [key: number]: Sheriff };
+export type AssignmentMap = { [key: number]: Assignment };
+export type AssignmentDutyMap = { [key: number]: AssignmentDuty };
+export type WorkSectionId = "COURTS" | "JAIL" | "ESCORTS" | "OTHER";
+export type Assignment = CourtAssignment | JailAssignment | EscortAssignment | OtherAssignment;
 
 export enum DaysOfWeek {
     Mon = 1 << 0,
@@ -76,23 +78,32 @@ export interface Sheriff {
     onDuty: boolean;
 }
 
-
-export interface AssignmentLocation {
-    courtroomId?: IdType;
-}
-
-
-export interface AssignmentDetails {
-    jailRoleId?: IdType;
-}
-export interface Assignment {
+export interface BaseAssignment {
     id: IdType;
     title: string;
     facilityId: IdType;
-    workSectionId: string;
-    location?: AssignmentLocation;
-    extraDetails?: AssignmentDetails;
+    workSectionId: WorkSectionId;
     recurrenceInfo?: RecurrenceInfo[];
+}
+
+export interface CourtAssignment extends BaseAssignment {
+    workSectionId: "COURTS";
+    courtroomId: IdType;
+}
+
+export interface JailAssignment extends BaseAssignment {
+    workSectionId: "JAIL";
+    jailRoleId: IdType;
+}
+
+export interface EscortAssignment extends BaseAssignment {
+    workSectionId: "ESCORTS";
+    runId: IdType;
+}
+
+export interface OtherAssignment extends BaseAssignment {
+    alternateAssignmentId: IdType;
+    workSectionId: "OTHER";
 }
 
 export interface AssignmentDutyDetails {

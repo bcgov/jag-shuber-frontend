@@ -15,13 +15,20 @@ import {
     assignments,
     training,
     courthouses,
-    WORK_SECTIONS,
     COURTROOMS,
     courtrooms,
     regions,
     assignmentDuties,
-    JAIL_ROLES
+    RUNS,
+    JAIL_ROLES,
+    ALTERNATE_ASSIGNMENTS
 } from "./MockData";
+import {
+     isCourtAssignment,
+     isJailAssignment, 
+     isEscortAssignment,
+     isOtherAssignment
+} from '../utils';
 import { randomDelay } from "../PromiseExtensions";
 
 
@@ -29,21 +36,19 @@ import { randomDelay } from "../PromiseExtensions";
 function getAssignmentTitle(assignment: Partial<Assignment>): string {
     let assignmentTitle = "Assignment Title";
 
-    if (assignment.workSectionId) {
-        assignmentTitle = WORK_SECTIONS[assignment.workSectionId];
-        switch (WORK_SECTIONS[assignment.workSectionId]) {
-            case WORK_SECTIONS.COURTS:
-                if (assignment.location && assignment.location.courtroomId) {
-                    assignmentTitle = COURTROOMS[assignment.location.courtroomId];
-                }
-                break;
-            case WORK_SECTIONS.JAIL:
-                if (assignment.extraDetails && assignment.extraDetails.jailRoleId) {
-                    assignmentTitle = JAIL_ROLES[assignment.extraDetails.jailRoleId]
-                }
-                break;
-        }
+    if(isCourtAssignment(assignment)){
+        assignmentTitle = COURTROOMS[assignment.courtroomId];
     }
+    else if (isEscortAssignment(assignment)){
+        assignmentTitle = RUNS[assignment.runId];
+    }
+    else if (isJailAssignment(assignment)){
+        assignmentTitle = JAIL_ROLES[assignment.jailRoleId];
+    }
+    else if (isOtherAssignment(assignment)){
+        assignmentTitle = ALTERNATE_ASSIGNMENTS[assignment.alternateAssignmentId];
+    }
+
     return assignmentTitle;
 }
 

@@ -15,8 +15,6 @@ import {
 import * as Validators from '../infrastructure/Validators';
 import TextField from './FormElements/TextField';
 import * as DateTimeFieldConst from './FormElements/DateTimeFieldConst';
-// import RequiredTrainingChecklist from './FormElements/RequiredTrainingChecklist';
-// import TextArea from './FormElements/TextArea';
 import CourtroomSelector from './FormElements/CourtroomSelector';
 import DaysOfWeekChecklist from './FormElements/DaysOfWeekChecklist';
 import JailRolesSelector from './FormElements/JailRoleSelector';
@@ -51,7 +49,7 @@ class JailFeilds extends React.PureComponent{
     render(){
         return (
             <div>
-                <Field name="extraDetails.jailRoleId" component={JailRolesSelector} label="Assignment" validate={[Validators.required]} /> 
+                <Field name="jailRoleId" component={JailRolesSelector} label="Assignment" validate={[Validators.required]} /> 
             </div>
         )
     }
@@ -61,7 +59,7 @@ class CourtSecurityFields extends React.PureComponent{
     render() {
         return (
             <div>
-                <Field name="location.courtroomId" component={CourtroomSelector} label="Courtroom" validate={[Validators.required]} />
+                <Field name="courtroomId" component={CourtroomSelector} label="Courtroom" validate={[Validators.required]} />
             </div>
         );
     }
@@ -116,6 +114,7 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
         let returnFields;
         if (this.props.initialValues && this.props.initialValues) {
             const { workSectionId = "OTHER" } = this.props.initialValues;
+
             switch (WORK_SECTIONS[workSectionId]) {
                 case WORK_SECTIONS.COURTS:
                     returnFields = <CourtSecurityFields />;
