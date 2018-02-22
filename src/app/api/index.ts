@@ -31,7 +31,8 @@ export {
  REGIONS,
  COURTROOMS,
  JAIL_ROLES,
- RUNS
+ RUNS,
+ ALTERNATE_ASSIGNMENTS
 } from './Mock/MockData'
 
 import Client from './Mock/MockApi'

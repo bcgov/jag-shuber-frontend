@@ -328,7 +328,7 @@ const jailAssingments: JailAssignment[] =  [
 const escortAssignments: EscortAssignment[] = [
     {
         id: 7,
-        title: RUNS[1],
+        title: ALTERNATE_ASSIGNMENTS[1],
         workSectionId: 'ESCORTS',
         facilityId: 1,
         runId: 1,
@@ -336,7 +336,7 @@ const escortAssignments: EscortAssignment[] = [
     },
     {
         id: 8,
-        title: RUNS[2],
+        title: ALTERNATE_ASSIGNMENTS[2],
         workSectionId: 'ESCORTS',
         facilityId: 1,
         runId: 2,
