@@ -99,6 +99,7 @@ export default class NewClient implements API {
             throw Error("No Template Id Specified");
         }
         let assignmentToUpdate = assignment as Assignment;
+        assignmentToUpdate.title = getAssignmentTitle(assignment);
 
         let index = assignments.findIndex(a => a.id == assignmentToUpdate.id);
         if (index < 0) {
