@@ -19,25 +19,32 @@ import {
     COURTROOMS,
     courtrooms,
     regions,
-    assignmentDuties
+    assignmentDuties,
+    JAIL_ROLES
 } from "./MockData";
 import { randomDelay } from "../PromiseExtensions";
 
 
 // Helpers
 function getAssignmentTitle(assignment: Partial<Assignment>): string {
+    let assignmentTitle = "Assignment Title";
 
     if (assignment.workSectionId) {
-        if (WORK_SECTIONS[assignment.workSectionId] === WORK_SECTIONS.COURTS && assignment.location && assignment.location.courtroomId) {
-            return COURTROOMS[assignment.location.courtroomId];
-        }
-        else {
-            return WORK_SECTIONS[assignment.workSectionId];
+        assignmentTitle = WORK_SECTIONS[assignment.workSectionId];
+        switch (WORK_SECTIONS[assignment.workSectionId]) {
+            case WORK_SECTIONS.COURTS:
+                if (assignment.location && assignment.location.courtroomId) {
+                    assignmentTitle = COURTROOMS[assignment.location.courtroomId];
+                }
+                break;
+            case WORK_SECTIONS.JAIL:
+                if (assignment.extraDetails && assignment.extraDetails.jailRoleId) {
+                    assignmentTitle = JAIL_ROLES[assignment.extraDetails.jailRoleId]
+                }
+                break;
         }
     }
-    else {
-        return "Assignment Title";
-    }
+    return assignmentTitle;
 }
 
 
@@ -75,17 +82,19 @@ export default class NewClient implements API {
         let newAssignment = assignment as Assignment;
         newAssignment.id = this.getId();
         newAssignment.title = getAssignmentTitle(assignment);
+        newAssignment.facilityId = 1; //hard coded for now - will eventually need to tie to the user and their facility
         assignments.push(newAssignment);
 
         return newAssignment;
     }
+
     async updateAssignment(assignment: Partial<Assignment>): Promise<Assignment> {
         await randomDelay();
         if (assignment.id == null) {
             throw Error("No Template Id Specified");
         }
         let assignmentToUpdate = assignment as Assignment;
-       
+
         let index = assignments.findIndex(a => a.id == assignmentToUpdate.id);
         if (index < 0) {
             throw Error(`No assignment could be located for ${assignmentToUpdate.id}`)
@@ -95,7 +104,7 @@ export default class NewClient implements API {
         return assignmentToUpdate;
     }
     async deleteAssignment(assignmentId: number): Promise<void> {
-        if (assignmentId == null ) {
+        if (assignmentId == null) {
             throw new Error("No ID specified");
         }
 

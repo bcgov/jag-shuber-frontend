@@ -81,11 +81,17 @@ export interface AssignmentLocation {
     courtroomId?: IdType;
 }
 
+
+export interface AssignmentDetails {
+    jailRoleId?: IdType;
+}
 export interface Assignment {
     id: IdType;
     title: string;
+    facilityId: IdType;
     workSectionId: string;
     location?: AssignmentLocation;
+    extraDetails?: AssignmentDetails;
     recurrenceInfo?: RecurrenceInfo[];
 }
 
@@ -132,6 +138,11 @@ export interface Courtroom {
     courthouseId: number;
     number: number;
     name: string;
+}
+
+export interface JailRole {
+    id: IdType; 
+    title: string;
 }
 
 export interface API {

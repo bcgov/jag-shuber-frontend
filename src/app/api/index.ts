@@ -30,7 +30,8 @@ export {
  TRAINING_TYPES,
  COURTHOUSES,
  REGIONS,
- COURTROOMS
+ COURTROOMS,
+ JAIL_ROLES
 } from './Mock/MockData'
 
 import Client from './Mock/MockApi'
