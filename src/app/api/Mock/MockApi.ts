@@ -128,9 +128,22 @@ export default class NewClient implements API {
     async createAssignmentDuty(duty: Partial<AssignmentDuty>): Promise<AssignmentDuty> {
         throw new Error("Method not implemented.");
     }
+    
     async updateAssignmentDuty(duty: Partial<AssignmentDuty>): Promise<AssignmentDuty> {
-        throw new Error("Method not implemented.");
+                await randomDelay();
+        if (duty.id == null) {
+            throw Error("No Template Id Specified");
+        }
+        let dutyToUpdate = duty as AssignmentDuty;
+       
+        let index = assignmentDuties.findIndex(d => d.id == dutyToUpdate.id);
+        if (index < 0) {
+            throw Error(`No assignment could be located for ${dutyToUpdate.id}`)
+        }
+        assignmentDuties[index] = dutyToUpdate;
+        return dutyToUpdate;
     }
+
     async deleteAssignmentDuty(dutyId: number): Promise<void> {
         throw new Error("Method not implemented.");
     }
