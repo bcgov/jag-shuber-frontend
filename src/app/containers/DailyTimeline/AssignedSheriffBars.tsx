@@ -17,7 +17,6 @@ interface DutyAssignmentBarProps {
     onRemove?: () => void;
 }
 
-
 interface DutyAssignmentBarStateProps {
     title: string;
 }
