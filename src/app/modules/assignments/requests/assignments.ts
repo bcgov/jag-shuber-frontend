@@ -73,6 +73,32 @@ class UpdateAssignmentRequest extends CreateAssignmentRequest {
         let newAssignment = await api.updateAssignment(assignment);
         return newAssignment;
     }
+    
+    reduceSuccess(moduleState: AssignmentModuleState, action: { type: string, payload: Assignment }): AssignmentModuleState {
+        // Call the super's reduce success and pull out our state and
+        // the assignmentMap state
+        const {
+            assignmentMap: {
+                data: currentMap = {},
+                ...restMap
+            } = {},
+            ...restState
+        } = super.reduceSuccess(moduleState, action);
+
+        // Create a new map and add our assignment to it
+        const newMap = { ...currentMap };
+        newMap[action.payload.id] = action.payload;
+
+        // Merge the state back together with the original in a new object
+        const newState: Partial<AssignmentModuleState> = {
+            ...restState,
+            assignmentMap: {
+                ...restMap,
+                data: newMap
+            }
+        }
+        return newState;
+    }
 }
 
 export const updateAssignmentRequest = new UpdateAssignmentRequest();

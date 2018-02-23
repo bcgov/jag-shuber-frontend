@@ -17,7 +17,6 @@ const formConfig: ConfigProps<any, AssignmentFormProps> = {
     form: 'EditAssignment',
     onSubmit: (values, dispatch, props) => {
         let updatedAssignment = Object.assign({}, { ...values });
-        // alert('// todo: FIXME');
         dispatch(editAssignment(updatedAssignment));
     }
 };

@@ -5,7 +5,6 @@ export {
     AssignmentDuty,
     AssignmentDutyDetails,
     AssignmentDutyMap,
-    AssignmentLocation,
     SheriffLocation,
     SheriffMap,
     SheriffTraining,
@@ -31,7 +30,9 @@ export {
  COURTHOUSES,
  REGIONS,
  COURTROOMS,
- JAIL_ROLES
+ JAIL_ROLES,
+ RUNS,
+ ALTERNATE_ASSIGNMENTS
 } from './Mock/MockData'
 
 import Client from './Mock/MockApi'

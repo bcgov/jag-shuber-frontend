@@ -15,43 +15,41 @@ import {
 import * as Validators from '../infrastructure/Validators';
 import TextField from './FormElements/TextField';
 import * as DateTimeFieldConst from './FormElements/DateTimeFieldConst';
-// import RequiredTrainingChecklist from './FormElements/RequiredTrainingChecklist';
-// import TextArea from './FormElements/TextArea';
 import CourtroomSelector from './FormElements/CourtroomSelector';
 import DaysOfWeekChecklist from './FormElements/DaysOfWeekChecklist';
 import JailRolesSelector from './FormElements/JailRoleSelector';
+import RunSelector from './FormElements/RunSelector';
+import AlternateAssignmentSelector from './FormElements/AlternateAssignmentSelector'
 import {
     WORK_SECTIONS,
     DateType
 } from '../api';
 
-// class GateSecurityFields extends React.PureComponent<any>{
-//     render() {
-//         return (
-//             <div>
-//                 <Field name="assignment.gateNumber" component={TextField} label="Gate Number" />
-//             </div>
-//         );
-//     }
-// }
+class OtherFields extends React.PureComponent<any>{
+    render() {
+        return (
+            <div>
+                <Field name="alternateAssignmentId" label="Assignment" component={AlternateAssignmentSelector}  validate={[Validators.required]} />
+            </div>
+        );
+    }
+}
 
-
-// class EscortServiceFields extends React.PureComponent<any>{
-//     render() {
-//         return (
-//             <div>
-//                 {/* <Field name="assignment.pickupLocation" component={TextField} label="Pick-Up Location" />
-//                 <Field name="assignment.dropoffLocation" component={TextField} label="Drop-Off Location" /> */}
-//             </div>
-//         );
-//     }
-// }
+class EscortsFields extends React.PureComponent<any>{
+    render() {
+        return (
+            <div>
+                <Field name="runId" component={RunSelector} label="Assignment" validate={[Validators.required]} /> 
+            </div>
+        );
+    }
+}
 
 class JailFeilds extends React.PureComponent{
     render(){
         return (
             <div>
-                <Field name="extraDetails.jailRoleId" component={JailRolesSelector} label="Assignment" validate={[Validators.required]} /> 
+                <Field name="jailRoleId" component={JailRolesSelector} label="Assignment" validate={[Validators.required]} /> 
             </div>
         )
     }
@@ -61,7 +59,7 @@ class CourtSecurityFields extends React.PureComponent{
     render() {
         return (
             <div>
-                <Field name="location.courtroomId" component={CourtroomSelector} label="Courtroom" validate={[Validators.required]} />
+                <Field name="courtroomId" component={CourtroomSelector} label="Courtroom" validate={[Validators.required]} />
             </div>
         );
     }
@@ -100,11 +98,8 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
                 case WORK_SECTIONS.ESCORTS:
                     heading = "Escorts";
                     break;
-                case WORK_SECTIONS.GATES:
-                    heading = "Gates";
-                    break;
-                case WORK_SECTIONS.DOCUMENTS:
-                    heading = "Document Service";
+                case WORK_SECTIONS.OTHER:
+                    heading = "Other";
                     break;
             }
         }
@@ -116,6 +111,7 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
         let returnFields;
         if (this.props.initialValues && this.props.initialValues) {
             const { workSectionId = "OTHER" } = this.props.initialValues;
+
             switch (WORK_SECTIONS[workSectionId]) {
                 case WORK_SECTIONS.COURTS:
                     returnFields = <CourtSecurityFields />;
@@ -123,12 +119,12 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
                 case WORK_SECTIONS.JAIL: 
                     returnFields = <JailFeilds />
                     break;
-                // case WORK_SECTIONS.ESCORTS:
-                //     returnFields = <EscortServiceFields />;
-                //     break;
-                // case WORK_SECTIONS.GATES:
-                //     returnFields = <GateSecurityFields />;
-                //     break;
+                case WORK_SECTIONS.ESCORTS:
+                    returnFields = <EscortsFields />;
+                    break;
+                case WORK_SECTIONS.OTHER:
+                    returnFields = <OtherFields />;
+                    break;
                 default:
                     returnFields = "";
                     break;

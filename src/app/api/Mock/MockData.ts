@@ -7,7 +7,11 @@ import {
     TrainingType,
     Courthouse,
     Courtroom,
-    Region
+    Region,
+    CourtAssignment,
+    JailAssignment,
+    EscortAssignment,
+    OtherAssignment
 } from "../Api";
 import * as moment from 'moment';
 
@@ -120,8 +124,6 @@ export const WORK_SECTIONS: StringMap = {
     COURTS: "Courts",
     JAIL: "Jail",
     ESCORTS: "Escorts",
-    DOCUMENTS: "Documents",
-    GATES: "Gates",
     OTHER: "Other"
 }
 
@@ -138,9 +140,33 @@ export const COURTROOMS: StringMap = {
 
 export const JAIL_ROLES: StringMap = {
     1: "Sergeant",
-    2: "Deputy Sergeant", 
+    2: "Deputy Sergeant",
     3: "Control",
     4: "Pre-Trial"
+}
+
+export const RUNS: StringMap = {
+    1: "Local Run",
+    2: "Run 1",
+    3: "Run 2",
+    4: "Run 3",
+    5: "Run 4",
+    6: "Run 5",
+    7: "Run 6",
+    8: "Run 7",
+    9: "Run 8",
+    10: "Run 9",
+    11: "Run 10",
+    12: "Run 11",
+    13: "Run 12"
+}
+
+export const ALTERNATE_ASSIGNMENTS: StringMap = {
+    1: "Gate 1",
+    2: "Gate 2", 
+    3: "Jury Selection",
+    4: "Jury Deliberation",
+    5: "Documents"
 }
 
 export const sheriffList: Sheriff[] = [
@@ -237,15 +263,13 @@ export const sheriffList: Sheriff[] = [
 ];
 
 
-export const assignments: Assignment[] = [
+const courtroomAssignments: CourtAssignment[] = [
     {
         id: 0,
         title: COURTROOMS[101],
         workSectionId: 'COURTS',
         facilityId: 1,
-        location: {
-            courtroomId: 101
-        },
+        courtroomId: 101,
         recurrenceInfo: DEFAULT_RECURRENCE
     },
     {
@@ -253,9 +277,7 @@ export const assignments: Assignment[] = [
         title: COURTROOMS[102],
         workSectionId: 'COURTS',
         facilityId: 1,
-        location: {
-            courtroomId: 102
-        },
+        courtroomId: 102,
         recurrenceInfo: DEFAULT_RECURRENCE
     },
     {
@@ -263,9 +285,7 @@ export const assignments: Assignment[] = [
         title: COURTROOMS[103],
         workSectionId: 'COURTS',
         facilityId: 1,
-        location: {
-            courtroomId: 103
-        },
+        courtroomId: 103,
         recurrenceInfo: DEFAULT_RECURRENCE
     },
     {
@@ -273,9 +293,7 @@ export const assignments: Assignment[] = [
         title: COURTROOMS[104],
         workSectionId: 'COURTS',
         facilityId: 1,
-        location: {
-            courtroomId: 104
-        },
+        courtroomId: 104,
         recurrenceInfo: DEFAULT_RECURRENCE
     },
     {
@@ -283,33 +301,74 @@ export const assignments: Assignment[] = [
         title: COURTROOMS[201],
         workSectionId: 'COURTS',
         facilityId: 1,
-        location: {
-            courtroomId: 201
-        },
+        courtroomId: 201,
         recurrenceInfo: DEFAULT_RECURRENCE
     },
+];
+
+const jailAssingments: JailAssignment[] =  [
     {
         id: 5,
-        title: 'Document Service',
-        workSectionId: 'DOCUMENTS',
+        title: JAIL_ROLES[1],
+        workSectionId: 'JAIL',
         facilityId: 1,
+        jailRoleId: 1,
         recurrenceInfo: DEFAULT_RECURRENCE
     },
     {
         id: 6,
-        title: 'Escorts',
+        title: JAIL_ROLES[2],
+        workSectionId: 'JAIL',
+        facilityId: 1,
+        jailRoleId: 1,
+        recurrenceInfo: DEFAULT_RECURRENCE
+    }
+]; 
+
+const escortAssignments: EscortAssignment[] = [
+    {
+        id: 7,
+        title: ALTERNATE_ASSIGNMENTS[1],
         workSectionId: 'ESCORTS',
         facilityId: 1,
+        runId: 1,
         recurrenceInfo: DEFAULT_RECURRENCE
     },
     {
-        id: 7,
-        title: 'Gate Secturity',
-        workSectionId: 'GATES',
+        id: 8,
+        title: ALTERNATE_ASSIGNMENTS[2],
+        workSectionId: 'ESCORTS',
         facilityId: 1,
+        runId: 2,
         recurrenceInfo: DEFAULT_RECURRENCE
     }
 ];
+
+const otherAssignments: OtherAssignment[] = [
+    {
+        id: 9,
+        title: ALTERNATE_ASSIGNMENTS[1],
+        workSectionId: 'OTHER',
+        facilityId: 1,
+        alternateAssignmentId: 1,
+        recurrenceInfo: DEFAULT_RECURRENCE
+    },
+    {
+        id: 10,
+        title: ALTERNATE_ASSIGNMENTS[3],
+        workSectionId: 'OTHER',
+        facilityId: 1,
+        alternateAssignmentId: 3,
+        recurrenceInfo: DEFAULT_RECURRENCE
+    }
+]
+
+function createAssignmentList(): Assignment[] {
+    let assignmentList:Assignment[] = [];
+    return assignmentList.concat(jailAssingments, courtroomAssignments, escortAssignments, otherAssignments);
+}
+
+export const assignments: Assignment[] =  createAssignmentList();
 
 function createAssignmentDuties(): AssignmentDuty[] {
     let duties: AssignmentDuty[] = [];
@@ -318,7 +377,7 @@ function createAssignmentDuties(): AssignmentDuty[] {
     assignments.forEach(assignment => {
         if (assignment.recurrenceInfo) {
             assignment.recurrenceInfo.forEach(item => {
-                
+
                 let duty: AssignmentDuty = {
                     id: incrementingId,
                     assignmentId: assignment.id,
@@ -331,7 +390,7 @@ function createAssignmentDuties(): AssignmentDuty[] {
                 incrementingId++;
             });
         }
-       
+
     });
 
     return duties;
