@@ -52,7 +52,7 @@ export const DEFAULT_RECURRENCE: RecurrenceInfo[] = [
         days: DaysOfWeek.Weekdays,
         startTime: moment().hour(13).minute(0),
         endTime: moment().hour(17).minute(0),
-        sheriffsRequired: 1
+        sheriffsRequired: 2
     }
 ];
 

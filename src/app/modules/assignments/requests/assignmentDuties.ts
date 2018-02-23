@@ -66,8 +66,8 @@ export const createAssignmentDutyRequest = new CreateAssignmentDutyRequest();
 
 // Assignment Template Edit
 class UpdateAssignmentDutyRequest extends CreateAssignmentDutyRequest {
-    constructor() {
-        super(STATE_KEY, "updateAssignmentDuty");
+    constructor(namespace = STATE_KEY, actionName = "updateAssignmentDuty") {
+        super(namespace,actionName);        
     }
 
     public async doWork(assignment: Partial<AssignmentDuty>, { api }: ThunkExtra): Promise<AssignmentDuty> {

@@ -1,0 +1,10 @@
+.sheriff-duty-bar-list{
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 80;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}

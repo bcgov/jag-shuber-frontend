@@ -1,8 +1,16 @@
 import * as React from 'react'
-import { DropTarget, DropTargetSpec } from 'react-dnd';
-import { CSSProperties } from 'react';
+import {
+    DropTarget,
+    DropTargetSpec
+} from 'react-dnd';
 
-export default function dropTargetFactory<TDrag, TDrop>(itemTypes: string | string[], styleOverride?: CSSProperties) {
+export interface DragDropStatus {
+    isActive?: boolean;
+    isOver?: boolean;
+    canDrop?: boolean;
+}
+
+export default function dropTargetFactory<TDrag, TDrop>(itemTypes: string | string[], styleOverride?: React.CSSProperties) {
 
     const targetCallbacks: DropTargetSpec<GenericDropTargetProps> = {
         canDrop(props, monitor) {
@@ -37,8 +45,25 @@ export default function dropTargetFactory<TDrag, TDrop>(itemTypes: string | stri
         connectDropTarget?: any;
         isOver?: boolean;
         canDrop?: boolean;
-        style?: CSSProperties;
-        computeStyle?: (props: { isActive?: boolean, canDrop?: boolean, isOver?: boolean }) => CSSProperties;
+        style?: React.CSSProperties;
+        computeStyle?: (props: { isActive?: boolean, canDrop?: boolean, isOver?: boolean }) => React.CSSProperties;
+    }
+
+    function computeStyleDefault({ isActive, canDrop, isOver }: DragDropStatus): React.CSSProperties {
+        let css: React.CSSProperties = {
+            borderColor: 'transparent',
+            border: 'dashed',
+            borderWidth: 2,
+        }
+
+        if (isActive) {
+            css.borderColor = 'lightgreen'
+        } else if (canDrop) {
+            css.borderColor = 'black'
+        } else if (isOver && !canDrop) {
+            css.borderColor = '#FF000088'
+        }
+        return css;
     }
 
     @DropTarget<GenericDropTargetProps>(itemTypes, targetCallbacks, collect)
@@ -50,33 +75,20 @@ export default function dropTargetFactory<TDrag, TDrop>(itemTypes: string | stri
                 isOver,
                 canDrop,
                 children,
-                style
+                style,
+                computeStyle = (s: DragDropStatus) => computeStyleDefault(s)
             } = this.props;
 
             const isActive = isOver && canDrop;
-            let borderColor: string = 'transparent'
-            //let dropStatus = "";
-            if (isActive) {
-                borderColor = 'lightgreen'
-            } else if (canDrop) {
-                borderColor = 'black'
-            } else if (isOver && !canDrop) {
-                borderColor = '#FF000088'
-            }
 
-            const computedStyle = this.props.computeStyle ? this.props.computeStyle({ isActive, isOver, canDrop }) : {};
-            const defaultStyle: CSSProperties = {                          
-                border: 'dashed',                
-                borderWidth:2,
-                borderColor:borderColor
-            };
+            const computedStyle = computeStyle ? computeStyle({ isActive, isOver, canDrop }) : {};
 
-            let containerStyle = Object.assign({},defaultStyle, style, computedStyle);
-
+            let containerStyle = { ...style, ...computedStyle };
 
             return connectDropTarget(
-                <div style={{ ...containerStyle }}>
+                <div style={style}>
                     {children}
+                    <div style={{ ...containerStyle, position: 'absolute', width: '100%', height: '100%', opacity: 0.8, top: 0, left: 0 }}></div>
                 </div>
             )
         }

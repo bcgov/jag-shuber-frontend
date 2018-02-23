@@ -1,44 +1,37 @@
-import { connect } from 'react-redux';
-import { updateSheriff } from '../modules/sheriffs/actions';
+// import { connect } from 'react-redux';
+// import { updateSheriff } from '../modules/sheriffs/actions';
+import * as React from 'react';
 import dragSourceFactory from '../infrastructure/DragDrop/dragSourceFactory';
 import ItemTypes from '../infrastructure/DragDrop/ItemTypes';
+import { Sheriff } from '../api';
 
-export interface DraggedSheriff {
-    badgeNumer: number;
-    onDuty: boolean;
+export interface DraggedSheriff extends Sheriff {
+
 }
 
-export interface SheriffDropResult {
+export interface SheriffDropResult extends Sheriff {
     dropEffect?: "copy" | "move";
-    badgeNumber: number;
-    onDuty: boolean;
 }
 
 interface AssignmentSourceFactoryProps {
-    onDuty: boolean;
-    badgeNumber: number;
-    getDragData?: () => DraggedSheriff;
-    endDrag?: (result?: SheriffDropResult) => void;
+    getDragData: () => DraggedSheriff;
 }
 
-const AssignmentSourceFactory = dragSourceFactory<AssignmentSourceFactoryProps, DraggedSheriff, SheriffDropResult>(ItemTypes.SHERIFF);
+const GenericSheriffDragSource = dragSourceFactory<AssignmentSourceFactoryProps, DraggedSheriff, void>(ItemTypes.SHERIFF);
 
-const mapDispatchToProps = (dispatch: any, ownProps: AssignmentSourceFactoryProps) => {
-    return {
-        getDragData: (): DraggedSheriff => {
-            return { badgeNumer: ownProps.badgeNumber, onDuty: ownProps.onDuty };
-        },
-        endDrag: (result?: SheriffDropResult) => {
-            if (ownProps.endDrag) {
-                ownProps.endDrag(result);
-            }
-            if (result) {
-                const {dropEffect,...rest} = result;
-                dispatch(updateSheriff(rest));
-            }
-        }
+
+interface SheriffDragSourceProps {
+    sheriff: Sheriff;
+}
+
+export default class SheriffDragSource extends React.PureComponent<SheriffDragSourceProps>{
+    render() {
+        const {children,sheriff} = this.props;
+        return (
+            <GenericSheriffDragSource getDragData={()=>sheriff}>
+                {children}
+            </GenericSheriffDragSource>
+        )
     }
 }
 
-
-export default connect<AssignmentSourceFactoryProps>(null, mapDispatchToProps)(AssignmentSourceFactory);
