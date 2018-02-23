@@ -6,7 +6,9 @@ import {
 } from '../../modules/assignments/selectors';
 import {
     getAssignments,
-    getAssignmentDuties
+    getAssignmentDuties,
+    linkAssignment,
+    unlinkAssignment
 } from '../../modules/assignments/actions';
 import { updateVisibleTime } from '../../modules/timeline/actions';
 import { connect } from 'react-redux';
@@ -21,7 +23,9 @@ import {
 } from '../../api/index';
 import * as moment from 'moment'
 import './DailyTimeline.css'
-import AssignmentDutyCard from '../../components/AssignmentDutyCard';
+import AssignmentDutyCard from '../../components/AssignmentDutyCard/AssignmentDutyCard';
+import { IdType } from '../../api/Api';
+import AssignedSheriffBars from './AssignedSheriffBars'
 // import { Glyphicon } from 'react-bootstrap';
 
 
@@ -31,9 +35,11 @@ interface DailyTimelineProps extends Partial<AssignmentTimelineProps> {
 }
 
 interface DailyTimelineDispatchProps {
-    onVisibleTimeChange?: (start: number, end: number) => void
-    getAssignmentDuties?: () => void;
-    getAssignments?: () => void;
+    onVisibleTimeChange: (start: number, end: number) => void
+    getAssignmentDuties: () => void;
+    getAssignments: () => void;
+    linkSheriff: (link: { sheriffId: IdType, dutyId: IdType }) => void;
+    unlinkSheriff: (link: { sheriffId: IdType, dutyId: IdType }) => void;
 }
 
 interface DailyTimelineStateProps {
@@ -53,8 +59,8 @@ class DailyTimeline extends React.Component<DailyTimelineProps & DailyTimelineSt
         const {
             onVisibleTimeChange,
             allowTimeDrag = false,
-            visibleTimeStart = moment().startOf('day').add(5, 'hours'),
-            visibleTimeEnd = moment().endOf('day').subtract(2, 'hours'),
+            visibleTimeStart = moment().startOf('day').add(5, 'hours').valueOf(),
+            visibleTimeEnd = moment().endOf('day').subtract(2, 'hours').valueOf(),
         } = this.props;
         if (onVisibleTimeChange) {
             if (allowTimeDrag) {
@@ -71,6 +77,8 @@ class DailyTimeline extends React.Component<DailyTimelineProps & DailyTimelineSt
             assignmentDuties = [],
             sideBarWidth = 200,
             onVisibleTimeChange,
+            linkSheriff,
+            unlinkSheriff,
             ...rest
         } = this.props;
         return (
@@ -80,8 +88,18 @@ class DailyTimeline extends React.Component<DailyTimelineProps & DailyTimelineSt
                     groups={assignments}
                     sidebarWidth={sideBarWidth}
                     onVisibleTimeChange={(s, e) => this.onVisibleTimeChange(s, e)}
-                    itemRenderer={(d) => <AssignmentDutyCard title={d.title} duty={d} />}
-                    itemHeightRatio = {0.95}
+                    itemHeightRatio={.97}
+                    itemRenderer={(duty) => (
+                        <AssignmentDutyCard
+                            duty={duty}
+                            onDropSheriff={({ badgeNumber: sheriffId }) => linkSheriff && linkSheriff({ sheriffId, dutyId: duty.id })}>
+                            <AssignedSheriffBars
+                                sheriffIds={duty.sheriffIds}
+                                sheriffsRequired={duty.sheriffsRequired}
+                                onRemove={(sheriffId)=>sheriffId !== undefined && unlinkSheriff({sheriffId,dutyId:duty.id})}
+                            />
+                        </AssignmentDutyCard>
+                    )}
                     {...rest}
                 />
             </div>
@@ -103,7 +121,9 @@ const mapStateToProps = (state: RootState, props: DailyTimelineProps) => {
 const mapDispatchToProps = {
     onVisibleTimeChange: updateVisibleTime,
     getAssignments: getAssignments,
-    getAssignmentDuties: getAssignmentDuties
+    getAssignmentDuties: getAssignmentDuties,
+    linkSheriff: linkAssignment,
+    unlinkSheriff: unlinkAssignment
 }
 
 export default connect<DailyTimelineStateProps, DailyTimelineDispatchProps, DailyTimelineProps>(

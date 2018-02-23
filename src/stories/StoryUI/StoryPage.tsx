@@ -1,10 +1,12 @@
 import * as React from 'react'
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 
 interface StoryPageProps {
     title: string
 }
 
-export default class StoryPage extends React.PureComponent<StoryPageProps> {
+class StoryPage extends React.PureComponent<StoryPageProps> {
     render() {
         return (
             <div style={{padding:10}}>
@@ -14,3 +16,5 @@ export default class StoryPage extends React.PureComponent<StoryPageProps> {
         )
     }
 }
+
+export default DragDropContext(HTML5Backend)(StoryPage);

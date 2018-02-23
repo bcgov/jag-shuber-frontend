@@ -15,7 +15,7 @@ import {
 // import { default as AssignmentTimelineCard } from './AssignmentTimelineCard'
 // import AssignmentDropRowExtension from './AssignmentDropRowExtension';
 import toTitleCase from '../../infrastructure/toTitleCase';
-import AssignmentDutyCard from '../AssignmentDutyCard';
+import AssignmentDutyCard from '../AssignmentDutyCard/AssignmentDutyCard';
 // import AssignmentRowActionsExtension from './AssignmentRowActionsExtension';
 
 
@@ -23,7 +23,7 @@ type TimelineAssignment = ReactCalendarTimelineGroup & Assignment;
 type TimelineAssignmentDuty = ReactCalendarTimelineItem & AssignmentDuty;
 
 export interface AssignmentTimelineProps extends TimelineProps<AssignmentDuty, Assignment> {
-    
+
 }
 
 export default class AssignmentTimeline extends Timeline<AssignmentDuty, Assignment, AssignmentTimelineProps>{
@@ -35,7 +35,11 @@ export default class AssignmentTimeline extends Timeline<AssignmentDuty, Assignm
                 {p.sideBarHeaderTitle}
             </div>
         ),
-        itemRenderer: (item) => <AssignmentDutyCard title={item.title} duty={item} />
+        itemRenderer: (item) => (
+            <AssignmentDutyCard duty={item} >
+                {item.title}
+            </AssignmentDutyCard>
+        )
     }
 
     // Maps a duty to an item that can be displayed by the timeline
