@@ -15,7 +15,7 @@ import {
 // import { default as AssignmentTimelineCard } from './AssignmentTimelineCard'
 // import AssignmentDropRowExtension from './AssignmentDropRowExtension';
 import toTitleCase from '../../infrastructure/toTitleCase';
-import AssignmentDutyCard from '../AssignmentDutyCard/AssignmentDutyCard';
+import AssignmentDutyCard from '../AssignmentDutyCard';
 // import AssignmentRowActionsExtension from './AssignmentRowActionsExtension';
 
 

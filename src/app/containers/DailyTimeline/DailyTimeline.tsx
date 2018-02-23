@@ -23,7 +23,7 @@ import {
 } from '../../api/index';
 import * as moment from 'moment'
 import './DailyTimeline.css'
-import AssignmentDutyCard from '../../components/AssignmentDutyCard/AssignmentDutyCard';
+import AssignmentDutyCard from '../../components/AssignmentDutyCard';
 import { IdType } from '../../api/Api';
 import AssignedSheriffBars from './AssignedSheriffBars'
 // import { Glyphicon } from 'react-bootstrap';

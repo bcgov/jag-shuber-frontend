@@ -1,8 +1,8 @@
 import * as React from 'react'
 import {
     AssignmentDuty, Sheriff
-} from '../../api/index';
-import SheriffDropTarget from '../../containers/SheriffDropTarget';
+} from '../api/index';
+import SheriffDropTarget from '../containers/SheriffDropTarget';
 
 export interface AssignmentDutyCardProps {
     duty: AssignmentDuty
