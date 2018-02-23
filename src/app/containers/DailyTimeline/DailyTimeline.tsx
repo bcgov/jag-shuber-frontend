@@ -35,7 +35,7 @@ interface DailyTimelineProps extends Partial<AssignmentTimelineProps> {
 }
 
 interface DailyTimelineDispatchProps {
-    onVisibleTimeChange: (start: number, end: number) => void
+    onVisibleTimeChange: (start: any, end: any) => void
     getAssignmentDuties: () => void;
     getAssignments: () => void;
     linkSheriff: (link: { sheriffId: IdType, dutyId: IdType }) => void;
@@ -59,15 +59,18 @@ class DailyTimeline extends React.Component<DailyTimelineProps & DailyTimelineSt
         const {
             onVisibleTimeChange,
             allowTimeDrag = false,
-            visibleTimeStart = moment().startOf('day').add(5, 'hours').valueOf(),
-            visibleTimeEnd = moment().endOf('day').subtract(2, 'hours').valueOf(),
+            visibleTimeStart = moment().startOf('day').add(5, 'hours'),
+            visibleTimeEnd = moment().endOf('day').subtract(2, 'hours'),
         } = this.props;
+
         if (onVisibleTimeChange) {
+            let newVisibleTimeStart = moment.isMoment(visibleTimeStart) ? visibleTimeStart.unix() : visibleTimeStart;
+            let newVisibleTimeEnd = moment.isMoment(visibleTimeEnd) ? visibleTimeEnd.unix() : visibleTimeEnd;
             if (allowTimeDrag) {
-                onVisibleTimeChange(visibleStart, visibleEnd);
-            } else {
-                onVisibleTimeChange(visibleTimeStart, visibleTimeEnd);
-            }
+                newVisibleTimeStart = moment.unix(visibleStart);
+                newVisibleTimeEnd = moment.unix(visibleEnd);
+            } 
+            onVisibleTimeChange(moment.unix(newVisibleTimeStart),moment.unix(newVisibleTimeEnd));
         }
     }
 
@@ -79,8 +82,14 @@ class DailyTimeline extends React.Component<DailyTimelineProps & DailyTimelineSt
             onVisibleTimeChange,
             linkSheriff,
             unlinkSheriff,
+            visibleTimeEnd,
+            visibleTimeStart,
             ...rest
         } = this.props;
+
+        const newVisibleTimeEnd = moment.isMoment(visibleTimeEnd) ? visibleTimeEnd.valueOf() : visibleTimeEnd;
+        const newVisibleTimeStart = moment.isMoment(visibleTimeStart) ? visibleTimeStart.valueOf() : visibleTimeStart;
+
         return (
             <div className="dailyTimeline">
                 <AssignmentTimeline
@@ -88,6 +97,8 @@ class DailyTimeline extends React.Component<DailyTimelineProps & DailyTimelineSt
                     groups={assignments}
                     sidebarWidth={sideBarWidth}
                     onVisibleTimeChange={(s, e) => this.onVisibleTimeChange(s, e)}
+                    visibleTimeEnd={newVisibleTimeEnd}
+                    visibleTimeStart={newVisibleTimeStart}
                     itemHeightRatio={.97}
                     itemRenderer={(duty) => (
                         <AssignmentDutyCard
@@ -96,7 +107,7 @@ class DailyTimeline extends React.Component<DailyTimelineProps & DailyTimelineSt
                             <AssignedSheriffBars
                                 sheriffIds={duty.sheriffIds}
                                 sheriffsRequired={duty.sheriffsRequired}
-                                onRemove={(sheriffId)=>sheriffId !== undefined && unlinkSheriff({sheriffId,dutyId:duty.id})}
+                                onRemove={(sheriffId) => sheriffId !== undefined && unlinkSheriff({ sheriffId, dutyId: duty.id })}
                             />
                         </AssignmentDutyCard>
                     )}
