@@ -3,11 +3,18 @@ import {
     AssignmentDuty, Sheriff
 } from '../api/index';
 import SheriffDropTarget from '../containers/SheriffDropTarget';
+import SheriffDutyBarList from './SheriffDutyBarList/SheriffDutyBarList';
 
 export interface AssignmentDutyCardProps {
     duty: AssignmentDuty
     canDropSheriff?: (sheriff: Sheriff) => boolean;
     onDropSheriff?: (sheriff: Sheriff) => void;
+    SheriffAssignmentRenderer?: React.ComponentType<SheriffAssignmentRendererProps>
+}
+
+export interface SheriffAssignmentRendererProps {
+    sheriffIds: number[];
+    sheriffsRequired: number;
 }
 
 export default class AssignmentDutyCard extends React.PureComponent<AssignmentDutyCardProps, any>{
@@ -22,6 +29,11 @@ export default class AssignmentDutyCard extends React.PureComponent<AssignmentDu
         const {
             canDropSheriff = (s: Sheriff) => this.canAssignSheriff(s),
             onDropSheriff,
+            SheriffAssignmentRenderer = SheriffDutyBarList,
+            duty: {
+                sheriffIds = [],
+                sheriffsRequired = 0
+            } = {}
         } = this.props;
 
         const backgroundColor = '#96c0e6';
@@ -36,7 +48,9 @@ export default class AssignmentDutyCard extends React.PureComponent<AssignmentDu
                     position: 'relative'
                 }}
                 computeStyle={!onDropSheriff ? (s: any) => ({}) : undefined}>
-                {this.props.children}
+                <SheriffAssignmentRenderer
+                    sheriffIds={sheriffIds}
+                    sheriffsRequired={sheriffsRequired}  />
             </SheriffDropTarget>
         )
     }

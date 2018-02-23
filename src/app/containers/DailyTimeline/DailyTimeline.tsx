@@ -25,8 +25,9 @@ import * as moment from 'moment'
 import './DailyTimeline.css'
 import AssignmentDutyCard from '../../components/AssignmentDutyCard';
 import { IdType } from '../../api/Api';
-import AssignedSheriffBars from './AssignedSheriffBars'
-// import { Glyphicon } from 'react-bootstrap';
+import SheriffDutyBarList from '../../components/SheriffDutyBarList/SheriffDutyBarList';
+import ConnectedSheriffDutyBar from '../SheriffDutyBar';
+
 
 
 interface DailyTimelineProps extends Partial<AssignmentTimelineProps> {
@@ -69,8 +70,8 @@ class DailyTimeline extends React.Component<DailyTimelineProps & DailyTimelineSt
             if (allowTimeDrag) {
                 newVisibleTimeStart = moment.unix(visibleStart);
                 newVisibleTimeEnd = moment.unix(visibleEnd);
-            } 
-            onVisibleTimeChange(moment.unix(newVisibleTimeStart),moment.unix(newVisibleTimeEnd));
+            }
+            onVisibleTimeChange(moment.unix(newVisibleTimeStart), moment.unix(newVisibleTimeEnd));
         }
     }
 
@@ -103,13 +104,16 @@ class DailyTimeline extends React.Component<DailyTimelineProps & DailyTimelineSt
                     itemRenderer={(duty) => (
                         <AssignmentDutyCard
                             duty={duty}
-                            onDropSheriff={({ badgeNumber: sheriffId }) => linkSheriff && linkSheriff({ sheriffId, dutyId: duty.id })}>
-                            <AssignedSheriffBars
-                                sheriffIds={duty.sheriffIds}
-                                sheriffsRequired={duty.sheriffsRequired}
-                                onRemove={(sheriffId) => sheriffId !== undefined && unlinkSheriff({ sheriffId, dutyId: duty.id })}
-                            />
-                        </AssignmentDutyCard>
+                            onDropSheriff={({ badgeNumber: sheriffId }) => linkSheriff && linkSheriff({ sheriffId, dutyId: duty.id })}
+                            SheriffAssignmentRenderer={(p) => (
+                                <SheriffDutyBarList
+                                    {...p}
+                                    BarRenderer={ConnectedSheriffDutyBar}
+                                    onRemove={(sheriffId) =>{
+                                        unlinkSheriff({ sheriffId, dutyId: duty.id })
+                                    }} />
+                            )}
+                        />
                     )}
                     {...rest}
                 />

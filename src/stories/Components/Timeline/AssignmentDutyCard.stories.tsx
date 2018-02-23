@@ -7,6 +7,7 @@ import AssignmentDutyCard from '../../../app/components/AssignmentDutyCard';
 import { AssignmentDuty } from '../../../app/api';
 import * as moment from 'moment'
 import TimelineCard from '../../../app/components/Timeline/TimelineCard';
+import SheriffDutyBarList from '../../../app/components/SheriffDutyBarList/SheriffDutyBarList';
 
 const blank_duty: AssignmentDuty = {
     id: 0,
@@ -27,7 +28,7 @@ class TimelineCardWrapper extends React.PureComponent {
                 color: 'white',
                 textAlign: 'center',
                 cursor: 'pointer',
-                position:'relative'
+                position: 'relative'
             }}>
                 <TimelineCard>
                     {this.props.children}
@@ -37,6 +38,8 @@ class TimelineCardWrapper extends React.PureComponent {
     }
 }
 
+const DutyBarList = (p: any) => <SheriffDutyBarList onRemove={(id) => alert(`Remove ${id}`)} {...p} />
+
 storiesOf('Timeline')
     .add('Assignment Duty Card', () => {
         return (
@@ -45,9 +48,11 @@ storiesOf('Timeline')
                     <TimelineCardWrapper>
                         <AssignmentDutyCard duty={{
                             ...blank_duty,
-                            sheriffIds: array('Sheriff Ids', [],'partial'),
+                            sheriffIds: array('Sheriff Ids', [], 'partial'),
                             sheriffsRequired: number("Sheriffs Required", 3)
-                        }} />
+                        }}
+                            SheriffAssignmentRenderer={DutyBarList}
+                        />
                     </TimelineCardWrapper>
                 </StorySection>
 
@@ -57,7 +62,10 @@ storiesOf('Timeline')
                             ...blank_duty,
                             sheriffIds: array('Sheriff Ids', [1, 2]),
                             sheriffsRequired: number("Sheriffs Required", 3)
-                        }} />
+                        }}
+                            SheriffAssignmentRenderer={DutyBarList}
+
+                        />
                     </TimelineCardWrapper>
                 </StorySection>
 
@@ -67,7 +75,9 @@ storiesOf('Timeline')
                             ...blank_duty,
                             sheriffIds: array('Sheriff Ids', [1, 2, 3]),
                             sheriffsRequired: number("Sheriffs Required", 3)
-                        }} />
+                        }}
+                            SheriffAssignmentRenderer={DutyBarList}
+                        />
                     </TimelineCardWrapper>
                 </StorySection>
 
@@ -77,7 +87,9 @@ storiesOf('Timeline')
                             ...blank_duty,
                             sheriffIds: array('Sheriff Ids', [1, 2, 3, 4]),
                             sheriffsRequired: number("Sheriffs Required", 3)
-                        }} />
+                        }}
+                            SheriffAssignmentRenderer={DutyBarList}
+                        />
                     </TimelineCardWrapper>
                 </StorySection>
             </StoryPage>
