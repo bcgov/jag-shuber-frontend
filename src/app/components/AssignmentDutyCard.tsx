@@ -5,6 +5,8 @@ import {
 } from '../api/index';
 import SheriffDropTarget from '../containers/SheriffDropTarget';
 import SheriffDutyBarList from './SheriffDutyBarList/SheriffDutyBarList';
+import AssignmentDutyActionsPanel from './AssignmentDutyActionsPanel/AssignmentDutyActionsPanel';
+import AssignmentDutyEditModal from '../containers/AssignmentDutyEditModal';
 
 export interface AssignmentDutyCardProps {
     duty: AssignmentDuty
@@ -32,6 +34,7 @@ export default class AssignmentDutyCard extends React.PureComponent<AssignmentDu
             onDropSheriff,
             SheriffAssignmentRenderer = SheriffDutyBarList,
             duty: {
+                id = -1,
                 sheriffIds = [],
                 sheriffsRequired = 0
             } = {}
@@ -52,6 +55,9 @@ export default class AssignmentDutyCard extends React.PureComponent<AssignmentDu
                 <SheriffAssignmentRenderer
                     sheriffIds={sheriffIds}
                     sheriffsRequired={sheriffsRequired} />
+                <AssignmentDutyActionsPanel>
+                    <AssignmentDutyEditModal dutyId={id} />
+                </AssignmentDutyActionsPanel>
             </SheriffDropTarget>
         )
     }
