@@ -35,20 +35,3 @@ export default class SheriffDragSource extends React.PureComponent<SheriffDragSo
     }
 }
 
-// const mapDispatchToProps = (dispatch: any, ownProps: AssignmentSourceFactoryProps) => {
-//     return {
-//         getDragData: (): DraggedSheriff => {
-//             return { ...ownProps.sheriff };
-//         },
-//         endDrag: (result?: SheriffDropResult) => {
-//             if (ownProps.endDrag) {
-//                 ownProps.endDrag(result);
-//             }
-//             if (result) {
-//                 const { dropEffect, ...rest } = result;
-//                 dispatch(updateSheriff(rest));
-//             }
-//         }
-//     }
-// }
-

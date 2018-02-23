@@ -1,6 +1,7 @@
 import * as React from 'react'
 import {
-    AssignmentDuty, Sheriff
+    AssignmentDuty,
+    Sheriff
 } from '../api/index';
 import SheriffDropTarget from '../containers/SheriffDropTarget';
 import SheriffDutyBarList from './SheriffDutyBarList/SheriffDutyBarList';
@@ -50,7 +51,7 @@ export default class AssignmentDutyCard extends React.PureComponent<AssignmentDu
                 computeStyle={!onDropSheriff ? (s: any) => ({}) : undefined}>
                 <SheriffAssignmentRenderer
                     sheriffIds={sheriffIds}
-                    sheriffsRequired={sheriffsRequired}  />
+                    sheriffsRequired={sheriffsRequired} />
             </SheriffDropTarget>
         )
     }
