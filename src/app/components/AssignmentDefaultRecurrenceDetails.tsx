@@ -15,7 +15,11 @@ export interface AssignmentDefaultRecurrenceDetailsProps {
 export default class AssignmentDefaultRecurrenceDetails extends React.PureComponent<AssignmentDefaultRecurrenceDetailsProps, any> {
     render() {
         const { data: { days, startTime, endTime, sheriffsRequired } } = this.props;
-        const dayDisplay = EnumUtils.displayEnum(DaysOfWeek, days).join(", ");
+        
+        let dayDisplay = EnumUtils.displayEnum(DaysOfWeek, days).join(", ");
+        if(dayDisplay.includes("Weekdays") && (dayDisplay.includes("Sat") || dayDisplay.includes("Sun"))){
+           dayDisplay = dayDisplay.replace("Weekdays, ", "");
+        }
 
         return (
             <div>
