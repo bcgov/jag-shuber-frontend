@@ -83,12 +83,10 @@ export default function dropTargetFactory<TDrag, TDrop>(itemTypes: string | stri
 
             const computedStyle = computeStyle ? computeStyle({ isActive, isOver, canDrop }) : {};
 
-            let containerStyle = { ...style, ...computedStyle };
-
             return connectDropTarget(
                 <div style={style}>
                     {children}
-                    <div style={{ ...containerStyle, position: 'absolute', width: '100%', height: '100%', opacity: 0.8, top: 0, left: 0 }}></div>
+                    <div style={{ ...computedStyle, position: 'absolute', width: '100%', height: '100%', opacity: 0.8, top: 0, left: 0 }}></div>
                 </div>
             )
         }
