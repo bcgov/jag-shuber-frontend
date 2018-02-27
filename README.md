@@ -25,7 +25,9 @@ The frontend portion of the Sheriff Scheduling System (code named Shuber).
     - [Yarn]
     - [VS Code] and extensions (below)
        - [Git Lens](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens)
-
+* Mac Users
+    - Install Homebrew
+    - Use Homebrew to install watchman (brew install watchman)
 * Clone Repo
 * Install Dependencies
     - Run `yarn` or `npm install` in the root of the project
