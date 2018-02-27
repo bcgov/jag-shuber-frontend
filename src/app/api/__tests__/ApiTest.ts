@@ -38,5 +38,15 @@ describe('DaysOfWeek.getDisplayValues', () => {
         expect(util(DaysOfWeek.Mon | DaysOfWeek.Tue | DaysOfWeek.Sat | DaysOfWeek.Sun)).toEqual(["Mon", "Tue", "Sat", "Sun"]);
     })
 
+    it('Should return Weekdays, if each weekday is selected', () => {
+        expect(util(DaysOfWeek.Mon | DaysOfWeek.Tue | DaysOfWeek.Wed | DaysOfWeek.Thu | DaysOfWeek.Fri)).toEqual(["Weekdays"]);
+        expect(util(DaysOfWeek.Weekdays)).toEqual(["Weekdays"]);
+    }) 
+
+    it('Should return Everyday, if each day of the week is selected', () => {
+        expect(util(DaysOfWeek.Mon | DaysOfWeek.Tue | DaysOfWeek.Wed | DaysOfWeek.Thu | DaysOfWeek.Fri | DaysOfWeek.Sat | DaysOfWeek.Sun)).toEqual(["Everyday"]);
+        expect(util(DaysOfWeek.Everyday)).toEqual(["Everyday"]);
+    }) 
+
 });
 
