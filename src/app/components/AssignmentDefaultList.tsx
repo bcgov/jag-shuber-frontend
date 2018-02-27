@@ -29,7 +29,7 @@ export default class AssignmentDefaultList extends React.Component<AssignmentDef
                             <tr>
                                 <th className="text-left">Work Section</th>
                                 <th className="text-left">Assignment</th>
-                                <th className="text-left">Default Days &amp; Times <Badge># of Sheriffs</Badge></th>
+                                <th className="text-left">Default Duties <Badge># of Sheriffs</Badge></th>
 
                             </tr>
                         </thead>
