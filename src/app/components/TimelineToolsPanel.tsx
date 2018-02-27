@@ -31,7 +31,7 @@ export default class TimelineToolsPanel extends React.PureComponent<TimelineTool
                 }}>
                     <h3 style={{ lineHeight: "60px", padding: 0, margin: 0, color: "#FFF" }}>{titleText}</h3>
                 </div>
-                <div style={{ flex: "1 1 auto"}}>
+                <div style={{ flex: "1 1 auto", overflowY:"scroll", height:200}}>
                     {this.props.children}
                 </div>
 
