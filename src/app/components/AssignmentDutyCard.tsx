@@ -7,12 +7,15 @@ import SheriffDropTarget from '../containers/SheriffDropTarget';
 import SheriffDutyBarList from './SheriffDutyBarList/SheriffDutyBarList';
 import AssignmentDutyActionsPanel from './AssignmentDutyActionsPanel/AssignmentDutyActionsPanel';
 import AssignmentDutyEditModal from '../containers/AssignmentDutyEditModal';
+import WorkSectionIndicator from './WorkSectionIndicator/WorkSectionIndicator';
+// import { WorkSectionId } from '../api/Api';
 
 export interface AssignmentDutyCardProps {
     duty: AssignmentDuty
     canDropSheriff?: (sheriff: Sheriff) => boolean;
     onDropSheriff?: (sheriff: Sheriff) => void;
     SheriffAssignmentRenderer?: React.ComponentType<SheriffAssignmentRendererProps>
+    // workSectionId: WorkSectionId;
 }
 
 export interface SheriffAssignmentRendererProps {
@@ -37,7 +40,8 @@ export default class AssignmentDutyCard extends React.PureComponent<AssignmentDu
                 id = -1,
                 sheriffIds = [],
                 sheriffsRequired = 0
-            } = {}
+            } = {},
+            // workSectionId
         } = this.props;
 
         const backgroundColor = '#96c0e6';
@@ -56,7 +60,10 @@ export default class AssignmentDutyCard extends React.PureComponent<AssignmentDu
                     sheriffIds={sheriffIds}
                     sheriffsRequired={sheriffsRequired} />
                 <AssignmentDutyActionsPanel>
-                    <AssignmentDutyEditModal dutyId={id} />
+                    <WorkSectionIndicator workSectionId='COURTS'/>
+                    {/* <div style={{bottom:0, left:0, position:'relative'}}> */}
+                        <AssignmentDutyEditModal dutyId={id} />
+                    {/* </div> */}
                 </AssignmentDutyActionsPanel>
             </SheriffDropTarget>
         )
