@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as EnumUtils from '../infrastructure/EnumUtils';
 import {
     RecurrenceInfo,
     DaysOfWeek
@@ -14,8 +13,8 @@ export interface AssignmentDefaultRecurrenceDetailsProps {
 
 export default class AssignmentDefaultRecurrenceDetails extends React.PureComponent<AssignmentDefaultRecurrenceDetailsProps, any> {
     render() {
-        const { data: { days, startTime, endTime, sheriffsRequired } } = this.props;
-        const dayDisplay = EnumUtils.displayEnum(DaysOfWeek, days).join(", ");
+        const { data: { days, startTime, endTime, sheriffsRequired } } = this.props; 
+        const dayDisplay = DaysOfWeek.getDisplayValues(days).join(", ");
 
         return (
             <div>

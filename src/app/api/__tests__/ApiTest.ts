@@ -1,4 +1,5 @@
 import {default as API} from "../index";
+import { DaysOfWeek } from "../Api";
  
 describe('API Client',()=>{
 
@@ -20,4 +21,32 @@ describe('API Client',()=>{
     })
 
 })
+
+describe('DaysOfWeek.getDisplayValues', () => {
+    const util = DaysOfWeek.getDisplayValues;
+    
+    it('Should return each day if weekdays and Sat or Sun is selected', () => {
+        expect(util(DaysOfWeek.Weekdays | DaysOfWeek.Sat)).toEqual(["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]);
+        expect(util(DaysOfWeek.Weekdays | DaysOfWeek.Sun)).toEqual(["Mon", "Tue", "Wed", "Thu", "Fri", "Sun"]);
+    }) 
+    
+    it('Should return each day if weekdays and Sat and Sun is selected', () => {
+        expect(util(DaysOfWeek.Weekdays | DaysOfWeek.Sat | DaysOfWeek.Sun)).toEqual(["Everyday"]);
+    })
+
+    it('Should return each day if not all weekdays or everyday are selected', () => {
+        expect(util(DaysOfWeek.Mon | DaysOfWeek.Tue | DaysOfWeek.Sat | DaysOfWeek.Sun)).toEqual(["Mon", "Tue", "Sat", "Sun"]);
+    })
+
+    it('Should return Weekdays, if each weekday is selected', () => {
+        expect(util(DaysOfWeek.Mon | DaysOfWeek.Tue | DaysOfWeek.Wed | DaysOfWeek.Thu | DaysOfWeek.Fri)).toEqual(["Weekdays"]);
+        expect(util(DaysOfWeek.Weekdays)).toEqual(["Weekdays"]);
+    }) 
+
+    it('Should return Everyday, if each day of the week is selected', () => {
+        expect(util(DaysOfWeek.Mon | DaysOfWeek.Tue | DaysOfWeek.Wed | DaysOfWeek.Thu | DaysOfWeek.Fri | DaysOfWeek.Sat | DaysOfWeek.Sun)).toEqual(["Everyday"]);
+        expect(util(DaysOfWeek.Everyday)).toEqual(["Everyday"]);
+    }) 
+
+});
 

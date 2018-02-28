@@ -1,4 +1,5 @@
 import * as moment from 'moment';
+import { displayEnum } from '../infrastructure/EnumUtils';
 
 export type DateType = Date | moment.Moment | string;
 export type StringMap = { [key: string]: string };
@@ -20,6 +21,26 @@ export enum DaysOfWeek {
     Everyday = Mon | Tue | Wed | Thu | Fri | Sat | Sun,
     Weekdays = Mon | Tue | Wed | Thu | Fri
 }
+
+export namespace DaysOfWeek {
+    
+    export function getDisplayValues(value: DaysOfWeek): string[] {
+        let dayDisplay = displayEnum(DaysOfWeek, value);
+
+        const weekdaysIndex = dayDisplay.indexOf("Weekdays");
+        const satIndex = dayDisplay.indexOf("Sat");
+        const sunIndex = dayDisplay.indexOf("Sun");
+
+        if (weekdaysIndex > -1) {
+            if (satIndex > -1 || sunIndex > -1) {
+                dayDisplay.splice(weekdaysIndex, 1);
+            }
+        }
+
+        return dayDisplay;
+    }
+}
+
 
 export const BLANK_SHERIFF_LOCATION: SheriffLocation = {
     courthouseId: "",
@@ -152,7 +173,7 @@ export interface Courtroom {
 }
 
 export interface JailRole {
-    id: IdType; 
+    id: IdType;
     title: string;
 }
 
