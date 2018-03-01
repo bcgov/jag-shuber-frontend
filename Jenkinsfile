@@ -1,103 +1,175 @@
+@Library('devops-library') _
+
 // Edit your app's name below
 def APP_NAME = 'frontend'
-
+def PATHFINDER_URL = "pathfinder.gov.bc.ca"
+def PROJECT_PREFIX = "jag-shuber"
 // Edit your environment TAG names below
-def TAG_NAMES = ['dev', 'test', 'prod']
+def TAG_NAMES = [
+  'dev', 
+  'test', 
+  'prod'
+]
+def APP_URLS = [
+  "https://${APP_NAME}-${PROJECT_PREFIX}-${TAG_NAMES[0]}.${PATHFINDER_URL}",
+  "https://${APP_NAME}-${PROJECT_PREFIX}-${TAG_NAMES[1]}.${PATHFINDER_URL}",
+  "https://${APP_NAME}-${PROJECT_PREFIX}-${TAG_NAMES[2]}.${PATHFINDER_URL}"
+]
 
 // You shouldn't have to edit these if you're following the conventions
-def NGINX_BUILD_CONFIG = 'nginx-runtime'
-def BUILD_CONFIG = APP_NAME + '-build'
+def ARTIFACT_BUILD = APP_NAME+'-artifacts-build'
+def RUNTIME_BUILD = APP_NAME+'-nginx-runtime-build'
 def IMAGESTREAM_NAME = APP_NAME
-def CONTEXT_DIRECTORY = ''
-def DEBUG = true
+def SLACK_DEV_CHANNEL="@colter.mcquay"
+def SLACK_MAIN_CHANNEL="@colter.mcquay"
+
+def hasRepoChanged = false;
+node{
+  def lastCommit = getLastCommit()
+  if(lastCommit != null){
+    // Ensure our CHANGE variables are set
+    if(env.CHANGE_AUTHOR_DISPLAY_NAME == null){
+      env.CHANGE_AUTHOR_DISPLAY_NAME = lastCommit.author.fullName
+    }
+
+    if(env.CHANGE_TITLE == null){
+      env.CHANGE_TITLE = lastCommit.msg
+    }
+    hasRepoChanged = true;
+  }else{
+    hasRepoChanged = false;
+  }
+}
  
-// Checks for new changes to the context directory
-@NonCPS
-boolean triggerBuild(String contextDirectory) {
-  // Determine if code has changed within the source context directory.
-  def changeLogSets = currentBuild.changeSets
-  def filesChangeCnt = 0
-  for (int i = 0; i < changeLogSets.size(); i++) {
-    def entries = changeLogSets[i].items
-    for (int j = 0; j < entries.length; j++) {
-      def entry = entries[j]
-      //echo "${entry.commitId} by ${entry.author} on ${new Date(entry.timestamp)}: ${entry.msg}"
-      def files = new ArrayList(entry.affectedFiles)
-      for (int k = 0; k < files.size(); k++) {
-        def file = files[k]
-        def filePath = file.path
-        //echo ">> ${file.path}"
-        if (filePath.contains(contextDirectory)) {
-          filesChangeCnt = 1
-          k = files.size()
-          j = entries.length
-        }
+if(hasRepoChanged){
+  stage('Build ' + APP_NAME) {
+    node{
+      try{
+        echo "Building: " + ARTIFACT_BUILD
+        //openshiftBuild bldCfg: ARTIFACT_BUILD, showBuildLogs: 'true'
+        
+        // the RUNTIME_BUILD should be triggered by the build above, but manually starting to match BCdevops 
+        echo "Assembling Runtime: " + RUNTIME_BUILD
+        openshiftBuild bldCfg: RUNTIME_BUILD, showBuildLogs: 'true'
+        
+        // Don't tag with BUILD_ID so the pruner can do it's job; it won't delete tagged images.
+        // Tag the images for deployment based on the image's hash
+        IMAGE_HASH = sh (
+          script: """oc get istag ${IMAGESTREAM_NAME}:latest -o template --template=\"{{.image.dockerImageReference}}\"|awk -F \":\" \'{print \$3}\'""",
+          returnStdout: true).trim()
+        echo ">> IMAGE_HASH: ${IMAGE_HASH}"
+      }catch(error){
+        slackNotify(
+          'Build Broken 🤕',
+          "The latest ${APP_NAME} build seems to have broken\n\"${error.message}\"",
+          'danger',
+          env.SLACK_HOOK,
+          SLACK_DEV_CHANNEL,
+          [
+            [
+              type: "button",
+              text: "View Build Logs",
+              style:"danger",           
+              url: "${currentBuild.absoluteUrl}/console"
+            ]
+          ])
+        throw error
       }
     }
-  }  
-  if ( filesChangeCnt < 1 ) {
-    echo('The changes do not require a build.')
-    return false
   }
-  else {
-    echo('The changes require a build.')
-    return true
-  } 
-}
 
-
-
-// Check if there are changes within the context directory 
-if( DEBUG || triggerBuild(CONTEXT_DIRECTORY) ) {
-  stage('build nginx runtime') {
-      node {
-      echo "Building: " + NGINX_BUILD_CONFIG
-      openshiftBuild bldCfg: NGINX_BUILD_CONFIG, showBuildLogs: 'true'
-      
-      // Don't tag with BUILD_ID so the pruner can do it's job; it won't delete tagged images.
-      // Tag the images for deployment based on the image's hash
-      NGINX_IMAGE_HASH = sh (
-        script: """oc get istag ${NGINX_BUILD_CONFIG}:latest -o template --template=\"{{.image.dockerImageReference}}\"|awk -F \":\" \'{print \$3}\'""",
-        returnStdout: true).trim()
-      echo ">> NGINX_IMAGE_HASH: ${NGINX_IMAGE_HASH}"
-      
-      // tag/retag the image to ensure it's there for the next stage of the build.
-      openshiftTag destStream: NGINX_BUILD_CONFIG, verbose: 'true', destTag: 'latest', srcStream: NGINX_BUILD_CONFIG, srcTag: "${NGINX_IMAGE_HASH}"
-    }
-  }
-  
-  stage('build ' + BUILD_CONFIG) {
+  stage('Deploy ' + TAG_NAMES[0]) {
+    def environment = TAG_NAMES[0]
+    def url = APP_URLS[0]
     node{
-      echo "Building: " + BUILD_CONFIG
-      openshiftBuild bldCfg: BUILD_CONFIG, showBuildLogs: 'true'
-      
-      // Don't tag with BUILD_ID so the pruner can do it's job; it won't delete tagged images.
-      // Tag the images for deployment based on the image's hash
-      IMAGE_HASH = sh (
-        script: """oc get istag ${IMAGESTREAM_NAME}:latest -o template --template=\"{{.image.dockerImageReference}}\"|awk -F \":\" \'{print \$3}\'""",
-        returnStdout: true).trim()
-      echo ">> IMAGE_HASH: ${IMAGE_HASH}"
+      try{
+        openshiftTag destStream: IMAGESTREAM_NAME, verbose: 'true', destTag: environment, srcStream: IMAGESTREAM_NAME, srcTag: "${IMAGE_HASH}"
+        slackNotify(
+            "New Version in ${environment} 🚀",
+            "A new version of the ${APP_NAME} is now in ${environment}",
+            'good',
+            env.SLACK_HOOK,
+            SLACK_MAIN_CHANNEL,
+            [
+              [
+                type: "button",
+                text: "View New Version",         
+                url: "${url}"
+              ],
+              [
+                type: "button",            
+                text: "Deploy to Test?",
+                style: "primary",              
+                url: "${currentBuild.absoluteUrl}/input"
+              ]
+            ])
+      }catch(error){
+        slackNotify(
+          "Couldn't deploy to ${environment} 🤕",
+          "The latest deployment of the ${APP_NAME} to ${environment} seems to have failed\n\"${error.message}\"",
+          'danger',
+          env.SLACK_HOOK,
+          SLACK_DEV_CHANNEL,
+          [
+            [
+              type: "button",
+              text: "View Build Logs",
+              style:"danger",        
+              url: "${currentBuild.absoluteUrl}/console"
+            ]
+          ])
+      }
     }
   }
-  
-  stage('deploy-' + TAG_NAMES[0]) {
+
+  stage('Deploy ' + TAG_NAMES[1]){
+    def environment = TAG_NAMES[1]
+    def url = APP_URLS[1]
+    try{
+      timeout(time:3, unit: 'DAYS'){ input "Deploy to ${environment}?"}
+    }catch(error){
+      // The following check will determine whether or not it was a timeout
+      // vs being aborted
+      node{
+        slackNotify(
+          "Deployment to ${environment} aborted 😕",
+          "Deployment of the ${APP_NAME} app to ${environment} was aborted for build #${currentBuild.number}",
+          'warning',
+          env.SLACK_HOOK,
+          SLACK_DEV_CHANNEL,
+          [
+            [
+              type: "button",
+              text: "View Build",
+              style:"danger",            
+              url: "${currentBuild.absoluteUrl}/console"
+            ]
+          ])
+        }
+        throw error         
+    }
+
     node{
-      openshiftTag destStream: IMAGESTREAM_NAME, verbose: 'true', destTag: TAG_NAMES[0], srcStream: IMAGESTREAM_NAME, srcTag: "${IMAGE_HASH}"
-    }
+      openshiftTag destStream: IMAGESTREAM_NAME, verbose: 'true', destTag: environment, srcStream: IMAGESTREAM_NAME, srcTag: "${IMAGE_HASH}"
+      slackNotify(
+          "New Version in ${environment} 🚀",
+          "A new version of the ${APP_NAME} is now in ${environment}",
+          'good',
+          env.SLACK_HOOK,
+          SLACK_MAIN_CHANNEL,
+          [
+            [
+              type: "button",
+              text: "View New Version",           
+              url: "${url}"
+            ],
+          ])
+    }  
   }
-
-  stage('deploy-' + TAG_NAMES[1]){
-    timeout(time:3, unit: 'DAYS'){ input "Deploy to test?"}
-    node{
-      openshiftTag destStream: IMAGESTREAM_NAME, verbose: 'true', destTag: TAG_NAMES[1], srcStream: IMAGESTREAM_NAME, srcTag: "${IMAGE_HASH}"
-    }
-  }
-
-  // Need a pipeline stage for prod
-
-}
-else {
-  stage('No Changes') {      
+}else{
+  stage('No Changes to Build 👍'){
     currentBuild.result = 'SUCCESS'
   }
 }
+
+
