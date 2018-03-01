@@ -20,8 +20,8 @@ def APP_URLS = [
 def ARTIFACT_BUILD = APP_NAME+'-artifacts-build'
 def RUNTIME_BUILD = APP_NAME+'-nginx-runtime-build'
 def IMAGESTREAM_NAME = APP_NAME
-def SLACK_DEV_CHANNEL="@colter.mcquay"
-def SLACK_MAIN_CHANNEL="@colter.mcquay"
+def SLACK_DEV_CHANNEL="#sheriffscheduling_dev"
+def SLACK_MAIN_CHANNEL="#sheriff_scheduling"
 
 def hasRepoChanged = false;
 node{
@@ -40,7 +40,7 @@ node{
     hasRepoChanged = false;
   }
 }
- 
+
 if(hasRepoChanged){
   stage('Build ' + APP_NAME) {
     node{
