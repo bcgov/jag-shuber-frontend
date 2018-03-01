@@ -46,7 +46,7 @@ if(hasRepoChanged){
     node{
       try{
         echo "Building: " + ARTIFACT_BUILD
-        //openshiftBuild bldCfg: ARTIFACT_BUILD, showBuildLogs: 'true'
+        openshiftBuild bldCfg: ARTIFACT_BUILD, showBuildLogs: 'true'
         
         // the RUNTIME_BUILD should be triggered by the build above, but manually starting to match BCdevops 
         echo "Assembling Runtime: " + RUNTIME_BUILD
@@ -136,7 +136,7 @@ if(hasRepoChanged){
           "Deployment of the ${APP_NAME} app to ${environment} was aborted for build #${currentBuild.number}",
           'warning',
           env.SLACK_HOOK,
-          SLACK_DEV_CHANNEL,
+          SLACK_MAIN_CHANNEL,
           [
             [
               type: "button",
