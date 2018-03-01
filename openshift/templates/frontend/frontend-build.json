@@ -3,21 +3,24 @@
     "apiVersion": "v1",
     "metadata": {
         "name": "frontend",
-        "creationTimestamp": null
+        "creationTimestamp": null,
+        "labels": {
+            "app": "${NAME}"
+        }
     },
     "objects": [
         {
             "kind": "ImageStream",
             "apiVersion": "v1",
             "metadata": {
-                "name": "${NAME}"
+                "name": "${NAME}-artifacts"
             }
         },
         {
             "kind": "BuildConfig",
             "apiVersion": "v1",
             "metadata": {
-                "name": "${NAME}-build",
+                "name": "${NAME}-artifacts-build",
                 "creationTimestamp": null,
                 "labels": {
                     "app": "${NAME}"
@@ -44,19 +47,8 @@
                     "sourceStrategy": {
                         "from": {
                             "kind": "ImageStreamTag",
-                            "namespace": "${OPENSHIFT_NAMESPACE}",
-                            "name": "nodejs:6"
+                            "name": "${BUILDER_IMAGE}:latest"
                         },
-                        "runtimeImage": {
-                            "kind": "ImageStreamTag",
-                            "name": "nginx-runtime:latest"
-                        },
-                        "runtimeArtifacts": [
-                            {
-                                "sourcePath": "/opt/app-root/src/dist/",
-                                "destinationDir": "app"
-                            }
-                        ],
                         "env": [
                             {
                                 "name": "NPM_MIRROR",
@@ -68,12 +60,101 @@
                 "output": {
                     "to": {
                         "kind": "ImageStreamTag",
-                        "name": "${NAME}:${OUTPUT_IMAGE_TAG}"
+                        "name": "${NAME}-artifacts:${OUTPUT_IMAGE_TAG}"
                     }
+                },
+                "resources": {}
+            }
+        },
+        {
+            "kind": "ImageStream",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "${NAME}"
+            }
+        },
+        {
+            "kind": "BuildConfig",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "${NAME}-${RUNTIME_IMAGE}-build",
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "${NAME}"
                 }
             },
-            "status": {
-                "lastVersion": 0
+            "spec": {
+                "runPolicy": "Parallel",
+                "completionDeadlineSeconds": 1800,
+                "triggers": [
+                    {
+                        "type": "ImageChange"
+                    }
+                ],
+                "source": {
+                    "dockerfile": "FROM ${NAME}-artifacts:latest\nCOPY * /tmp/app/dist/\nCMD  /usr/libexec/s2i/run",
+                    "images": [
+                        {
+                            "from": {
+                                "kind": "ImageStreamTag",
+                                "name": "${NAME}-artifacts:latest"
+                            },
+                            "paths": [
+                                {
+                                    "destinationDir": "tmp",
+                                    "sourcePath": "/opt/app-root/src/dist/."
+                                }
+                            ]
+                        }
+                    ],
+                    "type": "Dockerfile"
+                },
+                "strategy": {
+                    "dockerStrategy": {
+                        "from": {
+                            "kind": "ImageStreamTag",
+                            "name": "${RUNTIME_IMAGE}:latest"
+                        }
+                    },
+                    "type": "Docker"
+                },
+                "output": {
+                    "to": {
+                        "kind": "ImageStreamTag",
+                        "name": "${NAME}:${OUTPUT_IMAGE_TAG}"
+                    }
+                },
+                "resources": {}
+            }
+        },
+        {
+            "kind": "BuildConfig",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "${NAME}-pipeline",
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "${NAME}"
+                }
+            },
+            "spec": {
+                "runPolicy": "Parallel",
+                "completionDeadlineSeconds": 1800,
+                "triggers": [],
+                "source": {
+                    "type": "Git",
+                    "git": {
+                        "ref": "${GIT_REF}",
+                        "uri": "${GIT_REPO_URL}"
+                    },
+                    "contextDir": "${SOURCE_CONTEXT_DIR}"
+                },
+                "strategy": {
+                    "jenkinsPipelineStrategy": {
+                        "jenkinsfilePath": "Jenkinsfile"
+                    },
+                    "type": "JenkinsPipeline"
+                }
             }
         }
     ],
@@ -86,11 +167,18 @@
             "value": "frontend"
         },
         {
-            "name": "OPENSHIFT_NAMESPACE",
-            "displayName": "Open Shift Namespace",
-            "description": "The OpenShift Namespace where the ImageStream resides.",
+            "name": "BUILDER_IMAGE",
+            "displayName": "Builder Image",
+            "description": "The image to use as the Builder Image.",
             "required": true,
-            "value": "openshift"
+            "value": "yarn-builder"
+        },
+        {
+            "name": "RUNTIME_IMAGE",
+            "displayName": "Runtime Image",
+            "description": "The image to use as the applications runtime.",
+            "required": true,
+            "value": "nginx-runtime"
         },
         {
             "name": "GIT_REPO_URL",
@@ -112,6 +200,13 @@
             "description": "The source context directory.",
             "required": false,
             "value": ""
+        },
+        {
+            "name": "JENKINS_FILEPATH",
+            "displayName": "Jenkins File Path",
+            "description": "Path, relative to the context directory to find the Jenkinsfile",
+            "required": true,
+            "value": "Jenkinsfile"
         },
         {
             "name": "OUTPUT_IMAGE_TAG",

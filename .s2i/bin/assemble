@@ -59,14 +59,8 @@ if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
   mv /tmp/artifacts/* ./
 fi
 
-echo "---> Installing yarn"
-npm install -g yarn -s &>/dev/null
-
 echo "---> Installing application dependencies"
 yarn install
 
 echo "---> Building application from source"
 yarn build
-
-# Fix source directory permissions
-# fix-permissions ./
