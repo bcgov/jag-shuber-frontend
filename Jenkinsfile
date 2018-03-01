@@ -61,7 +61,7 @@ if(hasRepoChanged){
       }catch(error){
         slackNotify(
           'Build Broken 🤕',
-          "The latest ${APP_NAME} build seems to have broken\n\"${error.message}\"",
+          "The latest ${APP_NAME} build seems to have broken\n'${error.message}'",
           'danger',
           env.SLACK_HOOK,
           SLACK_DEV_CHANNEL,
@@ -106,7 +106,7 @@ if(hasRepoChanged){
       }catch(error){
         slackNotify(
           "Couldn't deploy to ${environment} 🤕",
-          "The latest deployment of the ${APP_NAME} to ${environment} seems to have failed\n\"${error.message}\"",
+          "The latest deployment of the ${APP_NAME} to ${environment} seems to have failed\n'${error.message}'",
           'danger',
           env.SLACK_HOOK,
           SLACK_DEV_CHANNEL,
