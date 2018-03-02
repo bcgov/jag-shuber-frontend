@@ -43,13 +43,7 @@ export default class AssignmentDefaultList extends React.Component<AssignmentDef
                                     
                                     <tr>
                                         <td> <WorkSectionIndicator workSectionId={assignment.workSectionId}/> </td>
-                                        <td>
-                                           
-                                            {/* <WorkSectionIndicator workSectionId={assignment.workSectionId}/> */}
-                                            {WORK_SECTIONS[assignment.workSectionId]}
-                                        
-                                            
-                                        </td>
+                                        <td> {WORK_SECTIONS[assignment.workSectionId]}</td>
                                         <td><strong>{assignment.title}</strong></td>
                                         <td>
                                             {assignment.recurrenceInfo &&
