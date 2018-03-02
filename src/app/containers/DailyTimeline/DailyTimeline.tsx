@@ -24,9 +24,10 @@ import {
 import * as moment from 'moment'
 import './DailyTimeline.css'
 import AssignmentDutyCard from '../../components/AssignmentDutyCard';
-import { IdType } from '../../api/Api';
+import { IdType, WorkSectionId } from '../../api/Api';
 import SheriffDutyBarList from '../../components/SheriffDutyBarList/SheriffDutyBarList';
 import ConnectedSheriffDutyBar from '../SheriffDutyBar';
+import { getWorkSectionColour } from '../../api/utils';
 
 
 
@@ -91,8 +92,13 @@ class DailyTimeline extends React.Component<DailyTimelineProps & DailyTimelineSt
         const newVisibleTimeEnd = moment.isMoment(visibleTimeEnd) ? visibleTimeEnd.valueOf() : visibleTimeEnd;
         const newVisibleTimeStart = moment.isMoment(visibleTimeStart) ? visibleTimeStart.valueOf() : visibleTimeStart;
 
+        const workSectionMap = assignments.reduce<{ [key: string]: WorkSectionId }>((map, assignment) => {
+            map[assignment.id] = assignment.workSectionId;
+            return map;
+        }, {});
+
         return (
-            <div className="dailyTimeline">
+            <div className="daily-timeline">
                 <AssignmentTimeline
                     items={assignmentDuties}
                     groups={assignments}
@@ -104,12 +110,15 @@ class DailyTimeline extends React.Component<DailyTimelineProps & DailyTimelineSt
                     itemRenderer={(duty) => (
                         <AssignmentDutyCard
                             duty={duty}
+                            style={{
+                                backgroundColor: getWorkSectionColour(workSectionMap[duty.assignmentId])
+                            }}
                             onDropSheriff={({ badgeNumber: sheriffId }) => linkSheriff && linkSheriff({ sheriffId, dutyId: duty.id })}
                             SheriffAssignmentRenderer={(p) => (
                                 <SheriffDutyBarList
                                     {...p}
                                     BarRenderer={ConnectedSheriffDutyBar}
-                                    onRemove={(sheriffId) =>{
+                                    onRemove={(sheriffId) => {
                                         unlinkSheriff({ sheriffId, dutyId: duty.id })
                                     }} />
                             )}

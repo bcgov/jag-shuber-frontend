@@ -54,7 +54,7 @@ export default class Timeline<TItem, TGroup, TOwnProps={}> extends React.PureCom
             return groupRenderer(group);
         } else {
             return (
-                <div>{title}</div>
+                <div style={{fontSize:16}}>{title}</div>
             )
         }
     }

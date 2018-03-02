@@ -12,11 +12,8 @@ import {
     ReactCalendarTimelineGroup,
     ReactCalendarTimelineItem
 } from "react-calendar-timeline";
-// import { default as AssignmentTimelineCard } from './AssignmentTimelineCard'
-// import AssignmentDropRowExtension from './AssignmentDropRowExtension';
 import toTitleCase from '../../infrastructure/toTitleCase';
 import AssignmentDutyCard from '../AssignmentDutyCard';
-// import AssignmentRowActionsExtension from './AssignmentRowActionsExtension';
 
 
 type TimelineAssignment = ReactCalendarTimelineGroup & Assignment;
@@ -72,12 +69,6 @@ export default class AssignmentTimeline extends Timeline<AssignmentDuty, Assignm
     protected renderGroup(group: TimelineAssignment) {
         return super.renderGroup(group);
     }
-
-    // protected getExtensions() {
-    //     return (
-    //         <AssignmentRowActionsExtension />
-    //     )
-    // }
 
 }
 
