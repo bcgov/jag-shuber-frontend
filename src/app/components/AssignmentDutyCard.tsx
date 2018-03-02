@@ -7,13 +7,13 @@ import SheriffDropTarget from '../containers/SheriffDropTarget';
 import SheriffDutyBarList from './SheriffDutyBarList/SheriffDutyBarList';
 import AssignmentDutyActionsPanel from './AssignmentDutyActionsPanel/AssignmentDutyActionsPanel';
 import AssignmentDutyEditModal from '../containers/AssignmentDutyEditModal';
-import WorkSectionIndicator from './WorkSectionIndicator/WorkSectionIndicator';
 
 export interface AssignmentDutyCardProps {
     duty: AssignmentDuty
     canDropSheriff?: (sheriff: Sheriff) => boolean;
     onDropSheriff?: (sheriff: Sheriff) => void;
-    SheriffAssignmentRenderer?: React.ComponentType<SheriffAssignmentRendererProps>
+    SheriffAssignmentRenderer?: React.ComponentType<SheriffAssignmentRendererProps>;
+    style?: React.CSSProperties;
 }
 
 export interface SheriffAssignmentRendererProps {
@@ -39,26 +39,26 @@ export default class AssignmentDutyCard extends React.PureComponent<AssignmentDu
                 sheriffIds = [],
                 sheriffsRequired = 0
             } = {},
+            style = {}
         } = this.props;
 
-        const backgroundColor = '#2CB7BA';
         return (
             <SheriffDropTarget
                 onDropItem={(s) => onDropSheriff && onDropSheriff(s)}
                 canDropItem={canDropSheriff}
                 style={{
-                    borderWidth: 10,
-                    backgroundColor,
+                    backgroundColor: '#96c0e6',
                     flex: '1',
                     zindex: 70,
-                    position: 'relative'
+                    position: 'relative',
+                    ...style
+
                 }}
                 computeStyle={!onDropSheriff ? (s: any) => ({}) : undefined}>
                 <SheriffAssignmentRenderer
                     sheriffIds={sheriffIds}
                     sheriffsRequired={sheriffsRequired} />
                 <AssignmentDutyActionsPanel>
-                    <WorkSectionIndicator workSectionId='COURTS' />
                     <AssignmentDutyEditModal dutyId={id} />
                 </AssignmentDutyActionsPanel>
             </SheriffDropTarget>
