@@ -10,6 +10,7 @@ import {
 } from '../api';
 import AssignmentEditModal from '../containers/AssignmentEditModal';
 import AssignmentDeleteModal from '../containers/AssignmentDeleteModal';
+import WorkSectionIndicator from './WorkSectionIndicator/WorkSectionIndicator';
 
 export interface AssignmentDefaultListProps {
     assignments: Assignment[];
@@ -24,20 +25,31 @@ export default class AssignmentDefaultList extends React.Component<AssignmentDef
                     <span className="text-danger">No default assignments recorded. </span>
                 )}
                 {assignments.length > 0 && (
-                    <Table responsive striped>
+                    <Table responsive striped >
                         <thead>
                             <tr>
+                                <th style={{width:25}} ></th>
                                 <th className="text-left">Work Section</th>
                                 <th className="text-left">Assignment</th>
                                 <th className="text-left">Default Duties <Badge># of Sheriffs</Badge></th>
+                                <th></th>
+                                <th></th>
 
                             </tr>
                         </thead>
                         <tbody>
                             {assignments.map((assignment) => {
                                 return (
+                                    
                                     <tr>
-                                        <td>{WORK_SECTIONS[assignment.workSectionId]}</td>
+                                        <td> <WorkSectionIndicator workSectionId={assignment.workSectionId}/> </td>
+                                        <td>
+                                           
+                                            {/* <WorkSectionIndicator workSectionId={assignment.workSectionId}/> */}
+                                            {WORK_SECTIONS[assignment.workSectionId]}
+                                        
+                                            
+                                        </td>
                                         <td><strong>{assignment.title}</strong></td>
                                         <td>
                                             {assignment.recurrenceInfo &&

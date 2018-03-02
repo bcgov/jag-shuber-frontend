@@ -12,16 +12,16 @@ export default class WorkSectionIndicator extends React.PureComponent<WorkSectio
 
         switch (workSectionId) {
             case "COURTS":
-                colour = 'yellow';
+            colour = '#2CB7BA';
                 break;
             case "ESCORTS":
-                colour = 'darkorange'
+                colour = '#F3BD48'
                 break;
             case "JAIL":
-                colour = 'purple';
+                colour = '#804A86';
                 break;
             case "OTHER":
-                colour = 'black';
+                colour = "#B74343"
                 break;
         }
         return colour;
