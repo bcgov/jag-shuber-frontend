@@ -12,7 +12,8 @@ export interface AssignmentDutyCardProps {
     duty: AssignmentDuty
     canDropSheriff?: (sheriff: Sheriff) => boolean;
     onDropSheriff?: (sheriff: Sheriff) => void;
-    SheriffAssignmentRenderer?: React.ComponentType<SheriffAssignmentRendererProps>
+    SheriffAssignmentRenderer?: React.ComponentType<SheriffAssignmentRendererProps>;
+    style?: React.CSSProperties;
 }
 
 export interface SheriffAssignmentRendererProps {
@@ -37,19 +38,21 @@ export default class AssignmentDutyCard extends React.PureComponent<AssignmentDu
                 id = -1,
                 sheriffIds = [],
                 sheriffsRequired = 0
-            } = {}
+            } = {},
+            style = {}
         } = this.props;
 
-        const backgroundColor = '#96c0e6';
         return (
             <SheriffDropTarget
                 onDropItem={(s) => onDropSheriff && onDropSheriff(s)}
                 canDropItem={canDropSheriff}
                 style={{
-                    backgroundColor,
+                    backgroundColor: '#96c0e6',
                     flex: '1',
                     zindex: 70,
-                    position: 'relative'
+                    position: 'relative',
+                    ...style
+
                 }}
                 computeStyle={!onDropSheriff ? (s: any) => ({}) : undefined}>
                 <SheriffAssignmentRenderer

@@ -14,8 +14,8 @@ export default class SheriffListCard extends React.PureComponent<SheriffListCard
         const { firstName, lastName } = sheriff;
         return (
             <div style={{width:200, paddingTop:2, paddingRight:2, paddingLeft:2}}>
-                <ListGroupItem style={{borderColor:'#002663', borderWidth:3}} >
-                    <h3>{lastName}, {firstName.charAt(0)}</h3>                 
+                <ListGroupItem style={{borderColor:'#002663', borderWidth:3, fontSize:16}} >
+                    {lastName}, {firstName.charAt(0)}                 
                 </ListGroupItem>
             </div>
         );

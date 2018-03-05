@@ -19,7 +19,7 @@ export default class AssignmentDutyEditModal extends React.PureComponent<Assignm
             <div>                
                 <ModalWrapper
                     title="Edit Duty"
-                    showButton={({handleShow})=><Button bsSize="xsmall" onClick={()=>handleShow()}><Glyphicon  glyph="pencil" /></Button>}
+                    showButton={({handleShow})=><Button bsStyle="link" bsSize="medium" onClick={()=>handleShow()}><Glyphicon  glyph="pencil" style={{color:'white'}}/></Button>}
                     body={({handleClose})=>{
                         return (
                             <AssignmentDutyEditForm id={dutyId} onSubmitSuccess={handleClose}/>

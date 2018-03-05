@@ -28,9 +28,9 @@ export default class Navigation extends React.Component<NavigationProps, any>{
                         </NavbarBrand>
                     </Navbar.Header>
                     <Nav bsStyle='tabs'>
-                        <NavigationLink exactMatch to="/" label="Timeline" />
-                        <NavigationLink to="/sheriffs/manage" label="Manage Sheriffs" />   
-                        <NavigationLink to="/assignments/manage/default" label="Manage Default Assignments" /> 
+                        <NavigationLink exactMatch to="/" label="Duty Roster" />
+                        <NavigationLink to="/assignments/manage/default" label="Default Assignments" /> 
+                        <NavigationLink to="/sheriffs/manage" label="Sheriffs" />   
                     </Nav>
                 </Navbar>
                 
