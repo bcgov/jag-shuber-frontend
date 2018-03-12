@@ -130,9 +130,10 @@ export default class NewClient implements API {
         return returnVal;
     }
     async createAssignmentDuty(duty: Partial<AssignmentDuty>): Promise<AssignmentDuty> {
-        duty.id = this.getId();
-        assignmentDuties.push(duty as AssignmentDuty);
-        return duty as AssignmentDuty;
+        let dutyToAdd = duty as AssignmentDuty;
+        dutyToAdd.id = this.getId();
+        assignmentDuties.push(dutyToAdd);
+        return dutyToAdd;
     }
 
     async updateAssignmentDuty(duty: Partial<AssignmentDuty>): Promise<AssignmentDuty> {
