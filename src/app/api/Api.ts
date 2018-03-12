@@ -29,9 +29,9 @@ export namespace DaysOfWeek {
     export function getDisplayValues(value: DaysOfWeek): string[] {
         let dayDisplay = displayEnum(DaysOfWeek, value);
 
-        const weekdaysIndex = dayDisplay.indexOf("Weekdays");
-        const satIndex = dayDisplay.indexOf("Sat");
-        const sunIndex = dayDisplay.indexOf("Sun");
+        const weekdaysIndex = dayDisplay.indexOf('Weekdays');
+        const satIndex = dayDisplay.indexOf('Sat');
+        const sunIndex = dayDisplay.indexOf('Sun');
 
         if (weekdaysIndex > -1) {
             if (satIndex > -1 || sunIndex > -1) {
@@ -45,8 +45,8 @@ export namespace DaysOfWeek {
 
 
 export const BLANK_SHERIFF_LOCATION: SheriffLocation = {
-    courthouseId: "",
-    regionId: ""
+    courthouseId: '',
+    regionId: ''
 }
 
 export const BLANK_SHERIFF: Sheriff = {
@@ -55,11 +55,11 @@ export const BLANK_SHERIFF: Sheriff = {
     firstName: "",
     lastName: "",
     badgeNumber: -1,
-    imageUrl: "/img/avatar.png",
+    imageUrl: '/img/avatar.png',
     training: [{
-        trainingType: "",
-        certificationDate: "",
-        expiryDate: "",
+        trainingType: '',
+        certificationDate: '',
+        expiryDate: '',
     }],
     permanentLocation: BLANK_SHERIFF_LOCATION,
     currentLocation: BLANK_SHERIFF_LOCATION,
@@ -120,23 +120,23 @@ export interface BaseAssignment {
 }
 
 export interface CourtAssignment extends BaseAssignment {
-    workSectionId: "COURTS";
+    workSectionId: 'COURTS';
     courtroomId: IdType;
 }
 
 export interface JailAssignment extends BaseAssignment {
-    workSectionId: "JAIL";
+    workSectionId: 'JAIL';
     jailRoleId: IdType;
 }
 
 export interface EscortAssignment extends BaseAssignment {
-    workSectionId: "ESCORTS";
+    workSectionId: 'ESCORTS';
     runId: IdType;
 }
 
 export interface OtherAssignment extends BaseAssignment {
     alternateAssignmentId: IdType;
-    workSectionId: "OTHER";
+    workSectionId: 'OTHER';
 }
 
 export interface AssignmentDutyDetails {

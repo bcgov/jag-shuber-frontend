@@ -1,5 +1,5 @@
-import * as assignmentRequests from './requests/assignments'
-import * as assignmentDutyRequests from './requests/assignmentDuties'
+import * as assignmentRequests from './requests/assignments';
+import * as assignmentDutyRequests from './requests/assignmentDuties';
 import { IdType } from '../../api';
 import { ThunkAction } from '../../store';
 import { getAssignmentDuty } from './selectors';

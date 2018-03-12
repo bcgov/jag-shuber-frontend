@@ -8,7 +8,8 @@ import {
     Courtroom,
     Region,
     AssignmentDuty,
-    IdType
+    IdType,
+    Shift
 } from "../Api";
 import arrayToMap from '../../infrastructure/arrayToMap'
 import {
@@ -24,20 +25,18 @@ import {
     JAIL_ROLES,
     ALTERNATE_ASSIGNMENTS,
     sheriffShifts
-} from "./MockData";
+} from './MockData';
 import {
     isCourtAssignment,
     isJailAssignment,
     isEscortAssignment,
     isOtherAssignment
 } from '../utils';
-import { randomDelay } from "../PromiseExtensions";
-import { Shift } from "../index";
-
+import { randomDelay } from '../PromiseExtensions';
 
 // Helpers
 function getAssignmentTitle(assignment: Partial<Assignment>): string {
-    let assignmentTitle = "Assignment Title";
+    let assignmentTitle = 'Assignment Title';
 
     if (isCourtAssignment(assignment)) {
         assignmentTitle = COURTROOMS[assignment.courtroomId];
@@ -55,7 +54,6 @@ function getAssignmentTitle(assignment: Partial<Assignment>): string {
     return assignmentTitle;
 }
 
-
 export default class NewClient implements API {
     private increasingId = 30;
 
@@ -71,7 +69,7 @@ export default class NewClient implements API {
 
         // This is a hack to throw in a profile picture
         if (!newSheriff.imageUrl) {
-            newSheriff.imageUrl = "/img/avatar.png"
+            newSheriff.imageUrl = '/img/avatar.png'
         }
         newSheriff.id = this.getId();
         newSheriff.title = `${newSheriff.lastName}, ${newSheriff.firstName}`;
@@ -102,7 +100,7 @@ export default class NewClient implements API {
     async updateAssignment(assignment: Partial<Assignment>): Promise<Assignment> {
         await randomDelay();
         if (assignment.id == null) {
-            throw Error("No Template Id Specified");
+            throw Error('No Template Id Specified');
         }
         let assignmentToUpdate = assignment as Assignment;
         assignmentToUpdate.title = getAssignmentTitle(assignment);
@@ -117,7 +115,7 @@ export default class NewClient implements API {
     }
     async deleteAssignment(assignmentId: number): Promise<void> {
         if (assignmentId == null) {
-            throw new Error("No ID specified");
+            throw new Error('No ID specified');
         }
 
         const assignmentIndex = assignments.findIndex((value) => value.id == assignmentId);
@@ -132,13 +130,15 @@ export default class NewClient implements API {
         return returnVal;
     }
     async createAssignmentDuty(duty: Partial<AssignmentDuty>): Promise<AssignmentDuty> {
-        throw new Error("Method not implemented.");
+        duty.id = this.getId();
+        assignmentDuties.push(duty as AssignmentDuty);
+        return duty as AssignmentDuty;
     }
 
     async updateAssignmentDuty(duty: Partial<AssignmentDuty>): Promise<AssignmentDuty> {
         await randomDelay();
         if (duty.id == null) {
-            throw Error("No Template Id Specified");
+            throw Error('No Template Id Specified');
         }
         let dutyToUpdate = duty as AssignmentDuty;
 
@@ -151,7 +151,7 @@ export default class NewClient implements API {
     }
 
     async deleteAssignmentDuty(dutyId: number): Promise<void> {
-        throw new Error("Method not implemented.");
+        throw new Error('Method not implemented.');
     }
     async getTrainingTypes(): Promise<TrainingType[]> {
         return training;
@@ -160,7 +160,7 @@ export default class NewClient implements API {
         return courthouses;
     }
     async getCourthousesByRegion(regionId: number): Promise<Courthouse[]> {
-        throw new Error("Method not implemented.");
+        throw new Error('Method not implemented.');
     }
     async getRegions(): Promise<Region[]> {
         return regions;
@@ -169,7 +169,7 @@ export default class NewClient implements API {
         return courtrooms;
     }
     async getCourtroomsByCourthouse(courthouseId: number): Promise<Courtroom[]> {
-        throw new Error("Method not implemented.");
+        throw new Error('Method not implemented.');
     }
 
     async getShifts(): Promise<Shift[]> {
