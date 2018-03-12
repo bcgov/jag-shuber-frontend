@@ -1,9 +1,9 @@
 import RequestAction from '../../../infrastructure/RequestAction';
 import { ThunkExtra } from '../../../store';
 import arrayToMap from '../../../infrastructure/arrayToMap';
-import { 
-    STATE_KEY, 
-    AssignmentModuleState 
+import {
+    STATE_KEY,
+    AssignmentModuleState
 } from '../common';
 import {
     AssignmentDutyMap,
@@ -25,7 +25,8 @@ class AssignmentDutyMapRequest extends RequestAction<void, AssignmentDutyMap, As
 export const assignmentDutyMapRequest = new AssignmentDutyMapRequest();
 
 // Assignment Template Create
-class CreateAssignmentDutyRequest extends RequestAction<Partial<AssignmentDuty>, AssignmentDuty, AssignmentModuleState> {
+class CreateAssignmentDutyRequest extends
+    RequestAction<Partial<AssignmentDuty>, AssignmentDuty, AssignmentModuleState> {
     constructor(namespace = STATE_KEY, actionName = 'createAssignmentDuty') {
         super(namespace, actionName);
     }
@@ -34,7 +35,8 @@ class CreateAssignmentDutyRequest extends RequestAction<Partial<AssignmentDuty>,
         return newAssignment;
     }
 
-    reduceSuccess(moduleState: AssignmentModuleState, action: { type: string, payload: AssignmentDuty }): AssignmentModuleState {
+    reduceSuccess(moduleState: AssignmentModuleState, action: { type: string, payload: AssignmentDuty })
+        : AssignmentModuleState {
         // Call the super's reduce success and pull out our state and
         // the assignmentMap state
         const {
@@ -67,7 +69,7 @@ export const createAssignmentDutyRequest = new CreateAssignmentDutyRequest();
 // Assignment Template Edit
 class UpdateAssignmentDutyRequest extends CreateAssignmentDutyRequest {
     constructor(namespace = STATE_KEY, actionName = 'updateAssignmentDuty') {
-        super(namespace, actionName);        
+        super(namespace, actionName);
     }
 
     public async doWork(assignment: Partial<AssignmentDuty>, { api }: ThunkExtra): Promise<AssignmentDuty> {

@@ -9,11 +9,12 @@ import { IdType } from '../api';
 
 export interface AssignmentDutyEditModalProps {
     dutyId: IdType;
+    assignmentId: IdType;
 }
 
 export default class AssignmentDutyEditModal extends React.PureComponent<AssignmentDutyEditModalProps>{
     render() {
-        const { dutyId } = this.props;
+        const { dutyId, assignmentId } = this.props;
         
         return (
             <div>                
@@ -22,7 +23,7 @@ export default class AssignmentDutyEditModal extends React.PureComponent<Assignm
                     showButton={({handleShow})=><Button bsStyle="link" bsSize="medium" onClick={()=>handleShow()}><Glyphicon  glyph="pencil" style={{color:'white'}}/></Button>}
                     body={({handleClose})=>{
                         return (
-                            <AssignmentDutyEditForm id={dutyId} onSubmitSuccess={handleClose}/>
+                            <AssignmentDutyEditForm id={dutyId} onSubmitSuccess={handleClose} assignmentId={assignmentId}/>
                         )}}
                     footerComponent = {<AssignmentDutyEditForm.SubmitButton bsStyle="primary">Save</AssignmentDutyEditForm.SubmitButton>}
                 />

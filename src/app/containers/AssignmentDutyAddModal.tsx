@@ -5,9 +5,14 @@ import {
     Glyphicon
 } from 'react-bootstrap';
 import ModalWrapper from './ModalWrapper';
+import { IdType } from '../api';
 
-export default class AssignmentDutyAddModal extends React.Component {
+export interface AssignmentDutyAddModalProps {
+    assignmentId: IdType;
+}
+export default class AssignmentDutyAddModal extends React.Component<AssignmentDutyAddModalProps> {
     render() {
+        const { assignmentId } = this.props;
         return (
             <ModalWrapper
                 title="Add a Duty"
@@ -16,7 +21,7 @@ export default class AssignmentDutyAddModal extends React.Component {
                         <Glyphicon glyph="plus" />
                     </Button>}
                 body={({ handleClose }) =>
-                    <AssignmentDutyCreateForm onSubmitSuccess={handleClose} />}
+                    <AssignmentDutyCreateForm onSubmitSuccess={handleClose} assignmentId={assignmentId} />}
                 footerComponent={
                     <AssignmentDutyCreateForm.SubmitButton bsStyle="primary">
                         Save

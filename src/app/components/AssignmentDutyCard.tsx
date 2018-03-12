@@ -37,8 +37,10 @@ export default class AssignmentDutyCard extends React.PureComponent<AssignmentDu
             duty: {
                 id = -1,
                 sheriffIds = [],
-                sheriffsRequired = 0
+                sheriffsRequired = 0,
+                assignmentId = -1
             } = {},
+            
             style = {}
         } = this.props;
 
@@ -59,7 +61,7 @@ export default class AssignmentDutyCard extends React.PureComponent<AssignmentDu
                     sheriffIds={sheriffIds}
                     sheriffsRequired={sheriffsRequired} />
                 <AssignmentDutyActionsPanel>
-                    <AssignmentDutyEditModal dutyId={id} />
+                    <AssignmentDutyEditModal dutyId={id} assignmentId={assignmentId}/>
                 </AssignmentDutyActionsPanel>
             </SheriffDropTarget>
         )

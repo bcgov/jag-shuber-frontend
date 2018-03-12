@@ -8,10 +8,10 @@ export interface AssignmentCardProps {
 
 export default class AssignmentCard extends React.PureComponent<AssignmentCardProps, {}> {
     render() {
-        const { assignment: { title } } = this.props;
+        const { assignment: { title, id } } = this.props;
         return (
             <div>
-                <AssignmentDutyAddModal />
+                <AssignmentDutyAddModal assignmentId={id}/>
                 {title}
             </div>
         );
