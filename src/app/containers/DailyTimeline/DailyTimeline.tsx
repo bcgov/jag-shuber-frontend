@@ -24,7 +24,7 @@ import ConnectedSheriffDutyBar from '../SheriffDutyBar';
 import { getWorkSectionColour } from '../../api/utils';
 import AssignmentTimeline from '../../components/AssignmentTimeline/AssignmentTimeline';
 import { TimelineProps } from '../../components/Timeline/Timeline';
-import AssignmentCard from '../../components/AssignmentCard';
+import AssignmentCard from '../../components/AssignmentCard/AssignmentCard';
 
 interface DailyTimelineProps extends TimelineProps {
     allowTimeDrag?: boolean;
