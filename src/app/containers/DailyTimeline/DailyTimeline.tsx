@@ -24,7 +24,6 @@ import ConnectedSheriffDutyBar from '../SheriffDutyBar';
 import { getWorkSectionColour } from '../../api/utils';
 import AssignmentTimeline from '../../components/AssignmentTimeline/AssignmentTimeline';
 import { TimelineProps } from '../../components/Timeline/Timeline';
-import AssignmentCard from '../../components/AssignmentCard/AssignmentCard';
 
 interface DailyTimelineProps extends TimelineProps {
     allowTimeDrag?: boolean;
@@ -85,9 +84,6 @@ class DailyTimeline extends React.Component<DailyTimelineProps & DailyTimelineSt
                     visibleTimeStart={visibleTimeStart}
                     visibleTimeEnd={visibleTimeEnd}                    
                     itemHeightRatio={.97}
-                    groupRenderer={(assignment) => (
-                        <AssignmentCard assignment={assignment} />
-                    )}
                     itemRenderer={(duty) => (
                         <AssignmentDutyCard
                             duty={duty}

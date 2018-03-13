@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from 'react'
 import {
     AssignmentDuty,
     Sheriff
@@ -21,12 +21,12 @@ export interface SheriffAssignmentRendererProps {
     sheriffsRequired: number;
 }
 
-export default class AssignmentDutyCard extends React.PureComponent<AssignmentDutyCardProps, {}> {
+export default class AssignmentDutyCard extends React.PureComponent<AssignmentDutyCardProps, any>{
 
     private canAssignSheriff(sheriff: Sheriff): boolean {
         const { sheriffIds = [] } = this.props.duty;
         return sheriff && !Number.isNaN(sheriff.badgeNumber)
-            && sheriffIds.indexOf(sheriff.badgeNumber) === -1;
+            && sheriffIds.indexOf(sheriff.badgeNumber) == -1;
     }
 
     render() {
@@ -39,7 +39,6 @@ export default class AssignmentDutyCard extends React.PureComponent<AssignmentDu
                 sheriffIds = [],
                 sheriffsRequired = 0
             } = {},
-            
             style = {}
         } = this.props;
 
@@ -55,15 +54,15 @@ export default class AssignmentDutyCard extends React.PureComponent<AssignmentDu
                     ...style
 
                 }}
-                computeStyle={!onDropSheriff ? (s: {}) => ({}) : undefined}>
+                computeStyle={!onDropSheriff ? (s: any) => ({}) : undefined}>
                 <SheriffAssignmentRenderer
                     sheriffIds={sheriffIds}
-                    sheriffsRequired={sheriffsRequired} 
-                />
+                    sheriffsRequired={sheriffsRequired} />
                 <AssignmentDutyActionsPanel>
                     <AssignmentDutyEditModal dutyId={id} />
                 </AssignmentDutyActionsPanel>
             </SheriffDropTarget>
-        );
+        )
     }
 }
+

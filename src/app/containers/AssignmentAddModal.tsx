@@ -16,13 +16,13 @@ export interface AssignmentAddModalProps {
 export default class AssignmentAddModal extends React.Component<AssignmentAddModalProps>{
     render() {
         const { isDefaultTemplate = false } = this.props;
-        const title = `Add ${isDefaultTemplate===true ? 'Default ' : ''}Assignment`;
+        const title = `Add ${isDefaultTemplate===true ? "Default " : ""}Assignment`;
         return (
             <div>
                 <ModalWrapper
                     title={title}
                     showButton={({ handleShow }) =>
-                        <DropdownButton bsStyle="primary" id="task-type-dropdown" title={title} >
+                        <DropdownButton bsStyle="success" id="task-type-dropdown" title={title} >
                             {
                                 Object.keys(WORK_SECTIONS).map((k, i) => {
                                     return (
@@ -39,8 +39,8 @@ export default class AssignmentAddModal extends React.Component<AssignmentAddMod
                     )}
                     footerComponent={
                         isDefaultTemplate
-                            ? <AssignmentTemplateCreateForm.SubmitButton>Save</AssignmentTemplateCreateForm.SubmitButton>
-                            : <AssignmentCreateForm.SubmitButton>Save</AssignmentCreateForm.SubmitButton>
+                            ? <AssignmentTemplateCreateForm.SubmitButton bsStyle="primary">Save</AssignmentTemplateCreateForm.SubmitButton>
+                            : <AssignmentCreateForm.SubmitButton bsStyle="primary">Save</AssignmentCreateForm.SubmitButton>
                     }
                 />
             </div>
