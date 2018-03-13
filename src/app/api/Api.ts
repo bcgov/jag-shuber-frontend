@@ -4,11 +4,13 @@ import { displayEnum } from '../infrastructure/EnumUtils';
 export type DateType = Date | moment.Moment | string;
 export type StringMap = { [key: string]: string };
 export type IdType = number;
+export type ShiftMap = { [key: number]: Shift };
 export type SheriffMap = { [key: number]: Sheriff };
 export type AssignmentMap = { [key: number]: Assignment };
 export type AssignmentDutyMap = { [key: number]: AssignmentDuty };
 export type WorkSectionId = "COURTS" | "JAIL" | "ESCORTS" | "OTHER";
 export type Assignment = CourtAssignment | JailAssignment | EscortAssignment | OtherAssignment;
+
 
 export enum DaysOfWeek {
     Mon = 1 << 0,
@@ -23,7 +25,7 @@ export enum DaysOfWeek {
 }
 
 export namespace DaysOfWeek {
-    
+
     export function getDisplayValues(value: DaysOfWeek): string[] {
         let dayDisplay = displayEnum(DaysOfWeek, value);
 
@@ -48,6 +50,8 @@ export const BLANK_SHERIFF_LOCATION: SheriffLocation = {
 }
 
 export const BLANK_SHERIFF: Sheriff = {
+    id: -1,
+    title: "",
     firstName: "",
     lastName: "",
     badgeNumber: -1,
@@ -61,6 +65,12 @@ export const BLANK_SHERIFF: Sheriff = {
     currentLocation: BLANK_SHERIFF_LOCATION,
     onDuty: false
 }
+
+export const BLANK_COURTHOUSE: Courthouse = {
+    id: -1,
+    name: '',
+    regionId: -1
+};
 
 export const DEFAULT_RECURRENCE: RecurrenceInfo[] = [
     {
@@ -89,6 +99,8 @@ export interface SheriffLocation {
 }
 
 export interface Sheriff {
+    id: IdType;
+    title: string;
     firstName: string;
     lastName: string;
     badgeNumber: number;
@@ -177,6 +189,15 @@ export interface JailRole {
     title: string;
 }
 
+export interface Shift {
+    id: IdType;
+    sheriffId?: IdType;
+    courthouseId: IdType;
+    workSectionId?: WorkSectionId;
+    startDateTime: DateType;
+    endDateTime: DateType;
+}
+
 export interface API {
     // Sheriffs
     getSheriffs(): Promise<SheriffMap>;
@@ -201,6 +222,12 @@ export interface API {
     getRegions(): Promise<Region[]>;
     getAllCourtrooms(): Promise<Courtroom[]>;
     getCourtroomsByCourthouse(courthouseId: number): Promise<Courtroom[]>;
+
+    //Sheriff Shifts
+    getShifts(): Promise<Shift[]>;
+    updateShift(shiftToUpdate: Partial<Shift>): Promise<Shift>;
+    createShift(newShift: Partial<Shift>): Promise<Shift>;
+    deleteShift(shiftId: IdType): Promise<void>;
 }
 
 

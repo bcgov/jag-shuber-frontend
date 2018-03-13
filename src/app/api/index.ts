@@ -20,8 +20,9 @@ export {
     Region, 
     Courtroom,
     API,
-    IdType
-} from './Api'
+    IdType, 
+    Shift
+} from './Api';
 
 // Todo: We need to create reducers for the following
 export {
@@ -33,8 +34,8 @@ export {
  JAIL_ROLES,
  RUNS,
  ALTERNATE_ASSIGNMENTS
-} from './Mock/MockData'
+} from './Mock/MockData';
 
-import Client from './Mock/MockApi'
+import Client from './Mock/MockApi';
 
 export default new Client();
