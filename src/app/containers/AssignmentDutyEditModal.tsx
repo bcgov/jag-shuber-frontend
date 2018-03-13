@@ -14,17 +14,22 @@ export interface AssignmentDutyEditModalProps {
 export default class AssignmentDutyEditModal extends React.PureComponent<AssignmentDutyEditModalProps>{
     render() {
         const { dutyId } = this.props;
-        
+
         return (
-            <div>                
+            <div>
                 <ModalWrapper
                     title="Edit Duty"
-                    showButton={({handleShow})=><Button bsStyle="link" bsSize="medium" onClick={()=>handleShow()}><Glyphicon  glyph="pencil" style={{color:'white'}}/></Button>}
-                    body={({handleClose})=>{
+                    showButton={
+                        ({ handleShow }) => 
+                            <Button bsStyle="link" bsSize="medium" onClick={() => handleShow()}>
+                                <Glyphicon glyph="pencil" style={{ color: 'white' }} />
+                            </Button>}
+                    body={({ handleClose }) => {
                         return (
-                            <AssignmentDutyEditForm id={dutyId} onSubmitSuccess={handleClose}/>
-                        )}}
-                    footerComponent = {<AssignmentDutyEditForm.SubmitButton bsStyle="primary">Save</AssignmentDutyEditForm.SubmitButton>}
+                            <AssignmentDutyEditForm id={dutyId} onSubmitSuccess={handleClose} />
+                        );
+                    }}
+                    footerComponent={<AssignmentDutyEditForm.SubmitButton>Save</AssignmentDutyEditForm.SubmitButton>}
                 />
             </div>
         );
