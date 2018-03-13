@@ -14,9 +14,7 @@ export default class AssignmentCard extends React.PureComponent<AssignmentCardPr
             <div className="assignment-card" >
                 {title}
                 <div className="assignment-actions">
-                    {/* <div className="add-duty-btn"> */}
                     <AssignmentDutyAddModal assignmentId={id}/>
-                    {/* </div> */}
                 </div>
             </div>            
         );

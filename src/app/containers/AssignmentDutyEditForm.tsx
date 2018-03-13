@@ -25,16 +25,15 @@ const formConfig: ConfigProps<{}, AssignmentDutyFormProps> = {
 
 export interface AssignmentDutyEditFormProps extends AssignmentDutyFormProps {
     id: IdType;
-    assignmentId: IdType;
 }
 
 const mapStateToProps = (state: RootState, props: AssignmentDutyEditFormProps) => {
     const initialAssignmentDuty = getAssignmentDuty(props.id)(state);
     if (initialAssignmentDuty) {
-        const assignment: Assignment = getAssignment(props.assignmentId)(state);
+        const { title }: Assignment = getAssignment(initialAssignmentDuty.assignmentId)(state);
         return {
             initialValues: initialAssignmentDuty, 
-            assignmentTitle: assignment.title
+            assignmentTitle: title
         };
     } else {
         return {};

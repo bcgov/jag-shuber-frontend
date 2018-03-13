@@ -13,7 +13,7 @@ import { IdType } from '../api';
 
 
 // wrapping generic assignment form in redux-form
-const formConfig: ConfigProps<any, AssignmentFormProps> = {
+const formConfig: ConfigProps<{}, AssignmentFormProps> = {
     form: 'EditAssignment',
     onSubmit: (values, dispatch, props) => {
         let updatedAssignment = Object.assign({}, { ...values });
@@ -31,12 +31,11 @@ const mapStateToProps = (state: RootState, props: AssignmentEditFormProps) => {
         return {
             initialValues: initialAssignment,        
             isDefaultTemplate: true
-        }
+        };
+    } else {
+        return {};
     }
-    else {
-        return {}
-    }
-}
+};
 
 // Here we create a class that extends the configured assignment form so that we
 // can add a static SubmitButton member to it to make the API cleaner

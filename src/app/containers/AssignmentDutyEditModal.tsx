@@ -9,23 +9,27 @@ import { IdType } from '../api';
 
 export interface AssignmentDutyEditModalProps {
     dutyId: IdType;
-    assignmentId: IdType;
 }
 
 export default class AssignmentDutyEditModal extends React.PureComponent<AssignmentDutyEditModalProps>{
     render() {
-        const { dutyId, assignmentId } = this.props;
-        
+        const { dutyId } = this.props;
+
         return (
-            <div>                
+            <div>
                 <ModalWrapper
                     title="Edit Duty"
-                    showButton={({handleShow})=><Button bsStyle="link" bsSize="medium" onClick={()=>handleShow()}><Glyphicon  glyph="pencil" style={{color:'white'}}/></Button>}
-                    body={({handleClose})=>{
+                    showButton={
+                        ({ handleShow }) => 
+                            <Button bsStyle="link" bsSize="medium" onClick={() => handleShow()}>
+                                <Glyphicon glyph="pencil" style={{ color: 'white' }} />
+                            </Button>}
+                    body={({ handleClose }) => {
                         return (
-                            <AssignmentDutyEditForm id={dutyId} onSubmitSuccess={handleClose} assignmentId={assignmentId}/>
-                        )}}
-                    footerComponent = {<AssignmentDutyEditForm.SubmitButton>Save</AssignmentDutyEditForm.SubmitButton>}
+                            <AssignmentDutyEditForm id={dutyId} onSubmitSuccess={handleClose} />
+                        );
+                    }}
+                    footerComponent={<AssignmentDutyEditForm.SubmitButton>Save</AssignmentDutyEditForm.SubmitButton>}
                 />
             </div>
         );
