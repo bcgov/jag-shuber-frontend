@@ -7,13 +7,15 @@ import { default as AssignmentDutyForm, AssignmentDutyFormProps } from '../compo
 import { default as FormSubmitButton, SubmitButtonProps } from '../components/FormElements/SubmitButton'
 import { connect } from 'react-redux';
 import { RootState } from '../store';
-import { getAssignmentDuty } from '../modules/assignments/selectors';
+import { getAssignmentDuty, getAssignment } from '../modules/assignments/selectors';
 import { editAssignmentDuty } from '../modules/assignments/actions'
-import { IdType } from '../api';
-
+import { 
+    IdType, 
+    Assignment 
+} from '../api';
 
 // wrapping generic assignment form in redux-form
-const formConfig: ConfigProps<any, AssignmentDutyFormProps> = {
+const formConfig: ConfigProps<{}, AssignmentDutyFormProps> = {
     form: 'EditAssignmentDuty',
     onSubmit: (values, dispatch, props) => {
         let updatedAssignmentDuty = Object.assign({}, { ...values });
@@ -28,12 +30,13 @@ export interface AssignmentDutyEditFormProps extends AssignmentDutyFormProps {
 const mapStateToProps = (state: RootState, props: AssignmentDutyEditFormProps) => {
     const initialAssignmentDuty = getAssignmentDuty(props.id)(state);
     if (initialAssignmentDuty) {
+        const { title }: Assignment = getAssignment(initialAssignmentDuty.assignmentId)(state);
         return {
-            initialValues: initialAssignmentDuty
-        }
-    }
-    else {
-        return {}
+            initialValues: initialAssignmentDuty, 
+            assignmentTitle: title
+        };
+    } else {
+        return {};
     }
 }
 
