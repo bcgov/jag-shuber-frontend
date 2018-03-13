@@ -9,7 +9,7 @@ import AssignmentDutyActionsPanel from './AssignmentDutyActionsPanel/AssignmentD
 import AssignmentDutyEditModal from '../containers/AssignmentDutyEditModal';
 
 export interface AssignmentDutyCardProps {
-    duty: AssignmentDuty
+    duty: AssignmentDuty;
     canDropSheriff?: (sheriff: Sheriff) => boolean;
     onDropSheriff?: (sheriff: Sheriff) => void;
     SheriffAssignmentRenderer?: React.ComponentType<SheriffAssignmentRendererProps>;

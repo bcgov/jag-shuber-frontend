@@ -1,0 +1,16 @@
+.dimmed{
+    opacity:.6;
+}
+
+.dimmed:hover{
+    opacity:1.0;
+}
+
+.scheduling-timeline .react-calendar-timeline .rct-items .rct-item.selected {
+    background: transparent;
+    border: 0px;
+}
+
+.scheduling-timeline .react-calendar-timeline .rct-items .rct-item {
+    border: 0px;
+}

@@ -7,7 +7,8 @@ import {
     Courthouse,
     Courtroom,
     Region,
-    AssignmentDuty
+    AssignmentDuty,
+    IdType
 } from "../Api";
 import arrayToMap from '../../infrastructure/arrayToMap'
 import {
@@ -21,31 +22,33 @@ import {
     assignmentDuties,
     RUNS,
     JAIL_ROLES,
-    ALTERNATE_ASSIGNMENTS
+    ALTERNATE_ASSIGNMENTS,
+    sheriffShifts
 } from "./MockData";
 import {
-     isCourtAssignment,
-     isJailAssignment, 
-     isEscortAssignment,
-     isOtherAssignment
+    isCourtAssignment,
+    isJailAssignment,
+    isEscortAssignment,
+    isOtherAssignment
 } from '../utils';
 import { randomDelay } from "../PromiseExtensions";
+import { Shift } from "../index";
 
 
 // Helpers
 function getAssignmentTitle(assignment: Partial<Assignment>): string {
     let assignmentTitle = "Assignment Title";
 
-    if(isCourtAssignment(assignment)){
+    if (isCourtAssignment(assignment)) {
         assignmentTitle = COURTROOMS[assignment.courtroomId];
     }
-    else if (isEscortAssignment(assignment)){
+    else if (isEscortAssignment(assignment)) {
         assignmentTitle = RUNS[assignment.runId];
     }
-    else if (isJailAssignment(assignment)){
+    else if (isJailAssignment(assignment)) {
         assignmentTitle = JAIL_ROLES[assignment.jailRoleId];
     }
-    else if (isOtherAssignment(assignment)){
+    else if (isOtherAssignment(assignment)) {
         assignmentTitle = ALTERNATE_ASSIGNMENTS[assignment.alternateAssignmentId];
     }
 
@@ -55,20 +58,23 @@ function getAssignmentTitle(assignment: Partial<Assignment>): string {
 
 export default class NewClient implements API {
     private increasingId = 30;
+
     private getId(): number {
         return this.increasingId++;
     }
+
     async getSheriffs(): Promise<SheriffMap> {
         return arrayToMap(sheriffList, (s) => s.badgeNumber) as SheriffMap;
     }
     async createSheriff(newSheriff: Sheriff): Promise<Sheriff> {
         await randomDelay();
 
-        //This is a hack to throw in a profile picture
+        // This is a hack to throw in a profile picture
         if (!newSheriff.imageUrl) {
             newSheriff.imageUrl = "/img/avatar.png"
         }
-
+        newSheriff.id = this.getId();
+        newSheriff.title = `${newSheriff.lastName}, ${newSheriff.firstName}`;
         sheriffList.push(newSheriff);
         return newSheriff;
     }
@@ -128,14 +134,14 @@ export default class NewClient implements API {
     async createAssignmentDuty(duty: Partial<AssignmentDuty>): Promise<AssignmentDuty> {
         throw new Error("Method not implemented.");
     }
-    
+
     async updateAssignmentDuty(duty: Partial<AssignmentDuty>): Promise<AssignmentDuty> {
-                await randomDelay();
+        await randomDelay();
         if (duty.id == null) {
             throw Error("No Template Id Specified");
         }
         let dutyToUpdate = duty as AssignmentDuty;
-       
+
         let index = assignmentDuties.findIndex(d => d.id == dutyToUpdate.id);
         if (index < 0) {
             throw Error(`No assignment could be located for ${dutyToUpdate.id}`)
@@ -163,6 +169,21 @@ export default class NewClient implements API {
         return courtrooms;
     }
     async getCourtroomsByCourthouse(courthouseId: number): Promise<Courtroom[]> {
+        throw new Error("Method not implemented.");
+    }
+
+    async getShifts(): Promise<Shift[]> {
+        return sheriffShifts;
+    }
+
+    updateShift(shiftToUpdate: Partial<Shift>): Promise<Shift> {
+        throw new Error("Method not implemented.");
+    }
+    createShift(newShift: Partial<Shift>): Promise<Shift> {
+        throw new Error("Method not implemented.");
+    }
+
+    deleteShift(shiftId: IdType): Promise<void> {
         throw new Error("Method not implemented.");
     }
 }

@@ -1,8 +1,9 @@
 import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
-import { default as thunk, ThunkAction as _ThunkAction } from 'redux-thunk'
-import { default as api, API } from './api'
+import { default as thunk, ThunkAction as _ThunkAction } from 'redux-thunk';
+import { default as api, API } from './api';
 import { default as sheriffReducer, SheriffState } from './modules/sheriffs/reducer';
-import { default as assignmentReducer, AssignmentModuleState, STATE_KEY as AssignmentModuleStateKey } from './modules/assignments/reducer';
+import { registerReducer as registerAssignmentReducer, AssignmentModuleState } from './modules/assignments/reducer';
+import { registerReducer as registerShiftReducer, ShiftModuleState } from './modules/shifts/reducer';
 import { default as timelineReducer, TimelineState } from './modules/timeline/reducer';
 import { reducer as formReducer } from 'redux-form';
 
@@ -16,14 +17,17 @@ export interface RootState {
     sheriffs: SheriffState;
     assignments: AssignmentModuleState;
     timeline: TimelineState;
+    shifts: ShiftModuleState;
 }
 
 const reducers = {
     sheriffs: sheriffReducer,
     timeline: timelineReducer,
     form: formReducer
-}
-reducers[AssignmentModuleStateKey] = assignmentReducer;
+};
+
+registerShiftReducer(reducers);
+registerAssignmentReducer(reducers);
 
 const rootReducer = combineReducers(reducers);
 
@@ -34,6 +38,6 @@ const enhancers = composeEnhancers(
     applyMiddleware(
         thunk.withExtraArgument({ api })
     )
-)
+);
 
 export default createStore(rootReducer, enhancers);

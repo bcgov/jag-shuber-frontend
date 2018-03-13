@@ -14,6 +14,7 @@ import './index.css';
 import Timeline from './pages/Timeline';
 import ManageSheriffs from './pages/ManageSheriffs';
 import DefaultAssignments from './pages/DefaultAssignments';
+import Scheduling from './pages/Scheduling';
 
 class Layout extends React.PureComponent {
   render() {
@@ -27,6 +28,7 @@ class Layout extends React.PureComponent {
             <Route exact path='/' component={Timeline} />
             <Route path='/sheriffs/manage' component={ManageSheriffs} />
             <Route path='/assignments/manage/default' component={DefaultAssignments} />
+            <Route path='/sheriffs/schedule' component={Scheduling} />
           </div>
           <div className='footerArea'>
             <Footer />

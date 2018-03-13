@@ -11,7 +11,8 @@ import {
     CourtAssignment,
     JailAssignment,
     EscortAssignment,
-    OtherAssignment
+    OtherAssignment,
+    Shift
 } from "../Api";
 import * as moment from 'moment';
 
@@ -171,6 +172,8 @@ export const ALTERNATE_ASSIGNMENTS: StringMap = {
 
 export const sheriffList: Sheriff[] = [
     {
+        id: 1,
+        title: "Shirley, G",
         firstName: "Garfield",
         lastName: "Shirley",
         badgeNumber: 969,
@@ -186,6 +189,8 @@ export const sheriffList: Sheriff[] = [
         onDuty: true
     },
     {
+        id: 2, 
+        title: "Jackson, J",
         firstName: "Jaqueline",
         lastName: "Jackson",
         badgeNumber: 204,
@@ -201,6 +206,8 @@ export const sheriffList: Sheriff[] = [
         onDuty: true
     },
     {
+        id: 3,
+        title: "Blundell, L",
         firstName: "Landon",
         lastName: "Bludnell",
         badgeNumber: 790,
@@ -216,6 +223,8 @@ export const sheriffList: Sheriff[] = [
         onDuty: false
     },
     {
+        id: 4, 
+        title: "Lucas, R",
         firstName: "Rob",
         lastName: "Lucas",
         badgeNumber: 987,
@@ -231,6 +240,8 @@ export const sheriffList: Sheriff[] = [
         onDuty: true
     },
     {
+        id: 5,
+        title: "Gill, S",
         firstName: "Steve",
         lastName: "Gill",
         badgeNumber: 932,
@@ -246,6 +257,8 @@ export const sheriffList: Sheriff[] = [
         onDuty: false
     },
     {
+        id: 6,
+        title: "Jervis, S",
         firstName: "Steve",
         lastName: "Jervis",
         badgeNumber: 579,
@@ -930,5 +943,54 @@ export const courtrooms: Courtroom[] = [
         courthouseId: 79,
         number: 204,
         name: "Courtroom 204"
+    }
+];
+
+export const sheriffShifts: Shift[] = [
+    {
+        id: 1, 
+        courthouseId: 1,
+        workSectionId: "COURTS", 
+        startDateTime: moment().startOf('day').add(6, 'hours'),
+        endDateTime:moment().startOf('day').add(13.5, 'hours')
+    },
+    {
+        id: 2, 
+        courthouseId: 1,
+        workSectionId: "JAIL", 
+        startDateTime: moment().startOf('day').add(6, 'hours'),
+        endDateTime:moment().startOf('day').add(13.5, 'hours')
+    },
+    {
+        id: 3, 
+        courthouseId: 1, 
+        startDateTime: moment().startOf('day').add(6, 'hours'),
+        endDateTime:moment().startOf('day').add(13.5, 'hours')
+    },
+    {
+        id: 4, 
+        courthouseId: 1, 
+        startDateTime: moment().startOf('day').add(8, 'hours'),
+        endDateTime: moment().startOf('day').add(15.5, 'hours')
+    },
+    {
+        id: 5, 
+        courthouseId: 1, 
+        workSectionId: "ESCORTS",
+        startDateTime: moment().startOf('day').add(8, 'hours'),
+        endDateTime: moment().startOf('day').add(15.5, 'hours')
+    },
+    {
+        id: 6, 
+        courthouseId: 1, 
+        startDateTime: moment().startOf('day').add(8, 'hours'),
+        endDateTime: moment().startOf('day').add(15.5, 'hours')
+    },
+    {
+        id: 7, 
+        courthouseId: 1,
+        workSectionId: "OTHER",
+        startDateTime: moment().startOf('day').add(8, 'hours'),
+        endDateTime: moment().startOf('day').add(15.5, 'hours')
     }
 ];

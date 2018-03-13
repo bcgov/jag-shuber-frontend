@@ -23,21 +23,24 @@ export function isOtherAssignment(assignment: Partial<Assignment>): assignment i
     return (<OtherAssignment>assignment).workSectionId == "OTHER";
 }
 
-export function getWorkSectionColour(workSectionId: WorkSectionId): string {
-    let colour = 'blue';
+export function getWorkSectionColour(workSectionId?: WorkSectionId): string {
+    let colour;
 
     switch (workSectionId) {
         case "COURTS":
             colour = '#2CB7BA';
             break;
         case "ESCORTS":
-            colour = '#F3BD48'
+            colour = '#F3BD48';
             break;
         case "JAIL":
             colour = '#804A86';
             break;
         case "OTHER":
-            colour = "#B74343"
+            colour = '#B74343';
+            break;
+        default: 
+            colour = '#D9D9D9';
             break;
     }
     return colour;
