@@ -1,13 +1,14 @@
 import * as assignmentRequests from './requests/assignments'
 import * as assignmentDutyRequests from './requests/assignmentDuties'
-// import * as assignmentTemplateRequests from './requests/assignmentTemplates'
-
 import NestedReducer from '../../infrastructure/NestedReducer';
+import { ReducersMapObject } from 'redux';
+import { STATE_KEY } from './common';
+import { addReducerToMap } from '../../infrastructure/reduxUtils';
 
 export {
   AssignmentModuleState,
   STATE_KEY
-} from './common'
+} from './common';
 
 const nestedReducer = new NestedReducer([
   // Assignments
@@ -31,3 +32,7 @@ const nestedReducer = new NestedReducer([
 
 const reducer = nestedReducer.reducer;
 export default reducer;
+
+export function registerReducer(reducersMap: ReducersMapObject) {
+  return addReducerToMap(reducersMap, STATE_KEY, reducer);
+}
