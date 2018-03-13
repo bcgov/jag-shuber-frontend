@@ -26,7 +26,7 @@ class SubmitButton extends React.PureComponent<SubmitButtonProps>{
     }
     render(){
         const {formName,submit,children="Save",...rest} = this.props;
-        const {bsStyle="primary"} = rest;
+        const {bsStyle="success"} = rest;
         return (
             <Button onClick={()=>this.handleSubmit()} bsStyle={bsStyle} >{children}</Button>
         )

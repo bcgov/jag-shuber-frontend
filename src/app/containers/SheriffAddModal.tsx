@@ -12,7 +12,7 @@ export default class SheriffAddModal extends React.Component {
                 title="Edit Assignment"
                 showButton={({ handleShow }) => <Button bsStyle='primary' onClick={() => handleShow()}>Add a Sheriff</Button>}
                 body={({ handleClose }) => <SheriffCreateForm onSubmitSuccess={handleClose} />}
-                footerComponent={<SheriffCreateForm.SubmitButton bsStyle='primary'>Save</SheriffCreateForm.SubmitButton>}
+                footerComponent={<SheriffCreateForm.SubmitButton>Save</SheriffCreateForm.SubmitButton>}
             />
         );
     }

@@ -25,7 +25,7 @@ export default class AssignmentDutyEditModal extends React.PureComponent<Assignm
                         return (
                             <AssignmentDutyEditForm id={dutyId} onSubmitSuccess={handleClose} assignmentId={assignmentId}/>
                         )}}
-                    footerComponent = {<AssignmentDutyEditForm.SubmitButton bsStyle="primary">Save</AssignmentDutyEditForm.SubmitButton>}
+                    footerComponent = {<AssignmentDutyEditForm.SubmitButton>Save</AssignmentDutyEditForm.SubmitButton>}
                 />
             </div>
         );

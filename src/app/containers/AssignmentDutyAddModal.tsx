@@ -23,7 +23,7 @@ export default class AssignmentDutyAddModal extends React.Component<AssignmentDu
                 body={({ handleClose }) =>
                     <AssignmentDutyCreateForm onSubmitSuccess={handleClose} assignmentId={assignmentId} />}
                 footerComponent={
-                    <AssignmentDutyCreateForm.SubmitButton bsStyle="primary">
+                    <AssignmentDutyCreateForm.SubmitButton>
                         Save
                     </AssignmentDutyCreateForm.SubmitButton>}
             />

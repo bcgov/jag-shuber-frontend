@@ -39,8 +39,8 @@ export default class AssignmentAddModal extends React.Component<AssignmentAddMod
                     )}
                     footerComponent={
                         isDefaultTemplate
-                            ? <AssignmentTemplateCreateForm.SubmitButton bsStyle="primary">Save</AssignmentTemplateCreateForm.SubmitButton>
-                            : <AssignmentCreateForm.SubmitButton bsStyle="primary">Save</AssignmentCreateForm.SubmitButton>
+                            ? <AssignmentTemplateCreateForm.SubmitButton>Save</AssignmentTemplateCreateForm.SubmitButton>
+                            : <AssignmentCreateForm.SubmitButton>Save</AssignmentCreateForm.SubmitButton>
                     }
                 />
             </div>
