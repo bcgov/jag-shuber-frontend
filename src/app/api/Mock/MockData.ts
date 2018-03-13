@@ -216,9 +216,9 @@ export const sheriffList: Sheriff[] = [
         currentLocation: { courthouseId: "PRINCEGEORGE", regionId: "NORTHERN" },
         training: [
             { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "FRO" },
-            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "PISTOL" },
-            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CID" },
-            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CEW" }
+            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: 'PISTOL' },
+            { certificationDate: 'Mon Jan 20 2017', expiryDate: 'Mon Jan 20 2018', trainingType: 'CID' },
+            { certificationDate: 'Mon Jan 20 2017', expiryDate: 'Mon Jan 20 2018', trainingType: 'CEW' }
         ],
         onDuty: false
     },
@@ -229,13 +229,13 @@ export const sheriffList: Sheriff[] = [
         lastName: "Lucas",
         badgeNumber: 987,
         imageUrl: '/img/rob_lucas.jpg',
-        permanentLocation: { courthouseId: "NEWWESTMINSTER", regionId: "FRASER" },
-        currentLocation: { courthouseId: "NEWWESTMINSTER", regionId: "FRASER" },
+        permanentLocation: { courthouseId: 'NEWWESTMINSTER', regionId: 'FRASER' },
+        currentLocation: { courthouseId: 'NEWWESTMINSTER', regionId: 'FRASER' },
         training: [
-            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "FRO" },
-            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "PISTOL" },
-            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CID" },
-            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CEW" }
+            { certificationDate: 'Mon Jan 20 2017', expiryDate: 'Mon Jan 20 2018', trainingType: 'FRO' },
+            { certificationDate: 'Mon Jan 20 2017', expiryDate: 'Mon Jan 20 2018', trainingType: 'PISTOL' },
+            { certificationDate: 'Mon Jan 20 2017', expiryDate: 'Mon Jan 20 2018', trainingType: 'CID' },
+            { certificationDate: 'Mon Jan 20 2017', expiryDate: 'Mon Jan 20 2018', trainingType: 'CEW' }
         ],
         onDuty: true
     },
@@ -246,13 +246,13 @@ export const sheriffList: Sheriff[] = [
         lastName: "Gill",
         badgeNumber: 932,
         imageUrl: '/img/steve_gill.jpg',
-        permanentLocation: { courthouseId: "SURREY", regionId: "FRASER" },
-        currentLocation: { courthouseId: "SURREY", regionId: "FRASER" },
+        permanentLocation: { courthouseId: 'SURREY', regionId: 'FRASER' },
+        currentLocation: { courthouseId: 'SURREY', regionId: 'FRASER' },
         training: [
-            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "FRO" },
-            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "PISTOL" },
-            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CID" },
-            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CEW" }
+            { certificationDate: 'Mon Jan 20 2017', expiryDate: 'Mon Jan 20 2018', trainingType: 'FRO' },
+            { certificationDate: 'Mon Jan 20 2017', expiryDate: 'Mon Jan 20 2018', trainingType: 'PISTOL' },
+            { certificationDate: 'Mon Jan 20 2017', expiryDate: 'Mon Jan 20 2018', trainingType: 'CID' },
+            { certificationDate: 'Mon Jan 20 2017', expiryDate: 'Mon Jan 20 2018', trainingType: 'CEW' }
         ],
         onDuty: false
     },
@@ -263,13 +263,13 @@ export const sheriffList: Sheriff[] = [
         lastName: "Jervis",
         badgeNumber: 579,
         imageUrl: '/img/steve_jervis.jpg',
-        permanentLocation: { courthouseId: "VLC", regionId: "VANCENTRE" },
-        currentLocation: { courthouseId: "VLC", regionId: "VANCENTRE" },
+        permanentLocation: { courthouseId: 'VLC', regionId: 'VANCENTRE' },
+        currentLocation: { courthouseId: 'VLC', regionId: 'VANCENTRE' },
         training: [
-            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "FRO" },
-            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "PISTOL" },
-            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CID" },
-            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CEW" }
+            { certificationDate: 'Mon Jan 20 2017', expiryDate: 'Mon Jan 20 2018', trainingType: 'FRO' },
+            { certificationDate: 'Mon Jan 20 2017', expiryDate: 'Mon Jan 20 2018', trainingType: 'PISTOL' },
+            { certificationDate: 'Mon Jan 20 2017', expiryDate: 'Mon Jan 20 2018', trainingType: 'CID' },
+            { certificationDate: 'Mon Jan 20 2017', expiryDate: 'Mon Jan 20 2018', trainingType: 'CEW' }
         ],
         onDuty: true
     }
@@ -414,460 +414,460 @@ export const assignmentDuties: AssignmentDuty[] = createAssignmentDuties();
 export const training: TrainingType[] = [
     {
         id: 0,
-        title: "FRO - Forced Response Option",
-        abbreviation: "FRO"
+        title: 'FRO - Forced Response Option',
+        abbreviation: 'FRO'
     },
     {
         id: 1,
-        title: "PISTOL",
-        abbreviation: "PISTOL"
+        title: 'PISTOL',
+        abbreviation: 'PISTOL'
     },
     {
         id: 2,
-        title: "CID - Critical Incident De-Escalation",
-        abbreviation: "CID"
+        title: 'CID - Critical Incident De-Escalation',
+        abbreviation: 'CID'
     },
     {
         id: 3,
-        title: "CEW - Conductive Energy Weapon",
-        abbreviation: "CEW"
+        title: 'CEW - Conductive Energy Weapon',
+        abbreviation: 'CEW'
     },
 ];
 
 export const courthouses: Courthouse[] = [
     {
         id: 0,
-        name: "Abbotsford",
+        name: 'Abbotsford',
         regionId: 0
     },
     {
         id: 1,
-        name: "Alexis Creek",
+        name: 'Alexis Creek',
         regionId: 0
     },
     {
         id: 2,
-        name: "Anahim Lake",
+        name: 'Anahim Lake',
         regionId: 0
     },
     {
         id: 3,
-        name: "Ashcroft",
+        name: 'Ashcroft',
         regionId: 0
     },
     {
         id: 4,
-        name: "Atlin",
+        name: 'Atlin',
         regionId: 0
     },
     {
         id: 5,
-        name: "Bella Bella",
+        name: 'Bella Bella',
         regionId: 0
     },
     {
         id: 6,
-        name: "Bella Coola",
+        name: 'Bella Coola',
         regionId: 0
     },
     {
         id: 7,
-        name: "Burns Lake",
+        name: 'Burns Lake',
         regionId: 0
     },
     {
         id: 8,
-        name: "Campbell River",
+        name: 'Campbell River',
         regionId: 0
     },
     {
         id: 9,
-        name: "Castlegar",
+        name: 'Castlegar',
         regionId: 0
     },
     {
         id: 10,
-        name: "Chase",
+        name: 'Chase',
         regionId: 0
     },
     {
         id: 11,
-        name: "Chetwynd",
+        name: 'Chetwynd',
         regionId: 0
     },
     {
         id: 12,
-        name: "Chilliwack",
+        name: 'Chilliwack',
         regionId: 0
     },
     {
         id: 13,
-        name: "Clearwater",
+        name: 'Clearwater',
         regionId: 0
     },
     {
         id: 14,
-        name: "Courtenay",
+        name: 'Courtenay',
         regionId: 0
     },
     {
         id: 15,
-        name: "Cranbrook",
+        name: 'Cranbrook',
         regionId: 0
     },
     {
         id: 16,
-        name: "Creston",
+        name: 'Creston',
         regionId: 0
     },
     {
         id: 17,
-        name: "Dease Lake",
+        name: 'Dease Lake',
         regionId: 0
     },
     {
         id: 18,
-        name: "Downtown Community Court",
+        name: 'Downtown Community Court',
         regionId: 0
     },
     {
         id: 19,
-        name: "Duncan",
+        name: 'Duncan',
         regionId: 0
     },
     {
         id: 20,
-        name: "Fernie",
+        name: 'Fernie',
         regionId: 0
     },
     {
         id: 21,
-        name: "Fort St. James",
+        name: 'Fort St. James',
         regionId: 0
     },
     {
         id: 22,
-        name: "Fort St. John",
+        name: 'Fort St. John',
         regionId: 0
     },
     {
         id: 23,
-        name: "Fort Ware (Kwadacha)",
+        name: 'Fort Ware (Kwadacha)',
         regionId: 0
     },
     {
         id: 24,
-        name: "Fraser Lake",
+        name: 'Fraser Lake',
         regionId: 0
     },
     {
         id: 25,
-        name: "Ganges",
+        name: 'Ganges',
         regionId: 0
     },
     {
         id: 26,
-        name: "Golden",
+        name: 'Golden',
         regionId: 0
     },
     {
         id: 27,
-        name: "Gold River",
+        name: 'Gold River',
         regionId: 0
     },
     {
         id: 28,
-        name: "Good Hope Lake",
+        name: 'Good Hope Lake',
         regionId: 0
     },
     {
         id: 29,
-        name: "Grand Forks",
+        name: 'Grand Forks',
         regionId: 0
     },
     {
         id: 30,
-        name: "Hazelton",
+        name: 'Hazelton',
         regionId: 0
     },
     {
         id: 31,
-        name: "Houston",
+        name: 'Houston',
         regionId: 0
     },
     {
         id: 32,
-        name: "Hudson's Hope",
+        name: 'Hudson\'s Hope',
         regionId: 0
     },
     {
         id: 33,
-        name: "Invermere",
+        name: 'Invermere',
         regionId: 0
     },
     {
         id: 34,
-        name: "Kamloops",
+        name: 'Kamloops',
         regionId: 0
     },
     {
         id: 35,
-        name: "Kelowna",
+        name: 'Kelowna',
         regionId: 0
     },
     {
         id: 36,
-        name: "Kitimat",
+        name: 'Kitimat',
         regionId: 0
     },
     {
         id: 37,
-        name: "Klemtu",
+        name: 'Klemtu',
         regionId: 0
     },
     {
         id: 38,
-        name: "Lilloet",
+        name: 'Lilloet',
         regionId: 0
     },
     {
         id: 39,
-        name: "Lower Post",
+        name: 'Lower Post',
         regionId: 0
     },
     {
         id: 40,
-        name: "Mackenzie",
+        name: 'Mackenzie',
         regionId: 0
     },
     {
         id: 41,
-        name: "Masset",
+        name: 'Masset',
         regionId: 0
     },
     {
         id: 42,
-        name: "McBride",
+        name: 'McBride',
         regionId: 0
     },
     {
         id: 43,
-        name: "Merritt",
+        name: 'Merritt',
         regionId: 0
     },
     {
         id: 44,
-        name: "Nakusp",
+        name: 'Nakusp',
         regionId: 0
     },
     {
         id: 45,
-        name: "Nanaimo",
+        name: 'Nanaimo',
         regionId: 0
     },
     {
         id: 46,
-        name: "Nelson",
+        name: 'Nelson',
         regionId: 0
     },
     {
         id: 47,
-        name: "New Aiyansh",
+        name: 'New Aiyansh',
         regionId: 0
     },
     {
         id: 48,
-        name: "New Westminster",
+        name: 'New Westminster',
         regionId: 0
     },
     {
         id: 49,
-        name: "North Vancouver",
+        name: 'North Vancouver',
         regionId: 0
     },
     {
         id: 50,
-        name: "100 Mile House",
+        name: '100 Mile House',
         regionId: 0
     },
     {
         id: 51,
-        name: "Pemberton",
+        name: 'Pemberton',
         regionId: 0
     },
     {
         id: 52,
-        name: "Penticton",
+        name: 'Penticton',
         regionId: 0
     },
     {
         id: 53,
-        name: "Port Alberni",
+        name: 'Port Alberni',
         regionId: 0
     },
     {
         id: 54,
-        name: "Port Coquitlam",
+        name: 'Port Coquitlam',
         regionId: 0
     },
     {
         id: 54,
-        name: "Port Hardy",
+        name: 'Port Hardy',
         regionId: 0
     },
     {
         id: 55,
-        name: "Powell River",
+        name: 'Powell River',
         regionId: 0
     },
     {
         id: 56,
-        name: "Prince George",
+        name: 'Prince George',
         regionId: 0
     },
     {
         id: 57,
-        name: "Prince Rupert",
+        name: 'Prince Rupert',
         regionId: 0
     },
     {
         id: 58,
-        name: "Princeton",
+        name: 'Princeton',
         regionId: 0
     },
     {
         id: 59,
-        name: "Queen Charlotte",
+        name: 'Queen Charlotte',
         regionId: 0
     },
     {
         id: 60,
-        name: "Quesnel",
+        name: 'Quesnel',
         regionId: 0
     },
     {
         id: 61,
-        name: "Revelstoke",
+        name: 'Revelstoke',
         regionId: 0
     },
     {
         id: 62,
-        name: "Richmond",
+        name: 'Richmond',
         regionId: 0
     },
     {
         id: 63,
-        name: "Rossland",
+        name: 'Rossland',
         regionId: 0
     },
     {
         id: 64,
-        name: "Salmon Arm",
+        name: 'Salmon Arm',
         regionId: 0
     },
     {
         id: 65,
-        name: "Sechelt",
+        name: 'Sechelt',
         regionId: 0
     },
     {
         id: 66,
-        name: "Sidney",
+        name: 'Sidney',
         regionId: 0
     },
     {
         id: 67,
-        name: "Smithers",
+        name: 'Smithers',
         regionId: 0
     },
     {
         id: 68,
-        name: "Sparwood",
+        name: 'Sparwood',
         regionId: 0
     },
     {
         id: 69,
-        name: "Stewart",
+        name: 'Stewart',
         regionId: 0
     },
     {
         id: 70,
-        name: "Surrey",
+        name: 'Surrey',
         regionId: 0
     },
     {
         id: 71,
-        name: "Tahsis",
+        name: 'Tahsis',
         regionId: 0
     },
     {
         id: 72,
-        name: "Terrace",
+        name: 'Terrace',
         regionId: 0
     },
     {
         id: 73,
-        name: "Tofino",
+        name: 'Tofino',
         regionId: 0
     },
     {
         id: 74,
-        name: "Tsay Keh Dene (Ingenika)",
+        name: 'Tsay Keh Dene (Ingenika)',
         regionId: 0
     },
     {
         id: 75,
-        name: "Tumbler Ridge",
+        name: 'Tumbler Ridge',
         regionId: 0
     },
     {
         id: 76,
-        name: "Ucluelet",
+        name: 'Ucluelet',
         regionId: 0
     },
     {
         id: 77,
-        name: "Valemont",
+        name: 'Valemont',
         regionId: 0
     },
     {
         id: 78,
-        name: "Vancouver - VLC",
+        name: 'Vancouver - VLC',
         regionId: 0
     },
     {
         id: 79,
-        name: "Vancouver - 222 Main",
+        name: 'Vancouver - 222 Main',
         regionId: 0
     },
     {
         id: 80,
-        name: "Vancouver - Robson Square",
+        name: 'Vancouver - Robson Square',
         regionId: 0
     },
     {
         id: 81,
-        name: "Vanderhoof",
+        name: 'Vanderhoof',
         regionId: 0
     },
     {
         id: 82,
-        name: "Vernon",
+        name: 'Vernon',
         regionId: 0
     },
     {
         id: 83,
-        name: "Victoria",
+        name: 'Victoria',
         regionId: 0
     },
     {
         id: 84,
-        name: "Western Communities",
+        name: 'Western Communities',
         regionId: 0
     },
     {
         id: 85,
-        name: "Williams Lake",
+        name: 'Williams Lake',
         regionId: 0
     }
 ];
@@ -875,23 +875,23 @@ export const courthouses: Courthouse[] = [
 export const regions: Region[] = [
     {
         id: 0,
-        name: "Fraser"
+        name: 'Fraser'
     },
     {
         id: 1,
-        name: "Interior"
+        name: 'Interior'
     },
     {
         id: 2,
-        name: "Northern"
+        name: 'Northern'
     },
     {
         id: 3,
-        name: "Van Centre"
+        name: 'Van Centre'
     },
     {
         id: 4,
-        name: "Vancouver Island"
+        name: 'Vancouver Island'
     }
 ];
 
@@ -900,49 +900,49 @@ export const courtrooms: Courtroom[] = [
         id: 0,
         courthouseId: 79,
         number: 101,
-        name: "Courtroom 101"
+        name: 'Courtroom 101'
     },
     {
         id: 1,
         courthouseId: 79,
         number: 102,
-        name: "Courtroom 102"
+        name: 'Courtroom 102'
     },
     {
         id: 2,
         courthouseId: 79,
         number: 103,
-        name: "Courtroom 103"
+        name: 'Courtroom 103'
     },
     {
         id: 3,
         courthouseId: 79,
         number: 104,
-        name: "Courtroom 104"
+        name: 'Courtroom 104'
     },
     {
         id: 4,
         courthouseId: 79,
         number: 201,
-        name: "Courtroom 201"
+        name: 'Courtroom 201'
     },
     {
         id: 5,
         courthouseId: 79,
         number: 202,
-        name: "Courtroom 202"
+        name: 'Courtroom 202'
     },
     {
         id: 6,
         courthouseId: 79,
         number: 203,
-        name: "Courtroom 203"
+        name: 'Courtroom 203'
     },
     {
         id: 7,
         courthouseId: 79,
         number: 204,
-        name: "Courtroom 204"
+        name: 'Courtroom 204'
     }
 ];
 
