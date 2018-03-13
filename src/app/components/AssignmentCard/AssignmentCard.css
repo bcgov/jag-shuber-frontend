@@ -1,20 +1,15 @@
-.assignment-actions .add-duty-btn{
-    /* display:none; */
-    /* position: absolute; */
-    /* right: 2px; */
-
-    float: right; 
-    padding-left: 10;
+.assignment-card { 
+    position: absolute; 
+    width: 100%; 
+    font-size: 16;
 }
+
 .assignment-actions {
-    /* display:none; */
-    /* position: absolute; */
-    /* right: 2px; */
-
+    display: none;
     float: right; 
-    padding-left: 20;
+    padding-right: 5px;
 }
-/* 
-.assignment-actions:hover .add-duty-btn{
-    display:inherit;
-} */
+
+.assignment-card:hover .assignment-actions {
+    display: block;
+}
