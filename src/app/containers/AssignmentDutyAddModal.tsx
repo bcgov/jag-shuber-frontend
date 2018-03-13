@@ -16,16 +16,19 @@ export default class AssignmentDutyAddModal extends React.Component<AssignmentDu
         return (
             <ModalWrapper
                 title="Add a Duty"
-                showButton={({ handleShow }) =>
+                showButton={({ handleShow }) => (
                     <Button bsStyle="primary" bsSize="xsmall" onClick={() => handleShow()}>
                         <Glyphicon glyph="plus" />
-                    </Button>}
-                body={({ handleClose }) =>
-                    <AssignmentDutyCreateForm onSubmitSuccess={handleClose} assignmentId={assignmentId} />}
-                footerComponent={
+                    </Button>
+                )}
+                body={({ handleClose }) => (
+                    <AssignmentDutyCreateForm onSubmitSuccess={handleClose} assignmentId={assignmentId} />
+                )}
+                footerComponent={(
                     <AssignmentDutyCreateForm.SubmitButton>
                         Save
-                    </AssignmentDutyCreateForm.SubmitButton>}
+                    </AssignmentDutyCreateForm.SubmitButton>
+                )}
             />
         );
     }
