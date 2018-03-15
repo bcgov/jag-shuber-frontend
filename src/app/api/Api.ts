@@ -8,11 +8,12 @@ export type ShiftMap = { [key: number]: Shift };
 export type SheriffMap = { [key: number]: Sheriff };
 export type AssignmentMap = { [key: number]: Assignment };
 export type AssignmentDutyMap = { [key: number]: AssignmentDuty };
-export type WorkSectionId = "COURTS" | "JAIL" | "ESCORTS" | "OTHER";
+export type WorkSectionId = 'COURTS' | 'JAIL' | 'ESCORTS' | 'OTHER';
 export type Assignment = CourtAssignment | JailAssignment | EscortAssignment | OtherAssignment;
 
-
+/* tslint:disable:no-bitwise */
 export enum DaysOfWeek {
+
     Mon = 1 << 0,
     Tue = 1 << 1,
     Wed = 1 << 2,
@@ -23,6 +24,7 @@ export enum DaysOfWeek {
     Everyday = Mon | Tue | Wed | Thu | Fri | Sat | Sun,
     Weekdays = Mon | Tue | Wed | Thu | Fri
 }
+/* tslint:enable:no-bitwise */
 
 export namespace DaysOfWeek {
 
@@ -43,17 +45,16 @@ export namespace DaysOfWeek {
     }
 }
 
-
 export const BLANK_SHERIFF_LOCATION: SheriffLocation = {
     courthouseId: '',
     regionId: ''
-}
+};
 
 export const BLANK_SHERIFF: Sheriff = {
     id: -1,
-    title: "",
-    firstName: "",
-    lastName: "",
+    title: '',
+    firstName: '',
+    lastName: '',
     badgeNumber: -1,
     imageUrl: '/img/avatar.png',
     training: [{
@@ -64,7 +65,7 @@ export const BLANK_SHERIFF: Sheriff = {
     permanentLocation: BLANK_SHERIFF_LOCATION,
     currentLocation: BLANK_SHERIFF_LOCATION,
     onDuty: false
-}
+};
 
 export const BLANK_COURTHOUSE: Courthouse = {
     id: -1,
@@ -223,11 +224,9 @@ export interface API {
     getAllCourtrooms(): Promise<Courtroom[]>;
     getCourtroomsByCourthouse(courthouseId: number): Promise<Courtroom[]>;
 
-    //Sheriff Shifts
+    // Sheriff Shifts
     getShifts(): Promise<Shift[]>;
     updateShift(shiftToUpdate: Partial<Shift>): Promise<Shift>;
     createShift(newShift: Partial<Shift>): Promise<Shift>;
     deleteShift(shiftId: IdType): Promise<void>;
 }
-
-
