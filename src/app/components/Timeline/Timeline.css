@@ -9,6 +9,8 @@
 
 .react-calendar-timeline .rct-sidebar .rct-sidebar-row > div{
     padding-left:10px;
+    font-size: 18px;
+    font-weight: bold;
 }
 
 .react-calendar-timeline .rct-horizontal-lines .rct-hl-even{

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {
     default as ReactTimeline,
-    // HeaderLabelFormats,
     ReactCalendarTimelineGroup as TimelineGroupProps,
     ReactCalendarTimelineItem as TimelineItemProps,
     HeaderLabelFormats
@@ -55,7 +54,7 @@ export default class Timeline<TItem, TGroup> extends React.PureComponent<Timelin
             visibleTimeStart,
             visibleTimeEnd,
             sideBarHeaderComponent = ({ sideBarHeaderTitle }: TimelineComponentProps<TItem, TGroup>) => (
-                <div style={{ paddingTop: 10, fontSize: 20, alignContent: 'center' }}>
+                <div style={{ fontSize: 20, alignContent: 'center' }}>
                     {sideBarHeaderTitle}
                 </div>
             ),
