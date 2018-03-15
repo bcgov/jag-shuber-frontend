@@ -23,8 +23,8 @@ export default class Navigation extends React.Component<NavigationProps, any>{
                               
                 <Navbar  staticTop fluid style={{borderRadius:4}}>
                     <Navbar.Header color="#003366">
-                        <NavbarBrand href="https://gov.bc.ca" color="#003366">
-                            SHUBER
+                        <NavbarBrand color="#003366">
+                            Sheriff Scheduling System
                         </NavbarBrand>
                     </Navbar.Header>
                     <Nav bsStyle='tabs'>
