@@ -17,7 +17,7 @@ import {
 } from '../../api/index';
 import * as moment from 'moment';
 import './DailyTimeline.css';
-import AssignmentDutyCard from '../../components/AssignmentDutyCard';
+import AssignmentDutyCard from '../../components/AssignmentDutyCard/AssignmentDutyCard';
 import { IdType, WorkSectionId } from '../../api/Api';
 import SheriffDutyBarList from '../../components/SheriffDutyBarList/SheriffDutyBarList';
 import ConnectedSheriffDutyBar from '../SheriffDutyBar';
@@ -25,6 +25,7 @@ import { getWorkSectionColour } from '../../api/utils';
 import AssignmentTimeline from '../../components/AssignmentTimeline/AssignmentTimeline';
 import { TimelineProps } from '../../components/Timeline/Timeline';
 import AssignmentCard from '../../components/AssignmentCard/AssignmentCard';
+import { getForegroundColor } from '../../infrastructure/colorUtils';
 
 interface DailyTimelineProps extends TimelineProps {
     allowTimeDrag?: boolean;
@@ -83,31 +84,36 @@ class DailyTimeline extends React.Component<DailyTimelineProps & DailyTimelineSt
                     groups={assignments}
                     sidebarWidth={sidebarWidth}
                     visibleTimeStart={visibleTimeStart}
-                    visibleTimeEnd={visibleTimeEnd}                    
+                    visibleTimeEnd={visibleTimeEnd}
                     itemHeightRatio={.97}
                     groupRenderer={(assignment) => (
                         <AssignmentCard assignment={assignment} />
                     )}
-                    itemRenderer={(duty) => (
-                        <AssignmentDutyCard
-                            duty={duty}
-                            style={{
-                                backgroundColor: getWorkSectionColour(workSectionMap[duty.assignmentId])
-                            }}
-                            onDropSheriff={({ badgeNumber: sheriffId }) => (
-                                linkSheriff && linkSheriff({ sheriffId, dutyId: duty.id })
-                            )}
-                            SheriffAssignmentRenderer={(p) => (
-                                <SheriffDutyBarList
-                                    {...p}
-                                    BarRenderer={ConnectedSheriffDutyBar}
-                                    onRemove={(sheriffId) => {
-                                        unlinkSheriff({ sheriffId, dutyId: duty.id });
-                                    }}
-                                />
-                            )}
-                        />
-                    )}
+                    itemRenderer={(duty) => {
+                        const backgroundColor = getWorkSectionColour(workSectionMap[duty.assignmentId]);
+                        const color = getForegroundColor(backgroundColor);
+                        return (
+                            <AssignmentDutyCard
+                                duty={duty}
+                                style={{
+                                    backgroundColor,
+                                    color
+                                }}
+                                onDropSheriff={({ badgeNumber: sheriffId }) => (
+                                    linkSheriff && linkSheriff({ sheriffId, dutyId: duty.id })
+                                )}
+                                SheriffAssignmentRenderer={(p) => (
+                                    <SheriffDutyBarList
+                                        {...p}
+                                        BarRenderer={ConnectedSheriffDutyBar}
+                                        onRemove={(sheriffId) => {
+                                            unlinkSheriff({ sheriffId, dutyId: duty.id });
+                                        }}
+                                    />
+                                )}
+                            />
+                        )
+                    }}
                     {...rest}
                 />
             </div>

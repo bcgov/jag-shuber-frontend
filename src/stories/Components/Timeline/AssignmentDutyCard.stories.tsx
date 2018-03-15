@@ -3,7 +3,7 @@ import { storiesOf } from '../../utils';
 import { number, array } from '@storybook/addon-knobs';
 import StoryPage from '../../StoryUI/StoryPage';
 import StorySection from '../../StoryUI/StorySection';
-import AssignmentDutyCard from '../../../app/components/AssignmentDutyCard';
+import AssignmentDutyCard from '../../../app/components/AssignmentDutyCard/AssignmentDutyCard';
 import { AssignmentDuty } from '../../../app/api';
 import * as moment from 'moment'
 import TimelineCard from '../../../app/components/Timeline/TimelineCard';

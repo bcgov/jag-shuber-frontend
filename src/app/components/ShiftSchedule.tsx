@@ -41,11 +41,10 @@ class ShiftScheduleTimeline extends Timeline<Shift, Courthouse> {
     }
 }
 
-
 export interface ShiftScheduleProps {
     shifts: Shift[];
-    visibleTimeStart?: any;
-    visibleTimeEnd?: any;
+    visibleTimeStart?: number;
+    visibleTimeEnd?: number;
     onVisibleTimeChange?: (visibleTimeStart: number, visibleTimeEnd: number) => void;
     allowTimeChange?: boolean;
     itemRenderer?: (item: ReactCalendarTimelineItem & Shift) => React.ReactNode;
@@ -59,7 +58,7 @@ export default class ShiftSchedule extends React.PureComponent<ShiftScheduleProp
             visibleTimeStart,
             itemRenderer = (item: ReactCalendarTimelineItem & Shift) => (
                 <ShiftCard shift={item} >
-                    {item.title}
+                    {item.sheriffId}
                 </ShiftCard>
             ),
             allowTimeChange = false
@@ -79,6 +78,6 @@ export default class ShiftSchedule extends React.PureComponent<ShiftScheduleProp
                 visibleTimeEnd={visibleTimeEnd}
                 itemRenderer={itemRenderer}
             />
-        )
+        );
     }
 }

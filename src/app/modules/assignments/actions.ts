@@ -26,41 +26,36 @@ export const createAssignmentDuty = assignmentDutyRequests.createAssignmentDutyR
 export const editAssignmentDuty = assignmentDutyRequests.updateAssignmentDutyRequest.actionCreator;
 export const deleteAssignmentDuty = assignmentDutyRequests.deleteAssignmentDutyRequest.actionCreator;
 
-
-
-// todo: the following
-// export const swapAssignment = (assignmentId: number, oldBadgeNumber: number, newBadgeNumber: number) => actionCreator("ASSIGNMENT_SWAP")({ assignmentId, oldBadgeNumber, newBadgeNumber })
 type SheriffDutyLink = { sheriffId: IdType, dutyId: IdType };
-export const linkAssignment: ThunkAction<SheriffDutyLink> = ({ sheriffId, dutyId }: SheriffDutyLink) => (dispatch, getState, extra) => {
-    const duty = getAssignmentDuty(dutyId)(getState());
-    if (duty == null) {
-        return;
-    }
-    const { sheriffIds = [] } = duty;
-    const newSheriffIds = sheriffIds.slice(0);
-    if (newSheriffIds.indexOf(sheriffId) == -1) {
-        newSheriffIds.push(sheriffId);
-    }
-    dispatch(editAssignmentDuty({ ...duty, sheriffIds: newSheriffIds }));
-}
+export const linkAssignment: ThunkAction<SheriffDutyLink> =
+    ({ sheriffId, dutyId }: SheriffDutyLink) => (dispatch, getState, extra) => {
+        const duty = getAssignmentDuty(dutyId)(getState());
+        if (duty == null) {
+            return;
+        }
+        const { sheriffIds = [] } = duty;
+        const newSheriffIds = sheriffIds.slice(0);
+        if (newSheriffIds.indexOf(sheriffId) === -1) {
+            newSheriffIds.push(sheriffId);
+        }
+        dispatch(editAssignmentDuty({ ...duty, sheriffIds: newSheriffIds }));
+    };
 
-export const unlinkAssignment: ThunkAction<SheriffDutyLink> = ({ sheriffId, dutyId }: SheriffDutyLink) => (dispatch, getState, extra) => {
-    const duty = getAssignmentDuty(dutyId)(getState());
-    if (duty == null) {
-        return;
-    }
+export const unlinkAssignment: ThunkAction<SheriffDutyLink> =
+    ({ sheriffId, dutyId }: SheriffDutyLink) => (dispatch, getState, extra) => {
+        const duty = getAssignmentDuty(dutyId)(getState());
+        if (duty == null) {
+            return;
+        }
 
-    const { sheriffIds = [] } = duty;
-    const sheriffIndex = sheriffIds.indexOf(sheriffId);
-    const newSheriffIds = sheriffIds.slice(0);
-    // If not found, just return
-    if (sheriffIndex == -1) {
-        return;
-    }
+        const { sheriffIds = [] } = duty;
+        const sheriffIndex = sheriffIds.indexOf(sheriffId);
+        const newSheriffIds = sheriffIds.slice(0);
+        // If not found, just return
+        if (sheriffIndex === -1) {
+            return;
+        }
 
-    newSheriffIds.splice(sheriffIndex, 1);
-    dispatch(editAssignmentDuty({ ...duty, sheriffIds: newSheriffIds }));
-}
-
-// export const unlinkAssignment = (assignmentId: number, badgeNumber: number) => actionCreator("ASSIGNMENT_UNLINK")({ assignmentId, badgeNumber });
-
+        newSheriffIds.splice(sheriffIndex, 1);
+        dispatch(editAssignmentDuty({ ...duty, sheriffIds: newSheriffIds }));
+    };

@@ -1,0 +1,15 @@
+.assignment-duty-card{
+    background-color: #96c0e6;
+    flex: 1;
+    z-index: 70;
+    position: relative;
+}
+
+.assignment-duty-card .assignment-duty-actions-panel{
+    display:none;
+}
+
+.assignment-duty-card:hover .assignment-duty-actions-panel{
+    display:initial;
+}
+

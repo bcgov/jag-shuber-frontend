@@ -4,7 +4,7 @@ import {
     SheriffDutyBarProps
 } from '../SheriffDutyBar/SheriffDutyBar';
 import './SheriffDutyBarList.css'
-import { SheriffAssignmentRendererProps } from '../AssignmentDutyCard';
+import { SheriffAssignmentRendererProps } from '../AssignmentDutyCard/AssignmentDutyCard';
 
 interface SheriffDutyBarListProps extends SheriffAssignmentRendererProps {
     onRemove?: (sheriffId: number) => void;

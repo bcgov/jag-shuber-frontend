@@ -4,7 +4,7 @@ import './AssignmentDutyActionsPanel.css';
 export interface AssignmentDutyActionsPanelProps {
 }
 
-export default class AssignmentDutyActionsPanel extends React.PureComponent<AssignmentDutyActionsPanelProps, any> {
+export default class AssignmentDutyActionsPanel extends React.PureComponent<AssignmentDutyActionsPanelProps> {
   render() {
     return (
       <div className="assignment-duty-actions-panel">
