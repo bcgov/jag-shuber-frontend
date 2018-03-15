@@ -13,10 +13,10 @@ export default class SheriffListCard extends React.PureComponent<SheriffListCard
         const { sheriff } = this.props;
         const { firstName, lastName, badgeNumber } = sheriff;
         return (
-            <div style={{width:200, paddingTop:2, paddingRight:2, paddingLeft:2}}>
-                <ListGroupItem style={{borderColor:'#002663', borderWidth:3, fontSize:16}} >
+            <div style={{width: 200, paddingTop: 4, paddingRight: 1.5, paddingLeft: 1.5}}>
+                <ListGroupItem style={{borderColor: '#808080', borderWidth: 2, fontSize: 16}} >
                     {lastName}, {firstName.charAt(0)} 
-                    <p style={{fontSize:14}}>{badgeNumber}</p>                 
+                    <p style={{fontSize: 14}}>{badgeNumber}</p>                 
                 </ListGroupItem>
             </div>
         );

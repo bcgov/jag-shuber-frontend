@@ -112,7 +112,7 @@ class DailyTimeline extends React.Component<DailyTimelineProps & DailyTimelineSt
                                     />
                                 )}
                             />
-                        )
+                        );
                     }}
                     {...rest}
                 />
