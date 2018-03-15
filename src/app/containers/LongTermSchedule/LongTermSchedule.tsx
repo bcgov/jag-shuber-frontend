@@ -13,7 +13,8 @@ import {
     ShiftScheduleProps
 } from '../../components/ShiftSchedule';
 import {
-    Shift, IdType
+    Shift, 
+    IdType
 } from '../../api';
 import './LongTermSchedule.css';
 import ShiftCard from '../../components/ShiftCard';
