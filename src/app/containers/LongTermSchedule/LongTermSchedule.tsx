@@ -58,17 +58,17 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
                     shifts={shifts}
                     visibleTimeEnd={newVisibleTimeEnd}
                     visibleTimeStart={newVisibleTimeStart}
-                    itemRenderer={(s) => (
+                    itemRenderer={(shift) => (
                         <SheriffDropTarget
                             style={{
                                 height: '100%',
                                 display: 'flex'
                             }}
-                            onDropItem={(sheriff) => assignShift({ sheriffId: sheriff.badgeNumber, shiftId: s.id })}
-                            canDropItem={(sheriff) => true}
+                            onDropItem={(sheriff) => assignShift({ sheriffId: sheriff.badgeNumber, shiftId: shift.id })}
+                            canDropItem={(sheriff) => shift.sheriffId === undefined}
                         >
-                            <ShiftCard shift={s}>
-                                <SheriffDisplay sheriffId={s.sheriffId} />
+                            <ShiftCard shift={shift}>
+                                <SheriffDisplay sheriffId={shift.sheriffId} />
                             </ShiftCard>
                         </SheriffDropTarget>
                     )}
