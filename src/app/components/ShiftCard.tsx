@@ -16,7 +16,7 @@ export default class ShiftCard extends React.Component<ShiftCardProps, {}> {
   render() {
     const { shift } = this.props;
     const { startDateTime } = shift;
-    const startTime = moment(startDateTime).format('HH:MM');
+    const startTime = moment(startDateTime).format('HH:mm');
     const {
       title = startTime
     } = this.props;
