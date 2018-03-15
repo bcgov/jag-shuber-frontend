@@ -16,6 +16,7 @@ interface SheriffDropTargetProps {
     onDropItem: (item: DroppableItem) => void;
     style?: React.CSSProperties;
     computeStyle?: (status: { isActive: boolean, isOver: boolean, canDrop: boolean }) => React.CSSProperties;
+    className?: string;
 }
 
 export default class SheriffDropTarget extends React.PureComponent<SheriffDropTargetProps> {
@@ -38,11 +39,10 @@ export default class SheriffDropTarget extends React.PureComponent<SheriffDropTa
 
         if (isActive) {
             css.zIndex = 90;
-            css.backgroundImage = 'repeating-linear-gradient(-45deg, #9F9A,#9F9A 20px, #0B0A 20px, #0B0A 40px)'            
+            css.backgroundImage = 'repeating-linear-gradient(-45deg, #9F9A,#9F9A 20px, #0B0A 20px, #0B0A 40px)'
         } else if (canDrop) {
             css.zIndex = 90;
-            css.backgroundColor = 'transparent'
-            //css.backgroundImage = 'repeating-linear-gradient(-45deg, #ADAA,#ADAA 20px, #080A 20px, #080A 40px)'            
+            css.backgroundColor = 'transparent';
         } else if (isOver && !canDrop) {
             css.zIndex = 90;
             css.backgroundImage = 'repeating-linear-gradient(-45deg, #F00B,#F00B 20px, #F99B 20px, #F99B 40px)'
@@ -56,7 +56,8 @@ export default class SheriffDropTarget extends React.PureComponent<SheriffDropTa
             computeStyle = (s: DragDropStatus) => this.computeStyle(s),
             canDropItem,
             onDropItem,
-            style
+            style,
+            className
         } = this.props;
 
         return (
@@ -64,7 +65,9 @@ export default class SheriffDropTarget extends React.PureComponent<SheriffDropTa
                 canDropItem={(a) => canDropItem ? canDropItem(a as DroppableItem) : false}
                 onDropItem={(a) => onDropItem && onDropItem(a)}
                 style={style}
-                computeStyle={computeStyle}>
+                computeStyle={computeStyle}
+                className={className}
+            >
                 {this.props.children}
             </GenericAssignmentDropTarget>
         );

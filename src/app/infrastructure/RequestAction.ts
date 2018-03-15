@@ -1,6 +1,6 @@
-import { 
-    ThunkAction, 
-    ThunkExtra 
+import {
+    ThunkAction,
+    ThunkExtra
 } from "../store";
 import { AnyAction } from "redux";
 import { Dispatch } from "react-redux";
@@ -46,14 +46,16 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
         } catch (error) {
             this.dispatchFailure(dispatch, error);
         }
-    });
+    })
 
     protected dispatchBegin(dispatch: Dispatch<any>) {
         dispatch(this.beginAction);
     }
 
-    protected dispatchFailure(dispatch: Dispatch<any>, error: string) {
-        dispatch(this.getFailAction(error));
+    protected dispatchFailure(dispatch: Dispatch<any>, error: Error) {
+        // tslint:disable-next-line:no-console
+        console.error(error);
+        dispatch(this.getFailAction(error.message));
     }
 
     protected dispatchSuccess(dispatch: Dispatch<any>, response: TResponse) {
@@ -79,7 +81,7 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
         return newState as TModuleState;
     }
 
-    get reducer() : Reducer<TModuleState>{
+    get reducer(): Reducer<TModuleState> {
         return this._reducer.bind(this);
     }
 
@@ -119,12 +121,12 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
         }
     }
 
-    private  _getIsBusy(state: any): boolean {
+    private _getIsBusy(state: any): boolean {
         let requestState = this.selectRequestActionStateFromRootState(state);
         return requestState && requestState.isBusy === true ? true : false;
     }
 
-    get getIsBusy(){
+    get getIsBusy() {
         return this._getIsBusy.bind(this);
     }
 
@@ -133,7 +135,7 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
         return requestState ? requestState.error : undefined;
     }
 
-    get getError(){
+    get getError() {
         return this._getError.bind(this);
     }
 
@@ -142,7 +144,7 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
         return requestState ? requestState.data : undefined;
     }
 
-    get getData(){
+    get getData() {
         return this._getData.bind(this);
     }
 }

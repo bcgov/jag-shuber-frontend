@@ -8,7 +8,7 @@ import {
     AssignmentDuty
 } from '../../api/index';
 import toTitleCase from '../../infrastructure/toTitleCase';
-import AssignmentDutyCard from '../AssignmentDutyCard';
+import AssignmentDutyCard from '../AssignmentDutyCard/AssignmentDutyCard';
 import { ensureMoment } from '../../infrastructure/momentUtils';
 
 export interface AssignmentTimelineProps extends TimelineComponentProps<AssignmentDuty, Assignment> {

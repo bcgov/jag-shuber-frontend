@@ -1,4 +1,4 @@
-// import { RootState } from '../../store';
+import { RootState } from '../../store';
 import { createSelector } from 'reselect';
 import * as shiftRequests from './requests/shifts';
 import {
@@ -13,3 +13,12 @@ export const allShifts = createSelector(
         return list;
     }
 );
+
+
+export const getShift = (id?: number) => (state: RootState) => {
+    if (state && id != null) {
+        const map: ShiftMap = shiftRequests.shiftMapRequest.getData(state);
+        return map[id];
+    }
+    return null;
+};

@@ -9,20 +9,24 @@ import { IdType } from '../api';
 
 export interface AssignmentDutyEditModalProps {
     dutyId: IdType;
+    color?: string
 }
 
 export default class AssignmentDutyEditModal extends React.PureComponent<AssignmentDutyEditModalProps>{
     render() {
-        const { dutyId } = this.props;
+        const {
+            dutyId,
+            color = 'white'
+         } = this.props;
 
         return (
             <div>
                 <ModalWrapper
                     title="Edit Duty"
                     showButton={
-                        ({ handleShow }) => 
+                        ({ handleShow }) =>
                             <Button bsStyle="link" bsSize="medium" onClick={() => handleShow()}>
-                                <Glyphicon glyph="pencil" style={{ color: 'white' }} />
+                                <Glyphicon glyph="pencil" style={{ color }} />
                             </Button>}
                     body={({ handleClose }) => {
                         return (

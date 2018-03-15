@@ -2,11 +2,12 @@ import * as React from 'react';
 import {
     AssignmentDuty,
     Sheriff
-} from '../api/index';
-import SheriffDropTarget from '../containers/SheriffDropTarget';
-import SheriffDutyBarList from './SheriffDutyBarList/SheriffDutyBarList';
-import AssignmentDutyActionsPanel from './AssignmentDutyActionsPanel/AssignmentDutyActionsPanel';
-import AssignmentDutyEditModal from '../containers/AssignmentDutyEditModal';
+} from '../../api/index';
+import SheriffDropTarget from '../../containers/SheriffDropTarget';
+import SheriffDutyBarList from '../SheriffDutyBarList/SheriffDutyBarList';
+import AssignmentDutyActionsPanel from '../AssignmentDutyActionsPanel/AssignmentDutyActionsPanel';
+import AssignmentDutyEditModal from '../../containers/AssignmentDutyEditModal';
+import './AssignmentDutyCard.css';
 
 export interface AssignmentDutyCardProps {
     duty: AssignmentDuty;
@@ -39,7 +40,6 @@ export default class AssignmentDutyCard extends React.PureComponent<AssignmentDu
                 sheriffIds = [],
                 sheriffsRequired = 0
             } = {},
-            
             style = {}
         } = this.props;
 
@@ -47,21 +47,15 @@ export default class AssignmentDutyCard extends React.PureComponent<AssignmentDu
             <SheriffDropTarget
                 onDropItem={(s) => onDropSheriff && onDropSheriff(s)}
                 canDropItem={canDropSheriff}
-                style={{
-                    backgroundColor: '#96c0e6',
-                    flex: '1',
-                    zindex: 70,
-                    position: 'relative',
-                    ...style
-
-                }}
+                style={{ ...style }}
+                className="assignment-duty-card"
                 computeStyle={!onDropSheriff ? (s: {}) => ({}) : undefined}>
                 <SheriffAssignmentRenderer
                     sheriffIds={sheriffIds}
-                    sheriffsRequired={sheriffsRequired} 
+                    sheriffsRequired={sheriffsRequired}
                 />
                 <AssignmentDutyActionsPanel>
-                    <AssignmentDutyEditModal dutyId={id} />
+                    <AssignmentDutyEditModal color={style.color} dutyId={id} />
                 </AssignmentDutyActionsPanel>
             </SheriffDropTarget>
         );

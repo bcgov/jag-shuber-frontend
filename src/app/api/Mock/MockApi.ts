@@ -40,14 +40,11 @@ function getAssignmentTitle(assignment: Partial<Assignment>): string {
 
     if (isCourtAssignment(assignment)) {
         assignmentTitle = COURTROOMS[assignment.courtroomId];
-    }
-    else if (isEscortAssignment(assignment)) {
+    } else if (isEscortAssignment(assignment)) {
         assignmentTitle = RUNS[assignment.runId];
-    }
-    else if (isJailAssignment(assignment)) {
+    } else if (isJailAssignment(assignment)) {
         assignmentTitle = JAIL_ROLES[assignment.jailRoleId];
-    }
-    else if (isOtherAssignment(assignment)) {
+    } else if (isOtherAssignment(assignment)) {
         assignmentTitle = ALTERNATE_ASSIGNMENTS[assignment.alternateAssignmentId];
     }
 
@@ -69,7 +66,7 @@ export default class NewClient implements API {
 
         // This is a hack to throw in a profile picture
         if (!newSheriff.imageUrl) {
-            newSheriff.imageUrl = '/img/avatar.png'
+            newSheriff.imageUrl = '/img/avatar.png';
         }
         newSheriff.id = this.getId();
         newSheriff.title = `${newSheriff.lastName}, ${newSheriff.firstName}`;
@@ -91,7 +88,8 @@ export default class NewClient implements API {
         let newAssignment = assignment as Assignment;
         newAssignment.id = this.getId();
         newAssignment.title = getAssignmentTitle(assignment);
-        newAssignment.facilityId = 1; //hard coded for now - will eventually need to tie to the user and their facility
+        // todo: will eventually need to tie to the user and their facility - hard coded for now
+        newAssignment.facilityId = 1; 
         assignments.push(newAssignment);
 
         return newAssignment;
@@ -105,9 +103,9 @@ export default class NewClient implements API {
         let assignmentToUpdate = assignment as Assignment;
         assignmentToUpdate.title = getAssignmentTitle(assignment);
 
-        let index = assignments.findIndex(a => a.id == assignmentToUpdate.id);
+        let index = assignments.findIndex(a => a.id === assignmentToUpdate.id);
         if (index < 0) {
-            throw Error(`No assignment could be located for ${assignmentToUpdate.id}`)
+            throw Error(`No assignment could be located for ${assignmentToUpdate.id}`);
         }
 
         assignments[index] = assignmentToUpdate;
@@ -118,9 +116,9 @@ export default class NewClient implements API {
             throw new Error('No ID specified');
         }
 
-        const assignmentIndex = assignments.findIndex((value) => value.id == assignmentId);
+        const assignmentIndex = assignments.findIndex((value) => value.id === assignmentId);
         if (assignmentIndex < 0) {
-            throw Error(`No template could be located for ${assignmentId}`)
+            throw Error(`No template could be located for ${assignmentId}`);
         }
 
         assignments.splice(assignmentIndex, 1);
@@ -143,9 +141,9 @@ export default class NewClient implements API {
         }
         let dutyToUpdate = duty as AssignmentDuty;
 
-        let index = assignmentDuties.findIndex(d => d.id == dutyToUpdate.id);
+        let index = assignmentDuties.findIndex(d => d.id === dutyToUpdate.id);
         if (index < 0) {
-            throw Error(`No assignment could be located for ${dutyToUpdate.id}`)
+            throw Error(`No assignment could be located for ${dutyToUpdate.id}`);
         }
         assignmentDuties[index] = dutyToUpdate;
         return dutyToUpdate;
@@ -177,14 +175,27 @@ export default class NewClient implements API {
         return sheriffShifts;
     }
 
-    updateShift(shiftToUpdate: Partial<Shift>): Promise<Shift> {
-        throw new Error("Method not implemented.");
+    async updateShift(shiftToUpdate: Partial<Shift>): Promise<Shift> {
+        await randomDelay();
+        if (shiftToUpdate.id == null) {
+            throw Error('No Shift Id Specified');
+        }
+        let updatedShift = shiftToUpdate as Shift;
+
+        let index = sheriffShifts.findIndex(s => s.id === updatedShift.id);
+        if (index < 0) {
+            throw Error(`No Shift could be located for ${updatedShift.id}`);
+        }
+
+        // todo: Should probably do a merge (i.e. patch of the objects here)
+        sheriffShifts[index] = updatedShift;
+        return updatedShift;
     }
     createShift(newShift: Partial<Shift>): Promise<Shift> {
-        throw new Error("Method not implemented.");
+        throw new Error('Method not implemented.');
     }
 
     deleteShift(shiftId: IdType): Promise<void> {
-        throw new Error("Method not implemented.");
+        throw new Error('Method not implemented.');
     }
 }

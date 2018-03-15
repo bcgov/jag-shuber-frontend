@@ -13,210 +13,210 @@ import {
     EscortAssignment,
     OtherAssignment,
     Shift
-} from "../Api";
+} from '../Api';
 import * as moment from 'moment';
 
 export const TRAINING_TYPES: StringMap = {
-    FRO: "FRO - Forced Response Option",
-    PISTOL: "PISTOL",
-    CID: "CID - Critical Incident De-Escalation",
-    CEW: "CEW - Conductive Energy Weapon"
-}
+    FRO: 'FRO - Forced Response Option',
+    PISTOL: 'PISTOL',
+    CID: 'CID - Critical Incident De-Escalation',
+    CEW: 'CEW - Conductive Energy Weapon'
+};
 
 export const COURTHOUSES: StringMap = {
-    ABBOTSFORD: "Abbotsford",
-    ALEXISCREEK: "Alexis Creek",
-    ANAHIMLAKE: "Anahim Lake",
-    ASHCROFT: "Ashcroft",
-    ATLIN: "Atlin",
-    BELLABELLA: "Bella Bella",
-    BELLACOOLA: "Bella Coola",
-    BURNSLAKE: "Burns Lake",
-    CAMPBELLRIVER: "Campbell River",
-    CASTLEGAR: "Castlegar",
-    CHASE: "Chase",
-    CHETWYND: "Chetwynd",
-    CHILLIWACK: "Chilliwack",
-    CLEARWATER: "Clearwater",
-    COURTENAY: "Courtenay",
-    CRANBROOK: "Cranbrook",
-    CRESTON: "Creston",
-    DEASELAKE: "Dease Lake",
-    DOWNTOWNCOMMUNITYCOURT: "Downtown Community Court",
-    DUNCAN: "Duncan",
-    FERNIE: "Fernie",
-    FORTSTJAMES: "Fort St. James",
-    FORTSTJOHN: "Fort St. John",
-    FORTWARE: "Fort Ware (Kwadacha)",
-    FRASERLAKE: "Fraser Lake",
-    GANGES: "Ganges",
-    GOLDEN: "Golden",
-    GOLDRIVER: "Gold River",
-    GOODHOPELAKE: "Good Hope Lake",
-    GRANDFORKS: "Grand Forks",
-    HAZELTON: "Hazelton",
-    HOUSTON: "Houston",
-    HUDSONSHOPE: "Hudson's Hope",
-    INVERMERE: "Invermere",
-    KAMLOOPS: "Kamloops",
-    KELOWNA: "KELOWNA",
-    KITIMAT: "Kitimat",
-    KLEMTU: "Klemtu",
-    LILLOOET: "Lilloet",
-    LOWERPOST: "Lower Post",
-    MACKENZIE: "Mackenzie",
-    MASSET: "Masset",
-    MCBRIDE: "McBride",
-    MERRITT: "Merritt",
-    NAKUSP: "Nakusp",
-    NANAIMO: "Nanaimo",
-    NELSON: "Nelson",
-    NEWAIYANSH: "New Aiyansh",
-    NEWWESTMINSTER: "New Westminster",
-    NORTHVANCOUVER: "North Vancouver",
-    HUNDREDMILEHOUSE: "100 Mile House",
-    PEMBERTON: "Pemberton",
-    PENTICTON: "Penticton",
-    PORTALBERNI: "Port Alberni",
-    PORTCOQUITLAM: "Port Coquitlam",
-    PORTHARDY: "Port Hardy",
-    POWELLRIVER: "Powell River",
-    PRINCEGEORGE: "Prince George",
-    PRINCERUPERT: "Prince Rupert",
-    PRINCETON: "Princeton",
-    QUEENCHARLOTTE: "Queen Charlotte",
-    QUESNEL: "Quesnel",
-    REVELSTOKE: "Revelstoke",
-    RICHMOND: "Richmond",
-    ROSSLAND: "Rossland",
-    SALMONARM: "Salmon Arm",
-    SECHELT: "Sechelt",
-    SIDNEY: "Sidney",
-    SMITHERS: "Smithers",
-    SPARWOOD: "Sparwood",
-    STEWART: "Stewart",
-    SURREY: "Surrey",
-    TAHSIS: "Tahsis",
-    TERRACE: "Terrace",
-    TOFINO: "Tofino",
-    TSAYKEHDENE: "Tsay Keh Dene (Ingenika)",
-    TUBLERRIDGE: "Tumbler Ridge",
-    UCLULET: "Ucluelet",
-    VALEMOUNT: "Valemont",
-    VLC: "Vancouver - VLC",
-    VANCOUVER: "Vancouver - 222 Main",
-    ROBSONSQUARE: "Vancouver - Robson Square",
-    VANDERHOOF: "Vanderhoof",
-    VERNON: "Vernon",
-    VICTORIA: "Victoria",
-    WESTERNCOMMUNITIES: "Western Communities",
-    WILLIAMSLAKE: "Williams Lake"
-}
+    ABBOTSFORD: 'Abbotsford',
+    ALEXISCREEK: 'Alexis Creek',
+    ANAHIMLAKE: 'Anahim Lake',
+    ASHCROFT: 'Ashcroft',
+    ATLIN: 'Atlin',
+    BELLABELLA: 'Bella Bella',
+    BELLACOOLA: 'Bella Coola',
+    BURNSLAKE: 'Burns Lake',
+    CAMPBELLRIVER: 'Campbell River',
+    CASTLEGAR: 'Castlegar',
+    CHASE: 'Chase',
+    CHETWYND: 'Chetwynd',
+    CHILLIWACK: 'Chilliwack',
+    CLEARWATER: 'Clearwater',
+    COURTENAY: 'Courtenay',
+    CRANBROOK: 'Cranbrook',
+    CRESTON: 'Creston',
+    DEASELAKE: 'Dease Lake',
+    DOWNTOWNCOMMUNITYCOURT: 'Downtown Community Court',
+    DUNCAN: 'Duncan',
+    FERNIE: 'Fernie',
+    FORTSTJAMES: 'Fort St. James',
+    FORTSTJOHN: 'Fort St. John',
+    FORTWARE: 'Fort Ware (Kwadacha)',
+    FRASERLAKE: 'Fraser Lake',
+    GANGES: 'Ganges',
+    GOLDEN: 'Golden',
+    GOLDRIVER: 'Gold River',
+    GOODHOPELAKE: 'Good Hope Lake',
+    GRANDFORKS: 'Grand Forks',
+    HAZELTON: 'Hazelton',
+    HOUSTON: 'Houston',
+    HUDSONSHOPE: 'Hudson\'s Hope',
+    INVERMERE: 'Invermere',
+    KAMLOOPS: 'Kamloops',
+    KELOWNA: 'KELOWNA',
+    KITIMAT: 'Kitimat',
+    KLEMTU: 'Klemtu',
+    LILLOOET: 'Lilloet',
+    LOWERPOST: 'Lower Post',
+    MACKENZIE: 'Mackenzie',
+    MASSET: 'Masset',
+    MCBRIDE: 'McBride',
+    MERRITT: 'Merritt',
+    NAKUSP: 'Nakusp',
+    NANAIMO: 'Nanaimo',
+    NELSON: 'Nelson',
+    NEWAIYANSH: 'New Aiyansh',
+    NEWWESTMINSTER: 'New Westminster',
+    NORTHVANCOUVER: 'North Vancouver',
+    HUNDREDMILEHOUSE: '100 Mile House',
+    PEMBERTON: 'Pemberton',
+    PENTICTON: 'Penticton',
+    PORTALBERNI: 'Port Alberni',
+    PORTCOQUITLAM: 'Port Coquitlam',
+    PORTHARDY: 'Port Hardy',
+    POWELLRIVER: 'Powell River',
+    PRINCEGEORGE: 'Prince George',
+    PRINCERUPERT: 'Prince Rupert',
+    PRINCETON: 'Princeton',
+    QUEENCHARLOTTE: 'Queen Charlotte',
+    QUESNEL: 'Quesnel',
+    REVELSTOKE: 'Revelstoke',
+    RICHMOND: 'Richmond',
+    ROSSLAND: 'Rossland',
+    SALMONARM: 'Salmon Arm',
+    SECHELT: 'Sechelt',
+    SIDNEY: 'Sidney',
+    SMITHERS: 'Smithers',
+    SPARWOOD: 'Sparwood',
+    STEWART: 'Stewart',
+    SURREY: 'Surrey',
+    TAHSIS: 'Tahsis',
+    TERRACE: 'Terrace',
+    TOFINO: 'Tofino',
+    TSAYKEHDENE: 'Tsay Keh Dene (Ingenika)',
+    TUBLERRIDGE: 'Tumbler Ridge',
+    UCLULET: 'Ucluelet',
+    VALEMOUNT: 'Valemont',
+    VLC: 'Vancouver - VLC',
+    VANCOUVER: 'Vancouver - 222 Main',
+    ROBSONSQUARE: 'Vancouver - Robson Square',
+    VANDERHOOF: 'Vanderhoof',
+    VERNON: 'Vernon',
+    VICTORIA: 'Victoria',
+    WESTERNCOMMUNITIES: 'Western Communities',
+    WILLIAMSLAKE: 'Williams Lake'
+};
 
 export const REGIONS: StringMap = {
-    FRASER: "Fraser",
-    INTERIOR: "Interior",
-    NORTHERN: "Northern",
-    VANCENTRE: "Van Centre",
-    VANISLAND: "Vancouver Island"
-}
+    FRASER: 'Fraser',
+    INTERIOR: 'Interior',
+    NORTHERN: 'Northern',
+    VANCENTRE: 'Van Centre',
+    VANISLAND: 'Vancouver Island'
+};
 
 export const WORK_SECTIONS: StringMap = {
-    COURTS: "Courts",
-    JAIL: "Jail",
-    ESCORTS: "Escorts",
-    OTHER: "Other"
-}
+    COURTS: 'Courts',
+    JAIL: 'Jail',
+    ESCORTS: 'Escorts',
+    OTHER: 'Other'
+};
 
 export const COURTROOMS: StringMap = {
-    101: "Courtroom 101",
-    102: "Courtroom 102",
-    103: "Courtroom 103",
-    104: "Courtroom 104",
-    201: "Courtroom 201",
-    202: "Courtroom 202",
-    203: "Courtroom 203",
-    204: "Courtroom 204"
-}
+    101: 'Courtroom 101',
+    102: 'Courtroom 102',
+    103: 'Courtroom 103',
+    104: 'Courtroom 104',
+    201: 'Courtroom 201',
+    202: 'Courtroom 202',
+    203: 'Courtroom 203',
+    204: 'Courtroom 204'
+};
 
 export const JAIL_ROLES: StringMap = {
-    1: "Sergeant",
-    2: "Deputy Sergeant",
-    3: "Control",
-    4: "Pre-Trial"
-}
+    1: 'Sergeant',
+    2: 'Deputy Sergeant',
+    3: 'Control',
+    4: 'Pre-Trial'
+};
 
 export const RUNS: StringMap = {
-    1: "Local Run",
-    2: "Run 1",
-    3: "Run 2",
-    4: "Run 3",
-    5: "Run 4",
-    6: "Run 5",
-    7: "Run 6",
-    8: "Run 7",
-    9: "Run 8",
-    10: "Run 9",
-    11: "Run 10",
-    12: "Run 11",
-    13: "Run 12"
-}
+    1: 'Local Run',
+    2: 'Run 1',
+    3: 'Run 2',
+    4: 'Run 3',
+    5: 'Run 4',
+    6: 'Run 5',
+    7: 'Run 6',
+    8: 'Run 7',
+    9: 'Run 8',
+    10: 'Run 9',
+    11: 'Run 10',
+    12: 'Run 11',
+    13: 'Run 12'
+};
 
 export const ALTERNATE_ASSIGNMENTS: StringMap = {
-    1: "Gate 1",
-    2: "Gate 2", 
-    3: "Jury Selection",
-    4: "Jury Deliberation",
-    5: "Documents"
-}
+    1: 'Gate 1',
+    2: 'Gate 2', 
+    3: 'Jury Selection',
+    4: 'Jury Deliberation',
+    5: 'Documents'
+};
 
 export const sheriffList: Sheriff[] = [
     {
         id: 1,
-        title: "Shirley, G",
-        firstName: "Garfield",
-        lastName: "Shirley",
+        title: 'Shirley, G',
+        firstName: 'Garfield',
+        lastName: 'Shirley',
         badgeNumber: 969,
         imageUrl: '/img/garfield_shirley.jpg',
-        permanentLocation: { courthouseId: "VANCOUVER", regionId: "VANCENTRE" },
-        currentLocation: { courthouseId: "VANCOUVER", regionId: "VANCENTRE" },
+        permanentLocation: { courthouseId: 'VANCOUVER', regionId: 'VANCENTRE' },
+        currentLocation: { courthouseId: 'VANCOUVER', regionId: 'VANCENTRE' },
         training: [
-            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "FRO" },
-            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "PISTOL" },
-            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CID" },
-            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CEW" }
+            { certificationDate: 'Mon Jan 20 2017', expiryDate: 'Mon Jan 20 2018', trainingType: 'FRO' },
+            { certificationDate: 'Mon Jan 20 2017', expiryDate: 'Mon Jan 20 2018', trainingType: 'PISTOL' },
+            { certificationDate: 'Mon Jan 20 2017', expiryDate: 'Mon Jan 20 2018', trainingType: 'CID' },
+            { certificationDate: 'Mon Jan 20 2017', expiryDate: 'Mon Jan 20 2018', trainingType: 'CEW' }
         ],
         onDuty: true
     },
     {
         id: 2, 
-        title: "Jackson, J",
-        firstName: "Jaqueline",
-        lastName: "Jackson",
+        title: 'Jackson, J',
+        firstName: 'Jaqueline',
+        lastName: 'Jackson',
         badgeNumber: 204,
         imageUrl: '/img/jaqueline_jackson.jpg',
-        permanentLocation: { courthouseId: "KAMLOOPS", regionId: "INTERIOR" },
-        currentLocation: { courthouseId: "KAMLOOPS", regionId: "INTERIOR" },
+        permanentLocation: { courthouseId: 'KAMLOOPS', regionId: 'INTERIOR' },
+        currentLocation: { courthouseId: 'KAMLOOPS', regionId: 'INTERIOR' },
         training: [
-            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "FRO" },
-            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "PISTOL" },
-            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CID" },
-            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "CEW" }
+            { certificationDate: 'Mon Jan 20 2017', expiryDate: 'Mon Jan 20 2018', trainingType: 'FRO' },
+            { certificationDate: 'Mon Jan 20 2017', expiryDate: 'Mon Jan 20 2018', trainingType: 'PISTOL' },
+            { certificationDate: 'Mon Jan 20 2017', expiryDate: 'Mon Jan 20 2018', trainingType: 'CID' },
+            { certificationDate: 'Mon Jan 20 2017', expiryDate: 'Mon Jan 20 2018', trainingType: 'CEW' }
         ],
         onDuty: true
     },
     {
         id: 3,
-        title: "Blundell, L",
-        firstName: "Landon",
-        lastName: "Bludnell",
+        title: 'Blundell, L',
+        firstName: 'Landon',
+        lastName: 'Bludnell',
         badgeNumber: 790,
         imageUrl: '/img/landon_bludnell.jpg',
-        permanentLocation: { courthouseId: "PRINCEGEORGE", regionId: "NORTHERN" },
-        currentLocation: { courthouseId: "PRINCEGEORGE", regionId: "NORTHERN" },
+        permanentLocation: { courthouseId: 'PRINCEGEORGE', regionId: 'NORTHERN' },
+        currentLocation: { courthouseId: 'PRINCEGEORGE', regionId: 'NORTHERN' },
         training: [
-            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: "FRO" },
-            { certificationDate: "Mon Jan 20 2017", expiryDate: "Mon Jan 20 2018", trainingType: 'PISTOL' },
+            { certificationDate: 'Mon Jan 20 2017', expiryDate: 'Mon Jan 20 2018', trainingType: 'FRO' },
+            { certificationDate: 'Mon Jan 20 2017', expiryDate: 'Mon Jan 20 2018', trainingType: 'PISTOL' },
             { certificationDate: 'Mon Jan 20 2017', expiryDate: 'Mon Jan 20 2018', trainingType: 'CID' },
             { certificationDate: 'Mon Jan 20 2017', expiryDate: 'Mon Jan 20 2018', trainingType: 'CEW' }
         ],
@@ -224,9 +224,9 @@ export const sheriffList: Sheriff[] = [
     },
     {
         id: 4, 
-        title: "Lucas, R",
-        firstName: "Rob",
-        lastName: "Lucas",
+        title: 'Lucas, R',
+        firstName: 'Rob',
+        lastName: 'Lucas',
         badgeNumber: 987,
         imageUrl: '/img/rob_lucas.jpg',
         permanentLocation: { courthouseId: 'NEWWESTMINSTER', regionId: 'FRASER' },
@@ -241,9 +241,9 @@ export const sheriffList: Sheriff[] = [
     },
     {
         id: 5,
-        title: "Gill, S",
-        firstName: "Steve",
-        lastName: "Gill",
+        title: 'Gill, S',
+        firstName: 'Steve',
+        lastName: 'Gill',
         badgeNumber: 932,
         imageUrl: '/img/steve_gill.jpg',
         permanentLocation: { courthouseId: 'SURREY', regionId: 'FRASER' },
@@ -258,9 +258,9 @@ export const sheriffList: Sheriff[] = [
     },
     {
         id: 6,
-        title: "Jervis, S",
-        firstName: "Steve",
-        lastName: "Jervis",
+        title: 'Jervis, S',
+        firstName: 'Steve',
+        lastName: 'Jervis',
         badgeNumber: 579,
         imageUrl: '/img/steve_jervis.jpg',
         permanentLocation: { courthouseId: 'VLC', regionId: 'VANCENTRE' },
@@ -274,7 +274,6 @@ export const sheriffList: Sheriff[] = [
         onDuty: true
     }
 ];
-
 
 const courtroomAssignments: CourtAssignment[] = [
     {
@@ -374,10 +373,10 @@ const otherAssignments: OtherAssignment[] = [
         alternateAssignmentId: 3,
         recurrenceInfo: DEFAULT_RECURRENCE
     }
-]
+];
 
 function createAssignmentList(): Assignment[] {
-    let assignmentList:Assignment[] = [];
+    let assignmentList: Assignment[] = [];
     return assignmentList.concat(jailAssingments, courtroomAssignments, escortAssignments, otherAssignments);
 }
 
@@ -398,7 +397,7 @@ function createAssignmentDuties(): AssignmentDuty[] {
                     startDateTime: moment(item.startTime),
                     endDateTime: moment(item.endTime),
                     sheriffsRequired: item.sheriffsRequired
-                }
+                };
                 duties.push(duty);
                 incrementingId++;
             });
@@ -950,22 +949,22 @@ export const sheriffShifts: Shift[] = [
     {
         id: 1, 
         courthouseId: 1,
-        workSectionId: "COURTS", 
+        workSectionId: 'COURTS', 
         startDateTime: moment().startOf('day').add(6, 'hours'),
-        endDateTime:moment().startOf('day').add(13.5, 'hours')
+        endDateTime: moment().startOf('day').add(13.5, 'hours')
     },
     {
         id: 2, 
         courthouseId: 1,
-        workSectionId: "JAIL", 
+        workSectionId: 'JAIL', 
         startDateTime: moment().startOf('day').add(6, 'hours'),
-        endDateTime:moment().startOf('day').add(13.5, 'hours')
+        endDateTime: moment().startOf('day').add(13.5, 'hours')
     },
     {
         id: 3, 
         courthouseId: 1, 
         startDateTime: moment().startOf('day').add(6, 'hours'),
-        endDateTime:moment().startOf('day').add(13.5, 'hours')
+        endDateTime: moment().startOf('day').add(13.5, 'hours')
     },
     {
         id: 4, 
@@ -976,7 +975,7 @@ export const sheriffShifts: Shift[] = [
     {
         id: 5, 
         courthouseId: 1, 
-        workSectionId: "ESCORTS",
+        workSectionId: 'ESCORTS',
         startDateTime: moment().startOf('day').add(8, 'hours'),
         endDateTime: moment().startOf('day').add(15.5, 'hours')
     },
@@ -989,7 +988,7 @@ export const sheriffShifts: Shift[] = [
     {
         id: 7, 
         courthouseId: 1,
-        workSectionId: "OTHER",
+        workSectionId: 'OTHER',
         startDateTime: moment().startOf('day').add(8, 'hours'),
         endDateTime: moment().startOf('day').add(15.5, 'hours')
     }
