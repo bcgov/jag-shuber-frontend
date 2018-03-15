@@ -9,6 +9,10 @@
   "footer"
 }
 
+[draggable]:active {
+  opacity: 0.5;
+}
+
 .headerArea .header-main{
   z-Index: 1000  
 }
