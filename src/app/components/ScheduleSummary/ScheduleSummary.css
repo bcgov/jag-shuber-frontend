@@ -1,6 +1,7 @@
 .schedule-summary-week {
     display: flex;
     flex-direction: row;
+    position: inherit;
 }
 .schedule-summary-day {
     width: 20px;
@@ -15,7 +16,7 @@
     border-radius: 50%;
     background-color: white;
     border: 1px solid;
-    margin: 1px;
+    margin-right: 2px;
 }
 
 .empty-day {
@@ -38,7 +39,6 @@
     border-color: red;
     color: red;
     padding-top: 2px;
-    padding-left: 2px;
 }
 
 .good-day {

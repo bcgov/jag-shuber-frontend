@@ -1,19 +1,20 @@
 import * as React from 'react';
-import { Sheriff } from '../api/index';
+import { Sheriff } from '../../api/index';
 import { 
     ListGroupItem
 } from 'react-bootstrap';
 import {
     default as ScheduleSummary,
     StatusEnum 
-} from './ScheduleSummary/ScheduleSummary';
+} from '../ScheduleSummary/ScheduleSummary';
+import './SheriffListCard.css';
 
 export interface SheriffListCardProps {
     onClick?: () => void;
     sheriff: Sheriff;
     showScheduleSummary?: boolean;
 }
-export default class SheriffListCard extends React.PureComponent<SheriffListCardProps, any>{
+export default class SheriffListCard extends React.PureComponent<SheriffListCardProps, {}> {
     render() {
         const { sheriff, showScheduleSummary = false } = this.props;
         const { firstName, lastName, badgeNumber } = sheriff;
@@ -27,10 +28,10 @@ export default class SheriffListCard extends React.PureComponent<SheriffListCard
             saturday: StatusEnum.HIDDEN
         };
         return (
-            <div style={{width: 200, paddingTop: 4, paddingRight: 1.5, paddingLeft: 1.5}}>
-                <ListGroupItem style={{borderColor: '#808080', borderWidth: 2, fontSize: 16}} >
+            <div className="sheriff-list-card">
+                <ListGroupItem className="sheriff-list-card-item" >
                     {lastName}, {firstName.charAt(0)} 
-                    <p style={{fontSize: 14}}>{badgeNumber}</p>
+                    <p className="sheriff-card-badge-number">{badgeNumber}</p>
                     {showScheduleSummary &&  <ScheduleSummary weekStatus={testWeek}/>} 
                 </ListGroupItem>
             </div>

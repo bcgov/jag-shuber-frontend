@@ -3,7 +3,7 @@ import DailyTimeline from '../containers/DailyTimeline/DailyTimeline';
 import TimelineToolsPanel from '../components/TimelineToolsPanel';
 import SheriffList from '../containers/SheriffList';
 import { Sheriff } from '../api';
-import SheriffListCard from '../components/SheriffListCard';
+import SheriffListCard from '../components/SheriffListCard/SheriffListCard';
 import { ListGroup } from 'react-bootstrap';
 import SheriffDragSource from '../containers/SheriffDragSource';
 
