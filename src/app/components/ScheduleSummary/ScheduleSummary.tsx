@@ -9,7 +9,6 @@ export enum StatusEnum {
     EMPTY,
     HIDDEN
 }
-
 export interface ScheduleSummaryProps {
     weekStatus: {
         sunday?: StatusEnum;
@@ -21,30 +20,29 @@ export interface ScheduleSummaryProps {
         saturday?: StatusEnum;
     };
 }
-
 export default class ScheduleSummary extends React.PureComponent<ScheduleSummaryProps, {}> {
     getDayInfo(status: StatusEnum, day: string) {
         switch (status) {
             case StatusEnum.GOOD:
                 return (
                     <div className="schedule-summary-day good-day non-empty-day">
-                        <Glyphicon glyph="ok"/>
+                        <Glyphicon glyph="ok" />
                     </div>
                 );
             case StatusEnum.BAD:
                 return (
                     <div className="schedule-summary-day bad-day non-empty-day">
-                        <Glyphicon glyph="remove"/>
+                        <Glyphicon glyph="remove" />
                     </div>
                 );
             case StatusEnum.WARNING:
-                return  (
+                return (
                     <div className="schedule-summary-day warning-day non-empty-day">
-                        <Glyphicon glyph="warning-sign"/>
+                        <Glyphicon glyph="alert" />
                     </div>
                 );
             default:
-               return (
+                return (
                     <div className="schedule-summary-day empty-day">
                         {day.charAt(0).toUpperCase()}
                     </div>
@@ -58,13 +56,11 @@ export default class ScheduleSummary extends React.PureComponent<ScheduleSummary
         const dayStatus = Object.keys(weekStatus).map(key => ({ key, status: weekStatus[key] }));
 
         return (
-
             <div className="schedule-summary-week" >
                 {dayStatus.filter(({ status }) => status !== StatusEnum.HIDDEN).map(({ status, key }) => (
                     this.getDayInfo(status, key)
                 ))}
             </div>
-
         );
     }
 }

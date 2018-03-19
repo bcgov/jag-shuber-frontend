@@ -17,7 +17,7 @@ class SchedulingPage extends React.PureComponent {
                         <SheriffList
                             SheriffRenderer={(s: Sheriff) => (
                                 <SheriffDragSource sheriff={s}>
-                                    <SheriffListCard sheriff={s} />
+                                    <SheriffListCard sheriff={s} showScheduleSummary={true} />
                                 </SheriffDragSource>
                             )}
                         />
