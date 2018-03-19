@@ -12,7 +12,8 @@ import {
     JailAssignment,
     EscortAssignment,
     OtherAssignment,
-    Shift
+    Shift,
+    Leave
 } from '../Api';
 import * as moment from 'moment';
 
@@ -991,5 +992,18 @@ export const sheriffShifts: Shift[] = [
         workSectionId: 'OTHER',
         startDateTime: moment().startOf('day').add(8, 'hours'),
         endDateTime: moment().startOf('day').add(15.5, 'hours')
+    }
+];
+
+export const sheriffLeaves: Leave[] = [
+    {
+        id: 1, 
+        sheriffId: 1, 
+        date: moment().startOf('week').add(1, 'day')
+    },
+    {
+        id: 2, 
+        sheriffId: 2, 
+        date: moment().startOf('week').add(2, 'day')
     }
 ];

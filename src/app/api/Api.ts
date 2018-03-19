@@ -199,6 +199,12 @@ export interface Shift {
     endDateTime: DateType;
 }
 
+export interface Leave {
+    id: IdType; 
+    sheriffId: IdType;
+    date: DateType;
+}
+
 export interface API {
     // Sheriffs
     getSheriffs(): Promise<SheriffMap>;
@@ -229,4 +235,7 @@ export interface API {
     updateShift(shiftToUpdate: Partial<Shift>): Promise<Shift>;
     createShift(newShift: Partial<Shift>): Promise<Shift>;
     deleteShift(shiftId: IdType): Promise<void>;
+
+    // Sheriff Leaves
+    getSheriffLeaves(sheriffId: IdType): Promise<Leave []>;
 }
