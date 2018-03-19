@@ -13,7 +13,6 @@ export type Assignment = CourtAssignment | JailAssignment | EscortAssignment | O
 
 /* tslint:disable:no-bitwise */
 export enum DaysOfWeek {
-
     Mon = 1 << 0,
     Tue = 1 << 1,
     Wed = 1 << 2,
@@ -24,6 +23,7 @@ export enum DaysOfWeek {
     Everyday = Mon | Tue | Wed | Thu | Fri | Sat | Sun,
     Weekdays = Mon | Tue | Wed | Thu | Fri
 }
+
 /* tslint:enable:no-bitwise */
 
 export namespace DaysOfWeek {
