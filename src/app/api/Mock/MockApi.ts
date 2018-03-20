@@ -201,15 +201,7 @@ export default class NewClient implements API {
         throw new Error('Method not implemented.');
     }
 
-    async getSheriffLeaves(sheriffId: IdType): Promise<Leave[]> {
-        let leaves: Leave[] = [];
-
-        sheriffLeaves.forEach(leave => {
-            if (leave.sheriffId === sheriffId) {
-                leaves.push(leave);
-            }
-        });
-
-        return leaves;
+    async getLeaves(): Promise<Leave[]> {
+        return sheriffLeaves;
     }
 }

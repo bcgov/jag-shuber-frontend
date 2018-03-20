@@ -1,4 +1,5 @@
 import * as shiftRequests from './requests/shifts';
+import * as leaveRequests from './requests/leaves';
 import { ReducersMapObject } from 'redux';
 import NestedReducer from '../../infrastructure/NestedReducer';
 import { STATE_KEY } from './common';
@@ -15,6 +16,9 @@ const nestedReducer = new NestedReducer([
   shiftRequests.createShiftRequest.reducer,
   shiftRequests.updateShiftRequest.reducer,
   shiftRequests.deleteShiftRequest.reducer,
+
+  // Leaves
+  leaveRequests.leaveMapRequest.reducer
 ]);
 
 const reducer = nestedReducer.reducer;

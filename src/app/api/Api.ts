@@ -5,6 +5,7 @@ export type DateType = Date | moment.Moment | string;
 export type StringMap = { [key: string]: string };
 export type IdType = number;
 export type ShiftMap = { [key: number]: Shift };
+export type LeaveMap = { [key: number]: Leave };
 export type SheriffMap = { [key: number]: Sheriff };
 export type AssignmentMap = { [key: number]: Assignment };
 export type AssignmentDutyMap = { [key: number]: AssignmentDuty };
@@ -203,6 +204,7 @@ export interface Leave {
     id: IdType; 
     sheriffId: IdType;
     date: DateType;
+    leaveCode?: string; // string for now until these are further defined with "add leave" user stories
 }
 
 export interface API {
@@ -237,5 +239,5 @@ export interface API {
     deleteShift(shiftId: IdType): Promise<void>;
 
     // Sheriff Leaves
-    getSheriffLeaves(sheriffId: IdType): Promise<Leave []>;
+    getLeaves(): Promise<Leave []>;
 }
