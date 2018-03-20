@@ -2,11 +2,15 @@ import * as React from 'react';
 import * as moment from 'moment';
 import { connect } from 'react-redux';
 import { RootState } from '../../store';
-import { allShifts } from '../../modules/shifts/selectors';
+import { 
+    allShifts,
+    allLeaves 
+} from '../../modules/shifts/selectors';
 import {
     getShifts,
     unlinkShift,
-    linkShift
+    linkShift,
+    getLeaves
 } from '../../modules/shifts/actions';
 import {
     default as ShiftSchedule,
@@ -14,7 +18,8 @@ import {
 } from '../../components/ShiftSchedule';
 import {
     Shift, 
-    IdType
+    IdType,
+    Leave
 } from '../../api';
 import './LongTermSchedule.css';
 import ShiftCard from '../../components/ShiftCard';
@@ -30,18 +35,29 @@ interface LongTermScheduleDispatchProps {
     fetchShifts: () => void;
     assignShift: (link: { sheriffId: IdType, shiftId: IdType }) => void;
     unassignShift: (link: { sheriffId: IdType, shiftId: IdType }) => void;
+    fetchLeaves: () => void;
 }
 
 interface LongTermScheduleStateProps {
     shifts: Shift[];
+    leaves: Leave[];
 }
 
 class LongTermSchedule extends React.Component<LongTermScheduleProps
     & LongTermScheduleStateProps
     & LongTermScheduleDispatchProps> {
     componentWillMount() {
-        const { fetchShifts } = this.props;
+        const { fetchShifts, fetchLeaves } = this.props;
         fetchShifts();
+        fetchLeaves();
+    }
+
+    isSheriffOnLeave(sheriffId: number, shift: Shift): boolean {
+        const { leaves } = this.props;
+        let leavesForSheriff = leaves.filter(l => l.sheriffId === sheriffId);
+        let filteredLeaves = leavesForSheriff.filter(l => 
+            moment(l.date).isBetween(shift.startDateTime, shift.endDateTime, 'days', '[]'));
+        return filteredLeaves.length > 0;
     }
 
     render() {
@@ -66,7 +82,8 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
                                 display: 'flex'
                             }}
                             onDropItem={(sheriff) => assignShift({ sheriffId: sheriff.id, shiftId: shift.id })}
-                            canDropItem={(sheriff) => shift.sheriffId === undefined}
+                            canDropItem={(sheriff) => 
+                                shift.sheriffId === undefined && !this.isSheriffOnLeave(sheriff.id, shift)}
                         >
                             <ShiftCard shift={shift}>
                                 <SheriffDisplay sheriffId={shift.sheriffId} />
@@ -81,14 +98,16 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
 
 const mapStateToProps = (state: RootState, props: LongTermScheduleProps) => {
     return {
-        shifts: allShifts(state)
+        shifts: allShifts(state),
+        leaves: allLeaves(state)
     };
 }
 
 const mapDispatchToProps = {
     fetchShifts: getShifts,
     assignShift: linkShift,
-    unassignShift: unlinkShift
+    unassignShift: unlinkShift,
+    fetchLeaves: getLeaves
 };
 
 export default connect<LongTermScheduleStateProps, LongTermScheduleDispatchProps, LongTermScheduleProps>(

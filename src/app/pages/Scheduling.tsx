@@ -32,5 +32,3 @@ class SchedulingPage extends React.PureComponent {
 }
 
 export default SchedulingPage;
-
-
