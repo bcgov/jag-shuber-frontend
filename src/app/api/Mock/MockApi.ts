@@ -61,7 +61,7 @@ export default class NewClient implements API {
     }
 
     async getSheriffs(): Promise<SheriffMap> {
-        return arrayToMap(sheriffList, (s) => s.badgeNumber) as SheriffMap;
+        return arrayToMap(sheriffList, (s) => s.id) as SheriffMap;
     }
     async createSheriff(newSheriff: Sheriff): Promise<Sheriff> {
         await randomDelay();

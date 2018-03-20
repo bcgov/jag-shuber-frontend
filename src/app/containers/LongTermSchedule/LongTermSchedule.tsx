@@ -65,7 +65,7 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
                                 height: '100%',
                                 display: 'flex'
                             }}
-                            onDropItem={(sheriff) => assignShift({ sheriffId: sheriff.badgeNumber, shiftId: shift.id })}
+                            onDropItem={(sheriff) => assignShift({ sheriffId: sheriff.id, shiftId: shift.id })}
                             canDropItem={(sheriff) => shift.sheriffId === undefined}
                         >
                             <ShiftCard shift={shift}>

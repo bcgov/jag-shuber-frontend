@@ -29,7 +29,7 @@ interface ConnectedScheduleSummaryProps {
 
 interface ConnectedScheduleSummaryDispatchProps {
     fetchShifts: () => void;
-    fetchLeaves: () => void;
+    fetchLeaves: () => void;    
 }
 
 interface ConnectedScheduleSummaryStateProps {

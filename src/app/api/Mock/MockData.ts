@@ -951,6 +951,7 @@ export const sheriffShifts: Shift[] = [
         id: 1, 
         courthouseId: 1,
         workSectionId: 'COURTS', 
+        sheriffId: 6,
         startDateTime: moment().startOf('day').add(6, 'hours'),
         endDateTime: moment().startOf('day').add(13.5, 'hours')
     },
