@@ -6,8 +6,7 @@ export enum StatusEnum {
     GOOD,
     BAD,
     WARNING,
-    EMPTY,
-    HIDDEN
+    EMPTY
 }
 export interface ScheduleSummaryProps {
     weekStatus: {
@@ -57,7 +56,7 @@ export default class ScheduleSummary extends React.PureComponent<ScheduleSummary
 
         return (
             <div className="schedule-summary-week" >
-                {dayStatus.filter(({ status }) => status !== StatusEnum.HIDDEN).map(({ status, key }) => (
+                {dayStatus.map(({ status, key }) => (
                     this.getDayInfo(status, key)
                 ))}
             </div>

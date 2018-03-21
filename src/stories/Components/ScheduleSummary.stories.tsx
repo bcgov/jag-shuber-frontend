@@ -15,13 +15,11 @@ storiesOf('Components')
       <StorySection title="Fully Schedulued">
         <ScheduleSummary
           weekStatus={{
-            sunday: StatusEnum.HIDDEN,
             monday: StatusEnum.GOOD,
             tuesday: StatusEnum.GOOD,
             wednesday: StatusEnum.GOOD,
             thursday: StatusEnum.GOOD,
             friday: StatusEnum.GOOD,
-            saturday: StatusEnum.HIDDEN
           }}
         />
       </StorySection>
@@ -29,13 +27,11 @@ storiesOf('Components')
       <StorySection title="Fully Available">
         <ScheduleSummary
           weekStatus={{
-            sunday: StatusEnum.HIDDEN,
             monday: StatusEnum.EMPTY,
             tuesday: StatusEnum.EMPTY,
             wednesday: StatusEnum.EMPTY,
             thursday: StatusEnum.EMPTY,
             friday: StatusEnum.EMPTY,
-            saturday: StatusEnum.HIDDEN
           }}
         />
       </StorySection>
@@ -43,13 +39,11 @@ storiesOf('Components')
       <StorySection title="Available with Warnings">
         <ScheduleSummary
           weekStatus={{
-            sunday: StatusEnum.HIDDEN,
             monday: StatusEnum.EMPTY,
             tuesday: StatusEnum.EMPTY,
             wednesday: StatusEnum.EMPTY,
             thursday: StatusEnum.WARNING,
             friday: StatusEnum.EMPTY,
-            saturday: StatusEnum.HIDDEN
           }}
         />
       </StorySection>
@@ -57,13 +51,11 @@ storiesOf('Components')
       <StorySection title="Available with Days Off">
         <ScheduleSummary
           weekStatus={{
-            sunday: StatusEnum.HIDDEN,
             monday: StatusEnum.EMPTY,
             tuesday: StatusEnum.EMPTY,
             wednesday: StatusEnum.EMPTY,
             thursday: StatusEnum.BAD,
             friday: StatusEnum.BAD,
-            saturday: StatusEnum.HIDDEN
           }}
         />
       </StorySection>
