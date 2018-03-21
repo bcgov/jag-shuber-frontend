@@ -41,12 +41,6 @@ class ConnectedScheduleSummary extends React.Component<ConnectedScheduleSummaryP
     & ConnectedScheduleSummaryStateProps
     & ConnectedScheduleSummaryDispatchProps> {
 
-    componentWillMount() {
-        const { fetchLeaves, fetchShifts } = this.props;
-        fetchShifts();
-        fetchLeaves();
-    }
-
     getDay(date: moment.Moment): string {
         switch (date.isoWeekday()) {
             case 1:
@@ -68,7 +62,7 @@ class ConnectedScheduleSummary extends React.Component<ConnectedScheduleSummaryP
         }
     }
     
-    createWeek() {
+    createWeekStatus() {
         const { 
             leaves, 
             shifts, 
@@ -80,13 +74,11 @@ class ConnectedScheduleSummary extends React.Component<ConnectedScheduleSummaryP
         const shiftsForWeek = shifts.filter(s => moment(s.startDateTime).isBetween(start, end, 'days', '[]'));
         
         let weekStatus = {
-            sunday: StatusEnum.HIDDEN,
             monday: StatusEnum.EMPTY,
             tuesday: StatusEnum.EMPTY,
             wednesday: StatusEnum.EMPTY,
             thursday: StatusEnum.EMPTY,
             friday: StatusEnum.EMPTY,
-            saturday: StatusEnum.HIDDEN             
         };
         
         leavesForWeek.forEach(leave => {
@@ -105,7 +97,7 @@ class ConnectedScheduleSummary extends React.Component<ConnectedScheduleSummaryP
     render() {
 
         return (
-            <ScheduleSummary weekStatus={this.createWeek()} />
+            <ScheduleSummary weekStatus={this.createWeekStatus()} />
         );
     }
 
