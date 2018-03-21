@@ -5,16 +5,16 @@ import {
 } from 'react-bootstrap';
 
 export interface ModalWrapperContext {
-    handleClose: ()=>void;
-    handleShow: (context?:any)=>void;
+    handleClose: () => void;
+    handleShow: (context?: {}) => void;
 }
 
 export interface ModalWrapperProps {
     isOpen?: boolean;
-    showButton?: (context:ModalWrapperContext)=>React.ReactNode;
+    showButton?: (context: ModalWrapperContext) => React.ReactNode;
     title: string;
-    body: (context:ModalWrapperContext)=>React.ReactNode;
-    footerComponent?: React.ReactNode | ((context:ModalWrapperContext)=>React.ReactNode);
+    body: (context: ModalWrapperContext) => React.ReactNode;
+    footerComponent?: React.ReactNode | ((context: ModalWrapperContext) => React.ReactNode);
 
 }
 
@@ -22,10 +22,10 @@ export interface ModalWrapperState {
     showModal?: boolean;
 }
 
-export default class ModalWrapper extends React.Component<ModalWrapperProps, ModalWrapperState>{
+export default class ModalWrapper extends React.Component<ModalWrapperProps, ModalWrapperState> {
     static defaultProps = {
         isOpen: false,
-        showButton:({handleShow}:ModalWrapperContext)=><Button onClick={handleShow}>Show</Button>
+        showButton: ({handleShow}: ModalWrapperContext) => <Button onClick={handleShow}>Show</Button>
     }
 
     constructor(props: ModalWrapperProps) {
@@ -33,7 +33,7 @@ export default class ModalWrapper extends React.Component<ModalWrapperProps, Mod
         this.state = { showModal: props.isOpen };
     }
 
-    handleShow(extraState?:any) {
+    handleShow(extraState?: {}) {
         this.setState({
             showModal: true,
             ...extraState
@@ -48,7 +48,8 @@ export default class ModalWrapper extends React.Component<ModalWrapperProps, Mod
     render() {
         const { showModal, ...restState } = this.state;
         const { title, showButton=ModalWrapper.defaultProps.showButton, body, footerComponent } = this.props;
-        const context = {handleClose:()=>this.handleClose(), handleShow:(extraState?:any)=>this.handleShow(extraState), ...restState}
+        const context = {handleClose: () => 
+            this.handleClose(), handleShow:(extraState?: {}) => this.handleShow(extraState), ...restState};
         return (
             <div>
                 {showButton(context)}
@@ -60,8 +61,7 @@ export default class ModalWrapper extends React.Component<ModalWrapperProps, Mod
                         {body(context)}
                     </Modal.Body>
                     <Modal.Footer>
-                        {typeof footerComponent==="function" ? footerComponent(context) : footerComponent}
-                        <Button onClick={() => this.handleClose()}>Close</Button>
+                        {typeof footerComponent === 'function' ? footerComponent(context) : footerComponent}
                     </Modal.Footer>
                 </Modal>
             </div>
