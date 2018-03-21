@@ -3,7 +3,7 @@
     flex-direction: row;
     position: inherit;
 }
-.schedule-summary-day {
+.schedule-summary-week .schedule-summary-day {
     width: 20px;
     height: 20px;
     padding-top: 1px;
@@ -19,29 +19,29 @@
     margin-right: 2px;
 }
 
-.empty-day {
+.schedule-summary-week .empty-day {
     border-color: grey;
     font-size: 12px;
     color: grey;
 }
 
-.non-empty-day {
+.schedule-summary-week .non-empty-day {
     font-size: 11px;
     font-weight: lighter;
 }
 
-.warning-day {
+.schedule-summary-week .warning-day {
     border-color: darkorange;
     color: darkorange;
 }
 
-.bad-day {
+.schedule-summary-week .bad-day {
     border-color: red;
     color: red;
     padding-top: 2px;
 }
 
-.good-day {
+.schedule-summary-week .good-day {
     border-color: green;  
     color: green;
     padding-top: 2px;  

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as moment from 'moment';
 import { Sheriff } from '../../api/index';
-import { 
+import {
     ListGroupItem
 } from 'react-bootstrap';
 import ScheduleSummary from '../../containers/ScheduleSummary';
@@ -18,18 +18,16 @@ export default class SheriffListCard extends React.PureComponent<SheriffListCard
         const { firstName, lastName, badgeNumber, id } = sheriff;
 
         return (
-            <div className="sheriff-list-card">
-                <ListGroupItem className="sheriff-list-card-item" >
-                    {lastName}, {firstName.charAt(0)} 
-                    <p className="sheriff-card-badge-number">{badgeNumber}</p>
-                    {showScheduleSummary &&  
-                        <ScheduleSummary 
-                            sheriffId={id} 
-                            start={moment().startOf('week')} 
-                            end={moment().endOf('week')}
-                        />} 
-                </ListGroupItem>
-            </div>
+            <ListGroupItem className="sheriff-list-card" >
+                {lastName}, {firstName.charAt(0)}
+                <p className="sheriff-card-badge-number">{badgeNumber}</p>
+                {showScheduleSummary &&
+                    <ScheduleSummary
+                        sheriffId={id}
+                        start={moment().startOf('week')}
+                        end={moment().endOf('week')}
+                    />}
+            </ListGroupItem>
         );
     }
 }
