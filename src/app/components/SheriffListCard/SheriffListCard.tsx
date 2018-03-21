@@ -23,7 +23,11 @@ export default class SheriffListCard extends React.PureComponent<SheriffListCard
                     {lastName}, {firstName.charAt(0)} 
                     <p className="sheriff-card-badge-number">{badgeNumber}</p>
                     {showScheduleSummary &&  
-                        <ScheduleSummary sheriffId={id} start={moment().startOf('week')} end={moment().endOf('day')}/>} 
+                        <ScheduleSummary 
+                            sheriffId={id} 
+                            start={moment().startOf('week')} 
+                            end={moment().endOf('week')}
+                        />} 
                 </ListGroupItem>
             </div>
         );
