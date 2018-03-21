@@ -19,7 +19,8 @@ import {
 import {
     Shift, 
     IdType,
-    Leave
+    Leave,
+    DateType
 } from '../../api';
 import './LongTermSchedule.css';
 import ShiftCard from '../../components/ShiftCard';
@@ -55,9 +56,18 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
     isSheriffOnLeave(sheriffId: number, shift: Shift): boolean {
         const { leaves } = this.props;
         let leavesForSheriff = leaves.filter(l => l.sheriffId === sheriffId);
-        let filteredLeaves = leavesForSheriff.filter(l => 
+        let dateFilteredLeaves = leavesForSheriff.filter(l => 
             moment(l.date).isBetween(shift.startDateTime, shift.endDateTime, 'days', '[]'));
-        return filteredLeaves.length > 0;
+        return dateFilteredLeaves.length > 0;
+    }
+
+    isSheriffScheduledForDay(sheriffId: number, shiftStart: DateType): boolean {
+        const { shifts } = this.props;
+        let shiftsForSheriff = shifts.filter(s => s.sheriffId === sheriffId);
+        let dateFilteredShifts = shiftsForSheriff.filter(s => 
+            moment(s.startDateTime).isSame(shiftStart, 'day'));
+        
+        return dateFilteredShifts.length > 0;
     }
 
     render() {
@@ -83,7 +93,10 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
                             }}
                             onDropItem={(sheriff) => assignShift({ sheriffId: sheriff.id, shiftId: shift.id })}
                             canDropItem={(sheriff) => 
-                                shift.sheriffId === undefined && !this.isSheriffOnLeave(sheriff.id, shift)}
+                                shift.sheriffId === undefined 
+                                && !this.isSheriffOnLeave(sheriff.id, shift)
+                                && !this.isSheriffScheduledForDay(sheriff.id, moment(shift.startDateTime))
+                            }
                         >
                             <ShiftCard shift={shift}>
                                 <SheriffDisplay sheriffId={shift.sheriffId} />
