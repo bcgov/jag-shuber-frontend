@@ -9,9 +9,10 @@ import {
     Region,
     AssignmentDuty,
     IdType,
-    Shift
-} from "../Api";
-import arrayToMap from '../../infrastructure/arrayToMap'
+    Shift,
+    Leave
+} from '../Api';
+import arrayToMap from '../../infrastructure/arrayToMap';
 import {
     sheriffList,
     assignments,
@@ -24,7 +25,8 @@ import {
     RUNS,
     JAIL_ROLES,
     ALTERNATE_ASSIGNMENTS,
-    sheriffShifts
+    sheriffShifts,
+    sheriffLeaves
 } from './MockData';
 import {
     isCourtAssignment,
@@ -59,7 +61,7 @@ export default class NewClient implements API {
     }
 
     async getSheriffs(): Promise<SheriffMap> {
-        return arrayToMap(sheriffList, (s) => s.badgeNumber) as SheriffMap;
+        return arrayToMap(sheriffList, (s) => s.id) as SheriffMap;
     }
     async createSheriff(newSheriff: Sheriff): Promise<Sheriff> {
         await randomDelay();
@@ -89,7 +91,7 @@ export default class NewClient implements API {
         newAssignment.id = this.getId();
         newAssignment.title = getAssignmentTitle(assignment);
         // todo: will eventually need to tie to the user and their facility - hard coded for now
-        newAssignment.facilityId = 1; 
+        newAssignment.facilityId = 1;
         assignments.push(newAssignment);
 
         return newAssignment;
@@ -197,5 +199,9 @@ export default class NewClient implements API {
 
     deleteShift(shiftId: IdType): Promise<void> {
         throw new Error('Method not implemented.');
+    }
+
+    async getLeaves(): Promise<Leave[]> {
+        return sheriffLeaves;
     }
 }

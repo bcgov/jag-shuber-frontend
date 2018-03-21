@@ -5,6 +5,7 @@ export type DateType = Date | moment.Moment | string;
 export type StringMap = { [key: string]: string };
 export type IdType = number;
 export type ShiftMap = { [key: number]: Shift };
+export type LeaveMap = { [key: number]: Leave };
 export type SheriffMap = { [key: number]: Sheriff };
 export type AssignmentMap = { [key: number]: Assignment };
 export type AssignmentDutyMap = { [key: number]: AssignmentDuty };
@@ -13,7 +14,6 @@ export type Assignment = CourtAssignment | JailAssignment | EscortAssignment | O
 
 /* tslint:disable:no-bitwise */
 export enum DaysOfWeek {
-
     Mon = 1 << 0,
     Tue = 1 << 1,
     Wed = 1 << 2,
@@ -24,6 +24,7 @@ export enum DaysOfWeek {
     Everyday = Mon | Tue | Wed | Thu | Fri | Sat | Sun,
     Weekdays = Mon | Tue | Wed | Thu | Fri
 }
+
 /* tslint:enable:no-bitwise */
 
 export namespace DaysOfWeek {
@@ -199,6 +200,13 @@ export interface Shift {
     endDateTime: DateType;
 }
 
+export interface Leave {
+    id: IdType; 
+    sheriffId: IdType;
+    date: DateType;
+    leaveCode?: string; // string for now until these are further defined with "add leave" user stories
+}
+
 export interface API {
     // Sheriffs
     getSheriffs(): Promise<SheriffMap>;
@@ -229,4 +237,7 @@ export interface API {
     updateShift(shiftToUpdate: Partial<Shift>): Promise<Shift>;
     createShift(newShift: Partial<Shift>): Promise<Shift>;
     deleteShift(shiftId: IdType): Promise<void>;
+
+    // Sheriff Leaves
+    getLeaves(): Promise<Leave []>;
 }
