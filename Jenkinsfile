@@ -33,7 +33,7 @@ node{
     }
 
     if(env.CHANGE_TITLE == null){
-      env.CHANGE_TITLE = lastCommit.msg
+      env.CHANGE_TITLE = getChangeString()
     }
     hasRepoChanged = true;
   }else{
@@ -125,30 +125,7 @@ if(hasRepoChanged){
   stage('Deploy ' + TAG_NAMES[1]){
     def environment = TAG_NAMES[1]
     def url = APP_URLS[1]
-    try{
-      timeout(time:3, unit: 'DAYS'){ input "Deploy to ${environment}?"}
-    }catch(error){
-      // The following check will determine whether or not it was a timeout
-      // vs being aborted
-      node{
-        slackNotify(
-          "Deployment to ${environment} aborted 😕",
-          "Deployment of the ${APP_NAME} app to ${environment} was aborted for build #${currentBuild.number}",
-          'warning',
-          env.SLACK_HOOK,
-          SLACK_MAIN_CHANNEL,
-          [
-            [
-              type: "button",
-              text: "View Build",
-              style:"danger",            
-              url: "${currentBuild.absoluteUrl}/console"
-            ]
-          ])
-        }
-        throw error         
-    }
-
+    timeout(time:3, unit: 'DAYS'){ input "Deploy to ${environment}?"}
     node{
       openshiftTag destStream: IMAGESTREAM_NAME, verbose: 'true', destTag: environment, srcStream: IMAGESTREAM_NAME, srcTag: "${IMAGE_HASH}"
       slackNotify(
