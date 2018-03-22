@@ -99,7 +99,7 @@ class DailyTimeline extends React.Component<DailyTimelineProps & DailyTimelineSt
                                     backgroundColor,
                                     color
                                 }}
-                                onDropSheriff={({ badgeNumber: sheriffId }) => (
+                                onDropSheriff={({ id: sheriffId }) => (
                                     linkSheriff && linkSheriff({ sheriffId, dutyId: duty.id })
                                 )}
                                 SheriffAssignmentRenderer={(p) => (
