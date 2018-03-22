@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as moment from 'moment';
 import ScheduleShiftCreateForm from './ScheduleShiftCreateForm';
 import ModalWrapper from './ModalWrapper';
 import { 
@@ -22,7 +23,11 @@ export default class ScheduleShiftAddModal extends React.Component<ScheduleShift
                         </Button>
                     )}
                     body={({ handleClose }) => (
-                        <ScheduleShiftCreateForm onSubmitSuccess={handleClose} />
+                        <ScheduleShiftCreateForm 
+                            onSubmitSuccess={handleClose} 
+                            weekStart={moment().startOf('week')}
+                            weekEnd={moment().endOf('week')} 
+                        />
                     )}
                     footerComponent={(
                         <ScheduleShiftCreateForm.SubmitButton>

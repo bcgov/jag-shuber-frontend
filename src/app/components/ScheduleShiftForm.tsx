@@ -1,120 +1,80 @@
 import * as React from 'react';
 import * as moment from 'moment';
 import {
-    Form,
-    ListGroup,
-    ListGroupItem,
-    Button,
-    Glyphicon
+    Form
 } from 'react-bootstrap';
 import {
     Field,
-    InjectedFormProps,
-    FieldArray
+    InjectedFormProps
 } from 'redux-form';
 import * as Validators from '../infrastructure/Validators';
 import * as DateTimeFieldConst from './FormElements/DateTimeFieldConst';
-// import TextField from './FormElements/TextField';
 import {
     DateType,
-    WorkSectionId,
     DaysOfWeek
 } from '../api/Api';
 import DaysOfWeekChecklist from './FormElements/DaysOfWeekChecklist';
 import WorkSectionSelector from './FormElements/WorkSectionSelector';
 import NumberSpinner from './FormElements/NumberSpinner';
-
-interface RecurrenceProps {
-    type?: string;
-    workSection?: WorkSectionId;
-    startTime?: DateType;
-    endTime?: DateType;
-    days?: DaysOfWeek;
-    repeatNumber?: number;
-}
-
-class RecurrenceFieldArray extends FieldArray<RecurrenceProps> {
-
-}
+import CheckboxField from './FormElements/CheckboxField';
 
 export interface ScheduleShiftFormProps {
     handleSubmit?: () => void;
     onSubmitSuccess?: () => void;
-    // will need to add week start and end here!
-    // assignmentTitle?: string;
-    // assignmentId?: IdType;
+    weekStart: DateType;
+    weekEnd: DateType;
 }
 
 export default class ScheduleShiftForm extends
     React.Component<ScheduleShiftFormProps & InjectedFormProps<{}, ScheduleShiftFormProps>, {}> {
-    render() {
+    
+        public static createDefaultShift() {
+            return {
+                startTime: moment().hour(9).minute(0),
+                endTime: moment().hour(17).minute(0),
+                days: DaysOfWeek.Weekdays,
+                repeatNumber: 1
+            };
+        }
+
+        render() {
         const { handleSubmit } = this.props;
         return (
             <div>
                 <Form onSubmit={handleSubmit}>
-                    <RecurrenceFieldArray 
-                        name="recurrenceInfo"
-                        // validate={}
-                        component={(p) => {
-                        const { fields } = p;
-                        return (
-                            <ListGroup >
-                                {fields.map((recurrenceInfoFieldName, index) => {
-                                    return (
-                                        <ListGroupItem key={index}>
-                                            <Button 
-                                                bsStyle="danger" 
-                                                onClick={() => fields.remove(index)} 
-                                                className="pull-right"
-                                            >
-                                                    <Glyphicon glyph="trash"/>
-                                            </Button>
-                                            <br />
-                                            <Field 
-                                                name={`${recurrenceInfoFieldName}.workSectionId`}
-                                                component={WorkSectionSelector}
-                                                label="Work Section"
-                                            />
-                                            <Field
-                                                name={`${recurrenceInfoFieldName}.startTime`}
-                                                component={DateTimeFieldConst.TimeField}
-                                                label="Start Time"
-                                            />
-                                            <Field
-                                                name={`${recurrenceInfoFieldName}.endTime`}
-                                                component={DateTimeFieldConst.TimeField}
-                                                label="End Time"
-                                            />
-                                            <Field
-                                                name={`${recurrenceInfoFieldName}.repeatNumber`}
-                                                component={NumberSpinner}
-                                                label="Number of Shifts" 
-                                                validate={[Validators.required, Validators.integer]}
-                                            />
-                                            <Field
-                                                name={`${recurrenceInfoFieldName}.days`}
-                                                component={DaysOfWeekChecklist}
-                                                label="Days"
-                                                // validate={[Validators.required]}
-                                            />
-                                        </ListGroupItem>
-                                    );
-                                }
-                                )}
-                                <br />
-                                <Button 
-                                    onClick={() => fields.push({
-                                        startTime: moment().hour(9).minute(0),
-                                        endTime: moment().hour(17).minute(0),
-                                        days: DaysOfWeek.Weekdays,
-                                        repeatNumber: 1
-                                    })} 
-                                >
-                                    <Glyphicon glyph="plus" />
-                                </Button>
-                            </ListGroup>
-                        );
-                    }}
+                    <Field 
+                        name="workSectionId"
+                        component={WorkSectionSelector}
+                        label="Work Section"
+                    />
+                    <Field
+                        name="workSectionNotRequired"
+                        component={CheckboxField}
+                        label="Work Section Not Applicable"
+                    />
+                    <Field
+                        name="startTime"
+                        component={DateTimeFieldConst.TimeField}
+                        label="Start Time"
+                        validate={[Validators.required]}
+                    />
+                    <Field
+                        name="endTime"
+                        component={DateTimeFieldConst.TimeField}
+                        label="End Time"
+                        validate={[Validators.required]}
+                    />
+                    <Field
+                        name="days"
+                        component={DaysOfWeekChecklist}
+                        label="Days"
+                        validate={[Validators.required]}
+                    />
+                    <Field
+                        name="repeatNumber"
+                        component={NumberSpinner}
+                        label="Number of FTEs required" 
+                        validate={[Validators.required, Validators.integerBetween1and50]}
                     />
                 </Form>
             </div>

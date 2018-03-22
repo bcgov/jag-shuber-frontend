@@ -6,10 +6,6 @@ import { Sheriff } from '../api';
 import SheriffListCard from '../components/SheriffListCard/SheriffListCard';
 import { ListGroup } from 'react-bootstrap';
 import SheriffDragSource from '../containers/SheriffDragSource';
-// import { 
-//     Button, 
-//     Glyphicon 
-// } from 'react-bootstrap';
 import ScheduleShiftAddModal from '../containers/ScheduleShiftAddModal';
 
 class SchedulingPage extends React.PureComponent {
@@ -18,12 +14,6 @@ class SchedulingPage extends React.PureComponent {
             <div>
                 <div style={{ textAlign: 'right', backgroundColor: '#003366'}}>
                 <ScheduleShiftAddModal />
-                {/* <Button bsStyle="link" bsSize="large" style={{color: 'white'}}>
-                    <Glyphicon glyph="share"/>
-                </Button>
-                <Button bsStyle="link" bsSize="large" style={{color: 'white'}}>
-                    <Glyphicon glyph="copy"/>
-                </Button> */}
                 </div>
             <div style={{ display: 'flex', flexDirection: 'row' }}>
                 
