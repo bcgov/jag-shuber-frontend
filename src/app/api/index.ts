@@ -22,7 +22,8 @@ export {
     API,
     IdType, 
     Shift,
-    Leave
+    Leave,
+    WorkSectionId
 } from './Api';
 
 // Todo: We need to create reducers for the following

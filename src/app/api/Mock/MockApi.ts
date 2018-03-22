@@ -193,7 +193,7 @@ export default class NewClient implements API {
         sheriffShifts[index] = updatedShift;
         return updatedShift;
     }
-    createShift(newShift: Partial<Shift>): Promise<Shift> {
+    createShift(newShift: Shift): Promise<Shift> {
         throw new Error('Method not implemented.');
     }
 
