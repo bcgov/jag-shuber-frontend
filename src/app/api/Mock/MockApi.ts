@@ -193,8 +193,17 @@ export default class NewClient implements API {
         sheriffShifts[index] = updatedShift;
         return updatedShift;
     }
-    createShift(newShift: Shift): Promise<Shift> {
-        throw new Error('Method not implemented.');
+
+    async createShift(newShift: Partial<Shift>): Promise<Shift> {
+        const shiftToAdd = {
+            ...newShift,
+            id: this.getId(),
+            courthouseId: 1
+        };
+        
+        sheriffShifts.push(shiftToAdd as Shift);
+        
+        return shiftToAdd as Shift;
     }
 
     deleteShift(shiftId: IdType): Promise<void> {

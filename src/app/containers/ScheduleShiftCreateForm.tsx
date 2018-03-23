@@ -12,25 +12,24 @@ import {
     DaysOfWeek,
     DateType 
 } from '../api/Api';
-// import { createAssignmentDuty } from '../modules/assignments/actions';
-// import { getAssignment } from '../modules/assignments/selectors';
+import { 
+    ShiftCreationPayload
+} from '../api/utils';
+import { createShifts } from '../modules/shifts/actions';
 
 // wrapping generic assignment form in redux-form
 const formConfig: ConfigProps<{}, ScheduleShiftFormProps> = {
     form: 'CreateScheduleShift',
     onSubmit: (values, dispatch, props) => {
-        // let newAssignmentDuty: Partial<AssignmentDuty> = Object.assign({}, { ...values });
-        // newAssignmentDuty.assignmentId = props.assignmentId;
-        // dispatch(createAssignmentDuty(newAssignmentDuty));
-        
-        // create a bunch
-        console.log(values);
+        const { weekStart } = props;
+        let newShiftCreator: Partial<ShiftCreationPayload> = Object.assign({}, {...values});
+        newShiftCreator.weekStart = weekStart;
+        dispatch(createShifts(newShiftCreator as ShiftCreationPayload));
     }
 };
 
 export interface ScheduleShiftCreateFormProps extends ScheduleShiftFormProps {
     weekStart: DateType;
-    weekEnd: DateType;
 }
 
 const mapStateToProps = (state: RootState, props: ScheduleShiftCreateFormProps) => {

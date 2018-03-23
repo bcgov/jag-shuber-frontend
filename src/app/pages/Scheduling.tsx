@@ -15,7 +15,7 @@ class SchedulingPage extends React.PureComponent {
                 <div style={{ textAlign: 'right', backgroundColor: '#003366'}}>
                 <ScheduleShiftAddModal />
                 </div>
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <div style={{ display: 'flex', flexDirection: 'row'}}>
                 
                 <TimelineToolsPanel titleText="My Team">
                     <ListGroup>
