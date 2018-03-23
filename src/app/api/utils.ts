@@ -1,11 +1,25 @@
+import * as moment from 'moment';
 import {
     EscortAssignment,
     Assignment,
     CourtAssignment,
     JailAssignment,
     OtherAssignment,
-    WorkSectionId
+    WorkSectionId,
+    Shift,
+    DateType,
+    DaysOfWeek
 } from './Api';
+
+export type ShiftCreationPayload = {
+    weekStart: DateType;
+    workSectionId?: WorkSectionId;
+    workSectionNotRequired?: boolean;
+    startTime: DateType;
+    endTime: DateType;
+    days: DaysOfWeek;
+    repeatNumber: number;
+};
 
 export function isCourtAssignment(assignment: Partial<Assignment>): assignment is CourtAssignment {
     return (<CourtAssignment> assignment).workSectionId === 'COURTS';
@@ -44,4 +58,30 @@ export function getWorkSectionColour(workSectionId?: WorkSectionId): string {
             break;
     }
     return colour;
+}
+
+export function createShiftsFromShiftCreatorPayload (shiftInfo: ShiftCreationPayload): Partial<Shift>[] {
+    let partialShifts: Partial<Shift>[] = []; 
+    const dayNumbers = DaysOfWeek.getWeekdayNumbers(shiftInfo.days);
+
+    dayNumbers.forEach(day => {
+        const startTimeMoment = moment(shiftInfo.startTime);
+        const endTimeMoment = moment(shiftInfo.endTime);
+        let newShift = {
+            workSectionId: shiftInfo.workSectionId,
+            startDateTime: moment(shiftInfo.weekStart).add(
+                {days: day, hours: startTimeMoment.hours(), minutes: startTimeMoment.minutes()}
+            ),
+            endDateTime: moment(shiftInfo.weekStart).add(
+                {days: day, hours: endTimeMoment.hours(), minutes: endTimeMoment.minutes()}
+            )
+        };
+
+        for (let i = 1; i <= shiftInfo.repeatNumber; i++) {
+            partialShifts.push(newShift);  
+        }
+        
+    });
+      
+    return partialShifts;
 }

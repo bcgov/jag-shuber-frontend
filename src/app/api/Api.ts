@@ -14,9 +14,9 @@ export type Assignment = CourtAssignment | JailAssignment | EscortAssignment | O
 
 /* tslint:disable:no-bitwise */
 export enum DaysOfWeek {
-    Mon = 1 << 0,
-    Tue = 1 << 1,
-    Wed = 1 << 2,
+    Mon = 1 << 0, 
+    Tue = 1 << 1, 
+    Wed = 1 << 2, 
     Thu = 1 << 3,
     Fri = 1 << 4,
     Sat = 1 << 5,
@@ -43,6 +43,33 @@ export namespace DaysOfWeek {
         }
 
         return dayDisplay;
+    }
+
+    export function getWeekdayNumbers(value: DaysOfWeek): number[] {
+        const dayMap = {
+            'Sun': 0,
+            'Mon': 1, 
+            'Tue': 2, 
+            'Wed': 3, 
+            'Thu': 4, 
+            'Fri': 5, 
+            'Sat': 6
+        };
+
+        const dayNames = getDisplayValues(value);
+        let dayNumbers: number[] = [];
+        
+        if (dayNames.indexOf('Everyday') !== -1) {
+            dayNumbers = [0, 1, 2, 3, 4, 5, 6];
+        }  else if (dayNames.indexOf('Weekdays') !== -1) {
+            dayNumbers = [1, 2, 3, 4, 5];
+        } else {
+            dayNames.forEach(day => {
+                dayNumbers.push(dayMap[day]);    
+            });
+        }
+        
+        return dayNumbers;
     }
 }
 

@@ -22,7 +22,6 @@ export interface ScheduleShiftFormProps {
     handleSubmit?: () => void;
     onSubmitSuccess?: () => void;
     weekStart: DateType;
-    weekEnd: DateType;
 }
 
 export default class ScheduleShiftForm extends
