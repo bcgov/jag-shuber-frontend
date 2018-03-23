@@ -7,13 +7,13 @@ import SheriffListCard from '../components/SheriffListCard/SheriffListCard';
 import { ListGroup } from 'react-bootstrap';
 import SheriffDragSource from '../containers/SheriffDragSource';
 import ScheduleShiftAddModal from '../containers/ScheduleShiftAddModal';
-
+import './pages.css';
 class SchedulingPage extends React.PureComponent {
     render() {
         return (
             <div>
-                <div style={{ textAlign: 'right', backgroundColor: '#003366'}}>
-                <ScheduleShiftAddModal />
+                <div className="scheduling-toolbar">
+                    <ScheduleShiftAddModal />
                 </div>
             <div style={{ display: 'flex', flexDirection: 'row'}}>
                 
