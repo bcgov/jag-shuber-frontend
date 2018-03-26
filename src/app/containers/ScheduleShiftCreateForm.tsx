@@ -19,7 +19,7 @@ import { createShifts } from '../modules/shifts/actions';
 
 // wrapping generic assignment form in redux-form
 const formConfig: ConfigProps<{}, ScheduleShiftFormProps> = {
-    form: 'CreateScheduleShift',
+    form: 'CopyScheduleShift',
     onSubmit: (values, dispatch, props) => {
         const { weekStart } = props;
         let newShiftCreatorPayload: Partial<ShiftCreationPayload> = Object.assign({}, {...values});
