@@ -26,22 +26,22 @@ export interface ScheduleShiftFormProps {
 
 export default class ScheduleShiftForm extends
     React.Component<ScheduleShiftFormProps & InjectedFormProps<{}, ScheduleShiftFormProps>, {}> {
-    
-        public static createDefaultShift() {
-            return {
-                startTime: moment().hour(9).minute(0),
-                endTime: moment().hour(17).minute(0),
-                days: DaysOfWeek.Weekdays,
-                repeatNumber: 1
-            };
-        }
 
-        render() {
+    public static createDefaultShift() {
+        return {
+            startTime: moment().hour(9).minute(0),
+            endTime: moment().hour(17).minute(0),
+            days: DaysOfWeek.Weekdays,
+            repeatNumber: 1
+        };
+    }
+
+    render() {
         const { handleSubmit } = this.props;
         return (
             <div>
                 <Form onSubmit={handleSubmit}>
-                    <Field 
+                    <Field
                         name="workSectionId"
                         component={WorkSectionSelector}
                         label="Work Section"
@@ -72,8 +72,13 @@ export default class ScheduleShiftForm extends
                     <Field
                         name="repeatNumber"
                         component={NumberSpinner}
-                        label="Number of FTEs required" 
-                        validate={[Validators.required, Validators.integerBetween1and50]}
+                        label="Number of FTEs required"
+                        validate={[
+                            Validators.required,
+                            Validators.max50,
+                            Validators.min1,
+                            Validators.integer
+                        ]}
                     />
                 </Form>
             </div>

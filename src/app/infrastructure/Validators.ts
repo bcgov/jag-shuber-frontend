@@ -20,18 +20,21 @@ export const integer = (value: any) => {
     return invalidMessage;
 };
 
-export const integerBetween1and50 = (value: any) => {
-    let invalidMessage = integer(value);
-    if (!invalidMessage) {
-        const numericValue = Number(value);
-        if (numericValue <= 50 && numericValue >= 1) {
-            invalidMessage = undefined;
-        } else {
-            invalidMessage = VALIDATOR_MESSAGES.INVALID_INTEGER_RANGE;
-        }
-    }
-    return invalidMessage;
-};
+export const minValidator = (minValue: number) => (
+    (value?: any) => (
+        value && value < minValue ? `Must be at least ${minValue}` : undefined
+    )
+);
+
+export const maxValidator = (maxValue: number) => (
+    (value?: any) => (
+        value && value > maxValue ? `Must be at less than ${maxValue}` : undefined
+    )
+);
+
+export const max50 = maxValidator(50);
+
+export const min1 = minValidator(1);
 
 export const number = (value: any) => { 
     return value && isNaN(value) ? VALIDATOR_MESSAGES.INVALID_NUMBER : undefined;
