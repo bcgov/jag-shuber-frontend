@@ -1,8 +1,15 @@
 import * as shiftRequests from './requests/shifts';
 import * as leaveRequests from './requests/leaves';
 import { getShift } from './selectors';
-import { IdType } from '../../api';
+import { 
+    IdType, 
+    Shift
+} from '../../api';
 import { ThunkAction } from '../../store';
+import { 
+    ShiftCreationPayload, 
+    ShiftFactory 
+} from '../../api/utils';
 
 export const getShifts = shiftRequests.shiftMapRequest.actionCreator;
 export const createShift = shiftRequests.createShiftRequest.actionCreator;
@@ -34,4 +41,25 @@ export const unlinkShift: ThunkAction<SheriffShiftLink> =
         // todo: Warn if shift is already assigned?
 
         dispatch(editShift({ ...shift, sheriffId: undefined }));
+    };
+
+export const createShifts: ThunkAction<ShiftCreationPayload> =
+    ({ weekStart, workSectionId, startTime, endTime, days, repeatNumber }: ShiftCreationPayload) => 
+        (dispatch, getState, extra) => {
+            
+            let partialShifts: Partial<Shift>[] = 
+                ShiftFactory.createShifts(
+                    { 
+                        weekStart, 
+                        workSectionId, 
+                        startTime, 
+                        endTime, 
+                        days, 
+                        repeatNumber
+                    }
+                );
+            
+            partialShifts.forEach(shift => {
+                dispatch(createShift(shift));
+            });
     };

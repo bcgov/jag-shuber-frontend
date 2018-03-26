@@ -74,11 +74,13 @@ class ConnectedScheduleSummary extends React.Component<ConnectedScheduleSummaryP
         const shiftsForWeek = shifts.filter(s => moment(s.startDateTime).isBetween(start, end, 'days', '[]'));
         
         let weekStatus = {
+            sunday: StatusEnum.EMPTY,
             monday: StatusEnum.EMPTY,
             tuesday: StatusEnum.EMPTY,
             wednesday: StatusEnum.EMPTY,
             thursday: StatusEnum.EMPTY,
             friday: StatusEnum.EMPTY,
+            saturday: StatusEnum.EMPTY
         };
         
         leavesForWeek.forEach(leave => {

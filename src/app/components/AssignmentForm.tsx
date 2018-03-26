@@ -19,7 +19,7 @@ import CourtroomSelector from './FormElements/CourtroomSelector';
 import DaysOfWeekChecklist from './FormElements/DaysOfWeekChecklist';
 import JailRolesSelector from './FormElements/JailRoleSelector';
 import RunSelector from './FormElements/RunSelector';
-import AlternateAssignmentSelector from './FormElements/AlternateAssignmentSelector'
+import AlternateAssignmentSelector from './FormElements/AlternateAssignmentSelector';
 import {
     WORK_SECTIONS,
     DateType
@@ -29,7 +29,7 @@ class OtherFields extends React.PureComponent<any>{
     render() {
         return (
             <div>
-                <Field name="alternateAssignmentId" label="Assignment" component={AlternateAssignmentSelector}  validate={[Validators.required]} />
+                <Field name="alternateAssignmentId" label="Assignment" component={AlternateAssignmentSelector} validate={[Validators.required]} />
             </div>
         );
     }
@@ -39,27 +39,37 @@ class EscortsFields extends React.PureComponent<any>{
     render() {
         return (
             <div>
-                <Field name="runId" component={RunSelector} label="Assignment" validate={[Validators.required]} /> 
+                <Field name="runId" component={RunSelector} label="Assignment" validate={[Validators.required]} />
             </div>
         );
     }
 }
 
-class JailFeilds extends React.PureComponent{
-    render(){
-        return (
-            <div>
-                <Field name="jailRoleId" component={JailRolesSelector} label="Assignment" validate={[Validators.required]} /> 
-            </div>
-        )
-    }
-}
-
-class CourtSecurityFields extends React.PureComponent{
+class JailFeilds extends React.PureComponent {
     render() {
         return (
             <div>
-                <Field name="courtroomId" component={CourtroomSelector} label="Courtroom" validate={[Validators.required]} />
+                <Field
+                    name="jailRoleId"
+                    component={JailRolesSelector}
+                    label="Assignment"
+                    validate={[Validators.required]}
+                />
+            </div>
+        );
+    }
+}
+
+class CourtSecurityFields extends React.PureComponent {
+    render() {
+        return (
+            <div>
+                <Field
+                    name="courtroomId"
+                    component={CourtroomSelector}
+                    label="Courtroom"
+                    validate={[Validators.required]}
+                />
             </div>
         );
     }
@@ -81,26 +91,28 @@ export interface AssignmentFormProps {
     workSectionId?: string;
 }
 
-
-export default class AssignmentForm extends React.Component<AssignmentFormProps & InjectedFormProps<any, AssignmentFormProps>, any>{
+export default class AssignmentForm extends
+    React.Component<AssignmentFormProps & InjectedFormProps<any, AssignmentFormProps>, any> {
     private renderHeading() {
-        let heading = "Other"
+        let heading = 'Other';
         if (this.props.initialValues && this.props.initialValues) {
-            const { workSectionId = "OTHER" } = this.props.initialValues;
+            const { workSectionId = 'OTHER' } = this.props.initialValues;
 
             switch (WORK_SECTIONS[workSectionId]) {
                 case WORK_SECTIONS.COURTS:
-                    heading = "Courts";
+                    heading = 'Courts';
                     break;
                 case WORK_SECTIONS.JAIL:
-                    heading = "Jail";
+                    heading = 'Jail';
                     break;
                 case WORK_SECTIONS.ESCORTS:
-                    heading = "Escorts";
+                    heading = 'Escorts';
                     break;
                 case WORK_SECTIONS.OTHER:
-                    heading = "Other";
+                    heading = 'Other';
                     break;
+                default:
+                    heading = '';
             }
         }
 
@@ -110,14 +122,14 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
     private renderWorkSectionFields() {
         let returnFields;
         if (this.props.initialValues && this.props.initialValues) {
-            const { workSectionId = "OTHER" } = this.props.initialValues;
+            const { workSectionId = 'OTHER' } = this.props.initialValues;
 
             switch (WORK_SECTIONS[workSectionId]) {
                 case WORK_SECTIONS.COURTS:
                     returnFields = <CourtSecurityFields />;
                     break;
-                case WORK_SECTIONS.JAIL: 
-                    returnFields = <JailFeilds />
+                case WORK_SECTIONS.JAIL:
+                    returnFields = <JailFeilds />;
                     break;
                 case WORK_SECTIONS.ESCORTS:
                     returnFields = <EscortsFields />;
@@ -126,12 +138,11 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
                     returnFields = <OtherFields />;
                     break;
                 default:
-                    returnFields = "";
+                    returnFields = '';
                     break;
             }
-        }
-        else{
-            returnFields="";
+        } else {
+            returnFields = '';
         }
         return returnFields;
     }
@@ -142,54 +153,66 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
             return (
                 <div>
                     <strong>Days &amp; Times</strong>
-                    <RecurrenceFieldArray name="recurrenceInfo" component={(p) => {
+                    <RecurrenceFieldArray 
+                        name="recurrenceInfo" 
+                        component={(p) => {
                         const { fields } = p;
                         return (
                             <ListGroup >
                                 {fields.map((recurrenceInfoFieldName, index) => {
                                     return (
                                         <ListGroupItem key={index}>
-                                            <Button bsStyle="danger" onClick={() => fields.remove(index)} className="pull-right"><Glyphicon glyph="trash" /></Button><br />
-                                            <Field name={`${recurrenceInfoFieldName}.days`} component={DaysOfWeekChecklist} label="Days" />
-                                            <Field name={`${recurrenceInfoFieldName}.startTime`} component={DateTimeFieldConst.TimeField} label="Start Time" />
-                                            <Field name={`${recurrenceInfoFieldName}.endTime`} component={DateTimeFieldConst.TimeField} label="End Time" />
-                                            <Field name={`${recurrenceInfoFieldName}.sheriffsRequired`} component={TextField} label="Number of Sheriffs Required" validate={[Validators.required, Validators.integer]} />
-                                        </ListGroupItem>)
+                                            <Button 
+                                                bsStyle="danger" 
+                                                onClick={() => fields.remove(index)} 
+                                                className="pull-right"
+                                            >
+                                                <Glyphicon glyph="trash" />
+                                            </Button>
+                                            <br />
+                                            <Field
+                                                name={`${recurrenceInfoFieldName}.days`}
+                                                component={DaysOfWeekChecklist}
+                                                label="Days"
+                                            />
+                                            <Field
+                                                name={`${recurrenceInfoFieldName}.startTime`}
+                                                component={DateTimeFieldConst.TimeField}
+                                                label="Start Time"
+                                            />
+                                            <Field
+                                                name={`${recurrenceInfoFieldName}.endTime`}
+                                                component={DateTimeFieldConst.TimeField}
+                                                label="End Time"
+                                            />
+                                            <Field
+                                                name={`${recurrenceInfoFieldName}.sheriffsRequired`}
+                                                component={TextField}
+                                                label="Number of Sheriffs Required" 
+                                                validate={[Validators.required, Validators.integer]}
+                                            />
+                                        </ListGroupItem>
+                                    )
                                 }
                                 )}
                                 <br />
-                                <Button onClick={() => fields.push({
-                                    startTime: moment().hour(9).minute(0),
-                                    endTime: moment().hour(17).minute(0)
-                                })} >
+                                <Button 
+                                    onClick={() => fields.push({
+                                        startTime: moment().hour(9).minute(0),
+                                        endTime: moment().hour(17).minute(0)
+                                    })} 
+                                >
                                     <Glyphicon glyph="plus" />
                                 </Button>
                             </ListGroup>
-                        )
-                    }} />
+                        );
+                    }}
+                    />
                 </div>
-
-            )
+            );
         }
-        return "";
+        return '';
     }
-
-    // private renderAssignmentFields() {
-    //     const { isDefaultTemplate } = this.props;
-    //     return (
-    //         <div>
-    //             {!isDefaultTemplate &&
-    //                 <div>
-    //                     <Field name="assignment.startTime" component={DateTimeFieldConst.DateAndTimeField} label="Start Time" validate={[Validators.required]} />
-    //                     <Field name="assignment.endTime" component={DateTimeFieldConst.DateAndTimeField} label="End Time" validate={[Validators.required]} />
-    //                     <Field name="assignment.abilities" component={RequiredTrainingChecklist} label="Required Qualifications" />
-    //                 </div>
-    //             }
-    //             <Field name="assignment.sherrifsRequired" component={TextField} label="Number of Sheriffs Required" validate={[Validators.required, Validators.integer]} />
-    //             {!isDefaultTemplate && <Field name="assignment.notes" component={TextArea} label="Notes" />}
-    //         </div>
-    //     );
-    // }
 
     render() {
         const { handleSubmit } = this.props;
@@ -198,11 +221,9 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
                 {this.renderHeading()}
                 <Form onSubmit={handleSubmit}>
                     {this.renderWorkSectionFields()}
-                    {/* {this.renderAssignmentFields()} */}
                     {this.renderAssignmentTemplateFields()}
                 </Form>
             </div>
         );
-
     }
 }

@@ -6,12 +6,17 @@ import { Sheriff } from '../api';
 import SheriffListCard from '../components/SheriffListCard/SheriffListCard';
 import { ListGroup } from 'react-bootstrap';
 import SheriffDragSource from '../containers/SheriffDragSource';
-
-
+import ScheduleShiftAddModal from '../containers/ScheduleShiftAddModal';
+import './pages.css';
 class SchedulingPage extends React.PureComponent {
     render() {
         return (
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <div>
+                <div className="scheduling-toolbar">
+                    <ScheduleShiftAddModal />
+                </div>
+            <div style={{ display: 'flex', flexDirection: 'row'}}>
+                
                 <TimelineToolsPanel titleText="My Team">
                     <ListGroup>
                         <SheriffList
@@ -26,6 +31,8 @@ class SchedulingPage extends React.PureComponent {
                 <div style={{ flex: '1 0px', minWidth: 500 }}>
                     <SchedulingTimeline />
                 </div>
+            </div>
+            
             </div>
         );
     }

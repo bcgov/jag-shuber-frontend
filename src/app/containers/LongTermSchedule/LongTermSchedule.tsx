@@ -76,8 +76,8 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
             assignShift
         } = this.props;
 
-        const newVisibleTimeStart = moment().startOf('isoWeek').valueOf();
-        const newVisibleTimeEnd = moment(newVisibleTimeStart).add(5, 'days').valueOf();
+        const newVisibleTimeStart = moment().startOf('week').valueOf();
+        const newVisibleTimeEnd = moment().endOf('week').valueOf();
 
         return (
             <div className="scheduling-timeline">

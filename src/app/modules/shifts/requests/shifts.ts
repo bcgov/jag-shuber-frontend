@@ -29,9 +29,9 @@ class CreateShiftRequest extends RequestAction<Partial<Shift>, Shift, ShiftModul
     constructor(namespace: string = STATE_KEY, actionName: string = 'createShift') {
         super(namespace, actionName);
     }
-    public async doWork(assignment: Partial<Shift>, { api }: ThunkExtra): Promise<Shift> {
-        let newAssignment = await api.createShift(assignment);
-        return newAssignment;
+    public async doWork(shift: Partial<Shift>, { api }: ThunkExtra): Promise<Shift> {
+        let newShift = await api.createShift(shift);
+        return newShift;
     }
 
     reduceSuccess(moduleState: ShiftModuleState, action: { type: string, payload: Shift }): ShiftModuleState {
@@ -64,21 +64,21 @@ class CreateShiftRequest extends RequestAction<Partial<Shift>, Shift, ShiftModul
 
 export const createShiftRequest = new CreateShiftRequest();
 
-// Assignment Template Edit
+// Shift Edit
 class UpdateShiftRequest extends CreateShiftRequest {
     constructor(namespace: string = STATE_KEY, actionName: string = 'updateShift') {
         super(namespace, actionName);
     }
 
-    public async doWork(assignment: Partial<Shift>, { api }: ThunkExtra): Promise<Shift> {
-        let newAssignment = await api.updateShift(assignment);
-        return newAssignment;
+    public async doWork(shift: Partial<Shift>, { api }: ThunkExtra): Promise<Shift> {
+        let newShift = await api.updateShift(shift);
+        return newShift;
     }
 }
 
 export const updateShiftRequest = new UpdateShiftRequest();
 
-// Assignment Template Delete
+// Shift Delete
 class DeleteShiftRequest extends RequestAction<IdType, void, ShiftModuleState> {
     constructor(namespace: string = STATE_KEY, actionName: string = 'deleteShift') {
         super(namespace, actionName);
