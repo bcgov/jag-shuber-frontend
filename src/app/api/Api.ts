@@ -11,6 +11,7 @@ export type AssignmentMap = { [key: number]: Assignment };
 export type AssignmentDutyMap = { [key: number]: AssignmentDuty };
 export type WorkSectionId = 'COURTS' | 'JAIL' | 'ESCORTS' | 'OTHER';
 export type Assignment = CourtAssignment | JailAssignment | EscortAssignment | OtherAssignment;
+export type ShiftCopySelection = 'shiftsOnly' | 'shiftsAndSheriffs';
 
 /* tslint:disable:no-bitwise */
 export enum DaysOfWeek {
@@ -227,6 +228,12 @@ export interface Shift {
     endDateTime: DateType;
 }
 
+export interface ShiftCopyInstructions {
+    copySelection: ShiftCopySelection;
+    startOfWeekToCopy: DateType;
+    startOfWeekToCreate: DateType;
+}
+
 export interface Leave {
     id: IdType; 
     sheriffId: IdType;
@@ -264,6 +271,7 @@ export interface API {
     updateShift(shiftToUpdate: Partial<Shift>): Promise<Shift>;
     createShift(newShift: Partial<Shift>): Promise<Shift>;
     deleteShift(shiftId: IdType): Promise<void>;
+    createShiftsFromPreviousWeek(shiftCopyDetails: ShiftCopyInstructions): Promise<Shift[]>; 
 
     // Sheriff Leaves
     getLeaves(): Promise<Leave []>;

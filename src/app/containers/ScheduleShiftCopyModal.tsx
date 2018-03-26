@@ -6,15 +6,12 @@ import {
 } from 'react-bootstrap';
 import ModalWrapper from './ModalWrapper';
 import ScheduleShiftCopyForm from './ScheduleShiftCopyForm';
-// import { connect } from 'react-redux';
-// import { deleteAssignment } from '../modules/assignments/actions';
 
 export interface ScheduleShiftCopyModalProps {
 }
 
 export default class ScheduleShiftCopyModal extends React.Component<ScheduleShiftCopyModalProps>{
     render() {
-        // const { deleteAssignment, assignmentId } = this.props;
         return (
             <div>
                 <ModalWrapper
@@ -28,6 +25,7 @@ export default class ScheduleShiftCopyModal extends React.Component<ScheduleShif
                         <ScheduleShiftCopyForm 
                             onSubmitSuccess={handleClose}
                             copyWeekStart={moment().startOf('week').subtract(1, 'week')}
+                            createWeekStart={moment().startOf('week')}
                         />
                     )}
                     footerComponent={(

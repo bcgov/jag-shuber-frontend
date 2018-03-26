@@ -952,235 +952,235 @@ export const sheriffShifts: Shift[] = [
         courthouseId: 1,
         workSectionId: 'COURTS', 
         sheriffId: 3,
-        startDateTime: moment().startOf('week').add(1, 'day').add(6, 'hours'),
-        endDateTime: moment().startOf('week').add(1, 'day').add(13.5, 'hours')
+        startDateTime: moment().startOf('week').subtract(1, 'week').add(1, 'day').add(6, 'hours'),
+        endDateTime: moment().startOf('week').subtract(1, 'week').add(1, 'day').add(13.5, 'hours')
     },
     {
         id: 502, 
         courthouseId: 1,
         workSectionId: 'JAIL', 
-        startDateTime: moment().startOf('week').add(1, 'day').add(6, 'hours'),
-        endDateTime: moment().startOf('week').add(1, 'day').add(13.5, 'hours')
+        startDateTime: moment().startOf('week').subtract(1, 'week').add(1, 'day').add(6, 'hours'),
+        endDateTime: moment().startOf('week').subtract(1, 'week').add(1, 'day').add(13.5, 'hours')
     },
     {
         id: 503, 
         courthouseId: 1, 
-        startDateTime: moment().startOf('week').add(1, 'day').add(6, 'hours'),
-        endDateTime: moment().startOf('week').add(1, 'day').add(13.5, 'hours')
+        startDateTime: moment().startOf('week').subtract(1, 'week').add(1, 'day').add(6, 'hours'),
+        endDateTime: moment().startOf('week').subtract(1, 'week').add(1, 'day').add(13.5, 'hours')
     },
     {
         id: 504, 
         courthouseId: 1, 
-        startDateTime: moment().startOf('week').add(1, 'day').add(8, 'hours'),
-        endDateTime: moment().startOf('week').add(1, 'day').add(15.5, 'hours')
+        startDateTime: moment().startOf('week').subtract(1, 'week').add(1, 'day').add(8, 'hours'),
+        endDateTime: moment().startOf('week').subtract(1, 'week').add(1, 'day').add(15.5, 'hours')
     },
     {
         id: 505, 
         courthouseId: 1, 
         workSectionId: 'ESCORTS',
-        startDateTime: moment().startOf('week').add(1, 'day').add(8, 'hours'),
-        endDateTime: moment().startOf('week').add(1, 'day').add(15.5, 'hours')
+        startDateTime: moment().startOf('week').subtract(1, 'week').add(1, 'day').add(8, 'hours'),
+        endDateTime: moment().startOf('week').subtract(1, 'week').add(1, 'day').add(15.5, 'hours')
     },
     {
         id: 506, 
         courthouseId: 1, 
-        startDateTime: moment().startOf('week').add(1, 'day').add(8, 'hours'),
-        endDateTime: moment().startOf('week').add(1, 'day').add(15.5, 'hours')
+        startDateTime: moment().startOf('week').subtract(1, 'week').add(1, 'day').add(8, 'hours'),
+        endDateTime: moment().startOf('week').subtract(1, 'week').add(1, 'day').add(15.5, 'hours')
     },
     {
         id: 507, 
         courthouseId: 1,
         workSectionId: 'OTHER',
-        startDateTime: moment().startOf('week').add(1, 'day').add(8, 'hours'),
-        endDateTime: moment().startOf('week').add(1, 'day').add(15.5, 'hours')
+        startDateTime: moment().startOf('week').subtract(1, 'week').add(1, 'day').add(8, 'hours'),
+        endDateTime: moment().startOf('week').subtract(1, 'week').add(1, 'day').add(15.5, 'hours')
     },
     {
         id: 508, 
         courthouseId: 1,
         workSectionId: 'COURTS', 
         sheriffId: 3,
-        startDateTime: moment().startOf('week').add(2, 'day').add(6, 'hours'),
-        endDateTime: moment().startOf('week').add(2, 'day').add(13.5, 'hours')
+        startDateTime: moment().startOf('week').subtract(1, 'week').add(2, 'day').add(6, 'hours'),
+        endDateTime: moment().startOf('week').subtract(1, 'week').add(2, 'day').add(13.5, 'hours')
     },
     {
         id: 509, 
         courthouseId: 1,
         workSectionId: 'JAIL', 
-        startDateTime: moment().startOf('week').add(2, 'day').add(6, 'hours'),
-        endDateTime: moment().startOf('week').add(2, 'day').add(13.5, 'hours')
+        startDateTime: moment().startOf('week').subtract(1, 'week').add(2, 'day').add(6, 'hours'),
+        endDateTime: moment().startOf('week').subtract(1, 'week').add(2, 'day').add(13.5, 'hours')
     },
     {
         id: 5010, 
         courthouseId: 1, 
-        startDateTime: moment().startOf('week').add(2, 'day').add(6, 'hours'),
-        endDateTime: moment().startOf('week').add(2, 'day').add(13.5, 'hours')
+        startDateTime: moment().startOf('week').subtract(1, 'week').add(2, 'day').add(6, 'hours'),
+        endDateTime: moment().startOf('week').subtract(1, 'week').add(2, 'day').add(13.5, 'hours')
     },
     {
         id: 5011, 
         courthouseId: 1, 
-        startDateTime: moment().startOf('week').add(2, 'day').add(8, 'hours'),
-        endDateTime: moment().startOf('week').add(2, 'day').add(15.5, 'hours')
+        startDateTime: moment().startOf('week').subtract(1, 'week').add(2, 'day').add(8, 'hours'),
+        endDateTime: moment().startOf('week').subtract(1, 'week').add(2, 'day').add(15.5, 'hours')
     },
     {
         id: 5012, 
         courthouseId: 1, 
         workSectionId: 'ESCORTS',
-        startDateTime: moment().startOf('week').add(2, 'day').add(8, 'hours'),
-        endDateTime: moment().startOf('week').add(2, 'day').add(15.5, 'hours')
+        startDateTime: moment().startOf('week').subtract(1, 'week').add(2, 'day').add(8, 'hours'),
+        endDateTime: moment().startOf('week').subtract(1, 'week').add(2, 'day').add(15.5, 'hours')
     },
     {
         id: 5013, 
         courthouseId: 1, 
-        startDateTime: moment().startOf('week').add(2, 'day').add(8, 'hours'),
-        endDateTime: moment().startOf('week').add(2, 'day').add(15.5, 'hours')
+        startDateTime: moment().startOf('week').subtract(1, 'week').add(2, 'day').add(8, 'hours'),
+        endDateTime: moment().startOf('week').subtract(1, 'week').add(2, 'day').add(15.5, 'hours')
     },
     {
         id: 5014, 
         courthouseId: 1,
         workSectionId: 'OTHER',
-        startDateTime: moment().startOf('week').add(2, 'day').add(8, 'hours'),
-        endDateTime: moment().startOf('week').add(2, 'day').add(15.5, 'hours')
+        startDateTime: moment().startOf('week').subtract(1, 'week').add(2, 'day').add(8, 'hours'),
+        endDateTime: moment().startOf('week').subtract(1, 'week').add(2, 'day').add(15.5, 'hours')
     },
     {
         id: 5015, 
         courthouseId: 1,
         workSectionId: 'COURTS', 
         sheriffId: 3,
-        startDateTime: moment().startOf('week').add(3, 'day').add(6, 'hours'),
-        endDateTime: moment().startOf('week').add(3, 'day').add(13.5, 'hours')
+        startDateTime: moment().startOf('week').subtract(1, 'week').add(3, 'day').add(6, 'hours'),
+        endDateTime: moment().startOf('week').subtract(1, 'week').add(3, 'day').add(13.5, 'hours')
     },
     {
         id: 5016, 
         courthouseId: 1,
         workSectionId: 'JAIL', 
-        startDateTime: moment().startOf('week').add(3, 'day').add(6, 'hours'),
-        endDateTime: moment().startOf('week').add(3, 'day').add(13.5, 'hours')
+        startDateTime: moment().startOf('week').subtract(1, 'week').add(3, 'day').add(6, 'hours'),
+        endDateTime: moment().startOf('week').subtract(1, 'week').add(3, 'day').add(13.5, 'hours')
     },
     {
         id: 5017, 
         courthouseId: 1, 
-        startDateTime: moment().startOf('week').add(3, 'day').add(6, 'hours'),
-        endDateTime: moment().startOf('week').add(3, 'day').add(13.5, 'hours')
+        startDateTime: moment().startOf('week').subtract(1, 'week').add(3, 'day').add(6, 'hours'),
+        endDateTime: moment().startOf('week').subtract(1, 'week').add(3, 'day').add(13.5, 'hours')
     },
     {
         id: 5018, 
         courthouseId: 1, 
-        startDateTime: moment().startOf('week').add(3, 'day').add(8, 'hours'),
-        endDateTime: moment().startOf('week').add(3, 'day').add(15.5, 'hours')
+        startDateTime: moment().startOf('week').subtract(1, 'week').add(3, 'day').add(8, 'hours'),
+        endDateTime: moment().startOf('week').subtract(1, 'week').add(3, 'day').add(15.5, 'hours')
     },
     {
         id: 5019, 
         courthouseId: 1, 
         workSectionId: 'ESCORTS',
-        startDateTime: moment().startOf('week').add(3, 'day').add(8, 'hours'),
-        endDateTime: moment().startOf('week').add(3, 'day').add(15.5, 'hours')
+        startDateTime: moment().startOf('week').subtract(1, 'week').add(3, 'day').add(8, 'hours'),
+        endDateTime: moment().startOf('week').subtract(1, 'week').add(3, 'day').add(15.5, 'hours')
     },
     {
         id: 5020, 
         courthouseId: 1, 
-        startDateTime: moment().startOf('week').add(3, 'day').add(8, 'hours'),
-        endDateTime: moment().startOf('week').add(3, 'day').add(15.5, 'hours')
+        startDateTime: moment().startOf('week').subtract(1, 'week').add(3, 'day').add(8, 'hours'),
+        endDateTime: moment().startOf('week').subtract(1, 'week').add(3, 'day').add(15.5, 'hours')
     },
     {
         id: 5021, 
         courthouseId: 1,
         workSectionId: 'OTHER',
-        startDateTime: moment().startOf('week').add(3, 'day').add(8, 'hours'),
-        endDateTime: moment().startOf('week').add(3, 'day').add(15.5, 'hours')
+        startDateTime: moment().startOf('week').subtract(1, 'week').add(3, 'day').add(8, 'hours'),
+        endDateTime: moment().startOf('week').subtract(1, 'week').add(3, 'day').add(15.5, 'hours')
     },
     {
         id: 5022, 
         courthouseId: 1,
         workSectionId: 'COURTS', 
         sheriffId: 3,
-        startDateTime: moment().startOf('week').add(4, 'day').add(6, 'hours'),
-        endDateTime: moment().startOf('week').add(4, 'day').add(13.5, 'hours')
+        startDateTime: moment().startOf('week').subtract(1, 'week').add(4, 'day').add(6, 'hours'),
+        endDateTime: moment().startOf('week').subtract(1, 'week').add(4, 'day').add(13.5, 'hours')
     },
     {
         id: 5023, 
         courthouseId: 1,
         workSectionId: 'JAIL', 
-        startDateTime: moment().startOf('week').add(4, 'day').add(6, 'hours'),
-        endDateTime: moment().startOf('week').add(4, 'day').add(13.5, 'hours')
+        startDateTime: moment().startOf('week').subtract(1, 'week').add(4, 'day').add(6, 'hours'),
+        endDateTime: moment().startOf('week').subtract(1, 'week').add(4, 'day').add(13.5, 'hours')
     },
     {
         id: 5024, 
         courthouseId: 1, 
-        startDateTime: moment().startOf('week').add(4, 'day').add(6, 'hours'),
-        endDateTime: moment().startOf('week').add(4, 'day').add(13.5, 'hours')
+        startDateTime: moment().startOf('week').subtract(1, 'week').add(4, 'day').add(6, 'hours'),
+        endDateTime: moment().startOf('week').subtract(1, 'week').add(4, 'day').add(13.5, 'hours')
     },
     {
         id: 5025, 
         courthouseId: 1, 
-        startDateTime: moment().startOf('week').add(4, 'day').add(8, 'hours'),
-        endDateTime: moment().startOf('week').add(4, 'day').add(15.5, 'hours')
+        startDateTime: moment().startOf('week').subtract(1, 'week').add(4, 'day').add(8, 'hours'),
+        endDateTime: moment().startOf('week').subtract(1, 'week').add(4, 'day').add(15.5, 'hours')
     },
     {
         id: 5026, 
         courthouseId: 1, 
         workSectionId: 'ESCORTS',
-        startDateTime: moment().startOf('week').add(4, 'day').add(8, 'hours'),
-        endDateTime: moment().startOf('week').add(4, 'day').add(15.5, 'hours')
+        startDateTime: moment().startOf('week').subtract(1, 'week').add(4, 'day').add(8, 'hours'),
+        endDateTime: moment().startOf('week').subtract(1, 'week').add(4, 'day').add(15.5, 'hours')
     },
     {
         id: 5027, 
         courthouseId: 1, 
-        startDateTime: moment().startOf('week').add(4, 'day').add(8, 'hours'),
-        endDateTime: moment().startOf('week').add(4, 'day').add(15.5, 'hours')
+        startDateTime: moment().startOf('week').subtract(1, 'week').add(4, 'day').add(8, 'hours'),
+        endDateTime: moment().startOf('week').subtract(1, 'week').add(4, 'day').add(15.5, 'hours')
     },
     {
         id: 5028, 
         courthouseId: 1,
         workSectionId: 'OTHER',
-        startDateTime: moment().startOf('week').add(4, 'day').add(8, 'hours'),
-        endDateTime: moment().startOf('week').add(4, 'day').add(15.5, 'hours')
+        startDateTime: moment().startOf('week').subtract(1, 'week').add(4, 'day').add(8, 'hours'),
+        endDateTime: moment().startOf('week').subtract(1, 'week').add(4, 'day').add(15.5, 'hours')
     },
     {
         id: 5029, 
         courthouseId: 1,
         workSectionId: 'COURTS', 
         sheriffId: 3,
-        startDateTime: moment().startOf('week').add(5, 'day').add(6, 'hours'),
-        endDateTime: moment().startOf('week').add(5, 'day').add(13.5, 'hours')
+        startDateTime: moment().startOf('week').subtract(1, 'week').add(5, 'day').add(6, 'hours'),
+        endDateTime: moment().startOf('week').subtract(1, 'week').add(5, 'day').add(13.5, 'hours')
     },
     {
         id: 5030, 
         courthouseId: 1,
         workSectionId: 'JAIL', 
-        startDateTime: moment().startOf('week').add(5, 'day').add(6, 'hours'),
-        endDateTime: moment().startOf('week').add(5, 'day').add(13.5, 'hours')
+        startDateTime: moment().startOf('week').subtract(1, 'week').add(5, 'day').add(6, 'hours'),
+        endDateTime: moment().startOf('week').subtract(1, 'week').add(5, 'day').add(13.5, 'hours')
     },
     {
         id: 5031, 
         courthouseId: 1, 
-        startDateTime: moment().startOf('week').add(5, 'day').add(6, 'hours'),
-        endDateTime: moment().startOf('week').add(5, 'day').add(13.5, 'hours')
+        startDateTime: moment().startOf('week').subtract(1, 'week').add(5, 'day').add(6, 'hours'),
+        endDateTime: moment().startOf('week').subtract(1, 'week').add(5, 'day').add(13.5, 'hours')
     },
     {
         id: 5032, 
         courthouseId: 1, 
-        startDateTime: moment().startOf('week').add(5, 'day').add(8, 'hours'),
-        endDateTime: moment().startOf('week').add(5, 'day').add(15.5, 'hours')
+        startDateTime: moment().startOf('week').subtract(1, 'week').add(5, 'day').add(8, 'hours'),
+        endDateTime: moment().startOf('week').subtract(1, 'week').add(5, 'day').add(15.5, 'hours')
     },
     {
         id: 5033, 
         courthouseId: 1, 
         workSectionId: 'ESCORTS',
-        startDateTime: moment().startOf('week').add(5, 'day').add(8, 'hours'),
-        endDateTime: moment().startOf('week').add(5, 'day').add(15.5, 'hours')
+        startDateTime: moment().startOf('week').subtract(1, 'week').add(5, 'day').add(8, 'hours'),
+        endDateTime: moment().startOf('week').subtract(1, 'week').add(5, 'day').add(15.5, 'hours')
     },
     {
         id: 5034, 
         courthouseId: 1, 
-        startDateTime: moment().startOf('week').add(5, 'day').add(8, 'hours'),
-        endDateTime: moment().startOf('week').add(5, 'day').add(15.5, 'hours')
+        startDateTime: moment().startOf('week').subtract(1, 'week').add(5, 'day').add(8, 'hours'),
+        endDateTime: moment().startOf('week').subtract(1, 'week').add(5, 'day').add(15.5, 'hours')
     },
     {
         id: 5035, 
         courthouseId: 1,
         workSectionId: 'OTHER',
-        startDateTime: moment().startOf('week').add(5, 'day').add(8, 'hours'),
-        endDateTime: moment().startOf('week').add(5, 'day').add(15.5, 'hours')
+        startDateTime: moment().startOf('week').subtract(1, 'week').add(5, 'day').add(8, 'hours'),
+        endDateTime: moment().startOf('week').subtract(1, 'week').add(5, 'day').add(15.5, 'hours')
     }
 
 ];

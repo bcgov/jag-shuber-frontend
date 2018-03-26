@@ -9,22 +9,21 @@ import { default as FormSubmitButton, SubmitButtonProps } from '../components/Fo
 import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { 
-    DateType 
+    DateType, ShiftCopyInstructions 
 } from '../api/Api';
-// import { 
-//     ShiftCreationPayload
-// } from '../api/utils';
-// import { createShifts } from '../modules/shifts/actions';
+import { copyShiftsFromPrevWeek } from '../modules/shifts/actions';
 
 // wrapping generic assignment form in redux-form
 const formConfig: ConfigProps<{}, ScheduleShiftCopyFormProps> = {
     form: 'CopyScheduleShift',
     onSubmit: (values, dispatch, props) => {
-        console.log(values);
-        // const { weekStart } = props;
-        // let newShiftCreator: Partial<ShiftCreationPayload> = Object.assign({}, {...values});
-        // newShiftCreator.weekStart = weekStart;
-        // dispatch(createShifts(newShiftCreator as ShiftCreationPayload));
+        let copyInstructions: Partial<ShiftCopyInstructions> = Object.assign({}, {...values});
+        if (copyInstructions.copySelection === undefined) {
+            copyInstructions.copySelection = 'shiftsOnly';
+        }
+        copyInstructions.startOfWeekToCopy = props.copyWeekStart;
+        copyInstructions.startOfWeekToCreate = props.createWeekStart;
+        dispatch(copyShiftsFromPrevWeek(copyInstructions as ShiftCopyInstructions));
     }
 };
 

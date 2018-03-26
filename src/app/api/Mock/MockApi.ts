@@ -1,3 +1,4 @@
+import * as moment from 'moment';
 import {
     API,
     SheriffMap,
@@ -10,7 +11,8 @@ import {
     AssignmentDuty,
     IdType,
     Shift,
-    Leave
+    Leave,
+    ShiftCopyInstructions
 } from '../Api';
 import arrayToMap from '../../infrastructure/arrayToMap';
 import {
@@ -208,6 +210,28 @@ export default class NewClient implements API {
 
     deleteShift(shiftId: IdType): Promise<void> {
         throw new Error('Method not implemented.');
+    }
+
+    async createShiftsFromPreviousWeek(shiftCopyDetails: ShiftCopyInstructions): Promise<Shift[]> {
+        const { startOfWeekToCopy, copySelection, startOfWeekToCreate } = shiftCopyDetails;
+        const shiftsToCopy = sheriffShifts.filter(s => moment(s.startDateTime).isSame(startOfWeekToCopy, 'week'));
+        
+        let copiedShifts: Shift[] = [];
+        shiftsToCopy.forEach(shift => {
+            let newShift: Shift = {
+                ...shift,
+                id: this.getId(),
+                startDateTime: moment(shift.startDateTime).week(moment(startOfWeekToCreate).week()),
+                endDateTime: moment(shift.endDateTime).week(moment(startOfWeekToCreate).week())
+            };
+            if (copySelection === 'shiftsOnly') {
+                newShift.sheriffId = undefined;
+            }
+            copiedShifts.push(newShift);
+            sheriffShifts.push(newShift);
+        });
+        
+        return copiedShifts;
     }
 
     async getLeaves(): Promise<Leave[]> {
