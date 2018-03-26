@@ -22,19 +22,19 @@ export type ShiftCreationPayload = {
 };
 
 export function isCourtAssignment(assignment: Partial<Assignment>): assignment is CourtAssignment {
-    return (<CourtAssignment> assignment).workSectionId === 'COURTS';
+    return (<CourtAssignment>assignment).workSectionId === 'COURTS';
 }
 
 export function isJailAssignment(assignment: Partial<Assignment>): assignment is JailAssignment {
-    return (<JailAssignment> assignment).workSectionId === 'JAIL';
+    return (<JailAssignment>assignment).workSectionId === 'JAIL';
 }
 
 export function isEscortAssignment(assignment: Partial<Assignment>): assignment is EscortAssignment {
-    return (<EscortAssignment> assignment).workSectionId === 'ESCORTS';
+    return (<EscortAssignment>assignment).workSectionId === 'ESCORTS';
 }
 
 export function isOtherAssignment(assignment: Partial<Assignment>): assignment is OtherAssignment {
-    return (<OtherAssignment> assignment).workSectionId === 'OTHER';
+    return (<OtherAssignment>assignment).workSectionId === 'OTHER';
 }
 
 export function getWorkSectionColour(workSectionId?: WorkSectionId): string {
@@ -60,28 +60,30 @@ export function getWorkSectionColour(workSectionId?: WorkSectionId): string {
     return colour;
 }
 
-export function createShiftsFromShiftCreatorPayload (shiftInfo: ShiftCreationPayload): Partial<Shift>[] {
-    let partialShifts: Partial<Shift>[] = []; 
-    const dayNumbers = DaysOfWeek.getWeekdayNumbers(shiftInfo.days);
+export class ShiftFactory {
+    static createShifts(shiftInfo: ShiftCreationPayload): Partial<Shift>[] {
+        let partialShifts: Partial<Shift>[] = [];
+        const dayNumbers = DaysOfWeek.getWeekdayNumbers(shiftInfo.days);
 
-    dayNumbers.forEach(day => {
-        const startTimeMoment = moment(shiftInfo.startTime);
-        const endTimeMoment = moment(shiftInfo.endTime);
-        let newShift = {
-            workSectionId: shiftInfo.workSectionId,
-            startDateTime: moment(shiftInfo.weekStart).add(
-                {days: day, hours: startTimeMoment.hours(), minutes: startTimeMoment.minutes()}
-            ),
-            endDateTime: moment(shiftInfo.weekStart).add(
-                {days: day, hours: endTimeMoment.hours(), minutes: endTimeMoment.minutes()}
-            )
-        };
+        dayNumbers.forEach(day => {
+            const startTimeMoment = moment(shiftInfo.startTime);
+            const endTimeMoment = moment(shiftInfo.endTime);
+            let newShift = {
+                workSectionId: shiftInfo.workSectionId,
+                startDateTime: moment(shiftInfo.weekStart).add(
+                    { days: day, hours: startTimeMoment.hours(), minutes: startTimeMoment.minutes() }
+                ),
+                endDateTime: moment(shiftInfo.weekStart).add(
+                    { days: day, hours: endTimeMoment.hours(), minutes: endTimeMoment.minutes() }
+                )
+            };
 
-        for (let i = 1; i <= shiftInfo.repeatNumber; i++) {
-            partialShifts.push(newShift);  
-        }
-        
-    });
-      
-    return partialShifts;
+            for (let i = 1; i <= shiftInfo.repeatNumber; i++) {
+                partialShifts.push(newShift);
+            }
+
+        });
+
+        return partialShifts;
+    }
 }

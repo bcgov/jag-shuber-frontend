@@ -1,9 +1,11 @@
 import * as moment from 'moment';
-import * as utils from '../utils';
 import { 
     DaysOfWeek
 } from '../../api/Api';
-import { ShiftCreationPayload } from '../utils';
+import { 
+    ShiftFactory, 
+    ShiftCreationPayload
+} from '../utils';
 
 const testPayload: ShiftCreationPayload = {
     weekStart: moment().startOf('isoWeek').subtract(1, 'day'),
@@ -14,8 +16,8 @@ const testPayload: ShiftCreationPayload = {
     days: DaysOfWeek.Weekdays
 };
 
-describe('createShiftsFromShiftCreatorPayload()', () => {
-    const util = utils.createShiftsFromShiftCreatorPayload;
+describe('ShiftFactory.createShifts()', () => {
+    const util = ShiftFactory.createShifts;
 
     it('Should return an array', () => {
         expect(util(testPayload)).toBeInstanceOf(Array);

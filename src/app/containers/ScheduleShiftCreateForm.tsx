@@ -22,9 +22,9 @@ const formConfig: ConfigProps<{}, ScheduleShiftFormProps> = {
     form: 'CreateScheduleShift',
     onSubmit: (values, dispatch, props) => {
         const { weekStart } = props;
-        let newShiftCreator: Partial<ShiftCreationPayload> = Object.assign({}, {...values});
-        newShiftCreator.weekStart = weekStart;
-        dispatch(createShifts(newShiftCreator as ShiftCreationPayload));
+        let newShiftCreatorPayload: Partial<ShiftCreationPayload> = Object.assign({}, {...values});
+        newShiftCreatorPayload.weekStart = weekStart;
+        dispatch(createShifts(newShiftCreatorPayload as ShiftCreationPayload));
     }
 };
 

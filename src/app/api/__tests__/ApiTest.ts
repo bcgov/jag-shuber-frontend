@@ -1,7 +1,7 @@
 import {default as API } from '../index';
 import { DaysOfWeek } from '../Api';
  
-describe('API Client',() => {
+describe('API Client', () => {
 
     beforeEach(() => {
       // tslint:disable-next-line:no-console
@@ -20,24 +20,21 @@ describe('API Client',() => {
 
 });
 
+/* tslint:disable:no-bitwise */ 
 describe('DaysOfWeek.getDisplayValues', () => {
     const util = DaysOfWeek.getDisplayValues;
     
     it('Should return each day if weekdays and Sat or Sun is selected', () => {
-        // tslint:disable-next-line:no-bitwise
         expect(util(DaysOfWeek.Weekdays | DaysOfWeek.Sat)).toEqual(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']);
-        // tslint:disable-next-line:no-bitwise
         expect(util(DaysOfWeek.Weekdays | DaysOfWeek.Sun)).toEqual(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sun']);
     }); 
-    
+       
     it('Should return each day if weekdays and Sat and Sun is selected', () => {
-        // tslint:disable-next-line:no-bitwise
         expect(util(DaysOfWeek.Weekdays | DaysOfWeek.Sat | DaysOfWeek.Sun)).toEqual(['Everyday']);
     });
 
     it('Should return each day if not all weekdays or everyday are selected', () => {
         expect(util(
-            // tslint:disable-next-line:no-bitwise
             DaysOfWeek.Mon | DaysOfWeek.Tue | DaysOfWeek.Sat | DaysOfWeek.Sun)).
             toEqual(['Mon', 'Tue', 'Sat', 'Sun']
         );
@@ -45,7 +42,6 @@ describe('DaysOfWeek.getDisplayValues', () => {
 
     it('Should return Weekdays, if each weekday is selected', () => {
         expect(util(
-            // tslint:disable-next-line:no-bitwise
             DaysOfWeek.Mon | DaysOfWeek.Tue | DaysOfWeek.Wed | DaysOfWeek.Thu | DaysOfWeek.Fri)).
             toEqual(['Weekdays'])
         ;
@@ -54,7 +50,6 @@ describe('DaysOfWeek.getDisplayValues', () => {
 
     it('Should return Everyday, if each day of the week is selected', () => {
         expect(util(
-            // tslint:disable-next-line:no-bitwise
             DaysOfWeek.Mon | DaysOfWeek.Tue | DaysOfWeek.Wed | 
             DaysOfWeek.Thu | DaysOfWeek.Fri | DaysOfWeek.Sat | DaysOfWeek.Sun))
             .toEqual(['Everyday']
@@ -85,22 +80,18 @@ describe('DaysOfWeek.getWeekdayNumbers', () => {
     it('Should return the correct number for each day, when mulitple days are selected', () => {
         expect(util(DaysOfWeek.Weekdays)).toEqual(expect.arrayContaining([1, 2, 3, 4, 5]));
         expect(util(DaysOfWeek.Everyday)).toEqual(expect.arrayContaining([0, 1, 2, 3, 4, 5, 6]));
-        // tslint:disable-next-line:no-bitwise
         expect(util(DaysOfWeek.Mon | DaysOfWeek.Wed | DaysOfWeek.Fri)).toEqual(expect.arrayContaining([1, 3, 5]));
         expect(
-            // tslint:disable-next-line:no-bitwise
             util(DaysOfWeek.Mon | DaysOfWeek.Tue | DaysOfWeek.Wed | DaysOfWeek.Thu | DaysOfWeek.Fri | DaysOfWeek.Sat)).
             toEqual(expect.arrayContaining([1, 2, 3, 4, 5, 6])
         );
         expect(
-            // tslint:disable-next-line:no-bitwise
             util(DaysOfWeek.Mon | DaysOfWeek.Tue | DaysOfWeek.Wed | DaysOfWeek.Thu | DaysOfWeek.Fri | DaysOfWeek.Sun)).
             toEqual(expect.arrayContaining([0, 1, 2, 3, 4, 5])
         );
-        // tslint:disable-next-line:no-bitwise
         expect(util(DaysOfWeek.Weekdays | DaysOfWeek.Sat)).toEqual(expect.arrayContaining([1, 2, 3, 4, 5, 6]));
-        // tslint:disable-next-line:no-bitwise
         expect(util(DaysOfWeek.Weekdays | DaysOfWeek.Sun)).toEqual(expect.arrayContaining([0, 1, 2, 3, 4, 5]));
     });
 
 });
+ /* tslint:enable:no-bitwise */ 

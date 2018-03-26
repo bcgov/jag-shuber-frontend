@@ -8,7 +8,7 @@ import {
 import { ThunkAction } from '../../store';
 import { 
     ShiftCreationPayload, 
-    createShiftsFromShiftCreatorPayload 
+    ShiftFactory 
 } from '../../api/utils';
 
 export const getShifts = shiftRequests.shiftMapRequest.actionCreator;
@@ -48,7 +48,7 @@ export const createShifts: ThunkAction<ShiftCreationPayload> =
         (dispatch, getState, extra) => {
             
             let partialShifts: Partial<Shift>[] = 
-                createShiftsFromShiftCreatorPayload(
+                ShiftFactory.createShifts(
                     { 
                         weekStart, 
                         workSectionId, 
