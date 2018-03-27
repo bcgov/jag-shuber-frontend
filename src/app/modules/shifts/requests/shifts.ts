@@ -9,7 +9,7 @@ import {
     Shift,
     IdType,
     ShiftMap,
-    ShiftCopyInstructions
+    ShiftCopyOptions
 } from '../../../api/Api';
 
 // Get the Map
@@ -65,12 +65,12 @@ class CreateShiftRequest extends RequestAction<Partial<Shift>, Shift, ShiftModul
 
 export const createShiftRequest = new CreateShiftRequest();
 
-class CopyShiftsRequest extends RequestAction<ShiftCopyInstructions, Shift[], ShiftModuleState> {
+class CopyShiftsRequest extends RequestAction<ShiftCopyOptions, Shift[], ShiftModuleState> {
     constructor(namespace: string = STATE_KEY, actionName: string = 'copyShiftsFromPrevWeek') {
         super(namespace, actionName);
     }
-    public async doWork(copyInstructions: ShiftCopyInstructions, { api }: ThunkExtra): Promise<Shift[]> {
-        let copiedShifts = await api.createShiftsFromPreviousWeek(copyInstructions);
+    public async doWork(copyInstructions: ShiftCopyOptions, { api }: ThunkExtra): Promise<Shift[]> {
+        let copiedShifts = await api.copyShifts(copyInstructions);
         return copiedShifts;
     }
 

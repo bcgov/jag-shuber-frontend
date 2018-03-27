@@ -12,7 +12,7 @@ import {
     IdType,
     Shift,
     Leave,
-    ShiftCopyInstructions
+    ShiftCopyOptions
 } from '../Api';
 import arrayToMap from '../../infrastructure/arrayToMap';
 import {
@@ -212,17 +212,17 @@ export default class NewClient implements API {
         throw new Error('Method not implemented.');
     }
 
-    async createShiftsFromPreviousWeek(shiftCopyDetails: ShiftCopyInstructions): Promise<Shift[]> {
-        const { startOfWeekToCopy, copySelection, startOfWeekToCreate } = shiftCopyDetails;
-        const shiftsToCopy = sheriffShifts.filter(s => moment(s.startDateTime).isSame(startOfWeekToCopy, 'week'));
+    async copyShifts(shiftCopyDetails: ShiftCopyOptions): Promise<Shift[]> {
+        const { startOfWeekSource, copySelection, startOfWeekDestination } = shiftCopyDetails;
+        const shiftsToCopy = sheriffShifts.filter(s => moment(s.startDateTime).isSame(startOfWeekSource, 'week'));
         
         let copiedShifts: Shift[] = [];
         shiftsToCopy.forEach(shift => {
             let newShift: Shift = {
                 ...shift,
                 id: this.getId(),
-                startDateTime: moment(shift.startDateTime).week(moment(startOfWeekToCreate).week()),
-                endDateTime: moment(shift.endDateTime).week(moment(startOfWeekToCreate).week())
+                startDateTime: moment(shift.startDateTime).week(moment(startOfWeekDestination).week()),
+                endDateTime: moment(shift.endDateTime).week(moment(startOfWeekDestination).week())
             };
             if (copySelection === 'shiftsOnly') {
                 newShift.sheriffId = undefined;

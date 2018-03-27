@@ -9,7 +9,7 @@ import { default as FormSubmitButton, SubmitButtonProps } from '../components/Fo
 import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { 
-    DateType, ShiftCopyInstructions 
+    DateType, ShiftCopyOptions 
 } from '../api/Api';
 import { copyShiftsFromPrevWeek } from '../modules/shifts/actions';
 
@@ -17,18 +17,18 @@ import { copyShiftsFromPrevWeek } from '../modules/shifts/actions';
 const formConfig: ConfigProps<{}, ScheduleShiftCopyFormProps> = {
     form: 'CopyScheduleShift',
     onSubmit: (values, dispatch, props) => {
-        let copyInstructions: Partial<ShiftCopyInstructions> = Object.assign({}, {...values});
+        let copyInstructions: Partial<ShiftCopyOptions> = Object.assign({}, {...values});
         if (copyInstructions.copySelection === undefined) {
             copyInstructions.copySelection = 'shiftsOnly';
         }
-        copyInstructions.startOfWeekToCopy = props.copyWeekStart;
-        copyInstructions.startOfWeekToCreate = props.createWeekStart;
-        dispatch(copyShiftsFromPrevWeek(copyInstructions as ShiftCopyInstructions));
+        copyInstructions.startOfWeekSource = props.weekStartSource;
+        copyInstructions.startOfWeekDestination = props.weekStartDestination;
+        dispatch(copyShiftsFromPrevWeek(copyInstructions as ShiftCopyOptions));
     }
 };
 
 export interface ScheduleShiftCreateFormProps extends ScheduleShiftCopyFormProps {
-    copyWeekStart: DateType;
+    weekStartSource: DateType;
 }
 
 // tslint:disable-next-line:no-empty

@@ -228,10 +228,10 @@ export interface Shift {
     endDateTime: DateType;
 }
 
-export interface ShiftCopyInstructions {
+export interface ShiftCopyOptions {
     copySelection: ShiftCopySelection;
-    startOfWeekToCopy: DateType;
-    startOfWeekToCreate: DateType;
+    startOfWeekSource: DateType;
+    startOfWeekDestination: DateType;
 }
 
 export interface Leave {
@@ -271,7 +271,7 @@ export interface API {
     updateShift(shiftToUpdate: Partial<Shift>): Promise<Shift>;
     createShift(newShift: Partial<Shift>): Promise<Shift>;
     deleteShift(shiftId: IdType): Promise<void>;
-    createShiftsFromPreviousWeek(shiftCopyDetails: ShiftCopyInstructions): Promise<Shift[]>; 
+    copyShifts(shiftCopyDetails: ShiftCopyOptions): Promise<Shift[]>; 
 
     // Sheriff Leaves
     getLeaves(): Promise<Leave []>;

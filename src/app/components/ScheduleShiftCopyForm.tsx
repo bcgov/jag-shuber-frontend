@@ -9,13 +9,12 @@ import {
 import {
     DateType
 } from '../api/Api';
-// import * as Validators from '../infrastructure/Validators';
 
 export interface ScheduleShiftCopyFormProps {
     handleSubmit?: () => void;
     onSubmitSuccess?: () => void;
-    copyWeekStart: DateType;
-    createWeekStart: DateType;
+    weekStartSource: DateType;
+    weekStartDestination: DateType;
 }
 
 export default class ScheduleShiftForm extends

@@ -24,8 +24,8 @@ export default class ScheduleShiftCopyModal extends React.Component<ScheduleShif
                     body={({handleClose}) => (
                         <ScheduleShiftCopyForm 
                             onSubmitSuccess={handleClose}
-                            copyWeekStart={moment().startOf('week').subtract(1, 'week')}
-                            createWeekStart={moment().startOf('week')}
+                            weekStartSource={moment().startOf('week').subtract(1, 'week')}
+                            weekStartDestination={moment().startOf('week')}
                         />
                     )}
                     footerComponent={(
