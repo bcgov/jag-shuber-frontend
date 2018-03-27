@@ -20,6 +20,7 @@ export interface ScheduleShiftFormProps {
     onSubmitSuccess?: () => void;
     weekStart?: DateType;
     isSingleShift?: boolean;
+    shiftTitle?: string;
 }
 
 export default class ScheduleShiftForm extends
@@ -79,9 +80,10 @@ export default class ScheduleShiftForm extends
     }
 
     render() {
-        const { handleSubmit } = this.props;
+        const { handleSubmit, shiftTitle } = this.props;
         return (
             <div>
+                <h1>{shiftTitle}</h1>
                 <Form onSubmit={handleSubmit}>
                     {this.renderShiftFields()}
                     {this.renderMultiShiftCreationFields()}

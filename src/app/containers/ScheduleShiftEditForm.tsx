@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as moment from 'moment';
 import {
     reduxForm,
     ConfigProps
@@ -29,7 +30,8 @@ const mapStateToProps = (state: RootState, props: ScheduleShiftEditFormProps) =>
     if (initialShift) {
         return {
             initialValues: initialShift,        
-            isSingleShift: true
+            isSingleShift: true,
+            shiftTitle: moment(initialShift.startDateTime).format('dddd MMMM DD, YYYY')
         };
     } else {
         return {};
