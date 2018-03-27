@@ -8,7 +8,8 @@ import {
 import {
     Shift,
     IdType,
-    ShiftMap
+    ShiftMap,
+    ShiftCopyOptions
 } from '../../../api/Api';
 
 // Get the Map
@@ -36,7 +37,7 @@ class CreateShiftRequest extends RequestAction<Partial<Shift>, Shift, ShiftModul
 
     reduceSuccess(moduleState: ShiftModuleState, action: { type: string, payload: Shift }): ShiftModuleState {
         // Call the super's reduce success and pull out our state and
-        // the assignmentMap state
+        // the shiftMap state
         const {
             shiftMap: {
                 data: currentMap = {},
@@ -45,7 +46,7 @@ class CreateShiftRequest extends RequestAction<Partial<Shift>, Shift, ShiftModul
             ...restState
         } = super.reduceSuccess(moduleState, action);
 
-        // Create a new map and add our assignment to it
+        // Create a new map and add our shift to it
         const newMap = { ...currentMap };
         newMap[action.payload.id] = action.payload;
 
@@ -63,6 +64,47 @@ class CreateShiftRequest extends RequestAction<Partial<Shift>, Shift, ShiftModul
 }
 
 export const createShiftRequest = new CreateShiftRequest();
+
+class CopyShiftsRequest extends RequestAction<ShiftCopyOptions, Shift[], ShiftModuleState> {
+    constructor(namespace: string = STATE_KEY, actionName: string = 'copyShiftsFromPrevWeek') {
+        super(namespace, actionName);
+    }
+    public async doWork(copyInstructions: ShiftCopyOptions, { api }: ThunkExtra): Promise<Shift[]> {
+        let copiedShifts = await api.copyShifts(copyInstructions);
+        return copiedShifts;
+    }
+
+    reduceSuccess(moduleState: ShiftModuleState, action: { type: string, payload: Shift[] }): ShiftModuleState {
+        // Call the super's reduce success and pull out our state and
+        // the shiftMap state
+        const {
+            shiftMap: {
+                data: currentMap = {},
+                ...restMap
+            } = {},
+            ...restState
+        } = super.reduceSuccess(moduleState, action);
+
+        // Create a new map and add our new shifts to it
+        const newMap = { ...currentMap };
+        action.payload.forEach(shift => {
+            newMap[shift.id] = shift;
+        });
+        
+        // Merge the state back together with the original in a new object
+        const newState: Partial<ShiftModuleState> = {
+            ...restState,
+            shiftMap: {
+                ...restMap,
+                data: newMap
+            }
+        };
+
+        return newState;
+    }
+}
+
+export const copyShiftsFromPrevWeek = new CopyShiftsRequest();
 
 // Shift Edit
 class UpdateShiftRequest extends CreateShiftRequest {
