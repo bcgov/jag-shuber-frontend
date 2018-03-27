@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { storiesOf } from '../utils';
-import StoryPage from '../StoryUI/StoryPage';
-import StorySection from '../StoryUI/StorySection';
+import { storiesOf } from '../../utils';
+import StoryPage from '../../StoryUI/StoryPage';
+import StorySection from '../../StoryUI/StorySection';
 import {
   default as ScheduleSummary,
   StatusEnum
-} from '../../app/components/ScheduleSummary/ScheduleSummary';
-import '../../app/assets/styles/Glyphicons.css';
+} from '../../../app/components/ScheduleSummary/ScheduleSummary';
+import '../../../app/assets/styles/Glyphicons.css';
 
-storiesOf('Components')
+storiesOf('Components/Schedule')
   .add('Schedule Summary', () => (
     <StoryPage title="Schedule Summary">
 
