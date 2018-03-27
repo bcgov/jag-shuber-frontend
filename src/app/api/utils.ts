@@ -14,7 +14,6 @@ import {
 export type ShiftCreationPayload = {
     weekStart: DateType;
     workSectionId?: WorkSectionId;
-    workSectionNotRequired?: boolean;
     startTime: DateType;
     endTime: DateType;
     days: DaysOfWeek;
