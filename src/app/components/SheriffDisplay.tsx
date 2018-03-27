@@ -15,7 +15,7 @@ export default class SheriffDisplay extends React.PureComponent<SheriffDisplayPr
 
         return (
             <div style={{ ...style }}>
-                {sheriff !== undefined ? `#${sheriff.badgeNumber}` : ''}
+                {sheriff !== undefined ? sheriff.lastName.toUpperCase() : ''}
             </div>
         );
     }

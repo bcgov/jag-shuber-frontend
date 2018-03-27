@@ -3,7 +3,6 @@ import {
     Button,
     Glyphicon
 } from 'react-bootstrap';
-// import AssignmentDutyEditForm from './AssignmentDutyEditForm';
 import ModalWrapper from './ModalWrapper';
 import { IdType } from '../api';
 import ScheduleShiftEditForm from './ScheduleShiftEditForm';
@@ -26,7 +25,7 @@ export default class ScheduleShiftEditModal extends React.PureComponent<Schedule
                     title="Edit Shift"
                     showButton={
                         ({ handleShow }) =>
-                            <Button bsStyle="link" bsSize="medium" onClick={() => handleShow()}>
+                            <Button bsStyle="link" bsSize="xsmall" onClick={() => handleShow()}>
                                 <Glyphicon glyph="pencil" style={{ color }} />
                             </Button>}
                     body={({ handleClose }) => {

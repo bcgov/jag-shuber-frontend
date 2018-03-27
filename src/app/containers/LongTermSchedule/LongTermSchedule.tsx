@@ -26,9 +26,6 @@ import './LongTermSchedule.css';
 import ShiftCard from '../../components/ShiftCard';
 import SheriffDropTarget from '../SheriffDropTarget';
 import SheriffDisplay from '../SheriffDisplay';
-import ScheduleShiftActionsPanel from '../../components/ScheduleShiftActionsPanel/ScheduleShiftActionPanel';
-import ScheduleShiftEditModal from '../ScheduleShiftEditModal';
-
 interface LongTermScheduleProps extends Partial<ShiftScheduleProps> {
     sideBarWidth?: number;
     allowTimeDrag?: boolean;
@@ -104,9 +101,6 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
                             <ShiftCard shift={shift}>
                                 <SheriffDisplay sheriffId={shift.sheriffId} />
                             </ShiftCard>
-                            <ScheduleShiftActionsPanel>
-                                <ScheduleShiftEditModal color="black" shiftId={shift.id} />
-                            </ScheduleShiftActionsPanel>
                         </SheriffDropTarget>
                     )}
                 />

@@ -3,7 +3,7 @@ import * as moment from 'moment';
 import { storiesOf } from '../../utils';
 import StoryPage from '../../StoryUI/StoryPage';
 import StorySection from '../../StoryUI/StorySection';
-import ShiftCard from '../../../app/components/ShiftCard/ShiftCard'; 
+import ShiftCard from '../../../app/components/ShiftCard'; 
 import '../../../app/assets/styles/Glyphicons.css';
 
 storiesOf('Components/Schedule')
