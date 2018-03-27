@@ -1,0 +1,10 @@
+.schedule-shift-actions-panel {
+    color: black;
+    position: absolute;
+    z-index: 81;
+    left: 0; 
+    top: 0;
+    height: 100%;
+    width: 40px;
+    background-color: transparent;
+}
