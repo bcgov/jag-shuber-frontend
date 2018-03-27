@@ -11,7 +11,6 @@ export type AssignmentMap = { [key: number]: Assignment };
 export type AssignmentDutyMap = { [key: number]: AssignmentDuty };
 export type WorkSectionId = 'COURTS' | 'JAIL' | 'ESCORTS' | 'OTHER';
 export type Assignment = CourtAssignment | JailAssignment | EscortAssignment | OtherAssignment;
-export type ShiftCopySelection = 'shiftsOnly' | 'shiftsAndSheriffs';
 
 /* tslint:disable:no-bitwise */
 export enum DaysOfWeek {
@@ -229,7 +228,7 @@ export interface Shift {
 }
 
 export interface ShiftCopyOptions {
-    copySelection: ShiftCopySelection;
+    shouldIncludeSheriffs: boolean;
     startOfWeekSource: DateType;
     startOfWeekDestination: DateType;
 }

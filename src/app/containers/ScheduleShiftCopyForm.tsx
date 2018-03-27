@@ -1,5 +1,4 @@
 import * as React from 'react';
-// import * as moment from 'moment';
 import {
     reduxForm,
     ConfigProps
@@ -17,13 +16,10 @@ import { copyShiftsFromPrevWeek } from '../modules/shifts/actions';
 const formConfig: ConfigProps<{}, ScheduleShiftCopyFormProps> = {
     form: 'CopyScheduleShift',
     onSubmit: (values, dispatch, props) => {
-        let copyInstructions: Partial<ShiftCopyOptions> = Object.assign({}, {...values});
-        if (copyInstructions.copySelection === undefined) {
-            copyInstructions.copySelection = 'shiftsOnly';
-        }
-        copyInstructions.startOfWeekSource = props.weekStartSource;
-        copyInstructions.startOfWeekDestination = props.weekStartDestination;
-        dispatch(copyShiftsFromPrevWeek(copyInstructions as ShiftCopyOptions));
+        let copyOptions: Partial<ShiftCopyOptions> = Object.assign({}, {...values});
+        copyOptions.startOfWeekSource = props.weekStartSource;
+        copyOptions.startOfWeekDestination = props.weekStartDestination;
+        dispatch(copyShiftsFromPrevWeek(copyOptions as ShiftCopyOptions));
     }
 };
 

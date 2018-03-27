@@ -202,9 +202,9 @@ export default class NewClient implements API {
             id: this.getId(),
             courthouseId: 1
         };
-        
+
         sheriffShifts.push(shiftToAdd as Shift);
-        
+
         return shiftToAdd as Shift;
     }
 
@@ -213,25 +213,22 @@ export default class NewClient implements API {
     }
 
     async copyShifts(shiftCopyDetails: ShiftCopyOptions): Promise<Shift[]> {
-        const { startOfWeekSource, copySelection, startOfWeekDestination } = shiftCopyDetails;
-        const shiftsToCopy = sheriffShifts.filter(s => moment(s.startDateTime).isSame(startOfWeekSource, 'week'));
-        
-        let copiedShifts: Shift[] = [];
-        shiftsToCopy.forEach(shift => {
-            let newShift: Shift = {
-                ...shift,
+        const { startOfWeekSource, shouldIncludeSheriffs, startOfWeekDestination } = shiftCopyDetails;
+        const shiftsToCopy = sheriffShifts
+            .filter(s => moment(s.startDateTime).isSame(startOfWeekSource, 'week'))
+            .map<Shift>(s =>
+            ({
+                ...s,
                 id: this.getId(),
-                startDateTime: moment(shift.startDateTime).week(moment(startOfWeekDestination).week()),
-                endDateTime: moment(shift.endDateTime).week(moment(startOfWeekDestination).week())
-            };
-            if (copySelection === 'shiftsOnly') {
-                newShift.sheriffId = undefined;
-            }
-            copiedShifts.push(newShift);
-            sheriffShifts.push(newShift);
-        });
-        
-        return copiedShifts;
+                startDateTime: moment(s.startDateTime).week(moment(startOfWeekDestination).week()),
+                endDateTime: moment(s.endDateTime).week(moment(startOfWeekDestination).week()),
+                sheriffId: shouldIncludeSheriffs ? s.sheriffId : undefined
+            })
+        );
+
+        shiftsToCopy.forEach(shift => sheriffShifts.push({...shift}));
+
+        return shiftsToCopy;
     }
 
     async getLeaves(): Promise<Leave[]> {

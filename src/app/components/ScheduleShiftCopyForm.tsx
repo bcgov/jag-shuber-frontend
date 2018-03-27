@@ -9,6 +9,7 @@ import {
 import {
     DateType
 } from '../api/Api';
+import CheckboxField from './FormElements/CheckboxField';
 
 export interface ScheduleShiftCopyFormProps {
     handleSubmit?: () => void;
@@ -24,16 +25,8 @@ export default class ScheduleShiftForm extends
         return (
             <div>
                 <Form onSubmit={handleSubmit}>
-                    <h3>From the previous week, copy:</h3> 
-                    <label>
-                        <Field name="copySelection" checked="true" component="input" type="radio" value="shiftsOnly" />
-                        {' '} Shifts Only 
-                    </label>
-                    <br/>
-                    <label>
-                        <Field name="copySelection" component="input" type="radio" value="shiftsAndSheriffs" />
-                        {' '} Shifts and Sheriffs 
-                    </label>
+                    <h3>Duplicate Shifts from Previous Week</h3> 
+                    <Field name="shouldIncludeSheriffs" component={CheckboxField} label="Include sheriffs" />
                 </Form>
             </div>
         );

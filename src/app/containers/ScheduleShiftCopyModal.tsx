@@ -15,7 +15,7 @@ export default class ScheduleShiftCopyModal extends React.Component<ScheduleShif
         return (
             <div>
                 <ModalWrapper
-                    title="Copy Shifts"
+                    title=""
                     showButton={({ handleShow }) => (
                         <Button bsStyle="link" bsSize="large" style={{color: 'white'}}  onClick={() => handleShow()}>
                             <Glyphicon glyph="repeat" />
