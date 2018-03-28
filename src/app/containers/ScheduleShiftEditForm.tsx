@@ -10,13 +10,21 @@ import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { getShift } from '../modules/shifts/selectors';
 import { editShift } from '../modules/shifts/actions';
-import { IdType } from '../api';
+import { getSheriff } from '../modules/sheriffs/selectors';
+import { 
+    IdType, 
+    Shift 
+} from '../api';
 
 // wrapping generic assignment form in redux-form
-const formConfig: ConfigProps<{}, ScheduleShiftFormProps> = {
+const formConfig: ConfigProps<any, ScheduleShiftFormProps> = {
     form: 'EditShift',
     onSubmit: (values, dispatch, props) => {
-        let updatedShift = Object.assign({}, { ...values });
+        const { isSheriffAssigned, sheriffId, ...shiftValues } = values;
+        let updatedShift: Partial<Shift> =  {
+            ...shiftValues, 
+            sheriffId: isSheriffAssigned ? sheriffId : undefined
+        };
         dispatch(editShift(updatedShift));
     }
 };
@@ -29,9 +37,14 @@ const mapStateToProps = (state: RootState, props: ScheduleShiftEditFormProps) =>
     const initialShift = getShift(props.id)(state);
     if (initialShift) {
         return {
-            initialValues: initialShift,        
+            initialValues: {
+                ...initialShift, 
+                isSheriffAssigned: true
+            },       
             isSingleShift: true,
-            shiftTitle: moment(initialShift.startDateTime).format('dddd MMMM DD, YYYY')
+            shiftTitle: moment(initialShift.startDateTime).format('dddd MMMM DD, YYYY'),
+            assignedSheriff: getSheriff(initialShift.sheriffId)(state),
+            
         };
     } else {
         return {};
