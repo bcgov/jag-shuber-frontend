@@ -27,31 +27,27 @@ export default class ScheduleShiftForm extends
     React.Component<ScheduleShiftFormProps & InjectedFormProps<{}, ScheduleShiftFormProps>, {}> {
 
     private renderMultiShiftCreationFields() {
-        const { isSingleShift } = this.props;
-        if (!isSingleShift) {
-            return (
-                <div>
-                    <Field
-                        name="days"
-                        component={DaysOfWeekChecklist}
-                        label="Days"
-                        validate={[Validators.required]}
-                    />
-                    <Field
-                        name="repeatNumber"
-                        component={NumberSpinner}
-                        label="Number of FTEs required"
-                        validate={[
-                            Validators.required,
-                            Validators.max50,
-                            Validators.min1,
-                            Validators.integer
-                        ]}
-                    />
-                </div>
-            );
-        }
-        return '';
+        return (
+            <div>
+                <Field
+                    name="days"
+                    component={DaysOfWeekChecklist}
+                    label="Days"
+                    validate={[Validators.required]}
+                />
+                <Field
+                    name="repeatNumber"
+                    component={NumberSpinner}
+                    label="Number of FTEs required"
+                    validate={[
+                        Validators.required,
+                        Validators.max50,
+                        Validators.min1,
+                        Validators.integer
+                    ]}
+                />
+            </div>
+        );
     }
 
     private renderShiftFields() {
@@ -80,13 +76,13 @@ export default class ScheduleShiftForm extends
     }
 
     render() {
-        const { handleSubmit, shiftTitle } = this.props;
+        const { handleSubmit, shiftTitle, isSingleShift } = this.props;
         return (
             <div>
                 <h1>{shiftTitle}</h1>
                 <Form onSubmit={handleSubmit}>
                     {this.renderShiftFields()}
-                    {this.renderMultiShiftCreationFields()}
+                    {!isSingleShift && this.renderMultiShiftCreationFields()}
                 </Form>
             </div>
         );
