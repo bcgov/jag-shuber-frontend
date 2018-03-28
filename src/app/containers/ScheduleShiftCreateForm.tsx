@@ -36,9 +36,9 @@ const mapStateToProps = (state: RootState, props: ScheduleShiftCreateFormProps) 
     return {
         initialValues: {
             startTime: moment().hour(9).minute(0),
-                endTime: moment().hour(17).minute(0),
-                days: DaysOfWeek.Weekdays,
-                repeatNumber: 1
+            endTime: moment().hour(17).minute(0),
+            days: DaysOfWeek.Weekdays,
+            repeatNumber: 1
         }
     };
 };

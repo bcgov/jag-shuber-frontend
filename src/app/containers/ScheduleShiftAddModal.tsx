@@ -26,6 +26,7 @@ export default class ScheduleShiftAddModal extends React.Component<ScheduleShift
                         <ScheduleShiftCreateForm 
                             onSubmitSuccess={handleClose} 
                             weekStart={moment().startOf('week')}
+                            isSingleShift={false}
                         />
                     )}
                     footerComponent={(

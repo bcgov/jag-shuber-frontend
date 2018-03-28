@@ -8,7 +8,7 @@ import { default as FormSubmitButton, SubmitButtonProps } from '../components/Fo
 import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { getAssignmentDuty, getAssignment } from '../modules/assignments/selectors';
-import { editAssignmentDuty } from '../modules/assignments/actions'
+import { editAssignmentDuty } from '../modules/assignments/actions';
 import { 
     IdType, 
     Assignment 
@@ -42,10 +42,10 @@ const mapStateToProps = (state: RootState, props: AssignmentDutyEditFormProps) =
 
 // Here we create a class that extends the configured assignment form so that we
 // can add a static SubmitButton member to it to make the API cleaner
-export default class AssignmentEditForm extends connect<any, {}, AssignmentDutyEditFormProps>(mapStateToProps)(reduxForm(formConfig)(AssignmentDutyForm)) {
-    static SubmitButton = (props: Partial<SubmitButtonProps>) => <FormSubmitButton {...props} formName={formConfig.form} />;
+export default class AssignmentEditForm extends 
+    connect<any, {}, AssignmentDutyEditFormProps>(mapStateToProps)(reduxForm(formConfig)(AssignmentDutyForm)) {
+        static SubmitButton = (props: Partial<SubmitButtonProps>) => 
+        <FormSubmitButton {...props} formName={formConfig.form} />
 }
-
-
 
 
