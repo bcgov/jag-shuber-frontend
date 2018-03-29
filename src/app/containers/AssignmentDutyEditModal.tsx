@@ -6,17 +6,28 @@ import {
 import AssignmentDutyEditForm from './AssignmentDutyEditForm';
 import ModalWrapper from './ModalWrapper';
 import { IdType } from '../api';
+import { ConfirmationModal } from '../components/ConfirmationModal';
+import { connect } from 'react-redux';
+import { deleteAssignmentDuty } from '../modules/assignments/actions';
 
 export interface AssignmentDutyEditModalProps {
     dutyId: IdType;
-    color?: string
+    color?: string;
 }
 
-export default class AssignmentDutyEditModal extends React.PureComponent<AssignmentDutyEditModalProps>{
+export interface AssignmentDutyEditModalDispatchProps {
+    deleteAssignmentDuty: (id: IdType) => void;
+}
+
+class AssignmentDutyEditModal extends React.PureComponent<
+    AssignmentDutyEditModalProps & AssignmentDutyEditModalDispatchProps> {
+
     render() {
         const {
             dutyId,
-            color = 'white'
+            color = 'white',
+            // tslint:disable-next-line:no-shadowed-variable
+            deleteAssignmentDuty
          } = this.props;
 
         return (
@@ -33,9 +44,23 @@ export default class AssignmentDutyEditModal extends React.PureComponent<Assignm
                             <AssignmentDutyEditForm id={dutyId} onSubmitSuccess={handleClose} />
                         );
                     }}
-                    footerComponent={<AssignmentDutyEditForm.SubmitButton>Save</AssignmentDutyEditForm.SubmitButton>}
+                    footerComponent={({ handleClose }) => ([
+                        <ConfirmationModal
+                            key="confirmationModal"
+                            onConfirm={() => {
+                                deleteAssignmentDuty(dutyId);
+                                handleClose();
+                            }}
+                            actionBtnLabel="Delete"
+                            actionBtnStyle="danger"
+                        />,
+                        <AssignmentDutyEditForm.SubmitButton key="save">Save</AssignmentDutyEditForm.SubmitButton>
+
+                    ])}
                 />
             </div>
         );
     }
 }
+// tslint:disable-next-line:max-line-length
+export default connect<{}, AssignmentDutyEditModalDispatchProps, AssignmentDutyEditModalProps>(null, { deleteAssignmentDuty })(AssignmentDutyEditModal);

@@ -11,7 +11,6 @@ import { getAssignment } from '../modules/assignments/selectors';
 import { editAssignment } from '../modules/assignments/actions'
 import { IdType } from '../api';
 
-
 // wrapping generic assignment form in redux-form
 const formConfig: ConfigProps<{}, AssignmentFormProps> = {
     form: 'EditAssignment',
@@ -39,10 +38,10 @@ const mapStateToProps = (state: RootState, props: AssignmentEditFormProps) => {
 
 // Here we create a class that extends the configured assignment form so that we
 // can add a static SubmitButton member to it to make the API cleaner
+// tslint:disable-next-line:max-line-length
 export default class AssignmentEditForm extends connect<any, {}, AssignmentEditFormProps>(mapStateToProps)(reduxForm(formConfig)(AssignmentForm)) {
+    // tslint:disable-next-line:max-line-length
     static SubmitButton = (props: Partial<SubmitButtonProps>) => <FormSubmitButton {...props} formName={formConfig.form} />;
 }
-
-
 
 
