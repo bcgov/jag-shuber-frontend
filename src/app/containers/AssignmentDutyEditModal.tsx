@@ -29,6 +29,9 @@ class AssignmentDutyEditModal extends React.PureComponent<
             // tslint:disable-next-line:no-shadowed-variable
             deleteAssignmentDuty
          } = this.props;
+        
+        const deleteConfirmationMessage = 
+            <p style={{fontSize: 14}}>Please confirm that you would like to <b>permanently delete</b> this duty.</p>;
 
         return (
             <div>
@@ -53,9 +56,14 @@ class AssignmentDutyEditModal extends React.PureComponent<
                             }}
                             actionBtnLabel="Delete"
                             actionBtnStyle="danger"
+                            confirmBtnLabel="Delete"
+                            confirmBtnStyle="danger"
+                            cancelBtnLabel="Cancel"
+                            cancelBtnStyle="default"
+                            message={deleteConfirmationMessage}
+                            title="Delete Duty"
                         />,
                         <AssignmentDutyEditForm.SubmitButton key="save">Save</AssignmentDutyEditForm.SubmitButton>
-
                     ])}
                 />
             </div>
