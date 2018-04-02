@@ -9,11 +9,15 @@ import {
 import * as Validators from '../infrastructure/Validators';
 import * as DateTimeFieldConst from './FormElements/DateTimeFieldConst';
 import {
-    DateType
+    DateType,
+    Sheriff
 } from '../api/Api';
 import DaysOfWeekChecklist from './FormElements/DaysOfWeekChecklist';
 import WorkSectionSelector from './FormElements/WorkSectionSelector';
 import NumberSpinner from './FormElements/NumberSpinner';
+import toTitleCase from '../infrastructure/toTitleCase';
+import CheckboxField from './FormElements/CheckboxField';
+import { Glyphicon } from 'react-bootstrap';
 
 export interface ScheduleShiftFormProps {
     handleSubmit?: () => void;
@@ -21,6 +25,7 @@ export interface ScheduleShiftFormProps {
     weekStart?: DateType;
     isSingleShift?: boolean;
     shiftTitle?: string;
+    assignedSheriff?: Sheriff;
 }
 
 export default class ScheduleShiftForm extends
@@ -75,6 +80,32 @@ export default class ScheduleShiftForm extends
         );
     }
 
+    private renderAssignedSheriffs() {
+        const { isSingleShift, assignedSheriff } = this.props;
+
+        if (isSingleShift) {
+            if (assignedSheriff) {
+                return (
+                    <div>
+                        <label>Assigned Sheriff</label><br />
+                        <Field
+                            name="isSheriffAssigned"
+                            component={CheckboxField}
+                            label={`${toTitleCase(assignedSheriff.lastName)}, ${assignedSheriff.firstName.charAt(0)}`}
+                        />
+                    </div>
+                );
+            } else {
+                return (
+                    <div style={{color: 'darkorange', fontSize: 16}}>
+                       <Glyphicon glyph="alert" /> Shift has not been assigned
+                    </div>
+                );
+            }
+        }
+        return '';
+    }
+
     render() {
         const { handleSubmit, shiftTitle, isSingleShift } = this.props;
         return (
@@ -83,6 +114,7 @@ export default class ScheduleShiftForm extends
                 <Form onSubmit={handleSubmit}>
                     {this.renderShiftFields()}
                     {!isSingleShift && this.renderMultiShiftCreationFields()}
+                    {this.renderAssignedSheriffs()}
                 </Form>
             </div>
         );
