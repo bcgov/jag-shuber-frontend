@@ -14,7 +14,11 @@ export interface ModalWrapperProps {
     showButton?: (context: ModalWrapperContext) => React.ReactNode;
     title: string;
     body: (context: ModalWrapperContext) => React.ReactNode;
-    footerComponent?: React.ReactNode | ((context: ModalWrapperContext) => React.ReactNode);
+    footerComponent?: 
+        React.ReactNode |
+        ((context: ModalWrapperContext) => React.ReactNode) |
+        React.ReactNode[] |
+        ((context: ModalWrapperContext) => React.ReactNode[]);
 
 }
 
@@ -25,7 +29,7 @@ export interface ModalWrapperState {
 export default class ModalWrapper extends React.Component<ModalWrapperProps, ModalWrapperState> {
     static defaultProps = {
         isOpen: false,
-        showButton: ({handleShow}: ModalWrapperContext) => <Button onClick={handleShow}>Show</Button>
+        showButton: ({ handleShow }: ModalWrapperContext) => <Button onClick={handleShow}>Show</Button>
     }
 
     constructor(props: ModalWrapperProps) {
@@ -37,24 +41,26 @@ export default class ModalWrapper extends React.Component<ModalWrapperProps, Mod
         this.setState({
             showModal: true,
             ...extraState
-            
-        })
+
+        });
     }
 
     handleClose() {
-        this.setState({ showModal: false })
+        this.setState({ showModal: false });
     }
 
     render() {
         const { showModal, ...restState } = this.state;
-        const { title, showButton=ModalWrapper.defaultProps.showButton, body, footerComponent } = this.props;
-        const context = {handleClose: () => 
-            this.handleClose(), handleShow:(extraState?: {}) => this.handleShow(extraState), ...restState};
+        const { title, showButton = ModalWrapper.defaultProps.showButton, body, footerComponent } = this.props;
+        const context = {
+            handleClose: () =>
+                this.handleClose(), handleShow: (extraState?: {}) => this.handleShow(extraState), ...restState
+        };
         return (
             <div>
                 {showButton(context)}
                 <Modal show={showModal} onHide={() => this.handleClose()}>
-                    <Modal.Header closeButton>
+                    <Modal.Header closeButton={true}>
                         <Modal.Title>{title}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>

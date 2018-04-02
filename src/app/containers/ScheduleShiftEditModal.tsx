@@ -6,18 +6,31 @@ import {
 import ModalWrapper from './ModalWrapper';
 import { IdType } from '../api';
 import ScheduleShiftEditForm from './ScheduleShiftEditForm';
-
+import { ConfirmationModal } from '../components/ConfirmationModal';
+import { connect } from 'react-redux';
+import { deleteShift } from '../modules/shifts/actions';
 export interface ScheduleShiftEditModalProps {
     shiftId: IdType;
     color?: string;
 }
 
-export default class ScheduleShiftEditModal extends React.PureComponent<ScheduleShiftEditModalProps>{
+export interface ScheduleShiftEditModalDispatchProps {
+    deleteShift: (id: IdType) => void;
+}
+
+class ScheduleShiftEditModal extends React.PureComponent<
+    ScheduleShiftEditModalProps & ScheduleShiftEditModalDispatchProps>{
+
     render() {
         const {
             shiftId,
-            color = 'white'
+            color = 'white',
+            // tslint:disable-next-line:no-shadowed-variable
+            deleteShift
          } = this.props;
+
+        const deleteConfirmationMessage =
+            <p style={{ fontSize: 14 }}>Please confirm that you would like to <b>permanently delete</b> this shift.</p>;
 
         return (
             <div>
@@ -31,12 +44,30 @@ export default class ScheduleShiftEditModal extends React.PureComponent<Schedule
                     body={({ handleClose }) => {
                         return (
                             <ScheduleShiftEditForm id={shiftId} onSubmitSuccess={handleClose} />
-                            
+
                         );
                     }}
-                    footerComponent={<ScheduleShiftEditForm.SubmitButton>Save</ScheduleShiftEditForm.SubmitButton>}
+                    footerComponent={({ handleClose }) => ([
+                        <ConfirmationModal
+                            key="confirmationModal"
+                            onConfirm={() => {
+                                deleteShift(shiftId);
+                                handleClose();
+                            }}
+                            actionBtnLabel="Delete"
+                            actionBtnStyle="danger"
+                            confirmBtnLabel="Delete"
+                            confirmBtnStyle="danger"
+                            message={deleteConfirmationMessage}
+                            title="Delete Shift"
+                        />,
+                        <ScheduleShiftEditForm.SubmitButton key="save">Save</ScheduleShiftEditForm.SubmitButton>
+                    ])}
                 />
             </div>
         );
     }
 }
+
+// tslint:disable-next-line:max-line-length
+export default connect<{}, ScheduleShiftEditModalDispatchProps, ScheduleShiftEditModalProps>(null, { deleteShift })(ScheduleShiftEditModal);

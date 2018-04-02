@@ -1,7 +1,5 @@
 import * as React from 'react';
-import {
-    Form
-} from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import {
     Field,
     InjectedFormProps
@@ -17,7 +15,6 @@ import WorkSectionSelector from './FormElements/WorkSectionSelector';
 import NumberSpinner from './FormElements/NumberSpinner';
 import toTitleCase from '../infrastructure/toTitleCase';
 import CheckboxField from './FormElements/CheckboxField';
-import { Glyphicon } from 'react-bootstrap';
 
 export interface ScheduleShiftFormProps {
     handleSubmit?: () => void;
@@ -81,29 +78,20 @@ export default class ScheduleShiftForm extends
     }
 
     private renderAssignedSheriffs() {
-        const { isSingleShift, assignedSheriff } = this.props;
+        const { assignedSheriff } = this.props;
 
-        if (isSingleShift) {
-            if (assignedSheriff) {
-                return (
-                    <div>
-                        <label>Assigned Sheriff</label><br />
-                        <Field
-                            name="isSheriffAssigned"
-                            component={CheckboxField}
-                            label={`${toTitleCase(assignedSheriff.lastName)}, ${assignedSheriff.firstName.charAt(0)}`}
-                        />
-                    </div>
-                );
-            } else {
-                return (
-                    <div style={{color: 'darkorange', fontSize: 16}}>
-                       <Glyphicon glyph="alert" /> Shift has not been assigned
-                    </div>
-                );
-            }
-        }
-        return '';
+        return (
+            <div>
+                <label>Assigned Sheriff</label><br />
+                {assignedSheriff ?
+                    <Field
+                        name="isSheriffAssigned"
+                        component={CheckboxField}
+                        label={`${toTitleCase(assignedSheriff.lastName)}, ${assignedSheriff.firstName.charAt(0)}`}
+                    /> : 'This shift has not yet been assigned.'}
+
+            </div>
+        );
     }
 
     render() {
@@ -114,7 +102,7 @@ export default class ScheduleShiftForm extends
                 <Form onSubmit={handleSubmit}>
                     {this.renderShiftFields()}
                     {!isSingleShift && this.renderMultiShiftCreationFields()}
-                    {this.renderAssignedSheriffs()}
+                    {isSingleShift && this.renderAssignedSheriffs()}
                 </Form>
             </div>
         );

@@ -26,6 +26,7 @@ export default class AssignmentDutyForm extends
             <div>
                 <h1>{assignmentTitle}</h1>
                 <Form onSubmit={handleSubmit}>
+
                     <Field
                         name="startDateTime"
                         component={DateTimeFieldConst.TimeField}

@@ -67,7 +67,6 @@ export default class NewClient implements API {
     }
     async createSheriff(newSheriff: Sheriff): Promise<Sheriff> {
         await randomDelay();
-
         // This is a hack to throw in a profile picture
         if (!newSheriff.imageUrl) {
             newSheriff.imageUrl = '/img/avatar.png';
@@ -154,7 +153,17 @@ export default class NewClient implements API {
     }
 
     async deleteAssignmentDuty(dutyId: number): Promise<void> {
-        throw new Error('Method not implemented.');
+        await randomDelay();
+        if (dutyId == null) {
+            throw new Error('No ID specified');
+        }
+
+        const dutyIndex = assignments.findIndex((value) => value.id === dutyId);
+        if (dutyIndex < 0) {
+            throw Error(`No duty could be located for ${dutyId}`);
+        }
+
+        assignmentDuties.splice(dutyIndex, 1);
     }
     async getTrainingTypes(): Promise<TrainingType[]> {
         return training;
@@ -197,6 +206,7 @@ export default class NewClient implements API {
     }
 
     async createShift(newShift: Partial<Shift>): Promise<Shift> {
+        await randomDelay();
         const shiftToAdd = {
             ...newShift,
             id: this.getId(),
@@ -208,11 +218,22 @@ export default class NewClient implements API {
         return shiftToAdd as Shift;
     }
 
-    deleteShift(shiftId: IdType): Promise<void> {
-        throw new Error('Method not implemented.');
+    async deleteShift(shiftId: IdType): Promise<void> {
+        await randomDelay();
+        if (shiftId == null) {
+            throw new Error('No ID specified');
+        }
+
+        const shiftIndex = sheriffShifts.findIndex((shift) => shift.id === shiftId);
+        if (shiftIndex < 0) {
+            throw Error(`No shift could be located for ${shiftId}`);
+        }
+
+        sheriffShifts.splice(shiftIndex, 1); 
     }
 
     async copyShifts(shiftCopyDetails: ShiftCopyOptions): Promise<Shift[]> {
+        await randomDelay();
         const { startOfWeekSource, shouldIncludeSheriffs, startOfWeekDestination } = shiftCopyDetails;
         const shiftsToCopy = sheriffShifts
             .filter(s => moment(s.startDateTime).isSame(startOfWeekSource, 'week'))

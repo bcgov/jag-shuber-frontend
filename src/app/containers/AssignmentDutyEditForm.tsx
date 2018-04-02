@@ -3,11 +3,20 @@ import {
     reduxForm,
     ConfigProps
 } from 'redux-form';
-import { default as AssignmentDutyForm, AssignmentDutyFormProps } from '../components/AssignmentDutyForm';
-import { default as FormSubmitButton, SubmitButtonProps } from '../components/FormElements/SubmitButton'
+import { 
+    default as AssignmentDutyForm, 
+    AssignmentDutyFormProps 
+} from '../components/AssignmentDutyForm';
+import { 
+    default as FormSubmitButton, 
+    SubmitButtonProps 
+} from '../components/FormElements/SubmitButton'
 import { connect } from 'react-redux';
 import { RootState } from '../store';
-import { getAssignmentDuty, getAssignment } from '../modules/assignments/selectors';
+import { 
+    getAssignmentDuty, 
+    getAssignment 
+} from '../modules/assignments/selectors';
 import { editAssignmentDuty } from '../modules/assignments/actions';
 import { 
     IdType, 
@@ -15,10 +24,10 @@ import {
 } from '../api';
 
 // wrapping generic assignment form in redux-form
-const formConfig: ConfigProps<{}, AssignmentDutyFormProps> = {
+const formConfig: ConfigProps<any, AssignmentDutyFormProps> = {
     form: 'EditAssignmentDuty',
     onSubmit: (values, dispatch, props) => {
-        let updatedAssignmentDuty = Object.assign({}, { ...values });
+        const updatedAssignmentDuty = Object.assign({}, ...values);
         dispatch(editAssignmentDuty(updatedAssignmentDuty));
     }
 };
@@ -38,7 +47,7 @@ const mapStateToProps = (state: RootState, props: AssignmentDutyEditFormProps) =
     } else {
         return {};
     }
-}
+};
 
 // Here we create a class that extends the configured assignment form so that we
 // can add a static SubmitButton member to it to make the API cleaner
@@ -47,5 +56,3 @@ export default class AssignmentEditForm extends
         static SubmitButton = (props: Partial<SubmitButtonProps>) => 
         <FormSubmitButton {...props} formName={formConfig.form} />
 }
-
-
