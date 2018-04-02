@@ -58,8 +58,6 @@ class ScheduleShiftEditModal extends React.PureComponent<
                             actionBtnStyle="danger"
                             confirmBtnLabel="Delete"
                             confirmBtnStyle="danger"
-                            cancelBtnLabel="Cancel"
-                            cancelBtnStyle="default"
                             message={deleteConfirmationMessage}
                             title="Delete Shift"
                         />,
