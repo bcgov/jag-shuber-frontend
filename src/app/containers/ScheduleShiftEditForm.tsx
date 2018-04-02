@@ -39,7 +39,7 @@ const mapStateToProps = (state: RootState, props: ScheduleShiftEditFormProps) =>
         return {
             initialValues: {
                 ...initialShift, 
-                isSheriffAssigned: true,
+                isSheriffAssigned: initialShift.sheriffId ? true : false,
             },       
             isSingleShift: true,
             shiftTitle: moment(initialShift.startDateTime).format('dddd MMMM DD, YYYY'),
