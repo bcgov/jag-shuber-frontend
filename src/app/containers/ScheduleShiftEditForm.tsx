@@ -9,10 +9,7 @@ import { default as FormSubmitButton, SubmitButtonProps } from '../components/Fo
 import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { getShift } from '../modules/shifts/selectors';
-import { 
-    editShift, 
-    deleteShift 
-} from '../modules/shifts/actions';
+import { editShift } from '../modules/shifts/actions';
 import { getSheriff } from '../modules/sheriffs/selectors';
 import { 
     IdType, 
@@ -23,16 +20,12 @@ import {
 const formConfig: ConfigProps<any, ScheduleShiftFormProps> = {
     form: 'EditShift',
     onSubmit: (values, dispatch, props) => {
-        const { shouldDeleteShift = false, isSheriffAssigned, sheriffId, ...shiftValues } = values;
-        if (shouldDeleteShift) {
-            dispatch(deleteShift(shiftValues.id));
-        } else {
-            let updatedShift: Partial<Shift> =  {
-                ...shiftValues, 
-                sheriffId: isSheriffAssigned ? sheriffId : undefined
-            };
-            dispatch(editShift(updatedShift));
-        }
+        const { isSheriffAssigned, sheriffId, ...shiftValues } = values;
+        let updatedShift: Partial<Shift> =  {
+            ...shiftValues, 
+            sheriffId: isSheriffAssigned ? sheriffId : undefined
+        };
+        dispatch(editShift(updatedShift));
     }
 };
 
@@ -47,7 +40,6 @@ const mapStateToProps = (state: RootState, props: ScheduleShiftEditFormProps) =>
             initialValues: {
                 ...initialShift, 
                 isSheriffAssigned: true,
-                shouldDeleteShift: false
             },       
             isSingleShift: true,
             shiftTitle: moment(initialShift.startDateTime).format('dddd MMMM DD, YYYY'),

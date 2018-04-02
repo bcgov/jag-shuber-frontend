@@ -1,8 +1,5 @@
 import * as React from 'react';
-import {
-    Form,
-    ListGroupItem
-} from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import {
     Field,
     InjectedFormProps
@@ -97,34 +94,15 @@ export default class ScheduleShiftForm extends
         );
     }
 
-    private renderDeleteShiftFields() {
-        return (
-            <div style={{ color: 'red', fontSize: 14 }}>
-                <Field
-                    name="shouldDeleteShift"
-                    component={CheckboxField}
-                    label="Delete this shift"
-                />
-            </div>
-        );
-    }
-
     render() {
         const { handleSubmit, shiftTitle, isSingleShift } = this.props;
         return (
             <div>
                 <h1>{shiftTitle}</h1>
                 <Form onSubmit={handleSubmit}>
-                    <ListGroupItem>
-                        {this.renderShiftFields()}
-                        {!isSingleShift && this.renderMultiShiftCreationFields()}
-                        {isSingleShift && this.renderAssignedSheriffs()}
-                    </ListGroupItem>
-                    <br/>
-                    {isSingleShift &&
-                        <ListGroupItem>
-                            {this.renderDeleteShiftFields()}
-                        </ListGroupItem>}
+                    {this.renderShiftFields()}
+                    {!isSingleShift && this.renderMultiShiftCreationFields()}
+                    {isSingleShift && this.renderAssignedSheriffs()}
                 </Form>
             </div>
         );
