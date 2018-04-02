@@ -9,7 +9,6 @@ import {
     Assignment
 } from '../api';
 import AssignmentEditModal from '../containers/AssignmentEditModal';
-import AssignmentDeleteModal from '../containers/AssignmentDeleteModal';
 import WorkSectionIndicator from './WorkSectionIndicator/WorkSectionIndicator';
 
 export interface AssignmentDefaultListProps {
@@ -21,36 +20,36 @@ export default class AssignmentDefaultList extends React.Component<AssignmentDef
         const { assignments = [] } = this.props;
         return (
             <div>
-                {assignments.length == 0 && (
+                {assignments.length === 0 && (
                     <span className="text-danger">No default assignments recorded. </span>
                 )}
                 {assignments.length > 0 && (
-                    <Table responsive striped >
+                    <Table responsive={true} striped={true} >
                         <thead>
                             <tr>
-                                <th style={{width:25}} ></th>
+                                <th style={{width: 25}} />
                                 <th className="text-left">Work Section</th>
                                 <th className="text-left">Assignment</th>
                                 <th className="text-left">Default Duties <Badge># of Sheriffs</Badge></th>
-                                <th></th>
-                                <th></th>
-
+                                <th/>
                             </tr>
                         </thead>
                         <tbody>
                             {assignments.map((assignment) => {
                                 return (
-                                    
-                                    <tr>
-                                        <td> <WorkSectionIndicator workSectionId={assignment.workSectionId}/> </td>
-                                        <td> {WORK_SECTIONS[assignment.workSectionId]}</td>
+                                    <tr key="row">
+                                        <td><WorkSectionIndicator workSectionId={assignment.workSectionId}/></td>
+                                        <td>{WORK_SECTIONS[assignment.workSectionId]}</td>
                                         <td><strong>{assignment.title}</strong></td>
                                         <td>
                                             {assignment.recurrenceInfo &&
-                                                assignment.recurrenceInfo.map((recurrence) => <AssignmentDefaultRecurrenceDetails data={recurrence} />)}
+                                                assignment.recurrenceInfo.map((recurrence) => 
+                                                <AssignmentDefaultRecurrenceDetails key="recurrence" data={recurrence}/>
+                                            )}
                                         </td>
-                                        <td className="text-right"><AssignmentEditModal assignmentId={assignment.id} /></td>
-                                        <td className="text-left"><AssignmentDeleteModal assignmentId={assignment.id} /></td>
+                                        <td className="text-right">
+                                            <AssignmentEditModal assignmentId={assignment.id} />
+                                        </td>
                                     </tr>
                                 );
                             })}

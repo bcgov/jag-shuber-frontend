@@ -25,6 +25,7 @@ class ScheduleShiftEditModal extends React.PureComponent<
         const {
             shiftId,
             color = 'white',
+            // tslint:disable-next-line:no-shadowed-variable
             deleteShift
          } = this.props;
 
