@@ -13,19 +13,29 @@ storiesOf('Components/Form Elements')
       <StorySection title="Time Slider - with default start and end times">
         <div style={{ width: 750, margin: 15 }}>
           <TimeSlider
-            sliderStartTime={moment().set({ 'hour': 10, 'minute': 0 })}
-            sliderEndTime={moment().set({ 'hour': 11, 'minute': 0 })}
-            defaultStartTime={moment().set({ 'hour': 10, 'minute': 15 })}
-            defaultEndTime={moment().set({ 'hour': 10, 'minute': 45 })}
+            minTime={moment().set({ 'hour': 10, 'minute': 0 }).toISOString()}
+            maxTime={moment().set({ 'hour': 11, 'minute': 0 }).toISOString()}
+            startTime={moment().set({ 'hour': 10, 'minute': 15 }).toISOString()}
+            endTime={moment().set({ 'hour': 10, 'minute': 45 }).toISOString()}
           />
         </div>
       </StorySection>
 
       <StorySection title="Time Slider - without default start and end times">
-        <div style={{ width: 750, margin: 15 }}>
+        <div style={{ width: 1000, margin: 15 }}>
           <TimeSlider
-            sliderStartTime={moment().set({ 'hour': 10, 'minute': 0 })}
-            sliderEndTime={moment().set({ 'hour': 11, 'minute': 0 })}
+            minTime={moment().set({ 'hour': 7, 'minute': 0 }).toISOString()}
+            maxTime={moment().set({ 'hour': 13, 'minute': 30 }).toISOString()}
+          />
+        </div>
+      </StorySection>
+
+      <StorySection title="Time Slider - with 30 min increments">
+        <div style={{ width: 1000, margin: 15 }}>
+          <TimeSlider
+            minTime={moment().set({ 'hour': 7, 'minute': 0 }).toISOString()}
+            maxTime={moment().set({ 'hour': 13, 'minute': 30 }).toISOString()}
+            timeIncrement={30}
           />
         </div>
       </StorySection>
