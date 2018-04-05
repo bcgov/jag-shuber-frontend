@@ -2,40 +2,62 @@ import * as React from 'react';
 import * as moment from 'moment';
 import { Range } from 'rc-slider';
 import 'rc-slider/assets/index.css';
+import { TimeType } from '../../api/Api';
 
 export interface TimeSliderProps {
-  sliderStartTime: moment.Moment;
-  sliderEndTime: moment.Moment;
-  defaultStartTime?: moment.Moment;
-  defaultEndTime?: moment.Moment;
+  minTime: TimeType;
+  maxTime: TimeType;
+  startTime?: TimeType;
+  endTime?: TimeType;
   timeIncrement?: number;
+  onTimeChanged?: (newTimes: {startTime: TimeType, endTime: TimeType}) => void;
 }
 
 export default class TimeSlider extends React.Component<TimeSliderProps> {
+  private handleAfterChange(arg: number[]) {
+    const { minTime, onTimeChanged } = this.props;
+    if (onTimeChanged) {
+      const newTimes = {
+        startTime: moment(minTime).add('minutes', arg[0]).toISOString(),
+        endTime: moment(minTime).add('minutes', arg[1]).toISOString()
+      };
+      onTimeChanged(newTimes);
+    }    
+  }
+
   render() {
     const {
-      sliderStartTime,
-      sliderEndTime,
+      minTime: _minTime,
+      maxTime: _maxTime,
       timeIncrement = 15,
-      defaultStartTime,
-      defaultEndTime
+      startTime: _startTime,
+      endTime: _endTime
     } = this.props;
-    const durationMinutes: number = moment.duration(sliderEndTime.diff(sliderStartTime)).asMinutes();
+    const minTime = moment(_minTime);
+    const maxTime = moment(_maxTime);
+    const startTime = _startTime ? moment(_startTime) : undefined;
+    const endTime = _endTime ? moment(_endTime) : undefined;
+
+    const durationMinutes: number = moment.duration(maxTime.diff(minTime)).asMinutes();
     const numberOfMarks: number = durationMinutes / timeIncrement;
-    const defaultStartMin = defaultStartTime ? moment.duration(defaultStartTime.diff(sliderStartTime)).asMinutes() : 0;
+    const defaultStartMin = startTime ? moment.duration(startTime.diff(minTime)).asMinutes() : 0;
     const defaultEndMin =
-      defaultEndTime ? moment.duration(defaultEndTime.diff(sliderStartTime)).asMinutes() : durationMinutes;
+      endTime ? moment.duration(endTime.diff(minTime)).asMinutes() : durationMinutes;
 
     let markLabels = {};
     for (let i = 0; i <= numberOfMarks; i++) {
       const index = i * timeIncrement;
       const minuteValue = i * timeIncrement;
-      let timeLabel = moment(sliderStartTime).add('minutes', minuteValue);
-      markLabels[index] = timeLabel.format('HH:mm');
+      let timeLabel = moment(minTime).add('minutes', minuteValue);
+      if (timeLabel.get('minutes') === 0) {
+        markLabels[index] = timeLabel.format('HH:mm');
+      } else {
+        markLabels[index] = '';
+      }
     }
 
     return (
-      <div>
+      <div style={{paddingLeft: 5, paddingRight: 5}}>
         <Range
           step={timeIncrement}
           dots={true}
@@ -44,15 +66,14 @@ export default class TimeSlider extends React.Component<TimeSliderProps> {
           min={0}
           max={durationMinutes}
           marks={markLabels}
-          trackStyle={[{ backgroundColor: '#003366' }]}
-          railStyle={{ backgroundColor: '#bcbec5' }}
-          dotStyle={{ borderColor: '#bcbec5' }}
-          activeDotStyle={{ borderColor: '#003366' }} 
+          trackStyle={[{ backgroundColor: '#2cb7ba' }]}
+          activeDotStyle={{ borderColor: '#2cb7ba' }} 
           handleStyle={
             [
-              { borderColor: '#FCBA19' }, 
-              { borderColor: '#FCBA19' }
-            ]} 
+              { borderColor: '#2cb7ba', backgroundColor: '#2cb7ba' }, 
+              { borderColor: '#2cb7ba', backgroundColor: '#2cb7ba' }
+            ]}
+          onAfterChange={(e) => this.handleAfterChange(e)} 
         />
       </div>
     );

@@ -59,7 +59,7 @@ export default class ModalWrapper extends React.Component<ModalWrapperProps, Mod
         return (
             <div>
                 {showButton(context)}
-                <Modal show={showModal} onHide={() => this.handleClose()}>
+                <Modal show={showModal} onHide={() => this.handleClose()} bsSize="large">
                     <Modal.Header closeButton={true}>
                         <Modal.Title>{title}</Modal.Title>
                     </Modal.Header>

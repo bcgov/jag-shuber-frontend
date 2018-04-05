@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as moment from 'moment';
 import {
     reduxForm,
     ConfigProps
@@ -18,11 +17,14 @@ import {
 } from '../api';
 
 // wrapping generic assignment form in redux-form
-const formConfig: ConfigProps<{}, AssignmentDutyFormProps> = {
+const formConfig: ConfigProps<any, AssignmentDutyFormProps> = {
     form: 'CreateAssignmentDuty',
     onSubmit: (values, dispatch, props) => {
-        let newAssignmentDuty: Partial<AssignmentDuty> = Object.assign({}, { ...values });
+        const { timeRange: {startTime, endTime}, ...rest } = values;
+        let newAssignmentDuty: Partial<AssignmentDuty> = Object.assign({}, { ...rest });
         newAssignmentDuty.assignmentId = props.assignmentId;
+        newAssignmentDuty.startDateTime = startTime;
+        newAssignmentDuty.endDateTime = endTime;
         dispatch(createAssignmentDuty(newAssignmentDuty));
     }
 };
@@ -35,11 +37,7 @@ export interface AssignmentDutyCreateFormProps extends AssignmentDutyFormProps {
 const mapStateToProps = (state: RootState, props: AssignmentDutyCreateFormProps) => {
     const assignment: Assignment = getAssignment(props.assignmentId)(state);
     return {
-        assignmentTitle: assignment.title,
-        initialValues: {
-            startDateTime: moment(props.date).toString(), 
-            endDateTime: moment(props.date).toString()
-        }
+        assignmentTitle: assignment.title
     };
 };
 

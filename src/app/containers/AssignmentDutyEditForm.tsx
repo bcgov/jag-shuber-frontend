@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as moment from 'moment';
 import {
     reduxForm,
     ConfigProps
@@ -27,7 +28,10 @@ import {
 const formConfig: ConfigProps<any, AssignmentDutyFormProps> = {
     form: 'EditAssignmentDuty',
     onSubmit: (values, dispatch, props) => {
-        const updatedAssignmentDuty = Object.assign({}, ...values);
+        const { timeRange: {startTime, endTime}, ...rest } = values;
+        const updatedAssignmentDuty = Object.assign({}, ...rest);
+        updatedAssignmentDuty.startDateTime = startTime;
+        updatedAssignmentDuty.endDateTime = endTime;
         dispatch(editAssignmentDuty(updatedAssignmentDuty));
     }
 };
@@ -42,7 +46,9 @@ const mapStateToProps = (state: RootState, props: AssignmentDutyEditFormProps) =
         const { title }: Assignment = getAssignment(initialAssignmentDuty.assignmentId)(state);
         return {
             initialValues: initialAssignmentDuty, 
-            assignmentTitle: title
+            assignmentTitle: title,
+            minTime: moment(initialAssignmentDuty.startDateTime).toISOString(),
+            maxTime: moment(initialAssignmentDuty.endDateTime).toISOString()
         };
     } else {
         return {};
