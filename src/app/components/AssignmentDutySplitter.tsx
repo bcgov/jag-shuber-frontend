@@ -1,35 +1,39 @@
 import * as React from 'react';
 import * as moment from 'moment';
 import TimeSlider from './FormElements/TimeSlider';
-import { Button } from 'react-bootstrap';
-import { Glyphicon } from 'react-bootstrap';
+import {
+  SheriffDuty, 
+  TimeType
+} from '../api/Api';
 
 export interface DutySplitterProps {
+  sheriffDuties: SheriffDuty[];
+  dutyStartTime: TimeType;
+  dutyEndTime: TimeType;
 }
 
 export default class DutySplitter extends React.Component<DutySplitterProps> {
   render() {
+    const {
+      sheriffDuties,
+      dutyStartTime,
+      dutyEndTime
+    } = this.props;
+
     return (
       <div>
-           <h4>Doe, J</h4>
-          <TimeSlider
-            sliderStartTime={moment().set({ 'hour': 10, 'minute': 0 })}
-            sliderEndTime={moment().set({ 'hour': 11, 'minute': 0 })}
-            defaultStartTime={moment().set({ 'hour': 10, 'minute': 0 })}
-            defaultEndTime={moment().set({ 'hour': 10, 'minute': 30 })}
-          />
-          <br /><br />
-          <h4>Smith, S</h4>
-          <TimeSlider
-            sliderStartTime={moment().set({ 'hour': 10, 'minute': 0 })}
-            sliderEndTime={moment().set({ 'hour': 11, 'minute': 0 })}
-            defaultStartTime={moment().set({ 'hour': 10, 'minute': 30 })}
-            defaultEndTime={moment().set({ 'hour': 11, 'minute': 0 })}
-          />
-          <br /> <br/>
-          <Button>
-            <Glyphicon glyph="plus" />
-          </Button>
+        {
+          sheriffDuties.map((sheriffDuty) =>
+            <div key="sheriffDuty" style={{paddingBottom: 50}}>
+              <h3>{`Sheriff Id: ${sheriffDuty.sheriffId}`}</h3>
+              <TimeSlider
+                minTime={dutyStartTime}
+                maxTime={dutyEndTime}
+                startTime={moment(sheriffDuty.startDateTime).toISOString()}
+                endTime={moment(sheriffDuty.endDateTime).toISOString()}
+              />
+            </div>
+        )}
       </div>
     );
   }
