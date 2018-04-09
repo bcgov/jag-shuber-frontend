@@ -37,7 +37,8 @@ export interface AssignmentDutyCreateFormProps extends AssignmentDutyFormProps {
 const mapStateToProps = (state: RootState, props: AssignmentDutyCreateFormProps) => {
     const assignment: Assignment = getAssignment(props.assignmentId)(state);
     return {
-        assignmentTitle: assignment.title
+        assignmentTitle: assignment.title,
+        workSectionId: assignment.workSectionId
     };
 };
 

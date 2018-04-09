@@ -11,6 +11,7 @@ export interface TimeSliderProps {
   endTime?: TimeType;
   timeIncrement?: number;
   onTimeChanged?: (newTimes: {startTime: TimeType, endTime: TimeType}) => void;
+  color?: string;
 }
 
 export default class TimeSlider extends React.Component<TimeSliderProps> {
@@ -31,7 +32,8 @@ export default class TimeSlider extends React.Component<TimeSliderProps> {
       maxTime: _maxTime,
       timeIncrement = 15,
       startTime: _startTime,
-      endTime: _endTime
+      endTime: _endTime,
+      color = '#003366'
     } = this.props;
     const minTime = moment(_minTime);
     const maxTime = moment(_maxTime);
@@ -57,7 +59,7 @@ export default class TimeSlider extends React.Component<TimeSliderProps> {
     }
 
     return (
-      <div style={{paddingLeft: 5, paddingRight: 5}}>
+      <div style={{margin: 5}}>
         <Range
           step={timeIncrement}
           dots={true}
@@ -66,12 +68,12 @@ export default class TimeSlider extends React.Component<TimeSliderProps> {
           min={0}
           max={durationMinutes}
           marks={markLabels}
-          trackStyle={[{ backgroundColor: '#2cb7ba' }]}
-          activeDotStyle={{ borderColor: '#2cb7ba' }} 
+          trackStyle={[{ backgroundColor: color }]}
+          activeDotStyle={{ borderColor: color }} 
           handleStyle={
             [
-              { borderColor: '#2cb7ba', backgroundColor: '#2cb7ba' }, 
-              { borderColor: '#2cb7ba', backgroundColor: '#2cb7ba' }
+              { borderColor: color, backgroundColor: color }, 
+              { borderColor: color, backgroundColor: color }
             ]}
           onAfterChange={(e) => this.handleAfterChange(e)} 
         />

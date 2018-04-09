@@ -11,17 +11,22 @@ import * as Validators from '../infrastructure/Validators';
 import TextField from './FormElements/TextField';
 import { 
     IdType, 
-    TimeType 
+    TimeType, 
+    WorkSectionId
 } from '../api';
 import TimeSliderField from './FormElements/TimeSliderField';
+import { getWorkSectionColour } from '../api/utils';
 
 export interface AssignmentDutyFormProps {
     handleSubmit?: () => void;
     onSubmitSuccess?: () => void;
     assignmentTitle?: string;
     assignmentId?: IdType;
-    minTime?: TimeType,
-    maxTime?: TimeType,
+    minTime?: TimeType;
+    maxTime?: TimeType;
+    startTime?: TimeType;
+    endTime?: TimeType;
+    workSectionId?: WorkSectionId;
 }
 
 export default class AssignmentDutyForm extends
@@ -31,8 +36,10 @@ export default class AssignmentDutyForm extends
             handleSubmit, 
             assignmentTitle = 'Duty', 
             minTime = moment().startOf('day').add('hours', 7).toISOString(), 
-            maxTime = moment().startOf('day').add('hours', 17).toISOString()
-
+            maxTime = moment().startOf('day').add('hours', 17).toISOString(),
+            startTime = moment().startOf('day').add('hours', 7).toISOString(), 
+            endTime = moment().startOf('day').add('hours', 17).toISOString(),
+            workSectionId = 'OTHER'
         } = this.props;
         return (
             <div>
@@ -44,7 +51,10 @@ export default class AssignmentDutyForm extends
                             {...p} 
                             minTime={minTime} 
                             maxTime={maxTime}
-                            timeIncrement={30}
+                            timeIncrement={15}
+                            sTime={startTime}
+                            eTime={endTime}
+                            color={getWorkSectionColour(workSectionId)}
                         />}
                         label="Time Range"
                     />
