@@ -33,6 +33,7 @@ export default class ScheduleShiftCopyModal extends React.Component<ScheduleShif
                             OK
                         </ScheduleShiftCopyForm.SubmitButton>
                     )}
+                    size="medium"
                 />
             </div>
         );
