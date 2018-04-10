@@ -53,7 +53,7 @@ export function getWorkSectionColour(workSectionId?: WorkSectionId): string {
             colour = '#B74343';
             break;
         default:
-            colour = '#D9D9D9';
+            colour = '#999999';
             break;
     }
     return colour;

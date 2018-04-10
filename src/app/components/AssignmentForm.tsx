@@ -14,7 +14,6 @@ import {
 } from 'redux-form';
 import * as Validators from '../infrastructure/Validators';
 import TextField from './FormElements/TextField';
-import * as DateTimeFieldConst from './FormElements/DateTimeFieldConst';
 import CourtroomSelector from './FormElements/CourtroomSelector';
 import DaysOfWeekChecklist from './FormElements/DaysOfWeekChecklist';
 import JailRolesSelector from './FormElements/JailRoleSelector';
@@ -22,24 +21,38 @@ import RunSelector from './FormElements/RunSelector';
 import AlternateAssignmentSelector from './FormElements/AlternateAssignmentSelector';
 import {
     WORK_SECTIONS,
-    DateType
+    TimeType,
+    WorkSectionId,
+    DaysOfWeek
 } from '../api';
+import TimeSliderField from './FormElements/TimeSliderField';
+import { getWorkSectionColour } from '../api/utils';
 
-class OtherFields extends React.PureComponent<any>{
+class OtherFields extends React.PureComponent {
     render() {
         return (
             <div>
-                <Field name="alternateAssignmentId" label="Assignment" component={AlternateAssignmentSelector} validate={[Validators.required]} />
+                <Field 
+                    name="alternateAssignmentId" 
+                    label="Assignment" 
+                    component={AlternateAssignmentSelector} 
+                    validate={[Validators.required]} 
+                />
             </div>
         );
     }
 }
 
-class EscortsFields extends React.PureComponent<any>{
+class EscortsFields extends React.PureComponent {
     render() {
         return (
             <div>
-                <Field name="runId" component={RunSelector} label="Assignment" validate={[Validators.required]} />
+                <Field 
+                    name="runId" 
+                    component={RunSelector} 
+                    label="Assignment" 
+                    validate={[Validators.required]} 
+                />
             </div>
         );
     }
@@ -77,8 +90,7 @@ class CourtSecurityFields extends React.PureComponent {
 
 interface RecurrenceProps {
     type?: string;
-    startTime?: DateType;
-    endTime?: DateType;
+    days?: DaysOfWeek;
 }
 class RecurrenceFieldArray extends FieldArray<RecurrenceProps> {
 
@@ -88,7 +100,9 @@ export interface AssignmentFormProps {
     handleSubmit?: () => void;
     onSubmitSuccess?: () => void;
     isDefaultTemplate?: boolean;
-    workSectionId?: string;
+    minTime?: TimeType;
+    maxTime?: TimeType;
+    workSectionId?: WorkSectionId;
 }
 
 export default class AssignmentForm extends
@@ -148,7 +162,12 @@ export default class AssignmentForm extends
     }
 
     private renderAssignmentTemplateFields() {
-        const { isDefaultTemplate } = this.props;
+        const { 
+            isDefaultTemplate, 
+            minTime = moment().startOf('day').add('hours', 6).toISOString(), 
+            maxTime = moment().startOf('day').add('hours', 22).toISOString(),
+            workSectionId = 'OTHER'
+        } = this.props;
         if (isDefaultTemplate) {
             return (
                 <div>
@@ -175,16 +194,18 @@ export default class AssignmentForm extends
                                                 component={DaysOfWeekChecklist}
                                                 label="Days"
                                             />
-                                            <Field
-                                                name={`${recurrenceInfoFieldName}.startTime`}
-                                                component={DateTimeFieldConst.TimeField}
-                                                label="Start Time"
+                                            <Field  
+                                                name={`${recurrenceInfoFieldName}.timeRange`}
+                                                component={(p) => <TimeSliderField 
+                                                    {...p} 
+                                                    minTime={minTime} 
+                                                    maxTime={maxTime}
+                                                    timeIncrement={15}
+                                                    color={getWorkSectionColour(workSectionId)}
+                                                />}
+                                                label="Time Range"
                                             />
-                                            <Field
-                                                name={`${recurrenceInfoFieldName}.endTime`}
-                                                component={DateTimeFieldConst.TimeField}
-                                                label="End Time"
-                                            />
+                                            <br/>
                                             <Field
                                                 name={`${recurrenceInfoFieldName}.sheriffsRequired`}
                                                 component={TextField}
@@ -198,8 +219,7 @@ export default class AssignmentForm extends
                                 <br />
                                 <Button 
                                     onClick={() => fields.push({
-                                        startTime: moment().hour(9).minute(0),
-                                        endTime: moment().hour(17).minute(0)
+                                        days: DaysOfWeek.Weekdays
                                     })} 
                                 >
                                     <Glyphicon glyph="plus" />

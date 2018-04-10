@@ -3,7 +3,7 @@ import { default as SheriffCreateForm } from '../containers/SheriffCreateForm';
 import {
     Button
 } from 'react-bootstrap';
-import ModalWrapper from './ModalWrapper';
+import ModalWrapper from './ModalWrapper/ModalWrapper';
 
 export default class SheriffAddModal extends React.Component {
     render() {
@@ -16,6 +16,7 @@ export default class SheriffAddModal extends React.Component {
                     </Button>}
                 body={({ handleClose }) => <SheriffCreateForm onSubmitSuccess={handleClose} />}
                 footerComponent={<SheriffCreateForm.SubmitButton>Save</SheriffCreateForm.SubmitButton>}
+                styleClassName="modal-wrapper-medium"
             />
         );
     }

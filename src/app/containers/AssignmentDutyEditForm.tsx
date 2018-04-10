@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as moment from 'moment';
 import {
     reduxForm,
     ConfigProps
@@ -27,7 +28,10 @@ import {
 const formConfig: ConfigProps<any, AssignmentDutyFormProps> = {
     form: 'EditAssignmentDuty',
     onSubmit: (values, dispatch, props) => {
-        const updatedAssignmentDuty = Object.assign({}, ...values);
+        const { timeRange: {startTime, endTime}, ...rest } = values;
+        const updatedAssignmentDuty = Object.assign({}, ...rest);
+        updatedAssignmentDuty.startDateTime = startTime;
+        updatedAssignmentDuty.endDateTime = endTime;
         dispatch(editAssignmentDuty(updatedAssignmentDuty));
     }
 };
@@ -39,10 +43,19 @@ export interface AssignmentDutyEditFormProps extends AssignmentDutyFormProps {
 const mapStateToProps = (state: RootState, props: AssignmentDutyEditFormProps) => {
     const initialAssignmentDuty = getAssignmentDuty(props.id)(state);
     if (initialAssignmentDuty) {
-        const { title }: Assignment = getAssignment(initialAssignmentDuty.assignmentId)(state);
+        const initialAssignment: Assignment = getAssignment(initialAssignmentDuty.assignmentId)(state);
         return {
-            initialValues: initialAssignmentDuty, 
-            assignmentTitle: title
+            initialValues: {
+                ...initialAssignmentDuty,
+                timeRange: {
+                    startTime: moment(initialAssignmentDuty.startDateTime).toISOString(), 
+                    endTime: moment(initialAssignmentDuty.endDateTime).toISOString()
+                }
+            }, 
+            assignmentTitle: initialAssignment.title,
+            minTime: moment(initialAssignmentDuty.startDateTime).startOf('day').add('hours', 6).toISOString(),
+            maxTime: moment(initialAssignmentDuty.endDateTime).startOf('day').add('hours', 22).toISOString(),
+            workSectionId: initialAssignment.workSectionId
         };
     } else {
         return {};

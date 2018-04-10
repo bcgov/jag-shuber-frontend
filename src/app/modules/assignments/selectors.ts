@@ -22,7 +22,7 @@ export const assignmentsError = assignmentRequests.assignmentMapRequest.getError
 
 export const getAssignment = (id?: IdType) => (state: RootState) => {
     if (state && id != null) {
-        const map = assignmentRequests.assignmentMapRequest.getData(state);
+        const map = assignmentRequests.assignmentMapRequest.getData(state) as Assignment;
         return map[id];
     }
     return null;

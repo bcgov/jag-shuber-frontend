@@ -5,7 +5,7 @@ import {
 } from 'react-bootstrap';
 import { Sheriff, BLANK_SHERIFF } from '../api';
 import SheriffProfileDetails from '../components/SheriffProfileDetails';
-import ModalWrapper from './ModalWrapper';
+import ModalWrapper from './ModalWrapper/ModalWrapper';
 
 export interface SheriffProfileDetailsModalProps {
     sheriff: Sheriff;
@@ -19,12 +19,12 @@ export default class SheriffProfileDetailsModal extends React.Component<SheriffP
             <ModalWrapper
                 title={title}
                 showButton={({ handleShow }) =>
-                    <Button bsStyle="link" bsSize="large" style={{ color: "#494949" }} onClick={() => handleShow()}>
-                        <Image src={imageUrl} circle width="120" height="120" /><br />
+                    <Button bsStyle="link" bsSize="large" style={{ color: '#494949' }} onClick={() => handleShow()}>
+                        <Image src={imageUrl} circle={true} width="120" height="120" /><br />
                         {firstName} {lastName} <br /> #{badgeNumber}
-                    </Button>
-                }
+                    </Button>}
                 body={() => <SheriffProfileDetails sheriff={sheriff} />}
+                styleClassName="modal-wrapper-medium"
             />
         );
     }

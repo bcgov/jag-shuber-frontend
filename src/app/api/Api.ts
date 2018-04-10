@@ -11,6 +11,7 @@ export type AssignmentMap = { [key: number]: Assignment };
 export type AssignmentDutyMap = { [key: number]: AssignmentDuty };
 export type WorkSectionId = 'COURTS' | 'JAIL' | 'ESCORTS' | 'OTHER';
 export type Assignment = CourtAssignment | JailAssignment | EscortAssignment | OtherAssignment;
+export type TimeType = string | number;
 
 /* tslint:disable:no-bitwise */
 export enum DaysOfWeek {
@@ -180,6 +181,14 @@ export interface AssignmentDuty {
     sheriffIds: IdType[];
     sheriffsRequired: number;
     extraDetails?: AssignmentDutyDetails;
+}
+
+export interface SheriffDuty {
+    id: IdType;
+    sheriffId: IdType;
+    dutyId: IdType; 
+    startDateTime: DateType;
+    endDateTime: DateType;
 }
 
 export interface RecurrenceInfo {

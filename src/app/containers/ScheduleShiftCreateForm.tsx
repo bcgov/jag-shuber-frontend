@@ -18,12 +18,15 @@ import {
 import { createShifts } from '../modules/shifts/actions';
 
 // wrapping generic assignment form in redux-form
-const formConfig: ConfigProps<{}, ScheduleShiftFormProps> = {
-    form: 'CopyScheduleShift',
+const formConfig: ConfigProps<any, ScheduleShiftFormProps> = {
+    form: 'CreateScheduleShift',
     onSubmit: (values, dispatch, props) => {
         const { weekStart } = props;
-        let newShiftCreatorPayload: Partial<ShiftCreationPayload> = Object.assign({}, {...values});
+        const { timeRange, ...rest} = values;
+        let newShiftCreatorPayload: Partial<ShiftCreationPayload> = Object.assign({}, {...rest});
         newShiftCreatorPayload.weekStart = weekStart;
+        newShiftCreatorPayload.startTime = timeRange.startTime;
+        newShiftCreatorPayload.endTime = timeRange.endTime;
         dispatch(createShifts(newShiftCreatorPayload as ShiftCreationPayload));
     }
 };
@@ -35,8 +38,10 @@ export interface ScheduleShiftCreateFormProps extends ScheduleShiftFormProps {
 const mapStateToProps = (state: RootState, props: ScheduleShiftCreateFormProps) => {
     return {
         initialValues: {
-            startTime: moment().hour(9).minute(0),
-            endTime: moment().hour(17).minute(0),
+            timeRange: {
+                startTime: moment().hour(9).minute(0),
+                endTime: moment().hour(17).minute(0)
+            },
             days: DaysOfWeek.Weekdays,
             repeatNumber: 1
         }

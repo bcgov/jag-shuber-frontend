@@ -20,10 +20,12 @@ import {
 const formConfig: ConfigProps<any, ScheduleShiftFormProps> = {
     form: 'EditShift',
     onSubmit: (values, dispatch, props) => {
-        const { isSheriffAssigned, sheriffId, ...shiftValues } = values;
+        const { isSheriffAssigned, sheriffId, timeRange, ...shiftValues } = values;
         let updatedShift: Partial<Shift> =  {
             ...shiftValues, 
-            sheriffId: isSheriffAssigned ? sheriffId : undefined
+            sheriffId: isSheriffAssigned ? sheriffId : undefined,
+            startDateTime: timeRange.startTime,
+            endDateTime: timeRange.endTime
         };
         dispatch(editShift(updatedShift));
     }
@@ -40,11 +42,17 @@ const mapStateToProps = (state: RootState, props: ScheduleShiftEditFormProps) =>
             initialValues: {
                 ...initialShift, 
                 isSheriffAssigned: initialShift.sheriffId ? true : false,
+                timeRange: {
+                    startTime: moment(initialShift.startDateTime).toISOString(),
+                    endTime: moment(initialShift.endDateTime).toISOString()
+                }
             },       
             isSingleShift: true,
             shiftTitle: moment(initialShift.startDateTime).format('dddd MMMM DD, YYYY'),
             assignedSheriff: getSheriff(initialShift.sheriffId)(state),
-            
+            minTime: moment(initialShift.startDateTime).startOf('day').add('hours', 6).toISOString(),
+            maxTime: moment(initialShift.endDateTime).startOf('day').add('hours', 22).toISOString(),
+            workSectionId: initialShift.workSectionId
         };
     } else {
         return {};

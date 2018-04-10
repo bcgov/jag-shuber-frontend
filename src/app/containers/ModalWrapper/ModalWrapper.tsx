@@ -3,6 +3,7 @@ import {
     Modal,
     Button
 } from 'react-bootstrap';
+import './ModalWrapper.css';
 
 export interface ModalWrapperContext {
     handleClose: () => void;
@@ -19,7 +20,7 @@ export interface ModalWrapperProps {
         ((context: ModalWrapperContext) => React.ReactNode) |
         React.ReactNode[] |
         ((context: ModalWrapperContext) => React.ReactNode[]);
-
+    styleClassName?: string;
 }
 
 export interface ModalWrapperState {
@@ -30,7 +31,7 @@ export default class ModalWrapper extends React.Component<ModalWrapperProps, Mod
     static defaultProps = {
         isOpen: false,
         showButton: ({ handleShow }: ModalWrapperContext) => <Button onClick={handleShow}>Show</Button>
-    }
+    };
 
     constructor(props: ModalWrapperProps) {
         super(props);
@@ -51,7 +52,13 @@ export default class ModalWrapper extends React.Component<ModalWrapperProps, Mod
 
     render() {
         const { showModal, ...restState } = this.state;
-        const { title, showButton = ModalWrapper.defaultProps.showButton, body, footerComponent } = this.props;
+        const { 
+            title, 
+            showButton = ModalWrapper.defaultProps.showButton, 
+            body, 
+            footerComponent, 
+            styleClassName = 'modal-wrapper-large' 
+        } = this.props;
         const context = {
             handleClose: () =>
                 this.handleClose(), handleShow: (extraState?: {}) => this.handleShow(extraState), ...restState
@@ -59,7 +66,7 @@ export default class ModalWrapper extends React.Component<ModalWrapperProps, Mod
         return (
             <div>
                 {showButton(context)}
-                <Modal show={showModal} onHide={() => this.handleClose()}>
+                <Modal show={showModal} onHide={() => this.handleClose()} dialogClassName={styleClassName}>
                     <Modal.Header closeButton={true}>
                         <Modal.Title>{title}</Modal.Title>
                     </Modal.Header>

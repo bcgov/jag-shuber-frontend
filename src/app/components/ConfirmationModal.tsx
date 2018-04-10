@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ModalWrapper from '../containers/ModalWrapper';
+import ModalWrapper from '../containers/ModalWrapper/ModalWrapper';
 import { Button } from 'react-bootstrap';
 
 export interface ConfirmationModalProps {
@@ -76,6 +76,7 @@ export class ConfirmationModal extends React.PureComponent<ConfirmationModalProp
                             {confirmBtnLabel}
                         </Button>
                     ]}
+                    styleClassName="modal-wrapper-small"
                 />
             </div>
         );
