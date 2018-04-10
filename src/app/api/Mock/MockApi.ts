@@ -133,8 +133,6 @@ export default class NewClient implements API {
     async createAssignmentDuty(duty: Partial<AssignmentDuty>): Promise<AssignmentDuty> {
         let dutyToAdd = duty as AssignmentDuty;
         dutyToAdd.id = this.getId();
-        // dutyToAdd.startDateTime = moment(duty.startDateTime);
-        // dutyToAdd.endDateTime = moment(duty.endDateTime);
         assignmentDuties.push(dutyToAdd);
         return dutyToAdd;
     }

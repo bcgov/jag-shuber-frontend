@@ -1,21 +1,29 @@
 import * as React from 'react';
+import * as moment from 'moment';
 import {
     reduxForm,
     ConfigProps
 } from 'redux-form';
 import { default as AssignmentForm, AssignmentFormProps } from '../components/AssignmentForm';
-import { default as FormSubmitButton, SubmitButtonProps } from '../components/FormElements/SubmitButton'
+import { default as FormSubmitButton, SubmitButtonProps } from '../components/FormElements/SubmitButton';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { getAssignment } from '../modules/assignments/selectors';
-import { editAssignment } from '../modules/assignments/actions'
-import { IdType } from '../api';
+import { editAssignment } from '../modules/assignments/actions';
+import { IdType, Assignment } from '../api';
 
 // wrapping generic assignment form in redux-form
-const formConfig: ConfigProps<{}, AssignmentFormProps> = {
+const formConfig: ConfigProps<any, AssignmentFormProps> = {
     form: 'EditAssignment',
     onSubmit: (values, dispatch, props) => {
-        let updatedAssignment = Object.assign({}, { ...values });
+        const {recurrenceInfo = [], ...rest} = values;
+        let updatedAssignment = Object.assign({}, { ...rest });
+        updatedAssignment.recurrenceInfo = recurrenceInfo.map((element: any) => ({
+            days: element.days,
+            startTime: element.timeRange.startTime,
+            endTime: element.timeRange.endTime,
+            sheriffsRequired: element.sheriffsRequired
+        }));
         dispatch(editAssignment(updatedAssignment));
     }
 };
@@ -25,12 +33,24 @@ export interface AssignmentEditFormProps extends AssignmentFormProps {
 }
 
 const mapStateToProps = (state: RootState, props: AssignmentEditFormProps) => {
-    const initialAssignment = getAssignment(props.id)(state);
+    const initialAssignment: Assignment = getAssignment(props.id)(state);
     if (initialAssignment) {
-        return {
-            initialValues: initialAssignment,        
+        const { recurrenceInfo = [] } = initialAssignment;
+        const foo =  {
+            initialValues: {
+                ...initialAssignment,
+                recurrenceInfo: recurrenceInfo.map(({startTime, endTime, ...rest}) => ({
+                    ...rest,
+                    timeRange: {
+                        startTime: moment(startTime).toISOString(), 
+                        endTime: moment(endTime).toISOString()
+                    }
+                }))
+            },
+            workSectionId: initialAssignment.workSectionId,
             isDefaultTemplate: true
         };
+        return foo;
     } else {
         return {};
     }

@@ -24,8 +24,6 @@ export interface AssignmentDutyFormProps {
     assignmentId?: IdType;
     minTime?: TimeType;
     maxTime?: TimeType;
-    startTime?: TimeType;
-    endTime?: TimeType;
     workSectionId?: WorkSectionId;
 }
 
@@ -37,8 +35,6 @@ export default class AssignmentDutyForm extends
             assignmentTitle = 'Duty', 
             minTime = moment().startOf('day').add('hours', 7).toISOString(), 
             maxTime = moment().startOf('day').add('hours', 17).toISOString(),
-            startTime = moment().startOf('day').add('hours', 7).toISOString(), 
-            endTime = moment().startOf('day').add('hours', 17).toISOString(),
             workSectionId = 'OTHER'
         } = this.props;
         return (
@@ -52,8 +48,6 @@ export default class AssignmentDutyForm extends
                             minTime={minTime} 
                             maxTime={maxTime}
                             timeIncrement={15}
-                            sTime={startTime}
-                            eTime={endTime}
                             color={getWorkSectionColour(workSectionId)}
                         />}
                         label="Time Range"

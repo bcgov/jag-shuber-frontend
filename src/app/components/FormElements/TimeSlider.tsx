@@ -15,6 +15,7 @@ export interface TimeSliderProps {
 }
 
 export default class TimeSlider extends React.Component<TimeSliderProps> {
+
   private handleAfterChange(arg: number[]) {
     const { minTime, onTimeChanged } = this.props;
     if (onTimeChanged) {

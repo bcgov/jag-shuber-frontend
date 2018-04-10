@@ -45,12 +45,16 @@ const mapStateToProps = (state: RootState, props: AssignmentDutyEditFormProps) =
     if (initialAssignmentDuty) {
         const initialAssignment: Assignment = getAssignment(initialAssignmentDuty.assignmentId)(state);
         return {
-            initialValues: initialAssignmentDuty, 
+            initialValues: {
+                ...initialAssignmentDuty,
+                timeRange: {
+                    startTime: moment(initialAssignmentDuty.startDateTime).toISOString(), 
+                    endTime: moment(initialAssignmentDuty.endDateTime).toISOString()
+                }
+            }, 
             assignmentTitle: initialAssignment.title,
             minTime: moment(initialAssignmentDuty.startDateTime).startOf('day').add('hours', 7).toISOString(),
             maxTime: moment(initialAssignmentDuty.endDateTime).startOf('day').add('hours', 17).toISOString(),
-            startTime: moment(initialAssignmentDuty.startDateTime).toISOString(),
-            endTime: moment(initialAssignmentDuty.endDateTime).toISOString(),
             workSectionId: initialAssignment.workSectionId
         };
     } else {
