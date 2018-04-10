@@ -51,7 +51,8 @@ const mapStateToProps = (state: RootState, props: ScheduleShiftEditFormProps) =>
             shiftTitle: moment(initialShift.startDateTime).format('dddd MMMM DD, YYYY'),
             assignedSheriff: getSheriff(initialShift.sheriffId)(state),
             minTime: moment(initialShift.startDateTime).startOf('day').add('hours', 6).toISOString(),
-            maxTime: moment(initialShift.endDateTime).startOf('day').add('hours', 22).toISOString()
+            maxTime: moment(initialShift.endDateTime).startOf('day').add('hours', 22).toISOString(),
+            workSectionId: initialShift.workSectionId
         };
     } else {
         return {};

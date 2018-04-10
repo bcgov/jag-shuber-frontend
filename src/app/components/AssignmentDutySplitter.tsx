@@ -24,7 +24,7 @@ export default class DutySplitter extends React.Component<DutySplitterProps> {
       <div>
         {
           sheriffDuties.map((sheriffDuty) =>
-            <div key="sheriffDuty" style={{paddingBottom: 50}}>
+            <div key={sheriffDuty.id} style={{paddingBottom: 50}}>
               <h3>{`Sheriff Id: ${sheriffDuty.sheriffId}`}</h3>
               <TimeSlider
                 minTime={dutyStartTime}

@@ -6,11 +6,11 @@ import {
     InjectedFormProps
 } from 'redux-form';
 import * as Validators from '../infrastructure/Validators';
-// import * as DateTimeFieldConst from './FormElements/DateTimeFieldConst';
 import {
     DateType,
     Sheriff,
-    TimeType
+    TimeType,
+    WorkSectionId
 } from '../api/Api';
 import DaysOfWeekChecklist from './FormElements/DaysOfWeekChecklist';
 import WorkSectionSelector from './FormElements/WorkSectionSelector';
@@ -18,7 +18,7 @@ import NumberSpinner from './FormElements/NumberSpinner';
 import toTitleCase from '../infrastructure/toTitleCase';
 import CheckboxField from './FormElements/CheckboxField';
 import TimeSliderField from './FormElements/TimeSliderField';
-// import { getWorkSectionColour } from '../api/utils';
+import { getWorkSectionColour } from '../api/utils';
 
 export interface ScheduleShiftFormProps {
     handleSubmit?: () => void;
@@ -29,6 +29,7 @@ export interface ScheduleShiftFormProps {
     assignedSheriff?: Sheriff;
     minTime?: TimeType;
     maxTime?: TimeType;
+    workSectionId?: WorkSectionId;
 }
 
 export default class ScheduleShiftForm extends
@@ -59,10 +60,10 @@ export default class ScheduleShiftForm extends
     }
 
     private renderShiftFields() {
-        // const { isSingleShift } = this.props;
         const {
             minTime = moment().startOf('day').add('hours', 6).toISOString(), 
             maxTime = moment().startOf('day').add('hours', 22).toISOString(),
+            workSectionId
         } = this.props;
         return (
             <div>
@@ -78,24 +79,12 @@ export default class ScheduleShiftForm extends
                         minTime={minTime}
                         maxTime={maxTime}
                         timeIncrement={15}
-                        color="grey"
-                        // color={getWorkSectionColour(workSectionId)}
+                        // color="grey"
+                        color={getWorkSectionColour(workSectionId)}
                     />}
                     label="Time Range"
                 />
                 <br/>
-                {/* <Field
-                    name={isSingleShift ? 'startDateTime' : 'startTime'}
-                    component={DateTimeFieldConst.TimeField}
-                    label="Start Time"
-                    validate={[Validators.required]}
-                />
-                <Field
-                    name={isSingleShift ? 'endDateTime' : 'endTime'}
-                    component={DateTimeFieldConst.TimeField}
-                    label="End Time"
-                    validate={[Validators.required]}
-                /> */}
             </div>
         );
     }
