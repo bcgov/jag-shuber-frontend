@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as moment from 'moment';
 import ScheduleShiftCreateForm from './ScheduleShiftCreateForm';
-import ModalWrapper from './ModalWrapper';
+import ModalWrapper from './ModalWrapper/ModalWrapper';
 import { 
     Button,
     Glyphicon

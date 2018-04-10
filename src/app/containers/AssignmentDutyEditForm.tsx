@@ -53,8 +53,8 @@ const mapStateToProps = (state: RootState, props: AssignmentDutyEditFormProps) =
                 }
             }, 
             assignmentTitle: initialAssignment.title,
-            minTime: moment(initialAssignmentDuty.startDateTime).startOf('day').add('hours', 7).toISOString(),
-            maxTime: moment(initialAssignmentDuty.endDateTime).startOf('day').add('hours', 17).toISOString(),
+            minTime: moment(initialAssignmentDuty.startDateTime).startOf('day').add('hours', 6).toISOString(),
+            maxTime: moment(initialAssignmentDuty.endDateTime).startOf('day').add('hours', 22).toISOString(),
             workSectionId: initialAssignment.workSectionId
         };
     } else {

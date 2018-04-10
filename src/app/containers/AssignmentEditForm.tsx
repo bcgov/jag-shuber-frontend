@@ -36,7 +36,7 @@ const mapStateToProps = (state: RootState, props: AssignmentEditFormProps) => {
     const initialAssignment: Assignment = getAssignment(props.id)(state);
     if (initialAssignment) {
         const { recurrenceInfo = [] } = initialAssignment;
-        const foo =  {
+        return {
             initialValues: {
                 ...initialAssignment,
                 recurrenceInfo: recurrenceInfo.map(({startTime, endTime, ...rest}) => ({
@@ -50,7 +50,6 @@ const mapStateToProps = (state: RootState, props: AssignmentEditFormProps) => {
             workSectionId: initialAssignment.workSectionId,
             isDefaultTemplate: true
         };
-        return foo;
     } else {
         return {};
     }

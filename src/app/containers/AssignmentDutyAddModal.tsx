@@ -4,7 +4,7 @@ import {
     Button,
     Glyphicon
 } from 'react-bootstrap';
-import ModalWrapper from './ModalWrapper';
+import ModalWrapper from './ModalWrapper/ModalWrapper';
 import { IdType } from '../api';
 
 export interface AssignmentDutyAddModalProps {

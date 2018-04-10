@@ -4,13 +4,13 @@ import {
     Button,
     Glyphicon
 } from 'react-bootstrap';
-import ModalWrapper from './ModalWrapper';
+import ModalWrapper from './ModalWrapper/ModalWrapper';
 import ScheduleShiftCopyForm from './ScheduleShiftCopyForm';
 
 export interface ScheduleShiftCopyModalProps {
 }
 
-export default class ScheduleShiftCopyModal extends React.Component<ScheduleShiftCopyModalProps>{
+export default class ScheduleShiftCopyModal extends React.Component<ScheduleShiftCopyModalProps> {
     render() {
         return (
             <div>
@@ -33,7 +33,7 @@ export default class ScheduleShiftCopyModal extends React.Component<ScheduleShif
                             OK
                         </ScheduleShiftCopyForm.SubmitButton>
                     )}
-                    size="medium"
+                    styleClassName="modal-wrapper-medium"
                 />
             </div>
         );

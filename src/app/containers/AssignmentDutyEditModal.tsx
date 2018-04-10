@@ -4,7 +4,7 @@ import {
     Glyphicon
 } from 'react-bootstrap';
 import AssignmentDutyEditForm from './AssignmentDutyEditForm';
-import ModalWrapper from './ModalWrapper';
+import ModalWrapper from './ModalWrapper/ModalWrapper';
 import { IdType } from '../api';
 import { ConfirmationModal } from '../components/ConfirmationModal';
 import { connect } from 'react-redux';

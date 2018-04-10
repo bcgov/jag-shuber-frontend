@@ -33,8 +33,8 @@ export default class AssignmentDutyForm extends
         const { 
             handleSubmit, 
             assignmentTitle = 'Duty', 
-            minTime = moment().startOf('day').add('hours', 7).toISOString(), 
-            maxTime = moment().startOf('day').add('hours', 17).toISOString(),
+            minTime = moment().startOf('day').add('hours', 6).toISOString(), 
+            maxTime = moment().startOf('day').add('hours', 22).toISOString(),
             workSectionId = 'OTHER'
         } = this.props;
         return (
