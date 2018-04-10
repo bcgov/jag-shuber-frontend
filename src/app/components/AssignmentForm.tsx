@@ -102,8 +102,6 @@ export interface AssignmentFormProps {
     isDefaultTemplate?: boolean;
     minTime?: TimeType;
     maxTime?: TimeType;
-    startTime?: TimeType;
-    endTime?: TimeType;
     workSectionId?: WorkSectionId;
 }
 

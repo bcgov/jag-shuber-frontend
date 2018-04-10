@@ -1,20 +1,24 @@
 import * as React from 'react';
+import * as moment from 'moment';
 import { Form } from 'react-bootstrap';
 import {
     Field,
     InjectedFormProps
 } from 'redux-form';
 import * as Validators from '../infrastructure/Validators';
-import * as DateTimeFieldConst from './FormElements/DateTimeFieldConst';
+// import * as DateTimeFieldConst from './FormElements/DateTimeFieldConst';
 import {
     DateType,
-    Sheriff
+    Sheriff,
+    TimeType
 } from '../api/Api';
 import DaysOfWeekChecklist from './FormElements/DaysOfWeekChecklist';
 import WorkSectionSelector from './FormElements/WorkSectionSelector';
 import NumberSpinner from './FormElements/NumberSpinner';
 import toTitleCase from '../infrastructure/toTitleCase';
 import CheckboxField from './FormElements/CheckboxField';
+import TimeSliderField from './FormElements/TimeSliderField';
+// import { getWorkSectionColour } from '../api/utils';
 
 export interface ScheduleShiftFormProps {
     handleSubmit?: () => void;
@@ -23,6 +27,8 @@ export interface ScheduleShiftFormProps {
     isSingleShift?: boolean;
     shiftTitle?: string;
     assignedSheriff?: Sheriff;
+    minTime?: TimeType;
+    maxTime?: TimeType;
 }
 
 export default class ScheduleShiftForm extends
@@ -53,7 +59,11 @@ export default class ScheduleShiftForm extends
     }
 
     private renderShiftFields() {
-        const { isSingleShift } = this.props;
+        // const { isSingleShift } = this.props;
+        const {
+            minTime = moment().startOf('day').add('hours', 6).toISOString(), 
+            maxTime = moment().startOf('day').add('hours', 22).toISOString(),
+        } = this.props;
         return (
             <div>
                 <Field
@@ -62,6 +72,19 @@ export default class ScheduleShiftForm extends
                     label="Work Section"
                 />
                 <Field
+                    name="timeRange"
+                    component={(p) => <TimeSliderField
+                        {...p}
+                        minTime={minTime}
+                        maxTime={maxTime}
+                        timeIncrement={15}
+                        color="grey"
+                        // color={getWorkSectionColour(workSectionId)}
+                    />}
+                    label="Time Range"
+                />
+                <br/>
+                {/* <Field
                     name={isSingleShift ? 'startDateTime' : 'startTime'}
                     component={DateTimeFieldConst.TimeField}
                     label="Start Time"
@@ -72,7 +95,7 @@ export default class ScheduleShiftForm extends
                     component={DateTimeFieldConst.TimeField}
                     label="End Time"
                     validate={[Validators.required]}
-                />
+                /> */}
             </div>
         );
     }
