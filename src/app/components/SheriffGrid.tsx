@@ -14,7 +14,9 @@ class SheriffGrid extends React.PureComponent<SheriffGridProps, any>{
             SheriffRenderer
         } = this.props;
         return (
-            <div style={{ display: "flex", flexFlow: "row wrap", justifyContent: "space-around" }}>
+            <div 
+                style={{ display: 'flex', flexFlow: 'row wrap', justifyContent: 'space-around' }}
+            >
                 {sheriffs.map(sheriff => (
                     <div key={sheriff.badgeNo}>
                         {SheriffRenderer && <SheriffRenderer {...sheriff} />}
@@ -22,7 +24,7 @@ class SheriffGrid extends React.PureComponent<SheriffGridProps, any>{
                     </div>
                 ))}
             </div>
-        )
+        );
     }
 }
 

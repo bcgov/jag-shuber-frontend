@@ -9,9 +9,9 @@ export interface SheriffTrainingDetailsProps {
     isCompactView?: boolean;
 }
 
-export default class SheriffTrainingDetails extends React.Component<SheriffTrainingDetailsProps, any>{
-   trainingStatusStyle():string { 
-        return "text-success";
+export default class SheriffTrainingDetails extends React.Component<SheriffTrainingDetailsProps, {}> {
+   trainingStatusStyle(): string { 
+        return 'text-success';
     }
     
     render() {
@@ -26,7 +26,7 @@ export default class SheriffTrainingDetails extends React.Component<SheriffTrain
             <div>
                 <h3>Training</h3>
                 { training.length > 0 && (
-                    <Table responsive>
+                    <Table responsive={true}>
                         <thead>
                             <tr >
                                 <th className="text-left">Type</th>
@@ -40,15 +40,31 @@ export default class SheriffTrainingDetails extends React.Component<SheriffTrain
                         return (
                                 <tr key={index}>
                                     <td>{training.trainingType}</td>
-                                    { !isCompactView && <td><DateDisplay date={training.certificationDate} showMonth showDay showYear/></td>}
-                                    { !isCompactView && <td><DateDisplay date={training.expiryDate} showMonth showDay showYear/></td>}
-                                    <td><Glyphicon glyph="ok" className="text-success" /></td>
+                                    { !isCompactView && 
+                                        <td>
+                                            <DateDisplay 
+                                                date={training.certificationDate} 
+                                                showMonth={true} 
+                                                showDay={true} 
+                                                showYear={true}
+                                            />
+                                        </td>}
+                                    { !isCompactView 
+                                        && <td>
+                                            <DateDisplay 
+                                                date={training.expiryDate} 
+                                                showMonth={true} 
+                                                showDay={true} 
+                                                showYear={true}
+                                            />
+                                        </td>}
+                                    <td><Glyphicon glyph="ok" className="text-success"/></td>
                                 </tr>
                             );
                         })}
                     </tbody>
                 </Table> )}
-                {  training.length == 0 && (
+                {  training.length === 0 && (
                     <span className="text-danger">No training recorded. </span>
                 )}
             </div>

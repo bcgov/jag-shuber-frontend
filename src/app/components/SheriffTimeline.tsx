@@ -1,14 +1,18 @@
 
-import * as React from 'react'
-import { Grid, Row, Col } from 'react-bootstrap'
-import SheriffCard from './SheriffCard'
+import * as React from 'react';
+import { 
+    Grid, 
+    Row, 
+    Col 
+} from 'react-bootstrap';
+import SheriffCard from './SheriffCard';
 import { Sheriff } from '../api/index';
 
 export interface SheriffTimelineProps {
-    sheriffs: Sheriff[]
+    sheriffs: Sheriff[];
 }
 
-class SheriffTimeline extends React.PureComponent<SheriffTimelineProps, any>{
+export default class SheriffTimeline extends React.PureComponent<SheriffTimelineProps, {}> {
     render() {
         const { sheriffs } = this.props;
 
@@ -24,8 +28,6 @@ class SheriffTimeline extends React.PureComponent<SheriffTimelineProps, any>{
                     ))}
                 </Grid>
             </div>
-        )
+        );
     }
 }
-
-export default SheriffTimeline
