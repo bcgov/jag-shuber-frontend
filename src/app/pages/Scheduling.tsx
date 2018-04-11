@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as moment from 'moment';
 import SchedulingTimeline from '../containers/LongTermSchedule/LongTermSchedule';
 import TimelineToolsPanel from '../components/TimelineToolsPanel';
 import SheriffList from '../containers/SheriffList';
@@ -9,6 +10,7 @@ import SheriffDragSource from '../containers/SheriffDragSource';
 import ScheduleShiftAddModal from '../containers/ScheduleShiftAddModal';
 import ScheduleShiftCopyModal from '../containers/ScheduleShiftCopyModal';
 import './pages.css';
+import ScheduleSummary from '../containers/ScheduleSummary';
 
 class SchedulingPage extends React.PureComponent {
     render() {
@@ -24,7 +26,13 @@ class SchedulingPage extends React.PureComponent {
                             <SheriffList
                                 SheriffRenderer={(s: Sheriff) => (
                                     <SheriffDragSource sheriff={s}>
-                                        <SheriffListCard sheriff={s} showScheduleSummary={true} />
+                                        <SheriffListCard sheriff={s} >
+                                            <ScheduleSummary
+                                                sheriffId={s.id}
+                                                start={moment().startOf('week')}
+                                                end={moment().endOf('week')}
+                                            />
+                                        </SheriffListCard>
                                     </SheriffDragSource>
                                 )}
                             />

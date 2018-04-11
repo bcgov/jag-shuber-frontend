@@ -8,6 +8,10 @@
     margin-top: 4px;
 }
 
+.sheriff-list-card.not-active { 
+    background-color: #CDCDCD;
+}
+
 .sheriff-card-badge-number {
     font-size: 14px;
     font-style: italic;
