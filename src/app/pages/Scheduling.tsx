@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as moment from 'moment';
 import SchedulingTimeline from '../containers/LongTermSchedule/LongTermSchedule';
 import TimelineToolsPanel from '../components/TimelineToolsPanel';
 import SheriffList from '../containers/SheriffList';
@@ -29,8 +28,6 @@ class SchedulingPage extends React.PureComponent {
                                         <SheriffListCard sheriff={s} >
                                             <ScheduleSummary
                                                 sheriffId={s.id}
-                                                start={moment().startOf('week')}
-                                                end={moment().endOf('week')}
                                             />
                                         </SheriffListCard>
                                     </SheriffDragSource>

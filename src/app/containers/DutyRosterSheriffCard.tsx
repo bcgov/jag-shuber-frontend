@@ -7,13 +7,13 @@ import { getShifts } from '../modules/shifts/actions';
 import {
     Shift,
     Sheriff,
-    DateType
+    TimeType
 } from '../api';
 import SheriffListCard from '../components/SheriffListCard/SheriffListCard';
 
 interface ConnectedDutyRosterSheriffCardProps {
     sheriff: Sheriff;
-    date: DateType;
+    date: TimeType;
 }
 
 interface ConnectedDutyRosterSheriffCardDispatchProps {
@@ -28,7 +28,7 @@ class ConnectedDutyRosterSheriffCard extends React.Component<ConnectedDutyRoster
     & ConnectedDutyRosterSheriffCardStateProps
     & ConnectedDutyRosterSheriffCardDispatchProps> {
         
-    getShiftDisplayForDate(date: DateType): string {
+    getShiftDisplayForDate(date: TimeType): string {
         const { shifts } = this.props;
         const shiftsForDay = shifts.filter(s => moment(date).isSame(s.startDateTime, 'day'));
         if (shiftsForDay.length > 0) {
@@ -44,7 +44,7 @@ class ConnectedDutyRosterSheriffCard extends React.Component<ConnectedDutyRoster
         const isCardDisabled = shiftSummary === '';
         return (
             <SheriffListCard sheriff={sheriff} disabled={isCardDisabled} >
-                <div style={{fontSize: 14}}>{shiftSummary}</div>
+                {!isCardDisabled && <div style={{fontSize: 14}}>{shiftSummary}</div>}
             </SheriffListCard> 
         );
     }
