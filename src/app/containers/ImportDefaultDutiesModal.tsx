@@ -1,9 +1,6 @@
 import * as React from 'react';
 import { Glyphicon } from 'react-bootstrap';
-// import ScheduleShiftEditForm from './ScheduleShiftEditForm';
 import { ConfirmationModal } from '../components/ConfirmationModal';
-// import { connect } from 'react-redux';
-// import { deleteShift } from '../modules/shifts/actions';
 import { DateType } from '../api/Api';
 export interface ImportDefaultDutiesModalProps {
     date: DateType;
@@ -25,16 +22,18 @@ export default class ScheduleShiftEditModal extends React.PureComponent<
         } = this.props;
 
         const importConfirmationMessage =
-            <p style={{ fontSize: 14 }}>Would you like to import your default duties?</p>;
+            <p style={{ fontSize: 14 }}>Would you like to add your default duties to the Duty Roster?</p>;
 
         return (
             <div>
                 <ConfirmationModal
+                    title="Import Default Duties"
                     message={importConfirmationMessage}
                     actionBtnLabel={<Glyphicon glyph="import" style={{color}}/>}
                     actionBtnStyle="link"
                     actionBtnSize="large"
                     confirmBtnLabel="Yes"
+                    confirmBtnStyle="success"
                     cancelBtnLabel="No"
                     onCancel={() => (null)}
                     onConfirm={() => (null)}
@@ -43,6 +42,3 @@ export default class ScheduleShiftEditModal extends React.PureComponent<
         );
     }
 }
-
-// tslint:disable-next-line:max-line-length
-// export default connect<{}, ImportDefaultDutiesModalDispatchProps, ImportDefaultDutiesModalProps>(null, { deleteShift })(ScheduleShiftEditModal);
