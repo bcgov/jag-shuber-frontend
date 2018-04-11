@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as moment from 'moment';
 import {
     reduxForm,
     ConfigProps
@@ -37,6 +38,12 @@ export interface AssignmentDutyCreateFormProps extends AssignmentDutyFormProps {
 const mapStateToProps = (state: RootState, props: AssignmentDutyCreateFormProps) => {
     const assignment: Assignment = getAssignment(props.assignmentId)(state);
     return {
+        initialValues: {
+            timeRange: {
+                startTime: moment().startOf('day').add('hours', 6).toISOString(), 
+                endTime: moment().startOf('day').add('hours', 17).toISOString()
+            }
+        }, 
         assignmentTitle: assignment.title,
         workSectionId: assignment.workSectionId
     };
