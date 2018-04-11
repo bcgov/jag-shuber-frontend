@@ -10,7 +10,7 @@ import {
     DateType,
     Sheriff,
     TimeType,
-    WorkSectionId
+    WorkSectionCode
 } from '../api/Api';
 import DaysOfWeekChecklist from './FormElements/DaysOfWeekChecklist';
 import WorkSectionSelector from './FormElements/WorkSectionSelector';
@@ -29,7 +29,7 @@ export interface ScheduleShiftFormProps {
     assignedSheriff?: Sheriff;
     minTime?: TimeType;
     maxTime?: TimeType;
-    workSectionId?: WorkSectionId;
+    workSectionId?: WorkSectionCode;
 }
 
 export default class ScheduleShiftForm extends

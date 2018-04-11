@@ -52,7 +52,7 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
         fetchLeaves();
     }
 
-    isSheriffOnLeave(sheriffId: number, shift: Shift): boolean {
+    isSheriffOnLeave(sheriffId: IdType, shift: Shift): boolean {
         const { leaves } = this.props;
         let leavesForSheriff = leaves.filter(l => l.sheriffId === sheriffId);
         let dateFilteredLeaves = leavesForSheriff.filter(l => 
@@ -60,7 +60,7 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
         return dateFilteredLeaves.length > 0;
     }
 
-    isSheriffScheduledForDay(sheriffId: number, shiftStart: DateType): boolean {
+    isSheriffScheduledForDay(sheriffId: IdType, shiftStart: DateType): boolean {
         const { shifts } = this.props;
         let shiftsForSheriff = shifts.filter(s => s.sheriffId === sheriffId);
         let dateFilteredShifts = shiftsForSheriff.filter(s => 

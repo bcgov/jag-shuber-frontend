@@ -15,16 +15,16 @@ storiesOf('Timeline')
             sheriffDuties={
               [
                 {
-                  id: 1,
-                  sheriffId: 1,
-                  dutyId: 1, 
+                  id: '1',
+                  sheriffId: '1',
+                  dutyId: '1', 
                   startDateTime: moment().set({ 'hour': 10, 'minute': 15 }).toISOString(),
                   endDateTime: moment().set({ 'hour': 10, 'minute': 45 }).toISOString(),
                 },
                 {
-                  id: 2,
-                  sheriffId: 2,
-                  dutyId: 1, 
+                  id: '2',
+                  sheriffId: '2',
+                  dutyId: '1', 
                   startDateTime: moment().set({ 'hour': 10, 'minute': 0 }).toISOString(),
                   endDateTime: moment().set({ 'hour': 10, 'minute': 30 }).toISOString(),
                 }

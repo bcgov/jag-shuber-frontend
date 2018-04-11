@@ -3,7 +3,7 @@ import {
     RecurrenceInfo,
     DaysOfWeek
 } from '../api';
-import DateDisplay from './DateDisplay';
+// import DateDisplay from './DateDisplay';
 import { Badge } from 'react-bootstrap';
 
 
@@ -13,12 +13,12 @@ export interface AssignmentDefaultRecurrenceDetailsProps {
 
 export default class AssignmentDefaultRecurrenceDetails extends React.PureComponent<AssignmentDefaultRecurrenceDetailsProps, any> {
     render() {
-        const { data: { days, startTime, endTime, sheriffsRequired } } = this.props; 
-        const dayDisplay = DaysOfWeek.getDisplayValues(days).join(", ");
+        const { data: { daysBitmap, startTime, endTime, sheriffsRequired } } = this.props; 
+        const dayDisplay = DaysOfWeek.getDisplayValues(daysBitmap).join(", ");
 
         return (
             <div>
-                <strong>{dayDisplay}</strong> - <DateDisplay date={startTime} showTime /> to <DateDisplay date={endTime} showTime /> {' '}
+                <strong>{dayDisplay}</strong> - {startTime} to {endTime}{' '}
                 <Badge>{sheriffsRequired}</Badge>
                 <br />
             </div>

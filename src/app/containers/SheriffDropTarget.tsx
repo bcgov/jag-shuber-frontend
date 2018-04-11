@@ -9,7 +9,7 @@ import { Sheriff } from '../api';
 
 type DroppableItem = Sheriff;
 
-const GenericAssignmentDropTarget = dropTargetFactory<DroppableItem, void>(ItemTypes.SHERIFF);
+const GenericDropTarget = dropTargetFactory<DroppableItem, void>(ItemTypes.SHERIFF);
 
 interface SheriffDropTargetProps {
     canDropItem?: (item: DroppableItem) => boolean;
@@ -61,7 +61,7 @@ export default class SheriffDropTarget extends React.PureComponent<SheriffDropTa
         } = this.props;
 
         return (
-            <GenericAssignmentDropTarget
+            <GenericDropTarget
                 canDropItem={(a) => canDropItem ? canDropItem(a as DroppableItem) : false}
                 onDropItem={(a) => onDropItem && onDropItem(a)}
                 style={style}
@@ -69,7 +69,7 @@ export default class SheriffDropTarget extends React.PureComponent<SheriffDropTa
                 className={className}
             >
                 {this.props.children}
-            </GenericAssignmentDropTarget>
+            </GenericDropTarget>
         );
     }
 }

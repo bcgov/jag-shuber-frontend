@@ -1,24 +1,4 @@
-import {default as API } from '../index';
 import { DaysOfWeek } from '../Api';
- 
-describe('API Client', () => {
-
-    beforeEach(() => {
-      // tslint:disable-next-line:no-console
-      console.log('before api test');  
-    });
-
-    afterEach(() => {
-        // tslint:disable-next-line:no-console
-        console.log('Cleanup');
-    });
-
-    it('Should return sheriffs',async () => {
-        let sheriffs = await API.getSheriffs();
-        expect(sheriffs).toBeDefined();
-    });
-
-});
 
 /* tslint:disable:no-bitwise */ 
 describe('DaysOfWeek.getDisplayValues', () => {

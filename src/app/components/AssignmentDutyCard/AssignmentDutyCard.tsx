@@ -1,7 +1,8 @@
 import * as React from 'react';
 import {
     AssignmentDuty,
-    Sheriff
+    Sheriff,
+    IdType
 } from '../../api/index';
 import SheriffDropTarget from '../../containers/SheriffDropTarget';
 import SheriffDutyBarList from '../SheriffDutyBarList/SheriffDutyBarList';
@@ -18,7 +19,7 @@ export interface AssignmentDutyCardProps {
 }
 
 export interface SheriffAssignmentRendererProps {
-    sheriffIds: number[];
+    sheriffIds: IdType[];
     sheriffsRequired: number;
 }
 
@@ -26,8 +27,7 @@ export default class AssignmentDutyCard extends React.PureComponent<AssignmentDu
 
     private canAssignSheriff(sheriff: Sheriff): boolean {
         const { sheriffIds = [] } = this.props.duty;
-        return sheriff && !Number.isNaN(sheriff.badgeNumber)
-            && sheriffIds.indexOf(sheriff.badgeNumber) === -1;
+        return sheriff && sheriffIds.indexOf(sheriff.id) === -1;
     }
 
     render() {
@@ -36,7 +36,7 @@ export default class AssignmentDutyCard extends React.PureComponent<AssignmentDu
             onDropSheriff,
             SheriffAssignmentRenderer = SheriffDutyBarList,
             duty: {
-                id = -1,
+                id = '-1',
                 sheriffIds = [],
                 sheriffsRequired = 0
             } = {},

@@ -13,16 +13,17 @@ export interface SheriffProfileDetailsModalProps {
 
 export default class SheriffProfileDetailsModal extends React.Component<SheriffProfileDetailsModalProps>{
     render() {
-        const { sheriff = BLANK_SHERIFF, sheriff: { firstName, lastName, badgeNumber, imageUrl } } = this.props;
-        const title = `${firstName} ${lastName} #${badgeNumber}`;
+        const { sheriff = BLANK_SHERIFF, sheriff: { firstName, lastName, badgeNo, imageUrl } } = this.props;
+        const title = `${firstName} ${lastName} #${badgeNo}`;
         return (
             <ModalWrapper
                 title={title}
                 showButton={({ handleShow }) =>
-                    <Button bsStyle="link" bsSize="large" style={{ color: '#494949' }} onClick={() => handleShow()}>
-                        <Image src={imageUrl} circle={true} width="120" height="120" /><br />
-                        {firstName} {lastName} <br /> #{badgeNumber}
-                    </Button>}
+                    <Button bsStyle="link" bsSize="large" style={{ color: "#494949" }} onClick={() => handleShow()}>
+                        <Image src={imageUrl} circle width="120" height="120" /><br />
+                        {firstName} {lastName} <br /> #{badgeNo}
+                    </Button>
+                }
                 body={() => <SheriffProfileDetails sheriff={sheriff} />}
                 styleClassName="modal-wrapper-medium"
             />

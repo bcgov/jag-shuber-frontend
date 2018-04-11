@@ -1,30 +1,27 @@
 import { createSelector } from 'reselect';
+import * as requests from './requests';
 import { RootState } from '../../store';
-import { Sheriff } from '../../api/index';
+import {
+    Sheriff,
+    SheriffMap,
+    IdType
+} from '../../api/Api';
 
-export const getSheriff = (id?: number) => (state: RootState) => {
-    if (state && id !== null && id !== undefined) {
-        const map = state.sheriffs.map || {};
+export const sheriffs = createSelector(
+    requests.sheriffMapRequest.getData,
+    (map: SheriffMap = {}): Sheriff[] => {
+        const list: Sheriff[] = Object.keys(map).map((k, i) => map[k]);
+        return list;
+    }
+);
+
+export const getSheriff = (id?: IdType) => (state: RootState) => {
+    if (state && id != null) {
+        const map = requests.sheriffMapRequest.getData(state);
         return map[id];
     }
-    return undefined;
+    return null;
 };
 
-export const sheriffs = (state: RootState): Sheriff[] => {
-    const sheriffMap = state.sheriffs.map;
-    return sheriffMap ? Object.keys(sheriffMap).map(k => sheriffMap[k]) : [];
-};
-
-export const onDutySheriffs = createSelector(
-    sheriffs,
-    (sheriffList) => sheriffList.filter(s => s.onDuty)
-);
-
-export const offDutySheriffs = createSelector(
-    sheriffs,
-    (sheriffList) => sheriffList.filter(s => !s.onDuty)
-);
-
-export const isLoading = (state: RootState) => state.sheriffs.loading;
-export const error = (state: RootState) => state.sheriffs.error;
-export const isSaving = (state: RootState) => state.sheriffs.saving;
+export const sheriffListLoading = requests.sheriffMapRequest.getIsBusy;
+export const sheriffListError = requests.sheriffMapRequest.getError;

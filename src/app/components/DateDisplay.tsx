@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as moment from 'moment';
 import {
     DateType
-} from '../api'
+} from '../api';
 
 export interface DateDisplayProps {
     date: DateType;
@@ -14,23 +14,23 @@ export interface DateDisplayProps {
 
 export default class DateDisplay extends React.PureComponent<DateDisplayProps> {
     render() {
-        const { date, showMonth=false, showDay=false, showYear=false, showTime=false } = this.props;
-        
+        const { date, showMonth = false, showDay = false, showYear = false, showTime = false } = this.props;
+
         let dateFormats = [];
         if (showMonth) {
-            dateFormats.push("MMM");
+            dateFormats.push('MMM');
         }
         if (showDay) {
-            dateFormats.push("D");
+            dateFormats.push('D');
         }
         if (showYear) {
-            dateFormats.push("YYYY");
+            dateFormats.push('YYYY');
         }
         if (showTime) {
-            dateFormats.push("HH:mm");       
+            dateFormats.push('HH:mm');
         }
-        
-        const dateFormat = dateFormats.join(" ");
+
+        const dateFormat = dateFormats.join(' ');
 
         return (
             moment(date).format(dateFormat)

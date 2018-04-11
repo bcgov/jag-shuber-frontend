@@ -16,9 +16,9 @@ class SheriffGrid extends React.PureComponent<SheriffGridProps, any>{
         return (
             <div style={{ display: "flex", flexFlow: "row wrap", justifyContent: "space-around" }}>
                 {sheriffs.map(sheriff => (
-                    <div key={sheriff.badgeNumber}>
+                    <div key={sheriff.badgeNo}>
                         {SheriffRenderer && <SheriffRenderer {...sheriff} />}
-                        {!SheriffRenderer && <SheriffCard sheriff={sheriff} onClick={() => alert(sheriff.badgeNumber)} />}
+                        {!SheriffRenderer && <SheriffCard sheriff={sheriff} onClick={() => alert(sheriff.badgeNo)} />}
                     </div>
                 ))}
             </div>

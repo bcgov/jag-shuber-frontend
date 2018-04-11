@@ -18,7 +18,7 @@ import {
 import * as moment from 'moment';
 import './DailyTimeline.css';
 import AssignmentDutyCard from '../../components/AssignmentDutyCard/AssignmentDutyCard';
-import { IdType, WorkSectionId } from '../../api/Api';
+import { IdType, WorkSectionCode } from '../../api/Api';
 import SheriffDutyBarList from '../../components/SheriffDutyBarList/SheriffDutyBarList';
 import ConnectedSheriffDutyBar from '../SheriffDutyBar';
 import { getWorkSectionColour } from '../../api/utils';
@@ -69,7 +69,7 @@ class DailyTimeline extends React.Component<DailyTimelineProps & DailyTimelineSt
             ...rest
         } = this.props;
 
-        const workSectionMap = assignments.reduce<{ [key: string]: WorkSectionId }>(
+        const workSectionMap = assignments.reduce<{ [key: string]: WorkSectionCode }>(
             (map, assignment) => {
                 map[assignment.id] = assignment.workSectionId;
                 return map;

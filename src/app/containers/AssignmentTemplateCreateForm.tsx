@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { reduxForm, ConfigProps } from 'redux-form';
+import { reduxForm, ConfigProps, SubmissionError } from 'redux-form';
 import { default as AssignmentForm, AssignmentFormProps } from '../components/AssignmentForm';
 import { createAssignment } from '../modules/assignments/actions';
 import { default as FormSubmitButton, SubmitButtonProps } from '../components/FormElements/SubmitButton';
@@ -9,22 +9,19 @@ import { RootState } from '../store';
 // wrapping generic assignment form in redux-form
 const formConfig: ConfigProps<any, AssignmentFormProps> = {
     form: 'CreateAssignmentTemplate',
-    onSubmit: (values, dispatch, props) => {
-        const { recurrenceInfo = [], ...rest } = values;
-        let newAssignment = Object.assign({}, {...rest});
-        newAssignment.recurrenceInfo = recurrenceInfo.map((element: any) => ({
-            days: element.days,
-            startTime: element.timeRange.startTime,
-            endTime: element.timeRange.endTime,
-            sheriffsRequired: element.sheriffsRequired
-        }));
-        dispatch(createAssignment(newAssignment));
+    onSubmit: async (values, dispatch, props) => {
+        try {
+            const newAssignment = AssignmentForm.parseAssignmentFromValues(values);
+            await dispatch(createAssignment(newAssignment));
+        } catch (e) {
+            throw new SubmissionError({ _error: e.message });
+        }
     }
 };
 
 const mapStateToProps = (state: RootState, props: AssignmentFormProps) => {
     return {
-        initialValues: {workSectionId: props.workSectionId},
+        initialValues: { workSectionId: props.workSectionId },
         isDefaultTemplate: true
     };
 };

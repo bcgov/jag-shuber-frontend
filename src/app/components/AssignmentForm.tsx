@@ -5,7 +5,8 @@ import {
     Button,
     ListGroup,
     ListGroupItem,
-    Glyphicon
+    Glyphicon,
+    Alert
 } from 'react-bootstrap';
 import {
     Field,
@@ -14,16 +15,17 @@ import {
 } from 'redux-form';
 import * as Validators from '../infrastructure/Validators';
 import TextField from './FormElements/TextField';
-import CourtroomSelector from './FormElements/CourtroomSelector';
+import CourtroomSelector from '../containers/CourthouseCourtroomSelector';
 import DaysOfWeekChecklist from './FormElements/DaysOfWeekChecklist';
-import JailRolesSelector from './FormElements/JailRoleSelector';
-import RunSelector from './FormElements/RunSelector';
-import AlternateAssignmentSelector from './FormElements/AlternateAssignmentSelector';
+import JailRolesSelector from '../containers/CourthouseJailRoleSelector';
+import RunSelector from '../containers/CourthouseRunSelector';
+import AlternateAssignmentSelector from '../containers/AlternateAssignmentTypeSelector';
 import {
     WORK_SECTIONS,
     TimeType,
-    WorkSectionId,
-    DaysOfWeek
+    WorkSectionCode,
+    DaysOfWeek,
+    Assignment
 } from '../api';
 import TimeSliderField from './FormElements/TimeSliderField';
 import { getWorkSectionColour } from '../api/utils';
@@ -32,11 +34,11 @@ class OtherFields extends React.PureComponent {
     render() {
         return (
             <div>
-                <Field 
-                    name="alternateAssignmentId" 
-                    label="Assignment" 
-                    component={AlternateAssignmentSelector} 
-                    validate={[Validators.required]} 
+                <Field
+                    name="otherAssignmentTypeId"
+                    label="Assignment"
+                    component={AlternateAssignmentSelector}
+                    validate={[Validators.required]}
                 />
             </div>
         );
@@ -47,11 +49,11 @@ class EscortsFields extends React.PureComponent {
     render() {
         return (
             <div>
-                <Field 
-                    name="runId" 
-                    component={RunSelector} 
-                    label="Assignment" 
-                    validate={[Validators.required]} 
+                <Field
+                    name="runId"
+                    component={RunSelector}
+                    label="Assignment"
+                    validate={[Validators.required]}
                 />
             </div>
         );
@@ -102,11 +104,59 @@ export interface AssignmentFormProps {
     isDefaultTemplate?: boolean;
     minTime?: TimeType;
     maxTime?: TimeType;
-    workSectionId?: WorkSectionId;
+    workSectionId?: WorkSectionCode;
 }
 
-export default class AssignmentForm extends
-    React.Component<AssignmentFormProps & InjectedFormProps<any, AssignmentFormProps>, any> {
+interface AssignmentFormData {
+    workSectionId: WorkSectionCode;
+    dutyRecurrences: DutyRecurrenceFormData[];
+    jailRoleId?: string;
+    courtroomId?: string;
+    otherAssignmentTypeId?: string;
+    runId?: string;
+}
+
+interface DutyRecurrenceFormData {
+    id?: string;
+    daysBitmap: DaysOfWeek;
+    sheriffsRequired: number;
+    timeRange: {
+        startTime: TimeType;
+        endTime: TimeType;
+    };
+}
+
+const TimeFormat = 'HH:mm:ss';
+
+// tslint:disable-next-line:max-line-length
+export default class AssignmentForm extends React.Component<AssignmentFormProps & InjectedFormProps<any, AssignmentFormProps>> {
+
+    static parseAssignmentFromValues(values: any): Assignment {
+        const { dutyRecurrences = [], ...rest } = (values as AssignmentFormData);
+        let assignment: any = { ...rest };
+        assignment.dutyRecurrences = dutyRecurrences.map((element) => ({
+            id: element.id,
+            daysBitmap: element.daysBitmap,
+            startTime: moment(element.timeRange.startTime).format(TimeFormat),
+            endTime: moment(element.timeRange.endTime).format(TimeFormat),
+            sheriffsRequired: element.sheriffsRequired
+        }));
+        return assignment as Assignment;
+    }
+
+    static assignmentToFormValues({ dutyRecurrences = [], ...rest }: Assignment): any {
+        return {
+            ...rest,
+            dutyRecurrences: dutyRecurrences.map(({ startTime, endTime, ...restRecurrence }) => ({
+                ...restRecurrence,
+                timeRange: {
+                    startTime: moment(startTime, TimeFormat).toISOString(),
+                    endTime: moment(endTime, TimeFormat).toISOString()
+                }
+            }))
+        }
+    }
+
     private renderHeading() {
         let heading = 'Other';
         if (this.props.initialValues && this.props.initialValues) {
@@ -162,9 +212,9 @@ export default class AssignmentForm extends
     }
 
     private renderAssignmentTemplateFields() {
-        const { 
-            isDefaultTemplate, 
-            minTime = moment().startOf('day').add('hours', 6).toISOString(), 
+        const {
+            isDefaultTemplate,
+            minTime = moment().startOf('day').add('hours', 6).toISOString(),
             maxTime = moment().startOf('day').add('hours', 22).toISOString(),
             workSectionId = 'OTHER'
         } = this.props;
@@ -172,61 +222,61 @@ export default class AssignmentForm extends
             return (
                 <div>
                     <strong>Days &amp; Times</strong>
-                    <RecurrenceFieldArray 
-                        name="recurrenceInfo" 
+                    <RecurrenceFieldArray
+                        name="dutyRecurrences"
                         component={(p) => {
-                        const { fields } = p;
-                        return (
-                            <ListGroup >
-                                {fields.map((recurrenceInfoFieldName, index) => {
-                                    return (
-                                        <ListGroupItem key={index}>
-                                            <Button 
-                                                bsStyle="danger" 
-                                                onClick={() => fields.remove(index)} 
-                                                className="pull-right"
-                                            >
-                                                <Glyphicon glyph="trash" />
-                                            </Button>
-                                            <br />
-                                            <Field
-                                                name={`${recurrenceInfoFieldName}.days`}
-                                                component={DaysOfWeekChecklist}
-                                                label="Days"
-                                            />
-                                            <Field  
-                                                name={`${recurrenceInfoFieldName}.timeRange`}
-                                                component={(p) => <TimeSliderField 
-                                                    {...p} 
-                                                    minTime={minTime} 
-                                                    maxTime={maxTime}
-                                                    timeIncrement={15}
-                                                    color={getWorkSectionColour(workSectionId)}
-                                                />}
-                                                label="Time Range"
-                                            />
-                                            <br/>
-                                            <Field
-                                                name={`${recurrenceInfoFieldName}.sheriffsRequired`}
-                                                component={TextField}
-                                                label="Number of Sheriffs Required" 
-                                                validate={[Validators.required, Validators.integer]}
-                                            />
-                                        </ListGroupItem>
-                                    )
-                                }
-                                )}
-                                <br />
-                                <Button 
-                                    onClick={() => fields.push({
-                                        days: DaysOfWeek.Weekdays
-                                    })} 
-                                >
-                                    <Glyphicon glyph="plus" />
-                                </Button>
-                            </ListGroup>
-                        );
-                    }}
+                            const { fields } = p;
+                            return (
+                                <ListGroup >
+                                    {fields.map((recurrenceInfoFieldName, index) => {
+                                        return (
+                                            <ListGroupItem key={index}>
+                                                <Button
+                                                    bsStyle="danger"
+                                                    onClick={() => fields.remove(index)}
+                                                    className="pull-right"
+                                                >
+                                                    <Glyphicon glyph="trash" />
+                                                </Button>
+                                                <br />
+                                                <Field
+                                                    name={`${recurrenceInfoFieldName}.daysBitmap`}
+                                                    component={DaysOfWeekChecklist}
+                                                    label="Days"
+                                                />
+                                                <Field
+                                                    name={`${recurrenceInfoFieldName}.timeRange`}
+                                                    component={(p) => <TimeSliderField
+                                                        {...p}
+                                                        minTime={minTime}
+                                                        maxTime={maxTime}
+                                                        timeIncrement={15}
+                                                        color={getWorkSectionColour(workSectionId)}
+                                                    />}
+                                                    label="Time Range"
+                                                />
+                                                <br />
+                                                <Field
+                                                    name={`${recurrenceInfoFieldName}.sheriffsRequired`}
+                                                    component={TextField}
+                                                    label="Number of Sheriffs Required"
+                                                    validate={[Validators.required, Validators.integer]}
+                                                />
+                                            </ListGroupItem>
+                                        )
+                                    }
+                                    )}
+                                    <br />
+                                    <Button
+                                        onClick={() => fields.push({
+                                            days: DaysOfWeek.Weekdays
+                                        })}
+                                    >
+                                        <Glyphicon glyph="plus" />
+                                    </Button>
+                                </ListGroup>
+                            );
+                        }}
                     />
                 </div>
             );
@@ -235,9 +285,14 @@ export default class AssignmentForm extends
     }
 
     render() {
-        const { handleSubmit } = this.props;
+        const { handleSubmit, error } = this.props;
         return (
             <div>
+                {error && (
+                    <Alert bsStyle="danger">
+                        <p>{error}</p>
+                    </Alert>
+                )}
                 {this.renderHeading()}
                 <Form onSubmit={handleSubmit}>
                     {this.renderWorkSectionFields()}

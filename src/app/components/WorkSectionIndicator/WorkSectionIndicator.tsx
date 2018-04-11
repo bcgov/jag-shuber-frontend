@@ -1,12 +1,12 @@
 import * as React from 'react';
 import './WorkSectionIndicator.css';
-import { WorkSectionId } from '../../api/Api';
+import { WorkSectionCode } from '../../api/Api';
 import {
     getWorkSectionColour
 } from '../../api/utils';
 
 export interface WorkSectionIndicatorProps {
-    workSectionId: WorkSectionId;
+    workSectionId: WorkSectionCode;
 }
 
 export default class WorkSectionIndicator extends React.PureComponent<WorkSectionIndicatorProps, any> {

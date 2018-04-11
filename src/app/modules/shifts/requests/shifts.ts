@@ -125,7 +125,7 @@ class DeleteShiftRequest extends RequestAction<IdType, IdType, ShiftModuleState>
     constructor(namespace: string = STATE_KEY, actionName: string = 'deleteShift') {
         super(namespace, actionName);
     }
-    public async doWork(request: number, { api }: ThunkExtra): Promise<IdType> {
+    public async doWork(request: IdType, { api }: ThunkExtra): Promise<IdType> {
         await api.deleteShift(request);
         return request;
     }

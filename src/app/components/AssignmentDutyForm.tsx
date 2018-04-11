@@ -12,7 +12,7 @@ import TextField from './FormElements/TextField';
 import { 
     IdType, 
     TimeType, 
-    WorkSectionId
+    WorkSectionCode
 } from '../api';
 import TimeSliderField from './FormElements/TimeSliderField';
 import { getWorkSectionColour } from '../api/utils';
@@ -24,7 +24,7 @@ export interface AssignmentDutyFormProps {
     assignmentId?: IdType;
     minTime?: TimeType;
     maxTime?: TimeType;
-    workSectionId?: WorkSectionId;
+    workSectionId?: WorkSectionCode;
 }
 
 export default class AssignmentDutyForm extends

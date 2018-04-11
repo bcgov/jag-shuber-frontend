@@ -1,28 +1,29 @@
 import * as moment from 'moment';
 import {
     API,
-    SheriffMap,
     Sheriff,
     Assignment,
-    TrainingType,
-    Courthouse,
+    // TrainingType,
+    // Courthouse,
     Courtroom,
-    Region,
+    // Region,
     AssignmentDuty,
     IdType,
     Shift,
     Leave,
-    ShiftCopyOptions
+    ShiftCopyOptions,
+    Run,
+    JailRole,
+    AlternateAssignment
 } from '../Api';
-import arrayToMap from '../../infrastructure/arrayToMap';
 import {
     sheriffList,
     assignments,
-    training,
-    courthouses,
+    // training,
+    // courthouses,
     COURTROOMS,
-    courtrooms,
-    regions,
+    // courtrooms,
+    // regions,
     assignmentDuties,
     RUNS,
     JAIL_ROLES,
@@ -49,21 +50,26 @@ function getAssignmentTitle(assignment: Partial<Assignment>): string {
     } else if (isJailAssignment(assignment)) {
         assignmentTitle = JAIL_ROLES[assignment.jailRoleId];
     } else if (isOtherAssignment(assignment)) {
-        assignmentTitle = ALTERNATE_ASSIGNMENTS[assignment.alternateAssignmentId];
+        assignmentTitle = ALTERNATE_ASSIGNMENTS[assignment.otherAssignmentTypeId];
     }
 
     return assignmentTitle;
 }
 
 export default class NewClient implements API {
+
     private increasingId = 30;
 
-    private getId(): number {
-        return this.increasingId++;
+    private getId(): IdType {
+        return `0000-00000-${this.increasingId++}`;
     }
 
-    async getSheriffs(): Promise<SheriffMap> {
-        return arrayToMap(sheriffList, (s) => s.id) as SheriffMap;
+    async init(): Promise<void> {
+        await randomDelay();
+    }
+
+    async getSheriffs(): Promise<Sheriff[]> {
+        return sheriffList;
     }
     async createSheriff(newSheriff: Sheriff): Promise<Sheriff> {
         await randomDelay();
@@ -72,12 +78,11 @@ export default class NewClient implements API {
             newSheriff.imageUrl = '/img/avatar.png';
         }
         newSheriff.id = this.getId();
-        newSheriff.title = `${newSheriff.lastName}, ${newSheriff.firstName}`;
         sheriffList.push(newSheriff);
         return newSheriff;
     }
     async updateSheriff(sheriffToUpdate: Partial<Sheriff>): Promise<Sheriff> {
-        const index = sheriffList.findIndex(s => s.badgeNumber === sheriffToUpdate.badgeNumber);
+        const index = sheriffList.findIndex(s => s.badgeNo === sheriffToUpdate.badgeNo);
         await randomDelay();
         sheriffList[index] = Object.assign({}, sheriffList[index], sheriffToUpdate);
         return sheriffList[index];
@@ -92,7 +97,7 @@ export default class NewClient implements API {
         newAssignment.id = this.getId();
         newAssignment.title = getAssignmentTitle(assignment);
         // todo: will eventually need to tie to the user and their facility - hard coded for now
-        newAssignment.facilityId = 1;
+        newAssignment.courthouseId = '1';
         assignments.push(newAssignment);
 
         return newAssignment;
@@ -114,7 +119,7 @@ export default class NewClient implements API {
         assignments[index] = assignmentToUpdate;
         return assignmentToUpdate;
     }
-    async deleteAssignment(assignmentId: number): Promise<void> {
+    async deleteAssignment(assignmentId: IdType): Promise<void> {
         if (assignmentId == null) {
             throw new Error('No ID specified');
         }
@@ -152,7 +157,7 @@ export default class NewClient implements API {
         return dutyToUpdate;
     }
 
-    async deleteAssignmentDuty(dutyId: number): Promise<void> {
+    async deleteAssignmentDuty(dutyId: IdType): Promise<void> {
         await randomDelay();
         if (dutyId == null) {
             throw new Error('No ID specified');
@@ -164,24 +169,6 @@ export default class NewClient implements API {
         }
 
         assignmentDuties.splice(dutyIndex, 1);
-    }
-    async getTrainingTypes(): Promise<TrainingType[]> {
-        return training;
-    }
-    async getAllCourthouses(): Promise<Courthouse[]> {
-        return courthouses;
-    }
-    async getCourthousesByRegion(regionId: number): Promise<Courthouse[]> {
-        throw new Error('Method not implemented.');
-    }
-    async getRegions(): Promise<Region[]> {
-        return regions;
-    }
-    async getAllCourtrooms(): Promise<Courtroom[]> {
-        return courtrooms;
-    }
-    async getCourtroomsByCourthouse(courthouseId: number): Promise<Courtroom[]> {
-        throw new Error('Method not implemented.');
     }
 
     async getShifts(): Promise<Shift[]> {
@@ -210,7 +197,7 @@ export default class NewClient implements API {
         const shiftToAdd = {
             ...newShift,
             id: this.getId(),
-            courthouseId: 1
+            courthouseId: '1'
         };
 
         sheriffShifts.push(shiftToAdd as Shift);
@@ -229,7 +216,7 @@ export default class NewClient implements API {
             throw Error(`No shift could be located for ${shiftId}`);
         }
 
-        sheriffShifts.splice(shiftIndex, 1); 
+        sheriffShifts.splice(shiftIndex, 1);
     }
 
     async copyShifts(shiftCopyDetails: ShiftCopyOptions): Promise<Shift[]> {
@@ -238,16 +225,16 @@ export default class NewClient implements API {
         const shiftsToCopy = sheriffShifts
             .filter(s => moment(s.startDateTime).isSame(startOfWeekSource, 'week'))
             .map<Shift>(s =>
-            ({
-                ...s,
-                id: this.getId(),
-                startDateTime: moment(s.startDateTime).week(moment(startOfWeekDestination).week()),
-                endDateTime: moment(s.endDateTime).week(moment(startOfWeekDestination).week()),
-                sheriffId: shouldIncludeSheriffs ? s.sheriffId : undefined
-            })
-        );
+                ({
+                    ...s,
+                    id: this.getId(),
+                    startDateTime: moment(s.startDateTime).week(moment(startOfWeekDestination).week()),
+                    endDateTime: moment(s.endDateTime).week(moment(startOfWeekDestination).week()),
+                    sheriffId: shouldIncludeSheriffs ? s.sheriffId : undefined
+                })
+            );
 
-        shiftsToCopy.forEach(shift => sheriffShifts.push({...shift}));
+        shiftsToCopy.forEach(shift => sheriffShifts.push({ ...shift }));
 
         return shiftsToCopy;
     }
@@ -255,4 +242,21 @@ export default class NewClient implements API {
     async getLeaves(): Promise<Leave[]> {
         return sheriffLeaves;
     }
+
+    getCourtrooms(): Promise<Courtroom[]> {
+        throw new Error("Method not implemented.");
+    }
+
+    getRuns(): Promise<Run[]> {
+        throw new Error("Method not implemented.");
+    }
+
+    getJailRoles(): Promise<JailRole[]> {
+        throw new Error("Method not implemented.");
+    }
+
+    getAlternateAssignmentTypes(): Promise<AlternateAssignment[]> {
+        throw new Error("Method not implemented.");
+    }
+
 }

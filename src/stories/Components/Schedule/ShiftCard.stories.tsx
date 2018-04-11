@@ -13,10 +13,10 @@ storiesOf('Components/Schedule')
       <StorySection title="Shift with Sheriff">
         <ShiftCard
           shift={{
-            id: 501, 
-            courthouseId: 1,
+            id: '501', 
+            courthouseId: '1',
             workSectionId: 'COURTS', 
-            sheriffId: 3,
+            sheriffId: '3',
             startDateTime: moment().startOf('week').subtract(1, 'week').add(1, 'day').add(6, 'hours'),
             endDateTime: moment().startOf('week').subtract(1, 'week').add(1, 'day').add(13.5, 'hours')
           }}
@@ -26,8 +26,8 @@ storiesOf('Components/Schedule')
       <StorySection title="Shift without Sheriff">
         <ShiftCard
           shift={{
-            id: 501, 
-            courthouseId: 1,
+            id: '501', 
+            courthouseId: '1',
             workSectionId: 'COURTS', 
             startDateTime: moment().startOf('week').subtract(1, 'week').add(1, 'day').add(6, 'hours'),
             endDateTime: moment().startOf('week').subtract(1, 'week').add(1, 'day').add(13.5, 'hours')
