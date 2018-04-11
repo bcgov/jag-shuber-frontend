@@ -1,14 +1,18 @@
 .sheriff-list-card {
-    border-color: #808080; 
+    border-color: #C8C8C8; 
     border-width: 2px;
     font-size: 16px;
     width: 200px;
     margin-left: 1.5px;
     margin-right: 1.5px;
     margin-top: 4px;
+}
 
+.sheriff-list-card.not-active { 
+    background-color: #CDCDCD;
 }
 
 .sheriff-card-badge-number {
     font-size: 14px;
+    font-style: italic;
 }

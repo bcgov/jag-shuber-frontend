@@ -18,13 +18,13 @@ import {
     Leave,
     Shift,
     IdType,
-    DateType
+    TimeType
 } from '../api';
 
 interface ConnectedScheduleSummaryProps {
     sheriffId: IdType;
-    start: DateType;
-    end: DateType; 
+    start?: TimeType;
+    end?: TimeType; 
 }
 
 interface ConnectedScheduleSummaryDispatchProps {
@@ -66,8 +66,8 @@ class ConnectedScheduleSummary extends React.Component<ConnectedScheduleSummaryP
         const { 
             leaves, 
             shifts, 
-            start, 
-            end
+            start = moment().startOf('week'), 
+            end = moment().endOf('week'),
         } = this.props;
 
         const leavesForWeek = leaves.filter(l => moment(l.date).isBetween(start, end, 'days', '[]'));

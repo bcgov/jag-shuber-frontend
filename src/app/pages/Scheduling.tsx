@@ -9,6 +9,7 @@ import SheriffDragSource from '../containers/SheriffDragSource';
 import ScheduleShiftAddModal from '../containers/ScheduleShiftAddModal';
 import ScheduleShiftCopyModal from '../containers/ScheduleShiftCopyModal';
 import './pages.css';
+import ScheduleSummary from '../containers/ScheduleSummary';
 
 class SchedulingPage extends React.PureComponent {
     render() {
@@ -24,7 +25,11 @@ class SchedulingPage extends React.PureComponent {
                             <SheriffList
                                 SheriffRenderer={(s: Sheriff) => (
                                     <SheriffDragSource sheriff={s}>
-                                        <SheriffListCard sheriff={s} showScheduleSummary={true} />
+                                        <SheriffListCard sheriff={s} >
+                                            <ScheduleSummary
+                                                sheriffId={s.id}
+                                            />
+                                        </SheriffListCard>
                                     </SheriffDragSource>
                                 )}
                             />

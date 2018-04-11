@@ -1,32 +1,25 @@
 import * as React from 'react';
-import * as moment from 'moment';
 import { Sheriff } from '../../api/index';
 import {
     ListGroupItem
 } from 'react-bootstrap';
-import ScheduleSummary from '../../containers/ScheduleSummary';
 import './SheriffListCard.css';
 
 export interface SheriffListCardProps {
     onClick?: () => void;
     sheriff: Sheriff;
-    showScheduleSummary?: boolean;
+    disabled?: boolean;
 }
 export default class SheriffListCard extends React.PureComponent<SheriffListCardProps, {}> {
     render() {
-        const { sheriff, showScheduleSummary = false } = this.props;
-        const { firstName, lastName, badgeNumber, id } = sheriff;
+        const { sheriff, disabled = false } = this.props;
+        const { firstName, lastName, badgeNumber} = sheriff;
 
         return (
-            <ListGroupItem className="sheriff-list-card" >
-                {lastName}, {firstName.charAt(0)}
+            <ListGroupItem className={`sheriff-list-card ${disabled ? 'not-active' : ''}`}>
+                <b>{lastName}, {firstName.charAt(0)}</b>
                 <p className="sheriff-card-badge-number">{badgeNumber}</p>
-                {showScheduleSummary &&
-                    <ScheduleSummary
-                        sheriffId={id}
-                        start={moment().startOf('week')}
-                        end={moment().endOf('week')}
-                    />}
+                {this.props.children}
             </ListGroupItem>
         );
     }
