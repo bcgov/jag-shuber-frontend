@@ -7,6 +7,7 @@ import { ListGroup } from 'react-bootstrap';
 import SheriffDragSource from '../containers/SheriffDragSource';
 import DutyRosterSheriffCard from '../containers/DutyRosterSheriffCard';
 import DutyRosterControls from '../containers/DutyRosterControls';
+// import ImportDefaultDutiesModal from '../containers/ImportDefaultDutiesModal';
 import './pages.css';
 
 class DutyRoster extends React.PureComponent {
