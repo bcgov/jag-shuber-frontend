@@ -20,6 +20,7 @@ export interface AssignmentDutyCardProps {
 
 export interface SheriffAssignmentRendererProps {
     sheriffDuties: SheriffDuty[];
+    duty: AssignmentDuty;
     sheriffsRequired?: number;
 }
 
@@ -35,6 +36,7 @@ export default class AssignmentDutyCard extends React.PureComponent<AssignmentDu
             canDropSheriff = (s: Sheriff) => this.canAssignSheriff(s),
             onDropSheriff,
             SheriffAssignmentRenderer = SheriffDutyBarList,
+            duty,
             duty: {
                 id = '-1',
                 sheriffDuties = [],
@@ -49,9 +51,11 @@ export default class AssignmentDutyCard extends React.PureComponent<AssignmentDu
                 canDropItem={canDropSheriff}
                 style={{ ...style }}
                 className="assignment-duty-card"
-                computeStyle={!onDropSheriff ? (s: {}) => ({}) : undefined}>
+                computeStyle={!onDropSheriff ? (s: {}) => ({}) : undefined}
+            >
                 <SheriffAssignmentRenderer
                     sheriffDuties={sheriffDuties}
+                    duty={duty}
                     sheriffsRequired={sheriffsRequired}
                 />
                 <AssignmentDutyActionsPanel>

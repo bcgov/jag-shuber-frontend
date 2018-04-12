@@ -1,5 +1,7 @@
 .assignment-duty-card{
-    background-color: #96c0e6;
+    background-color: transparent;
+    border: dotted;
+    border-color: #96c0e6;
     flex: 1;
     z-index: 70;
     position: relative;
