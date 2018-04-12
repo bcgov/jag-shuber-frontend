@@ -42,10 +42,10 @@ class APIResource extends HalResource {
 
 export function extractWorksectionCode(workSectionCodePath: string): WorkSectionCode {
     const code = `${workSectionCodePath}`.split('/').slice(-1)[0] as any;
-    return code !== '' ? code : 'COURTS';
+    return code !== '' ? code : 'OTHER';
 }
 
-export function toWorkSectionCodePath(workSectionCode: WorkSectionCode = 'COURTS'): string {
+export function toWorkSectionCodePath(workSectionCode: WorkSectionCode = 'OTHER'): string {
     return `/workSectionCodes/${workSectionCode}`;
 }
 

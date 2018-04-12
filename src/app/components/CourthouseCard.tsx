@@ -1,7 +1,4 @@
 import * as React from 'react';
-// import { 
-
-// } from '../api'
 
 export interface CourthouseCardProps {
 
