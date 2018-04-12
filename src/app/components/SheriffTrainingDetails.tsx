@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { SheriffTraining } from '../api/index';
 import {
     Table,
     Glyphicon
@@ -7,7 +6,6 @@ import {
 import DateDisplay from './DateDisplay';
 
 export interface SheriffTrainingDetailsProps {
-    training: SheriffTraining[];
     isCompactView?: boolean;
 }
 
@@ -17,7 +15,13 @@ export default class SheriffTrainingDetails extends React.Component<SheriffTrain
     }
     
     render() {
-        const { training = [], isCompactView = false} = this.props;
+        const { isCompactView = false} = this.props;
+        const training = [
+            { certificationDate: 'Mon Jan 20 2017', expiryDate: 'Mon Jan 20 2018', trainingType: 'FRO' },
+            { certificationDate: 'Mon Jan 20 2017', expiryDate: 'Mon Jan 20 2018', trainingType: 'PISTOL' },
+            { certificationDate: 'Mon Jan 20 2017', expiryDate: 'Mon Jan 20 2018', trainingType: 'CID' },
+            { certificationDate: 'Mon Jan 20 2017', expiryDate: 'Mon Jan 20 2018', trainingType: 'CEW' }
+        ];
         return (
             <div>
                 <h3>Training</h3>

@@ -4,16 +4,16 @@ import { Sheriff } from '../api/index';
 import { RootState } from '../store';
 import { default as SheriffGrid } from '../components/SheriffGrid'
 import { getSheriffList } from '../modules/sheriffs/actions'
-import { 
-  sheriffs, 
-  isLoading 
+import {
+  sheriffs,
+  sheriffListLoading
 } from '../modules/sheriffs/selectors'
 
 export interface SheriffListProps {
   getSheriffList: any;
   sheriffs: Sheriff[]
   loading: boolean;
-  SheriffListComponent?: React.ReactType<{ sheriffs?: Sheriff[] ,SheriffRenderer?:React.ReactType<Sheriff>}>
+  SheriffListComponent?: React.ReactType<{ sheriffs?: Sheriff[], SheriffRenderer?: React.ReactType<Sheriff> }>
   SheriffRenderer?: React.ReactType<Sheriff>;
 }
 
@@ -25,9 +25,9 @@ class SheriffList extends React.Component<SheriffListProps, any>{
   }
 
   render() {
-    const { 
-      sheriffs = [], 
-      loading = true, 
+    const {
+      sheriffs = [],
+      loading = true,
       SheriffListComponent = SheriffGrid,
       SheriffRenderer
     } = this.props;
@@ -39,7 +39,7 @@ class SheriffList extends React.Component<SheriffListProps, any>{
     };
 
     return (
-      <SheriffListComponent sheriffs={sheriffs} SheriffRenderer={SheriffRenderer}/>
+      <SheriffListComponent sheriffs={sheriffs} SheriffRenderer={SheriffRenderer} />
     )
   }
 }
@@ -47,15 +47,15 @@ class SheriffList extends React.Component<SheriffListProps, any>{
 const mapStateToProps = (state: RootState) => {
   return {
     sheriffs: sheriffs(state),
-    loading: isLoading(state)
-  }
-}
+    loading: sheriffListLoading(state)
+  };
+};
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
     getSheriffList: () => dispatch(getSheriffList())
-  }
-}
+  };
+};
 
 const ConnectedOnDutySherrifs = connect(
   mapStateToProps,

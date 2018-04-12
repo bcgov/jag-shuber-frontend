@@ -18,8 +18,8 @@ declare module "react-calendar-timeline" {
     }
 
     export interface ReactCalendarTimelineItem {
-        id: number;
-        group: number;
+        id: number|string;
+        group: number|string;
         title?: React.ReactNode;
         start_time: any;
         end_time: any;
@@ -30,7 +30,7 @@ declare module "react-calendar-timeline" {
     }
 
     export interface ReactCalendarTimelineGroup {
-        id: number;
+        id: number|string;
         title: React.ReactNode;
     }
 

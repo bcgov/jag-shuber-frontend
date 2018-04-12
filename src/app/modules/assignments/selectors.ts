@@ -56,30 +56,11 @@ export const allAssignmentDuties = createSelector(assignmentDutyRequests.assignm
 export const isLoadingAssignmentDuties = assignmentDutyRequests.assignmentDutyMapRequest.getIsBusy;
 export const assignmentDutiesError = assignmentDutyRequests.assignmentDutyMapRequest.getError;
 
-export const getAssignmentDuty = (id?: number) => (state: RootState) => {
+export const getAssignmentDuty = (id?: IdType) => (state: RootState) => {
     if (state && id != null) {
         const map: AssignmentDutyMap = assignmentDutyRequests.assignmentDutyMapRequest.getData(state);
-        return map[id];
+        return map[id] as AssignmentDuty;
     }
-    return null;
+    return undefined;
 }
-
-// Not Memoized since not sure which id is getting passed in
-export const linkedAssignments = (id?: number) => (state: RootState) => {
-    // if (id == null) {
-    //     return [];
-    // }
-    // return allAssignments(state).filter(t => t.sheriffIds.indexOf(id) >= 0);
-    return [];
-}
-
-export const unlinkedAssignments = createSelector(allAssignments,
-    assignments => {
-        // let ts = assignments ? assignments.filter(t => {
-        //     return !t.sheriffIds || t.sheriffIds.length == 0
-        // }) : []
-        // return ts;
-        return [];
-    }
-)
 

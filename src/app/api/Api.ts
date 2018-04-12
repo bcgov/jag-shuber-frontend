@@ -3,21 +3,25 @@ import { displayEnum } from '../infrastructure/EnumUtils';
 
 export type DateType = Date | moment.Moment | string;
 export type StringMap = { [key: string]: string };
-export type IdType = number;
+export type IdType = string;
 export type ShiftMap = { [key: number]: Shift };
 export type LeaveMap = { [key: number]: Leave };
 export type SheriffMap = { [key: number]: Sheriff };
 export type AssignmentMap = { [key: number]: Assignment };
 export type AssignmentDutyMap = { [key: number]: AssignmentDuty };
-export type WorkSectionId = 'COURTS' | 'JAIL' | 'ESCORTS' | 'OTHER';
+export type WorkSectionCode = 'COURTS' | 'JAIL' | 'ESCORTS' | 'OTHER';
 export type Assignment = CourtAssignment | JailAssignment | EscortAssignment | OtherAssignment;
 export type TimeType = string | number;
+export type CourtroomMap = { [key: number]: Courtroom };
+export type RunMap = { [key: number]: Run };
+export type JailRoleMap = { [key: number]: JailRole };
+export type AlternateAssignmentMap = { [key: number]: AlternateAssignment };
 
 /* tslint:disable:no-bitwise */
 export enum DaysOfWeek {
-    Mon = 1 << 0, 
-    Tue = 1 << 1, 
-    Wed = 1 << 2, 
+    Mon = 1 << 0,
+    Tue = 1 << 1,
+    Wed = 1 << 2,
     Thu = 1 << 3,
     Fri = 1 << 4,
     Sat = 1 << 5,
@@ -49,104 +53,73 @@ export namespace DaysOfWeek {
     export function getWeekdayNumbers(value: DaysOfWeek): number[] {
         const dayMap = {
             'Sun': 0,
-            'Mon': 1, 
-            'Tue': 2, 
-            'Wed': 3, 
-            'Thu': 4, 
-            'Fri': 5, 
+            'Mon': 1,
+            'Tue': 2,
+            'Wed': 3,
+            'Thu': 4,
+            'Fri': 5,
             'Sat': 6
         };
 
         const dayNames = getDisplayValues(value);
         let dayNumbers: number[] = [];
-        
+
         if (dayNames.indexOf('Everyday') !== -1) {
             dayNumbers = [0, 1, 2, 3, 4, 5, 6];
-        }  else if (dayNames.indexOf('Weekdays') !== -1) {
+        } else if (dayNames.indexOf('Weekdays') !== -1) {
             dayNumbers = [1, 2, 3, 4, 5];
         } else {
             dayNames.forEach(day => {
-                dayNumbers.push(dayMap[day]);    
+                dayNumbers.push(dayMap[day]);
             });
         }
-        
+
         return dayNumbers;
     }
 }
 
-export const BLANK_SHERIFF_LOCATION: SheriffLocation = {
-    courthouseId: '',
-    regionId: ''
-};
-
 export const BLANK_SHERIFF: Sheriff = {
-    id: -1,
-    title: '',
+    id: '00000000-0000-0000-0000-000000000000',
     firstName: '',
     lastName: '',
-    badgeNumber: -1,
-    imageUrl: '/img/avatar.png',
-    training: [{
-        trainingType: '',
-        certificationDate: '',
-        expiryDate: '',
-    }],
-    permanentLocation: BLANK_SHERIFF_LOCATION,
-    currentLocation: BLANK_SHERIFF_LOCATION,
-    onDuty: false
+    badgeNo: '-1',
+    imageUrl: '/img/avatar.png'
 };
 
 export const BLANK_COURTHOUSE: Courthouse = {
-    id: -1,
-    name: '',
-    regionId: -1
+    id: '-1',
+    name: ''
 };
 
 export const DEFAULT_RECURRENCE: RecurrenceInfo[] = [
     {
-        days: DaysOfWeek.Weekdays,
+        daysBitmap: DaysOfWeek.Weekdays,
         startTime: moment().hour(9).minute(0),
         endTime: moment().hour(12).minute(0),
         sheriffsRequired: 1
     },
     {
-        days: DaysOfWeek.Weekdays,
+        daysBitmap: DaysOfWeek.Weekdays,
         startTime: moment().hour(13).minute(0),
         endTime: moment().hour(17).minute(0),
         sheriffsRequired: 2
     }
 ];
 
-export interface SheriffTraining {
-    trainingType: string;
-    certificationDate: string;
-    expiryDate: string;
-}
-
-export interface SheriffLocation {
-    courthouseId: string;
-    regionId: string;
-}
-
 export interface Sheriff {
     id: IdType;
-    title: string;
     firstName: string;
     lastName: string;
-    badgeNumber: number;
+    badgeNo: string;
     imageUrl?: string;
-    training: SheriffTraining[];
-    permanentLocation?: SheriffLocation;
-    currentLocation?: SheriffLocation;
-    onDuty: boolean;
 }
 
 export interface BaseAssignment {
     id: IdType;
     title: string;
-    facilityId: IdType;
-    workSectionId: WorkSectionId;
-    recurrenceInfo?: RecurrenceInfo[];
+    courthouseId: IdType;
+    workSectionId: WorkSectionCode;
+    dutyRecurrences?: RecurrenceInfo[];
 }
 
 export interface CourtAssignment extends BaseAssignment {
@@ -165,8 +138,8 @@ export interface EscortAssignment extends BaseAssignment {
 }
 
 export interface OtherAssignment extends BaseAssignment {
-    alternateAssignmentId: IdType;
     workSectionId: 'OTHER';
+    otherAssignmentTypeId: IdType;
 }
 
 export interface AssignmentDutyDetails {
@@ -192,22 +165,17 @@ export interface SheriffDuty {
 }
 
 export interface RecurrenceInfo {
+    id?: IdType;
+    assignmentIdPath?: IdType;
     startTime: DateType;
     endTime: DateType;
-    days: DaysOfWeek;
+    daysBitmap: DaysOfWeek;
     sheriffsRequired: number;
 }
 
-export interface TrainingType {
-    id: number;
-    title: string;
-    abbreviation: string;
-}
-
 export interface Courthouse {
-    id: number;
+    id: IdType;
     name: string;
-    regionId: number;
 }
 
 export interface Region {
@@ -216,9 +184,9 @@ export interface Region {
 }
 
 export interface Courtroom {
-    id: number;
-    courthouseId: number;
-    number: number;
+    id: IdType;
+    courthouseId: IdType;
+    code: IdType;
     name: string;
 }
 
@@ -231,7 +199,7 @@ export interface Shift {
     id: IdType;
     sheriffId?: IdType;
     courthouseId: IdType;
-    workSectionId?: WorkSectionId;
+    workSectionId?: WorkSectionCode;
     startDateTime: DateType;
     endDateTime: DateType;
 }
@@ -243,15 +211,27 @@ export interface ShiftCopyOptions {
 }
 
 export interface Leave {
-    id: IdType; 
+    id: IdType;
     sheriffId: IdType;
     date: DateType;
-    leaveCode?: string; // string for now until these are further defined with "add leave" user stories
+    leaveCode?: string;
+}
+
+export interface Run {
+    id: IdType;
+    courthouseId: IdType | string;
+    description: string;
+}
+
+export interface AlternateAssignment {
+    id: IdType | string;
+    description: string;
 }
 
 export interface API {
+
     // Sheriffs
-    getSheriffs(): Promise<SheriffMap>;
+    getSheriffs(): Promise<Sheriff[]>;
     createSheriff(newSheriff: Sheriff): Promise<Sheriff>;
     updateSheriff(sheriffToUpdate: Partial<Sheriff>): Promise<Sheriff>;
 
@@ -267,20 +247,18 @@ export interface API {
     updateAssignmentDuty(duty: Partial<AssignmentDuty>): Promise<AssignmentDuty>;
     deleteAssignmentDuty(dutyId: IdType): Promise<void>;
 
-    getTrainingTypes(): Promise<TrainingType[]>;
-    getAllCourthouses(): Promise<Courthouse[]>;
-    getCourthousesByRegion(regionId: number): Promise<Courthouse[]>;
-    getRegions(): Promise<Region[]>;
-    getAllCourtrooms(): Promise<Courtroom[]>;
-    getCourtroomsByCourthouse(courthouseId: number): Promise<Courtroom[]>;
-
     // Sheriff Shifts
     getShifts(): Promise<Shift[]>;
     updateShift(shiftToUpdate: Partial<Shift>): Promise<Shift>;
     createShift(newShift: Partial<Shift>): Promise<Shift>;
     deleteShift(shiftId: IdType): Promise<void>;
-    copyShifts(shiftCopyDetails: ShiftCopyOptions): Promise<Shift[]>; 
+    copyShifts(shiftCopyDetails: ShiftCopyOptions): Promise<Shift[]>;
 
     // Sheriff Leaves
-    getLeaves(): Promise<Leave []>;
+    getLeaves(): Promise<Leave[]>;
+
+    getCourtrooms(): Promise<Courtroom[]>;
+    getRuns(): Promise<Run[]>;
+    getJailRoles(): Promise<JailRole[]>;
+    getAlternateAssignmentTypes(): Promise<AlternateAssignment[]>;
 }

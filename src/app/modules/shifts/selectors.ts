@@ -6,7 +6,8 @@ import {
     Shift,
     ShiftMap,
     LeaveMap,
-    Leave
+    Leave,
+    IdType
 } from '../../api/Api';
 
 export const allShifts = createSelector(
@@ -17,7 +18,7 @@ export const allShifts = createSelector(
     }
 );
 
-export const getShift = (id?: number) => (state: RootState) => {
+export const getShift = (id?: IdType) => (state: RootState) => {
     if (state && id != null) {
         const map: ShiftMap = shiftRequests.shiftMapRequest.getData(state);
         return map[id];
@@ -25,7 +26,7 @@ export const getShift = (id?: number) => (state: RootState) => {
     return null;
 };
 
-export const getSheriffShifts = (sheriffId?: number) => (state: RootState) => {
+export const getSheriffShifts = (sheriffId?: IdType) => (state: RootState) => {
     if (state && sheriffId != null) {
         return allShifts(state).filter(s => s.sheriffId === sheriffId);
     }
@@ -40,7 +41,7 @@ export const allLeaves = createSelector(
     }
 );
 
-export const getLeave = (id?: number) => (state: RootState) => {
+export const getLeave = (id?: IdType) => (state: RootState) => {
     if (state && id != null) {
         const map: LeaveMap = leaveRequests.leaveMapRequest.getData(state);
         return map[id];
@@ -48,7 +49,7 @@ export const getLeave = (id?: number) => (state: RootState) => {
     return null;
 };
 
-export const getSheriffLeaves = (sheriffId?: number) => (state: RootState) => {
+export const getSheriffLeaves = (sheriffId?: IdType) => (state: RootState) => {
     if (state && sheriffId != null) {
         return allLeaves(state).filter(l => l.sheriffId === sheriffId);
     }

@@ -16,9 +16,9 @@ class SheriffTimeline extends React.PureComponent<SheriffTimelineProps, any>{
             <div>
                 <Grid>
                     {sheriffs.map(sheriff => (
-                        <Row key={sheriff.badgeNumber} >
+                        <Row key={sheriff.badgeNo} >
                             <Col sm={12} md={12} lg={12}>
-                                <SheriffCard sheriff={sheriff} onClick={() => alert(sheriff.badgeNumber)} />
+                                <SheriffCard sheriff={sheriff} onClick={() => alert(sheriff.badgeNo)} />
                             </Col>
                         </Row>
                     ))}

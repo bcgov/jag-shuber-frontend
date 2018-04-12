@@ -2,11 +2,11 @@ import * as React from 'react';
 import { RootState } from '../store';
 import { connect } from 'react-redux';
 import { getSheriff } from '../modules/sheriffs/selectors';
-import { Sheriff } from '../api/Api';
+import { Sheriff, IdType } from '../api/Api';
 import SheriffDisplay from '../components/SheriffDisplay';
 
 interface ConnectedSheriffDisplayProps {
-    sheriffId?: number;
+    sheriffId?: IdType;
     RenderComponent?: React.ComponentType<SheriffDisplayProps>;
 }
 interface SheriffDisplayProps {

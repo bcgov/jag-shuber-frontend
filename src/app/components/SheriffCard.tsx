@@ -12,7 +12,7 @@ export default class SheriffCard extends React.PureComponent<SheriffCardProps, a
     render() {
         const { sheriff } = this.props;
         return (
-            <div key={sheriff.badgeNumber} style={{ flex: "1 1 auto" }}>
+            <div key={sheriff.badgeNo} style={{ flex: "1 1 auto" }}>
                 <SheriffProfileDetailsModal sheriff={sheriff} />
             </div>
         );

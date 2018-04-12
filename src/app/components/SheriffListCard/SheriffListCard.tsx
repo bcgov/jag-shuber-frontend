@@ -13,12 +13,12 @@ export interface SheriffListCardProps {
 export default class SheriffListCard extends React.PureComponent<SheriffListCardProps, {}> {
     render() {
         const { sheriff, disabled = false } = this.props;
-        const { firstName, lastName, badgeNumber} = sheriff;
+        const { firstName, lastName, badgeNo} = sheriff;
 
         return (
             <ListGroupItem className={`sheriff-list-card ${disabled ? 'not-active' : ''}`}>
                 <b>{lastName}, {firstName.charAt(0)}</b>
-                <p className="sheriff-card-badge-number">{badgeNumber}</p>
+                <p className="sheriff-card-badge-number">{badgeNo}</p>
                 {this.props.children}
             </ListGroupItem>
         );

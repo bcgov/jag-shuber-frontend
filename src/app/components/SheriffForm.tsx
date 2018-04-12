@@ -12,7 +12,6 @@ import {
     FieldArray,
     InjectedFormProps
 } from 'redux-form';
-import RegionSelector from './FormElements/RegionSelector';
 import CourthouseSelector from './FormElements/CourthouseSelector';
 import TextField from './FormElements/TextField';
 import TrainingTypeSelector from './FormElements/TrainingTypeSelector';
@@ -50,9 +49,7 @@ export default class SheriffForm extends React.Component<SheriffFormProps & Inje
                     <br />
                     
                     <h3>Region and Courthouse</h3>
-                    <Field name="permanentLocation.regionId" component={RegionSelector} label="Permanent Region" />
                     <Field name="permanentLocation.courthouseId" component={CourthouseSelector} label="Permanent Courthouse" />
-                    <Field name="currentLocation.regionId" component={RegionSelector} label="Current Region" />
                     <Field name="currentLocation.courthouseId" component={CourthouseSelector} label="Current Courthouse" />
                    
                     <br />

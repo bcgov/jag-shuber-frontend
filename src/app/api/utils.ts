@@ -5,7 +5,7 @@ import {
     CourtAssignment,
     JailAssignment,
     OtherAssignment,
-    WorkSectionId,
+    WorkSectionCode,
     Shift,
     DateType,
     DaysOfWeek
@@ -13,7 +13,7 @@ import {
 
 export type ShiftCreationPayload = {
     weekStart: DateType;
-    workSectionId?: WorkSectionId;
+    workSectionId?: WorkSectionCode;
     startTime: DateType;
     endTime: DateType;
     days: DaysOfWeek;
@@ -36,7 +36,7 @@ export function isOtherAssignment(assignment: Partial<Assignment>): assignment i
     return (<OtherAssignment>assignment).workSectionId === 'OTHER';
 }
 
-export function getWorkSectionColour(workSectionId?: WorkSectionId): string {
+export function getWorkSectionColour(workSectionId?: WorkSectionCode): string {
     let colour;
 
     switch (workSectionId) {

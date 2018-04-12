@@ -5,41 +5,50 @@ export {
     AssignmentDuty,
     AssignmentDutyDetails,
     AssignmentDutyMap,
-    SheriffLocation,
     SheriffMap,
-    SheriffTraining,
     StringMap,
     BLANK_SHERIFF,
-    BLANK_SHERIFF_LOCATION,
     DateType,
     DaysOfWeek,
     DEFAULT_RECURRENCE,
     RecurrenceInfo,
-    TrainingType,
     Courthouse,
-    Region, 
+    Region,
     Courtroom,
     API,
-    IdType, 
+    IdType,
     Shift,
     Leave,
-    WorkSectionId,
     SheriffDuty,
-    TimeType
+    TimeType,
+    WorkSectionCode,
+    CourtroomMap,
+    Run,
+    RunMap,
+    JailRole,
+    JailRoleMap,
+    AlternateAssignment,
+    AlternateAssignmentMap
 } from './Api';
 
 // Todo: We need to create reducers for the following
 export {
- WORK_SECTIONS,
- TRAINING_TYPES,
- COURTHOUSES,
- REGIONS,
- COURTROOMS,
- JAIL_ROLES,
- RUNS,
- ALTERNATE_ASSIGNMENTS
+    WORK_SECTIONS,
+    TRAINING_TYPES,
+    COURTHOUSES,
+    COURTROOMS,
+    JAIL_ROLES,
+    RUNS,
+    ALTERNATE_ASSIGNMENTS
 } from './Mock/MockData';
 
-import Client from './Mock/MockApi';
+import MockClient from './Mock/MockApi';
+import Client from './Client';
 
-export default new Client();
+const mock = false;
+
+export const courthouseCode = '1201';
+
+const client = mock ? new MockClient() : new Client(`/api`, courthouseCode);
+
+export default client;

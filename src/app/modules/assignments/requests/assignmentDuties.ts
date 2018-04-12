@@ -85,7 +85,7 @@ class DeleteAssignmentDutyRequest extends RequestAction<IdType, IdType, Assignme
     constructor(namespace = STATE_KEY, actionName = 'deleteAssignmentDuty') {
         super(namespace, actionName);
     }
-    public async  doWork(request: number, { api }: ThunkExtra): Promise<IdType> {
+    public async  doWork(request: IdType, { api }: ThunkExtra): Promise<IdType> {
         await api.deleteAssignmentDuty(request);
         return request;
     }

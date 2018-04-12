@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as moment from 'moment';
+// import * as moment from 'moment';
 import {
     reduxForm,
     ConfigProps
@@ -12,18 +12,21 @@ import { getAssignment } from '../modules/assignments/selectors';
 import { editAssignment } from '../modules/assignments/actions';
 import { IdType, Assignment } from '../api';
 
+// const TimeFormat = 'HH:mm:ss';
+
 // wrapping generic assignment form in redux-form
 const formConfig: ConfigProps<any, AssignmentFormProps> = {
     form: 'EditAssignment',
     onSubmit: (values, dispatch, props) => {
-        const {recurrenceInfo = [], ...rest} = values;
-        let updatedAssignment = Object.assign({}, { ...rest });
-        updatedAssignment.recurrenceInfo = recurrenceInfo.map((element: any) => ({
-            days: element.days,
-            startTime: element.timeRange.startTime,
-            endTime: element.timeRange.endTime,
-            sheriffsRequired: element.sheriffsRequired
-        }));
+        // const { dutyRecurrences = [], ...rest } = values;
+        // let updatedAssignment: Assignment = { ...rest };
+        // updatedAssignment.dutyRecurrences = dutyRecurrences.map((element: any) => ({
+        //     daysBitmap: element.daysBitmap,
+        //     startTime: moment(element.timeRange.startTime).format(TimeFormat),
+        //     endTime: moment(element.timeRange.endTime).format(TimeFormat),
+        //     sheriffsRequired: element.sheriffsRequired
+        // }));
+        const updatedAssignment = AssignmentForm.parseAssignmentFromValues(values);
         dispatch(editAssignment(updatedAssignment));
     }
 };
@@ -35,18 +38,8 @@ export interface AssignmentEditFormProps extends AssignmentFormProps {
 const mapStateToProps = (state: RootState, props: AssignmentEditFormProps) => {
     const initialAssignment: Assignment = getAssignment(props.id)(state);
     if (initialAssignment) {
-        const { recurrenceInfo = [] } = initialAssignment;
         return {
-            initialValues: {
-                ...initialAssignment,
-                recurrenceInfo: recurrenceInfo.map(({startTime, endTime, ...rest}) => ({
-                    ...rest,
-                    timeRange: {
-                        startTime: moment(startTime).toISOString(), 
-                        endTime: moment(endTime).toISOString()
-                    }
-                }))
-            },
+            initialValues: AssignmentForm.assignmentToFormValues(initialAssignment),
             workSectionId: initialAssignment.workSectionId,
             isDefaultTemplate: true
         };

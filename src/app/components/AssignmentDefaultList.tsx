@@ -42,8 +42,8 @@ export default class AssignmentDefaultList extends React.Component<AssignmentDef
                                         <td>{WORK_SECTIONS[assignment.workSectionId]}</td>
                                         <td><strong>{assignment.title}</strong></td>
                                         <td>
-                                            {assignment.recurrenceInfo &&
-                                                assignment.recurrenceInfo.map((recurrence) => 
+                                            {assignment.dutyRecurrences &&
+                                                assignment.dutyRecurrences.map((recurrence) => 
                                                 <AssignmentDefaultRecurrenceDetails key="recurrence" data={recurrence}/>
                                             )}
                                         </td>

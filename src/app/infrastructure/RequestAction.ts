@@ -24,7 +24,7 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
         return { type: this.actionNames.success, payload: response };
     }
 
-    constructor(private namespace: string, private actionName: string) {
+    constructor(private namespace: string, private actionName: string, private throwOnError: boolean = false) {
         const upperNamespace = namespace.toUpperCase();
         const upperAction = actionName.toUpperCase();
         // Create our actions
@@ -44,7 +44,11 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
             const response = await this.doWork(request, extra, getState);
             this.dispatchSuccess(dispatch, response);
         } catch (error) {
-            this.dispatchFailure(dispatch, error);
+            if (this.throwOnError) {
+                throw error;
+            } else {
+                this.dispatchFailure(dispatch, error);
+            }
         }
     })
 
@@ -52,10 +56,11 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
         dispatch(this.beginAction);
     }
 
-    protected dispatchFailure(dispatch: Dispatch<any>, error: Error) {
+    protected dispatchFailure(dispatch: Dispatch<any>, error: Error | string) {
+        const errorMessage = typeof error === 'string' ? error : error.message;
+        dispatch(this.getFailAction(errorMessage));
         // tslint:disable-next-line:no-console
-        console.error(error);
-        dispatch(this.getFailAction(error.message));
+        console.error(errorMessage);
     }
 
     protected dispatchSuccess(dispatch: Dispatch<any>, response: TResponse) {

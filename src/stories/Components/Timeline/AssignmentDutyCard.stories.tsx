@@ -10,8 +10,8 @@ import TimelineCard from '../../../app/components/Timeline/TimelineCard';
 import SheriffDutyBarList from '../../../app/components/SheriffDutyBarList/SheriffDutyBarList';
 
 const blank_duty: AssignmentDuty = {
-    id: 0,
-    assignmentId: 0,
+    id: '0',
+    assignmentId: '0',
     sheriffsRequired: 1,
     sheriffIds: [],
     startDateTime: moment(),
@@ -60,7 +60,7 @@ storiesOf('Timeline')
                     <TimelineCardWrapper>
                         <AssignmentDutyCard duty={{
                             ...blank_duty,
-                            sheriffIds: array('Sheriff Ids', [1, 2]),
+                            sheriffIds: array('Sheriff Ids', ['1', '2']),
                             sheriffsRequired: number("Sheriffs Required", 3)
                         }}
                             SheriffAssignmentRenderer={DutyBarList}
@@ -73,7 +73,7 @@ storiesOf('Timeline')
                     <TimelineCardWrapper>
                         <AssignmentDutyCard duty={{
                             ...blank_duty,
-                            sheriffIds: array('Sheriff Ids', [1, 2, 3]),
+                            sheriffIds: array('Sheriff Ids', ['1', '2', '3']),
                             sheriffsRequired: number("Sheriffs Required", 3)
                         }}
                             SheriffAssignmentRenderer={DutyBarList}
@@ -85,7 +85,7 @@ storiesOf('Timeline')
                     <TimelineCardWrapper>
                         <AssignmentDutyCard duty={{
                             ...blank_duty,
-                            sheriffIds: array('Sheriff Ids', [1, 2, 3, 4]),
+                            sheriffIds: array('Sheriff Ids', ['1', '2', '3', '4']),
                             sheriffsRequired: number("Sheriffs Required", 3)
                         }}
                             SheriffAssignmentRenderer={DutyBarList}

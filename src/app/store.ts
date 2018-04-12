@@ -1,9 +1,10 @@
 import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
 import { default as thunk, ThunkAction as _ThunkAction } from 'redux-thunk';
 import { default as api, API } from './api';
-import { default as sheriffReducer, SheriffState } from './modules/sheriffs/reducer';
+import { registerReducer as registerSheriffReducer, SheriffModuleState } from './modules/sheriffs/reducer';
 import { registerReducer as registerAssignmentReducer, AssignmentModuleState } from './modules/assignments/reducer';
 import { registerReducer as registerShiftReducer, ShiftModuleState } from './modules/shifts/reducer';
+import { registerReducer as registerCourthouseReducer, CourthouseModuleState } from './modules/courthouse/reducer';
 import { default as timelineReducer, TimelineState } from './modules/timeline/reducer';
 import { reducer as formReducer } from 'redux-form';
 
@@ -14,20 +15,22 @@ export interface ThunkExtra {
 export type ThunkAction<T> = (args?: T) => _ThunkAction<any, RootState, ThunkExtra>;
 
 export interface RootState {
-    sheriffs: SheriffState;
+    sheriffs: SheriffModuleState;
     assignments: AssignmentModuleState;
     timeline: TimelineState;
     shifts: ShiftModuleState;
+    courthouse: CourthouseModuleState;
 }
 
 const reducers = {
-    sheriffs: sheriffReducer,
     timeline: timelineReducer,
     form: formReducer
 };
 
+registerSheriffReducer(reducers);
 registerShiftReducer(reducers);
 registerAssignmentReducer(reducers);
+registerCourthouseReducer(reducers);
 
 const rootReducer = combineReducers(reducers);
 

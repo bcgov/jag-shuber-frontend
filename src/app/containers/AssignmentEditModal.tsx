@@ -10,7 +10,7 @@ import { ConfirmationModal } from '../components/ConfirmationModal';
 import { connect } from 'react-redux';
 import { deleteAssignment } from '../modules/assignments/actions';
 export interface AssignmentEditModalProps {
-    assignmentId: number;
+    assignmentId: IdType;
 }
 
 export interface AssignmentEditModalDispatchProps {

@@ -13,18 +13,17 @@ export interface SheriffProfileDetailsProps {
 
 export default class SheriffProfileDetails extends React.Component<SheriffProfileDetailsProps, any>{
     render() {
-        const { isCompactView, sheriff:{onDuty, training, currentLocation, permanentLocation} } = this.props;
+        const onDuty = true;
+
+        const { isCompactView} = this.props;
         return (
             <div>
-                <SheriffLocationDetails 
-                    currentLocation={currentLocation} 
-                    permanentLocation={permanentLocation}  
-                />
+                <SheriffLocationDetails />
                 <br />
-                <SheriffTrainingDetails training={ training } isCompactView={isCompactView}/>           
+                <SheriffTrainingDetails isCompactView={isCompactView} />
                 <br />
-                {!isCompactView && <SheriffUpcomingSchedule onDuty={ onDuty } /> }
-                {isCompactView && <SheriffDutyStatus onDuty ={ onDuty } />}
+                {!isCompactView && <SheriffUpcomingSchedule onDuty={onDuty} />}
+                {isCompactView && <SheriffDutyStatus onDuty={onDuty} />}
                 <br />
                 {!isCompactView && <SheriffOvertimeStatus />}
             </div>
