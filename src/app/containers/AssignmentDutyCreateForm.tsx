@@ -10,10 +10,9 @@ import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { createAssignmentDuty } from '../modules/assignments/actions';
 import { getAssignment } from '../modules/assignments/selectors';
-import { 
-    IdType, 
-    Assignment, 
-    AssignmentDuty,
+import {
+    IdType,
+    Assignment,
     DateType
 } from '../api';
 
@@ -21,11 +20,7 @@ import {
 const formConfig: ConfigProps<any, AssignmentDutyFormProps> = {
     form: 'CreateAssignmentDuty',
     onSubmit: (values, dispatch, props) => {
-        const { timeRange: {startTime, endTime}, ...rest } = values;
-        let newAssignmentDuty: Partial<AssignmentDuty> = Object.assign({}, { ...rest });
-        newAssignmentDuty.assignmentId = props.assignmentId;
-        newAssignmentDuty.startDateTime = startTime;
-        newAssignmentDuty.endDateTime = endTime;
+        let newAssignmentDuty = AssignmentDutyForm.parseAssignmentDutyFromValues(values);
         dispatch(createAssignmentDuty(newAssignmentDuty));
     }
 };
@@ -37,13 +32,21 @@ export interface AssignmentDutyCreateFormProps extends AssignmentDutyFormProps {
 
 const mapStateToProps = (state: RootState, props: AssignmentDutyCreateFormProps) => {
     const assignment: Assignment = getAssignment(props.assignmentId)(state);
+    const defaultTimeRange = {
+        startTime: moment().startOf('day').add('hours', 6).toISOString(),
+        endTime: moment().startOf('day').add('hours', 17).toISOString()
+    };
     return {
         initialValues: {
-            timeRange: {
-                startTime: moment().startOf('day').add('hours', 6).toISOString(), 
-                endTime: moment().startOf('day').add('hours', 17).toISOString()
-            }
-        }, 
+            timeRange: defaultTimeRange,
+            sheriffDuties: [
+                {
+                    timeRange: {
+                        ...defaultTimeRange
+                    }
+                }
+            ]
+        },
         assignmentTitle: assignment.title,
         workSectionId: assignment.workSectionId
     };
@@ -51,10 +54,10 @@ const mapStateToProps = (state: RootState, props: AssignmentDutyCreateFormProps)
 
 // Here we create a class that extends the configured assignment form so that we
 // can add a static SubmitButton member to it to make the API cleaner
-export default class AssignmentDutyCreateForm extends 
+export default class AssignmentDutyCreateForm extends
     connect<any, {}, AssignmentDutyFormProps>
-    (mapStateToProps)(reduxForm(formConfig)(AssignmentDutyForm)) {
-        static SubmitButton = (props: Partial<SubmitButtonProps>) => (
-            <FormSubmitButton {...props} formName={formConfig.form} />
-        )
+        (mapStateToProps)(reduxForm(formConfig)(AssignmentDutyForm)) {
+    static SubmitButton = (props: Partial<SubmitButtonProps>) => (
+        <FormSubmitButton {...props} formName={formConfig.form} />
+    )
 }
