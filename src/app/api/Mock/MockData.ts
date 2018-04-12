@@ -324,7 +324,7 @@ function createAssignmentDuties(): AssignmentDuty[] {
                 let duty: AssignmentDuty = {
                     id: `${incrementingId}`,
                     assignmentId: assignment.id,
-                    sheriffIds: [],
+                    sheriffDuties: [],
                     startDateTime: moment(item.startTime),
                     endDateTime: moment(item.endTime),
                     sheriffsRequired: item.sheriffsRequired

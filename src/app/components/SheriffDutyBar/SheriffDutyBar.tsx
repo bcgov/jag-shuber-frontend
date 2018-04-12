@@ -1,11 +1,10 @@
-import * as React from 'react'
+import * as React from 'react';
 import {
     Glyphicon,
     Label
-} from 'react-bootstrap'
-import './SheriffDutyBar.css'
+} from 'react-bootstrap';
+import './SheriffDutyBar.css';
 import { IdType } from '../../api';
-
 
 export interface SheriffDutyBarProps {
     sheriffId?: IdType;

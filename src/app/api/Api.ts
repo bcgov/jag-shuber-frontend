@@ -151,14 +151,14 @@ export interface AssignmentDuty {
     assignmentId: IdType;
     startDateTime: DateType;
     endDateTime: DateType;
-    sheriffIds: IdType[];
+    sheriffDuties: SheriffDuty[];
     sheriffsRequired: number;
     extraDetails?: AssignmentDutyDetails;
 }
 
 export interface SheriffDuty {
     id: IdType;
-    sheriffId: IdType;
+    sheriffId?: IdType;
     dutyId: IdType; 
     startDateTime: DateType;
     endDateTime: DateType;

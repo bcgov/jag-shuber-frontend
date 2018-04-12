@@ -33,12 +33,12 @@ export const linkAssignment: ThunkAction<SheriffDutyLink> =
         if (duty == null) {
             return;
         }
-        const { sheriffIds = [] } = duty;
-        const newSheriffIds = sheriffIds.slice(0);
-        if (newSheriffIds.indexOf(sheriffId) === -1) {
-            newSheriffIds.push(sheriffId);
-        }
-        dispatch(editAssignmentDuty({ ...duty, sheriffIds: newSheriffIds }));
+        // const { sheriffDuties = [] } = duty;
+        // const newSheriffIds = sheriffDuties.slice(0);
+        // if (newSheriffIds.indexOf(sheriffId) === -1) {
+        //     newSheriffIds.push(sheriffId);
+        // }
+        // dispatch(editAssignmentDuty({ ...duty, sheriffDuties: newSheriffIds }));
     };
 
 export const unlinkAssignment: ThunkAction<SheriffDutyLink> =
@@ -48,14 +48,14 @@ export const unlinkAssignment: ThunkAction<SheriffDutyLink> =
             return;
         }
 
-        const { sheriffIds = [] } = duty;
-        const sheriffIndex = sheriffIds.indexOf(sheriffId);
-        const newSheriffIds = sheriffIds.slice(0);
-        // If not found, just return
-        if (sheriffIndex === -1) {
-            return;
-        }
+        // const { sheriffDuties = [] } = duty;
+        // const sheriffIndex = sheriffDuties.indexOf(sheriffId);
+        // const newSheriffIds = sheriffDuties.slice(0);
+        // // If not found, just return
+        // if (sheriffIndex === -1) {
+        //     return;
+        // }
 
-        newSheriffIds.splice(sheriffIndex, 1);
-        dispatch(editAssignmentDuty({ ...duty, sheriffIds: newSheriffIds }));
+        // newSheriffIds.splice(sheriffIndex, 1);
+        // dispatch(editAssignmentDuty({ ...duty, sheriffDuties: newSheriffIds }));
     };
