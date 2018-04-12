@@ -48,11 +48,15 @@ export default class AssignmentDutyForm extends
     React.Component<AssignmentDutyFormProps & InjectedFormProps<{}, AssignmentDutyFormProps>, {}> {
 
     static parseAssignmentDutyFromValues(values: any): AssignmentDuty {
-        const { timeRange: { startTime, endTime }, ...rest } = values;
-        const updatedAssignmentDuty = { ...rest };
-        updatedAssignmentDuty.startDateTime = startTime;
-        updatedAssignmentDuty.endDateTime = endTime;
-        return updatedAssignmentDuty as AssignmentDuty;
+        const { timeRange: { startTime, endTime }, sheriffDuties, ...rest } = values;
+        const assignmentDuty = { ...rest };
+        assignmentDuty.startDateTime = startTime;
+        assignmentDuty.endDateTime = endTime;
+        assignmentDuty.sheriffDuties = sheriffDuties.map((element: any) => ({
+            startDateTime: moment(element.timeRange.startTime).toISOString(),
+            endDateTime: moment(element.timeRange.endTime).toISOString(),
+        }));
+        return assignmentDuty as AssignmentDuty;
     }
 
     static assignmentDutyToFormValues(duty: AssignmentDuty) {

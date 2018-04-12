@@ -20,7 +20,9 @@ import {
 const formConfig: ConfigProps<any, AssignmentDutyFormProps> = {
     form: 'CreateAssignmentDuty',
     onSubmit: (values, dispatch, props) => {
+        const { assignmentId = '-1' } = props;
         let newAssignmentDuty = AssignmentDutyForm.parseAssignmentDutyFromValues(values);
+        newAssignmentDuty.assignmentId = assignmentId;
         dispatch(createAssignmentDuty(newAssignmentDuty));
     }
 };

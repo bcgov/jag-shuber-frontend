@@ -315,26 +315,27 @@ export const assignments: Assignment[] = createAssignmentList();
 
 function createAssignmentDuties(): AssignmentDuty[] {
     let duties: AssignmentDuty[] = [];
-    let incrementingId = 0;
+    // let incrementingId = 0;
 
-    assignments.forEach(assignment => {
-        if (assignment.dutyRecurrences) {
-            assignment.dutyRecurrences.forEach(item => {
+    // assignments.forEach(assignment => {
+    //     if (assignment.dutyRecurrences) {
+    //         assignment.dutyRecurrences.forEach(item => {
 
-                let duty: AssignmentDuty = {
-                    id: `${incrementingId}`,
-                    assignmentId: assignment.id,
-                    sheriffDuties: [],
-                    startDateTime: moment(item.startTime),
-                    endDateTime: moment(item.endTime),
-                    sheriffsRequired: item.sheriffsRequired
-                };
-                duties.push(duty);
-                incrementingId++;
-            });
-        }
+    //             let duty: AssignmentDuty = {
+    //                 id: `${incrementingId}`,
+    //                 assignmentId: assignment.id,
+    //                 sheriffDuties: [],
+    //                 startDateTime: moment(item.startTime),
+    //                 endDateTime: moment(item.endTime),
+    //                 sheriffsRequired: item.sheriffsRequired
+    //             };
+    //             duties.push(duty);
+    //             incrementingId++;
+    //         });
+    //     }
 
-    });
+    // });
+
 
     return duties;
 }
