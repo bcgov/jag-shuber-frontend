@@ -2,7 +2,7 @@ import {
   IActionType,
   IActionPayload,
   IAction
-} from './actions'
+} from './actions';
 
 export type ReducerResponse<State> = State;
 export type ReducerCases<State> = {
@@ -30,10 +30,9 @@ export interface TimelineState {
   visibleTimeEnd: any;
 }
 
-
 const reducer = createReducer<TimelineState>({
   TIMELINE_UPDATE_VISIBLETIME: (state, { visibleTimeStart, visibleTimeEnd }) => {
-    return { ...state, visibleTimeStart, visibleTimeEnd }
+    return { ...state, visibleTimeStart, visibleTimeEnd };
   }
 });
 

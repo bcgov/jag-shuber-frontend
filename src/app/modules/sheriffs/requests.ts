@@ -12,7 +12,7 @@ import {
 
 // Sheriff Map
 class SheriffMapRequest extends RequestAction<void, SheriffMap, SheriffModuleState> {
-    constructor(namespace = STATE_KEY, actionName = "sheriffMap") {
+    constructor(namespace: string = STATE_KEY, actionName: string = 'sheriffMap') {
         super(namespace, actionName);
     }
     public async doWork(request: void, { api }: ThunkExtra): Promise<SheriffMap> {
@@ -25,7 +25,7 @@ export const sheriffMapRequest = new SheriffMapRequest();
 
 // Create Sheriff
 class CreateSheriffRequest extends RequestAction<Partial<Sheriff>, Sheriff, SheriffModuleState> {
-    constructor(namespace = STATE_KEY, actionName = 'createSheriff') {
+    constructor(namespace: string = STATE_KEY, actionName: string = 'createSheriff') {
         super(namespace, actionName);
     }
     public async doWork(sheriff: Partial<Sheriff>, { api }: ThunkExtra): Promise<Sheriff> {
@@ -64,7 +64,7 @@ export const createSheriffRequest = new CreateSheriffRequest();
 
 // Sheriff Edit
 class UpdateSheriffRequest extends CreateSheriffRequest {
-    constructor(namespace = STATE_KEY, actionName = 'updateSheriff') {
+    constructor(namespace: string = STATE_KEY, actionName: string = 'updateSheriff') {
         super(namespace, actionName);
     }
     public async doWork(sheriff: Partial<Sheriff>, { api }: ThunkExtra): Promise<Sheriff> {

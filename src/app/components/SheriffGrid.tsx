@@ -7,7 +7,7 @@ export interface SheriffGridProps {
     SheriffRenderer?: React.ReactType<Sheriff>;
 }
 
-class SheriffGrid extends React.PureComponent<SheriffGridProps, any>{
+class SheriffGrid extends React.PureComponent<SheriffGridProps, any> {
     render() {
         const {
             sheriffs,

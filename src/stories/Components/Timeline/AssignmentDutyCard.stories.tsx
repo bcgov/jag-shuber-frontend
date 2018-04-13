@@ -21,15 +21,17 @@ const blank_duty: AssignmentDuty = {
 class TimelineCardWrapper extends React.PureComponent {
     render() {
         return (
-            <div style={{
-                height: 70,
-                display: 'block',
-                fontSize: 12,
-                color: 'white',
-                textAlign: 'center',
-                cursor: 'pointer',
-                position: 'relative'
-            }}>
+            <div 
+                style={{
+                    height: 70,
+                    display: 'block',
+                    fontSize: 12,
+                    color: 'white',
+                    textAlign: 'center',
+                    cursor: 'pointer',
+                    position: 'relative'
+                }}
+            >
                 <TimelineCard>
                     {this.props.children}
                 </TimelineCard>
@@ -46,11 +48,12 @@ storiesOf('Timeline')
             <StoryPage title="Assignment Duty Card" >
                 <StorySection title="Unassigned" >
                     <TimelineCardWrapper>
-                        <AssignmentDutyCard duty={{
-                            ...blank_duty,
-                            sheriffDuties: array('Sheriff Ids', [], 'partial'),
-                            sheriffsRequired: number("Sheriffs Required", 3)
-                        }}
+                        <AssignmentDutyCard 
+                            duty={{
+                                ...blank_duty,
+                                sheriffDuties: array('Sheriff Ids', [], 'partial'),
+                                sheriffsRequired: number('Sheriffs Required', 3)
+                            }}
                             SheriffAssignmentRenderer={DutyBarList}
                         />
                     </TimelineCardWrapper>

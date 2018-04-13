@@ -13,7 +13,7 @@ import {
 
 // Get the Map
 class AssignmentDutyMapRequest extends RequestAction<void, AssignmentDutyMap, AssignmentModuleState> {
-    constructor(namespace = STATE_KEY, actionName = 'assignmentDutyMap') {
+    constructor(namespace: string = STATE_KEY, actionName: string = 'assignmentDutyMap') {
         super(namespace, actionName);
     }
     public async doWork(request: void, { api }: ThunkExtra): Promise<AssignmentDutyMap> {
@@ -27,7 +27,7 @@ export const assignmentDutyMapRequest = new AssignmentDutyMapRequest();
 // Assignment Template Create
 class CreateAssignmentDutyRequest extends
     RequestAction<Partial<AssignmentDuty>, AssignmentDuty, AssignmentModuleState> {
-    constructor(namespace = STATE_KEY, actionName = 'createAssignmentDuty') {
+    constructor(namespace: string = STATE_KEY, actionName: string = 'createAssignmentDuty') {
         super(namespace, actionName);
     }
     public async doWork(assignment: Partial<AssignmentDuty>, { api }: ThunkExtra): Promise<AssignmentDuty> {
@@ -68,7 +68,7 @@ export const createAssignmentDutyRequest = new CreateAssignmentDutyRequest();
 
 // Assignment Template Edit
 class UpdateAssignmentDutyRequest extends CreateAssignmentDutyRequest {
-    constructor(namespace = STATE_KEY, actionName = 'updateAssignmentDuty') {
+    constructor(namespace: string = STATE_KEY, actionName: string = 'updateAssignmentDuty') {
         super(namespace, actionName);
     }
 
@@ -82,7 +82,7 @@ export const updateAssignmentDutyRequest = new UpdateAssignmentDutyRequest();
 
 // Assignment Template Delete
 class DeleteAssignmentDutyRequest extends RequestAction<IdType, IdType, AssignmentModuleState> {
-    constructor(namespace = STATE_KEY, actionName = 'deleteAssignmentDuty') {
+    constructor(namespace: string = STATE_KEY, actionName: string = 'deleteAssignmentDuty') {
         super(namespace, actionName);
     }
     public async  doWork(request: IdType, { api }: ThunkExtra): Promise<IdType> {

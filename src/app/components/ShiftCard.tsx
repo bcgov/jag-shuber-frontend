@@ -28,7 +28,6 @@ export default class ShiftCard extends React.Component<ShiftCardProps, {}> {
           flex: '1',
           flexDirection: 'column',
           zindex: 70,
-          // justifyContent: 'space-evenly',
           fontSize: 12,
           paddingTop: 19,
           backgroundColor: background,

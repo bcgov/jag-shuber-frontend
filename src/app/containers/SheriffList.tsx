@@ -1,31 +1,32 @@
-import * as React from 'react'
-import { connect } from 'react-redux'
+import * as React from 'react';
+import { connect } from 'react-redux';
 import { Sheriff } from '../api/index';
 import { RootState } from '../store';
-import { default as SheriffGrid } from '../components/SheriffGrid'
-import { getSheriffList } from '../modules/sheriffs/actions'
+import { default as SheriffGrid } from '../components/SheriffGrid';
+import { getSheriffList } from '../modules/sheriffs/actions';
 import {
   sheriffs,
   sheriffListLoading
-} from '../modules/sheriffs/selectors'
+} from '../modules/sheriffs/selectors';
 
 export interface SheriffListProps {
   getSheriffList: any;
-  sheriffs: Sheriff[]
+  sheriffs: Sheriff[];
   loading: boolean;
-  SheriffListComponent?: React.ReactType<{ sheriffs?: Sheriff[], SheriffRenderer?: React.ReactType<Sheriff> }>
+  SheriffListComponent?: React.ReactType<{ sheriffs?: Sheriff[], SheriffRenderer?: React.ReactType<Sheriff> }>;
   SheriffRenderer?: React.ReactType<Sheriff>;
 }
 
-
-class SheriffList extends React.Component<SheriffListProps, any>{
+class SheriffList extends React.Component<SheriffListProps, any> {
   componentWillMount() {
+    // tslint:disable-next-line:no-shadowed-variable
     const { getSheriffList } = this.props;
     getSheriffList();
   }
 
   render() {
     const {
+      // tslint:disable-next-line:no-shadowed-variable
       sheriffs = [],
       loading = true,
       SheriffListComponent = SheriffGrid,
@@ -35,12 +36,12 @@ class SheriffList extends React.Component<SheriffListProps, any>{
     if (loading) {
       return (
         <div>Loading...</div>
-      )
-    };
+      );
+    }
 
     return (
       <SheriffListComponent sheriffs={sheriffs} SheriffRenderer={SheriffRenderer} />
-    )
+    );
   }
 }
 
@@ -60,6 +61,6 @@ const mapDispatchToProps = (dispatch: any) => {
 const ConnectedOnDutySherrifs = connect(
   mapStateToProps,
   mapDispatchToProps
-)(SheriffList)
+)(SheriffList);
 
 export default ConnectedOnDutySherrifs;

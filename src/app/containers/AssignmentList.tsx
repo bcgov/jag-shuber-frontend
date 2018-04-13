@@ -20,11 +20,15 @@ interface AssignmentTemplateListProps {
   assignments?: Assignment[];
   loading?: boolean;
 }
+class AssignmentTemplateList 
+  extends React.PureComponent<AssignmentTemplateListProps 
+    & AssignmentTemplateListDispatchProps 
+    & AssignmentTemplateListStateProps> {
 
-
-class AssignmentTemplateList extends React.PureComponent<AssignmentTemplateListProps & AssignmentTemplateListDispatchProps & AssignmentTemplateListStateProps>{
   componentWillMount() {
+    // tslint:disable-next-line:no-shadowed-variable
     const { getAssignments } = this.props;
+    // tslint:disable-next-line:no-unused-expression
     getAssignments && getAssignments();
   }
 
@@ -34,12 +38,12 @@ class AssignmentTemplateList extends React.PureComponent<AssignmentTemplateListP
     if (loading) {
       return (
         <div>Loading...</div>
-      )
-    };
+      );
+    }
 
     return (
       <AssignmentDefaultList assignments={assignments} />
-    )
+    );
   }
 }
 
@@ -47,13 +51,14 @@ const mapStateToProps = (state: RootState) => {
   return {
     assignments: allAssignments(state),
     loading: isLoadingAssignments(state)
-  }
-}
+  };
+};
 
 const mapDispatchToProps = {
   getAssignments: getAssignments
-}
+};
 
+// tslint:disable-next-line:max-line-length
 export default connect<AssignmentTemplateListStateProps, AssignmentTemplateListDispatchProps, AssignmentTemplateListProps>(
   mapStateToProps,
   mapDispatchToProps

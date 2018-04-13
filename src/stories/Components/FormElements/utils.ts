@@ -5,17 +5,19 @@ import {
     WrappedFieldMetaProps
 } from 'redux-form';
 
-export function generateFieldProps(inputOverrides: Partial<WrappedFieldInputProps> = {}, metaOverrides: Partial<WrappedFieldMetaProps> = {}): WrappedFieldProps {
+export function generateFieldProps(
+    inputOverrides: Partial<WrappedFieldInputProps> = {}, 
+    metaOverrides: Partial<WrappedFieldMetaProps> = {}): WrappedFieldProps {
     const defaultProps: WrappedFieldProps = {
         input: {
             checked: false,
             name: 'unnamed',
             value: undefined,
-            onBlur: action("blur"),
-            onChange: action("change"),
-            onDragStart: action("dragStart"),
-            onDrop: action("drop"),
-            onFocus: action("blur")
+            onBlur: action('blur'),
+            onChange: action('change'),
+            onDragStart: action('dragStart'),
+            onDrop: action('drop'),
+            onFocus: action('blur')
         },
         meta: {
             active: false,
@@ -35,12 +37,12 @@ export function generateFieldProps(inputOverrides: Partial<WrappedFieldInputProp
             visited: false,
             warning: undefined
         }
-    }
+    };
     defaultProps.input = Object.assign(defaultProps.input, inputOverrides);
     defaultProps.meta = Object.assign(defaultProps.meta, metaOverrides);
     return defaultProps;
 }
 
 export const fieldProps = generateFieldProps();
-export const errorFieldProps = generateFieldProps({}, { error: "Error With something", touched: true })
-export const warningFieldProps = generateFieldProps({}, { warning: "Warning With something", touched: true })
+export const errorFieldProps = generateFieldProps({}, { error: 'Error With something', touched: true });
+export const warningFieldProps = generateFieldProps({}, { warning: 'Warning With something', touched: true });

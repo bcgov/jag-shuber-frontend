@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { render } from 'react-dom';
 import { unregister } from './registerServiceWorker';
-import store from './store'
+import store from './store';
 import { Provider } from 'react-redux';
 import RootLayout from './RootLayout';
 

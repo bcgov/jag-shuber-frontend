@@ -4,21 +4,11 @@ import { IdType } from '../../api';
 import { ThunkAction } from '../../store';
 import { getAssignmentDuty } from './selectors';
 
-// import * as assignmentTemplateRequests from './requests/assignmentTemplates'
-
-
-
 // Assignments
 export const getAssignments = assignmentRequests.assignmentMapRequest.actionCreator;
 export const createAssignment = assignmentRequests.createAssignmentRequest.actionCreator;
 export const editAssignment = assignmentRequests.updateAssignmentRequest.actionCreator;
 export const deleteAssignment = assignmentRequests.deleteAssignmentRequest.actionCreator;
-
-// Assignment Templates
-// export const getAssignmentTemplates = assignmentTemplateRequests.assignmentTemplateMapRequest.actionCreator;
-// export const createAssignmentTemplate = assignmentTemplateRequests.createAssignmentTemplateRequest.actionCreator;
-// export const editAssignmentTemplate  = assignmentTemplateRequests.updateAssignmentTemplateRequest.actionCreator;
-// export const deleteAssignment = assignmentTemplateRequests.deleteAssignmentTemplateRequest.actionCreator;
 
 // Assignment Duties
 export const getAssignmentDuties = assignmentDutyRequests.assignmentDutyMapRequest.actionCreator;

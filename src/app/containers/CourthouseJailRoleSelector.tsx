@@ -23,7 +23,9 @@ class CourthouseJailRoleList extends React.PureComponent<
     CourthouseJailRoleListProps & CourthouseJailRoleListDispatchProps & CourthouseJailRoleListStateProps> {
 
     componentWillMount() {
+        // tslint:disable-next-line:no-shadowed-variable
         const { getJailRoles } = this.props;
+        // tslint:disable-next-line:no-unused-expression
         getJailRoles && getJailRoles();
     }
 

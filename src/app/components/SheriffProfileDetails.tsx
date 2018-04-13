@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Sheriff } from '../api/index';
-import SheriffOvertimeStatus from './SheriffOvertimeStatus';
+// import SheriffOvertimeStatus from './SheriffOvertimeStatus';
 import SheriffUpcomingSchedule from './SheriffUpcomingScheduleDetails';
 import SheriffTrainingDetails from './SheriffTrainingDetails';
 import SheriffLocationDetails from './SheriffLocationDetails';
-import SheriffDutyStatus from './SheriffDutyStatus';
+// import SheriffDutyStatus from './SheriffDutyStatus';
 
 export interface SheriffProfileDetailsProps {
     sheriff: Sheriff;
@@ -23,9 +23,9 @@ export default class SheriffProfileDetails extends React.Component<SheriffProfil
                 <SheriffTrainingDetails isCompactView={isCompactView} />
                 <br />
                 {!isCompactView && <SheriffUpcomingSchedule onDuty={onDuty} />}
-                {isCompactView && <SheriffDutyStatus onDuty={onDuty} />}
+                {/* {isCompactView && <SheriffDutyStatus onDuty={onDuty} />} */}
                 <br />
-                {!isCompactView && <SheriffOvertimeStatus />}
+                {/* {!isCompactView && <SheriffOvertimeStatus />} */}
             </div>
         );
     }
