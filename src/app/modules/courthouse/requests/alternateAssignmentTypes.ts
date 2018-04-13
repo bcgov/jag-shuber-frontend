@@ -10,7 +10,7 @@ import {
 } from '../../../api/index';
 
 class AlternateAssignmentTypeMapRequest extends RequestAction<void, AlternateAssignmentMap, CourthouseModuleState> {
-    constructor(namespace = STATE_KEY, actionName = 'alternateAssignmentMap') {
+    constructor(namespace: string = STATE_KEY, actionName: string = 'alternateAssignmentMap') {
         super(namespace, actionName);
     }
     public async doWork(request: void, { api }: ThunkExtra): Promise<AlternateAssignmentMap> {

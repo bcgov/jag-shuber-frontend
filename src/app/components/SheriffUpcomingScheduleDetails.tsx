@@ -2,7 +2,7 @@ import * as React from 'react';
 import { 
     Table
 } from 'react-bootstrap';
-import SheriffDutyStatus from './SheriffDutyStatus';
+// import SheriffDutyStatus from './SheriffDutyStatus';
 
 export interface SheriffUpcomingScheduleDetailsProps {
     onDuty: boolean;
@@ -10,10 +10,10 @@ export interface SheriffUpcomingScheduleDetailsProps {
 
 export default class SheriffUpcomingScheduleDetails extends React.Component<SheriffUpcomingScheduleDetailsProps, any>{
     render() {
-        const { onDuty } = this.props;
+        // const { onDuty } = this.props;
         return (
             <div>
-                <SheriffDutyStatus onDuty ={ onDuty } />
+                {/* <SheriffDutyStatus onDuty ={ onDuty } /> */}
                 
                 <Table responsive>
                     <thead>

@@ -1,5 +1,5 @@
-import * as React from 'react'
-import { SheriffDropResult, DraggedSheriff } from './SheriffDragSource'
+import * as React from 'react';
+import { SheriffDropResult, DraggedSheriff } from './SheriffDragSource';
 import {
     default as dropTargetFactory,
     DragDropStatus
@@ -29,7 +29,7 @@ export default class SheriffDropTarget extends React.PureComponent<SheriffDropTa
     onDropItem(dragged: DraggedSheriff): SheriffDropResult {
         return {
             ...dragged
-        }
+        };
     }
 
     computeStyle({ isActive, isOver, canDrop }: DragDropStatus): React.CSSProperties {
@@ -73,4 +73,3 @@ export default class SheriffDropTarget extends React.PureComponent<SheriffDropTa
         );
     }
 }
-

@@ -11,10 +11,12 @@ export interface WorkSectionIndicatorProps {
 
 export default class WorkSectionIndicator extends React.PureComponent<WorkSectionIndicatorProps, any> {
     render() {
-        const { workSectionId = 'OTHER' } = this.props
+        const { workSectionId = 'OTHER' } = this.props;
         return (
-            <div className="work-section-indicator" style={{ borderTopColor: getWorkSectionColour(workSectionId) }}>
-            </div>
+            <div 
+                className="work-section-indicator" 
+                style={{ borderTopColor: getWorkSectionColour(workSectionId) }}
+            />
         );
     }
 }

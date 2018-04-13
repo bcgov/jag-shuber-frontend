@@ -19,8 +19,8 @@ export default class SheriffProfileDetailsModal extends React.Component<SheriffP
             <ModalWrapper
                 title={title}
                 showButton={({ handleShow }) =>
-                    <Button bsStyle="link" bsSize="large" style={{ color: "#494949" }} onClick={() => handleShow()}>
-                        <Image src={imageUrl} circle width="120" height="120" /><br />
+                    <Button bsStyle="link" bsSize="large" style={{ color: '#494949' }} onClick={() => handleShow()}>
+                        <Image src={imageUrl} circle={true} width="120" height="120" /><br />
                         {firstName} {lastName} <br /> #{badgeNo}
                     </Button>
                 }

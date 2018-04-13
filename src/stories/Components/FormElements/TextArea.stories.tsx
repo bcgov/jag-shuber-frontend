@@ -12,17 +12,19 @@ import TextArea from '../../../app/components/FormElements/TextArea';
 
 storiesOf('Components/Form Elements')
   .add('Text Area', () =>
-    <StoryPage title="Text Area">
-      <StorySection title="Normal">
-        <TextArea showLabel={boolean('Show Label',true)} label={text('Label', 'Some Text')} {...fieldProps} />
-      </StorySection>
+    (
+      <StoryPage title="Text Area">
+        <StorySection title="Normal">
+          <TextArea showLabel={boolean('Show Label',true)} label={text('Label', 'Some Text')} {...fieldProps} />
+        </StorySection>
 
-      <StorySection title="Warning">
-        <TextArea showLabel={boolean('Show Label',true)} label={text('Label', 'Some Text')} {...warningFieldProps} />
-      </StorySection>
+        <StorySection title="Warning">
+          <TextArea showLabel={boolean('Show Label',true)} label={text('Label', 'Some Text')} {...warningFieldProps} />
+        </StorySection>
 
-      <StorySection title="Error">
-        <TextArea showLabel={boolean('Show Label',true)} label={text('Label', 'Some Text')} {...errorFieldProps} />
-      </StorySection>
-    </StoryPage>
+        <StorySection title="Error">
+          <TextArea showLabel={boolean('Show Label',true)} label={text('Label', 'Some Text')} {...errorFieldProps} />
+        </StorySection>
+      </StoryPage>
+    )
   );

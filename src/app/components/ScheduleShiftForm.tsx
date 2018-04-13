@@ -79,7 +79,6 @@ export default class ScheduleShiftForm extends
                         minTime={minTime}
                         maxTime={maxTime}
                         timeIncrement={15}
-                        // color="grey"
                         color={getWorkSectionColour(workSectionId)}
                     />}
                     label="Time Range"

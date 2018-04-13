@@ -5,14 +5,13 @@ import {
     NavbarBrand
 } from 'react-bootstrap';
 
-import NavigationLink from './NavigationLink'
-
+import NavigationLink from './NavigationLink';
 
 export interface NavigationProps {
 
 }
 
-export default class Navigation extends React.Component<NavigationProps, any>{
+export default class Navigation extends React.Component<NavigationProps, any> {
     render() {
         return (
             <div id="header-main" >
@@ -21,14 +20,14 @@ export default class Navigation extends React.Component<NavigationProps, any>{
                     <img className="visible-xs" src="/img/bc_logo_transparent-dark.png" />
                 </span>
                               
-                <Navbar  staticTop fluid style={{borderRadius:4}}>
+                <Navbar staticTop={true} fluid={true} style={{borderRadius: 4}}>
                     <Navbar.Header color="#003366">
                         <NavbarBrand color="#003366">
                             Sheriff Scheduling System
                         </NavbarBrand>
                     </Navbar.Header>
-                    <Nav bsStyle='tabs'>
-                        <NavigationLink exactMatch to="/" label="Duty Roster" />
+                    <Nav bsStyle="tabs">
+                        <NavigationLink exactMatch={true} to="/" label="Duty Roster" />
                         <NavigationLink to="/assignments/manage/default" label="Default Assignments" /> 
                         <NavigationLink to="/sheriffs/manage" label="Sheriffs" /> 
                         <NavigationLink to="/sheriffs/schedule" label="Schedule" />  

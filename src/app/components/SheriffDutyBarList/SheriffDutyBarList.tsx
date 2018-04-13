@@ -47,6 +47,6 @@ export default class SheriffDutyBarList extends React.PureComponent<SheriffDutyB
                 }
                 )}
             </div>
-        )
+        );
     }
 }

@@ -1,20 +1,19 @@
-import RequestAction from "../../../infrastructure/RequestAction";
-import { ThunkExtra } from "../../../store";
-import arrayToMap from "../../../infrastructure/arrayToMap";
+import RequestAction from '../../../infrastructure/RequestAction';
+import { ThunkExtra } from '../../../store';
+import arrayToMap from '../../../infrastructure/arrayToMap';
 import {
     STATE_KEY,
     AssignmentModuleState
-} from "../common";
+} from '../common';
 import {
     IdType,
     AssignmentMap,
     Assignment
-} from "../../../api/index";
+} from '../../../api/index';
 
 // Assignment Map
-
 class AssignmentMapRequest extends RequestAction<void, AssignmentMap, AssignmentModuleState> {
-    constructor(namespace = STATE_KEY, actionName = "assignmentMap") {
+    constructor(namespace: string = STATE_KEY, actionName: string = 'assignmentMap') {
         super(namespace, actionName);
     }
     public async doWork(request: void, { api }: ThunkExtra): Promise<AssignmentMap> {
@@ -27,7 +26,7 @@ export const assignmentMapRequest = new AssignmentMapRequest();
 
 // Assignment Create
 class CreateAssignmentRequest extends RequestAction<Partial<Assignment>, Assignment, AssignmentModuleState> {
-    constructor(namespace = STATE_KEY, actionName = "createAssignment", throwOnError:boolean = true) {
+    constructor(namespace: string = STATE_KEY, actionName: string = 'createAssignment', throwOnError: boolean = true) {
         super(namespace, actionName, throwOnError);
     }
     public async doWork(assignment: Partial<Assignment>, { api }: ThunkExtra): Promise<Assignment> {
@@ -35,7 +34,9 @@ class CreateAssignmentRequest extends RequestAction<Partial<Assignment>, Assignm
         return newAssignment;
     }
 
-    reduceSuccess(moduleState: AssignmentModuleState, action: { type: string, payload: Assignment }): AssignmentModuleState {
+    reduceSuccess(
+        moduleState: AssignmentModuleState, 
+        action: { type: string, payload: Assignment }): AssignmentModuleState {
         // Call the super's reduce success and pull out our state and
         // the assignmentMap state
         const {
@@ -57,7 +58,7 @@ class CreateAssignmentRequest extends RequestAction<Partial<Assignment>, Assignm
                 ...restMap,
                 data: newMap
             }
-        }
+        };
         return newState;
     }
 }
@@ -66,7 +67,7 @@ export const createAssignmentRequest = new CreateAssignmentRequest();
 
 // Assignment Edit
 class UpdateAssignmentRequest extends CreateAssignmentRequest {
-    constructor(namespace = STATE_KEY, actionName = "updateAssignment") {
+    constructor(namespace: string = STATE_KEY, actionName: string = 'updateAssignment') {
         super(namespace, actionName);
     }
     public async doWork(assignment: Partial<Assignment>, { api }: ThunkExtra): Promise<Assignment> {
@@ -74,7 +75,9 @@ class UpdateAssignmentRequest extends CreateAssignmentRequest {
         return newAssignment;
     }
 
-    reduceSuccess(moduleState: AssignmentModuleState, action: { type: string, payload: Assignment }): AssignmentModuleState {
+    reduceSuccess(
+        moduleState: AssignmentModuleState, 
+        action: { type: string, payload: Assignment }): AssignmentModuleState {
         // Call the super's reduce success and pull out our state and
         // the assignmentMap state
         const {
@@ -96,7 +99,7 @@ class UpdateAssignmentRequest extends CreateAssignmentRequest {
                 ...restMap,
                 data: newMap
             }
-        }
+        };
         return newState;
     }
 }
@@ -105,7 +108,7 @@ export const updateAssignmentRequest = new UpdateAssignmentRequest();
 
 // Assignment Delete
 class DeleteAssignmentRequest extends RequestAction<IdType, IdType, AssignmentModuleState> {
-    constructor(namespace = STATE_KEY, actionName = "deleteAssignment") {
+    constructor(namespace: string = STATE_KEY, actionName: string = 'deleteAssignment') {
         super(namespace, actionName);
     }
 
@@ -114,7 +117,9 @@ class DeleteAssignmentRequest extends RequestAction<IdType, IdType, AssignmentMo
         return assignmentIdToDelete;
     }
 
-    reduceSuccess(moduleState: AssignmentModuleState, action: { type: string, payload: IdType }): AssignmentModuleState {
+    reduceSuccess(
+        moduleState: AssignmentModuleState, 
+        action: { type: string, payload: IdType }): AssignmentModuleState {
         // Call the super's reduce success and pull out our state and
         // the assignmentMap state
         const {
@@ -136,12 +141,10 @@ class DeleteAssignmentRequest extends RequestAction<IdType, IdType, AssignmentMo
                 ...restMap,
                 data: newMap
             }
-        }
+        };
         return newState;
     }
 }
 
 export const deleteAssignmentRequest = new DeleteAssignmentRequest();
-
-
 

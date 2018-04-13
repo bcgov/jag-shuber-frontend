@@ -1,4 +1,4 @@
-import * as React from 'react'
+import * as React from 'react';
 import {
     ReactCalendarTimelineExtension,
 } from 'react-calendar-timeline/lib';
@@ -18,15 +18,17 @@ export default abstract class TimelineExtension extends React.Component<Timeline
         return nextProps.canvasTimeStart !== this.props.canvasTimeStart ||
             nextProps.canvasTimeEnd !== this.props.canvasTimeEnd ||
             nextProps.canvasWidth !== this.props.canvasWidth ||
-            TimelineExtension.getValues(nextProps.groupHeights).join(',') !== TimelineExtension.getValues(this.props.groupHeights).join(',')
+            TimelineExtension.getValues(nextProps.groupHeights).join(',') 
+                !== TimelineExtension.getValues(this.props.groupHeights).join(',');
     }
 
-    abstract getItemRenderer(extensionProps: TimelineExtensionProps): (group: ReactCalendarTimelineGroup, index: number, array?: ReactCalendarTimelineGroup[]) => React.ReactNode;
+    abstract getItemRenderer(extensionProps: TimelineExtensionProps): 
+        (group: ReactCalendarTimelineGroup, index: number, array?: ReactCalendarTimelineGroup[]) => React.ReactNode;
 
     render() {
         const {
             groups = [],
-        } = this.props
+        } = this.props;
 
         const itemRenderer = this.getItemRenderer(this.props);
 

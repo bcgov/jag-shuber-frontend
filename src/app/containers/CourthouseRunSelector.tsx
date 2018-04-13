@@ -23,7 +23,9 @@ class CourthouseRunList extends React.PureComponent<
     CourthouseRunListProps & CourthouseRunListDispatchProps & CourthouseRunListStateProps> {
 
     componentWillMount() {
+        // tslint:disable-next-line:no-shadowed-variable
         const { getRuns } = this.props;
+        // tslint:disable-next-line:no-unused-expression
         getRuns && getRuns();
     }
 

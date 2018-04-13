@@ -12,17 +12,19 @@ import TextField from '../../../app/components/FormElements/TextField';
 
 storiesOf('Components/Form Elements')
   .add('Text Field', () =>
-    <StoryPage title="Text Field">
-      <StorySection title="Normal">
-        <TextField label={text('Label', 'Some Text')} {...fieldProps} />
-      </StorySection>
+  (
+      <StoryPage title="Text Field">
+        <StorySection title="Normal">
+          <TextField label={text('Label', 'Some Text')} {...fieldProps} />
+        </StorySection>
 
-      <StorySection title="Warning">
-        <TextField label={text('Label', 'Some Text')} {...warningFieldProps} />
-      </StorySection>
+        <StorySection title="Warning">
+          <TextField label={text('Label', 'Some Text')} {...warningFieldProps} />
+        </StorySection>
 
-      <StorySection title="Error">
-        <TextField label={text('Label', 'Some Text')} {...errorFieldProps} />
-      </StorySection>
-    </StoryPage>
-  );
+        <StorySection title="Error">
+          <TextField label={text('Label', 'Some Text')} {...errorFieldProps} />
+        </StorySection>
+      </StoryPage>
+  )  
+);

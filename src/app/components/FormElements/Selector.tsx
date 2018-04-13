@@ -3,17 +3,24 @@ import { default as FormFieldWrapper, FormFieldWrapperProps } from './FormFieldW
 import { FormControl } from 'react-bootstrap';
 
 export interface SelectorProps {
-    data: {key:string|number, value:string}[]; 
+    data: { key: string | number, value: string }[];
 }
 
 export default class Selector extends React.PureComponent<FormFieldWrapperProps & SelectorProps>{
-    render(){
-        const { input:{value, onChange}, label, data} = this.props;
+    render() {
+        const { input: { value, onChange }, label, data } = this.props;
         return (
             <FormFieldWrapper {...this.props}>
                 <FormControl componentClass="select" value={value} onChange={onChange}>
                     <option>{`Select ${label}`}</option>
-                    {data.map((keyValue, index)=><option selected={value===keyValue.key} value={keyValue.key}>{keyValue.value}</option>)}
+                    {data.map((keyValue, index) => 
+                        <option 
+                            key={index}
+                            selected={value === keyValue.key} 
+                            value={keyValue.key}
+                        >
+                            {keyValue.value}
+                        </option>)}
                 </FormControl>
             </FormFieldWrapper>
         );

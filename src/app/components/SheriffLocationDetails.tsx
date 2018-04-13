@@ -14,10 +14,10 @@ export default class SheriffLocationDetails extends React.Component<SheriffLocat
         return (
             <div>
                 <h3>Location</h3>
-                <Table responsive>
+                <Table responsive={true} >
                     <thead>
                         <tr>
-                            <th> </th>
+                            <th/>
                             <th className="text-left">Courthouse</th>
                         </tr>
                     </thead>

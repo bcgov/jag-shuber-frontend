@@ -1,5 +1,5 @@
-import * as assignmentRequests from './requests/assignments'
-import * as assignmentDutyRequests from './requests/assignmentDuties'
+import * as assignmentRequests from './requests/assignments';
+import * as assignmentDutyRequests from './requests/assignmentDuties';
 import NestedReducer from '../../infrastructure/NestedReducer';
 import { ReducersMapObject } from 'redux';
 import { STATE_KEY } from './common';
@@ -23,11 +23,6 @@ const nestedReducer = new NestedReducer([
   assignmentDutyRequests.updateAssignmentDutyRequest.reducer,
   assignmentDutyRequests.deleteAssignmentDutyRequest.reducer,
 
-  // Templates
-  // assignmentTemplateRequests.assignmentTemplateMapRequest.reducer,
-  // assignmentTemplateRequests.createAssignmentTemplateRequest.reducer,
-  // assignmentTemplateRequests.updateAssignmentTemplateRequest.reducer,
-  // assignmentTemplateRequests.deleteAssignmentTemplateRequest.reducer,
 ]);
 
 const reducer = nestedReducer.reducer;

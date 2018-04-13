@@ -10,7 +10,7 @@ import {
 } from '../../../api/index';
 
 class JailRoleMapRequest extends RequestAction<void, JailRoleMap, CourthouseModuleState> {
-    constructor(namespace = STATE_KEY, actionName = 'jailRoleMap') {
+    constructor(namespace: string = STATE_KEY, actionName: string = 'jailRoleMap') {
         super(namespace, actionName);
     }
     public async doWork(request: void, { api }: ThunkExtra): Promise<JailRoleMap> {

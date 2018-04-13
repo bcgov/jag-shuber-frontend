@@ -1,10 +1,10 @@
-import { RequestActionState } from "../../infrastructure/RequestAction";
+import { RequestActionState } from '../../infrastructure/RequestAction';
 import {
     AssignmentDutyMap,
     Assignment,
     AssignmentMap,
     AssignmentDuty
-} from "../../api/index";
+} from '../../api/index';
 
 export interface AssignmentModuleState {
     // Assignments
@@ -18,4 +18,4 @@ export interface AssignmentModuleState {
     updateAssignmentDuty?: RequestActionState<AssignmentDuty>;
     deleteAssignmentDuty?: RequestActionState<void>;
 }
-export const STATE_KEY: string = "assignments";
+export const STATE_KEY: string = 'assignments';

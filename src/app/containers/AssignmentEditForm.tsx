@@ -52,8 +52,6 @@ const mapStateToProps = (state: RootState, props: AssignmentEditFormProps) => {
 // can add a static SubmitButton member to it to make the API cleaner
 // tslint:disable-next-line:max-line-length
 export default class AssignmentEditForm extends connect<any, {}, AssignmentEditFormProps>(mapStateToProps)(reduxForm(formConfig)(AssignmentForm)) {
-    // tslint:disable-next-line:max-line-length
-    static SubmitButton = (props: Partial<SubmitButtonProps>) => <FormSubmitButton {...props} formName={formConfig.form} />;
+    static SubmitButton = 
+        (props: Partial<SubmitButtonProps>) => <FormSubmitButton {...props} formName={formConfig.form} />
 }
-
-

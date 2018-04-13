@@ -23,7 +23,9 @@ class CourthouseCourtroomList extends React.PureComponent<
     CourthouseCourtroomListProps & CourthouseCourtroomListDispatchProps & CourthouseCourtroomListStateProps> {
 
     componentWillMount() {
+        // tslint:disable-next-line:no-shadowed-variable
         const { getCourtrooms } = this.props;
+        // tslint:disable-next-line:no-unused-expression
         getCourtrooms && getCourtrooms();
     }
 

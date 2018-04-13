@@ -12,7 +12,6 @@ export interface AssignmentAddModalProps {
     isDefaultTemplate?: boolean;
 }
 
-
 export default class AssignmentAddModal extends React.Component<AssignmentAddModalProps>{
     render() {
         const { isDefaultTemplate = false } = this.props;
@@ -27,7 +26,7 @@ export default class AssignmentAddModal extends React.Component<AssignmentAddMod
                                 Object.keys(WORK_SECTIONS).map((k, i) => {
                                     return (
                                         <MenuItem
-                                            key="workSectionMenu"
+                                            key={k}
                                             onSelect={() => handleShow({ workSectionId: k })}>
                                             {WORK_SECTIONS[k]}
                                         </MenuItem>
