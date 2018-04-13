@@ -81,7 +81,7 @@ export default class SheriffDutyBar extends React.PureComponent<SheriffDutyBarPr
         } = this.props;
         const isAssigned = sheriffId !== undefined && sheriffId !== '';
         const title = !this.props.title ? (isAssigned ? `Sheriff #${sheriffId}` : '') : this.props.title.toUpperCase();
-        // const backgroundColor = isAssigned ? (!isExtra ? 'green' : 'orange') : 'transparent';
+
         return (
             <div
                 className="sheriff-duty-bar"
