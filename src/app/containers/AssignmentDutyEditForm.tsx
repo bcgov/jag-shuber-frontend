@@ -11,7 +11,7 @@ import {
 import { 
     default as FormSubmitButton, 
     SubmitButtonProps 
-} from '../components/FormElements/SubmitButton'
+} from '../components/FormElements/SubmitButton';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { 
@@ -28,10 +28,7 @@ import {
 const formConfig: ConfigProps<any, AssignmentDutyFormProps> = {
     form: 'EditAssignmentDuty',
     onSubmit: (values, dispatch, props) => {
-        const { timeRange: {startTime, endTime}, ...rest } = values;
-        const updatedAssignmentDuty = Object.assign({}, ...rest);
-        updatedAssignmentDuty.startDateTime = startTime;
-        updatedAssignmentDuty.endDateTime = endTime;
+        const updatedAssignmentDuty = AssignmentDutyForm.parseAssignmentDutyFromValues(values);
         dispatch(editAssignmentDuty(updatedAssignmentDuty));
     }
 };
@@ -45,13 +42,7 @@ const mapStateToProps = (state: RootState, props: AssignmentDutyEditFormProps) =
     if (initialAssignmentDuty) {
         const initialAssignment: Assignment = getAssignment(initialAssignmentDuty.assignmentId)(state);
         return {
-            initialValues: {
-                ...initialAssignmentDuty,
-                timeRange: {
-                    startTime: moment(initialAssignmentDuty.startDateTime).toISOString(), 
-                    endTime: moment(initialAssignmentDuty.endDateTime).toISOString()
-                }
-            }, 
+            initialValues: AssignmentDutyForm.assignmentDutyToFormValues(initialAssignmentDuty), 
             assignmentTitle: initialAssignment.title,
             minTime: moment(initialAssignmentDuty.startDateTime).startOf('day').add('hours', 6).toISOString(),
             maxTime: moment(initialAssignmentDuty.endDateTime).startOf('day').add('hours', 22).toISOString(),

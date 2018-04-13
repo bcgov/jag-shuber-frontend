@@ -13,7 +13,7 @@ const blank_duty: AssignmentDuty = {
     id: '0',
     assignmentId: '0',
     sheriffsRequired: 1,
-    sheriffIds: [],
+    sheriffDuties: [],
     startDateTime: moment(),
     endDateTime: moment()
 };
@@ -48,7 +48,7 @@ storiesOf('Timeline')
                     <TimelineCardWrapper>
                         <AssignmentDutyCard duty={{
                             ...blank_duty,
-                            sheriffIds: array('Sheriff Ids', [], 'partial'),
+                            sheriffDuties: array('Sheriff Ids', [], 'partial'),
                             sheriffsRequired: number("Sheriffs Required", 3)
                         }}
                             SheriffAssignmentRenderer={DutyBarList}
@@ -58,38 +58,38 @@ storiesOf('Timeline')
 
                 <StorySection title="Partially Assigned" >
                     <TimelineCardWrapper>
-                        <AssignmentDutyCard duty={{
+                        {/* <AssignmentDutyCard duty={{
                             ...blank_duty,
-                            sheriffIds: array('Sheriff Ids', ['1', '2']),
+                            sheriffDuties: array('Sheriff Duties', ['1', '2']),
                             sheriffsRequired: number("Sheriffs Required", 3)
                         }}
                             SheriffAssignmentRenderer={DutyBarList}
 
-                        />
+                        /> */}
                     </TimelineCardWrapper>
                 </StorySection>
 
                 <StorySection title="Fully Assigned" >
                     <TimelineCardWrapper>
-                        <AssignmentDutyCard duty={{
+                        {/* <AssignmentDutyCard duty={{
                             ...blank_duty,
-                            sheriffIds: array('Sheriff Ids', ['1', '2', '3']),
+                            sheriffDuties: array('Sheriff Ids', ['1', '2', '3']),
                             sheriffsRequired: number("Sheriffs Required", 3)
                         }}
                             SheriffAssignmentRenderer={DutyBarList}
-                        />
+                        /> */}
                     </TimelineCardWrapper>
                 </StorySection>
 
                 <StorySection title="Over Assigned" >
                     <TimelineCardWrapper>
-                        <AssignmentDutyCard duty={{
+                        {/* <AssignmentDutyCard duty={{
                             ...blank_duty,
-                            sheriffIds: array('Sheriff Ids', ['1', '2', '3', '4']),
+                            sheriffDuties: array('Sheriff Ids', ['1', '2', '3', '4']),
                             sheriffsRequired: number("Sheriffs Required", 3)
                         }}
                             SheriffAssignmentRenderer={DutyBarList}
-                        />
+                        /> */}
                     </TimelineCardWrapper>
                 </StorySection>
             </StoryPage>

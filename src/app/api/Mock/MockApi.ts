@@ -138,6 +138,13 @@ export default class NewClient implements API {
     async createAssignmentDuty(duty: Partial<AssignmentDuty>): Promise<AssignmentDuty> {
         let dutyToAdd = duty as AssignmentDuty;
         dutyToAdd.id = this.getId();
+        if (duty.sheriffDuties) {
+            dutyToAdd.sheriffDuties = duty.sheriffDuties.map((element: any) => ({
+                ...element,
+                id: this.getId(),
+                dutyId: dutyToAdd.id
+            }));
+        }
         assignmentDuties.push(dutyToAdd);
         return dutyToAdd;
     }

@@ -90,13 +90,13 @@ class DailyTimeline extends React.Component<DailyTimelineProps & DailyTimelineSt
                         <AssignmentCard assignment={assignment} />
                     )}
                     itemRenderer={(duty) => {
-                        const backgroundColor = getWorkSectionColour(workSectionMap[duty.assignmentId]);
-                        const color = getForegroundColor(backgroundColor);
+                        const workSectionColor = getWorkSectionColour(workSectionMap[duty.assignmentId]);
+                        const color = getForegroundColor(workSectionColor);
                         return (
                             <AssignmentDutyCard
                                 duty={duty}
                                 style={{
-                                    backgroundColor,
+                                    borderColor: workSectionColor,
                                     color
                                 }}
                                 onDropSheriff={({ id: sheriffId }) => (
@@ -109,6 +109,7 @@ class DailyTimeline extends React.Component<DailyTimelineProps & DailyTimelineSt
                                         onRemove={(sheriffId) => {
                                             unlinkSheriff({ sheriffId, dutyId: duty.id });
                                         }}
+                                        workSection={workSectionMap[duty.assignmentId]}
                                     />
                                 )}
                             />

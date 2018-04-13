@@ -10,7 +10,7 @@ export interface TimeSliderProps {
   startTime?: TimeType;
   endTime?: TimeType;
   timeIncrement?: number;
-  onTimeChanged?: (newTimes: {startTime: TimeType, endTime: TimeType}) => void;
+  onTimeChanged?: (newTimes: { startTime: TimeType, endTime: TimeType }) => void;
   color?: string;
 }
 
@@ -24,7 +24,37 @@ export default class TimeSlider extends React.Component<TimeSliderProps> {
         endTime: moment(minTime).add('minutes', arg[1]).toISOString()
       };
       onTimeChanged(newTimes);
-    }    
+    }
+  }
+
+  componentWillMount() {
+    const {
+      minTime: _minTime,
+      maxTime: _maxTime,
+      startTime: _startTime,
+      endTime: _endTime,
+      onTimeChanged
+    } = this.props;
+    const minTime = moment(_minTime);
+    const maxTime = moment(_maxTime);
+    const startTime = _startTime ? moment(_startTime) : undefined;
+    const endTime = _endTime ? moment(_endTime) : undefined;
+
+    // Here we need to issue onTimeChange events if the min/max times
+    // are larger or smaller than the current start/end
+    if (startTime && endTime) {
+      const adjustedStartTime = minTime.isAfter(startTime) ? minTime : startTime;
+      const adjustedEndTime = maxTime.isBefore(endTime) ? maxTime : endTime;
+      if (adjustedStartTime !== startTime || adjustedEndTime !== endTime) {
+        if (onTimeChanged) {
+          onTimeChanged({
+            startTime: adjustedStartTime.toISOString(),
+            endTime: adjustedEndTime.toISOString()
+          });
+        }
+      }
+    }
+
   }
 
   render() {
@@ -60,7 +90,7 @@ export default class TimeSlider extends React.Component<TimeSliderProps> {
     }
 
     return (
-      <div style={{margin: 5}}>
+      <div style={{ margin: 5 }}>
         <Range
           step={timeIncrement}
           dots={true}
@@ -70,13 +100,13 @@ export default class TimeSlider extends React.Component<TimeSliderProps> {
           max={durationMinutes}
           marks={markLabels}
           trackStyle={[{ backgroundColor: color }]}
-          activeDotStyle={{ borderColor: color }} 
+          activeDotStyle={{ borderColor: color }}
           handleStyle={
             [
-              { borderColor: color, backgroundColor: color }, 
+              { borderColor: color, backgroundColor: color },
               { borderColor: color, backgroundColor: color }
             ]}
-          onAfterChange={(e) => this.handleAfterChange(e)} 
+          onAfterChange={(e) => this.handleAfterChange(e)}
         />
       </div>
     );
