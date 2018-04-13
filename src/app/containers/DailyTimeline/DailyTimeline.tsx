@@ -109,7 +109,7 @@ class DailyTimeline extends React.Component<DailyTimelineProps & DailyTimelineSt
                                         onRemove={(sheriffId) => {
                                             unlinkSheriff({ sheriffId, dutyId: duty.id });
                                         }}
-                                        dutyWorkSection={workSectionMap[duty.assignmentId]}
+                                        workSection={workSectionMap[duty.assignmentId]}
                                     />
                                 )}
                             />

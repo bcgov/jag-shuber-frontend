@@ -9,8 +9,6 @@ import {
     FieldArray,
     formValues
 } from 'redux-form';
-// import * as Validators from '../infrastructure/Validators';
-// import TextField from './FormElements/TextField';
 import {
     IdType,
     TimeType,
@@ -69,13 +67,7 @@ export default class AssignmentDutyForm extends
         };
     }
 
-    renderSheriffDutyFields(): React.ComponentClass {
-        const {
-            // workSectionId,
-            // minTime = moment().startOf('day').add(7, 'hours').toISOString(),
-            // maxTime = moment().startOf('day').add(17, 'hours').toISOString()
-        } = this.props;
-
+    renderSheriffDutyFieldsComponent(): React.ComponentClass {
         return formValues('timeRange')((props: any) => {
             const {
                 timeRange: {
@@ -144,7 +136,7 @@ export default class AssignmentDutyForm extends
             maxTime = moment().startOf('day').add('hours', 22).toISOString(),
             workSectionId = 'OTHER'
         } = this.props;
-        const RenderFields = this.renderSheriffDutyFields();
+        const SheriffDutyFields = this.renderSheriffDutyFieldsComponent();
         return (
             <div>
                 <h1 style={{ marginBottom: 20 }}>{assignmentTitle}</h1>
@@ -162,7 +154,7 @@ export default class AssignmentDutyForm extends
                     />
                     <div style={{ marginTop: 40 }}>
                         <h2>Sheriffs for Duty</h2>
-                        <RenderFields />
+                        <SheriffDutyFields />
                     </div>
                 </Form>
             </div>
