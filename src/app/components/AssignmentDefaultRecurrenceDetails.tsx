@@ -3,18 +3,18 @@ import {
     RecurrenceInfo,
     DaysOfWeek
 } from '../api';
-// import DateDisplay from './DateDisplay';
 import { Badge } from 'react-bootstrap';
-
 
 export interface AssignmentDefaultRecurrenceDetailsProps {
     data: RecurrenceInfo;
 }
 
-export default class AssignmentDefaultRecurrenceDetails extends React.PureComponent<AssignmentDefaultRecurrenceDetailsProps, any> {
+export default class AssignmentDefaultRecurrenceDetails 
+    extends React.PureComponent<AssignmentDefaultRecurrenceDetailsProps, any> {
+    
     render() {
         const { data: { daysBitmap, startTime, endTime, sheriffsRequired } } = this.props; 
-        const dayDisplay = DaysOfWeek.getDisplayValues(daysBitmap).join(", ");
+        const dayDisplay = DaysOfWeek.getDisplayValues(daysBitmap).join(', ');
 
         return (
             <div>

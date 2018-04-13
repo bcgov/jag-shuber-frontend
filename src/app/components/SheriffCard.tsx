@@ -7,12 +7,12 @@ export interface SheriffCardProps {
     sheriff: Sheriff;
 }
 
-export default class SheriffCard extends React.PureComponent<SheriffCardProps, any>{
+export default class SheriffCard extends React.PureComponent<SheriffCardProps, any> {
 
     render() {
         const { sheriff } = this.props;
         return (
-            <div key={sheriff.badgeNo} style={{ flex: "1 1 auto" }}>
+            <div key={sheriff.badgeNo} style={{ flex: '1 1 auto' }}>
                 <SheriffProfileDetailsModal sheriff={sheriff} />
             </div>
         );

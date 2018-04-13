@@ -14,9 +14,9 @@ import {
 } from 'redux-form';
 import CourthouseSelector from './FormElements/CourthouseSelector';
 import TextField from './FormElements/TextField';
-import TrainingTypeSelector from './FormElements/TrainingTypeSelector';
-import * as Validators from '../infrastructure/Validators'
-import * as DateTimeFieldConst from '../components/FormElements/DateTimeFieldConst';
+// import TrainingTypeSelector from './FormElements/TrainingTypeSelector';
+import * as Validators from '../infrastructure/Validators';
+// import * as DateTimeFieldConst from '../components/FormElements/DateTimeFieldConst';
 
 export interface SheriffFormProps {
     handleSubmit?: () => void;
@@ -92,12 +92,12 @@ export default class SheriffForm extends
                                                     <Glyphicon glyph="trash" />
                                                 </Button>
                                                 <br/>                                                                  
-                                                <Field 
+                                                {/* <Field 
                                                     name={`${trainingFieldName}.trainingType`} 
                                                     component={TrainingTypeSelector} 
                                                     label="Training Type " 
-                                                />
-                                                <Field 
+                                                /> */}
+                                                {/* <Field 
                                                     name={`${trainingFieldName}.certificationDate`} 
                                                     component={DateTimeFieldConst.DateField} 
                                                     label="Certification Date" 
@@ -106,7 +106,7 @@ export default class SheriffForm extends
                                                     name={`${trainingFieldName}.expiryDate`} 
                                                     component={DateTimeFieldConst.DateField} 
                                                     label="Expiry Date" 
-                                                />
+                                                /> */}
                                             </ListGroupItem>);
                                     }
                                     )}

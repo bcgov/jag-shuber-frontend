@@ -8,11 +8,18 @@ class BackToTopButton extends React.PureComponent {
 
     render() {
         return (
-            <img className="back-to-top" onClick={this.scrollToTop} width='30' src="https://www2.gov.bc.ca/StaticWebResources/static/gov3/images/back-to-top.png" alt="Back to top" title="Back to top" style={{display:'inline'}} />
-        )
+            <img 
+                className="back-to-top" 
+                onClick={this.scrollToTop} 
+                width="30"
+                src="https://www2.gov.bc.ca/StaticWebResources/static/gov3/images/back-to-top.png" 
+                alt="Back to top" 
+                title="Back to top" 
+                style={{display: 'inline'}} 
+            />
+        );
     }
 }
-
 
 export interface FooterProps {
 
