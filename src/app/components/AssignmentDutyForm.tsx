@@ -58,13 +58,21 @@ export default class AssignmentDutyForm extends
     }
 
     static assignmentDutyToFormValues(duty: AssignmentDuty) {
-        return {
+        const formValues = {
             ...duty,
             timeRange: {
                 startTime: moment(duty.startDateTime).toISOString(),
                 endTime: moment(duty.endDateTime).toISOString()
-            }
+            },
+            sheriffDuties: duty.sheriffDuties.map((element: any) => ({
+                timeRange: {
+                    startTime: moment(element.startDateTime).toISOString(),
+                    endTime: moment(element.endDateTime).toISOString()
+                }
+            }))
         };
+        
+        return formValues;
     }
 
     renderSheriffDutyFieldsComponent(): React.ComponentClass {
@@ -72,7 +80,7 @@ export default class AssignmentDutyForm extends
             const {
                 timeRange: {
                     startTime: minTime = moment().startOf('day').add(7, 'hours').toISOString(),
-                endTime: maxTime = moment().startOf('day').add(17, 'hours').toISOString()
+                    endTime: maxTime = moment().startOf('day').add(17, 'hours').toISOString()
                 }
             } = props;
             return (
@@ -149,8 +157,8 @@ export default class AssignmentDutyForm extends
                             maxTime={maxTime}
                             timeIncrement={15}
                             color={getWorkSectionColour(workSectionId)}
-                            label={<h2 style={{marginBottom:5}}>Duty Time Range</h2>}
-                        />}
+                            label={<h2 style={{marginBottom: 5}}>Duty Time Range</h2>}
+                        />} 
                     />
                     <div style={{ marginTop: 40 }}>
                         <h2>Sheriffs for Duty</h2>
