@@ -8,9 +8,19 @@ import {
 } from '../modules/assignments/selectors';
 import { getAssignments } from '../modules/assignments/actions';
 import AssignmentDefaultList from '../components/AssignmentDefaultList';
+import { 
+  getCourtrooms, 
+  getAlternateAssignmentTypes,
+  getJailRoles,
+  getRuns 
+} from '../modules/courthouse/action';
 
 interface AssignmentTemplateListDispatchProps {
   getAssignments?: () => void;
+  getCourtrooms?: () => void;
+  getAlternateAssignmentTypes?: () => void;
+  getJailRoles?: () => void;
+  getRuns?: () => void; 
 }
 
 interface AssignmentTemplateListStateProps {
@@ -20,16 +30,21 @@ interface AssignmentTemplateListProps {
   assignments?: Assignment[];
   loading?: boolean;
 }
-class AssignmentTemplateList 
-  extends React.PureComponent<AssignmentTemplateListProps 
-    & AssignmentTemplateListDispatchProps 
-    & AssignmentTemplateListStateProps> {
+class AssignmentTemplateList
+  extends React.PureComponent<AssignmentTemplateListProps
+  & AssignmentTemplateListDispatchProps
+  & AssignmentTemplateListStateProps> {
 
   componentWillMount() {
     // tslint:disable-next-line:no-shadowed-variable
-    const { getAssignments } = this.props;
-    // tslint:disable-next-line:no-unused-expression
+    const { getAssignments, getCourtrooms, getJailRoles, getRuns, getAlternateAssignmentTypes } = this.props;
+    /* tslint:disable:no-unused-expression */
     getAssignments && getAssignments();
+    getCourtrooms && getCourtrooms();
+    getAlternateAssignmentTypes && getAlternateAssignmentTypes();
+    getJailRoles && getJailRoles();
+    getRuns && getRuns();
+    /* tslint:enable:no-unused-expression */
   }
 
   render() {
@@ -55,7 +70,11 @@ const mapStateToProps = (state: RootState) => {
 };
 
 const mapDispatchToProps = {
-  getAssignments: getAssignments
+  getAssignments: getAssignments,
+  getCourtrooms: getCourtrooms,
+  getAlternateAssignmentTypes: getAlternateAssignmentTypes,
+  getJailRoles: getJailRoles,
+  getRuns: getRuns
 };
 
 // tslint:disable-next-line:max-line-length

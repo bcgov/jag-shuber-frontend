@@ -26,6 +26,12 @@ import AssignmentTimeline from '../../components/AssignmentTimeline/AssignmentTi
 import { TimelineProps } from '../../components/Timeline/Timeline';
 import AssignmentCard from '../../components/AssignmentCard/AssignmentCard';
 import { getForegroundColor } from '../../infrastructure/colorUtils';
+import { 
+    getCourtrooms, 
+    getAlternateAssignmentTypes,
+    getJailRoles,
+    getRuns 
+  } from '../../modules/courthouse/action';
 
 interface DailyTimelineProps extends TimelineProps {
     allowTimeDrag?: boolean;
@@ -36,6 +42,10 @@ interface DailyTimelineDispatchProps {
     fetchAssignments: () => void;
     linkSheriff: (link: { sheriffId: IdType, dutyId: IdType }) => void;
     unlinkSheriff: (link: { sheriffId: IdType, dutyId: IdType }) => void;
+    getCourtrooms?: () => void;
+    getAlternateAssignmentTypes?: () => void;
+    getJailRoles?: () => void;
+    getRuns?: () => void; 
 }
 
 interface DailyTimelineStateProps {
@@ -46,14 +56,25 @@ interface DailyTimelineStateProps {
 class DailyTimeline extends React.Component<DailyTimelineProps & DailyTimelineStateProps & DailyTimelineDispatchProps> {
 
     componentWillMount() {
-        const { fetchAssignmentDuties, fetchAssignments } = this.props;
-        if (fetchAssignmentDuties) {
-            fetchAssignmentDuties();
-        }
+        const { 
+                fetchAssignmentDuties, 
+                fetchAssignments,
+                /* tslint:disable:no-shadowed-variable */ 
+                getCourtrooms, 
+                getJailRoles, 
+                getRuns, 
+                getAlternateAssignmentTypes
+                /* tslint:enable:no-shadowed-variable */  
+        } = this.props;
 
-        if (fetchAssignments) {
-            fetchAssignments();
-        }
+        /* tslint:disable:no-unused-expression */
+        fetchAssignmentDuties && fetchAssignmentDuties();
+        fetchAssignments && fetchAssignments();
+        getCourtrooms && getCourtrooms();
+        getAlternateAssignmentTypes && getAlternateAssignmentTypes();
+        getJailRoles && getJailRoles();
+        getRuns && getRuns();
+        /* tslint:enable:no-unused-expression */
     }
 
     render() {
@@ -132,6 +153,10 @@ const mapStateToProps = (state: RootState, props: DailyTimelineProps) => {
 const mapDispatchToProps = {
     fetchAssignments: getAssignments,
     fetchAssignmentDuties: getAssignmentDuties,
+    getCourtrooms: getCourtrooms,
+    getAlternateAssignmentTypes: getAlternateAssignmentTypes,
+    getJailRoles: getJailRoles,
+    getRuns: getRuns,
     linkSheriff: linkAssignment,
     unlinkSheriff: unlinkAssignment
 };

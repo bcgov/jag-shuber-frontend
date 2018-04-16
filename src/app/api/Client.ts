@@ -149,17 +149,20 @@ export default class Client implements API {
         let assignmentToCreate: any = {
             courthouse: courthousePath,
             workSectionCode: toWorkSectionCodePath(assignment.workSectionId),
-            title: assignment.title ? assignment.title : "Untitled",
         };
 
         if (isJailAssignment(assignment)) {
             assignmentToCreate.jailRoleCode = assignment.jailRoleId;
+            assignmentToCreate.title = assignment.jailRoleId;
         } else if (isCourtAssignment(assignment)) {
             assignmentToCreate.courtroom = assignment.courtroomId;
+            assignmentToCreate.title = assignment.courtroomId;
         } else if (isEscortAssignment(assignment)) {
             assignmentToCreate.run = assignment.runId;
+            assignmentToCreate.title = assignment.runId;
         } else if (isOtherAssignment(assignment)) {
             assignmentToCreate.otherAssignCode = assignment.otherAssignmentTypeId;
+            assignmentToCreate.title = assignment.otherAssignmentTypeId;
         }
 
         let created = await this._halClient.create(`/assignments`, assignmentToCreate, APIResource);
