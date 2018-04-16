@@ -36,6 +36,8 @@ export const max50 = maxValidator(50);
 
 export const min1 = minValidator(1);
 
+export const max10 = maxValidator(10);
+
 export const number = (value: any) => { 
     return value && isNaN(value) ? VALIDATOR_MESSAGES.INVALID_NUMBER : undefined;
 };
