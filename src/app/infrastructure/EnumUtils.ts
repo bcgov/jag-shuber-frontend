@@ -9,7 +9,8 @@ export function displayEnum(theEnum: any, enumValue: any): string[] {
         return enumNumberValues
             .filter(key => !isNaN(key))
             .filter(n => {
-                let val = (n && enumValue) === n;
+                // tslint:disable-next-line:no-bitwise
+                let val = (n & enumValue) === n;
                 return val;
             })
             .map(n => theEnum[n]);
