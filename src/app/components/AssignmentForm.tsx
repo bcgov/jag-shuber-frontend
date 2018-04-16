@@ -91,8 +91,6 @@ class CourtSecurityFields extends React.PureComponent {
 }
 
 interface RecurrenceProps {
-    // type?: string;
-    // days?: DaysOfWeek;
 }
 class RecurrenceFieldArray extends FieldArray<RecurrenceProps> {
 
@@ -269,10 +267,10 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
                                     <br />
                                     <Button
                                         onClick={() => fields.push({
-                                            days: DaysOfWeek.Weekdays,
+                                            daysBitmap: DaysOfWeek.Weekdays,
                                             timeRange: {
-                                                startTime: minTime,
-                                                endTime: maxTime
+                                                startTime: moment().startOf('day').add('hours', 8).toISOString(),
+                                                endTime: moment().startOf('day').add('hours', 17).toISOString()
                                             }
                                         })}
                                     >
