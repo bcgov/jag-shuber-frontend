@@ -58,7 +58,7 @@ export default class AssignmentDutyForm extends
     }
 
     static assignmentDutyToFormValues(duty: AssignmentDuty) {
-        const formValues = {
+        return {
             ...duty,
             timeRange: {
                 startTime: moment(duty.startDateTime).toISOString(),
@@ -71,8 +71,6 @@ export default class AssignmentDutyForm extends
                 }
             }))
         };
-        
-        return formValues;
     }
 
     renderSheriffDutyFieldsComponent(): React.ComponentClass {
