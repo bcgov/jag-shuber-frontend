@@ -15,10 +15,12 @@ export default class AssignmentDefaultRecurrenceDetails
     render() {
         const { data: { daysBitmap, startTime, endTime, sheriffsRequired } } = this.props; 
         const dayDisplay = DaysOfWeek.getDisplayValues(daysBitmap).join(', ');
+        const startTimeString = startTime.toString();
+        const endTimeString = endTime.toString();
 
         return (
             <div>
-                <strong>{dayDisplay}</strong> - {startTime} to {endTime}{' '}
+                <strong>{dayDisplay}</strong> - {startTimeString.substr(0, startTimeString.length - 3)} to {endTimeString.substr(0, endTimeString.length - 3)}{' '}
                 <Badge>{sheriffsRequired}</Badge>
                 <br />
             </div>
