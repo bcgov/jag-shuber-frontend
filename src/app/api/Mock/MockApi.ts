@@ -160,6 +160,13 @@ export default class NewClient implements API {
         if (index < 0) {
             throw Error(`No assignment could be located for ${dutyToUpdate.id}`);
         }
+        if (duty.sheriffDuties) {
+            dutyToUpdate.sheriffDuties = duty.sheriffDuties.map((element: any) => ({
+                ...element,
+                id: this.getId(),
+                dutyId: dutyToUpdate.id
+            }));
+        }
         assignmentDuties[index] = dutyToUpdate;
         return dutyToUpdate;
     }
