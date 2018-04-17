@@ -7,6 +7,12 @@ import { registerReducer as registerShiftReducer, ShiftModuleState } from './mod
 import { registerReducer as registerCourthouseReducer, CourthouseModuleState } from './modules/courthouse/reducer';
 import { default as timelineReducer, TimelineState } from './modules/timeline/reducer';
 import { reducer as formReducer } from 'redux-form';
+import { 
+    getCourtrooms, 
+    getAlternateAssignmentTypes,
+    getJailRoles,
+    getRuns 
+} from './modules/courthouse/action';
 
 export interface ThunkExtra {
     api: API;
@@ -21,6 +27,13 @@ export interface RootState {
     shifts: ShiftModuleState;
     courthouse: CourthouseModuleState;
 }
+
+const initialActions: any[] = [
+    getCourtrooms, 
+    getAlternateAssignmentTypes,
+    getJailRoles,
+    getRuns
+];
 
 const reducers = {
     timeline: timelineReducer,
@@ -43,4 +56,6 @@ const enhancers = composeEnhancers(
     )
 );
 
-export default createStore(rootReducer, enhancers);
+const store = createStore(rootReducer, enhancers);
+initialActions.forEach(actionCreator => store.dispatch(actionCreator()));
+export default store;

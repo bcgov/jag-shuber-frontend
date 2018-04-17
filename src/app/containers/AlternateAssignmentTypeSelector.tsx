@@ -3,13 +3,9 @@ import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { AlternateAssignment } from '../api/index';
 import { allAlternateAssignmentTypes } from '../modules/courthouse/selectors';
-import { getAlternateAssignmentTypes } from '../modules/courthouse/action';
 import { FormFieldWrapperProps } from '../components/FormElements/FormFieldWrapper';
 import Selector from '../components/FormElements/Selector';
 
-interface AlternateAssignmentTypeListDispatchProps {
-    getAlternateAssignmentTypes?: () => void;
-}
 
 interface AlternateAssignmentTypeListStateProps {
     alternateAssignmentTypes: AlternateAssignment[];
@@ -21,13 +17,7 @@ interface AlternateAssignmentTypeListProps extends FormFieldWrapperProps {
 
 class AlternateAssignmentTypeList extends React.PureComponent<
     AlternateAssignmentTypeListProps & 
-    AlternateAssignmentTypeListDispatchProps & 
     AlternateAssignmentTypeListStateProps> {
-
-    componentWillMount() {
-        const { getAlternateAssignmentTypes } = this.props;
-        getAlternateAssignmentTypes && getAlternateAssignmentTypes();
-    }
 
     render() {
         const { alternateAssignmentTypes = [], ...restProps } = this.props;
@@ -46,12 +36,7 @@ const mapStateToProps = (state: RootState) => {
     };
 };
 
-const mapDispatchToProps = {
-    getAlternateAssignmentTypes: getAlternateAssignmentTypes
-};
-
 // tslint:disable-next-line:max-line-length
-export default connect<AlternateAssignmentTypeListStateProps, AlternateAssignmentTypeListDispatchProps, AlternateAssignmentTypeListProps>(
-    mapStateToProps,
-    mapDispatchToProps
+export default connect<AlternateAssignmentTypeListStateProps, {}, AlternateAssignmentTypeListProps>(
+    mapStateToProps
   )(AlternateAssignmentTypeList);

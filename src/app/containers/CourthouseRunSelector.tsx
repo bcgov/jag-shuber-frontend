@@ -3,13 +3,8 @@ import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { Run } from '../api/index';
 import { allRuns } from '../modules/courthouse/selectors';
-import { getRuns } from '../modules/courthouse/action';
 import { FormFieldWrapperProps } from '../components/FormElements/FormFieldWrapper';
 import Selector from '../components/FormElements/Selector';
-
-interface CourthouseRunListDispatchProps {
-    getRuns?: () => void;
-}
 
 interface CourthouseRunListStateProps {
     runs: Run[];
@@ -20,14 +15,7 @@ interface CourthouseRunListProps extends FormFieldWrapperProps {
 }
 
 class CourthouseRunList extends React.PureComponent<
-    CourthouseRunListProps & CourthouseRunListDispatchProps & CourthouseRunListStateProps> {
-
-    componentWillMount() {
-        // tslint:disable-next-line:no-shadowed-variable
-        const { getRuns } = this.props;
-        // tslint:disable-next-line:no-unused-expression
-        getRuns && getRuns();
-    }
+    CourthouseRunListProps & CourthouseRunListStateProps> {
 
     render() {
         const { runs = [], ...restProps } = this.props;
@@ -43,14 +31,9 @@ const mapStateToProps = (state: RootState) => {
     return {
         runs: allRuns(state)
     };
-}
-
-const mapDispatchToProps = {
-    getRuns: getRuns
 };
 
 // tslint:disable-next-line:max-line-length
-export default connect<CourthouseRunListStateProps, CourthouseRunListDispatchProps, CourthouseRunListProps>(
-    mapStateToProps,
-    mapDispatchToProps
+export default connect<CourthouseRunListStateProps, {}, CourthouseRunListProps>(
+    mapStateToProps
   )(CourthouseRunList);

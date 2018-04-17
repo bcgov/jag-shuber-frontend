@@ -8,19 +8,9 @@ import {
 } from '../modules/assignments/selectors';
 import { getAssignments } from '../modules/assignments/actions';
 import AssignmentDefaultList from '../components/AssignmentDefaultList';
-import { 
-  getCourtrooms, 
-  getAlternateAssignmentTypes,
-  getJailRoles,
-  getRuns 
-} from '../modules/courthouse/action';
 
 interface AssignmentTemplateListDispatchProps {
   getAssignments?: () => void;
-  getCourtrooms?: () => void;
-  getAlternateAssignmentTypes?: () => void;
-  getJailRoles?: () => void;
-  getRuns?: () => void; 
 }
 
 interface AssignmentTemplateListStateProps {
@@ -37,13 +27,9 @@ class AssignmentTemplateList
 
   componentWillMount() {
     // tslint:disable-next-line:no-shadowed-variable
-    const { getAssignments, getCourtrooms, getJailRoles, getRuns, getAlternateAssignmentTypes } = this.props;
+    const { getAssignments } = this.props;
     /* tslint:disable:no-unused-expression */
     getAssignments && getAssignments();
-    getCourtrooms && getCourtrooms();
-    getAlternateAssignmentTypes && getAlternateAssignmentTypes();
-    getJailRoles && getJailRoles();
-    getRuns && getRuns();
     /* tslint:enable:no-unused-expression */
   }
 
@@ -70,11 +56,7 @@ const mapStateToProps = (state: RootState) => {
 };
 
 const mapDispatchToProps = {
-  getAssignments: getAssignments,
-  getCourtrooms: getCourtrooms,
-  getAlternateAssignmentTypes: getAlternateAssignmentTypes,
-  getJailRoles: getJailRoles,
-  getRuns: getRuns
+  getAssignments: getAssignments
 };
 
 // tslint:disable-next-line:max-line-length
