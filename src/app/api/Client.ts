@@ -149,23 +149,21 @@ export default class Client implements API {
         let assignmentToCreate: any = {
             courthouse: courthousePath,
             workSectionCode: toWorkSectionCodePath(assignment.workSectionId),
+            // currently we do not use this attribute explicity in the front-end, so setting it to 'title' for now
+            title: 'title'
         };
 
         if (isJailAssignment(assignment)) {
             assignmentToCreate.jailRoleCode = assignment.jailRoleId;
-            assignmentToCreate.title = assignment.jailRoleId;
         } else if (isCourtAssignment(assignment)) {
             assignmentToCreate.courtroom = assignment.courtroomId;
-            assignmentToCreate.title = assignment.courtroomId;
         } else if (isEscortAssignment(assignment)) {
             assignmentToCreate.run = assignment.runId;
-            assignmentToCreate.title = assignment.runId;
         } else if (isOtherAssignment(assignment)) {
             assignmentToCreate.otherAssignCode = assignment.otherAssignmentTypeId;
-            assignmentToCreate.title = assignment.otherAssignmentTypeId;
         }
 
-        let created = await this._halClient.create(`/assignments`, assignmentToCreate, APIResource);
+        let created = await this._halClient.create(`/assignments`, assignmentToCreate, APIResource);       
 
         // This is a bit of hack, taking the idPath from the response and creating a new object with the id &
         // other properties from the original object.  This is because the api currently doesn't return us back
