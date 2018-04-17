@@ -6,6 +6,7 @@
     margin-left: 1.5px;
     margin-right: 1.5px;
     margin-top: 6px;
+    transition: box-shadow .5s;
 }
 
 .sheriff-list-card.not-active { 
@@ -18,5 +19,5 @@
 }
 
 .sheriff-list-card:hover {
-    box-shadow: 2px 3px #b3b3b3;
+    box-shadow: 0 2px 3px #A6A6A6;
 }
