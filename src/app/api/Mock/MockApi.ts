@@ -163,7 +163,7 @@ export default class NewClient implements API {
         if (duty.sheriffDuties) {
             dutyToUpdate.sheriffDuties = duty.sheriffDuties.map((element: any) => ({
                 ...element,
-                id: this.getId(),
+                id: element.id ? element.id : this.getId(),
                 dutyId: dutyToUpdate.id
             }));
         }

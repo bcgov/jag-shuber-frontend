@@ -51,6 +51,7 @@ export default class AssignmentDutyForm extends
         assignmentDuty.startDateTime = startTime;
         assignmentDuty.endDateTime = endTime;
         assignmentDuty.sheriffDuties = sheriffDuties.map((element: any) => ({
+            ...element,
             startDateTime: moment(element.timeRange.startTime).toISOString(),
             endDateTime: moment(element.timeRange.endTime).toISOString(),
         }));
@@ -65,6 +66,7 @@ export default class AssignmentDutyForm extends
                 endTime: moment(duty.endDateTime).toISOString()
             },
             sheriffDuties: duty.sheriffDuties.map((element: any) => ({
+                ...element, 
                 timeRange: {
                     startTime: moment(element.startDateTime).toISOString(),
                     endTime: moment(element.endDateTime).toISOString()

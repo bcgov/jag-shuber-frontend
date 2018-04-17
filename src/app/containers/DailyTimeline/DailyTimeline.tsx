@@ -7,7 +7,7 @@ import {
     getAssignments,
     getAssignmentDuties,
     linkAssignment,
-    unlinkAssignment
+    // unlinkAssignment
 } from '../../modules/assignments/actions';
 import { connect } from 'react-redux';
 import { RootState } from '../../store';
@@ -34,8 +34,8 @@ interface DailyTimelineProps extends TimelineProps {
 interface DailyTimelineDispatchProps {
     fetchAssignmentDuties: () => void;
     fetchAssignments: () => void;
-    linkSheriff: (link: { sheriffId: IdType, dutyId: IdType }) => void;
-    unlinkSheriff: (link: { sheriffId: IdType, dutyId: IdType }) => void;
+    linkSheriff: (link: { sheriffId: IdType, dutyId: IdType, sheriffDutyId: IdType }) => void;
+    // unlinkSheriff: (link: { sheriffId: IdType, dutyId: IdType }) => void;
 }
 
 interface DailyTimelineStateProps {
@@ -64,7 +64,7 @@ class DailyTimeline extends React.Component<DailyTimelineProps & DailyTimelineSt
             sidebarWidth = 200,
             onVisibleTimeChange,
             linkSheriff,
-            unlinkSheriff,
+            // unlinkSheriff,
             visibleTimeStart = moment().startOf('day').add(7, 'hours'),
             visibleTimeEnd = moment().endOf('day').subtract(6, 'hours'),
             ...rest
@@ -104,11 +104,11 @@ class DailyTimeline extends React.Component<DailyTimelineProps & DailyTimelineSt
                                     <SheriffDutyBarList
                                         {...p}
                                         BarRenderer={ConnectedSheriffDutyBar}
-                                        onRemove={(sheriffId) => {
-                                            unlinkSheriff({ sheriffId, dutyId: duty.id });
-                                        }}
-                                        onDropSheriff={({ id: sheriffId }) => (
-                                            linkSheriff && linkSheriff({ sheriffId, dutyId: duty.id })
+                                        // onRemove={(sheriffId) => {
+                                        //     unlinkSheriff({ sheriffId, dutyId: duty.id });
+                                        // }}
+                                        onDropSheriff={({ id: sheriffId }, {id: sheriffDutyId}) => (
+                                            linkSheriff && linkSheriff({ sheriffId, dutyId: duty.id, sheriffDutyId})
                                         )}
                                         workSection={workSectionMap[duty.assignmentId]}
                                     />
@@ -134,9 +134,8 @@ const mapDispatchToProps = {
     fetchAssignments: getAssignments,
     fetchAssignmentDuties: getAssignmentDuties,
     linkSheriff: linkAssignment,
-    unlinkSheriff: unlinkAssignment
+    // unlinkSheriff: unlinkAssignment
 };
 
 export default connect<DailyTimelineStateProps, DailyTimelineDispatchProps, DailyTimelineProps>(
     mapStateToProps, mapDispatchToProps)(DailyTimeline);
-

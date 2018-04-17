@@ -12,8 +12,6 @@ import './AssignmentDutyCard.css';
 
 export interface AssignmentDutyCardProps {
     duty: AssignmentDuty;
-    // canDropSheriff?: (sheriff: Sheriff) => boolean;
-    // onDropSheriff?: (sheriff: Sheriff) => void;
     SheriffAssignmentRenderer?: React.ComponentType<SheriffAssignmentRendererProps>;
     style?: React.CSSProperties;
 }

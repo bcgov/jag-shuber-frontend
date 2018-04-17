@@ -8,12 +8,13 @@ import { SheriffAssignmentRendererProps } from '../AssignmentDutyCard/Assignment
 import { 
     IdType,
     WorkSectionCode, 
-    Sheriff
+    Sheriff,
+    SheriffDuty
 } from '../../api/Api';
 
 interface SheriffDutyBarListProps extends SheriffAssignmentRendererProps {
     onRemove?: (sheriffId: IdType) => void;
-    onDropSheriff?: (sheriff: Sheriff) => void;
+    onDropSheriff?: (sheriff: Sheriff, sheriffDuty: SheriffDuty) => void;
     BarRenderer?: React.ComponentType<SheriffDutyBarProps>;
     workSection?: WorkSectionCode;
 }
