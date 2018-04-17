@@ -22,7 +22,6 @@ interface SheriffDropTargetProps {
 export default class SheriffDropTarget extends React.PureComponent<SheriffDropTargetProps> {
 
     canDropItem(sheriff: DraggedSheriff) {
-        // return sheriff.onDuty !== this.props.onDuty;
         return true;
     }
 

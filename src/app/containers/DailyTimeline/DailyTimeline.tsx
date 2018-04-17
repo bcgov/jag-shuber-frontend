@@ -100,9 +100,6 @@ class DailyTimeline extends React.Component<DailyTimelineProps & DailyTimelineSt
                                     borderColor: workSectionColor,
                                     color
                                 }}
-                                onDropSheriff={({ id: sheriffId }) => (
-                                    linkSheriff && linkSheriff({ sheriffId, dutyId: duty.id })
-                                )}
                                 SheriffAssignmentRenderer={(p) => (
                                     <SheriffDutyBarList
                                         {...p}
@@ -110,6 +107,9 @@ class DailyTimeline extends React.Component<DailyTimelineProps & DailyTimelineSt
                                         onRemove={(sheriffId) => {
                                             unlinkSheriff({ sheriffId, dutyId: duty.id });
                                         }}
+                                        onDropSheriff={({ id: sheriffId }) => (
+                                            linkSheriff && linkSheriff({ sheriffId, dutyId: duty.id })
+                                        )}
                                         workSection={workSectionMap[duty.assignmentId]}
                                     />
                                 )}
