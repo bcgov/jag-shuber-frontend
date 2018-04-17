@@ -77,8 +77,22 @@ export default class SheriffDutyBar extends React.PureComponent<SheriffDutyBarPr
     }
 
     private canAssignSheriff(sheriff: Sheriff): boolean {
-        const { sheriffDuties = [] } = this.props.duty;
-        return sheriff && sheriffDuties.findIndex(sd => sd.sheriffId === sheriff.id) === -1;
+        const { duty: {sheriffDuties = []}, sheriffDuty: sheriffDutyToAssign  } = this.props;
+        const sdToAssignStartTimeMoment = moment(sheriffDutyToAssign.startDateTime);
+        const sdToAssignEndTimeMoment = moment(sheriffDutyToAssign.endDateTime);
+        let canAssignSheriff: boolean = true;
+
+        sheriffDuties.forEach(sd => {
+            if (sd.sheriffId === sheriff.id) {
+                const sdStartTimeMoment = moment(sd.startDateTime);
+                const sdEndTimeMoment = moment(sd.endDateTime);
+                if (sdToAssignStartTimeMoment.isBetween(sdStartTimeMoment, sdEndTimeMoment) 
+                    || sdToAssignEndTimeMoment.isBetween(sdStartTimeMoment, sdEndTimeMoment)) {
+                    canAssignSheriff = false;
+                }
+            }
+        });
+        return canAssignSheriff;
     }
 
     render() {
@@ -110,7 +124,7 @@ export default class SheriffDutyBar extends React.PureComponent<SheriffDutyBarPr
                 }}
             >
                 {isAssigned && (
-                    <div style={{ margin: 'auto', fontSize: 16 }}>
+                    <div style={{ margin: 'auto', fontSize: 15 }}>
                         {title}
                         {onRemove !== undefined && (
                             <Label

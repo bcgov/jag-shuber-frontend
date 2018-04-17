@@ -28,11 +28,7 @@ export const linkAssignment: ThunkAction<SheriffDutyLink> =
         if (indexOfSheriffDuty !== -1) {
             sheriffDuties[indexOfSheriffDuty].sheriffId = sheriffId;
         }
-        // const newSheriffIds = sheriffDuties.slice(0);
-        // if (newSheriffIds.indexOf(sheriffId) === -1) {
-        //     newSheriffIds.push(sheriffId);
-        // }
-        dispatch(editAssignmentDuty({ ...duty/*, sheriffDuties: newSheriffIds*/ }));
+        dispatch(editAssignmentDuty({ ...duty}));
     };
 
 export const unlinkAssignment: ThunkAction<SheriffDutyLink> =

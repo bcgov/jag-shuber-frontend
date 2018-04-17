@@ -100,7 +100,7 @@ export default class AssignmentDutyForm extends
                                             >
                                                 <Glyphicon glyph="trash" />
                                             </Button>
-                                            <div style={{marginTop:20}}>
+                                            <div style={{marginTop: 20}}>
                                             <Field
                                                 name={`${fieldInstanceName}.timeRange`}
                                                 component={(p) => <TimeSliderField
