@@ -6,7 +6,7 @@ import {
 import { WORK_SECTIONS } from '../api';
 import AssignmentTemplateCreateForm from './AssignmentTemplateCreateForm';
 import ModalWrapper from './ModalWrapper/ModalWrapper';
-import AssignmentCreateForm from './AssignmentCreateForm';
+// import AssignmentCreateForm from './X_AssignmentCreateForm';
 
 export interface AssignmentAddModalProps {
     isDefaultTemplate?: boolean;
@@ -35,28 +35,28 @@ export default class AssignmentAddModal extends React.Component<AssignmentAddMod
                             }
                         </DropdownButton>}
                     body={({ handleClose, workSectionId }: any) => (
-                        isDefaultTemplate
-                            ? 
+                        //isDefaultTemplate
+                            //? 
                             <AssignmentTemplateCreateForm
                                 onSubmitSuccess={handleClose}
                                 workSectionId={workSectionId}
                             />
-                            : 
-                            <AssignmentCreateForm 
-                                onSubmitSuccess={handleClose} 
-                                workSectionId={workSectionId} 
-                            />
+                            //: 
+                            // <AssignmentCreateForm 
+                            //     onSubmitSuccess={handleClose} 
+                            //     workSectionId={workSectionId} 
+                            // />
                     )}
                     footerComponent={
-                        isDefaultTemplate
-                            ? 
+                        // isDefaultTemplate
+                            // ? 
                             <AssignmentTemplateCreateForm.SubmitButton>
                                 Save
                             </AssignmentTemplateCreateForm.SubmitButton>
-                            : 
-                            <AssignmentCreateForm.SubmitButton>
-                                Save
-                            </AssignmentCreateForm.SubmitButton>
+                            // : 
+                            // <AssignmentCreateForm.SubmitButton>
+                            //     Save
+                            // </AssignmentCreateForm.SubmitButton>
                     }
                 />
             </div>

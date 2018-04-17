@@ -3,13 +3,8 @@ import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { JailRole } from '../api/index';
 import { allJailRoles } from '../modules/courthouse/selectors';
-import { getJailRoles } from '../modules/courthouse/action';
 import { FormFieldWrapperProps } from '../components/FormElements/FormFieldWrapper';
 import Selector from '../components/FormElements/Selector';
-
-interface CourthouseJailRoleListDispatchProps {
-    getJailRoles?: () => void;
-}
 
 interface CourthouseJailRoleListStateProps {
     jailRoles: JailRole[];
@@ -20,14 +15,7 @@ interface CourthouseJailRoleListProps extends FormFieldWrapperProps {
 }
 
 class CourthouseJailRoleList extends React.PureComponent<
-    CourthouseJailRoleListProps & CourthouseJailRoleListDispatchProps & CourthouseJailRoleListStateProps> {
-
-    componentWillMount() {
-        // tslint:disable-next-line:no-shadowed-variable
-        const { getJailRoles } = this.props;
-        // tslint:disable-next-line:no-unused-expression
-        getJailRoles && getJailRoles();
-    }
+    CourthouseJailRoleListProps & CourthouseJailRoleListStateProps> {
 
     render() {
         const { jailRoles = [], ...restProps } = this.props;
@@ -43,14 +31,9 @@ const mapStateToProps = (state: RootState) => {
     return {
         jailRoles: allJailRoles(state)
     };
-}
-
-const mapDispatchToProps = {
-    getJailRoles: getJailRoles
 };
 
 // tslint:disable-next-line:max-line-length
-export default connect<CourthouseJailRoleListStateProps, CourthouseJailRoleListDispatchProps, CourthouseJailRoleListProps>(
-    mapStateToProps,
-    mapDispatchToProps
+export default connect<CourthouseJailRoleListStateProps, {}, CourthouseJailRoleListProps>(
+    mapStateToProps
   )(CourthouseJailRoleList);

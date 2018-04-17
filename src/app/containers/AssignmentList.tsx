@@ -20,16 +20,17 @@ interface AssignmentTemplateListProps {
   assignments?: Assignment[];
   loading?: boolean;
 }
-class AssignmentTemplateList 
-  extends React.PureComponent<AssignmentTemplateListProps 
-    & AssignmentTemplateListDispatchProps 
-    & AssignmentTemplateListStateProps> {
+class AssignmentTemplateList
+  extends React.PureComponent<AssignmentTemplateListProps
+  & AssignmentTemplateListDispatchProps
+  & AssignmentTemplateListStateProps> {
 
   componentWillMount() {
     // tslint:disable-next-line:no-shadowed-variable
     const { getAssignments } = this.props;
-    // tslint:disable-next-line:no-unused-expression
+    /* tslint:disable:no-unused-expression */
     getAssignments && getAssignments();
+    /* tslint:enable:no-unused-expression */
   }
 
   render() {

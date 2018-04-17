@@ -3,13 +3,8 @@ import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { Courtroom } from '../api/index';
 import { allCourtrooms } from '../modules/courthouse/selectors';
-import { getCourtrooms } from '../modules/courthouse/action';
 import { FormFieldWrapperProps } from '../components/FormElements/FormFieldWrapper';
 import Selector from '../components/FormElements/Selector';
-
-interface CourthouseCourtroomListDispatchProps {
-    getCourtrooms?: () => void;
-}
 
 interface CourthouseCourtroomListStateProps {
     courtrooms: Courtroom[];
@@ -20,14 +15,7 @@ interface CourthouseCourtroomListProps extends FormFieldWrapperProps {
 }
 
 class CourthouseCourtroomList extends React.PureComponent<
-    CourthouseCourtroomListProps & CourthouseCourtroomListDispatchProps & CourthouseCourtroomListStateProps> {
-
-    componentWillMount() {
-        // tslint:disable-next-line:no-shadowed-variable
-        const { getCourtrooms } = this.props;
-        // tslint:disable-next-line:no-unused-expression
-        getCourtrooms && getCourtrooms();
-    }
+    CourthouseCourtroomListProps & CourthouseCourtroomListStateProps> {
 
     render() {
         const { courtrooms = [], ...restProps } = this.props;
@@ -45,12 +33,7 @@ const mapStateToProps = (state: RootState) => {
     };
 };
 
-const mapDispatchToProps = {
-    getCourtrooms: getCourtrooms
-};
-
 // tslint:disable-next-line:max-line-length
-export default connect<CourthouseCourtroomListStateProps, CourthouseCourtroomListDispatchProps, CourthouseCourtroomListProps>(
-    mapStateToProps,
-    mapDispatchToProps
+export default connect<CourthouseCourtroomListStateProps, {}, CourthouseCourtroomListProps>(
+    mapStateToProps
   )(CourthouseCourtroomList);

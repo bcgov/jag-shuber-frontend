@@ -14,3 +14,7 @@
 .daily-timeline .react-calendar-timeline .rct-items .rct-item {
     border: 0px;
 }
+
+.daily-timeline .react-calendar-timeline .rct-sidebar .rct-sidebar-header {
+    z-index: 90;
+}

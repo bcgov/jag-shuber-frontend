@@ -14,11 +14,11 @@ import {
     InjectedFormProps
 } from 'redux-form';
 import * as Validators from '../infrastructure/Validators';
-import TextField from './FormElements/TextField';
 import CourtroomSelector from '../containers/CourthouseCourtroomSelector';
 import DaysOfWeekChecklist from './FormElements/DaysOfWeekChecklist';
 import JailRolesSelector from '../containers/CourthouseJailRoleSelector';
 import RunSelector from '../containers/CourthouseRunSelector';
+import NumberSpinner from './FormElements/NumberSpinner';
 import AlternateAssignmentSelector from '../containers/AlternateAssignmentTypeSelector';
 import {
     WORK_SECTIONS,
@@ -91,8 +91,6 @@ class CourtSecurityFields extends React.PureComponent {
 }
 
 interface RecurrenceProps {
-    type?: string;
-    days?: DaysOfWeek;
 }
 class RecurrenceFieldArray extends FieldArray<RecurrenceProps> {
 
@@ -258,18 +256,32 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
                                                 <br />
                                                 <Field
                                                     name={`${recurrenceInfoFieldName}.sheriffsRequired`}
-                                                    component={TextField}
+                                                    component={
+                                                        (p) => <NumberSpinner 
+                                                            {...p}
+                                                            maxValue={10}
+                                                        />
+                                                    }
                                                     label="Number of Sheriffs Required"
-                                                    validate={[Validators.required, Validators.integer]}
+                                                    validate={[
+                                                        Validators.required, 
+                                                        Validators.integer,
+                                                        Validators.min1,
+                                                        Validators.max10
+                                                    ]}
                                                 />
                                             </ListGroupItem>
-                                        )
+                                        );
                                     }
                                     )}
                                     <br />
                                     <Button
                                         onClick={() => fields.push({
-                                            days: DaysOfWeek.Weekdays
+                                            daysBitmap: DaysOfWeek.Weekdays,
+                                            timeRange: {
+                                                startTime: moment().startOf('day').add('hours', 8).toISOString(),
+                                                endTime: moment().startOf('day').add('hours', 17).toISOString()
+                                            }
                                         })}
                                     >
                                         <Glyphicon glyph="plus" />

@@ -13,3 +13,10 @@
 .assignment-card:hover .assignment-actions {
     display: block;
 }
+
+.assignment-card-title {
+    max-width: 80%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    float: left;
+}

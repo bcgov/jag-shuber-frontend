@@ -20,8 +20,7 @@ export default class TimelineToolsPanel extends React.PureComponent<TimelineTool
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'stretch',
-                    borderLeft: '2px solid #BBB',
-                    borderBottom: '2px solid #BBB'
+                    borderLeft: '2px solid #BBB'
                 }}
             >
                 <div
@@ -48,7 +47,7 @@ export default class TimelineToolsPanel extends React.PureComponent<TimelineTool
                     style={{
                         flex: '1 1 auto',
                         overflowY: 'auto',
-                        height: 200
+                        height: '100%'
                     }}
                 >
                     {this.props.children}

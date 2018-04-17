@@ -46,14 +46,15 @@ interface DailyTimelineStateProps {
 class DailyTimeline extends React.Component<DailyTimelineProps & DailyTimelineStateProps & DailyTimelineDispatchProps> {
 
     componentWillMount() {
-        const { fetchAssignmentDuties, fetchAssignments } = this.props;
-        if (fetchAssignmentDuties) {
-            fetchAssignmentDuties();
-        }
+        const { 
+                fetchAssignmentDuties, 
+                fetchAssignments
+        } = this.props;
 
-        if (fetchAssignments) {
-            fetchAssignments();
-        }
+        /* tslint:disable:no-unused-expression */
+        fetchAssignmentDuties && fetchAssignmentDuties();
+        fetchAssignments && fetchAssignments();
+        /* tslint:enable:no-unused-expression */
     }
 
     render() {

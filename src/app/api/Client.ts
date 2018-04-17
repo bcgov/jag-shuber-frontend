@@ -31,7 +31,7 @@ import {
     HalProperty 
 } from 'hal-rest-client';
 import MockApi from './Mock/MockApi';
-
+import * as moment from 'moment';
 
 // All of our resources now have an idPath
 // so we'll specify a HalResource that contains that
@@ -149,7 +149,9 @@ export default class Client implements API {
         let assignmentToCreate: any = {
             courthouse: courthousePath,
             workSectionCode: toWorkSectionCodePath(assignment.workSectionId),
-            title: assignment.title ? assignment.title : "Untitled",
+            // currently we do not use this attribute explicity in the front-end, so setting it to 'title' for now
+            title: 'title',
+            effectiveDate: moment().toISOString()
         };
 
         if (isJailAssignment(assignment)) {
@@ -162,7 +164,7 @@ export default class Client implements API {
             assignmentToCreate.otherAssignCode = assignment.otherAssignmentTypeId;
         }
 
-        let created = await this._halClient.create(`/assignments`, assignmentToCreate, APIResource);
+        let created = await this._halClient.create(`/assignments`, assignmentToCreate, APIResource);       
 
         // This is a bit of hack, taking the idPath from the response and creating a new object with the id &
         // other properties from the original object.  This is because the api currently doesn't return us back
@@ -184,6 +186,7 @@ export default class Client implements API {
         const createdRecurrences = await Promise.all(
             recurrences.map(async (dutyRecurrenceToCreate) => {
                 return await this._halClient.create('/dutyRecurrences', {
+                    effectiveDate: moment().toISOString(),
                     assignment: assignmentId,
                     ...dutyRecurrenceToCreate
                 });
