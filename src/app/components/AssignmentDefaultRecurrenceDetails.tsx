@@ -11,16 +11,19 @@ export interface AssignmentDefaultRecurrenceDetailsProps {
 
 export default class AssignmentDefaultRecurrenceDetails 
     extends React.PureComponent<AssignmentDefaultRecurrenceDetailsProps, any> {
+        getTimeDisplay(timeString: string) {
+            return timeString.substr(0, timeString.lastIndexOf(':'));
+        }
     
-    render() {
+        render() {
         const { data: { daysBitmap, startTime, endTime, sheriffsRequired } } = this.props; 
         const dayDisplay = DaysOfWeek.getDisplayValues(daysBitmap).join(', ');
-        const startTimeString = startTime.toString();
-        const endTimeString = endTime.toString();
+        const startTimeString = this.getTimeDisplay(startTime.toString());
+        const endTimeString = this.getTimeDisplay(endTime.toString());
 
         return (
             <div>
-                <strong>{dayDisplay}</strong> - {startTimeString.substr(0, startTimeString.length - 3)} to {endTimeString.substr(0, endTimeString.length - 3)}{' '}
+                <strong>{dayDisplay}</strong> - {startTimeString} to {endTimeString}{' '}
                 <Badge>{sheriffsRequired}</Badge>
                 <br />
             </div>
