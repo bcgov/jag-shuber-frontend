@@ -9,9 +9,12 @@ import {
     IdType,
     SheriffDuty,
     AssignmentDuty,
-    WorkSectionCode
+    WorkSectionCode,
+    Sheriff
 } from '../../api';
 import { getWorkSectionColour } from '../../api/utils';
+import SheriffDropTarget from '../../containers/SheriffDropTarget';
+import * as TimeRangeUtils from '../../infrastructure/TimeRangeUtils'; 
 
 export interface SheriffDutyBarProps {
     sheriffId?: IdType;
@@ -22,10 +25,12 @@ export interface SheriffDutyBarProps {
     isExtra?: boolean;
     showBorder?: boolean;
     onRemove?: () => void;
+    canDropSheriff?: (sheriff: Sheriff) => boolean;
+    onDropSheriff?: (sheriff: Sheriff, sheriffDuty: SheriffDuty) => void;
 }
 
 export default class SheriffDutyBar extends React.PureComponent<SheriffDutyBarProps>{
-    getDutyBarWidth() {
+    private getDutyBarWidth() {
         const {
             sheriffDuty: { startDateTime: sheriffDutyStart, endDateTime: sheriffDutyEnd },
             duty: { startDateTime: dutyStart, endDateTime: dutyEnd }
@@ -37,7 +42,7 @@ export default class SheriffDutyBar extends React.PureComponent<SheriffDutyBarPr
         return `${sheriffDutyPercentage.toString()}%`;
     }
 
-    getDutyBarLeftPosition() {
+    private getDutyBarLeftPosition() {
         const {
             sheriffDuty: { startDateTime: sheriffDutyStart },
             duty: { startDateTime: dutyStart, endDateTime: dutyEnd }
@@ -49,7 +54,7 @@ export default class SheriffDutyBar extends React.PureComponent<SheriffDutyBarPr
         return `${startDifferencePercentage.toString()}%`;
     }
 
-    getDutyBarHeight() {
+    private getDutyBarHeight() {
         const { duty: { sheriffDuties } } = this.props;
         if (sheriffDuties.length > 0) {
             const dutyBarPercentage = (1 / sheriffDuties.length) * 100;
@@ -59,7 +64,7 @@ export default class SheriffDutyBar extends React.PureComponent<SheriffDutyBarPr
         
     }
     
-    getDutyBarTopPosition () {
+    private getDutyBarTopPosition () {
         const {
             sheriffDuty,
             duty: {sheriffDuties}
@@ -72,18 +77,39 @@ export default class SheriffDutyBar extends React.PureComponent<SheriffDutyBarPr
         return '0%';
     }
 
+    private canAssignSheriff(sheriff: Sheriff): boolean {
+        const { duty: {sheriffDuties = []}, sheriffDuty: sheriffDutyToAssign  } = this.props;
+        const sdToAssignStartTime = moment(sheriffDutyToAssign.startDateTime).toISOString();
+        const sdToAssignEndTime = moment(sheriffDutyToAssign.endDateTime).toISOString();
+        
+        const anyOverlap: boolean = sheriffDuties.filter(sd => sd.sheriffId === sheriff.id)
+        .some(sd => TimeRangeUtils
+                    .doTimeRangesOverlap(
+                        // tslint:disable-next-line:max-line-length
+                        {startTime: moment(sd.startDateTime).toISOString(), endTime: moment(sd.endDateTime).toISOString()}, 
+                        {startTime: sdToAssignStartTime, endTime: sdToAssignEndTime}
+                    ));
+                    
+        return !anyOverlap;
+    }
+
     render() {
         const {
             sheriffId,
+            sheriffDuty,
             showBorder = true,
             onRemove,
-            dutyWorkSection = 'OTHER'
+            dutyWorkSection = 'OTHER',
+            canDropSheriff = (s: Sheriff) => this.canAssignSheriff(s),
+            onDropSheriff,
         } = this.props;
         const isAssigned = sheriffId !== undefined && sheriffId !== '';
         const title = !this.props.title ? (isAssigned ? `Sheriff #${sheriffId}` : '') : this.props.title.toUpperCase();
 
         return (
-            <div
+            <SheriffDropTarget
+                onDropItem={(s) => onDropSheriff && onDropSheriff(s, sheriffDuty)}
+                canDropItem={canDropSheriff}
                 className="sheriff-duty-bar"
                 style={{
                     borderBottomWidth: showBorder ? 1 : 0,
@@ -96,7 +122,7 @@ export default class SheriffDutyBar extends React.PureComponent<SheriffDutyBarPr
                 }}
             >
                 {isAssigned && (
-                    <div style={{ margin: 'auto', fontSize: 16 }}>
+                    <div style={{ margin: 'auto', fontSize: 15 }}>
                         {title}
                         {onRemove !== undefined && (
                             <Label
@@ -110,7 +136,7 @@ export default class SheriffDutyBar extends React.PureComponent<SheriffDutyBarPr
                         )}
                     </div>
                 )}
-            </div>
-        )
+            </SheriffDropTarget>
+        );
     }
 }

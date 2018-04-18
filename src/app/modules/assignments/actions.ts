@@ -16,19 +16,19 @@ export const createAssignmentDuty = assignmentDutyRequests.createAssignmentDutyR
 export const editAssignmentDuty = assignmentDutyRequests.updateAssignmentDutyRequest.actionCreator;
 export const deleteAssignmentDuty = assignmentDutyRequests.deleteAssignmentDutyRequest.actionCreator;
 
-type SheriffDutyLink = { sheriffId: IdType, dutyId: IdType };
+type SheriffDutyLink = { sheriffId: IdType, dutyId: IdType, sheriffDutyId: IdType };
 export const linkAssignment: ThunkAction<SheriffDutyLink> =
-    ({ sheriffId, dutyId }: SheriffDutyLink) => (dispatch, getState, extra) => {
+    ({ sheriffId, dutyId, sheriffDutyId }: SheriffDutyLink) => (dispatch, getState, extra) => {
         const duty = getAssignmentDuty(dutyId)(getState());
         if (duty == null) {
             return;
         }
-        // const { sheriffDuties = [] } = duty;
-        // const newSheriffIds = sheriffDuties.slice(0);
-        // if (newSheriffIds.indexOf(sheriffId) === -1) {
-        //     newSheriffIds.push(sheriffId);
-        // }
-        // dispatch(editAssignmentDuty({ ...duty, sheriffDuties: newSheriffIds }));
+        const { sheriffDuties = [] } = duty;
+        const indexOfSheriffDuty = sheriffDuties.findIndex(s => s.id === sheriffDutyId);
+        if (indexOfSheriffDuty !== -1) {
+            sheriffDuties[indexOfSheriffDuty].sheriffId = sheriffId;
+        }
+        dispatch(editAssignmentDuty({ ...duty}));
     };
 
 export const unlinkAssignment: ThunkAction<SheriffDutyLink> =
