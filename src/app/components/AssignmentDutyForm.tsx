@@ -23,6 +23,7 @@ import {
     Button,
     Glyphicon
 } from 'react-bootstrap';
+import SheriffSelector from '../containers/SheriffSelector';
 
 export interface AssignmentDutyFormProps {
     handleSubmit?: () => void;
@@ -35,11 +36,9 @@ export interface AssignmentDutyFormProps {
 }
 
 interface SheriffDutyFieldProps {
-
 }
 
 class SheriffDutyFieldArray extends FieldArray<SheriffDutyFieldProps> {
-
 }
 
 export default class AssignmentDutyForm extends
@@ -76,6 +75,7 @@ export default class AssignmentDutyForm extends
     }
 
     renderSheriffDutyFieldsComponent(): React.ComponentClass {
+
         return formValues('timeRange')((props: any) => {
             const {
                 timeRange: {
@@ -101,17 +101,21 @@ export default class AssignmentDutyForm extends
                                                 <Glyphicon glyph="trash" />
                                             </Button>
                                             <div style={{marginTop: 20}}>
-                                            <Field
-                                                name={`${fieldInstanceName}.timeRange`}
-                                                component={(p) => <TimeSliderField
-                                                    {...p}
-                                                    minTime={minTime}
-                                                    maxTime={maxTime}
-                                                    timeIncrement={15}
-                                                    color={'#888'}
-                                                />}
-                                                label={`Sheriff ${index + 1}`}
-                                            />
+                                                <Field 
+                                                    name={`${fieldInstanceName}.sheriffId`}
+                                                    component={SheriffSelector}
+                                                    label="Assigned Sheriff"
+                                                />
+                                                <Field
+                                                    name={`${fieldInstanceName}.timeRange`}
+                                                    component={(p) => <TimeSliderField
+                                                        {...p}
+                                                        minTime={minTime}
+                                                        maxTime={maxTime}
+                                                        timeIncrement={15}
+                                                        color={'#888'}
+                                                    />}
+                                                />
                                             </div>
                                         </ListGroupItem>
                                     );
