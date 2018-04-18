@@ -14,8 +14,10 @@ export default class Selector extends React.PureComponent<FormFieldWrapperProps 
         return (
             <FormFieldWrapper {...this.props}>
                 <FormControl componentClass="select" value={value} onChange={onChange}>
-                    {!allowNone && <option disabled={true} selected={value === ""} value="">{`Select ${label}`}</option>}
-                    {allowNone && <option selected={value === ""} value="">{noneLabel}</option>}
+                    {!allowNone &&
+                         <option disabled={true} selected={value === ''} value="">{`Select ${label}`}</option>}
+                    {allowNone && <option selected={value === ''} value="">{noneLabel}</option>}
+                    
                     {data.map((keyValue, index) => 
                         <option 
                             key={index}
