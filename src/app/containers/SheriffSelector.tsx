@@ -22,10 +22,11 @@ class SheriffList extends React.PureComponent<
         const selectorValues = Object.keys(sheriffList).map((key, index) => 
             ({
                 key: sheriffList[key].id, 
-                value: `${sheriffList[key].lastName}, ${sheriffList[key].firstName.charAt(0)}`
+                value: `${sheriffList[key].lastName}, ${sheriffList[key].firstName}`
             }));
+        
         return (
-            <Selector {...restProps} data={selectorValues} />
+            <Selector {...restProps} data={selectorValues} allowNone={true} noneLabel="Not Assigned" />
         );
     }
 
