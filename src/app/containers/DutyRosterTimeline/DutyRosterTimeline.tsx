@@ -16,7 +16,7 @@ import {
     AssignmentDuty
 } from '../../api/index';
 import * as moment from 'moment';
-import './DailyTimeline.css';
+import './DutyRosterTimeline.css';
 import AssignmentDutyCard from '../../components/AssignmentDutyCard/AssignmentDutyCard';
 import { IdType, WorkSectionCode } from '../../api/Api';
 import SheriffDutyBarList from '../../components/SheriffDutyBarList/SheriffDutyBarList';
@@ -27,23 +27,23 @@ import { TimelineProps } from '../../components/Timeline/Timeline';
 import AssignmentCard from '../../components/AssignmentCard/AssignmentCard';
 import { getForegroundColor } from '../../infrastructure/colorUtils';
 
-interface DailyTimelineProps extends TimelineProps {
+interface DutyRosterTimelineProps extends TimelineProps {
     allowTimeDrag?: boolean;
 }
 
-interface DailyTimelineDispatchProps {
+interface DutyRosterTimelineDispatchProps {
     fetchAssignmentDuties: () => void;
     fetchAssignments: () => void;
     linkSheriff: (link: { sheriffId: IdType, dutyId: IdType, sheriffDutyId: IdType }) => void;
     // unlinkSheriff: (link: { sheriffId: IdType, dutyId: IdType }) => void;
 }
 
-interface DailyTimelineStateProps {
+interface DutyRosterTimelineStateProps {
     assignmentDuties: AssignmentDuty[];
     assignments: Assignment[];
 }
 
-class DailyTimeline extends React.Component<DailyTimelineProps & DailyTimelineStateProps & DailyTimelineDispatchProps> {
+class DutyRosterTimeline extends React.Component<DutyRosterTimelineProps & DutyRosterTimelineStateProps & DutyRosterTimelineDispatchProps> {
 
     componentWillMount() {
         const { 
@@ -78,7 +78,7 @@ class DailyTimeline extends React.Component<DailyTimelineProps & DailyTimelineSt
             {});
 
         return (
-            <div className="daily-timeline">
+            <div className="duty-roster-timeline">
                 <AssignmentTimeline
                     allowChangeTime={false}
                     items={assignmentDuties}
@@ -123,7 +123,7 @@ class DailyTimeline extends React.Component<DailyTimelineProps & DailyTimelineSt
     }
 }
 
-const mapStateToProps = (state: RootState, props: DailyTimelineProps) => {
+const mapStateToProps = (state: RootState, props: DutyRosterTimelineProps) => {
     return {
         assignmentDuties: allAssignmentDuties(state),
         assignments: allAssignments(state)
@@ -137,5 +137,5 @@ const mapDispatchToProps = {
     // unlinkSheriff: unlinkAssignment
 };
 
-export default connect<DailyTimelineStateProps, DailyTimelineDispatchProps, DailyTimelineProps>(
-    mapStateToProps, mapDispatchToProps)(DailyTimeline);
+export default connect<DutyRosterTimelineStateProps, DutyRosterTimelineDispatchProps, DutyRosterTimelineProps>(
+    mapStateToProps, mapDispatchToProps)(DutyRosterTimeline);

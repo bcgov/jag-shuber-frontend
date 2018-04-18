@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as moment from 'moment';
-import DailyTimeline from '../containers/DailyTimeline/DailyTimeline';
+import DutyRosterTimeline from '../containers/DutyRosterTimeline/DutyRosterTimeline';
 import TimelineToolsPanel from '../components/TimelineToolsPanel';
 import SheriffList from '../containers/SheriffList';
 import { Sheriff } from '../api';
@@ -8,12 +8,12 @@ import { ListGroup } from 'react-bootstrap';
 import SheriffDragSource from '../containers/SheriffDragSource';
 import DutyRosterSheriffCard from '../containers/DutyRosterSheriffCard';
 
-class TimelinePage extends React.PureComponent {
+class DutyRoster extends React.PureComponent {
     render() {
         return (
             <div style={{ display: 'flex', flexDirection: 'row' }}>
                 <div style={{ flex: '1 0px', minWidth: 500 }}>
-                    <DailyTimeline />
+                    <DutyRosterTimeline />
                 </div>
                 <TimelineToolsPanel titleText="My Team">
                     <ListGroup>
@@ -34,4 +34,4 @@ class TimelinePage extends React.PureComponent {
     }
 }
 
-export default TimelinePage;
+export default DutyRoster;
