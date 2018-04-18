@@ -104,7 +104,7 @@ export default class AssignmentDutyForm extends
                                                 <Field 
                                                     name={`${fieldInstanceName}.sheriffId`}
                                                     component={SheriffSelector}
-                                                    label="Assigned Sheriff"
+                                                    label="Sheriff"
                                                 />
                                                 <Field
                                                     name={`${fieldInstanceName}.timeRange`}

@@ -86,8 +86,11 @@ export default class SheriffDutyBar extends React.PureComponent<SheriffDutyBarPr
             if (sd.sheriffId === sheriff.id) {
                 const sdStartTimeMoment = moment(sd.startDateTime);
                 const sdEndTimeMoment = moment(sd.endDateTime);
-                if (sdToAssignStartTimeMoment.isBetween(sdStartTimeMoment, sdEndTimeMoment) 
-                    || sdToAssignEndTimeMoment.isBetween(sdStartTimeMoment, sdEndTimeMoment)) {
+                if ((sdToAssignStartTimeMoment.isBetween(sdStartTimeMoment, sdEndTimeMoment) 
+                        || sdToAssignEndTimeMoment.isBetween(sdStartTimeMoment, sdEndTimeMoment)) 
+                    || 
+                    (sdToAssignStartTimeMoment.isSame(sd.startDateTime) 
+                        && sdToAssignEndTimeMoment.isSame(sd.endDateTime))) {
                     canAssignSheriff = false;
                 }
             }
