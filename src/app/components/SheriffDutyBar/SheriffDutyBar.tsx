@@ -14,6 +14,7 @@ import {
 } from '../../api';
 import { getWorkSectionColour } from '../../api/utils';
 import SheriffDropTarget from '../../containers/SheriffDropTarget';
+import * as TimeRangeUtils from '../../infrastructure/TimeRangeUtils'; 
 
 export interface SheriffDutyBarProps {
     sheriffId?: IdType;
@@ -78,30 +79,18 @@ export default class SheriffDutyBar extends React.PureComponent<SheriffDutyBarPr
 
     private canAssignSheriff(sheriff: Sheriff): boolean {
         const { duty: {sheriffDuties = []}, sheriffDuty: sheriffDutyToAssign  } = this.props;
-        const sdToAssignStartTimeMoment = moment(sheriffDutyToAssign.startDateTime);
-        const sdToAssignEndTimeMoment = moment(sheriffDutyToAssign.endDateTime);
-        let canAssignSheriff: boolean = true;
-
-        sheriffDuties.forEach(sd => {
-            if (sd.sheriffId === sheriff.id) {
-                const sdStartTimeMoment = moment(sd.startDateTime);
-                const sdEndTimeMoment = moment(sd.endDateTime);
-                if ((sdToAssignStartTimeMoment.isBetween(sdStartTimeMoment, sdEndTimeMoment) 
-                        || sdToAssignEndTimeMoment.isBetween(sdStartTimeMoment, sdEndTimeMoment)) 
-                    || 
-                    (sdToAssignStartTimeMoment.isSame(sdStartTimeMoment) 
-                        && sdToAssignEndTimeMoment.isSame(sdEndTimeMoment))
-                    || 
-                    (sdToAssignStartTimeMoment.isSame(sdStartTimeMoment) 
-                        && sdEndTimeMoment.isBetween(sdToAssignStartTimeMoment, sdToAssignEndTimeMoment))
-                    ||
-                    (sdToAssignEndTimeMoment.isSame(sdEndTimeMoment) 
-                        && sdStartTimeMoment.isBetween(sdToAssignStartTimeMoment, sdToAssignEndTimeMoment))) {
-                    canAssignSheriff = false;
-                }
-            }
-        });
-        return canAssignSheriff;
+        const sdToAssignStartTime = moment(sheriffDutyToAssign.startDateTime).toISOString();
+        const sdToAssignEndTime = moment(sheriffDutyToAssign.endDateTime).toISOString();
+        
+        const anyOverlap: boolean = sheriffDuties.filter(sd => sd.sheriffId === sheriff.id)
+        .some(sd => TimeRangeUtils
+                    .doTimeRangesOverlap(
+                        // tslint:disable-next-line:max-line-length
+                        {startTime: moment(sd.startDateTime).toISOString(), endTime: moment(sd.endDateTime).toISOString()}, 
+                        {startTime: sdToAssignStartTime, endTime: sdToAssignEndTime}
+                    ));
+                    
+        return !anyOverlap;
     }
 
     render() {

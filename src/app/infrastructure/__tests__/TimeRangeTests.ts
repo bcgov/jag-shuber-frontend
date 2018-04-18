@@ -9,8 +9,8 @@ describe('doTimeRangesOverlap() ', () => {
     const threePM = moment().hour(15).minute(0).second(0).millisecond(0).toISOString();
     const fourPM = moment().hour(16).minute(0).second(0).millisecond(0).toISOString();
 
+    /* tslint:disable:max-line-length */
     it(
-        // tslint:disable-next-line:max-line-length
         'Should return true if the start time or end time of time range one is between the start and end time of time range two', 
         () => {
             expect(util({startTime: onePM, endTime: threePM}, {startTime: twoPM, endTime: fourPM})).toBeTruthy();
