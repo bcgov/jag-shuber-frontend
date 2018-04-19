@@ -15,7 +15,7 @@ import {
     Assignment,
     AssignmentDuty
 } from '../../api/index';
-import * as moment from 'moment';
+// import * as moment from 'moment';
 import './DutyRosterTimeline.css';
 import AssignmentDutyCard from '../../components/AssignmentDutyCard/AssignmentDutyCard';
 import { IdType, WorkSectionCode } from '../../api/Api';
@@ -26,6 +26,7 @@ import AssignmentTimeline from '../../components/AssignmentTimeline/AssignmentTi
 import { TimelineProps } from '../../components/Timeline/Timeline';
 import AssignmentCard from '../../components/AssignmentCard/AssignmentCard';
 import { getForegroundColor } from '../../infrastructure/colorUtils';
+import { visibleTime } from '../../modules/timeline/selectors';
 
 interface DutyRosterTimelineProps extends TimelineProps {
     allowTimeDrag?: boolean;
@@ -35,25 +36,32 @@ interface DutyRosterTimelineDispatchProps {
     fetchAssignmentDuties: () => void;
     fetchAssignments: () => void;
     linkSheriff: (link: { sheriffId: IdType, dutyId: IdType, sheriffDutyId: IdType }) => void;
+    // visibleTime: () => void;
     // unlinkSheriff: (link: { sheriffId: IdType, dutyId: IdType }) => void;
 }
 
 interface DutyRosterTimelineStateProps {
     assignmentDuties: AssignmentDuty[];
     assignments: Assignment[];
+    visibleTimeStart: any;
+    visibleTimeEnd: any;
 }
 
-class DutyRosterTimeline extends React.Component<DutyRosterTimelineProps & DutyRosterTimelineStateProps & DutyRosterTimelineDispatchProps> {
+class DutyRosterTimeline extends 
+    React.Component<DutyRosterTimelineProps & DutyRosterTimelineStateProps & DutyRosterTimelineDispatchProps> {
 
     componentWillMount() {
         const { 
                 fetchAssignmentDuties, 
-                fetchAssignments
+                fetchAssignments,
+                // tslint:disable-next-line:no-shadowed-variable
+                // visibleTime
         } = this.props;
 
         /* tslint:disable:no-unused-expression */
         fetchAssignmentDuties && fetchAssignmentDuties();
         fetchAssignments && fetchAssignments();
+        // visibleTime && visibleTime();
         /* tslint:enable:no-unused-expression */
     }
 
@@ -65,8 +73,8 @@ class DutyRosterTimeline extends React.Component<DutyRosterTimelineProps & DutyR
             onVisibleTimeChange,
             linkSheriff,
             // unlinkSheriff,
-            visibleTimeStart = moment().startOf('day').add(7, 'hours'),
-            visibleTimeEnd = moment().endOf('day').subtract(6, 'hours'),
+            visibleTimeStart, //= moment().startOf('day').add(7, 'hours'),
+            visibleTimeEnd, //= moment().endOf('day').subtract(6, 'hours'),
             ...rest
         } = this.props;
 
@@ -86,6 +94,7 @@ class DutyRosterTimeline extends React.Component<DutyRosterTimelineProps & DutyR
                     sidebarWidth={sidebarWidth}
                     visibleTimeStart={visibleTimeStart}
                     visibleTimeEnd={visibleTimeEnd}
+                    // onVisibleTimeChange={visibleTime()}
                     itemHeightRatio={.97}
                     groupRenderer={(assignment) => (
                         <AssignmentCard assignment={assignment} />
@@ -124,9 +133,11 @@ class DutyRosterTimeline extends React.Component<DutyRosterTimelineProps & DutyR
 }
 
 const mapStateToProps = (state: RootState, props: DutyRosterTimelineProps) => {
+    const currentVisibleTime = visibleTime(state);
     return {
         assignmentDuties: allAssignmentDuties(state),
-        assignments: allAssignments(state)
+        assignments: allAssignments(state),
+        ...currentVisibleTime
     };
 };
 

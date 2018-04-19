@@ -7,11 +7,13 @@ import { Sheriff } from '../api';
 import { ListGroup } from 'react-bootstrap';
 import SheriffDragSource from '../containers/SheriffDragSource';
 import DutyRosterSheriffCard from '../containers/DutyRosterSheriffCard';
+import DutyRosterControls from '../containers/DutyRosterControls';
 
 class DutyRoster extends React.PureComponent {
     render() {
         return (
             <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <DutyRosterControls />
                 <div style={{ flex: '1 0px', minWidth: 500 }}>
                     <DutyRosterTimeline />
                 </div>

@@ -1,3 +1,4 @@
+import * as moment from 'moment';
 import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
 import { default as thunk, ThunkAction as _ThunkAction } from 'redux-thunk';
 import { default as api, API } from './api';
@@ -16,6 +17,8 @@ import {
 import {
     getSheriffList
 } from './modules/sheriffs/actions';
+import { updateVisibleTime } from './modules/timeline/actions';
+
 
 export interface ThunkExtra {
     api: API;
@@ -36,7 +39,8 @@ const initialActions: any[] = [
     getCourtrooms, 
     getAlternateAssignmentTypes,
     getJailRoles,
-    getRuns
+    getRuns,
+    () => updateVisibleTime(moment().startOf('day').add(7, 'hours'), moment().endOf('day').subtract(6, 'hours'))
 ];
 
 const reducers = {
