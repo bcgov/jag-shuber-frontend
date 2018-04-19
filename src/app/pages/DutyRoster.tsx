@@ -12,8 +12,24 @@ import DutyRosterControls from '../containers/DutyRosterControls';
 class DutyRoster extends React.PureComponent {
     render() {
         return (
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
-                <DutyRosterControls />
+            <div >
+                <div
+                    style={{
+                        backgroundColor: '#003366',
+                        marginLeft: 3,
+                        marginRight: 3, 
+                        marginBottom: 3,
+                        borderRadius: 3,
+                        display: 'flex',
+                        flexDirection: 'row',
+                        paddingLeft: 10,
+                        justifyContent: 'center',
+                        
+                    }}
+                >
+                    <DutyRosterControls />
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'row' }}>
                 <div style={{ flex: '1 0px', minWidth: 500 }}>
                     <DutyRosterTimeline />
                 </div>
@@ -31,6 +47,7 @@ class DutyRoster extends React.PureComponent {
                         />
                     </ListGroup>
                 </TimelineToolsPanel>
+                </div>
             </div>
         );
     }

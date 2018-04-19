@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { createAssignmentDuty } from '../modules/assignments/actions';
 import { getAssignment } from '../modules/assignments/selectors';
+import { visibleTime } from '../modules/timeline/selectors';
 import {
     IdType,
     Assignment,
@@ -34,9 +35,13 @@ export interface AssignmentDutyCreateFormProps extends AssignmentDutyFormProps {
 
 const mapStateToProps = (state: RootState, props: AssignmentDutyCreateFormProps) => {
     const assignment: Assignment = getAssignment(props.assignmentId)(state);
+    const currentVisibleTime = visibleTime(state);
+    const currentVisibleStartMoment = moment(currentVisibleTime.visibleTimeStart);
+    const currentVisibleEndMoment = moment(currentVisibleTime.visibleTimeEnd);
+
     const defaultTimeRange = {
-        startTime: moment().startOf('day').add('hours', 6).toISOString(),
-        endTime: moment().startOf('day').add('hours', 17).toISOString()
+        startTime: currentVisibleStartMoment.startOf('day').add('hours', 7).toISOString(),
+        endTime: currentVisibleEndMoment.startOf('day').add('hours', 17).toISOString()
     };
     return {
         initialValues: {
@@ -49,6 +54,8 @@ const mapStateToProps = (state: RootState, props: AssignmentDutyCreateFormProps)
                 }
             ]
         },
+        minTime: currentVisibleStartMoment.startOf('day').add('hours', 6).toISOString(),
+        maxTime: currentVisibleEndMoment.startOf('day').add('hours', 22).toISOString(),
         assignmentTitle: assignment.title,
         workSectionId: assignment.workSectionId
     };

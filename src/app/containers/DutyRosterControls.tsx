@@ -33,8 +33,19 @@ class DutyRosterControls extends React.PureComponent<
                         moment(visibleTimeStart).subtract('day', 1),
                         moment(visibleTimeEnd).subtract('day', 1)
                     )}
+                    bsStyle="link" 
+                    bsSize="large" 
+                    style={{color: 'white'}}
                 >
                     <Glyphicon glyph="chevron-left" />
+                </Button>
+
+                <Button
+                    bsStyle="link" 
+                    bsSize="large" 
+                    style={{color: 'white'}}
+                >
+                    <Glyphicon glyph="calendar" />
                 </Button>
 
                 <Button
@@ -42,6 +53,9 @@ class DutyRosterControls extends React.PureComponent<
                         moment(visibleTimeStart).add('day', 1),
                         moment(visibleTimeEnd).add('day', 1)
                     )}
+                    bsStyle="link" 
+                    bsSize="large" 
+                    style={{color: 'white'}}
                 >
                     <Glyphicon glyph="chevron-right" />
                 </Button>
@@ -56,7 +70,8 @@ const mapStateToProps = (state: RootState) => {
 
 const mapDispatchToProps = {
     updateVisibleTime: setVisibleTime
-}
+};
+
 // tslint:disable-next-line:max-line-length
 export default connect<DutyRosterControlsStateProps, DutyRosterDistpatchProps, DutyRosterControlsProps>(
     mapStateToProps,
