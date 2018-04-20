@@ -370,14 +370,14 @@ export default class Client implements API {
     }
     async updateAssignmentDuty(duty: Partial<AssignmentDuty>): Promise<AssignmentDuty> {
         const {
-        id,
+            id,
             assignmentId: assignment,
             sheriffDuties = [],
             dutyRecurrenceId: dutyRecurrence,
             startDateTime,
             endDateTime,
             ...restDuty
-    } = duty;
+        } = duty;
 
         const assignmentDutyUpdateTask = this._halClient.update(`${id}`, {
             assignment,
@@ -407,10 +407,18 @@ export default class Client implements API {
     }
 
     async createSheriffDuty(sheriffDuty: Partial<SheriffDuty>): Promise<SheriffDuty> {
-        const { dutyId: duty, sheriffId: sheriff, ...restSheriffDuty } = sheriffDuty;
+        const {
+            dutyId: duty,
+            sheriffId: sheriff,
+            startDateTime,
+            endDateTime,
+            ...restSheriffDuty
+        } = sheriffDuty;
         const { props: { id } } = await this._halClient.create('/sheriffDuties', {
             duty,
             sheriff,
+            startDateTime: toServerDateTime(startDateTime),
+            endDateTime: toServerDateTime(endDateTime),
             ...restSheriffDuty
         });
         return { ...sheriffDuty, id } as SheriffDuty;
