@@ -8,6 +8,8 @@ import {
 } from 'react-bootstrap';
 import { visibleTime } from '../modules/timeline/selectors';
 import { updateVisibleTime as setVisibleTime } from '../modules/timeline/actions';
+import CalendarButton from '../components/FormElements/CalendarButton/CalendarButton';
+import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 
 interface DutyRosterControlsStateProps {
     visibleTimeStart: any;
@@ -24,10 +26,11 @@ interface DutyRosterDistpatchProps {
 class DutyRosterControls extends React.PureComponent<
     DutyRosterControlsProps & DutyRosterControlsStateProps & DutyRosterDistpatchProps> {
 
+
     render() {
         const { visibleTimeStart, visibleTimeEnd, updateVisibleTime } = this.props;
         return (
-            <div>
+            <div style={{ textAlign: 'center', display: 'flex'}}>
                 <Button
                     onClick={() => updateVisibleTime(
                         moment(visibleTimeStart).subtract('day', 1),
@@ -39,14 +42,22 @@ class DutyRosterControls extends React.PureComponent<
                 >
                     <Glyphicon glyph="chevron-left" />
                 </Button>
-
-                <Button
-                    bsStyle="link" 
-                    bsSize="large" 
-                    style={{color: 'white'}}
-                >
-                    <Glyphicon glyph="calendar" />
-                </Button>
+                
+                <CalendarButton 
+                    onChange={(selectedDate) => updateVisibleTime(
+                        TimeUtils.getDefaultStartTime(moment(selectedDate)),
+                        TimeUtils.getDefaultEndTime(moment(selectedDate))
+                        // moment(selectedDate).startOf('day').add('hour', 7),
+                        // moment(selectedDate).startOf('day').add('hour', 17)
+                    )}
+                    defaultValue={visibleTimeStart}
+                    todayOnClick={() => updateVisibleTime(
+                        TimeUtils.getDefaultStartTime(moment()),
+                        TimeUtils.getDefaultEndTime(moment())
+                        // moment().startOf('day').add('hour', 7),
+                        // moment().startOf('day').add('hour', 17)
+                    )}
+                />
 
                 <Button
                     onClick={() => updateVisibleTime(
@@ -58,7 +69,7 @@ class DutyRosterControls extends React.PureComponent<
                     style={{color: 'white'}}
                 >
                     <Glyphicon glyph="chevron-right" />
-                </Button>
+                </Button>                
             </div>
         );
     }

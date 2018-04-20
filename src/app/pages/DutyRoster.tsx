@@ -20,6 +20,8 @@ class DutyRoster extends React.PureComponent {
                         flexDirection: 'row',
                         paddingLeft: 10,
                         justifyContent: 'center',
+                        maxHeight: 85,
+                        paddingTop: 5
                     }}
                 >
                     <DutyRosterControls />
