@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as moment from 'moment';
 import { Form } from 'react-bootstrap';
 import {
     Field,
@@ -19,7 +18,7 @@ import toTitleCase from '../infrastructure/toTitleCase';
 import CheckboxField from './FormElements/CheckboxField';
 import TimeSliderField from './FormElements/TimeSliderField';
 import { getWorkSectionColour } from '../api/utils';
-
+import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 export interface ScheduleShiftFormProps {
     handleSubmit?: () => void;
     onSubmitSuccess?: () => void;
@@ -61,8 +60,8 @@ export default class ScheduleShiftForm extends
 
     private renderShiftFields() {
         const {
-            minTime = moment().startOf('day').add('hours', 6).toISOString(), 
-            maxTime = moment().startOf('day').add('hours', 22).toISOString(),
+            minTime = TimeUtils.getDefaultTimePickerMinTime().toISOString(), 
+            maxTime = TimeUtils.getDefaultTimePickerMaxTime().toISOString(),
             workSectionId
         } = this.props;
         return (

@@ -6,8 +6,7 @@ import {
 import {
     getAssignments,
     getAssignmentDuties,
-    linkAssignment,
-    // unlinkAssignment
+    linkAssignment
 } from '../../modules/assignments/actions';
 import { connect } from 'react-redux';
 import { RootState } from '../../store';
@@ -15,7 +14,6 @@ import {
     Assignment,
     AssignmentDuty
 } from '../../api/index';
-// import * as moment from 'moment';
 import './DutyRosterTimeline.css';
 import AssignmentDutyCard from '../../components/AssignmentDutyCard/AssignmentDutyCard';
 import { IdType, WorkSectionCode } from '../../api/Api';
@@ -36,8 +34,6 @@ interface DutyRosterTimelineDispatchProps {
     fetchAssignmentDuties: () => void;
     fetchAssignments: () => void;
     linkSheriff: (link: { sheriffId: IdType, dutyId: IdType, sheriffDutyId: IdType }) => void;
-    // visibleTime: () => void;
-    // unlinkSheriff: (link: { sheriffId: IdType, dutyId: IdType }) => void;
 }
 
 interface DutyRosterTimelineStateProps {
@@ -54,14 +50,11 @@ class DutyRosterTimeline extends
         const { 
                 fetchAssignmentDuties, 
                 fetchAssignments,
-                // tslint:disable-next-line:no-shadowed-variable
-                // visibleTime
         } = this.props;
 
         /* tslint:disable:no-unused-expression */
         fetchAssignmentDuties && fetchAssignmentDuties();
         fetchAssignments && fetchAssignments();
-        // visibleTime && visibleTime();
         /* tslint:enable:no-unused-expression */
     }
 
@@ -72,9 +65,8 @@ class DutyRosterTimeline extends
             sidebarWidth = 200,
             onVisibleTimeChange,
             linkSheriff,
-            // unlinkSheriff,
-            visibleTimeStart, //= moment().startOf('day').add(7, 'hours'),
-            visibleTimeEnd, //= moment().endOf('day').subtract(6, 'hours'),
+            visibleTimeStart,
+            visibleTimeEnd, 
             ...rest
         } = this.props;
 
@@ -94,7 +86,6 @@ class DutyRosterTimeline extends
                     sidebarWidth={sidebarWidth}
                     visibleTimeStart={visibleTimeStart}
                     visibleTimeEnd={visibleTimeEnd}
-                    // onVisibleTimeChange={visibleTime()}
                     itemHeightRatio={.97}
                     groupRenderer={(assignment) => (
                         <AssignmentCard assignment={assignment} />
@@ -113,9 +104,6 @@ class DutyRosterTimeline extends
                                     <SheriffDutyBarList
                                         {...p}
                                         BarRenderer={ConnectedSheriffDutyBar}
-                                        // onRemove={(sheriffId) => {
-                                        //     unlinkSheriff({ sheriffId, dutyId: duty.id });
-                                        // }}
                                         onDropSheriff={({ id: sheriffId }, {id: sheriffDutyId}) => (
                                             linkSheriff && linkSheriff({ sheriffId, dutyId: duty.id, sheriffDutyId})
                                         )}
@@ -145,7 +133,6 @@ const mapDispatchToProps = {
     fetchAssignments: getAssignments,
     fetchAssignmentDuties: getAssignmentDuties,
     linkSheriff: linkAssignment,
-    // unlinkSheriff: unlinkAssignment
 };
 
 export default connect<DutyRosterTimelineStateProps, DutyRosterTimelineDispatchProps, DutyRosterTimelineProps>(

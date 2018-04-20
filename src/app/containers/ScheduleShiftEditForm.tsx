@@ -15,6 +15,7 @@ import {
     IdType, 
     Shift 
 } from '../api';
+import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 
 // wrapping generic assignment form in redux-form
 const formConfig: ConfigProps<any, ScheduleShiftFormProps> = {
@@ -50,8 +51,8 @@ const mapStateToProps = (state: RootState, props: ScheduleShiftEditFormProps) =>
             isSingleShift: true,
             shiftTitle: moment(initialShift.startDateTime).format('dddd MMMM DD, YYYY'),
             assignedSheriff: getSheriff(initialShift.sheriffId)(state),
-            minTime: moment(initialShift.startDateTime).startOf('day').add('hours', 6).toISOString(),
-            maxTime: moment(initialShift.endDateTime).startOf('day').add('hours', 22).toISOString(),
+            minTime: TimeUtils.getDefaultTimePickerMinTime(moment(initialShift.startDateTime)).toISOString(),
+            maxTime: TimeUtils.getDefaultTimePickerMaxTime(moment(initialShift.endDateTime)).toISOString(),
             workSectionId: initialShift.workSectionId
         };
     } else {

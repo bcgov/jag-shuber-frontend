@@ -47,15 +47,11 @@ class DutyRosterControls extends React.PureComponent<
                     onChange={(selectedDate) => updateVisibleTime(
                         TimeUtils.getDefaultStartTime(moment(selectedDate)),
                         TimeUtils.getDefaultEndTime(moment(selectedDate))
-                        // moment(selectedDate).startOf('day').add('hour', 7),
-                        // moment(selectedDate).startOf('day').add('hour', 17)
                     )}
                     defaultValue={visibleTimeStart}
                     todayOnClick={() => updateVisibleTime(
-                        TimeUtils.getDefaultStartTime(moment()),
-                        TimeUtils.getDefaultEndTime(moment())
-                        // moment().startOf('day').add('hour', 7),
-                        // moment().startOf('day').add('hour', 17)
+                        TimeUtils.getDefaultStartTime(),
+                        TimeUtils.getDefaultEndTime()
                     )}
                 />
 

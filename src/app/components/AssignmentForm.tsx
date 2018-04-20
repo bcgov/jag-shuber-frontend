@@ -29,7 +29,7 @@ import {
 } from '../api';
 import TimeSliderField from './FormElements/TimeSliderField';
 import { getWorkSectionColour } from '../api/utils';
-
+import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 class OtherFields extends React.PureComponent {
     render() {
         return (
@@ -212,8 +212,8 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
     private renderAssignmentTemplateFields() {
         const {
             isDefaultTemplate,
-            minTime = moment().startOf('day').add('hours', 6).toISOString(),
-            maxTime = moment().startOf('day').add('hours', 22).toISOString(),
+            minTime = TimeUtils.getDefaultTimePickerMinTime().toISOString(),
+            maxTime = TimeUtils.getDefaultTimePickerMaxTime().toISOString(),
             workSectionId = 'OTHER'
         } = this.props;
         if (isDefaultTemplate) {
@@ -279,8 +279,8 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
                                         onClick={() => fields.push({
                                             daysBitmap: DaysOfWeek.Weekdays,
                                             timeRange: {
-                                                startTime: moment().startOf('day').add('hours', 8).toISOString(),
-                                                endTime: moment().startOf('day').add('hours', 17).toISOString()
+                                                startTime: TimeUtils.getDefaultStartTime().toISOString(),
+                                                endTime: TimeUtils.getDefaultStartTime().toISOString()
                                             }
                                         })}
                                     >

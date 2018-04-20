@@ -1,9 +1,5 @@
 import * as React from 'react';
 import * as moment from 'moment';
-import {
-    Glyphicon,
-    Label
-} from 'react-bootstrap';
 import './SheriffDutyBar.css';
 import {
     IdType,
@@ -98,7 +94,6 @@ export default class SheriffDutyBar extends React.PureComponent<SheriffDutyBarPr
             sheriffId,
             sheriffDuty,
             showBorder = true,
-            onRemove,
             dutyWorkSection = 'OTHER',
             canDropSheriff = (s: Sheriff) => this.canAssignSheriff(s),
             onDropSheriff,
@@ -124,16 +119,6 @@ export default class SheriffDutyBar extends React.PureComponent<SheriffDutyBarPr
                 {isAssigned && (
                     <div style={{ margin: 'auto', fontSize: 15 }}>
                         {title}
-                        {onRemove !== undefined && (
-                            <Label
-                                className="remove-assignment-btn"
-                                bsSize="xs"
-                                onMouseDown={() => onRemove && onRemove()}
-                                bsStyle="danger"
-                            >
-                                <Glyphicon glyph="remove" />
-                            </Label>
-                        )}
                     </div>
                 )}
             </SheriffDropTarget>
