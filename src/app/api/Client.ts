@@ -340,17 +340,21 @@ export default class Client implements API {
         const {
             assignmentId,
             sheriffDuties = [],
+            startDateTime,
+            endDateTime,
             ...restDuty
         } = duty;
 
         const dutyToCreate: any = {
             ...restDuty,
+            startDateTime: toServerDateTime(startDateTime),
+            endDateTime: toServerDateTime(endDateTime),
             assignment: assignmentId
         };
 
         const apiCreatedDuty = await this._halClient.create('/duties', dutyToCreate);
         const { id, ...rest } = apiCreatedDuty.props;
-        
+
         const createdDuty = {
             id,
             ...rest,
