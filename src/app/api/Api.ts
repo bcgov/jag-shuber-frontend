@@ -33,7 +33,6 @@ export enum DaysOfWeek {
 /* tslint:enable:no-bitwise */
 
 export namespace DaysOfWeek {
-
     export function getDisplayValues(value: DaysOfWeek): string[] {
         let dayDisplay = displayEnum(DaysOfWeek, value);
 
@@ -153,13 +152,13 @@ export interface AssignmentDuty {
     endDateTime: DateType;
     sheriffDuties: SheriffDuty[];
     sheriffsRequired: number;
-    extraDetails?: AssignmentDutyDetails;
+    dutyRecurrenceId?: IdType;
 }
 
 export interface SheriffDuty {
     id: IdType;
     sheriffId?: IdType;
-    dutyId: IdType; 
+    dutyId: IdType;
     startDateTime: DateType;
     endDateTime: DateType;
 }
@@ -242,10 +241,18 @@ export interface API {
     deleteAssignment(assignmentId: IdType): Promise<void>;
 
     // Assignment Duties
-    getAssignmentDuties(): Promise<AssignmentDuty[]>;
+    getAssignmentDuties(startDate?: DateType, endDate?: DateType): Promise<AssignmentDuty[]>;
     createAssignmentDuty(duty: Partial<AssignmentDuty>): Promise<AssignmentDuty>;
     updateAssignmentDuty(duty: Partial<AssignmentDuty>): Promise<AssignmentDuty>;
     deleteAssignmentDuty(dutyId: IdType): Promise<void>;
+    
+
+    createSheriffDuty(sheriffDuty:Partial<SheriffDuty>):Promise<SheriffDuty>;
+    updateSheriffDuty(sheriffDuty:Partial<SheriffDuty>):Promise<SheriffDuty>;
+    deleteSheriffDuty(sheriffDutyId:IdType):Promise<void>;
+
+    // Default Duties
+    createDefaultDuties(date?: DateType): Promise<AssignmentDuty[]>;
 
     // Sheriff Shifts
     getShifts(): Promise<Shift[]>;

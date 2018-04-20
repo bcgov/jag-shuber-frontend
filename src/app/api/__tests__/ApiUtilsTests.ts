@@ -1,6 +1,6 @@
 import { DaysOfWeek } from '../Api';
 
-/* tslint:disable:no-bitwise */ 
+/* tslint:disable:no-bitwise */
 describe('DaysOfWeek.getDisplayValues', () => {
     const util = DaysOfWeek.getDisplayValues;
     

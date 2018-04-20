@@ -40,6 +40,22 @@
             "protocol": "inspector",
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen"
+          },
+          {
+            "name": "Debug Integration Tests",
+            "type": "node",
+            "request": "launch",
+            "runtimeExecutable": "node",
+            "runtimeArgs": [
+              "${workspaceRoot}/scripts/test",
+              "--runInBand",      
+              "--env=jsdom",
+              "--runIntegrationTests"        
+            ],
+            "sourceMaps": true,
+            "protocol": "inspector",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
           }
     ]
 }

@@ -1,10 +1,13 @@
+/**
+ * @jest-environment node
+ */
 import {
     API,
     Sheriff
 } from '../Api';
 import APIClient from '../Client';
 import { courthouseCode } from '../index';
-import './shape-matchers.ts';
+// import * as TestUtils from '../../infrastructure/TestUtils';
 
 const SheriffShape: Sheriff = {
     badgeNo: '2345',
@@ -12,10 +15,9 @@ const SheriffShape: Sheriff = {
     lastName: 'curious',
     id: '123-132-234',
     imageUrl: 'http://someurl.to/an/image'
-}
+};
 
-
-describe('API Client', () => {
+describe('API Client', async () => {
     let client: API;
 
     beforeEach(() => {

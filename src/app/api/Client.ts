@@ -1,3 +1,4 @@
+import * as moment from 'moment';
 import {
     Sheriff,
     AssignmentDuty,
@@ -16,7 +17,9 @@ import {
     JailRole,
     AlternateAssignment,
     IdType,
-    WorkSectionCode
+    WorkSectionCode,
+    DateType,
+    SheriffDuty
 } from './Api';
 import {
     isCourtAssignment,
@@ -24,20 +27,21 @@ import {
     isEscortAssignment,
     isOtherAssignment
 } from './utils';
-import { 
-    createClient, 
-    HalRestClient, 
-    HalResource, 
-    HalProperty 
+import { renameKeysInObject } from '../infrastructure/objectUtils';
+import {
+    createClient,
+    HalRestClient,
+    HalResource,
+    HalProperty
 } from 'hal-rest-client';
 import MockApi from './Mock/MockApi';
-import * as moment from 'moment';
+import { AxiosRequestConfig } from 'axios';
 
-// All of our resources now have an idPath
-// so we'll specify a HalResource that contains that
-class APIResource extends HalResource {
-    @HalProperty()
-    idPath: string;
+const API_DATE_FORMAT = 'YYYY-MM-DD';
+const API_DATETIME_FORMAT = 'YYYY-MM-DDTHH:mm:ss';
+
+export function toServerDateTime(timeMoment: any) {
+    return moment(timeMoment).format(API_DATETIME_FORMAT);
 }
 
 export function extractWorksectionCode(workSectionCodePath: string): WorkSectionCode {
@@ -49,7 +53,97 @@ export function toWorkSectionCodePath(workSectionCode: WorkSectionCode = 'OTHER'
     return `/workSectionCodes/${workSectionCode}`;
 }
 
+interface APIErrorResponse extends Error {
+    config?: AxiosRequestConfig;
+    response?: {
+        status: number,
+        data?: {
+            fieldErrors?: {
+                code: string;
+                defaultMessage: string;
+                field: string;
+                localizedMessage: string;
+                objectName: string;
+                rejectedValue: any;
+            }[],
+            globalErrors?: {
+                code: string;
+                defaultMessage: string;
+                localizedMessage: string;
+                objectName: string;
+            }[]
+            message?: string;
+        }
+    };
+}
+
+class APIError extends Error {
+    _isAPIError = true;
+    status: number;
+    // get status(): number | undefined {
+    //     return this._error!.response!.status;
+    // }
+
+    private _error?: APIErrorResponse;
+    static isAPIError(error: any): error is APIError {
+        return (<APIError>error)._isAPIError === true;
+    }
+
+    static constructFromResponse(originalError?: APIErrorResponse) {
+        if (APIError.isAPIError(originalError)) {
+            return originalError;
+        }
+        const apiError = new APIError(APIError.parseErrorMessage(originalError));
+        apiError._error = originalError;
+        apiError.status = originalError!.response!.status;
+        return apiError;
+    }
+
+    static parseErrorMessage(error?: APIErrorResponse) {
+        let message = 'Unknown Error';
+        if (error) {
+            const messageParts: string[] = [];
+            const {
+                response: {
+                    data: {
+                        fieldErrors = [],
+                globalErrors = [],
+                message: dataMessage = ''
+                    } = {}
+                } = {}
+            } = error;
+            if (error.message) {
+                messageParts.push(error.message);
+            }
+            if (dataMessage) {
+                messageParts.push(dataMessage);
+            }
+
+            fieldErrors.forEach(fe => {
+                messageParts.push(`Field '${fe.field}' ${fe.localizedMessage}`);
+            });
+            globalErrors.forEach(ge => {
+                messageParts.push(`${ge.defaultMessage}`);
+            });
+            message = messageParts.join('\r\n');
+        }
+        return message;
+    }
+
+    constructor(message?: string) {
+        super(message);
+    }
+}
+
+// All of our resources now have an idPath
+// so we'll specify a HalResource that contains that
+class APIResource extends HalResource {
+    @HalProperty()
+    id: string;
+}
+
 export default class Client implements API {
+
     private _halClient: HalRestClient;
     private _courthouseId: string;
     private _courthouseIdPath: string;
@@ -57,13 +151,38 @@ export default class Client implements API {
 
     constructor(private baseUrl: string = '/', private _courthouseCode: string) {
         this._halClient = createClient(this.baseUrl);
+
+        // Setup some interceptors on the response / errors
+        this._halClient.interceptors.response.use(
+            (response) => {
+                // Here we're renaming any key with idPath as id so that our frontend
+                // doesn't have to know about idPaths
+                const newData = renameKeysInObject(response.data, /([iI]d)Path/, '$1');
+                response.data = newData;
+                return response;
+            },
+            (error) => {
+                return Promise.reject(APIError.constructFromResponse(error));
+            }
+        );
         this._mockApi = new MockApi();
+    }
+
+    async deleteResource(idPath: string): Promise<void> {
+        if (idPath === undefined || idPath === '') {
+            return;
+        }
+        await this._halClient.delete(idPath);
+    }
+
+    async getResource(idPath: string): Promise<APIResource> {
+        return await this._halClient.fetch(idPath, APIResource);
     }
 
     async getCurrentCourtHousePath() {
         if (!this._courthouseIdPath) {
             const courthouse = await this._halClient.fetchResource(`/courthouses/search/findByCourthouseCd?courthouseCd=${this._courthouseCode}`);
-            this._courthouseIdPath = (courthouse.props as any).idPath;
+            this._courthouseIdPath = (courthouse.props as any).id;
         }
         return this._courthouseIdPath;
     }
@@ -74,10 +193,10 @@ export default class Client implements API {
 
     async getSheriffs(): Promise<Sheriff[]> {
         const courthousePath = await this.getCurrentCourtHousePath();
-        const sheriffList = (await this._halClient.fetchArray(`${courthousePath}/sheriffs`, APIResource)
-        ).map(sr => sr.props as any)
-            .map(({ idPath: id, ...rest }) => ({ ...rest, id }));
-        return sheriffList as Sheriff[];
+        const sheriffList = (
+            await this._halClient.fetchArray(`${courthousePath}/sheriffs`, APIResource)
+        ).map(sr => sr.props as Sheriff);
+        return sheriffList;
     }
     async createSheriff(newSheriff: Sheriff): Promise<Sheriff> {
         // const { badgeNo: badgeNo, sheriffId: userid, ...rest } = newSheriff;
@@ -102,30 +221,21 @@ export default class Client implements API {
 
     private convertAssignmentResource(props: any): Assignment {
         const {
-            idPath: id,
-            title,
             workSectionCodePath,
-            courthouseIdPath: courthouseId,
             jailRoleCodePath: jailRoleId,
             otherAssignCodePath: otherAssignmentTypeId,
-            runIdPath: runId,
-            courtroomIdPath: courtroomId,
-            dutyRecurrences = []
+            dutyRecurrences = [],
+            ...restAssignment,
         } = props;
         return {
-            id,
-            title,
+            ...restAssignment,
             workSectionId: extractWorksectionCode(workSectionCodePath),
-            courthouseId,
-            courtroomId,
             jailRoleId,
             otherAssignmentTypeId,
-            runId,
-            dutyRecurrences: (dutyRecurrences as any[]).map(({ idPath, ...rest }) => (
+            dutyRecurrences: (dutyRecurrences as any[]).map(({ idPath, ...restRecurrence }) => (
                 {
-                    assignmentIdPath: id,
-                    ...rest,
-                    id: idPath
+                    assignmentIdPath: restAssignment.id,
+                    ...restRecurrence
                 })
             )
         } as Assignment;
@@ -164,7 +274,7 @@ export default class Client implements API {
             assignmentToCreate.otherAssignCode = assignment.otherAssignmentTypeId;
         }
 
-        let created = await this._halClient.create(`/assignments`, assignmentToCreate, APIResource);       
+        let created = await this._halClient.create(`/assignments`, assignmentToCreate, APIResource);
 
         // This is a bit of hack, taking the idPath from the response and creating a new object with the id &
         // other properties from the original object.  This is because the api currently doesn't return us back
@@ -172,7 +282,7 @@ export default class Client implements API {
         // info from each endpoint.
         let createdAssignment = {
             ...assignment,
-            id: created.props.idPath
+            id: created.props.id
         };
 
         createdAssignment.dutyRecurrences = await this.createRecurrences(
@@ -181,7 +291,6 @@ export default class Client implements API {
         );
         return createdAssignment as Assignment;
     }
-
     async createRecurrences(assignmentId: IdType, recurrences: RecurrenceInfo[] = []): Promise<any[]> {
         const createdRecurrences = await Promise.all(
             recurrences.map(async (dutyRecurrenceToCreate) => {
@@ -193,16 +302,15 @@ export default class Client implements API {
             })
         );
         return createdRecurrences
-            .map(r => r.props)
-            .map(({ idPath: id, ...rest }) => ({
-                ...rest,
-                id,
+            .map(r => ({
+                ...r.props,
                 assignmentIdPath: assignmentId
-            }));
+            })
+            );
     }
 
     updateAssignment(assignment: Partial<Assignment>): Promise<Assignment> {
-        throw Error("Coming Soon!!");
+        throw Error('Coming Soon!!');
         // console.warn('Using Mock API');
         // return this._mockApi.updateAssignment(assignment);
     }
@@ -212,30 +320,137 @@ export default class Client implements API {
             return;
         }
 
-        // Delete the recurrences
-        const recurrences = await this._halClient.fetchArray(`${assignmentId}/dutyRecurrences`, APIResource);
-        await Promise.all(recurrences.map((r: any) => {
-            return this._halClient.delete(r.idPath);
-        }));
+        await this.deleteResource(assignmentId);
+    }
 
-        // delete the assignment
-        await this._halClient.delete(assignmentId);
+    async getAssignmentDuties(startDate: DateType = moment(), endDate?: DateType): Promise<AssignmentDuty[]> {
+        const courthousePath = await this.getCurrentCourtHousePath();
+        let duties: AssignmentDuty[];
+        try {
+            const halResponse = await this._halClient.fetchArray(
+                `${courthousePath}/getDutiesByDateRange?startDate=${moment(startDate).format(API_DATE_FORMAT)}&endDate=${endDate !== undefined ? moment(endDate).format(API_DATE_FORMAT) : ''}`,
+                APIResource);
+            duties = this.unwrapSimpleDuties(halResponse);
+        } catch (e) {
+            duties = [];
+        }
+        return duties;
     }
-    getAssignmentDuties(): Promise<AssignmentDuty[]> {
-        console.warn('Using Mock API');
-        return this._mockApi.getAssignmentDuties();
+    async createAssignmentDuty(duty: Partial<AssignmentDuty>): Promise<AssignmentDuty> {
+        const {
+            assignmentId,
+            sheriffDuties = [],
+            ...restDuty
+        } = duty;
+
+        const dutyToCreate: any = {
+            ...restDuty,
+            assignment: assignmentId
+        };
+
+        const apiCreatedDuty = await this._halClient.create('/duties', dutyToCreate);
+        const { id, ...rest } = apiCreatedDuty.props;
+        
+        const createdDuty = {
+            id,
+            ...rest,
+            assignmentId,
+            sheriffDuties: await Promise.all(
+                sheriffDuties
+                    .map(sd => ({ ...sd, dutyId: id }))
+                    .map(sd => this.createSheriffDuty(sd))
+            )
+        };
+
+        return createdDuty;
     }
-    createAssignmentDuty(duty: Partial<AssignmentDuty>): Promise<AssignmentDuty> {
-        console.warn('Using Mock API');
-        return this._mockApi.createAssignmentDuty(duty);
+    async updateAssignmentDuty(duty: Partial<AssignmentDuty>): Promise<AssignmentDuty> {
+        const {
+        id,
+            assignmentId: assignment,
+            sheriffDuties = [],
+            dutyRecurrenceId: dutyRecurrence,
+            startDateTime,
+            endDateTime,
+            ...restDuty
+    } = duty;
+
+        const assignmentDutyUpdateTask = this._halClient.update(`${id}`, {
+            assignment,
+            startDateTime: toServerDateTime(startDateTime),
+            endDateTime: toServerDateTime(endDateTime),
+            dutyRecurrence,
+            ...restDuty
+        });
+
+        const sheriffDutyUpdateTask = Promise.all(sheriffDuties.filter(sd => sd.id === undefined || sd.id === '')
+            .map(sd => ({ ...sd, dutyId: id }))
+            .map((sd) => this.createSheriffDuty(sd))
+            .concat(sheriffDuties
+                .filter(sd => sd.id !== undefined && sd.id !== '')
+                .map(sd => this.updateSheriffDuty(sd))
+            ));
+
+        return {
+            ...duty,
+            sheriffDuties: (await sheriffDutyUpdateTask),
+            ...(await assignmentDutyUpdateTask).props
+        };
     }
-    updateAssignmentDuty(duty: Partial<AssignmentDuty>): Promise<AssignmentDuty> {
-        console.warn('Using Mock API');
-        return this._mockApi.updateAssignmentDuty(duty);
+
+    async deleteAssignmentDuty(idPath: IdType): Promise<void> {
+        await this.deleteResource(idPath);
     }
-    deleteAssignmentDuty(dutyId: IdType): Promise<void> {
-        console.warn('Using Mock API');
-        return this._mockApi.deleteAssignmentDuty(dutyId);
+
+    async createSheriffDuty(sheriffDuty: Partial<SheriffDuty>): Promise<SheriffDuty> {
+        const { dutyId: duty, sheriffId: sheriff, ...restSheriffDuty } = sheriffDuty;
+        const { props: { id } } = await this._halClient.create('/sheriffDuties', {
+            duty,
+            sheriff,
+            ...restSheriffDuty
+        });
+        return { ...sheriffDuty, id } as SheriffDuty;
+    }
+    async updateSheriffDuty(sheriffDuty: Partial<SheriffDuty>): Promise<SheriffDuty> {
+        const {
+                id,
+            dutyId: duty,
+            sheriffId: sheriff,
+            startDateTime,
+            endDateTime,
+            ...restDuty
+            } = sheriffDuty;
+
+        const halResponse = await this._halClient.update(`${id}`, {
+            duty,
+            sheriff,
+            startDateTime: toServerDateTime(startDateTime),
+            endDateTime: toServerDateTime(endDateTime),
+            ...restDuty
+        });
+        return {
+            ...sheriffDuty,
+            ...halResponse.props
+        } as SheriffDuty;
+    }
+    async deleteSheriffDuty(sheriffDutyId: string): Promise<void> {
+        await this.deleteResource(sheriffDutyId);
+    }
+
+    private unwrapSimpleDuties(halDuties: APIResource[]): AssignmentDuty[] {
+        const duties = halDuties.map((d: any) => {
+            const { sheriffDuties = [], ...duty } = d.props;
+            duty.sheriffDuties = sheriffDuties.map((sd: any) => sd.props);
+            return duty;
+        });
+        return duties;
+    }
+
+    async createDefaultDuties(date: moment.Moment = moment()): Promise<AssignmentDuty[]> {
+        const courthouseIdPath = await this.getCurrentCourtHousePath();
+        const halResponse = await this._halClient.create(`${courthouseIdPath}/createDefaultDuties?date=${date.format("YYYY-MM-DD")}`, {}, APIResource);
+        const createdDuties = this.unwrapSimpleDuties(halResponse.props.duties);
+        return createdDuties;
     }
 
     getShifts(): Promise<Shift[]> {
@@ -274,7 +489,7 @@ export default class Client implements API {
 
         const list = resourceList.map(ar => ar.props as any)
             .map<Courtroom>(({
-                idPath: id,
+                id,
                 courtroomCd: code,
                 courtroomName: name,
             }) => {
@@ -282,7 +497,7 @@ export default class Client implements API {
                     id,
                     code,
                     name,
-                    courthouseId: id
+                    courthouseId: courthousePath
                 };
             });
         return list as Courtroom[];
@@ -299,7 +514,7 @@ export default class Client implements API {
         const list = resourceList.map(ar => ar.props)
             .map<Run>((props: any) => {
                 return {
-                    id: props.idPath,
+                    id: props.id,
                     description: props.title,
                     courthouseId: this._courthouseId
                 };
@@ -317,7 +532,7 @@ export default class Client implements API {
         const list = resourceList.map(ar => ar.props)
             .map<JailRole>((props: any) => {
                 return {
-                    id: props.idPath,
+                    id: props.id,
                     title: props.description,
                 };
             });
@@ -334,7 +549,7 @@ export default class Client implements API {
         const list = resourceList.map(ar => ar.props)
             .map<AlternateAssignment>((props: any) => {
                 return {
-                    id: props.idPath,
+                    id: props.id,
                     description: props.description,
                 };
             });

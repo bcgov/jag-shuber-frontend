@@ -14,7 +14,8 @@ import {
     ShiftCopyOptions,
     Run,
     JailRole,
-    AlternateAssignment
+    AlternateAssignment,
+    SheriffDuty
 } from '../Api';
 import {
     sheriffList,
@@ -56,7 +57,16 @@ function getAssignmentTitle(assignment: Partial<Assignment>): string {
     return assignmentTitle;
 }
 
-export default class NewClient implements API {
+export default class MockClient implements API {
+    createSheriffDuty(sheriffDuty: Partial<SheriffDuty>): Promise<SheriffDuty> {
+        throw new Error("Method not implemented.");
+    }
+    updateSheriffDuty(sheriffDuty: Partial<SheriffDuty>): Promise<SheriffDuty> {
+        throw new Error("Method not implemented.");
+    }
+    deleteSheriffDuty(sheriffDutyId: string): Promise<void> {
+        throw new Error("Method not implemented.");
+    }
 
     private increasingId = 30;
 
@@ -183,6 +193,10 @@ export default class NewClient implements API {
         }
 
         assignmentDuties.splice(dutyIndex, 1);
+    }
+
+    createDefaultDuties(date: moment.Moment): Promise<AssignmentDuty[]> {
+        throw new Error("Method not implemented.");
     }
 
     async getShifts(): Promise<Shift[]> {
