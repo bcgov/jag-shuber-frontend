@@ -1,14 +1,19 @@
+/**
+ * @jest-environment node
+ */
 import {
     API,
     CourtAssignment,
     OtherAssignment,
     JailAssignment,
     EscortAssignment,
-    RecurrenceInfo
+    RecurrenceInfo,
+    IdType,
+    Assignment
 } from '../Api';
 import APIClient from '../Client';
 import { courthouseCode } from '../index';
-import './shape-matchers.ts';
+import * as TestUtils from '../../infrastructure/TestUtils';
 
 const DutyRecurrenceShape: RecurrenceInfo = {
     id: 'some string',
@@ -66,15 +71,28 @@ const OtherAssignmentShape: OtherAssignment = {
 describe('Client Assignment API', () => {
     let client: API;
     let currentCourthousePath: string;
+
     beforeEach(async (done) => {
         client = new APIClient('http://api-test.192.168.99.100.nip.io/api', courthouseCode);
         currentCourthousePath = await (client as APIClient).getCurrentCourtHousePath();
         done();
     });
 
-    // afterEach(() => {
-
-    // });
+    async function deleteResources(idPaths: IdType[]): Promise<void> {
+        await Promise.all(
+            idPaths.filter(id => id !== undefined)
+                .map(async (id) => {
+                    try {
+                        await (client as APIClient).deleteResource(id);
+                        console.log(`Deleted '${id}'`);
+                    } catch (e) {
+                        console.error(`Error deleting '${id}', ${e.message}`);
+                        throw e;
+                    }
+                }
+                )
+        );
+    }
 
     describe('Get Assignments', () => {
         it('Should return assignments', async () => {
@@ -91,29 +109,39 @@ describe('Client Assignment API', () => {
         });
     });
 
-    describe('Create Recurrence', () => {
+    describe('Create & Delete Recurrence', () => {
         it('Should create a duty recurrence', async () => {
-            expect.assertions(1);
-            let list = await client.getAssignments();
-            let item = list[0];
-            let createdRecurrences = await (client as APIClient).createRecurrences(item.id, [
+            const recurrencesToCreate = [
                 {
                     sheriffsRequired: 2,
-                    startTime: "11:00",
-                    endTime: "12:00",
+                    startTime: '11:00',
+                    endTime: '12:00',
                     daysBitmap: 12
                 }
-            ]) as RecurrenceInfo[];
+            ];
+            expect.assertions(1 + recurrencesToCreate.length);
+            let list = await client.getAssignments();
+            let assignment = list[0];
+
+            let createdRecurrences = await (client as APIClient)
+                .createRecurrences(assignment.id, recurrencesToCreate) as RecurrenceInfo[];
+
+
             expect(createdRecurrences[0]).toMatchShapeOf(DutyRecurrenceShape);
+            const idsToDelete = createdRecurrences.map(r => r.id as IdType)
+                .filter(idPath => idPath !== undefined);
+
+            // expect to delete with no issue
+            await deleteResources(idsToDelete);
+            await Promise.all(idsToDelete.map(async (id) => await TestUtils.expectNoResource(client, id)));
         });
     });
 
-
-    describe('Create Assignment', () => {
+    describe('Create & Delete Assignment', () => {
 
         const newDutyRecurrence: RecurrenceInfo = {
-            startTime: "10:00:00",
-            endTime: "12:00:00",
+            startTime: '10:00:00',
+            endTime: '12:00:00',
             daysBitmap: 31,
             sheriffsRequired: 2
         };
@@ -128,6 +156,8 @@ describe('Client Assignment API', () => {
             ]
         };
 
+        let createdAssignment : Assignment;
+
         beforeAll(async (done) => {
             const courtrooms = await client.getCourtrooms();
             newCourtAssignment.courtroomId = courtrooms[0].id;
@@ -136,18 +166,30 @@ describe('Client Assignment API', () => {
 
         it('Should return created assignment with ids', async () => {
             expect.assertions(3);
-            let newAssignment = await client.createAssignment(newCourtAssignment);
-            expect(newAssignment).toBeDefined();
-            expect(newAssignment).toMatchShapeOf(CourtAssignmentShape);
-            expect(newAssignment.id).not.toBe(newCourtAssignment.id);
+            createdAssignment = await client.createAssignment(newCourtAssignment);
+            expect(createdAssignment).toBeDefined();
+            expect(createdAssignment).toMatchShapeOf(CourtAssignmentShape);
+            expect(createdAssignment.id).not.toBe(newCourtAssignment.id);            
+        });
+
+        it('Should delete an assigment and its duty recurrences', async () => {
+            // We have 1 for expecting no assignment + 1 for each duty recurrence check
+            expect.assertions(1 + newCourtAssignment.dutyRecurrences!.length);
+            // Test the delete from the API
+            await client.deleteAssignment(createdAssignment.id);
+            try{
+            // Check that all resources are no longer present
+            await TestUtils.expectNoResource(client, createdAssignment.id);
+            await Promise.all(
+                createdAssignment.dutyRecurrences!
+                    .map(async r => await TestUtils.expectNoResource(client, r.id)));
+            }catch(exc){
+                console.log(exc);
+            }
         });
     });
 
-
-
-
-
-
+    
 });
 
 
