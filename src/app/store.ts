@@ -13,6 +13,9 @@ import {
     getJailRoles,
     getRuns 
 } from './modules/courthouse/action';
+import {
+    getSheriffList
+} from './modules/sheriffs/actions';
 
 export interface ThunkExtra {
     api: API;
@@ -29,6 +32,7 @@ export interface RootState {
 }
 
 const initialActions: any[] = [
+    getSheriffList,
     getCourtrooms, 
     getAlternateAssignmentTypes,
     getJailRoles,
