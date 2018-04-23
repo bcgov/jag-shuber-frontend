@@ -10,10 +10,10 @@ import {
     TimeType
 } from '../api';
 import SheriffListCard from '../components/SheriffListCard/SheriffListCard';
+import { visibleTime } from '../modules/timeline/selectors';
 
 interface ConnectedDutyRosterSheriffCardProps {
     sheriff: Sheriff;
-    date: TimeType;
 }
 
 interface ConnectedDutyRosterSheriffCardDispatchProps {
@@ -22,6 +22,7 @@ interface ConnectedDutyRosterSheriffCardDispatchProps {
 
 interface ConnectedDutyRosterSheriffCardStateProps {
     shifts: Shift[];
+    visibleTimeStart: any;
 }
 
 class ConnectedDutyRosterSheriffCard extends React.Component<ConnectedDutyRosterSheriffCardProps
@@ -39,8 +40,8 @@ class ConnectedDutyRosterSheriffCard extends React.Component<ConnectedDutyRoster
     }
 
     render() {
-        const { date, sheriff } = this.props;
-        const shiftSummary = this.getShiftDisplayForDate(date);
+        const { visibleTimeStart, sheriff } = this.props;
+        const shiftSummary = this.getShiftDisplayForDate(moment(visibleTimeStart).toISOString());
         const isCardDisabled = shiftSummary === '';
         return (
             <SheriffListCard sheriff={sheriff} disabled={isCardDisabled} >
@@ -54,6 +55,7 @@ class ConnectedDutyRosterSheriffCard extends React.Component<ConnectedDutyRoster
 const mapStateToProps = (state: RootState, { sheriff }: ConnectedDutyRosterSheriffCardProps) => {
     return {
         shifts: getSheriffShifts(sheriff.id)(state),
+        visibleTimeStart: visibleTime(state).visibleTimeStart
     };
 };
 

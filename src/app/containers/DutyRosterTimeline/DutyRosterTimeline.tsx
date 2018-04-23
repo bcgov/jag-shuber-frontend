@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as moment from 'moment';
 import {
     allAssignments,
     allAssignmentDuties
@@ -10,13 +11,15 @@ import {
 } from '../../modules/assignments/actions';
 import { connect } from 'react-redux';
 import { RootState } from '../../store';
-import {
-    Assignment,
-    AssignmentDuty
-} from '../../api/index';
 import './DutyRosterTimeline.css';
 import AssignmentDutyCard from '../../components/AssignmentDutyCard/AssignmentDutyCard';
-import { IdType, WorkSectionCode } from '../../api/Api';
+import {
+    IdType,
+    WorkSectionCode,
+    DateRange,
+    Assignment,
+    AssignmentDuty
+} from '../../api/Api';
 import SheriffDutyBarList from '../../components/SheriffDutyBarList/SheriffDutyBarList';
 import ConnectedSheriffDutyBar from '../SheriffDutyBar';
 import { getWorkSectionColour } from '../../api/utils';
@@ -31,7 +34,7 @@ interface DutyRosterTimelineProps extends TimelineProps {
 }
 
 interface DutyRosterTimelineDispatchProps {
-    fetchAssignmentDuties: () => void;
+    fetchAssignmentDuties: (dateRange: DateRange) => void;
     fetchAssignments: () => void;
     linkSheriff: (link: { sheriffId: IdType, dutyId: IdType, sheriffDutyId: IdType }) => void;
 }
@@ -43,19 +46,32 @@ interface DutyRosterTimelineStateProps {
     visibleTimeEnd: any;
 }
 
-class DutyRosterTimeline extends 
-    React.Component<DutyRosterTimelineProps & DutyRosterTimelineStateProps & DutyRosterTimelineDispatchProps> {
+
+type CompositeProps = DutyRosterTimelineProps & DutyRosterTimelineStateProps & DutyRosterTimelineDispatchProps;
+class DutyRosterTimeline extends React.Component<CompositeProps> {
 
     componentWillMount() {
-        const { 
-                fetchAssignmentDuties, 
-                fetchAssignments,
+        const {
+            fetchAssignmentDuties,
+            fetchAssignments,
+            visibleTimeStart: startDate,
+            visibleTimeEnd: endDate
         } = this.props;
 
         /* tslint:disable:no-unused-expression */
-        fetchAssignmentDuties && fetchAssignmentDuties();
+        fetchAssignmentDuties && fetchAssignmentDuties({ startDate, endDate });
         fetchAssignments && fetchAssignments();
         /* tslint:enable:no-unused-expression */
+    }
+
+    componentWillReceiveProps(nextProps: CompositeProps) {
+        const { visibleTimeStart: prevStartDate, visibleTimeEnd: prevEndDate } = this.props;
+        const { visibleTimeStart: nextStartDate, visibleTimeEnd: nextEndDate, fetchAssignmentDuties } = nextProps;
+
+        if (!moment(prevStartDate).isSame(moment(nextStartDate)) || !moment(prevEndDate).isSame(moment(nextEndDate))) {
+            // tslint:disable-next-line:no-unused-expression
+            fetchAssignmentDuties && fetchAssignmentDuties({ startDate: nextStartDate, endDate: nextEndDate });
+        }
     }
 
     render() {
@@ -66,7 +82,7 @@ class DutyRosterTimeline extends
             onVisibleTimeChange,
             linkSheriff,
             visibleTimeStart,
-            visibleTimeEnd, 
+            visibleTimeEnd,
             ...rest
         } = this.props;
 
@@ -104,8 +120,8 @@ class DutyRosterTimeline extends
                                     <SheriffDutyBarList
                                         {...p}
                                         BarRenderer={ConnectedSheriffDutyBar}
-                                        onDropSheriff={({ id: sheriffId }, {id: sheriffDutyId}) => (
-                                            linkSheriff && linkSheriff({ sheriffId, dutyId: duty.id, sheriffDutyId})
+                                        onDropSheriff={({ id: sheriffId }, { id: sheriffDutyId }) => (
+                                            linkSheriff && linkSheriff({ sheriffId, dutyId: duty.id, sheriffDutyId })
                                         )}
                                         workSection={workSectionMap[duty.assignmentId]}
                                     />

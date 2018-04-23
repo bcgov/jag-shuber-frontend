@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as moment from 'moment';
 import DutyRosterTimeline from '../containers/DutyRosterTimeline/DutyRosterTimeline';
 import TimelineToolsPanel from '../components/TimelineToolsPanel';
 import SheriffList from '../containers/SheriffList';
@@ -37,7 +36,6 @@ class DutyRoster extends React.PureComponent {
                                 (<SheriffDragSource sheriff={s}>
                                         <DutyRosterSheriffCard  
                                             sheriff={s} 
-                                            date={moment().toISOString()}
                                         />
                                     </SheriffDragSource>
                                 )} 

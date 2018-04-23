@@ -328,6 +328,7 @@ export default class Client implements API {
         let duties: AssignmentDuty[];
         try {
             const halResponse = await this._halClient.fetchArray(
+                // tslint:disable-next-line:max-line-length
                 `${courthousePath}/getDutiesByDateRange?startDate=${moment(startDate).format(API_DATE_FORMAT)}&endDate=${endDate !== undefined ? moment(endDate).format(API_DATE_FORMAT) : ''}`,
                 APIResource);
             duties = this.unwrapSimpleDuties(halResponse);

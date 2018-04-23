@@ -26,7 +26,6 @@ interface DutyRosterDistpatchProps {
 class DutyRosterControls extends React.PureComponent<
     DutyRosterControlsProps & DutyRosterControlsStateProps & DutyRosterDistpatchProps> {
 
-
     render() {
         const { visibleTimeStart, visibleTimeEnd, updateVisibleTime } = this.props;
         return (
