@@ -24,6 +24,7 @@ import {
     Glyphicon
 } from 'react-bootstrap';
 import SheriffSelector from '../containers/SheriffSelector';
+import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 
 export interface AssignmentDutyFormProps {
     handleSubmit?: () => void;
@@ -79,8 +80,8 @@ export default class AssignmentDutyForm extends
         return formValues('timeRange')((props: any) => {
             const {
                 timeRange: {
-                    startTime: minTime = moment().startOf('day').add(7, 'hours').toISOString(),
-                    endTime: maxTime = moment().startOf('day').add(17, 'hours').toISOString()
+                    startTime: minTime = TimeUtils.getDefaultStartTime().toISOString(),
+                    endTime: maxTime = TimeUtils.getDefaultEndTime().toISOString()
                 }
             } = props;
             return (
@@ -136,7 +137,7 @@ export default class AssignmentDutyForm extends
                         );
                     }}
                 />
-            )
+            );
         });
     }
 
@@ -144,8 +145,8 @@ export default class AssignmentDutyForm extends
         const {
             handleSubmit,
             assignmentTitle = 'Duty',
-            minTime = moment().startOf('day').add('hours', 6).toISOString(),
-            maxTime = moment().startOf('day').add('hours', 22).toISOString(),
+            minTime = TimeUtils.getDefaultTimePickerMinTime().toISOString(),
+            maxTime = TimeUtils.getDefaultTimePickerMaxTime().toISOString(),
             workSectionId = 'OTHER'
         } = this.props;
         const SheriffDutyFields = this.renderSheriffDutyFieldsComponent();

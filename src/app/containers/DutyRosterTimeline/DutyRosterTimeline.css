@@ -1,0 +1,20 @@
+.dimmed{
+    opacity:.6;
+}
+
+.dimmed:hover{
+    opacity:1.0;
+}
+
+.duty-roster-timeline .react-calendar-timeline .rct-items .rct-item.selected {
+    background: transparent;
+    border: 0px;
+}
+
+.duty-roster-timeline .react-calendar-timeline .rct-items .rct-item {
+    border: 0px;
+}
+
+.duty-roster-timeline .react-calendar-timeline .rct-sidebar .rct-sidebar-header {
+    z-index: 90;
+}

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as moment from 'moment';
 import {
     reduxForm,
     ConfigProps
@@ -16,6 +15,7 @@ import {
     ShiftCreationPayload
 } from '../api/utils';
 import { createShifts } from '../modules/shifts/actions';
+import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 
 // wrapping generic assignment form in redux-form
 const formConfig: ConfigProps<any, ScheduleShiftFormProps> = {
@@ -39,8 +39,8 @@ const mapStateToProps = (state: RootState, props: ScheduleShiftCreateFormProps) 
     return {
         initialValues: {
             timeRange: {
-                startTime: moment().hour(9).minute(0),
-                endTime: moment().hour(17).minute(0)
+                startTime: TimeUtils.getDefaultStartTime().toISOString(),
+                endTime: TimeUtils.getDefaultEndTime().toISOString()
             },
             days: DaysOfWeek.Weekdays,
             repeatNumber: 1

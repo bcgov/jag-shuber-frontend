@@ -10,11 +10,13 @@ import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { createAssignmentDuty } from '../modules/assignments/actions';
 import { getAssignment } from '../modules/assignments/selectors';
+import { visibleTime } from '../modules/timeline/selectors';
 import {
     IdType,
     Assignment,
     DateType
 } from '../api';
+import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 
 // wrapping generic assignment form in redux-form
 const formConfig: ConfigProps<any, AssignmentDutyFormProps> = {
@@ -34,10 +36,14 @@ export interface AssignmentDutyCreateFormProps extends AssignmentDutyFormProps {
 
 const mapStateToProps = (state: RootState, props: AssignmentDutyCreateFormProps) => {
     const assignment: Assignment = getAssignment(props.assignmentId)(state);
+    const currentVisibleTime = visibleTime(state);
+    const currentVisibleStartMoment = moment(currentVisibleTime.visibleTimeStart);
+
     const defaultTimeRange = {
-        startTime: moment().startOf('day').add('hours', 6).toISOString(),
-        endTime: moment().startOf('day').add('hours', 17).toISOString()
+        startTime: TimeUtils.getDefaultStartTime(currentVisibleStartMoment).toISOString(),
+        endTime: TimeUtils.getDefaultEndTime(currentVisibleStartMoment).toISOString()
     };
+
     return {
         initialValues: {
             timeRange: defaultTimeRange,
@@ -49,6 +55,8 @@ const mapStateToProps = (state: RootState, props: AssignmentDutyCreateFormProps)
                 }
             ]
         },
+        minTime: TimeUtils.getDefaultTimePickerMinTime(currentVisibleStartMoment).toISOString(),
+        maxTime: TimeUtils.getDefaultTimePickerMaxTime(currentVisibleStartMoment).toISOString(),
         assignmentTitle: assignment.title,
         workSectionId: assignment.workSectionId
     };

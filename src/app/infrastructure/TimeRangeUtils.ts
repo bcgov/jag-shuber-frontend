@@ -31,3 +31,63 @@ export function doTimeRangesOverlap (
         && startTimeTwoMoment.isBetween(startTimeOneMoment, endTimeOneMoment))
     );
 }
+
+export function getDefaultStartTime (dayForTime?: moment.Moment): moment.Moment {
+    if (dayForTime) {
+        return dayForTime.startOf('day').add('hour', 7);
+    } else {
+        return moment().startOf('day').add('hour', 7);
+    }
+}
+
+export function getDefaultEndTime (dayForTime?: moment.Moment): moment.Moment {
+    if (dayForTime) {
+        return dayForTime.startOf('day').add('hour', 17);
+    } else {
+        return moment().startOf('day').add('hour', 17);
+    }
+}
+
+export function getDefaultTimeRange (dayForTime?: moment.Moment): {startTime: moment.Moment, endTime: moment.Moment} {
+   if (dayForTime) {
+       return {
+            startTime: getDefaultStartTime(dayForTime),
+            endTime: getDefaultEndTime(dayForTime)
+       };
+    } else {
+       return {
+        startTime: getDefaultStartTime(moment()),
+        endTime: getDefaultEndTime(moment())
+       };
+   }
+}
+
+export function getDefaultTimePickerMinTime (dayForTime?: moment.Moment): moment.Moment {
+    if (dayForTime) {
+        return dayForTime.startOf('day').add('hour', 6);
+    } else {
+        return moment().startOf('day').add('hour', 6);
+    }
+}
+
+export function getDefaultTimePickerMaxTime (dayForTime?: moment.Moment): moment.Moment {
+    if (dayForTime) {
+        return dayForTime.startOf('day').add('hour', 22);
+    } else {
+        return moment().startOf('day').add('hour', 22);
+    }
+}
+
+export function getDefaultTimePickerRange (dayForTime?: moment.Moment): {startTime: moment.Moment, endTime: moment.Moment} {
+    if (dayForTime) {
+        return {
+             startTime: getDefaultTimePickerMinTime(dayForTime),
+             endTime: getDefaultTimePickerMaxTime(dayForTime)
+        };
+     } else {
+        return {
+         startTime: getDefaultTimePickerMinTime(moment()),
+         endTime: getDefaultTimePickerMaxTime(moment())
+        };
+    }
+}

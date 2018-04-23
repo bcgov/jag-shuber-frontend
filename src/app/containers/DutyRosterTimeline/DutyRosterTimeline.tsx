@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as moment from 'moment';
 import {
     allAssignments,
     allAssignmentDuties
@@ -6,19 +7,19 @@ import {
 import {
     getAssignments,
     getAssignmentDuties,
-    linkAssignment,
-    // unlinkAssignment
+    linkAssignment
 } from '../../modules/assignments/actions';
 import { connect } from 'react-redux';
 import { RootState } from '../../store';
+import './DutyRosterTimeline.css';
+import AssignmentDutyCard from '../../components/AssignmentDutyCard/AssignmentDutyCard';
 import {
+    IdType,
+    WorkSectionCode,
+    DateRange,
     Assignment,
     AssignmentDuty
-} from '../../api/index';
-import * as moment from 'moment';
-import './DailyTimeline.css';
-import AssignmentDutyCard from '../../components/AssignmentDutyCard/AssignmentDutyCard';
-import { IdType, WorkSectionCode } from '../../api/Api';
+} from '../../api/Api';
 import SheriffDutyBarList from '../../components/SheriffDutyBarList/SheriffDutyBarList';
 import ConnectedSheriffDutyBar from '../SheriffDutyBar';
 import { getWorkSectionColour } from '../../api/utils';
@@ -26,35 +27,51 @@ import AssignmentTimeline from '../../components/AssignmentTimeline/AssignmentTi
 import { TimelineProps } from '../../components/Timeline/Timeline';
 import AssignmentCard from '../../components/AssignmentCard/AssignmentCard';
 import { getForegroundColor } from '../../infrastructure/colorUtils';
+import { visibleTime } from '../../modules/timeline/selectors';
 
-interface DailyTimelineProps extends TimelineProps {
+interface DutyRosterTimelineProps extends TimelineProps {
     allowTimeDrag?: boolean;
 }
 
-interface DailyTimelineDispatchProps {
-    fetchAssignmentDuties: () => void;
+interface DutyRosterTimelineDispatchProps {
+    fetchAssignmentDuties: (dateRange: DateRange) => void;
     fetchAssignments: () => void;
     linkSheriff: (link: { sheriffId: IdType, dutyId: IdType, sheriffDutyId: IdType }) => void;
-    // unlinkSheriff: (link: { sheriffId: IdType, dutyId: IdType }) => void;
 }
 
-interface DailyTimelineStateProps {
+interface DutyRosterTimelineStateProps {
     assignmentDuties: AssignmentDuty[];
     assignments: Assignment[];
+    visibleTimeStart: any;
+    visibleTimeEnd: any;
 }
 
-class DailyTimeline extends React.Component<DailyTimelineProps & DailyTimelineStateProps & DailyTimelineDispatchProps> {
+
+type CompositeProps = DutyRosterTimelineProps & DutyRosterTimelineStateProps & DutyRosterTimelineDispatchProps;
+class DutyRosterTimeline extends React.Component<CompositeProps> {
 
     componentWillMount() {
-        const { 
-                fetchAssignmentDuties, 
-                fetchAssignments
+        const {
+            fetchAssignmentDuties,
+            fetchAssignments,
+            visibleTimeStart: startDate,
+            visibleTimeEnd: endDate
         } = this.props;
 
         /* tslint:disable:no-unused-expression */
-        fetchAssignmentDuties && fetchAssignmentDuties();
+        fetchAssignmentDuties && fetchAssignmentDuties({ startDate, endDate });
         fetchAssignments && fetchAssignments();
         /* tslint:enable:no-unused-expression */
+    }
+
+    componentWillReceiveProps(nextProps: CompositeProps) {
+        const { visibleTimeStart: prevStartDate, visibleTimeEnd: prevEndDate } = this.props;
+        const { visibleTimeStart: nextStartDate, visibleTimeEnd: nextEndDate, fetchAssignmentDuties } = nextProps;
+
+        if (!moment(prevStartDate).isSame(moment(nextStartDate)) || !moment(prevEndDate).isSame(moment(nextEndDate))) {
+            // tslint:disable-next-line:no-unused-expression
+            fetchAssignmentDuties && fetchAssignmentDuties({ startDate: nextStartDate, endDate: nextEndDate });
+        }
     }
 
     render() {
@@ -64,9 +81,8 @@ class DailyTimeline extends React.Component<DailyTimelineProps & DailyTimelineSt
             sidebarWidth = 200,
             onVisibleTimeChange,
             linkSheriff,
-            // unlinkSheriff,
-            visibleTimeStart = moment().startOf('day').add(7, 'hours'),
-            visibleTimeEnd = moment().endOf('day').subtract(6, 'hours'),
+            visibleTimeStart,
+            visibleTimeEnd,
             ...rest
         } = this.props;
 
@@ -78,7 +94,7 @@ class DailyTimeline extends React.Component<DailyTimelineProps & DailyTimelineSt
             {});
 
         return (
-            <div className="daily-timeline">
+            <div className="duty-roster-timeline">
                 <AssignmentTimeline
                     allowChangeTime={false}
                     items={assignmentDuties}
@@ -104,11 +120,8 @@ class DailyTimeline extends React.Component<DailyTimelineProps & DailyTimelineSt
                                     <SheriffDutyBarList
                                         {...p}
                                         BarRenderer={ConnectedSheriffDutyBar}
-                                        // onRemove={(sheriffId) => {
-                                        //     unlinkSheriff({ sheriffId, dutyId: duty.id });
-                                        // }}
-                                        onDropSheriff={({ id: sheriffId }, {id: sheriffDutyId}) => (
-                                            linkSheriff && linkSheriff({ sheriffId, dutyId: duty.id, sheriffDutyId})
+                                        onDropSheriff={({ id: sheriffId }, { id: sheriffDutyId }) => (
+                                            linkSheriff && linkSheriff({ sheriffId, dutyId: duty.id, sheriffDutyId })
                                         )}
                                         workSection={workSectionMap[duty.assignmentId]}
                                     />
@@ -123,10 +136,12 @@ class DailyTimeline extends React.Component<DailyTimelineProps & DailyTimelineSt
     }
 }
 
-const mapStateToProps = (state: RootState, props: DailyTimelineProps) => {
+const mapStateToProps = (state: RootState, props: DutyRosterTimelineProps) => {
+    const currentVisibleTime = visibleTime(state);
     return {
         assignmentDuties: allAssignmentDuties(state),
-        assignments: allAssignments(state)
+        assignments: allAssignments(state),
+        ...currentVisibleTime
     };
 };
 
@@ -134,8 +149,7 @@ const mapDispatchToProps = {
     fetchAssignments: getAssignments,
     fetchAssignmentDuties: getAssignmentDuties,
     linkSheriff: linkAssignment,
-    // unlinkSheriff: unlinkAssignment
 };
 
-export default connect<DailyTimelineStateProps, DailyTimelineDispatchProps, DailyTimelineProps>(
-    mapStateToProps, mapDispatchToProps)(DailyTimeline);
+export default connect<DutyRosterTimelineStateProps, DutyRosterTimelineDispatchProps, DutyRosterTimelineProps>(
+    mapStateToProps, mapDispatchToProps)(DutyRosterTimeline);

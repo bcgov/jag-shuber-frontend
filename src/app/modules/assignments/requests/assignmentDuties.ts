@@ -10,14 +10,18 @@ import {
     AssignmentDuty,
     IdType
 } from '../../../api/index';
+import { 
+    DateRange 
+} from '../../../api/Api';
 
 // Get the Map
-class AssignmentDutyMapRequest extends RequestAction<void, AssignmentDutyMap, AssignmentModuleState> {
+class AssignmentDutyMapRequest extends RequestAction<DateRange, AssignmentDutyMap, AssignmentModuleState> {
     constructor(namespace: string = STATE_KEY, actionName: string = 'assignmentDutyMap') {
         super(namespace, actionName);
     }
-    public async doWork(request: void, { api }: ThunkExtra): Promise<AssignmentDutyMap> {
-        let templates = await api.getAssignmentDuties();
+    public async doWork(request: DateRange = {}, { api }: ThunkExtra): Promise<AssignmentDutyMap> {
+        const { startDate, endDate } = request;
+        let templates = await api.getAssignmentDuties(startDate, endDate);
         return arrayToMap(templates, t => t.id);
     }
 }
@@ -42,7 +46,7 @@ class CreateAssignmentDutyRequest extends
         const {
             assignmentDutyMap: {
                 data: currentMap = {},
-                ...restMap
+            ...restMap
             } = {},
             ...restState
         } = super.reduceSuccess(moduleState, action);
@@ -97,7 +101,7 @@ class DeleteAssignmentDutyRequest extends RequestAction<IdType, IdType, Assignme
         const {
             assignmentDutyMap: {
                 data: currentMap = {},
-                ...restMap
+            ...restMap
             } = {},
             ...restState
         } = super.reduceSuccess(moduleState, action);

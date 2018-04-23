@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as moment from 'moment';
 import { reduxForm, ConfigProps, SubmissionError } from 'redux-form';
 import { default as AssignmentForm, AssignmentFormProps } from '../components/AssignmentForm';
 import { createAssignment } from '../modules/assignments/actions';
@@ -7,6 +6,7 @@ import { default as FormSubmitButton, SubmitButtonProps } from '../components/Fo
 import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { DaysOfWeek } from '../api/Api';
+import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 
 // wrapping generic assignment form in redux-form
 const formConfig: ConfigProps<any, AssignmentFormProps> = {
@@ -28,10 +28,7 @@ const mapStateToProps = (state: RootState, props: AssignmentFormProps) => {
             dutyRecurrences: [
                 {
                     daysBitmap: DaysOfWeek.Weekdays,
-                    timeRange: {
-                        startTime: moment().startOf('day').add('hours', 8).toISOString(),
-                        endTime: moment().startOf('day').add('hours', 17).toISOString()
-                    }
+                    timeRange: TimeUtils.getDefaultTimeRange()
                 }
             ] 
         },

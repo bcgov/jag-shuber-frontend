@@ -11,7 +11,7 @@ import Footer from './components/Footer';
 import Navigation from './components/Navigation';
 import './assets/styles/Glyphicons.css';
 import './index.css';
-import Timeline from './pages/Timeline';
+import DutyRoster from './pages/DutyRoster';
 import ManageSheriffs from './pages/ManageSheriffs';
 import DefaultAssignments from './pages/DefaultAssignments';
 import Scheduling from './pages/Scheduling';
@@ -25,7 +25,7 @@ class Layout extends React.PureComponent {
             <Navigation />
           </div>
           <div className="mainArea">
-            <Route exact={true} path="/" component={Timeline} />
+            <Route exact={true} path="/" component={DutyRoster} />
             <Route path="/sheriffs/manage" component={ManageSheriffs} />
             <Route path="/assignments/manage/default" component={DefaultAssignments} />
             <Route path="/sheriffs/schedule" component={Scheduling} />

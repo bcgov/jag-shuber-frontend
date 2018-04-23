@@ -15,7 +15,7 @@ class SchedulingPage extends React.PureComponent {
     render() {
         return (
             <div>
-                <div className="scheduling-toolbar" style={{ display: 'flex', flexDirection: 'row-reverse' }}>
+                <div className="toolbar" style={{ flexDirection: 'row-reverse' }}>
                     <ScheduleShiftAddModal />
                     <ScheduleShiftCopyModal />
                 </div>

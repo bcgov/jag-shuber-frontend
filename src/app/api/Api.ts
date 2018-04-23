@@ -16,6 +16,7 @@ export type CourtroomMap = { [key: number]: Courtroom };
 export type RunMap = { [key: number]: Run };
 export type JailRoleMap = { [key: number]: JailRole };
 export type AlternateAssignmentMap = { [key: number]: AlternateAssignment };
+export type DateRange = { startDate?: DateType, endDate?: DateType };
 
 /* tslint:disable:no-bitwise */
 export enum DaysOfWeek {

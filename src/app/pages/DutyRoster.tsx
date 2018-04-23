@@ -1,19 +1,33 @@
 import * as React from 'react';
-import * as moment from 'moment';
-import DailyTimeline from '../containers/DailyTimeline/DailyTimeline';
+import DutyRosterTimeline from '../containers/DutyRosterTimeline/DutyRosterTimeline';
 import TimelineToolsPanel from '../components/TimelineToolsPanel';
 import SheriffList from '../containers/SheriffList';
 import { Sheriff } from '../api';
 import { ListGroup } from 'react-bootstrap';
 import SheriffDragSource from '../containers/SheriffDragSource';
 import DutyRosterSheriffCard from '../containers/DutyRosterSheriffCard';
+import DutyRosterControls from '../containers/DutyRosterControls';
+import './pages.css';
 
-class TimelinePage extends React.PureComponent {
+class DutyRoster extends React.PureComponent {
     render() {
         return (
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <div >
+                <div
+                    className="toolbar"
+                    style={{
+                        flexDirection: 'row',
+                        paddingLeft: 10,
+                        justifyContent: 'center',
+                        maxHeight: 85,
+                        paddingTop: 5
+                    }}
+                >
+                    <DutyRosterControls />
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'row' }}>
                 <div style={{ flex: '1 0px', minWidth: 500 }}>
-                    <DailyTimeline />
+                    <DutyRosterTimeline />
                 </div>
                 <TimelineToolsPanel titleText="My Team">
                     <ListGroup>
@@ -22,16 +36,16 @@ class TimelinePage extends React.PureComponent {
                                 (<SheriffDragSource sheriff={s}>
                                         <DutyRosterSheriffCard  
                                             sheriff={s} 
-                                            date={moment().toISOString()}
                                         />
                                     </SheriffDragSource>
                                 )} 
                         />
                     </ListGroup>
                 </TimelineToolsPanel>
+                </div>
             </div>
         );
     }
 }
 
-export default TimelinePage;
+export default DutyRoster;
