@@ -5,6 +5,7 @@ import { Button } from 'react-bootstrap';
 export interface ConfirmationModalProps {
     actionBtnLabel: React.ReactNode; 
     actionBtnStyle: string;
+    actionBtnSize?: any;
     title?: string;
     message?: React.ReactNode;
     confirmBtnLabel?: React.ReactNode;
@@ -34,6 +35,7 @@ export class ConfirmationModal extends React.PureComponent<ConfirmationModalProp
         const {
             actionBtnLabel, 
             actionBtnStyle,
+            actionBtnSize = '',
             title = 'Confirm',
             message = <p style={{fontSize: 16}}>Please confirm that you would like to complete this action.</p>,
             confirmBtnLabel = 'Confirm',
@@ -49,6 +51,7 @@ export class ConfirmationModal extends React.PureComponent<ConfirmationModalProp
                     showButton={({ handleShow }) => 
                         <Button 
                             bsStyle={actionBtnStyle} 
+                            bsSize={actionBtnSize}
                             onClick={() => handleShow()}
                         >
                             {actionBtnLabel}

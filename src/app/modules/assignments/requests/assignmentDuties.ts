@@ -11,7 +11,7 @@ import {
     IdType
 } from '../../../api/index';
 import { 
-    DateRange 
+    DateRange, DateType 
 } from '../../../api/Api';
 
 // Get the Map
@@ -28,7 +28,7 @@ class AssignmentDutyMapRequest extends RequestAction<DateRange, AssignmentDutyMa
 
 export const assignmentDutyMapRequest = new AssignmentDutyMapRequest();
 
-// Assignment Template Create
+// Assignment Duty Create
 class CreateAssignmentDutyRequest extends
     RequestAction<Partial<AssignmentDuty>, AssignmentDuty, AssignmentModuleState> {
     constructor(namespace: string = STATE_KEY, actionName: string = 'createAssignmentDuty') {
@@ -70,7 +70,7 @@ class CreateAssignmentDutyRequest extends
 
 export const createAssignmentDutyRequest = new CreateAssignmentDutyRequest();
 
-// Assignment Template Edit
+// Assignment Duty Edit
 class UpdateAssignmentDutyRequest extends CreateAssignmentDutyRequest {
     constructor(namespace: string = STATE_KEY, actionName: string = 'updateAssignmentDuty') {
         super(namespace, actionName);
@@ -84,7 +84,7 @@ class UpdateAssignmentDutyRequest extends CreateAssignmentDutyRequest {
 
 export const updateAssignmentDutyRequest = new UpdateAssignmentDutyRequest();
 
-// Assignment Template Delete
+// Assignment Duty Delete
 class DeleteAssignmentDutyRequest extends RequestAction<IdType, IdType, AssignmentModuleState> {
     constructor(namespace: string = STATE_KEY, actionName: string = 'deleteAssignmentDuty') {
         super(namespace, actionName);
@@ -124,3 +124,44 @@ class DeleteAssignmentDutyRequest extends RequestAction<IdType, IdType, Assignme
 }
 
 export const deleteAssignmentDutyRequest = new DeleteAssignmentDutyRequest();
+
+// Create assingment duties
+class CreateDefaultDutiesRequest extends RequestAction<DateType, AssignmentDuty[], AssignmentModuleState> {
+    constructor(namespace: string = STATE_KEY, actionName: string = 'createDefaultDuties') {
+        super(namespace, actionName);
+    }
+    public async doWork(request: DateType, { api }: ThunkExtra): Promise<AssignmentDuty[]> {
+        return await api.createDefaultDuties(request);
+    }
+
+    reduceSuccess(moduleState: AssignmentModuleState, action: { type: string, payload: AssignmentDuty[] })
+        : AssignmentModuleState {
+        // Call the super's reduce success and pull out our state and
+        // the assignmentMap state
+        const {
+            assignmentDutyMap: {
+                data: currentMap = {},
+            ...restMap
+            } = {},
+            ...restState
+        } = super.reduceSuccess(moduleState, action);
+
+        // Create a new map and add our assignment to it
+        const newMap = { ...currentMap };
+        const newDuties = action.payload || []; 
+        newDuties.forEach( nd => newMap[nd.id] = nd);
+
+        // Merge the state back together with the original in a new object
+        const newState: Partial<AssignmentModuleState> = {
+            ...restState,
+            assignmentDutyMap: {
+                ...restMap,
+                data: newMap
+            }
+        };
+
+        return newState;
+    }
+}
+
+export const createDefaultDutiesRequest = new CreateDefaultDutiesRequest();

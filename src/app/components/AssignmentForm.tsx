@@ -278,10 +278,7 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
                                     <Button
                                         onClick={() => fields.push({
                                             daysBitmap: DaysOfWeek.Weekdays,
-                                            timeRange: {
-                                                startTime: TimeUtils.getDefaultStartTime().toISOString(),
-                                                endTime: TimeUtils.getDefaultStartTime().toISOString()
-                                            }
+                                            timeRange: TimeUtils.getDefaultTimeRange()
                                         })}
                                     >
                                         <Glyphicon glyph="plus" />

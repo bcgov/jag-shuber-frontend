@@ -17,7 +17,6 @@ class DutyRoster extends React.PureComponent {
                     className="toolbar"
                     style={{
                         flexDirection: 'row',
-                        paddingLeft: 10,
                         justifyContent: 'center',
                         maxHeight: 85,
                         paddingTop: 5

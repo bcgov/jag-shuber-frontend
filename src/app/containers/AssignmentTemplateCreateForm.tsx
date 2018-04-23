@@ -29,6 +29,7 @@ const mapStateToProps = (state: RootState, props: AssignmentFormProps) => {
                 {
                     daysBitmap: DaysOfWeek.Weekdays,
                     timeRange: TimeUtils.getDefaultTimeRange()
+                    
                 }
             ] 
         },
