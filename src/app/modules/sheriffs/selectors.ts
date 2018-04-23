@@ -17,7 +17,7 @@ export const sheriffs = createSelector(
 
 export const getSheriff = (id?: IdType) => (state: RootState) => {
     if (state && id != null) {
-        const map = requests.sheriffMapRequest.getData(state);
+        const map = requests.sheriffMapRequest.getData(state) || {};
         return map[id];
     }
     return null;

@@ -144,9 +144,9 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
         return this._getError.bind(this);
     }
 
-    private _getData(state: any): TResponse | undefined {
+    private _getData(state: any): TResponse {
         let requestState = this.selectRequestActionStateFromRootState(state);
-        return requestState ? requestState.data : undefined;
+        return (requestState ? requestState.data : {}) as TResponse;
     }
 
     get getData() {

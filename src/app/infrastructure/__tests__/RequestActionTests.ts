@@ -3,7 +3,7 @@ import thunk from 'redux-thunk';
 import {
     default as RequestAction,
     RequestActionState
-} from "../RequestAction";
+} from '../RequestAction';
 import * as fetchMock from 'fetch-mock';
 import { API } from '../../api';
 import { AnyAction } from 'redux';
@@ -73,20 +73,20 @@ const listRequest = new FetchWidgets();
 const widgets: Widget[] = [
     { id: 0, title: "Widget 0" },
     { id: 1, title: "Widget 1" },
-    { id: 2, title: "Widget 2" }
+    { id: 2, title: 'Widget 2' }
 ]
 
 const createdWidget: Widget = {
     id: 7,
-    title: "Widget #7"
+    title: 'Widget #7'
 }
 
 const actions = {
     listBegin: { type: listRequest.actionNames.begin },
-    listFail: { type: listRequest.actionNames.fail, payload: "Some error occured" },
+    listFail: { type: listRequest.actionNames.fail, payload: 'Some error occured' },
     listSuccess: { type: listRequest.actionNames.success, payload: widgets },
     createBegin: { type: createRequest.actionNames.begin },
-    createFail: { type: createRequest.actionNames.fail, payload: "Some error occured" },
+    createFail: { type: createRequest.actionNames.fail, payload: 'Some error occured' },
     createSuccess: { type: createRequest.actionNames.success, payload: createdWidget }
 }
 
@@ -98,7 +98,7 @@ describe('RequestAction.actionCreator', () => {
     });
 
     it('should create request and success when fetching succeeds', (done) => {
-        fetchMock.getOnce('/api/widgets', { body: widgets, headers: { 'content-type': 'application/json' } })
+        fetchMock.getOnce('/api/widgets', { body: widgets, headers: { 'content-type': 'application/json' } });
 
         const expectedActions = [
             { type: listRequest.actionNames.begin },
@@ -109,12 +109,12 @@ describe('RequestAction.actionCreator', () => {
     });
 
     it('should create request and failure actions when fetching fails', (done) => {
-        const errorMessage = "Could not retrieve widgets";
+        const errorMessage = 'Could not retrieve widgets';
         fetchMock.getOnce('/api/widgets', {
             throws: errorMessage,
             headers: { 'content-type': 'application/json' },
-            status: "401",
-            statusText: "Unauthorized"
+            status: '401',
+            statusText: 'Unauthorized'
         });
 
         const expectedActions = [
@@ -128,7 +128,7 @@ describe('RequestAction.actionCreator', () => {
 
 describe('RequestAction Reducers', () => {
     it('Standard RequestAction.reducer Should return initial state', () => {
-        expect(listRequest.reducer({}, { type: "SOME_ACTION" })).toEqual({});
+        expect(listRequest.reducer({}, { type: 'SOME_ACTION' })).toEqual({});
     });
 
     it('Standard RequestAction.reducer Should handle BEGIN', () => {
@@ -144,7 +144,7 @@ describe('RequestAction Reducers', () => {
     });
 
     it('Custom RequestAction.reducer Should return initial state', () => {
-        expect(createRequest.reducer({}, { type: "SOME_ACTION" })).toEqual({});
+        expect(createRequest.reducer({}, { type: 'SOME_ACTION' })).toEqual({});
     });
 
     it('Custom RequestAction.reducer Should handle BEGIN', () => {
@@ -490,12 +490,12 @@ describe('RequestAction.selectors', () => {
         })).toEqual(widgets);
     });
 
-    it('getData should return undefined if data is undefined', () => {
-        expect(listRequest.getData({})).toEqual(undefined);
+    it('getData should return empty object {} if data is undefined', () => {
+        expect(listRequest.getData({})).toEqual({});
     });
 
     it('getError should select error', () => {
-        const errorMsg = "Some Error message";
+        const errorMsg = 'Some Error message';
         expect(listRequest.getError({
             widgets: {
                 list:
@@ -508,7 +508,7 @@ describe('RequestAction.selectors', () => {
         })).toEqual(errorMsg);
     });
 
-    it('getError should return undefined if there is no root state', () => {
+    it('getError should return empty object if there is no root state', () => {
         expect(listRequest.getError({})).toEqual(undefined);
     });
 });
@@ -556,12 +556,12 @@ describe('RequestAction.selectors should work with function pointers', () => {
         })).toEqual(widgets);
     });
 
-    it('getData should return undefined if data is undefined', () => {
-        expect(selectors.getData({})).toEqual(undefined);
+    it('getData should return empty object if data is undefined', () => {
+        expect(selectors.getData({})).toEqual({});
     });
 
     it('getError should select error', () => {
-        const errorMsg = "Some Error message";
+        const errorMsg = 'Some Error message';
         expect(selectors.getError({
             widgets: {
                 list:
