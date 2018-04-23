@@ -1,5 +1,4 @@
-import { RootState } from '../../../store'
-import { SheriffModuleState } from '../reducer';
+import { RootState } from '../../../store';
 import * as selectors from '../selectors';
 
 describe('Sheriff Selector', () => {
