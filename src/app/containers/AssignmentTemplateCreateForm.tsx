@@ -28,10 +28,7 @@ const mapStateToProps = (state: RootState, props: AssignmentFormProps) => {
             dutyRecurrences: [
                 {
                     daysBitmap: DaysOfWeek.Weekdays,
-                    timeRange: {
-                        startTime: TimeUtils.getDefaultStartTime().toISOString(),
-                        endTime: TimeUtils.getDefaultEndTime().toISOString()
-                    }
+                    timeRange: TimeUtils.getDefaultTimeRange()
                 }
             ] 
         },
