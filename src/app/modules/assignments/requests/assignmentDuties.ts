@@ -125,7 +125,7 @@ class DeleteAssignmentDutyRequest extends RequestAction<IdType, IdType, Assignme
 
 export const deleteAssignmentDutyRequest = new DeleteAssignmentDutyRequest();
 
-// Import assingment duties
+// Create assingment duties
 class CreateDefaultDutiesRequest extends RequestAction<DateType, AssignmentDuty[], AssignmentModuleState> {
     constructor(namespace: string = STATE_KEY, actionName: string = 'createDefaultDuties') {
         super(namespace, actionName);

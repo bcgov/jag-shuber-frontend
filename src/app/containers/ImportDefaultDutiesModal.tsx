@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as moment from 'moment';
 import { connect } from 'react-redux';
 import { ConfirmationModal } from '../components/ConfirmationModal';
 import { DateType } from '../api/Api';
@@ -25,7 +26,8 @@ class ImportDefaultDutiesEditModal extends React.PureComponent<
         } = this.props;
 
         const importConfirmationMessage =
-            <p style={{ fontSize: 14 }}>Would you like to add your default duties to the Duty Roster?</p>;
+            // tslint:disable-next-line:max-line-length
+            <p style={{ fontSize: 14 }}>{`Would you like to import default duties for ${moment(date).format('MMM DD, YYYY')}?`}</p>;
 
         return (
             <div style={{position: 'absolute', right: 2}}>
