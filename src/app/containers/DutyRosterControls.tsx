@@ -10,6 +10,7 @@ import { visibleTime } from '../modules/timeline/selectors';
 import { updateVisibleTime as setVisibleTime } from '../modules/timeline/actions';
 import CalendarButton from '../components/FormElements/CalendarButton/CalendarButton';
 import * as TimeUtils from '../infrastructure/TimeRangeUtils';
+import ImportDefaultDutiesModal from '../containers/ImportDefaultDutiesModal';
 
 interface DutyRosterControlsStateProps {
     visibleTimeStart: any;
@@ -29,6 +30,7 @@ class DutyRosterControls extends React.PureComponent<
     render() {
         const { visibleTimeStart, visibleTimeEnd, updateVisibleTime } = this.props;
         return (
+            
             <div style={{ textAlign: 'center', display: 'flex'}}>
                 <Button
                     onClick={() => updateVisibleTime(
@@ -64,8 +66,11 @@ class DutyRosterControls extends React.PureComponent<
                     style={{color: 'white'}}
                 >
                     <Glyphicon glyph="chevron-right" />
-                </Button>                
+                </Button>   
+                    
+                <ImportDefaultDutiesModal date={visibleTimeStart}/>              
             </div>
+
         );
     }
 }

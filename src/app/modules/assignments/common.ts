@@ -17,5 +17,6 @@ export interface AssignmentModuleState {
     createAssignmentDuty?: RequestActionState<AssignmentDuty>;
     updateAssignmentDuty?: RequestActionState<AssignmentDuty>;
     deleteAssignmentDuty?: RequestActionState<void>;
+    createDefaultDuties?: RequestActionState<AssignmentDuty[]>;
 }
 export const STATE_KEY: string = 'assignments';

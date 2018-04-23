@@ -280,7 +280,7 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
                                             daysBitmap: DaysOfWeek.Weekdays,
                                             timeRange: {
                                                 startTime: TimeUtils.getDefaultStartTime().toISOString(),
-                                                endTime: TimeUtils.getDefaultStartTime().toISOString()
+                                                endTime: TimeUtils.getDefaultEndTime().toISOString()
                                             }
                                         })}
                                     >

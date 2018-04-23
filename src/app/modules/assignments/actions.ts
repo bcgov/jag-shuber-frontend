@@ -15,6 +15,7 @@ export const getAssignmentDuties = assignmentDutyRequests.assignmentDutyMapReque
 export const createAssignmentDuty = assignmentDutyRequests.createAssignmentDutyRequest.actionCreator;
 export const editAssignmentDuty = assignmentDutyRequests.updateAssignmentDutyRequest.actionCreator;
 export const deleteAssignmentDuty = assignmentDutyRequests.deleteAssignmentDutyRequest.actionCreator;
+export const createDefaultDuties = assignmentDutyRequests.createDefaultDutiesRequest.actionCreator;
 
 type SheriffDutyLink = { sheriffId: IdType, dutyId: IdType, sheriffDutyId: IdType };
 export const linkAssignment: ThunkAction<SheriffDutyLink> =

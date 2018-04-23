@@ -1,44 +1,50 @@
 import * as React from 'react';
-import { Glyphicon } from 'react-bootstrap';
+import { connect } from 'react-redux';
 import { ConfirmationModal } from '../components/ConfirmationModal';
 import { DateType } from '../api/Api';
+import { createDefaultDuties } from '../modules/assignments/actions';
+
 export interface ImportDefaultDutiesModalProps {
     date: DateType;
     color?: string;
 }
 
 export interface ImportDefaultDutiesModalDispatchProps {
-    // importDuties: () => void;
+    createDefaultDuties: (date: DateType) => void;
 }
 
-export default class ScheduleShiftEditModal extends React.PureComponent<
+class ImportDefaultDutiesEditModal extends React.PureComponent<
     ImportDefaultDutiesModalProps & ImportDefaultDutiesModalDispatchProps>{
 
     render() {
         const {
             color = 'white',
             // tslint:disable-next-line:no-shadowed-variable
-            // importDuties
+            createDefaultDuties,
+            date
         } = this.props;
 
         const importConfirmationMessage =
             <p style={{ fontSize: 14 }}>Would you like to add your default duties to the Duty Roster?</p>;
 
         return (
-            <div>
+            <div style={{position: 'absolute', right: 2}}>
                 <ConfirmationModal
                     title="Import Default Duties"
                     message={importConfirmationMessage}
-                    actionBtnLabel={<Glyphicon glyph="import" style={{color}}/>}
+                    actionBtnLabel={<span style={{color}} > Import Defaults</span>}
                     actionBtnStyle="link"
-                    actionBtnSize="large"
                     confirmBtnLabel="Yes"
                     confirmBtnStyle="success"
                     cancelBtnLabel="No"
-                    onCancel={() => (null)}
-                    onConfirm={() => (null)}
+                    onConfirm={() => {
+                        createDefaultDuties(date);
+                    }}
                 />
             </div>
         );
     }
 }
+
+// tslint:disable-next-line:max-line-length
+export default connect<{}, ImportDefaultDutiesModalDispatchProps, ImportDefaultDutiesModalProps>(null, { createDefaultDuties })(ImportDefaultDutiesEditModal);
