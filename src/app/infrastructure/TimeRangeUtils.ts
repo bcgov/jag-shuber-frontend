@@ -34,17 +34,17 @@ export function doTimeRangesOverlap (
 
 export function getDefaultStartTime (dayForTime?: moment.Moment): moment.Moment {
     if (dayForTime) {
-        return dayForTime.startOf('day').add('hour', 7);
+        return dayForTime.startOf('day').add(7, 'hour');
     } else {
-        return moment().startOf('day').add('hour', 7);
+        return moment().startOf('day').add(7, 'hour');
     }
 }
 
 export function getDefaultEndTime (dayForTime?: moment.Moment): moment.Moment {
     if (dayForTime) {
-        return dayForTime.startOf('day').add('hour', 17);
+        return dayForTime.startOf('day').add(18, 'hour');
     } else {
-        return moment().startOf('day').add('hour', 17);
+        return moment().startOf('day').add(18, 'hour');
     }
 }
 
@@ -64,17 +64,17 @@ export function getDefaultTimeRange (dayForTime?: moment.Moment): {startTime: mo
 
 export function getDefaultTimePickerMinTime (dayForTime?: moment.Moment): moment.Moment {
     if (dayForTime) {
-        return dayForTime.startOf('day').add('hour', 6);
+        return dayForTime.startOf('day').add(6, 'hour');
     } else {
-        return moment().startOf('day').add('hour', 6);
+        return moment().startOf('day').add(6, 'hour');
     }
 }
 
 export function getDefaultTimePickerMaxTime (dayForTime?: moment.Moment): moment.Moment {
     if (dayForTime) {
-        return dayForTime.startOf('day').add('hour', 22);
+        return dayForTime.startOf('day').add(22, 'hour');
     } else {
-        return moment().startOf('day').add('hour', 22);
+        return moment().startOf('day').add(22, 'hour');
     }
 }
 
