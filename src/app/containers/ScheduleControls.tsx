@@ -9,10 +9,8 @@ import {
 import { visibleTime } from '../modules/schedule/selectors';
 import { updateVisibleTime as setVisibleTime } from '../modules/schedule/actions';
 import CalendarButton from '../components/FormElements/CalendarButton/CalendarButton';
-import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 import ScheduleShiftAddModal from './ScheduleShiftAddModal';
 import ScheduleShiftCopyModal from './ScheduleShiftCopyModal';
-// import ImportDefaultDutiesModal from '../containers/ImportDefaultDutiesModal';
 
 interface ScheduleControlsStateProps {
     visibleTimeStart: any;
@@ -36,8 +34,8 @@ class ScheduleControls extends React.PureComponent<
             <div style={{ textAlign: 'center', display: 'flex'}}>
                 <Button
                     onClick={() => updateVisibleTime(
-                        moment(visibleTimeStart).subtract('day', 1),
-                        moment(visibleTimeEnd).subtract('day', 1)
+                        moment(visibleTimeStart).subtract('week', 1),
+                        moment(visibleTimeEnd).subtract('week', 1)
                     )}
                     bsStyle="link" 
                     bsSize="large" 
@@ -48,20 +46,20 @@ class ScheduleControls extends React.PureComponent<
                 
                 <CalendarButton 
                     onChange={(selectedDate) => updateVisibleTime(
-                        TimeUtils.getDefaultStartTime(moment(selectedDate)),
-                        TimeUtils.getDefaultEndTime(moment(selectedDate))
+                        moment(selectedDate).startOf('week'),
+                        moment(selectedDate).endOf('week')
                     )}
                     defaultValue={visibleTimeStart}
                     todayOnClick={() => updateVisibleTime(
-                        TimeUtils.getDefaultStartTime(),
-                        TimeUtils.getDefaultEndTime()
+                        moment().startOf('week'),
+                        moment().endOf('week')
                     )}
                 />
 
                 <Button
                     onClick={() => updateVisibleTime(
-                        moment(visibleTimeStart).add('day', 1),
-                        moment(visibleTimeEnd).add('day', 1)
+                        moment(visibleTimeStart).add('week', 1),
+                        moment(visibleTimeEnd).add('week', 1)
                     )}
                     bsStyle="link" 
                     bsSize="large" 
