@@ -1,4 +1,5 @@
 import * as React from 'react';
+// import * as moment from 'moment';
 import {
     reduxForm,
     ConfigProps
@@ -8,9 +9,10 @@ import { default as FormSubmitButton, SubmitButtonProps } from '../components/Fo
 import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { 
-    DateType, ShiftCopyOptions 
+    ShiftCopyOptions 
 } from '../api/Api';
 import { copyShiftsFromPrevWeek } from '../modules/shifts/actions';
+import { visibleTime } from '../modules/schedule/selectors';
 
 // wrapping generic assignment form in redux-form
 const formConfig: ConfigProps<{}, ScheduleShiftCopyFormProps> = {
@@ -23,12 +25,21 @@ const formConfig: ConfigProps<{}, ScheduleShiftCopyFormProps> = {
     }
 };
 
-export interface ScheduleShiftCreateFormProps extends ScheduleShiftCopyFormProps {
-    weekStartSource: DateType;
+export interface ScheduleShiftCopyFormProps extends ScheduleShiftCopyFormProps {
 }
 
 // tslint:disable-next-line:no-empty
-const mapStateToProps = (state: RootState, props: ScheduleShiftCreateFormProps) => {
+const mapStateToProps = (state: RootState, props: ScheduleShiftCopyFormProps) => {
+    let currentVisibleStart = visibleTime(state).visibleTimeStart;
+    let destination = currentVisibleStart;
+    const source = visibleTime(state).visibleTimeStart.subtract('week', 1);
+    // let source = destination.subtract('week', 1);
+    // const dest = currentVisibleStartMoment;
+    // const source = currentVisibleStartMoment.subtract('week', 1);
+    return {
+        weekStartDestination: destination,
+        weekStartSource: source
+    };
 };
 
 // Here we create a class that extends the configured assignment form so that we

@@ -9,13 +9,13 @@ import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { 
     DaysOfWeek,
-    DateType 
 } from '../api/Api';
 import { 
     ShiftCreationPayload
 } from '../api/utils';
 import { createShifts } from '../modules/shifts/actions';
 import * as TimeUtils from '../infrastructure/TimeRangeUtils';
+import { visibleTime } from '../modules/schedule/selectors';
 
 // wrapping generic assignment form in redux-form
 const formConfig: ConfigProps<any, ScheduleShiftFormProps> = {
@@ -32,7 +32,6 @@ const formConfig: ConfigProps<any, ScheduleShiftFormProps> = {
 };
 
 export interface ScheduleShiftCreateFormProps extends ScheduleShiftFormProps {
-    weekStart: DateType;
 }
 
 const mapStateToProps = (state: RootState, props: ScheduleShiftCreateFormProps) => {
@@ -44,7 +43,8 @@ const mapStateToProps = (state: RootState, props: ScheduleShiftCreateFormProps) 
             },
             days: DaysOfWeek.Weekdays,
             repeatNumber: 1
-        }
+        },
+        weekStart: visibleTime(state).visibleTimeStart
     };
 };
 
