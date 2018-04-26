@@ -13,7 +13,7 @@ export interface ScheduleShiftCopyModalProps {
 export default class ScheduleShiftCopyModal extends React.Component<ScheduleShiftCopyModalProps> {
     render() {
         return (
-            <div>
+            <div style={{position: 'absolute', right: 50}}>
                 <ModalWrapper
                     title=""
                     showButton={({ handleShow }) => (

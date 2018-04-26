@@ -6,10 +6,12 @@ import {
     Button,
     Glyphicon
 } from 'react-bootstrap';
-import { visibleTime } from '../modules/timeline/selectors';
-import { updateVisibleTime as setVisibleTime } from '../modules/timeline/actions';
+import { visibleTime } from '../modules/schedule/selectors';
+import { updateVisibleTime as setVisibleTime } from '../modules/schedule/actions';
 import CalendarButton from '../components/FormElements/CalendarButton/CalendarButton';
 import * as TimeUtils from '../infrastructure/TimeRangeUtils';
+import ScheduleShiftAddModal from './ScheduleShiftAddModal';
+import ScheduleShiftCopyModal from './ScheduleShiftCopyModal';
 // import ImportDefaultDutiesModal from '../containers/ImportDefaultDutiesModal';
 
 interface ScheduleControlsStateProps {
@@ -67,7 +69,9 @@ class ScheduleControls extends React.PureComponent<
                 >
                     <Glyphicon glyph="chevron-right" />
                 </Button>   
-                    
+                
+                <ScheduleShiftAddModal />
+                <ScheduleShiftCopyModal />
             </div>
 
         );

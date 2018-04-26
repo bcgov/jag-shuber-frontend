@@ -14,7 +14,7 @@ export interface ScheduleShiftAddModalProps {
 export default class ScheduleShiftAddModal extends React.Component<ScheduleShiftAddModalProps>{
     render() {
         return (
-            <div>
+            <div style={{position: 'absolute', right: 2}}>
                 <ModalWrapper
                     title="Add a Shift"
                     showButton={({ handleShow }) => (
