@@ -21,7 +21,7 @@ export default class TimelineToolsPanel extends React.PureComponent<TimelineTool
                     flexDirection: 'column',
                     alignItems: 'stretch',
                     borderLeft: '2px solid #BBB',
-                    borderBottom: '1px solid #BBB'
+                    // borderBottom: '1px solid #BBB'
                 }}
             >
                 <div

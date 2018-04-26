@@ -53,7 +53,7 @@ export default class Timeline<TItem, TGroup> extends React.PureComponent<Timelin
             ...ReactTimeline.defaultProps.subHeaderLabelFormats, 
             dayLong: 'ddd D'
         };
-
+        
         const {
             groups = [],
             items = [],

@@ -24,7 +24,8 @@ class ShiftScheduleTimeline extends Timeline<Shift, Courthouse> {
                 {item.title}
             </ShiftCard>
         ),
-        mapItem: ShiftScheduleTimeline.mapItem
+        mapItem: ShiftScheduleTimeline.mapItem,
+        
     };
 
     public static mapItem(shift: Shift, groups: Courthouse[]) {
@@ -77,7 +78,6 @@ export default class ShiftSchedule extends React.PureComponent<ShiftScheduleProp
                 visibleTimeStart={visibleTimeStart}
                 visibleTimeEnd={visibleTimeEnd}
                 itemRenderer={itemRenderer}
-                lineHeight={700}
             />
         );
     }
