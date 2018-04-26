@@ -26,9 +26,9 @@ class Layout extends React.PureComponent {
           </div>
           <div className="mainArea">
             <Route exact={true} path="/" component={DutyRoster} />
+            <Route path="/sheriffs/schedule" component={Scheduling} />
             <Route path="/sheriffs/manage" component={ManageSheriffs} />
             <Route path="/assignments/manage/default" component={DefaultAssignments} />
-            <Route path="/sheriffs/schedule" component={Scheduling} />
           </div>
           <div className="footerArea">
             <Footer />
