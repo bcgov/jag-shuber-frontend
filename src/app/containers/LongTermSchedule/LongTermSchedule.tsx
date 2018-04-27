@@ -26,6 +26,8 @@ import './LongTermSchedule.css';
 import ShiftCard from '../../components/ShiftCard';
 import SheriffDropTarget from '../SheriffDropTarget';
 import SheriffDisplay from '../SheriffDisplay';
+import { visibleTime } from '../../modules/schedule/selectors';
+
 interface LongTermScheduleProps extends Partial<ShiftScheduleProps> {
     sideBarWidth?: number;
     allowTimeDrag?: boolean;
@@ -41,13 +43,20 @@ interface LongTermScheduleDispatchProps {
 interface LongTermScheduleStateProps {
     shifts: Shift[];
     leaves: Leave[];
+    visibleTimeStart: any;
+    visibleTimeEnd: any;
 }
 
 class LongTermSchedule extends React.Component<LongTermScheduleProps
     & LongTermScheduleStateProps
     & LongTermScheduleDispatchProps> {
+
     componentWillMount() {
-        const { fetchShifts, fetchLeaves } = this.props;
+        const { 
+            fetchShifts, 
+            fetchLeaves
+        } = this.props;
+        
         fetchShifts();
         fetchLeaves();
     }
@@ -72,18 +81,17 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
     render() {
         const {
             shifts = [],
-            assignShift
+            assignShift,
+            visibleTimeStart,
+            visibleTimeEnd
         } = this.props;
-
-        const newVisibleTimeStart = moment().startOf('week').valueOf();
-        const newVisibleTimeEnd = moment().endOf('week').valueOf();
 
         return (
             <div className="scheduling-timeline">
                 <ShiftSchedule
                     shifts={shifts}
-                    visibleTimeEnd={newVisibleTimeEnd}
-                    visibleTimeStart={newVisibleTimeStart}
+                    visibleTimeEnd={visibleTimeEnd}
+                    visibleTimeStart={visibleTimeStart}
                     itemRenderer={(shift) => (
                         <SheriffDropTarget
                             style={{
@@ -110,9 +118,11 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
 }
 
 const mapStateToProps = (state: RootState, props: LongTermScheduleProps) => {
+    const currentVisibleTime = visibleTime(state);
     return {
         shifts: allShifts(state),
-        leaves: allLeaves(state)
+        leaves: allLeaves(state),
+        ...currentVisibleTime
     };
 };
 

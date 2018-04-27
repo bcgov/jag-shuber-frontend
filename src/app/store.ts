@@ -17,7 +17,9 @@ import {
 import {
     getSheriffList
 } from './modules/sheriffs/actions';
-import { updateVisibleTime } from './modules/timeline/actions';
+import { updateVisibleTime as updateTimelineVisibleTime } from './modules/timeline/actions';
+import { default as scheduleReducer, ScheduleState } from './modules/schedule/reducer';
+import { updateVisibleTime as updateScheduleVisibleTime } from './modules/schedule/actions';
 
 
 export interface ThunkExtra {
@@ -32,6 +34,7 @@ export interface RootState {
     timeline: TimelineState;
     shifts: ShiftModuleState;
     courthouse: CourthouseModuleState;
+    schedule: ScheduleState;
 }
 
 const initialActions: any[] = [
@@ -40,11 +43,14 @@ const initialActions: any[] = [
     getAlternateAssignmentTypes,
     getJailRoles,
     getRuns,
-    () => updateVisibleTime(moment().startOf('day').add(7, 'hours'), moment().endOf('day').subtract(6, 'hours'))
+    () => updateTimelineVisibleTime(
+            moment().startOf('day').add(7, 'hours'), moment().endOf('day').subtract(6, 'hours')),
+    () => updateScheduleVisibleTime(moment().startOf('week'), moment().endOf('week'))
 ];
 
 const reducers = {
     timeline: timelineReducer,
+    schedule: scheduleReducer,
     form: formReducer
 };
 

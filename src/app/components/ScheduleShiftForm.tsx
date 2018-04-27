@@ -51,7 +51,7 @@ export default class ScheduleShiftForm extends
                 startTime: moment(shift.startDateTime).toISOString(),
                 endTime: moment(shift.endDateTime).toISOString()
             }
-        }
+        };
     }
 
     private renderMultiShiftCreationFields() {

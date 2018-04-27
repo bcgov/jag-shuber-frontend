@@ -6,18 +6,25 @@ import { Sheriff } from '../api';
 import SheriffListCard from '../components/SheriffListCard/SheriffListCard';
 import { ListGroup } from 'react-bootstrap';
 import SheriffDragSource from '../containers/SheriffDragSource';
-import ScheduleShiftAddModal from '../containers/ScheduleShiftAddModal';
-import ScheduleShiftCopyModal from '../containers/ScheduleShiftCopyModal';
 import './pages.css';
 import ScheduleSummary from '../containers/ScheduleSummary';
+import ScheduleControls from '../containers/ScheduleControls';
 
 class SchedulingPage extends React.PureComponent {
     render() {
         return (
             <div>
-                <div className="toolbar" style={{ flexDirection: 'row-reverse' }}>
-                    <ScheduleShiftAddModal />
-                    <ScheduleShiftCopyModal />
+                <div
+                    className="toolbar"
+                    style={{
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        maxHeight: 85,
+                        paddingTop: 5,
+                        paddingLeft: 210
+                    }}
+                >
+                    <ScheduleControls />
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'row' }}>
                     <TimelineToolsPanel titleText="My Team">
