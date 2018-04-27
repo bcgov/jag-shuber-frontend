@@ -1,5 +1,5 @@
 import * as React from 'react';
-// import * as moment from 'moment';
+import * as moment from 'moment';
 import {
     reduxForm,
     ConfigProps
@@ -30,12 +30,9 @@ export interface ScheduleShiftCopyFormProps extends ScheduleShiftCopyFormProps {
 
 // tslint:disable-next-line:no-empty
 const mapStateToProps = (state: RootState, props: ScheduleShiftCopyFormProps) => {
-    let currentVisibleStart = visibleTime(state).visibleTimeStart;
-    let destination = currentVisibleStart;
-    const source = visibleTime(state).visibleTimeStart.subtract('week', 1);
-    // let source = destination.subtract('week', 1);
-    // const dest = currentVisibleStartMoment;
-    // const source = currentVisibleStartMoment.subtract('week', 1);
+    const currentVisibleStart = visibleTime(state).visibleTimeStart;
+    const destination = moment(currentVisibleStart);
+    const source = moment(currentVisibleStart).subtract('week', 1);
     return {
         weekStartDestination: destination,
         weekStartSource: source
