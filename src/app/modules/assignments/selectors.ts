@@ -80,6 +80,14 @@ export const getAssignmentDuty = (id?: IdType) => (state: RootState) => {
     return undefined;
 };
 
+// Assignment Duty Details
+export const allAssignmentDutyDetails = createSelector(
+    assignmentDutyRequests.assignmentDutyDetailsMapRequest.getData,
+    (map: AssignmentDutyDetailsMap = {}): AssignmentDutyDetails[] => {
+        const list: AssignmentDutyDetails[] = Object.keys(map).map((k, i) => map[k]);
+        return list;
+    });
+
 export const getAssignmentDutyDetailsByDutyId = (assignmentDutyId?: IdType) => (state: RootState) => {
     if (state && assignmentDutyId != null) {
         const map: AssignmentDutyDetailsMap = assignmentDutyRequests.assignmentDutyDetailsMapRequest.getData(state);

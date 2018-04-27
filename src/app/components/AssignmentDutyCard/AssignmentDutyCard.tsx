@@ -9,10 +9,13 @@ import SheriffDutyBarList from '../SheriffDutyBarList/SheriffDutyBarList';
 import AssignmentDutyActionsPanel from '../AssignmentDutyActionsPanel/AssignmentDutyActionsPanel';
 import AssignmentDutyEditModal from '../../containers/AssignmentDutyEditModal';
 import './AssignmentDutyCard.css';
+import { Glyphicon } from 'react-bootstrap';
+import AssignmentDutyInformationPanel from '../AssignmentDutyInformationPanel/AssignmentDutyInformationPanel';
 
 export interface AssignmentDutyCardProps {
     duty: AssignmentDuty;
     SheriffAssignmentRenderer?: React.ComponentType<SheriffAssignmentRendererProps>;
+    hasComments?: boolean;
     style?: React.CSSProperties;
 }
 
@@ -33,6 +36,7 @@ export default class AssignmentDutyCard extends React.PureComponent<AssignmentDu
                 sheriffDuties = [],
                 sheriffsRequired = 0
             } = {},
+            hasComments = false,
             style = {}
         } = this.props;
 
@@ -46,6 +50,9 @@ export default class AssignmentDutyCard extends React.PureComponent<AssignmentDu
                 <AssignmentDutyActionsPanel>
                     <AssignmentDutyEditModal color={style.color} dutyId={id} />
                 </AssignmentDutyActionsPanel>
+                <AssignmentDutyInformationPanel>
+                    {hasComments && <Glyphicon glyph="comment" style={{fontSize: 16, paddingTop: 10}}/>}
+                </AssignmentDutyInformationPanel>
             </div>
         );
     }

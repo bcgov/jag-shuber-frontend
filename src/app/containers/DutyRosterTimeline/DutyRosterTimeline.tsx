@@ -2,12 +2,14 @@ import * as React from 'react';
 import * as moment from 'moment';
 import {
     allAssignments,
-    allAssignmentDuties
+    allAssignmentDuties,
+    allAssignmentDutyDetails
 } from '../../modules/assignments/selectors';
 import {
     getAssignments,
     getAssignmentDuties,
-    linkAssignment
+    linkAssignment,
+    getAssignmentDutyDetails
 } from '../../modules/assignments/actions';
 import { connect } from 'react-redux';
 import { RootState } from '../../store';
@@ -18,7 +20,8 @@ import {
     WorkSectionCode,
     DateRange,
     Assignment,
-    AssignmentDuty
+    AssignmentDuty,
+    AssignmentDutyDetails
 } from '../../api/Api';
 import SheriffDutyBarList from '../../components/SheriffDutyBarList/SheriffDutyBarList';
 import ConnectedSheriffDutyBar from '../SheriffDutyBar';
@@ -37,6 +40,7 @@ interface DutyRosterTimelineDispatchProps {
     fetchAssignmentDuties: (dateRange: DateRange) => void;
     fetchAssignments: () => void;
     linkSheriff: (link: { sheriffId: IdType, dutyId: IdType, sheriffDutyId: IdType }) => void;
+    fetchAssignmentDutyDetails: () => void;
 }
 
 interface DutyRosterTimelineStateProps {
@@ -44,8 +48,8 @@ interface DutyRosterTimelineStateProps {
     assignments: Assignment[];
     visibleTimeStart: any;
     visibleTimeEnd: any;
+    assignmentDutyDetails: AssignmentDutyDetails[];
 }
-
 
 type CompositeProps = DutyRosterTimelineProps & DutyRosterTimelineStateProps & DutyRosterTimelineDispatchProps;
 class DutyRosterTimeline extends React.Component<CompositeProps> {
@@ -55,12 +59,14 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
             fetchAssignmentDuties,
             fetchAssignments,
             visibleTimeStart: startDate,
-            visibleTimeEnd: endDate
+            visibleTimeEnd: endDate,
+            fetchAssignmentDutyDetails
         } = this.props;
 
         /* tslint:disable:no-unused-expression */
         fetchAssignmentDuties && fetchAssignmentDuties({ startDate, endDate });
         fetchAssignments && fetchAssignments();
+        fetchAssignmentDutyDetails && fetchAssignmentDutyDetails();
         /* tslint:enable:no-unused-expression */
     }
 
@@ -83,6 +89,7 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
             linkSheriff,
             visibleTimeStart,
             visibleTimeEnd,
+            assignmentDutyDetails = [],
             ...rest
         } = this.props;
 
@@ -109,6 +116,7 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
                     itemRenderer={(duty) => {
                         const workSectionColor = getWorkSectionColour(workSectionMap[duty.assignmentId]);
                         const color = getForegroundColor(workSectionColor);
+                        const hasComments = assignmentDutyDetails.some(dd => dd.assignmentDutyId === duty.id);
                         return (
                             <AssignmentDutyCard
                                 duty={duty}
@@ -116,6 +124,7 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
                                     borderColor: workSectionColor,
                                     color
                                 }}
+                                hasComments={hasComments}
                                 SheriffAssignmentRenderer={(p) => (
                                     <SheriffDutyBarList
                                         {...p}
@@ -141,6 +150,7 @@ const mapStateToProps = (state: RootState, props: DutyRosterTimelineProps) => {
     return {
         assignmentDuties: allAssignmentDuties(state),
         assignments: allAssignments(state),
+        assignmentDutyDetails: allAssignmentDutyDetails(state),
         ...currentVisibleTime
     };
 };
@@ -149,6 +159,7 @@ const mapDispatchToProps = {
     fetchAssignments: getAssignments,
     fetchAssignmentDuties: getAssignmentDuties,
     linkSheriff: linkAssignment,
+    fetchAssignmentDutyDetails: getAssignmentDutyDetails
 };
 
 export default connect<DutyRosterTimelineStateProps, DutyRosterTimelineDispatchProps, DutyRosterTimelineProps>(
