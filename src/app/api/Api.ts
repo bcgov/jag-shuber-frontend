@@ -18,6 +18,7 @@ export type RunMap = { [key: number]: Run };
 export type JailRoleMap = { [key: number]: JailRole };
 export type AlternateAssignmentMap = { [key: number]: AlternateAssignment };
 export type DateRange = { startDate?: DateType, endDate?: DateType };
+export type CourthouseMap = {[key: number]: Courthouse};
 
 /* tslint:disable:no-bitwise */
 export enum DaysOfWeek {
@@ -89,7 +90,8 @@ export const BLANK_SHERIFF: Sheriff = {
 
 export const BLANK_COURTHOUSE: Courthouse = {
     id: '-1',
-    name: ''
+    name: '',
+    code: ''
 };
 
 export const DEFAULT_RECURRENCE: RecurrenceInfo[] = [
@@ -179,6 +181,7 @@ export interface RecurrenceInfo {
 export interface Courthouse {
     id: IdType;
     name: string;
+    code: string;
 }
 
 export interface Region {
@@ -275,4 +278,6 @@ export interface API {
     getRuns(): Promise<Run[]>;
     getJailRoles(): Promise<JailRole[]>;
     getAlternateAssignmentTypes(): Promise<AlternateAssignment[]>;
+
+    getCourthouses(): Promise<Courthouse[]>;
 }

@@ -12,7 +12,7 @@ import {
     FieldArray,
     InjectedFormProps
 } from 'redux-form';
-import CourthouseSelector from './FormElements/CourthouseSelector';
+// import CourthouseSelector from './FormElements/CourthouseSelector';
 import TextField from './FormElements/TextField';
 // import TrainingTypeSelector from './FormElements/TrainingTypeSelector';
 import * as Validators from '../infrastructure/Validators';
@@ -62,7 +62,7 @@ export default class SheriffForm extends
                     />
                     <br />
                     <h3>Region and Courthouse</h3>
-                    <Field 
+                    {/* <Field 
                         name="permanentLocation.courthouseId" 
                         component={CourthouseSelector} 
                         label="Permanent Courthouse" 
@@ -72,7 +72,7 @@ export default class SheriffForm extends
                         component={CourthouseSelector} 
                         label="Current Courthouse" 
                     />
-                   
+                    */}
                     <br />
                     <h3>Training</h3>
                     <TrainingFieldArray 

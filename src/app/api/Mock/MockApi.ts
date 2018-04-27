@@ -16,7 +16,8 @@ import {
     JailRole,
     AlternateAssignment,
     SheriffDuty,
-    AssignmentDutyDetails
+    AssignmentDutyDetails,
+    Courthouse
 } from '../Api';
 import {
     sheriffList,
@@ -60,6 +61,9 @@ function getAssignmentTitle(assignment: Partial<Assignment>): string {
 }
 
 export default class MockClient implements API {
+    getCourthouses(): Promise<Courthouse[]> {
+        throw new Error("Method not implemented.");
+    }
     async createAssignmentDutyDetails(dutyDetails: Partial<AssignmentDutyDetails>): Promise<AssignmentDutyDetails> {
         const newDutyDetails: AssignmentDutyDetails = {
             id: this.getId(),

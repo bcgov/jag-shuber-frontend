@@ -3,8 +3,9 @@ import {
    CourtroomMap,
    RunMap,
    JailRoleMap,
-   AlternateAssignmentMap
-} from '../../api/index';
+   AlternateAssignmentMap,
+   CourthouseMap
+} from '../../api/Api';
 
 export interface CourthouseModuleState {
     // Courtrooms
@@ -18,5 +19,8 @@ export interface CourthouseModuleState {
 
     // Alternate Assignment Types
     alternateAssignmentMap?: RequestActionState<AlternateAssignmentMap>;
+
+    // Courthouses
+    courthouseMap?: RequestActionState<CourthouseMap>;
 }
 export const STATE_KEY: string = 'courthouse';

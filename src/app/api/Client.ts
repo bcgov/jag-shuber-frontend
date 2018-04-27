@@ -20,7 +20,8 @@ import {
     WorkSectionCode,
     DateType,
     SheriffDuty,
-    AssignmentDutyDetails
+    AssignmentDutyDetails,
+    Courthouse
 } from './Api';
 import {
     isCourtAssignment,
@@ -185,6 +186,14 @@ export default class Client implements API {
             this._courthouseIdPath = (courthouse.props as any).id;
         }
         return this._courthouseIdPath;
+    }
+
+    get isCourthouseSet() {
+        return this._courthouseIdPath != undefined;
+    }
+
+    setCurrentCourthouse(id: IdType) {
+        this._courthouseIdPath = id;
     }
 
     get currentCourthouse() {
@@ -360,7 +369,7 @@ export default class Client implements API {
         console.warn('Using Mock API');
         return this._mockApi.createAssignmentDutyDetails(dutyDetails);
     }
-    
+
     async createAssignmentDuty(duty: Partial<AssignmentDuty>): Promise<AssignmentDuty> {
         const {
             assignmentId,
@@ -514,6 +523,24 @@ export default class Client implements API {
     getLeaves(): Promise<Leave[]> {
         console.warn('Using Mock API');
         return this._mockApi.getLeaves();
+    }
+
+    async getCourthouses(): Promise<Courthouse[]> {
+        const resourceList =
+            await this._halClient.fetchArray(
+                `/courthouses`,
+                APIResource
+            );
+
+        const list = resourceList.map(ar => ar.props)
+            .map<Courthouse>((props: any) => {
+                return {
+                    id: props.id,
+                    name: props.courthouseName,
+                    code: props.courthouseCd
+                };
+            });
+        return list as Courthouse[];
     }
 
     async getCourtrooms(): Promise<Courtroom[]> {

@@ -2,6 +2,7 @@ import * as courtroomRequests from './requests/courtrooms';
 import * as runRequests from './requests/runs';
 import * as jailRoleRequests from './requests/jailRoles';
 import * as alternateAssignmentTypeRequests from './requests/alternateAssignmentTypes';
+import * as courthouseRequests from './requests/courthouses';
 
 // Courtrooms
 export const getCourtrooms = courtroomRequests.courtroomMapRequest.actionCreator;
@@ -15,3 +16,6 @@ export const getJailRoles = jailRoleRequests.jailRoleMapRequest.actionCreator;
 // Alternate Assign
 export const getAlternateAssignmentTypes = 
     alternateAssignmentTypeRequests.alternateAssignmentTypeMapRequest.actionCreator;
+
+// Courthouses
+export const getCourthouses = courthouseRequests.courthouseMapRequest.actionCreator;

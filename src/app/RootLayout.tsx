@@ -16,9 +16,27 @@ import ManageSheriffs from './pages/ManageSheriffs';
 import DefaultAssignments from './pages/DefaultAssignments';
 import Scheduling from './pages/Scheduling';
 import AssignmentDutyEditModal from './containers/AssignmentDutyEditModal';
+import CourthouseSelector from './containers/CourthouseSelector';
+import api from './api/index';
+import Client from './api/Client';
 
-class Layout extends React.PureComponent {
+class Layout extends React.Component {
+
+  private onSelectCourthouse(id: string) {
+    (api as Client).setCurrentCourthouse(id);
+    this.setState({ initialize: true });
+  }
+
   render() {
+    const needCourthouse = !(api as Client).isCourthouseSet;
+    if (needCourthouse) {
+      return (
+        <div>
+          <h1>But you Need to select a courhouse first</h1>
+          <CourthouseSelector onChange={(id: string) => this.onSelectCourthouse(id)} />
+        </div>
+      )
+    }
     return (
       <Router>
         <div className="App">
