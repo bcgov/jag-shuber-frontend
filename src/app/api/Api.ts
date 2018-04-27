@@ -9,7 +9,7 @@ export type LeaveMap = { [key: number]: Leave };
 export type SheriffMap = { [key: number]: Sheriff };
 export type AssignmentMap = { [key: number]: Assignment };
 export type AssignmentDutyMap = { [key: number]: AssignmentDuty };
-export type AssignmentDutyDetailsMap = {[key: number]: AssignmentDutyDetails};
+export type AssignmentDutyDetailsMap = { [key: number]: AssignmentDutyDetails };
 export type WorkSectionCode = 'COURTS' | 'JAIL' | 'ESCORTS' | 'OTHER';
 export type Assignment = CourtAssignment | JailAssignment | EscortAssignment | OtherAssignment;
 export type TimeType = string | number;
@@ -250,10 +250,12 @@ export interface API {
     updateAssignmentDuty(duty: Partial<AssignmentDuty>): Promise<AssignmentDuty>;
     deleteAssignmentDuty(dutyId: IdType): Promise<void>;
     getAssignmentDutyDetails(): Promise<AssignmentDutyDetails[]>;
-    
-    createSheriffDuty(sheriffDuty:Partial<SheriffDuty>):Promise<SheriffDuty>;
-    updateSheriffDuty(sheriffDuty:Partial<SheriffDuty>):Promise<SheriffDuty>;
-    deleteSheriffDuty(sheriffDutyId:IdType):Promise<void>;
+    createAssignmentDutyDetails(dutyDetails: Partial<AssignmentDutyDetails>): Promise<AssignmentDutyDetails>;
+    updateAssignmentDutyDetails(dutyDetails: Partial<AssignmentDutyDetails>): Promise<AssignmentDutyDetails>;
+
+    createSheriffDuty(sheriffDuty: Partial<SheriffDuty>): Promise<SheriffDuty>;
+    updateSheriffDuty(sheriffDuty: Partial<SheriffDuty>): Promise<SheriffDuty>;
+    deleteSheriffDuty(sheriffDutyId: IdType): Promise<void>;
 
     // Default Duties
     createDefaultDuties(date?: DateType): Promise<AssignmentDuty[]>;

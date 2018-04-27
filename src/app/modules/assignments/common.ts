@@ -3,9 +3,10 @@ import {
     AssignmentDutyMap,
     Assignment,
     AssignmentMap,
-    AssignmentDuty
-} from '../../api/index';
-import { AssignmentDutyDetailsMap } from '../../api/Api';
+    AssignmentDuty,
+    AssignmentDutyDetailsMap, 
+    AssignmentDutyDetails
+} from '../../api/Api';
 
 export interface AssignmentModuleState {
     // Assignments
@@ -19,6 +20,8 @@ export interface AssignmentModuleState {
     updateAssignmentDuty?: RequestActionState<AssignmentDuty>;
     deleteAssignmentDuty?: RequestActionState<void>;
     createDefaultDuties?: RequestActionState<AssignmentDuty[]>;
-    assignemtnDutyDetailsMap?: RequestActionState<AssignmentDutyDetailsMap>;
+    assignmentDutyDetailsMap?: RequestActionState<AssignmentDutyDetailsMap>;
+    createAssignmentDutyDetail?: RequestActionState<AssignmentDutyDetails>;
+    updateAssignmentDutyDetail?: RequestActionState<AssignmentDutyDetails>;
 }
 export const STATE_KEY: string = 'assignments';

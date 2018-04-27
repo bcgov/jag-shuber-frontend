@@ -25,6 +25,7 @@ import {
 } from 'react-bootstrap';
 import SheriffSelector from '../containers/SheriffSelector';
 import * as TimeUtils from '../infrastructure/TimeRangeUtils';
+import TextArea from './FormElements/TextArea';
 
 export interface AssignmentDutyFormProps {
     handleSubmit?: () => void;
@@ -165,9 +166,12 @@ export default class AssignmentDutyForm extends
                             label={<h2 style={{marginBottom: 5}}>Duty Time Range</h2>}
                         />} 
                     />
-                    {/* <Field 
-                        
-                    /> */}
+                    <br/>
+                    <Field 
+                        name="comments"
+                        component={TextArea}
+                        label="Comments"
+                    />
                     <div style={{ marginTop: 40 }}>
                         <h2>Sheriffs for Duty</h2>
                         <SheriffDutyFields />

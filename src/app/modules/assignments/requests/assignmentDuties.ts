@@ -11,7 +11,8 @@ import {
     IdType,
     DateRange, 
     DateType,
-    AssignmentDutyDetailsMap 
+    AssignmentDutyDetailsMap, 
+    AssignmentDutyDetails
 } from '../../../api/Api';
 
 // Get the Map
@@ -178,3 +179,65 @@ class AssignmentDutyDetailsMapRequest extends RequestAction<void, AssignmentDuty
 }
 
 export const assignmentDutyDetailsMapRequest = new AssignmentDutyDetailsMapRequest();
+
+// Create Assignment Duty Details
+class CreateAssignmentDutyDetailsRequest extends 
+    RequestAction<Partial<AssignmentDutyDetails>, AssignmentDutyDetails, AssignmentModuleState> {
+    
+    constructor(
+        namespace: string = STATE_KEY, 
+        actionName: string = 'createAssignmentDutyDetails', 
+        throwOnError: boolean = true) {
+            super(namespace, actionName, throwOnError);
+    }
+    public async doWork(
+        assignmentDutyDetails: Partial<AssignmentDutyDetails>, { api }: ThunkExtra): Promise<AssignmentDutyDetails> {
+            let newAssignmentDutyDetails = await api.createAssignmentDutyDetails(assignmentDutyDetails);
+            return newAssignmentDutyDetails;
+    }
+
+    reduceSuccess(
+        moduleState: AssignmentModuleState, 
+        action: { type: string, payload: AssignmentDutyDetails }): AssignmentModuleState {
+        // Call the super's reduce success and pull out our state and
+        // the assignmentMap state
+        const {
+            assignmentDutyDetailsMap: {
+                data: currentMap = {},
+            ...restMap
+            } = {},
+            ...restState
+        } = super.reduceSuccess(moduleState, action);
+
+        // Create a new map and add our assignment duty details to it
+        const newMap = { ...currentMap };
+        newMap[action.payload.id] = action.payload;
+
+        // Merge the state back together with the original in a new object
+        const newState: Partial<AssignmentModuleState> = {
+            ...restState,
+            assignmentDutyDetailsMap: {
+                ...restMap,
+                data: newMap
+            }
+        };
+        return newState;
+    }
+}
+
+export const createAssignmentDutyDetailsRequest = new CreateAssignmentDutyDetailsRequest();
+
+// Assignment Duty Details Edit
+class UpdateAssignmentDutyDetailsRequest extends CreateAssignmentDutyDetailsRequest {
+    constructor(namespace: string = STATE_KEY, actionName: string = 'updateAssignmentDutyDetails') {
+        super(namespace, actionName);
+    }
+
+    public async doWork(
+        dutyDetails: Partial<AssignmentDutyDetails>, { api }: ThunkExtra): Promise<AssignmentDutyDetails> {
+            let updatedDutyDetails = await api.updateAssignmentDutyDetails(dutyDetails);
+            return updatedDutyDetails;
+    }
+}
+
+export const updateAssignmentDutyDetialsRequest = new UpdateAssignmentDutyDetailsRequest();

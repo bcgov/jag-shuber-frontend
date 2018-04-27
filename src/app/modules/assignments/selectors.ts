@@ -80,10 +80,16 @@ export const getAssignmentDuty = (id?: IdType) => (state: RootState) => {
     return undefined;
 };
 
-export const getAssignmentDutyDetails = (id?: IdType) => (state: RootState) => {
-    if (state && id != null) {
+export const getAssignmentDutyDetailsByDutyId = (assignmentDutyId?: IdType) => (state: RootState) => {
+    if (state && assignmentDutyId != null) {
         const map: AssignmentDutyDetailsMap = assignmentDutyRequests.assignmentDutyDetailsMapRequest.getData(state);
-        return map[id] as AssignmentDutyDetails;
+        const dutyDetails: AssignmentDutyDetails | undefined
+            = Object.keys(map).map(k => map[k]).find(dd => dd.assignmentDutyId === assignmentDutyId);
+        if (dutyDetails) {
+            return map[dutyDetails.id];
+        } else {
+            return undefined;
+        }
     }
     return undefined;
 };
