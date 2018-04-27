@@ -35,6 +35,7 @@ export interface AssignmentDutyFormProps {
     minTime?: TimeType;
     maxTime?: TimeType;
     workSectionId?: WorkSectionCode;
+    isNewDuty?: boolean;
 }
 
 interface SheriffDutyFieldProps {
@@ -148,7 +149,8 @@ export default class AssignmentDutyForm extends
             assignmentTitle = 'Duty',
             minTime = TimeUtils.getDefaultTimePickerMinTime().toISOString(),
             maxTime = TimeUtils.getDefaultTimePickerMaxTime().toISOString(),
-            workSectionId = 'OTHER'
+            workSectionId = 'OTHER',
+            isNewDuty = false
         } = this.props;
         const SheriffDutyFields = this.renderSheriffDutyFieldsComponent();
         return (
@@ -167,11 +169,11 @@ export default class AssignmentDutyForm extends
                         />} 
                     />
                     <br/>
-                    <Field 
+                    {!isNewDuty && <Field 
                         name="comments"
                         component={TextArea}
                         label="Comments"
-                    />
+                    />}
                     <div style={{ marginTop: 40 }}>
                         <h2>Sheriffs for Duty</h2>
                         <SheriffDutyFields />

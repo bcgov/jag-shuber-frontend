@@ -61,7 +61,8 @@ const mapStateToProps = (state: RootState, props: AssignmentDutyCreateFormProps)
         minTime: TimeUtils.getDefaultTimePickerMinTime(currentVisibleStartMoment).toISOString(),
         maxTime: TimeUtils.getDefaultTimePickerMaxTime(currentVisibleStartMoment).toISOString(),
         assignmentTitle: assignment.title,
-        workSectionId: assignment.workSectionId
+        workSectionId: assignment.workSectionId,
+        isNewDuty: true
     };
 };
 

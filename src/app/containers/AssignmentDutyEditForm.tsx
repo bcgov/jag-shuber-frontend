@@ -64,7 +64,8 @@ const mapStateToProps = (state: RootState, props: AssignmentDutyEditFormProps) =
             assignmentTitle: initialAssignment.title,
             minTime: TimeUtils.getDefaultTimePickerMinTime(moment(initialAssignmentDuty.startDateTime)),
             maxTime: TimeUtils.getDefaultTimePickerMaxTime(moment(initialAssignmentDuty.endDateTime)),
-            workSectionId: initialAssignment.workSectionId  
+            workSectionId: initialAssignment.workSectionId,
+            isNewDuty: false  
         };
     } else {
         return {};
