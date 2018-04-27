@@ -54,9 +54,7 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
     componentWillMount() {
         const { 
             fetchShifts, 
-            fetchLeaves,
-            // visibleTimeStart, 
-            // visibleTimeEnd
+            fetchLeaves
         } = this.props;
         
         fetchShifts();
@@ -84,12 +82,9 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
         const {
             shifts = [],
             assignShift,
-            visibleTimeStart /*= moment().startOf('week').valueOf()*/,
-            visibleTimeEnd /*= moment().endOf('week').valueOf()*/
+            visibleTimeStart,
+            visibleTimeEnd
         } = this.props;
-
-        // const newVisibleTimeStart = moment().startOf('week').valueOf();
-        // const newVisibleTimeEnd = moment().endOf('week').valueOf();
 
         return (
             <div className="scheduling-timeline">
