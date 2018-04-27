@@ -114,7 +114,7 @@ const mapStateToProps = (state: RootState, props: LongTermScheduleProps) => {
         shifts: allShifts(state),
         leaves: allLeaves(state)
     };
-}
+};
 
 const mapDispatchToProps = {
     fetchShifts: getShifts,

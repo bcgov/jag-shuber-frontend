@@ -48,6 +48,12 @@ export default class Timeline<TItem, TGroup> extends React.PureComponent<Timelin
             ...ReactTimeline.defaultProps.headerLabelFormats,
             dayLong: 'dddd LL',
         };
+
+        const subHeaderLabelFormats: Partial<HeaderLabelFormats> = {
+            ...ReactTimeline.defaultProps.subHeaderLabelFormats, 
+            dayLong: 'ddd D'
+        };
+        
         const {
             groups = [],
             items = [],
@@ -77,6 +83,7 @@ export default class Timeline<TItem, TGroup> extends React.PureComponent<Timelin
                 groups={mappedGroups}
                 items={mappedItems}
                 headerLabelFormats={headerLabelFormats as HeaderLabelFormats}
+                subHeaderLabelFormats={subHeaderLabelFormats as HeaderLabelFormats}
                 visibleTimeStart={visibleTimeStart}
                 visibleTimeEnd={visibleTimeEnd}
                 onTimeChange={(s, e, cb) => this.handleTimeChange(s, e, cb)}

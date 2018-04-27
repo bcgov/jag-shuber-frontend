@@ -10,10 +10,8 @@ import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { getShift } from '../modules/shifts/selectors';
 import { editShift } from '../modules/shifts/actions';
-import { getSheriff } from '../modules/sheriffs/selectors';
 import { 
-    IdType, 
-    Shift 
+    IdType
 } from '../api';
 import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 
@@ -21,13 +19,7 @@ import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 const formConfig: ConfigProps<any, ScheduleShiftFormProps> = {
     form: 'EditShift',
     onSubmit: (values, dispatch, props) => {
-        const { isSheriffAssigned, sheriffId, timeRange, ...shiftValues } = values;
-        let updatedShift: Partial<Shift> =  {
-            ...shiftValues, 
-            sheriffId: isSheriffAssigned ? sheriffId : undefined,
-            startDateTime: timeRange.startTime,
-            endDateTime: timeRange.endTime
-        };
+        const updatedShift = ScheduleShiftForm.parseShiftFormValues(values);
         dispatch(editShift(updatedShift));
     }
 };
@@ -40,17 +32,9 @@ const mapStateToProps = (state: RootState, props: ScheduleShiftEditFormProps) =>
     const initialShift = getShift(props.id)(state);
     if (initialShift) {
         return {
-            initialValues: {
-                ...initialShift, 
-                isSheriffAssigned: initialShift.sheriffId ? true : false,
-                timeRange: {
-                    startTime: moment(initialShift.startDateTime).toISOString(),
-                    endTime: moment(initialShift.endDateTime).toISOString()
-                }
-            },       
+            initialValues: ScheduleShiftForm.shiftToFormValues(initialShift),    
             isSingleShift: true,
             shiftTitle: moment(initialShift.startDateTime).format('dddd MMMM DD, YYYY'),
-            assignedSheriff: getSheriff(initialShift.sheriffId)(state),
             minTime: TimeUtils.getDefaultTimePickerMinTime(moment(initialShift.startDateTime)).toISOString(),
             maxTime: TimeUtils.getDefaultTimePickerMaxTime(moment(initialShift.endDateTime)).toISOString(),
             workSectionId: initialShift.workSectionId

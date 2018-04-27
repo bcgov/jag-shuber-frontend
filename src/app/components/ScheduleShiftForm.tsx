@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as moment from 'moment';
 import { Form } from 'react-bootstrap';
 import {
     Field,
@@ -7,25 +8,23 @@ import {
 import * as Validators from '../infrastructure/Validators';
 import {
     DateType,
-    Sheriff,
     TimeType,
-    WorkSectionCode
+    WorkSectionCode,
+    Shift
 } from '../api/Api';
 import DaysOfWeekChecklist from './FormElements/DaysOfWeekChecklist';
 import WorkSectionSelector from './FormElements/WorkSectionSelector';
 import NumberSpinner from './FormElements/NumberSpinner';
-import toTitleCase from '../infrastructure/toTitleCase';
-import CheckboxField from './FormElements/CheckboxField';
 import TimeSliderField from './FormElements/TimeSliderField';
 import { getWorkSectionColour } from '../api/utils';
 import * as TimeUtils from '../infrastructure/TimeRangeUtils';
+import SheriffSelector from '../containers/SheriffSelector';
 export interface ScheduleShiftFormProps {
     handleSubmit?: () => void;
     onSubmitSuccess?: () => void;
     weekStart?: DateType;
     isSingleShift?: boolean;
     shiftTitle?: string;
-    assignedSheriff?: Sheriff;
     minTime?: TimeType;
     maxTime?: TimeType;
     workSectionId?: WorkSectionCode;
@@ -33,6 +32,27 @@ export interface ScheduleShiftFormProps {
 
 export default class ScheduleShiftForm extends
     React.Component<ScheduleShiftFormProps & InjectedFormProps<{}, ScheduleShiftFormProps>, {}> {
+
+    static parseShiftFormValues(values: any): Shift {
+        const { timeRange, ...shiftValues } = values;
+        const updatedShift = {
+            ...shiftValues, 
+            startDateTime: timeRange.startTime,
+            endDateTime: timeRange.endTime
+        };
+
+        return updatedShift as Shift;
+    }
+
+    static shiftToFormValues(shift: Shift) {
+        return{ 
+            ...shift, 
+            timeRange: {
+                startTime: moment(shift.startDateTime).toISOString(),
+                endTime: moment(shift.endDateTime).toISOString()
+            }
+        }
+    }
 
     private renderMultiShiftCreationFields() {
         return (
@@ -60,7 +80,7 @@ export default class ScheduleShiftForm extends
 
     private renderShiftFields() {
         const {
-            minTime = TimeUtils.getDefaultTimePickerMinTime().toISOString(), 
+            minTime = TimeUtils.getDefaultTimePickerMinTime().toISOString(),
             maxTime = TimeUtils.getDefaultTimePickerMaxTime().toISOString(),
             workSectionId
         } = this.props;
@@ -82,25 +102,18 @@ export default class ScheduleShiftForm extends
                     />}
                     label="Time Range"
                 />
-                <br/>
+                <br />
             </div>
         );
     }
 
-    private renderAssignedSheriffs() {
-        const { assignedSheriff } = this.props;
-
+    private renderSheriffField() {
         return (
-            <div>
-                <label>Assigned Sheriff</label><br />
-                {assignedSheriff ?
-                    <Field
-                        name="isSheriffAssigned"
-                        component={CheckboxField}
-                        label={`${toTitleCase(assignedSheriff.lastName)}, ${assignedSheriff.firstName.charAt(0)}`}
-                    /> : 'This shift has not yet been assigned.'}
-
-            </div>
+            <Field
+                name="sheriffId"
+                component={SheriffSelector}
+                label="Sheriff"
+            />
         );
     }
 
@@ -112,7 +125,7 @@ export default class ScheduleShiftForm extends
                 <Form onSubmit={handleSubmit}>
                     {this.renderShiftFields()}
                     {!isSingleShift && this.renderMultiShiftCreationFields()}
-                    {isSingleShift && this.renderAssignedSheriffs()}
+                    {isSingleShift && this.renderSheriffField()}
                 </Form>
             </div>
         );
