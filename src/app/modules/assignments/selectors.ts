@@ -6,14 +6,16 @@ import {
     Assignment,
     AssignmentDuty,
     IdType,
-    AssignmentMap
+    AssignmentMap,
+    AssignmentDutyDetailsMap
 } from '../../api/Api';
 import { 
     AssignmentDutyMap, 
     CourtroomMap, 
     JailRoleMap,
     RunMap,
-    AlternateAssignmentMap 
+    AlternateAssignmentMap, 
+    AssignmentDutyDetails
 } from '../../api';
 import { 
     isCourtAssignment, 
@@ -74,6 +76,14 @@ export const getAssignmentDuty = (id?: IdType) => (state: RootState) => {
     if (state && id != null) {
         const map: AssignmentDutyMap = assignmentDutyRequests.assignmentDutyMapRequest.getData(state);
         return map[id] as AssignmentDuty;
+    }
+    return undefined;
+};
+
+export const getAssignmentDutyDetails = (id?: IdType) => (state: RootState) => {
+    if (state && id != null) {
+        const map: AssignmentDutyDetailsMap = assignmentDutyRequests.assignmentDutyDetailsMapRequest.getData(state);
+        return map[id] as AssignmentDutyDetails;
     }
     return undefined;
 };

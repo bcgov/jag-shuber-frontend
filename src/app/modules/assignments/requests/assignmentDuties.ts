@@ -8,10 +8,10 @@ import {
 import {
     AssignmentDutyMap,
     AssignmentDuty,
-    IdType
-} from '../../../api/index';
-import { 
-    DateRange, DateType 
+    IdType,
+    DateRange, 
+    DateType,
+    AssignmentDutyDetailsMap 
 } from '../../../api/Api';
 
 // Get the Map
@@ -165,3 +165,16 @@ class CreateDefaultDutiesRequest extends RequestAction<DateType, AssignmentDuty[
 }
 
 export const createDefaultDutiesRequest = new CreateDefaultDutiesRequest();
+
+// Get the Map of Assingment Duty Details
+class AssignmentDutyDetailsMapRequest extends RequestAction<void, AssignmentDutyDetailsMap, AssignmentModuleState> {
+    constructor(namespace: string = STATE_KEY, actionName: string = 'assignmentDutyDetailsMap') {
+        super(namespace, actionName);
+    }
+    public async doWork(request: void, { api }: ThunkExtra): Promise<AssignmentDutyDetailsMap> {
+        let dutyDetails = await api.getAssignmentDutyDetails();
+        return arrayToMap(dutyDetails, t => t.id);
+    }
+}
+
+export const assignmentDutyDetailsMapRequest = new AssignmentDutyDetailsMapRequest();

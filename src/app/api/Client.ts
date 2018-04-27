@@ -19,7 +19,8 @@ import {
     IdType,
     WorkSectionCode,
     DateType,
-    SheriffDuty
+    SheriffDuty,
+    AssignmentDutyDetails
 } from './Api';
 import {
     isCourtAssignment,
@@ -337,6 +338,12 @@ export default class Client implements API {
         }
         return duties;
     }
+
+    getAssignmentDutyDetails(): Promise<AssignmentDutyDetails[]> {
+        console.warn('Using Mock API');
+        return this._mockApi.getAssignmentDutyDetails();
+    }
+    
     async createAssignmentDuty(duty: Partial<AssignmentDuty>): Promise<AssignmentDuty> {
         const {
             assignmentId,

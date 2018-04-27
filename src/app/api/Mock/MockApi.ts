@@ -15,7 +15,8 @@ import {
     Run,
     JailRole,
     AlternateAssignment,
-    SheriffDuty
+    SheriffDuty,
+    AssignmentDutyDetails
 } from '../Api';
 import {
     sheriffList,
@@ -30,7 +31,8 @@ import {
     JAIL_ROLES,
     ALTERNATE_ASSIGNMENTS,
     sheriffShifts,
-    sheriffLeaves
+    sheriffLeaves,
+    assignmentDutyDetails
 } from './MockData';
 import {
     isCourtAssignment,
@@ -58,6 +60,9 @@ function getAssignmentTitle(assignment: Partial<Assignment>): string {
 }
 
 export default class MockClient implements API {
+    async getAssignmentDutyDetails(): Promise<AssignmentDutyDetails[]> {
+        return assignmentDutyDetails;
+    }
     createSheriffDuty(sheriffDuty: Partial<SheriffDuty>): Promise<SheriffDuty> {
         throw new Error("Method not implemented.");
     }
