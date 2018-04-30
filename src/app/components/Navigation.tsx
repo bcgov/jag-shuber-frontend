@@ -15,11 +15,8 @@ export interface NavigationProps {
 
 export default class Navigation extends React.Component<NavigationProps, any> {
     render() {
-        const isCourthouseSelected = (api as Client).isCourthouseSet;
-        let currentCourthouseId = '';
-        if (isCourthouseSelected) {
-            currentCourthouseId = (api as Client).currentCourthouse;
-        }
+
+        const currentCourthouseId = (api as Client).currentCourthouse;
 
         return (
             <div id="header-main" >
