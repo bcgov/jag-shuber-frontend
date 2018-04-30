@@ -1,10 +1,9 @@
 import * as React from 'react';
 import {
     AssignmentDuty,
-    // Sheriff,
-    SheriffDuty
-} from '../../api/index';
-// import SheriffDropTarget from '../../containers/SheriffDropTarget';
+    SheriffDuty,
+    AssignmentDutyDetails
+} from '../../api/Api';
 import SheriffDutyBarList from '../SheriffDutyBarList/SheriffDutyBarList';
 import AssignmentDutyActionsPanel from '../AssignmentDutyActionsPanel/AssignmentDutyActionsPanel';
 import AssignmentDutyEditModal from '../../containers/AssignmentDutyEditModal';
@@ -15,7 +14,7 @@ import AssignmentDutyInformationPanel from '../AssignmentDutyInformationPanel/As
 export interface AssignmentDutyCardProps {
     duty: AssignmentDuty;
     SheriffAssignmentRenderer?: React.ComponentType<SheriffAssignmentRendererProps>;
-    hasComments?: boolean;
+    details?: AssignmentDutyDetails;
     style?: React.CSSProperties;
 }
 
@@ -36,7 +35,7 @@ export default class AssignmentDutyCard extends React.PureComponent<AssignmentDu
                 sheriffDuties = [],
                 sheriffsRequired = 0
             } = {},
-            hasComments = false,
+            details = false,
             style = {}
         } = this.props;
 
@@ -51,7 +50,8 @@ export default class AssignmentDutyCard extends React.PureComponent<AssignmentDu
                     <AssignmentDutyEditModal color={style.color} dutyId={id} />
                 </AssignmentDutyActionsPanel>
                 <AssignmentDutyInformationPanel>
-                    {hasComments && <Glyphicon glyph="comment" style={{fontSize: 16, paddingTop: 10}}/>}
+                    {details && 
+                        <Glyphicon style={{fontSize: 16, paddingTop: 10}} title={details.comments} glyph="comment" />}
                 </AssignmentDutyInformationPanel>
             </div>
         );

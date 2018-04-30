@@ -116,7 +116,8 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
                     itemRenderer={(duty) => {
                         const workSectionColor = getWorkSectionColour(workSectionMap[duty.assignmentId]);
                         const color = getForegroundColor(workSectionColor);
-                        const hasComments = assignmentDutyDetails.some(dd => dd.assignmentDutyId === duty.id);
+                        const details: AssignmentDutyDetails | undefined = 
+                            assignmentDutyDetails.find(dd => dd.assignmentDutyId === duty.id);
                         return (
                             <AssignmentDutyCard
                                 duty={duty}
@@ -124,7 +125,7 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
                                     borderColor: workSectionColor,
                                     color
                                 }}
-                                hasComments={hasComments}
+                                details={details}
                                 SheriffAssignmentRenderer={(p) => (
                                     <SheriffDutyBarList
                                         {...p}
