@@ -25,11 +25,14 @@ import {
     TimeType,
     WorkSectionCode,
     DaysOfWeek,
-    Assignment
+    Assignment,
+    IdType,
+    AssignmentDuty
 } from '../api';
 import TimeSliderField from './FormElements/TimeSliderField';
 import { getWorkSectionColour } from '../api/utils';
 import * as TimeUtils from '../infrastructure/TimeRangeUtils';
+import { ConfirmationModal } from './ConfirmationModal';
 class OtherFields extends React.PureComponent {
     render() {
         return (
@@ -91,14 +94,20 @@ class CourtSecurityFields extends React.PureComponent {
 }
 
 interface RecurrenceProps {
+    id?: IdType;
+    daysBitmap: DaysOfWeek;
+    timeRange: {
+        startTime: TimeType;
+        endTime: TimeType;
+    };
 }
-class RecurrenceFieldArray extends FieldArray<RecurrenceProps> {
-
+class RecurrenceFieldArray extends FieldArray<RecurrenceProps | Partial<AssignmentDuty>> {
 }
 
 export interface AssignmentFormProps {
     handleSubmit?: () => void;
     onSubmitSuccess?: () => void;
+    onRemoveDutyRecurrence?: (id: IdType) => void;
     isDefaultTemplate?: boolean;
     minTime?: TimeType;
     maxTime?: TimeType;
@@ -152,7 +161,7 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
                     endTime: moment(endTime, TIME_FORMAT).toISOString()
                 }
             }))
-        }
+        };
     }
 
     private renderHeading() {
@@ -214,7 +223,8 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
             isDefaultTemplate,
             minTime = TimeUtils.getDefaultTimePickerMinTime().toISOString(),
             maxTime = TimeUtils.getDefaultTimePickerMaxTime().toISOString(),
-            workSectionId = 'OTHER'
+            workSectionId = 'OTHER',
+            onRemoveDutyRecurrence
         } = this.props;
         if (isDefaultTemplate) {
             return (
@@ -224,19 +234,37 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
                         name="dutyRecurrences"
                         component={(p) => {
                             const { fields } = p;
+                            function handleRemoveDutyRecurrence(index: number) {
+                                const dId = fields.get(index).id;
+                                if (dId) {
+                                    if (onRemoveDutyRecurrence) {
+                                        onRemoveDutyRecurrence(dId);
+                                    }
+                                }
+                                fields.remove(index);
+                            }
                             return (
                                 <ListGroup >
                                     {fields.map((recurrenceInfoFieldName, index) => {
                                         return (
                                             <ListGroupItem key={index}>
-                                                <Button
-                                                    bsStyle="danger"
-                                                    onClick={() => fields.remove(index)}
-                                                    className="pull-right"
-                                                >
-                                                    <Glyphicon glyph="trash" />
-                                                </Button>
-                                                <br />
+                                                <div className="pull-right">
+                                                    <ConfirmationModal
+                                                        title="Delete Duty Recurrence"
+                                                        message={
+                                                            <p style={{ fontSize: 14 }}>
+                                                                Please confirm that you would like to delete this duty recurrence.
+                                                        </p>}
+                                                        actionBtnLabel={<Glyphicon glyph="trash" />}
+                                                        actionBtnStyle="danger"
+                                                        confirmBtnLabel="Yes"
+                                                        confirmBtnStyle="success"
+                                                        cancelBtnLabel="No"
+                                                        onConfirm={() => {
+                                                            handleRemoveDutyRecurrence(index);
+                                                        }}
+                                                    />
+                                                </div>
                                                 <Field
                                                     name={`${recurrenceInfoFieldName}.daysBitmap`}
                                                     component={DaysOfWeekChecklist}
@@ -257,14 +285,14 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
                                                 <Field
                                                     name={`${recurrenceInfoFieldName}.sheriffsRequired`}
                                                     component={
-                                                        (p) => <NumberSpinner 
+                                                        (p) => <NumberSpinner
                                                             {...p}
                                                             maxValue={10}
                                                         />
                                                     }
                                                     label="Number of Sheriffs Required"
                                                     validate={[
-                                                        Validators.required, 
+                                                        Validators.required,
                                                         Validators.integer,
                                                         Validators.min1,
                                                         Validators.max10
@@ -278,7 +306,10 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
                                     <Button
                                         onClick={() => fields.push({
                                             daysBitmap: DaysOfWeek.Weekdays,
-                                            timeRange: TimeUtils.getDefaultTimeRange()
+                                            timeRange: {
+                                                startTime: minTime,
+                                                endTime: maxTime
+                                            }
                                         })}
                                     >
                                         <Glyphicon glyph="plus" />

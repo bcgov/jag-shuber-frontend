@@ -89,6 +89,9 @@ export default class MockClient implements API {
     async getAssignmentDutyDetails(): Promise<AssignmentDutyDetails[]> {
         return assignmentDutyDetails;
     }
+    deleteDutyRecurrence(recurrenceId: string): Promise<void> {
+        throw new Error("Method not implemented.");
+    }
     createSheriffDuty(sheriffDuty: Partial<SheriffDuty>): Promise<SheriffDuty> {
         throw new Error("Method not implemented.");
     }

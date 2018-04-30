@@ -148,3 +148,60 @@ class DeleteAssignmentRequest extends RequestAction<IdType, IdType, AssignmentMo
 
 export const deleteAssignmentRequest = new DeleteAssignmentRequest();
 
+class DeleteAssignmentDutyRecurrenceRequest extends RequestAction<IdType, IdType, AssignmentModuleState> {
+    constructor(namespace: string = STATE_KEY, actionName: string = 'deleteAssignmentDutyRecurrence') {
+        super(namespace, actionName, true);
+    }
+
+    public async doWork(request: IdType, { api }: ThunkExtra): Promise<IdType> {
+        await api.deleteDutyRecurrence(request);
+        return request;
+    }
+
+    reduceSuccess(
+        moduleState: AssignmentModuleState, 
+        action: { type: string, payload: IdType }): AssignmentModuleState {
+        // Call the super's reduce success and pull out our state and
+        // the assignmentMap state
+        const {
+            assignmentMap: {
+                data: currentMap = {},
+            ...restMap
+            } = {},
+            ...restState
+        } = super.reduceSuccess(moduleState, action);
+
+        // Create a new map and remove the assignment duty recurrence from it
+        const newMap: AssignmentMap = { ...currentMap };
+        let dutyRecurrenceParent: Assignment | undefined  = 
+            Object.keys(newMap).map((key) => newMap[key] as Assignment)
+            .find(
+                a => {
+                    if(a.dutyRecurrences) {
+                        return a.dutyRecurrences.some(dr => dr.id === action.payload);
+                    } else {
+                        return false;
+                    }
+                });
+        
+        if (dutyRecurrenceParent && dutyRecurrenceParent.dutyRecurrences) {
+            const recurrenceIndex = dutyRecurrenceParent.dutyRecurrences.findIndex(dr => dr.id === action.payload);
+            dutyRecurrenceParent.dutyRecurrences.splice(recurrenceIndex, 1);
+
+            newMap[dutyRecurrenceParent.id] = dutyRecurrenceParent;
+        }
+        delete newMap[action.payload];
+
+        // Merge the state back together with the original in a new object
+        const newState: Partial<AssignmentModuleState> = {
+            ...restState,
+            assignmentMap: {
+                ...restMap,
+                data: newMap
+            }
+        };
+        return newState;
+    }
+}
+
+export const deleteAssignmentDutyRecurrenceRequest = new DeleteAssignmentDutyRecurrenceRequest();

@@ -243,6 +243,7 @@ export interface API {
     createAssignment(assignment: Partial<Assignment>): Promise<Assignment>;
     updateAssignment(assignment: Partial<Assignment>): Promise<Assignment>;
     deleteAssignment(assignmentId: IdType): Promise<void>;
+    deleteDutyRecurrence(recurrenceId: IdType): Promise<void>;
 
     // Assignment Duties
     getAssignmentDuties(startDate?: DateType, endDate?: DateType): Promise<AssignmentDuty[]>;

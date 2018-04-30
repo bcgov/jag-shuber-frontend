@@ -1,6 +1,7 @@
 import * as moment from 'moment';
 import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
 import { default as thunk, ThunkAction as _ThunkAction } from 'redux-thunk';
+import { reducer as modalReducer } from 'redux-modal';
 import { default as api, API } from './api';
 import { registerReducer as registerSheriffReducer, SheriffModuleState } from './modules/sheriffs/reducer';
 import { registerReducer as registerAssignmentReducer, AssignmentModuleState } from './modules/assignments/reducer';
@@ -8,11 +9,11 @@ import { registerReducer as registerShiftReducer, ShiftModuleState } from './mod
 import { registerReducer as registerCourthouseReducer, CourthouseModuleState } from './modules/courthouse/reducer';
 import { default as timelineReducer, TimelineState } from './modules/timeline/reducer';
 import { reducer as formReducer } from 'redux-form';
-import { 
-    getCourtrooms, 
+import {
+    getCourtrooms,
     getAlternateAssignmentTypes,
     getJailRoles,
-    getRuns 
+    getRuns
 } from './modules/courthouse/action';
 import {
     getSheriffList
@@ -20,7 +21,6 @@ import {
 import { updateVisibleTime as updateTimelineVisibleTime } from './modules/timeline/actions';
 import { default as scheduleReducer, ScheduleState } from './modules/schedule/reducer';
 import { updateVisibleTime as updateScheduleVisibleTime } from './modules/schedule/actions';
-
 
 export interface ThunkExtra {
     api: API;
@@ -39,7 +39,7 @@ export interface RootState {
 
 const initialActions: any[] = [
     getSheriffList,
-    getCourtrooms, 
+    getCourtrooms,
     getAlternateAssignmentTypes,
     getJailRoles,
     getRuns,
@@ -51,6 +51,7 @@ const initialActions: any[] = [
 const reducers = {
     timeline: timelineReducer,
     schedule: scheduleReducer,
+    modal: modalReducer,
     form: formReducer
 };
 

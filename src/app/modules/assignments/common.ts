@@ -13,6 +13,7 @@ export interface AssignmentModuleState {
     assignmentMap?: RequestActionState<AssignmentMap>;
     createAssignment?: RequestActionState<Assignment>;
     updateAssignment?: RequestActionState<Assignment>;
+    deleteAssignmentDutyRecurrence?: RequestActionState<void>;
 
     // Duties
     assignmentDutyMap?: RequestActionState<AssignmentDutyMap>;
@@ -23,5 +24,8 @@ export interface AssignmentModuleState {
     assignmentDutyDetailsMap?: RequestActionState<AssignmentDutyDetailsMap>;
     createAssignmentDutyDetail?: RequestActionState<AssignmentDutyDetails>;
     updateAssignmentDutyDetail?: RequestActionState<AssignmentDutyDetails>;
+
+    // Sheriff Duties
+    deleteSheriffDuty?: RequestActionState<void>;
 }
 export const STATE_KEY: string = 'assignments';

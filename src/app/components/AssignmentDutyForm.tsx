@@ -1,9 +1,6 @@
 import * as React from 'react';
 import * as moment from 'moment';
 import {
-    Form
-} from 'react-bootstrap';
-import {
     Field,
     InjectedFormProps,
     FieldArray,
@@ -13,7 +10,8 @@ import {
     IdType,
     TimeType,
     WorkSectionCode,
-    AssignmentDuty
+    AssignmentDuty,
+    SheriffDuty
 } from '../api';
 import TimeSliderField from './FormElements/TimeSliderField';
 import { getWorkSectionColour } from '../api/utils';
@@ -21,15 +19,18 @@ import {
     ListGroup,
     ListGroupItem,
     Button,
-    Glyphicon
+    Glyphicon,
+    Form
 } from 'react-bootstrap';
 import SheriffSelector from '../containers/SheriffSelector';
 import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 import TextArea from './FormElements/TextArea';
+import { ConfirmationModal } from './ConfirmationModal';
 
 export interface AssignmentDutyFormProps {
     handleSubmit?: () => void;
     onSubmitSuccess?: () => void;
+    onRemoveSheriffDuty?: (id: string) => void;
     assignmentTitle?: string;
     assignmentId?: IdType;
     minTime?: TimeType;
@@ -39,11 +40,15 @@ export interface AssignmentDutyFormProps {
 }
 
 interface SheriffDutyFieldProps {
+    id?: IdType;
+    timeRange: {
+        startTime: TimeType;
+        endTime: TimeType;
+    };
 }
 
-class SheriffDutyFieldArray extends FieldArray<SheriffDutyFieldProps> {
+class SheriffDutyFieldArray extends FieldArray<SheriffDutyFieldProps | Partial<SheriffDuty>> {
 }
-
 export default class AssignmentDutyForm extends
     React.Component<AssignmentDutyFormProps & InjectedFormProps<{}, AssignmentDutyFormProps>, {}> {
 
@@ -68,7 +73,7 @@ export default class AssignmentDutyForm extends
                 endTime: moment(duty.endDateTime).toISOString()
             },
             sheriffDuties: duty.sheriffDuties.map((element: any) => ({
-                ...element, 
+                ...element,
                 timeRange: {
                     startTime: moment(element.startDateTime).toISOString(),
                     endTime: moment(element.endDateTime).toISOString()
@@ -78,33 +83,56 @@ export default class AssignmentDutyForm extends
     }
 
     renderSheriffDutyFieldsComponent(): React.ComponentClass {
-
-        return formValues('timeRange')((props: any) => {
+        const {
+            onRemoveSheriffDuty
+        } = this.props;
+        return formValues('timeRange')((timeRangeProps: any) => {
             const {
                 timeRange: {
                     startTime: minTime = TimeUtils.getDefaultStartTime().toISOString(),
-                    endTime: maxTime = TimeUtils.getDefaultEndTime().toISOString()
+                endTime: maxTime = TimeUtils.getDefaultEndTime().toISOString()
                 }
-            } = props;
+            } = timeRangeProps;
             return (
                 <SheriffDutyFieldArray
                     name="sheriffDuties"
                     component={(p) => {
                         const { fields } = p;
+                        function handleRemoveSheriffDuty(index: number) {
+                            const sdId = fields.get(index).id;
+                            if (sdId) {
+                                if (onRemoveSheriffDuty) {
+                                    onRemoveSheriffDuty(sdId);
+                                }
+                            }
+                            fields.remove(index);
+                        }
+                        const deleteConfirmMessage = (
+                            <p style={{ fontSize: 14 }}>
+                                Please confirm that you would like to <b>permanently delete</b> this sheriff duty.
+                            </p>
+                        );
                         return (
                             <ListGroup >
                                 {fields.map((fieldInstanceName, index) => {
                                     return (
                                         <ListGroupItem key={index}>
-                                            <Button
-                                                bsStyle="danger"
-                                                onClick={() => fields.remove(index)}
-                                                className="pull-right"
-                                            >
-                                                <Glyphicon glyph="trash" />
-                                            </Button>
-                                            <div style={{marginTop: 20}}>
-                                                <Field 
+                                            <div className="pull-right">
+                                                <ConfirmationModal
+                                                    title="Delete Sheriff Duty"
+                                                    message={deleteConfirmMessage}
+                                                    actionBtnLabel={<Glyphicon glyph="trash" />}
+                                                    actionBtnStyle="danger"
+                                                    confirmBtnLabel="Yes"
+                                                    confirmBtnStyle="success"
+                                                    cancelBtnLabel="No"
+                                                    onConfirm={() => {
+                                                        handleRemoveSheriffDuty(index);
+                                                    }}
+                                                />
+                                            </div>
+                                            <div style={{ marginTop: 20 }}>
+                                                <Field
                                                     name={`${fieldInstanceName}.sheriffId`}
                                                     component={SheriffSelector}
                                                     label="Sheriff"
@@ -125,13 +153,13 @@ export default class AssignmentDutyForm extends
                                 }
                                 )}
                                 <br />
-                                <Button 
+                                <Button
                                     onClick={() => fields.push({
                                         timeRange: {
                                             startTime: minTime,
                                             endTime: maxTime
                                         }
-                                    })} 
+                                    })}
                                 >
                                     <Glyphicon glyph="plus" />
                                 </Button>
@@ -165,11 +193,11 @@ export default class AssignmentDutyForm extends
                             maxTime={maxTime}
                             timeIncrement={15}
                             color={getWorkSectionColour(workSectionId)}
-                            label={<h2 style={{marginBottom: 5}}>Duty Time Range</h2>}
-                        />} 
+                            label={<h2 style={{ marginBottom: 5 }}>Duty Time Range</h2>}
+                        />}
                     />
-                    <br/>
-                    {!isNewDuty && <Field 
+                    <br />
+                    {!isNewDuty && <Field
                         name="comments"
                         component={TextArea}
                         label="Comments"

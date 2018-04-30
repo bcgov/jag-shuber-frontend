@@ -35,6 +35,7 @@
     "react-router-dom": "^4.2.2",
     "redux": "^3.7.2",
     "redux-form": "^7.2.0",
+    "redux-modal": "^1.7.3",
     "redux-thunk": "^2.2.0",
     "reselect": "^3.0.1",
     "source-map-loader": "^0.2.1",
@@ -59,7 +60,7 @@
     "prepare": "patch-package",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "test-api":"yarn test --runIntegrationTests"
+    "test-api": "yarn test --runIntegrationTests"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^3.3.10",

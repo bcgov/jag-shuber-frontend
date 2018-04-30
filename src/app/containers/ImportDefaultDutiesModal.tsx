@@ -14,7 +14,7 @@ export interface ImportDefaultDutiesModalDispatchProps {
     createDefaultDuties: (date: DateType) => void;
 }
 
-class ImportDefaultDutiesEditModal extends React.PureComponent<
+class ImportDefaultDutiesModal extends React.PureComponent<
     ImportDefaultDutiesModalProps & ImportDefaultDutiesModalDispatchProps>{
 
     render() {
@@ -49,4 +49,4 @@ class ImportDefaultDutiesEditModal extends React.PureComponent<
 }
 
 // tslint:disable-next-line:max-line-length
-export default connect<{}, ImportDefaultDutiesModalDispatchProps, ImportDefaultDutiesModalProps>(null, { createDefaultDuties })(ImportDefaultDutiesEditModal);
+export default connect<{}, ImportDefaultDutiesModalDispatchProps, ImportDefaultDutiesModalProps>(null, { createDefaultDuties })(ImportDefaultDutiesModal);
