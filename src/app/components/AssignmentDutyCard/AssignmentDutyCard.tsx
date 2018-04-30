@@ -53,7 +53,7 @@ export default class AssignmentDutyCard extends React.PureComponent<AssignmentDu
                     sheriffsRequired={sheriffsRequired}
                 />
                 <AssignmentDutyInformationPanel>
-                    {details &&
+                    {details && details.comments &&
                         <Glyphicon style={{ fontSize: 16, paddingTop: 10 }} title={details.comments} glyph="comment" />}
                 </AssignmentDutyInformationPanel>
             </div>

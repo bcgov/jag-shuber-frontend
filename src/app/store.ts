@@ -10,17 +10,14 @@ import { registerReducer as registerCourthouseReducer, CourthouseModuleState } f
 import { default as timelineReducer, TimelineState } from './modules/timeline/reducer';
 import { reducer as formReducer } from 'redux-form';
 import {
-    getCourtrooms,
     getAlternateAssignmentTypes,
     getJailRoles,
-    getRuns
+    getCourthouses
 } from './modules/courthouse/action';
-import {
-    getSheriffList
-} from './modules/sheriffs/actions';
 import { updateVisibleTime as updateTimelineVisibleTime } from './modules/timeline/actions';
 import { default as scheduleReducer, ScheduleState } from './modules/schedule/reducer';
 import { updateVisibleTime as updateScheduleVisibleTime } from './modules/schedule/actions';
+
 
 export interface ThunkExtra {
     api: API;
@@ -38,11 +35,9 @@ export interface RootState {
 }
 
 const initialActions: any[] = [
-    getSheriffList,
-    getCourtrooms,
     getAlternateAssignmentTypes,
     getJailRoles,
-    getRuns,
+    getCourthouses,
     () => updateTimelineVisibleTime(
             moment().startOf('day').add(7, 'hours'), moment().endOf('day').subtract(6, 'hours')),
     () => updateScheduleVisibleTime(moment().startOf('week'), moment().endOf('week'))
