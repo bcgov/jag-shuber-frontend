@@ -5,7 +5,6 @@ import {
     AssignmentDutyDetails
 } from '../../api/Api';
 import SheriffDutyBarList from '../SheriffDutyBarList/SheriffDutyBarList';
-// import AssignmentDutyActionsPanel from '../AssignmentDutyActionsPanel/AssignmentDutyActionsPanel';
 import './AssignmentDutyCard.css';
 import { Glyphicon } from 'react-bootstrap';
 import AssignmentDutyInformationPanel from '../AssignmentDutyInformationPanel/AssignmentDutyInformationPanel';
