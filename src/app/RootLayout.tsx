@@ -24,7 +24,6 @@ import { Well } from 'react-bootstrap';
 class Layout extends React.Component {
 
   private onSelectCourthouse(id: string) {
-    (api as Client).setCurrentCourthouse(id);
     this.setState({ initialize: true });
   }
 

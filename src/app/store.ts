@@ -10,7 +10,8 @@ import { default as timelineReducer, TimelineState } from './modules/timeline/re
 import { reducer as formReducer } from 'redux-form';
 import { 
     getAlternateAssignmentTypes,
-    getJailRoles
+    getJailRoles,
+    getCourthouses
 } from './modules/courthouse/action';
 import { updateVisibleTime as updateTimelineVisibleTime } from './modules/timeline/actions';
 import { default as scheduleReducer, ScheduleState } from './modules/schedule/reducer';
@@ -35,6 +36,7 @@ export interface RootState {
 const initialActions: any[] = [
     getAlternateAssignmentTypes,
     getJailRoles,
+    getCourthouses,
     () => updateTimelineVisibleTime(
             moment().startOf('day').add(7, 'hours'), moment().endOf('day').subtract(6, 'hours')),
     () => updateScheduleVisibleTime(moment().startOf('week'), moment().endOf('week'))
