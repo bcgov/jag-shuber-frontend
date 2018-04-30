@@ -22,7 +22,10 @@ const nestedReducer = new NestedReducer([
   assignmentDutyRequests.createAssignmentDutyRequest.reducer,
   assignmentDutyRequests.updateAssignmentDutyRequest.reducer,
   assignmentDutyRequests.deleteAssignmentDutyRequest.reducer,
-  assignmentDutyRequests.createDefaultDutiesRequest.reducer
+  assignmentDutyRequests.createDefaultDutiesRequest.reducer,
+  assignmentDutyRequests.assignmentDutyDetailsMapRequest.reducer,
+  assignmentDutyRequests.createAssignmentDutyDetailsRequest.reducer,
+  assignmentDutyRequests.updateAssignmentDutyDetialsRequest.reducer
 
 ]);
 

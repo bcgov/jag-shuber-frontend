@@ -19,7 +19,8 @@ import {
     IdType,
     WorkSectionCode,
     DateType,
-    SheriffDuty
+    SheriffDuty,
+    AssignmentDutyDetails
 } from './Api';
 import {
     isCourtAssignment,
@@ -143,7 +144,6 @@ class APIResource extends HalResource {
 }
 
 export default class Client implements API {
-
     private _halClient: HalRestClient;
     private _courthouseId: string;
     private _courthouseIdPath: string;
@@ -337,6 +337,22 @@ export default class Client implements API {
         }
         return duties;
     }
+
+    getAssignmentDutyDetails(): Promise<AssignmentDutyDetails[]> {
+        console.warn('Using Mock API');
+        return this._mockApi.getAssignmentDutyDetails();
+    }
+
+    updateAssignmentDutyDetails(dutyDetails: Partial<AssignmentDutyDetails>): Promise<AssignmentDutyDetails> {
+        console.warn('Using Mock API');
+        return this._mockApi.updateAssignmentDutyDetails(dutyDetails);
+    }
+
+    createAssignmentDutyDetails(dutyDetails: Partial<AssignmentDutyDetails>): Promise<AssignmentDutyDetails> {
+        console.warn('Using Mock API');
+        return this._mockApi.createAssignmentDutyDetails(dutyDetails);
+    }
+    
     async createAssignmentDuty(duty: Partial<AssignmentDuty>): Promise<AssignmentDuty> {
         const {
             assignmentId,

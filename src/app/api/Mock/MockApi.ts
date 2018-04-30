@@ -15,7 +15,8 @@ import {
     Run,
     JailRole,
     AlternateAssignment,
-    SheriffDuty
+    SheriffDuty,
+    AssignmentDutyDetails
 } from '../Api';
 import {
     sheriffList,
@@ -30,7 +31,8 @@ import {
     JAIL_ROLES,
     ALTERNATE_ASSIGNMENTS,
     sheriffShifts,
-    sheriffLeaves
+    sheriffLeaves,
+    assignmentDutyDetails
 } from './MockData';
 import {
     isCourtAssignment,
@@ -58,6 +60,35 @@ function getAssignmentTitle(assignment: Partial<Assignment>): string {
 }
 
 export default class MockClient implements API {
+    async createAssignmentDutyDetails(dutyDetails: Partial<AssignmentDutyDetails>): Promise<AssignmentDutyDetails> {
+        const newDutyDetails: AssignmentDutyDetails = {
+            id: this.getId(),
+            assignmentDutyId: dutyDetails.assignmentDutyId ? dutyDetails.assignmentDutyId : this.getId(),
+            comments: dutyDetails.comments
+        };
+        assignmentDutyDetails.push(newDutyDetails);
+        return newDutyDetails; 
+    }
+    
+    async updateAssignmentDutyDetails(dutyDetails: Partial<AssignmentDutyDetails>): Promise<AssignmentDutyDetails> {
+        const index = assignmentDutyDetails.findIndex(dd => dd.assignmentDutyId === dutyDetails.assignmentDutyId);
+        await randomDelay();
+        if (index > -1) {
+            assignmentDutyDetails[index] = Object.assign({}, assignmentDutyDetails[index], dutyDetails);
+            return assignmentDutyDetails[index];
+        } else {
+            const newDutyDetails: AssignmentDutyDetails = {
+                id: this.getId(),
+                assignmentDutyId: dutyDetails.assignmentDutyId ? dutyDetails.assignmentDutyId : this.getId(),
+                comments: dutyDetails.comments
+            };
+            assignmentDutyDetails.push(newDutyDetails);
+            return newDutyDetails; 
+        }
+    }
+    async getAssignmentDutyDetails(): Promise<AssignmentDutyDetails[]> {
+        return assignmentDutyDetails;
+    }
     createSheriffDuty(sheriffDuty: Partial<SheriffDuty>): Promise<SheriffDuty> {
         throw new Error("Method not implemented.");
     }

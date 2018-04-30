@@ -8,7 +8,9 @@ import { default as AssignmentDutyForm, AssignmentDutyFormProps } from '../compo
 import { default as FormSubmitButton, SubmitButtonProps } from '../components/FormElements/SubmitButton';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
-import { createAssignmentDuty } from '../modules/assignments/actions';
+import { 
+    createAssignmentDuty 
+} from '../modules/assignments/actions';
 import { getAssignment } from '../modules/assignments/selectors';
 import { visibleTime } from '../modules/timeline/selectors';
 import {
@@ -23,7 +25,8 @@ const formConfig: ConfigProps<any, AssignmentDutyFormProps> = {
     form: 'CreateAssignmentDuty',
     onSubmit: (values, dispatch, props) => {
         const { assignmentId = '-1' } = props;
-        let newAssignmentDuty = AssignmentDutyForm.parseAssignmentDutyFromValues(values);
+        const { comments, ...rest } = values;
+        let newAssignmentDuty = AssignmentDutyForm.parseAssignmentDutyFromValues(rest);
         newAssignmentDuty.assignmentId = assignmentId;
         dispatch(createAssignmentDuty(newAssignmentDuty));
     }
@@ -58,7 +61,8 @@ const mapStateToProps = (state: RootState, props: AssignmentDutyCreateFormProps)
         minTime: TimeUtils.getDefaultTimePickerMinTime(currentVisibleStartMoment).toISOString(),
         maxTime: TimeUtils.getDefaultTimePickerMaxTime(currentVisibleStartMoment).toISOString(),
         assignmentTitle: assignment.title,
-        workSectionId: assignment.workSectionId
+        workSectionId: assignment.workSectionId,
+        isNewDuty: true
     };
 };
 

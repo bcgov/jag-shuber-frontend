@@ -1,0 +1,9 @@
+.assignment-duty-information-panel {
+    color: #262626;
+    position: absolute;
+    z-index: 81;
+    right: 0; 
+    height: 50%;
+    width: 40px;
+    background-color: transparent;
+}

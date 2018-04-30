@@ -6,14 +6,16 @@ import {
     Assignment,
     AssignmentDuty,
     IdType,
-    AssignmentMap
+    AssignmentMap,
+    AssignmentDutyDetailsMap
 } from '../../api/Api';
 import { 
     AssignmentDutyMap, 
     CourtroomMap, 
     JailRoleMap,
     RunMap,
-    AlternateAssignmentMap 
+    AlternateAssignmentMap, 
+    AssignmentDutyDetails
 } from '../../api';
 import { 
     isCourtAssignment, 
@@ -74,6 +76,28 @@ export const getAssignmentDuty = (id?: IdType) => (state: RootState) => {
     if (state && id != null) {
         const map: AssignmentDutyMap = assignmentDutyRequests.assignmentDutyMapRequest.getData(state);
         return map[id] as AssignmentDuty;
+    }
+    return undefined;
+};
+
+// Assignment Duty Details
+export const allAssignmentDutyDetails = createSelector(
+    assignmentDutyRequests.assignmentDutyDetailsMapRequest.getData,
+    (map: AssignmentDutyDetailsMap = {}): AssignmentDutyDetails[] => {
+        const list: AssignmentDutyDetails[] = Object.keys(map).map((k, i) => map[k]);
+        return list;
+    });
+
+export const getAssignmentDutyDetailsByDutyId = (assignmentDutyId?: IdType) => (state: RootState) => {
+    if (state && assignmentDutyId != null) {
+        const map: AssignmentDutyDetailsMap = assignmentDutyRequests.assignmentDutyDetailsMapRequest.getData(state);
+        const dutyDetails: AssignmentDutyDetails | undefined
+            = Object.keys(map).map(k => map[k]).find(dd => dd.assignmentDutyId === assignmentDutyId);
+        if (dutyDetails) {
+            return map[dutyDetails.id];
+        } else {
+            return undefined;
+        }
     }
     return undefined;
 };
