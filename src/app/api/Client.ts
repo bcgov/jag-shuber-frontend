@@ -182,6 +182,7 @@ export default class Client implements API {
 
     async getCurrentCourtHousePath() {
         if (!this._courthouseIdPath) {
+            // tslint:disable-next-line:max-line-length
             const courthouse = await this._halClient.fetchResource(`/courthouses/search/findByCourthouseCd?courthouseCd=${this._courthouseCode}`);
             this._courthouseIdPath = (courthouse.props as any).id;
         }
@@ -196,7 +197,7 @@ export default class Client implements API {
         this._courthouseIdPath = id;
     }
 
-    get currentCourthouse() {
+    get currentCourthouse(): string {
         return this._courthouseIdPath;
     }
 

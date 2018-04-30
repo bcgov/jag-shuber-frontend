@@ -19,6 +19,7 @@ import AssignmentDutyEditModal from './containers/AssignmentDutyEditModal';
 import CourthouseSelector from './containers/CourthouseSelector';
 import api from './api/index';
 import Client from './api/Client';
+import { Well } from 'react-bootstrap';
 
 class Layout extends React.Component {
 
@@ -29,27 +30,40 @@ class Layout extends React.Component {
 
   render() {
     const needCourthouse = !(api as Client).isCourthouseSet;
-    if (needCourthouse) {
-      return (
-        <div>
-          <h1>But you Need to select a courhouse first</h1>
-          <CourthouseSelector onChange={(id: string) => this.onSelectCourthouse(id)} />
-        </div>
-      )
-    }
     return (
       <Router>
         <div className="App">
           <div className="headerArea">
             <Navigation />
           </div>
-          <div className="mainArea">
-            <Route exact={true} path="/" component={DutyRoster} />
-            <Route path="/sheriffs/schedule" component={Scheduling} />
-            <Route path="/sheriffs/manage" component={ManageSheriffs} />
-            <Route path="/assignments/manage/default" component={DefaultAssignments} />
-            <AssignmentDutyEditModal />
-          </div>
+          {needCourthouse &&
+            <div style={{ display: 'flex', justifyContent: 'center',  }}>
+              <Well
+                style={{
+                  display: 'flex',
+                  backgroundColor: 'white',
+                  flexDirection: 'column',
+                  flex: '1 1',
+                  maxWidth: '80%',
+                  minWidth: 800,
+                  height: '70%'
+                }}
+              >
+                <div style={{paddingTop: 10 }}>
+                  <h1>Select your Courthouse</h1>
+                  <CourthouseSelector onChange={(id: string) => this.onSelectCourthouse(id)} />
+                </div>
+              </Well>
+            </div>}
+
+          {!needCourthouse &&
+            <div className="mainArea">
+              <Route exact={true} path="/" component={DutyRoster} />
+              <Route path="/sheriffs/schedule" component={Scheduling} />
+              <Route path="/sheriffs/manage" component={ManageSheriffs} />
+              <Route path="/assignments/manage/default" component={DefaultAssignments} />
+              <AssignmentDutyEditModal />
+            </div>}
           <div className="footerArea">
             <Footer />
           </div>

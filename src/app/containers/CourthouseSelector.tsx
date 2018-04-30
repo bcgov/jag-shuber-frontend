@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { Courthouse } from '../api/index';
 import { allCourthouses } from '../modules/courthouse/selectors';
+import { FormControl } from 'react-bootstrap';
 
 interface CourthouseListStateProps {
     courthouses: Courthouse[];
@@ -19,14 +20,23 @@ class CourthouseList extends React.PureComponent<
         const { courthouses = [], onChange } = this.props;
         const selectorValues = Object.keys(courthouses).map((key, index) => ({ key, value: courthouses[key].name }));
         return (
-            <select onChange={(ev) => onChange && onChange(ev.target.value)}>
-                {selectorValues.map(sv => (
-                    <option key={sv.key} value={sv.key}>{sv.value}</option>
-                ))}
-            </select>
+                <FormControl 
+                    componentClass="select" 
+                    placeholder="select" 
+                    onChange={(ev) => onChange && onChange((ev.target as any).value)}
+                >
+                    <option value="">Select Courthouse</option>
+                    {selectorValues.map(sv => (
+                        <option 
+                            key={sv.key} 
+                            value={sv.key}
+                        >
+                            {sv.value}
+                        </option>
+                    ))}
+                </FormControl>
         );
     }
-
 }
 
 const mapStateToProps = (state: RootState) => {

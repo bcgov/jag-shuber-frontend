@@ -6,7 +6,7 @@ import { Well } from 'react-bootstrap';
 class ManageSheriffs extends React.PureComponent {
     render() {
         return (
-            <div style={{display: 'flex', justifyContent:'center'}}>
+            <div style={{display: 'flex', justifyContent: 'center'}}>
             <Well 
                 style={{
                     display: 'flex', 
