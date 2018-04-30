@@ -265,7 +265,7 @@
         "displayName": "API Service Name",
         "name": "API_SERVICE_NAME",
         "required": false,
-        "value": ""
+        "value": "api"
       },
       {
         "description": "The root path for the API.  Used in conjunction with API_SERVICE_NAME.",
@@ -315,6 +315,5 @@
         "name": "HTTP_BASIC_PASSWORD",
         "value": ""
       }
-  
     ]
   }
