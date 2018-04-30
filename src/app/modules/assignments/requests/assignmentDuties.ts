@@ -149,8 +149,8 @@ class CreateDefaultDutiesRequest extends RequestAction<DateType, AssignmentDuty[
 
         // Create a new map and add our assignment to it
         const newMap = { ...currentMap };
-        const newDuties = action.payload || []; 
-        newDuties.forEach( nd => newMap[nd.id] = nd);
+        const newDuties = action.payload || [];
+        newDuties.forEach(nd => newMap[nd.id] = nd);
 
         // Merge the state back together with the original in a new object
         const newState: Partial<AssignmentModuleState> = {
@@ -166,6 +166,56 @@ class CreateDefaultDutiesRequest extends RequestAction<DateType, AssignmentDuty[
 }
 
 export const createDefaultDutiesRequest = new CreateDefaultDutiesRequest();
+
+// Delete Sheriff Duty 
+class DeleteSheriffDutyRequest extends RequestAction<IdType, IdType, AssignmentModuleState> {
+    constructor(namespace: string = STATE_KEY, actionName: string = 'deleteSheriffDuty') {
+        super(namespace, actionName);
+    }
+    public async  doWork(request: IdType, { api }: ThunkExtra): Promise<IdType> {
+        await api.deleteSheriffDuty(request);
+        return request;
+    }
+
+    reduceSuccess(moduleState: AssignmentModuleState, action: { type: string, payload: IdType })
+        : AssignmentModuleState {
+        // Call the super's reduce success and pull out our state and
+        // the assignmentMap state
+        const {
+            assignmentDutyMap: {
+                data: currentMap = {},
+            ...restMap
+            } = {},
+            ...restState
+        } = super.reduceSuccess(moduleState, action);
+
+        // Create a new map and remvoe the sheriff duty from it
+        const newMap: AssignmentDutyMap = { ...currentMap };
+        let sheriffDutyParent: AssignmentDuty | undefined = 
+            Object.keys(newMap).map((key) => newMap[key] as AssignmentDuty)
+            .find(ad => ad.sheriffDuties.some(sd => sd.id === action.payload));
+        
+        if (sheriffDutyParent) {
+            const sheriffDutyIndex = sheriffDutyParent.sheriffDuties.findIndex(sd => sd.id === action.payload);
+            sheriffDutyParent.sheriffDuties.splice(sheriffDutyIndex, 1);
+            
+            newMap[sheriffDutyParent.id] = sheriffDutyParent;
+        }
+
+        // Merge the state back together with the original in a new object
+        const newState: Partial<AssignmentModuleState> = {
+            ...restState,
+            assignmentDutyMap: {
+                ...restMap,
+                data: newMap
+            }
+        };
+
+        return newState;
+    }
+}
+
+export const deleteSheriffDutyRequest = new DeleteSheriffDutyRequest();
 
 // Get the Map of Assingment Duty Details
 class AssignmentDutyDetailsMapRequest extends RequestAction<void, AssignmentDutyDetailsMap, AssignmentModuleState> {
@@ -240,4 +290,4 @@ class UpdateAssignmentDutyDetailsRequest extends CreateAssignmentDutyDetailsRequ
     }
 }
 
-export const updateAssignmentDutyDetialsRequest = new UpdateAssignmentDutyDetailsRequest();
+export const updateAssignmentDutyDetailsRequest = new UpdateAssignmentDutyDetailsRequest();

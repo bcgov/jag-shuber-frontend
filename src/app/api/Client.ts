@@ -309,6 +309,14 @@ export default class Client implements API {
             );
     }
 
+    async deleteDutyRecurrence(recurrenceId: string): Promise<void> {
+        if (recurrenceId === undefined) {
+            return;
+        } 
+        
+        await this.deleteResource(recurrenceId);
+    }
+
     updateAssignment(assignment: Partial<Assignment>): Promise<Assignment> {
         throw Error('Coming Soon!!');
         // console.warn('Using Mock API');

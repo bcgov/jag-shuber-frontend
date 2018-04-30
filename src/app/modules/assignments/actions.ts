@@ -9,6 +9,7 @@ export const getAssignments = assignmentRequests.assignmentMapRequest.actionCrea
 export const createAssignment = assignmentRequests.createAssignmentRequest.actionCreator;
 export const editAssignment = assignmentRequests.updateAssignmentRequest.actionCreator;
 export const deleteAssignment = assignmentRequests.deleteAssignmentRequest.actionCreator;
+export const deleteDutyRecurrence = assignmentRequests.deleteAssignmentDutyRecurrenceRequest.actionCreator;
 
 // Assignment Duties
 export const getAssignmentDuties = assignmentDutyRequests.assignmentDutyMapRequest.actionCreator;
@@ -18,7 +19,10 @@ export const deleteAssignmentDuty = assignmentDutyRequests.deleteAssignmentDutyR
 export const createDefaultDuties = assignmentDutyRequests.createDefaultDutiesRequest.actionCreator;
 export const getAssignmentDutyDetails = assignmentDutyRequests.assignmentDutyDetailsMapRequest.actionCreator;
 export const createAssignmentDutyDetails = assignmentDutyRequests.createAssignmentDutyDetailsRequest.actionCreator;
-export const updateAssignmentDutyDetails = assignmentDutyRequests.updateAssignmentDutyDetialsRequest.actionCreator;
+export const updateAssignmentDutyDetails = assignmentDutyRequests.updateAssignmentDutyDetailsRequest.actionCreator;
+
+// Sheriff Duties
+export const deleteSheriffDuty = assignmentDutyRequests.deleteSheriffDutyRequest.actionCreator;
 
 type SheriffDutyLink = { sheriffId: IdType, dutyId: IdType, sheriffDutyId: IdType };
 export const linkAssignment: ThunkAction<SheriffDutyLink> =
@@ -33,23 +37,4 @@ export const linkAssignment: ThunkAction<SheriffDutyLink> =
             sheriffDuties[indexOfSheriffDuty].sheriffId = sheriffId;
         }
         dispatch(editAssignmentDuty({ ...duty}));
-    };
-
-export const unlinkAssignment: ThunkAction<SheriffDutyLink> =
-    ({ sheriffId, dutyId }: SheriffDutyLink) => (dispatch, getState, extra) => {
-        const duty = getAssignmentDuty(dutyId)(getState());
-        if (duty == null) {
-            return;
-        }
-
-        // const { sheriffDuties = [] } = duty;
-        // const sheriffIndex = sheriffDuties.indexOf(sheriffId);
-        // const newSheriffIds = sheriffDuties.slice(0);
-        // // If not found, just return
-        // if (sheriffIndex === -1) {
-        //     return;
-        // }
-
-        // newSheriffIds.splice(sheriffIndex, 1);
-        // dispatch(editAssignmentDuty({ ...duty, sheriffDuties: newSheriffIds }));
     };

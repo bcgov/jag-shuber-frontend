@@ -29,6 +29,7 @@ import {
     AssignmentDutyDetails
 } from '../api';
 import * as TimeUtils from '../infrastructure/TimeRangeUtils';
+import { deleteSheriffDuty } from '../modules/assignments/actions';
 
 // wrapping generic assignment form in redux-form
 const formConfig: ConfigProps<any, AssignmentDutyFormProps> = {
@@ -72,10 +73,14 @@ const mapStateToProps = (state: RootState, props: AssignmentDutyEditFormProps) =
     }
 };
 
+const mapDispatchToProps = {
+    onRemoveSheriffDuty: deleteSheriffDuty
+};
+
 // Here we create a class that extends the configured assignment form so that we
 // can add a static SubmitButton member to it to make the API cleaner
 export default class AssignmentEditForm extends 
-    connect<any, {}, AssignmentDutyEditFormProps>(mapStateToProps)(reduxForm(formConfig)(AssignmentDutyForm)) {
+    connect<any, {}, AssignmentDutyEditFormProps>(mapStateToProps, mapDispatchToProps)(reduxForm(formConfig)(AssignmentDutyForm)) {
         static SubmitButton = (props: Partial<SubmitButtonProps>) => 
         <FormSubmitButton {...props} formName={formConfig.form} />
 }

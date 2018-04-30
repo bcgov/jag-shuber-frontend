@@ -15,6 +15,7 @@ import DutyRoster from './pages/DutyRoster';
 import ManageSheriffs from './pages/ManageSheriffs';
 import DefaultAssignments from './pages/DefaultAssignments';
 import Scheduling from './pages/Scheduling';
+import AssignmentDutyEditModal from './containers/AssignmentDutyEditModal';
 
 class Layout extends React.PureComponent {
   render() {
@@ -29,6 +30,7 @@ class Layout extends React.PureComponent {
             <Route path="/sheriffs/schedule" component={Scheduling} />
             <Route path="/sheriffs/manage" component={ManageSheriffs} />
             <Route path="/assignments/manage/default" component={DefaultAssignments} />
+            <AssignmentDutyEditModal />
           </div>
           <div className="footerArea">
             <Footer />

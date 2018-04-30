@@ -5,8 +5,6 @@ import {
     AssignmentDutyDetails
 } from '../../api/Api';
 import SheriffDutyBarList from '../SheriffDutyBarList/SheriffDutyBarList';
-import AssignmentDutyActionsPanel from '../AssignmentDutyActionsPanel/AssignmentDutyActionsPanel';
-import AssignmentDutyEditModal from '../../containers/AssignmentDutyEditModal';
 import './AssignmentDutyCard.css';
 import { Glyphicon } from 'react-bootstrap';
 import AssignmentDutyInformationPanel from '../AssignmentDutyInformationPanel/AssignmentDutyInformationPanel';
@@ -16,6 +14,8 @@ export interface AssignmentDutyCardProps {
     SheriffAssignmentRenderer?: React.ComponentType<SheriffAssignmentRendererProps>;
     details?: AssignmentDutyDetails;
     style?: React.CSSProperties;
+    onDoubleClick?: () => void;
+    onClick?: () => void;
 }
 
 export interface SheriffAssignmentRendererProps {
@@ -24,34 +24,37 @@ export interface SheriffAssignmentRendererProps {
     sheriffsRequired?: number;
 }
 
-export default class AssignmentDutyCard extends React.PureComponent<AssignmentDutyCardProps, {}> {
+export default class AssignmentDutyCard extends React.PureComponent<AssignmentDutyCardProps> {
 
     render() {
         const {
             SheriffAssignmentRenderer = SheriffDutyBarList,
             duty,
             duty: {
-                id = '-1',
                 sheriffDuties = [],
                 sheriffsRequired = 0
             } = {},
-            details = false,
+            details,
+            onDoubleClick,
+            onClick,
             style = {}
         } = this.props;
 
         return (
-            <div className="assignment-duty-card" style={{...style}}>
+            <div
+                className="assignment-duty-card drop-shadow-hover"
+                style={{ ...style }}
+                onDoubleClick={() => onDoubleClick && onDoubleClick()}
+                onMouseDown={() => onClick && onClick()}
+            >
                 <SheriffAssignmentRenderer
                     sheriffDuties={sheriffDuties}
                     duty={duty}
                     sheriffsRequired={sheriffsRequired}
                 />
-                <AssignmentDutyActionsPanel>
-                    <AssignmentDutyEditModal color={style.color} dutyId={id} />
-                </AssignmentDutyActionsPanel>
                 <AssignmentDutyInformationPanel>
-                    {details && 
-                        <Glyphicon style={{fontSize: 16, paddingTop: 10}} title={details.comments} glyph="comment" />}
+                    {details &&
+                        <Glyphicon style={{ fontSize: 16, paddingTop: 10 }} title={details.comments} glyph="comment" />}
                 </AssignmentDutyInformationPanel>
             </div>
         );

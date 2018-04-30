@@ -6889,6 +6889,13 @@ redux-mock-store@^1.0.2:
   dependencies:
     lodash.isplainobject "^4.0.6"
 
+redux-modal@^1.7.3:
+  version "1.7.3"
+  resolved "https://registry.yarnpkg.com/redux-modal/-/redux-modal-1.7.3.tgz#24ee7d6abb6f9644aff918dc65d5683b7609122f"
+  dependencies:
+    hoist-non-react-statics "^2.3.1"
+    prop-types "^15.5.10"
+
 redux-thunk@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/redux-thunk/-/redux-thunk-2.2.0.tgz#e615a16e16b47a19a515766133d1e3e99b7852e5"

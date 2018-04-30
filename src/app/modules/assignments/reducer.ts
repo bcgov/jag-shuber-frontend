@@ -16,8 +16,9 @@ const nestedReducer = new NestedReducer([
   assignmentRequests.createAssignmentRequest.reducer,
   assignmentRequests.updateAssignmentRequest.reducer,
   assignmentRequests.deleteAssignmentRequest.reducer,
+  assignmentRequests.deleteAssignmentDutyRecurrenceRequest.reducer,
   
-  // Duties
+  // Assignment Duties
   assignmentDutyRequests.assignmentDutyMapRequest.reducer,
   assignmentDutyRequests.createAssignmentDutyRequest.reducer,
   assignmentDutyRequests.updateAssignmentDutyRequest.reducer,
@@ -25,8 +26,10 @@ const nestedReducer = new NestedReducer([
   assignmentDutyRequests.createDefaultDutiesRequest.reducer,
   assignmentDutyRequests.assignmentDutyDetailsMapRequest.reducer,
   assignmentDutyRequests.createAssignmentDutyDetailsRequest.reducer,
-  assignmentDutyRequests.updateAssignmentDutyDetialsRequest.reducer
+  assignmentDutyRequests.updateAssignmentDutyDetailsRequest.reducer,
 
+  // Sheriff Duties
+  assignmentDutyRequests.deleteSheriffDutyRequest.reducer
 ]);
 
 const reducer = nestedReducer.reducer;
