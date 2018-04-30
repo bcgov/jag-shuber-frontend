@@ -13,6 +13,7 @@ read -r -d '' _CONFIG_SECTION << EOF
 # proxy requests to the API
         location /api/ {
             proxy_pass ${1};
+            ${HTTP_BASIC}
         }
 EOF
 
