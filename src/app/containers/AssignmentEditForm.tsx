@@ -3,21 +3,21 @@ import {
     reduxForm,
     ConfigProps
 } from 'redux-form';
-import { 
-    default as AssignmentForm, 
-    AssignmentFormProps 
+import {
+    default as AssignmentForm,
+    AssignmentFormProps
 } from '../components/AssignmentForm';
-import { 
-    default as FormSubmitButton, 
-    SubmitButtonProps 
+import {
+    default as FormSubmitButton,
+    SubmitButtonProps
 } from '../components/FormElements/SubmitButton';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { getAssignment } from '../modules/assignments/selectors';
 import { editAssignment } from '../modules/assignments/actions';
-import { 
-    IdType, 
-    Assignment 
+import {
+    IdType,
+    Assignment
 } from '../api';
 import { deleteDutyRecurrence } from '../modules/assignments/actions';
 
@@ -55,6 +55,7 @@ const mapDispatchToProps = {
 // can add a static SubmitButton member to it to make the API cleaner
 // tslint:disable-next-line:max-line-length
 export default class AssignmentEditForm extends connect<any, {}, AssignmentEditFormProps>(mapStateToProps, mapDispatchToProps)(reduxForm(formConfig)(AssignmentForm)) {
-    static SubmitButton = 
-        (props: Partial<SubmitButtonProps>) => <FormSubmitButton {...props} formName={formConfig.form} />
+    static SubmitButton = (props: Partial<SubmitButtonProps>) => (
+        <FormSubmitButton {...props} formName={formConfig.form} />
+    )
 }

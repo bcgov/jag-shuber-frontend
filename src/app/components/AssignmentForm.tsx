@@ -112,6 +112,8 @@ export interface AssignmentFormProps {
     minTime?: TimeType;
     maxTime?: TimeType;
     workSectionId?: WorkSectionCode;
+    allowDelete?: boolean;
+    allowEdit?: boolean;
 }
 
 interface AssignmentFormData {
@@ -224,7 +226,9 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
             minTime = TimeUtils.getDefaultTimePickerMinTime().toISOString(),
             maxTime = TimeUtils.getDefaultTimePickerMaxTime().toISOString(),
             workSectionId = 'OTHER',
-            onRemoveDutyRecurrence
+            onRemoveDutyRecurrence,
+            allowDelete = false,
+            allowEdit = false
         } = this.props;
         if (isDefaultTemplate) {
             return (
@@ -248,6 +252,7 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
                                     {fields.map((recurrenceInfoFieldName, index) => {
                                         return (
                                             <ListGroupItem key={index}>
+                                                {allowDelete && (
                                                 <div className="pull-right">
                                                     <ConfirmationModal
                                                         title="Delete Duty Recurrence"
@@ -265,6 +270,7 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
                                                         }}
                                                     />
                                                 </div>
+                                                )}
                                                 <Field
                                                     name={`${recurrenceInfoFieldName}.daysBitmap`}
                                                     component={DaysOfWeekChecklist}
@@ -303,6 +309,7 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
                                     }
                                     )}
                                     <br />
+                                    {allowEdit && (
                                     <Button
                                         onClick={() => fields.push({
                                             daysBitmap: DaysOfWeek.Weekdays,
@@ -314,6 +321,7 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
                                     >
                                         <Glyphicon glyph="plus" />
                                     </Button>
+                                    )}
                                 </ListGroup>
                             );
                         }}
