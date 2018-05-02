@@ -11,6 +11,8 @@ import { connect } from 'react-redux';
 import { deleteAssignment } from '../modules/assignments/actions';
 export interface AssignmentEditModalProps {
     assignmentId: IdType;
+    allowDelete?: boolean;
+    allowSave?: boolean;
 }
 
 export interface AssignmentEditModalDispatchProps {
@@ -24,7 +26,9 @@ class AssignmentEditModal extends React.PureComponent<
         const {
             assignmentId,
             // tslint:disable-next-line:no-shadowed-variable
-            deleteAssignment
+            deleteAssignment,
+            allowDelete = false,
+            allowSave = false
         } = this.props;
 
         const deleteConfirmationMessage =
@@ -48,7 +52,7 @@ class AssignmentEditModal extends React.PureComponent<
                         );
                     }}
                     footerComponent={({ handleClose }) => ([
-                        <ConfirmationModal
+                        allowDelete && <ConfirmationModal
                             key="confirmationModal"
                             onConfirm={() => {
                                 deleteAssignment(assignmentId);
@@ -61,7 +65,7 @@ class AssignmentEditModal extends React.PureComponent<
                             message={deleteConfirmationMessage}
                             title="Delete Assignment"
                         />,
-                        <AssignmentEditForm.SubmitButton key="save">Save</AssignmentEditForm.SubmitButton>
+                        allowSave && <AssignmentEditForm.SubmitButton key="save">Save</AssignmentEditForm.SubmitButton>
                     ])}
                 />
             </div>

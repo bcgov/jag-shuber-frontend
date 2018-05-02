@@ -35,28 +35,17 @@ export default class AssignmentAddModal extends React.Component<AssignmentAddMod
                             }
                         </DropdownButton>}
                     body={({ handleClose, workSectionId }: any) => (
-                        //isDefaultTemplate
-                            //? 
-                            <AssignmentTemplateCreateForm
-                                onSubmitSuccess={handleClose}
-                                workSectionId={workSectionId}
-                            />
-                            //: 
-                            // <AssignmentCreateForm 
-                            //     onSubmitSuccess={handleClose} 
-                            //     workSectionId={workSectionId} 
-                            // />
+                        <AssignmentTemplateCreateForm
+                            allowDelete={true}
+                            allowEdit={true}
+                            onSubmitSuccess={handleClose}
+                            workSectionId={workSectionId}
+                        />
                     )}
                     footerComponent={
-                        // isDefaultTemplate
-                            // ? 
-                            <AssignmentTemplateCreateForm.SubmitButton>
-                                Save
-                            </AssignmentTemplateCreateForm.SubmitButton>
-                            // : 
-                            // <AssignmentCreateForm.SubmitButton>
-                            //     Save
-                            // </AssignmentCreateForm.SubmitButton>
+                        <AssignmentTemplateCreateForm.SubmitButton>
+                            Save
+                        </AssignmentTemplateCreateForm.SubmitButton>
                     }
                 />
             </div>
