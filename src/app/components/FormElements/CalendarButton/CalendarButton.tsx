@@ -73,7 +73,7 @@ export default class CalendarButton extends React.Component<CalendarButtonProps,
                     <DateTime
                         timeFormat={false}
                         onChange={(event: Moment) => this.handleOnChange(event)}
-                        defaultValue={defaultValue}
+                        value={defaultValue}
                         input={false}
                         open={true}
                     />
