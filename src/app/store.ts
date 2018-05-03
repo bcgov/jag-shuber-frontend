@@ -41,7 +41,7 @@ const initialActions: any[] = [
     getCourthouses,
     () => updateTimelineVisibleTime(
             TimeUtils.getDefaultStartTime(), TimeUtils.getDefaultEndTime()),
-    () => updateScheduleVisibleTime(moment().startOf('week'), moment().endOf('week'))
+    () => updateScheduleVisibleTime(moment().startOf('week').add(1, 'day'), moment().endOf('week').subtract(1, 'day'))
 ];
 
 const reducers = {
