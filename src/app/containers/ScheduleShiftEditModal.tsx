@@ -1,73 +1,93 @@
 import * as React from 'react';
 import {
-    Button,
-    Glyphicon
+    Modal
 } from 'react-bootstrap';
-import ModalWrapper from './ModalWrapper/ModalWrapper';
 import { IdType } from '../api';
 import ScheduleShiftEditForm from './ScheduleShiftEditForm';
 import { ConfirmationModal } from '../components/ConfirmationModal';
 import { connect } from 'react-redux';
 import { deleteShift } from '../modules/shifts/actions';
+import { IModalInjectedProps, connectModal } from 'redux-modal';
+import { ConnectedShowModalButton } from './ConnectedShowModalButton';
+import { show as showModal, hide as hideModal } from 'redux-modal';
 export interface ScheduleShiftEditModalProps {
     shiftId: IdType;
-    color?: string;
 }
 
 export interface ScheduleShiftEditModalDispatchProps {
     deleteShift: (id: IdType) => void;
 }
 
-class ScheduleShiftEditModal extends React.PureComponent<
-    ScheduleShiftEditModalProps & ScheduleShiftEditModalDispatchProps>{
+type CompositeProps = ScheduleShiftEditModalProps & ScheduleShiftEditModalDispatchProps & IModalInjectedProps;
+
+class ScheduleShiftEditModal extends React.PureComponent<CompositeProps>{
 
     render() {
         const {
             shiftId,
-            color = 'white',
             // tslint:disable-next-line:no-shadowed-variable
-            deleteShift
+            deleteShift,
+            show,
+            handleHide
          } = this.props;
 
         const deleteConfirmationMessage =
             <p style={{ fontSize: 14 }}>Please confirm that you would like to <b>permanently delete</b> this shift.</p>;
 
         return (
-            <div>
-                <ModalWrapper
-                    title="Edit Shift"
-                    showButton={
-                        ({ handleShow }) =>
-                            <Button bsStyle="link" bsSize="xsmall" onClick={() => handleShow()}>
-                                <Glyphicon glyph="pencil" style={{ color }} />
-                            </Button>}
-                    body={({ handleClose }) => {
-                        return (
-                            <ScheduleShiftEditForm id={shiftId} onSubmitSuccess={handleClose} />
-
-                        );
-                    }}
-                    footerComponent={({ handleClose }) => ([
-                        <ConfirmationModal
-                            key="confirmationModal"
-                            onConfirm={() => {
-                                deleteShift(shiftId);
-                                handleClose();
-                            }}
-                            actionBtnLabel="Delete"
-                            actionBtnStyle="danger"
-                            confirmBtnLabel="Delete"
-                            confirmBtnStyle="danger"
-                            message={deleteConfirmationMessage}
-                            title="Delete Shift"
-                        />,
-                        <ScheduleShiftEditForm.SubmitButton key="save">Save</ScheduleShiftEditForm.SubmitButton>
-                    ])}
-                />
-            </div>
+            <Modal
+                show={show}
+                onHide={handleHide}
+                dialogClassName="modal-large"
+                style={{
+                    maxSize: '70%'
+                }}
+            >
+                <Modal.Header closeButton={true}>Edit Shift</Modal.Header>
+                <Modal.Body>
+                    <ScheduleShiftEditForm id={shiftId} onSubmitSuccess={handleHide} />
+                </Modal.Body>
+                <Modal.Footer>
+                    <ConfirmationModal
+                        key="confirmationModal"
+                        onConfirm={() => {
+                            deleteShift(shiftId);
+                            handleHide();
+                        }}
+                        actionBtnLabel="Delete"
+                        actionBtnStyle="danger"
+                        confirmBtnLabel="Delete"
+                        confirmBtnStyle="danger"
+                        message={deleteConfirmationMessage}
+                        title="Delete Shift"
+                    />,
+                    <ScheduleShiftEditForm.SubmitButton key="save">Save</ScheduleShiftEditForm.SubmitButton>
+                </Modal.Footer>
+            </Modal>
         );
     }
 }
 
-// tslint:disable-next-line:max-line-length
-export default connect<{}, ScheduleShiftEditModalDispatchProps, ScheduleShiftEditModalProps>(null, { deleteShift })(ScheduleShiftEditModal);
+const modalConfig = {
+    name: 'ScheduleShiftEditModal'
+};
+
+// Here we extend the Higher Order Component so that we can add on some static
+// members that can be used to hide the modal configuration from consumers
+export default class extends connectModal(modalConfig)(
+    connect<{}, ScheduleShiftEditModalDispatchProps, ScheduleShiftEditModalProps>(
+        null,
+        {
+            deleteShift
+        })
+        (ScheduleShiftEditModal) as any
+) {
+    static modalName = modalConfig.name;
+
+    static ShowButton = (props: ScheduleShiftEditModalProps) => (
+        <ConnectedShowModalButton modalName={modalConfig.name} modalProps={props} />
+    )
+
+    static ShowAction = (shiftId: IdType) => showModal(modalConfig.name, { shiftId });
+    static HideAction = () => hideModal(modalConfig.name);
+}

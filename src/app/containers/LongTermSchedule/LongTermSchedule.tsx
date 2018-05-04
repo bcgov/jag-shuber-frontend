@@ -2,9 +2,9 @@ import * as React from 'react';
 import * as moment from 'moment';
 import { connect } from 'react-redux';
 import { RootState } from '../../store';
-import { 
+import {
     allShifts,
-    allLeaves 
+    allLeaves
 } from '../../modules/shifts/selectors';
 import {
     getShifts,
@@ -17,7 +17,7 @@ import {
     ShiftScheduleProps
 } from '../../components/ShiftSchedule';
 import {
-    Shift, 
+    Shift,
     IdType,
     Leave,
     DateType
@@ -27,6 +27,7 @@ import ShiftCard from '../../components/ShiftCard';
 import SheriffDropTarget from '../SheriffDropTarget';
 import SheriffDisplay from '../SheriffDisplay';
 import { visibleTime } from '../../modules/schedule/selectors';
+import ScheduleShiftEditModal from '../ScheduleShiftEditModal';
 
 interface LongTermScheduleProps extends Partial<ShiftScheduleProps> {
     sideBarWidth?: number;
@@ -38,6 +39,7 @@ interface LongTermScheduleDispatchProps {
     assignShift: (link: { sheriffId: IdType, shiftId: IdType }) => void;
     unassignShift: (link: { sheriffId: IdType, shiftId: IdType }) => void;
     fetchLeaves: () => void;
+    showShiftEditModal: (id: IdType) => void;
 }
 
 interface LongTermScheduleStateProps {
@@ -52,11 +54,11 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
     & LongTermScheduleDispatchProps> {
 
     componentWillMount() {
-        const { 
-            fetchShifts, 
+        const {
+            fetchShifts,
             fetchLeaves
         } = this.props;
-        
+
         fetchShifts();
         fetchLeaves();
     }
@@ -64,7 +66,7 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
     isSheriffOnLeave(sheriffId: IdType, shift: Shift): boolean {
         const { leaves } = this.props;
         let leavesForSheriff = leaves.filter(l => l.sheriffId === sheriffId);
-        let dateFilteredLeaves = leavesForSheriff.filter(l => 
+        let dateFilteredLeaves = leavesForSheriff.filter(l =>
             moment(l.date).isBetween(shift.startDateTime, shift.endDateTime, 'days', '[]'));
         return dateFilteredLeaves.length > 0;
     }
@@ -72,9 +74,9 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
     isSheriffScheduledForDay(sheriffId: IdType, shiftStart: DateType): boolean {
         const { shifts } = this.props;
         let shiftsForSheriff = shifts.filter(s => s.sheriffId === sheriffId);
-        let dateFilteredShifts = shiftsForSheriff.filter(s => 
+        let dateFilteredShifts = shiftsForSheriff.filter(s =>
             moment(s.startDateTime).isSame(shiftStart, 'day'));
-        
+
         return dateFilteredShifts.length > 0;
     }
 
@@ -83,7 +85,8 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
             shifts = [],
             assignShift,
             visibleTimeStart,
-            visibleTimeEnd
+            visibleTimeEnd,
+            showShiftEditModal
         } = this.props;
 
         return (
@@ -99,15 +102,16 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
                                 display: 'flex'
                             }}
                             onDropItem={(sheriff) => assignShift({ sheriffId: sheriff.id, shiftId: shift.id })}
-                            canDropItem={(sheriff) => 
-                                shift.sheriffId === undefined 
+                            canDropItem={(sheriff) =>
+                                shift.sheriffId === undefined
                                 && !this.isSheriffOnLeave(sheriff.id, shift)
                                 && !this.isSheriffScheduledForDay(sheriff.id, moment(shift.startDateTime))
                             }
-                            className="shift-card"
+                            className="shift-card drop-shadow-hover"
+                            onClick={() => showShiftEditModal(shift.id)}
                         >
                             <ShiftCard shift={shift}>
-                                <div style={{paddingBottom: 5}}>{shift.title}</div>
+                                <div style={{ paddingBottom: 5 }}>{shift.title}</div>
                                 <SheriffDisplay sheriffId={shift.sheriffId} />
                             </ShiftCard>
                         </SheriffDropTarget>
@@ -131,7 +135,8 @@ const mapDispatchToProps = {
     fetchShifts: getShifts,
     assignShift: linkShift,
     unassignShift: unlinkShift,
-    fetchLeaves: getLeaves
+    fetchLeaves: getLeaves,
+    showShiftEditModal: (id: IdType) => ScheduleShiftEditModal.ShowAction(id)
 };
 
 export default connect<LongTermScheduleStateProps, LongTermScheduleDispatchProps, LongTermScheduleProps>(

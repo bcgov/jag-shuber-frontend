@@ -4,8 +4,6 @@ import {
   getWorkSectionColour
 } from '../api/utils';
 import { getForegroundColor } from '../infrastructure/colorUtils';
-import ScheduleShiftActionsPanel from './ScheduleShiftActionsPanel/ScheduleShiftActionPanel';
-import ScheduleShiftEditModal from '../containers/ScheduleShiftEditModal';
 
 export interface ShiftCardProps {
   shift: Shift;
@@ -22,23 +20,19 @@ export default class ShiftCard extends React.Component<ShiftCardProps, {}> {
 
     return (
       <div
-       
-        style={{ 
+        style={{
           display: 'flex',
           flex: '1',
           flexDirection: 'column',
           zindex: 70,
           fontSize: 12,
-          paddingTop: 19,
+          paddingTop: 13,
           backgroundColor: background,
           color: foreground
         }}
       >
-        <div style={{flex: '1'}}>
+        <div style={{ flex: '1' }}>
           {this.props.children}
-          <ScheduleShiftActionsPanel>
-            <ScheduleShiftEditModal color={foreground} shiftId={shift.id} />
-          </ScheduleShiftActionsPanel>
         </div>
       </div>
     );
