@@ -47,7 +47,8 @@ export default function dropTargetFactory<TDrag, TDrop>(itemTypes: string | stri
         canDrop?: boolean;
         style?: React.CSSProperties;
         computeStyle?: (props: { isActive?: boolean, canDrop?: boolean, isOver?: boolean }) => React.CSSProperties;
-        className?:string;
+        className?: string;
+        onClick?: () => void;
     }
 
     function computeStyleDefault({ isActive, canDrop, isOver }: DragDropStatus): React.CSSProperties {
@@ -78,15 +79,15 @@ export default function dropTargetFactory<TDrag, TDrop>(itemTypes: string | stri
                 children,
                 style,
                 computeStyle = (s: DragDropStatus) => computeStyleDefault(s),
-                className
+                className,
+                onClick
             } = this.props;
 
             const isActive = isOver && canDrop;
 
             const computedStyle = computeStyle ? computeStyle({ isActive, isOver, canDrop }) : {};
-
             return connectDropTarget(
-                <div style={style} className={className}>
+                <div style={style} className={className} onClick={() => onClick && onClick()}>
                     {children}
                     <div style={{ ...computedStyle, position: 'absolute', width: '100%', height: '100%', opacity: 0.8, top: 0, left: 0 }}></div>
                 </div>

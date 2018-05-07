@@ -13,7 +13,6 @@ import { show as showModal, hide as hideModal } from 'redux-modal';
 
 export interface AssignmentDutyEditModalProps {
     dutyId: IdType;
-    color?: string;
 }
 
 export interface AssignmentDutyEditModalDispatchProps {
@@ -26,7 +25,6 @@ class AssignmentDutyEditModal extends React.PureComponent<CompositeProps> {
     render() {
         const {
             dutyId,
-            // color = 'white',
             // tslint:disable-next-line:no-shadowed-variable
             deleteAssignmentDuty,
             show,
@@ -42,7 +40,7 @@ class AssignmentDutyEditModal extends React.PureComponent<CompositeProps> {
                 onHide={handleHide}
                 dialogClassName="modal-large"
                 style={{
-                    maxSize: "70%"
+                    maxSize: '70%'
                 }}
             >
                 <Modal.Header closeButton={true}>Edit Duty</Modal.Header>

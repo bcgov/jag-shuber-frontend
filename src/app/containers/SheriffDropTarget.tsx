@@ -17,6 +17,7 @@ interface SheriffDropTargetProps {
     style?: React.CSSProperties;
     computeStyle?: (status: { isActive: boolean, isOver: boolean, canDrop: boolean }) => React.CSSProperties;
     className?: string;
+    onClick?: () => void;
 }
 
 export default class SheriffDropTarget extends React.PureComponent<SheriffDropTargetProps> {
@@ -56,7 +57,8 @@ export default class SheriffDropTarget extends React.PureComponent<SheriffDropTa
             canDropItem,
             onDropItem,
             style,
-            className
+            className,
+            onClick
         } = this.props;
 
         return (
@@ -66,6 +68,7 @@ export default class SheriffDropTarget extends React.PureComponent<SheriffDropTa
                 style={style}
                 computeStyle={computeStyle}
                 className={className}
+                onClick={onClick}
             >
                 {this.props.children}
             </GenericDropTarget>

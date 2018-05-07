@@ -15,10 +15,6 @@
     border: 0px;
 }
 
-.scheduling-timeline .shift-card .schedule-shift-actions-panel {
-    display: none;
-}
-
-.scheduling-timeline .shift-card:hover .schedule-shift-actions-panel {
-    display: initial;
+.scheduling-timeline .shift-card:hover {
+    margin: 1px;
 }
