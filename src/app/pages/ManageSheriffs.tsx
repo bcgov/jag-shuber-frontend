@@ -25,8 +25,6 @@ class ManageSheriffs extends React.PureComponent {
                     <SheriffAddModal />
                 </div><br/>
                 <SheriffList />
-                
-                
             </Well>
             </div>
         );

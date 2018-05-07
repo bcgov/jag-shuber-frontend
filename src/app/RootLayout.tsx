@@ -21,6 +21,7 @@ import CourthouseSelector from './containers/CourthouseSelector';
 import api from './api/index';
 import Client from './api/Client';
 import { Well } from 'react-bootstrap';
+import SheriffProfileModal from './containers/SheriffProfileModal';
 
 class Layout extends React.Component {
 
@@ -64,6 +65,7 @@ class Layout extends React.Component {
               <Route path="/assignments/manage/default" component={DefaultAssignments} />
               <AssignmentDutyEditModal />
               <ScheduleShiftEditModal/>
+              <SheriffProfileModal />
             </div>}
           <div className="footerArea">
             <Footer />
