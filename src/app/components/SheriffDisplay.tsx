@@ -17,7 +17,7 @@ export default class SheriffDisplay extends React.PureComponent<SheriffDisplayPr
             // tslint:disable:triple-equals
             // using != below vs !== because it checks for null and undefined
             <div style={{ ...style }}>
-                {sheriff != undefined ? sheriff.lastName.toUpperCase() : ''}
+                {sheriff != undefined ? `${sheriff.lastName.toUpperCase()}, ${sheriff.firstName.charAt(0)}` : ''}
             </div>
         );
     }

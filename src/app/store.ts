@@ -1,4 +1,5 @@
 import * as moment from 'moment';
+import * as TimeUtils from './infrastructure/TimeRangeUtils';
 import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
 import { default as thunk, ThunkAction as _ThunkAction } from 'redux-thunk';
 import { reducer as modalReducer } from 'redux-modal';
@@ -39,8 +40,8 @@ const initialActions: any[] = [
     getJailRoles,
     getCourthouses,
     () => updateTimelineVisibleTime(
-            moment().startOf('day').add(7, 'hours'), moment().endOf('day').subtract(6, 'hours')),
-    () => updateScheduleVisibleTime(moment().startOf('week'), moment().endOf('week'))
+            TimeUtils.getDefaultStartTime(), TimeUtils.getDefaultEndTime()),
+    () => updateScheduleVisibleTime(moment().startOf('week').add(1, 'day'), moment().endOf('week').subtract(1, 'day'))
 ];
 
 const reducers = {

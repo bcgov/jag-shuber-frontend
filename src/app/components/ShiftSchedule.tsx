@@ -78,6 +78,7 @@ export default class ShiftSchedule extends React.PureComponent<ShiftScheduleProp
                 visibleTimeStart={visibleTimeStart}
                 visibleTimeEnd={visibleTimeEnd}
                 itemRenderer={itemRenderer}
+                lineHeight={68}
             />
         );
     }

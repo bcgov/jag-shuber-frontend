@@ -107,6 +107,7 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
                             className="shift-card"
                         >
                             <ShiftCard shift={shift}>
+                                <div style={{paddingBottom: 5}}>{shift.title}</div>
                                 <SheriffDisplay sheriffId={shift.sheriffId} />
                             </ShiftCard>
                         </SheriffDropTarget>

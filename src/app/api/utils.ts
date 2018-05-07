@@ -67,12 +67,13 @@ export class ShiftFactory {
         dayNumbers.forEach(day => {
             const startTimeMoment = moment(shiftInfo.startTime);
             const endTimeMoment = moment(shiftInfo.endTime);
+
             let newShift = {
                 workSectionId: shiftInfo.workSectionId,
-                startDateTime: moment(shiftInfo.weekStart).add(
+                startDateTime: moment(shiftInfo.weekStart).day(0).add(
                     { days: day, hours: startTimeMoment.hours(), minutes: startTimeMoment.minutes() }
                 ),
-                endDateTime: moment(shiftInfo.weekStart).add(
+                endDateTime: moment(shiftInfo.weekStart).day(0).add(
                     { days: day, hours: endTimeMoment.hours(), minutes: endTimeMoment.minutes() }
                 )
             };

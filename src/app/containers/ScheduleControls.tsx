@@ -46,13 +46,13 @@ class ScheduleControls extends React.PureComponent<
                 
                 <CalendarButton 
                     onChange={(selectedDate) => updateVisibleTime(
-                        moment(selectedDate).startOf('week'),
-                        moment(selectedDate).endOf('week')
+                        moment(selectedDate).startOf('week').add(1, 'day'),
+                        moment(selectedDate).endOf('week').subtract(1, 'day')
                     )}
                     defaultValue={visibleTimeStart}
                     todayOnClick={() => updateVisibleTime(
-                        moment().startOf('week'),
-                        moment().endOf('week')
+                        moment().startOf('week').add(1, 'day'),
+                        moment().endOf('week').subtract(1, 'day')
                     )}
                 />
 

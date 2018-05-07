@@ -34,9 +34,9 @@ export function doTimeRangesOverlap (
 
 export function getDefaultStartTime (dayForTime?: moment.Moment): moment.Moment {
     if (dayForTime) {
-        return dayForTime.startOf('day').add(7, 'hour');
+        return dayForTime.startOf('day').add(6, 'hour');
     } else {
-        return moment().startOf('day').add(7, 'hour');
+        return moment().startOf('day').add(6, 'hour');
     }
 }
 
