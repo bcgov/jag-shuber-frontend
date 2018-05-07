@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {
-    Form,
-    // Image,
+    Form
 } from 'react-bootstrap';
 import {
     Field,
@@ -10,14 +9,20 @@ import {
 import TextField from './FormElements/TextField';
 import * as Validators from '../infrastructure/Validators';
 import SheriffLocationSelector from '../containers/SheriffLocationSelector';
+import { Sheriff } from '../api/Api';
 
 export interface SheriffFormProps {
     handleSubmit?: () => void;
     onSubmitSuccess?: () => void;
 }
 
-export default class SheriffForm extends 
+export default class SheriffForm extends
     React.Component<SheriffFormProps & InjectedFormProps<{}, SheriffFormProps>, {}> {
+
+    static parseSheriffFromValues(values: any): Sheriff {
+        const sheriff = { ...values };
+        return sheriff as Sheriff;
+    }
 
     render() {
         const { handleSubmit } = this.props;
@@ -25,42 +30,40 @@ export default class SheriffForm extends
         return (
             <div>
                 <Form onSubmit={handleSubmit} >
-                    {/* <Image responsive={true} src="/img/avatar.png" circle={true} width="150" height="150" />
-                    <br /> */}
-                    <Field 
-                        name="firstName" 
-                        component={TextField} 
-                        label="First Name" 
-                        validate={[Validators.required]} 
+                    <Field
+                        name="firstName"
+                        component={TextField}
+                        label="First Name"
+                        validate={[Validators.required]}
                     />
-                    <Field 
-                        name="lastName" 
-                        component={TextField} 
-                        label="Last Name" 
-                        validate={[Validators.required]} 
+                    <Field
+                        name="lastName"
+                        component={TextField}
+                        label="Last Name"
+                        validate={[Validators.required]}
                     />
-                    <Field 
-                        name="rank" 
-                        component={TextField} 
-                        label="Rank - TO DO add selector" 
-                        validate={[Validators.required]} 
+                    <Field
+                        name="rankCode"
+                        component={TextField}
+                        label="Rank - TO DO add selector"
+                        validate={[Validators.required]}
                     />
-                    <Field 
-                        name="badgeNumber" 
-                        component={TextField} 
-                        label="Badge Number" 
-                        validate={[Validators.required]} 
+                    <Field
+                        name="badgeNo"
+                        component={TextField}
+                        label="Badge Number"
+                        validate={[Validators.required]}
                     />
-                    <Field 
-                        name="alias" 
-                        component={TextField} 
-                        label="Alias" 
+                    <Field
+                        name="alias"
+                        component={TextField}
+                        label="Alias"
                     />
                     <Field
                         name="homeCourthouseId"
                         component={SheriffLocationSelector}
                         label="Home Location"
-                        validate={[Validators.required]} 
+                        validate={[Validators.required]}
                     />
                 </Form>
             </div>

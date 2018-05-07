@@ -8,7 +8,7 @@ import { default as FormSubmitButton, SubmitButtonProps } from '../components/Fo
 const formConfig: ConfigProps<any, SheriffFormProps> = {
     form: 'CreateSheriff',
     onSubmit: (values: Sheriff | any, dispatch, ownProps) => {
-        const newSheriff = {...values};
+        let newSheriff = SheriffForm.parseSheriffFromValues(values);
         dispatch(createSheriff(newSheriff));
     }
 };
