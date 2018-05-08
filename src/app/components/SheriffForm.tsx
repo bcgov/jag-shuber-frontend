@@ -14,7 +14,6 @@ import { Sheriff } from '../api/Api';
 export interface SheriffFormProps {
     handleSubmit?: () => void;
     onSubmitSuccess?: () => void;
-    isNewSheriff?: boolean;
 }
 
 export default class SheriffForm extends
@@ -26,7 +25,7 @@ export default class SheriffForm extends
     }
 
     render() {
-        const { handleSubmit, isNewSheriff = false } = this.props;
+        const { handleSubmit } = this.props;
 
         return (
             <div>
@@ -67,9 +66,6 @@ export default class SheriffForm extends
                         validate={[Validators.required]}
                     />
                 </Form>
-
-                {isNewSheriff && 'new sheriff'}
-                {!isNewSheriff && 'existing sheriff'}
             </div>
         );
     }
