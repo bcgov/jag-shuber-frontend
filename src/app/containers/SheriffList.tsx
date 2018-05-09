@@ -53,10 +53,9 @@ class SheriffList extends React.Component<CompositeProps> {
         {sheriffs.map(sheriff => (
           <div
             key={sheriff.badgeNo}
-            onMouseDown={() => showSheriffProfileModal(sheriff)}
           >
             {SheriffRenderer && <SheriffRenderer {...sheriff} />}
-            {!SheriffRenderer && <SheriffCard sheriff={sheriff} />}
+            {!SheriffRenderer && <SheriffCard sheriff={sheriff} onClick={() => showSheriffProfileModal(sheriff)}/>}
           </div>
         ))}
       </div>
