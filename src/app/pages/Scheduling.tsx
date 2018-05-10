@@ -15,13 +15,16 @@ class SchedulingPage extends React.PureComponent {
         return (
             <div>
                 <div
-                    className="toolbar"
+                    // className="toolbar"
                     style={{
                         flexDirection: 'row',
-                        justifyContent: 'center',
+                        // justifyContent: 'center',
                         maxHeight: 85,
-                        paddingTop: 5,
-                        paddingLeft: 210
+                        display: 'flex',
+                        backgroundColor: '#003366',
+                        margingTop: 2
+                        // paddingTop: 5,
+                        // paddingLeft: 210
                     }}
                 >
                     <ScheduleControls />

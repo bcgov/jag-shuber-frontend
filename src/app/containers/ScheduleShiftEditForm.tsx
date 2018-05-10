@@ -46,7 +46,7 @@ const mapStateToProps = (state: RootState, props: ScheduleShiftEditFormProps) =>
 
 // Here we create a class that extends the configured assignment form so that we
 // can add a static SubmitButton member to it to make the API cleaner
-export default class AssignmentEditForm extends 
+export default class SchedyleShiftEditForm extends 
     connect<any, {}, ScheduleShiftEditFormProps>(mapStateToProps)(reduxForm(formConfig)(ScheduleShiftForm)) {
     static SubmitButton = (props: Partial<SubmitButtonProps>) => 
         <FormSubmitButton {...props} formName={formConfig.form} />
