@@ -1,6 +1,6 @@
 import * as React from 'react';
 import SchedulingTimeline from '../containers/LongTermSchedule/LongTermSchedule';
-import TimelineToolsPanel from '../components/TimelineToolsPanel';
+import TimelineToolsPanel from '../components/TimelineToolsPanel/TimelineToolsPanel';
 import SheriffList from '../containers/SheriffList';
 import { Sheriff } from '../api';
 import SheriffListCard from '../components/SheriffListCard/SheriffListCard';
@@ -27,7 +27,7 @@ class SchedulingPage extends React.PureComponent {
                     <ScheduleControls />
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'row' }}>
-                    <TimelineToolsPanel titleText="My Team">
+                    <TimelineToolsPanel titleText="My Team" isScheduleTimeline={true}>
                         <ListGroup>
                             <SheriffList
                                 SheriffRenderer={(s: Sheriff) => (

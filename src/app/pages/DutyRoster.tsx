@@ -1,6 +1,6 @@
 import * as React from 'react';
 import DutyRosterTimeline from '../containers/DutyRosterTimeline/DutyRosterTimeline';
-import TimelineToolsPanel from '../components/TimelineToolsPanel';
+import TimelineToolsPanel from '../components/TimelineToolsPanel/TimelineToolsPanel';
 import SheriffList from '../containers/SheriffList';
 import { Sheriff } from '../api';
 import { ListGroup } from 'react-bootstrap';

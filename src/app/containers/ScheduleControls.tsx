@@ -9,8 +9,8 @@ import {
 import { visibleTime } from '../modules/schedule/selectors';
 import { updateVisibleTime as setVisibleTime } from '../modules/schedule/actions';
 import CalendarButton from '../components/FormElements/CalendarButton/CalendarButton';
-import ScheduleShiftAddModal from './ScheduleShiftAddModal';
-import ScheduleShiftCopyModal from './ScheduleShiftCopyModal';
+// import ScheduleShiftAddModal from './ScheduleShiftAddModal';
+// import ScheduleShiftCopyModal from './ScheduleShiftCopyModal';
 
 interface ScheduleControlsStateProps {
     visibleTimeStart: any;
@@ -68,8 +68,8 @@ class ScheduleControls extends React.PureComponent<
                     <Glyphicon glyph="chevron-right" />
                 </Button>   
                 
-                <ScheduleShiftAddModal />
-                <ScheduleShiftCopyModal />
+                {/* <ScheduleShiftAddModal />
+                <ScheduleShiftCopyModal /> */}
             </div>
 
         );
