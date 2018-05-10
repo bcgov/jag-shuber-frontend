@@ -18,10 +18,12 @@ export interface SheriffFormProps {
 
 export default class SheriffForm extends
     React.Component<SheriffFormProps & InjectedFormProps<{}, SheriffFormProps>, {}> {
-
     static parseSheriffFromValues(values: any): Sheriff {
-        const sheriff = { ...values };
-        return sheriff as Sheriff;
+        return { ...values } as Sheriff;
+    }
+
+    static sheriffToFormValues(sheriff: Sheriff): any {
+        return { ...sheriff };
     }
 
     render() {

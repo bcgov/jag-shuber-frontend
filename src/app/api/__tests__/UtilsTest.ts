@@ -1,11 +1,6 @@
 import * as moment from 'moment';
-import { 
-    DaysOfWeek
-} from '../../api/Api';
-import { 
-    ShiftFactory, 
-    ShiftCreationPayload
-} from '../utils';
+import { DaysOfWeek } from '../../api/Api';
+import { ShiftCreationPayload, ShiftFactory } from '../utils';
 
 const testPayload: ShiftCreationPayload = {
     weekStart: moment().startOf('isoWeek').subtract(1, 'day'),
