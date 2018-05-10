@@ -4,20 +4,18 @@ import './TimelineToolsPanel.css';
 interface TimelineToolsPanelProps {
     titleText?: string;
     legendChildren?: React.ReactNode;
-    isScheduleTimeline?: boolean;
 }
 
 export default class TimelineToolsPanel extends React.PureComponent<TimelineToolsPanelProps> {
     render() {
         const {
             legendChildren,
-            titleText = 'Tools',
-            isScheduleTimeline = false
+            titleText = 'Tools'
         } = this.props;
     
         return (
             <div className="timeline-tools-panel">
-                <div className={`timeline-tools-title-background ${isScheduleTimeline ? ' schedule' : ''}`}>
+                <div className="timeline-tools-title-background">
                     <h3 className="timeline-tools-title">
                         {titleText}
                     </h3>

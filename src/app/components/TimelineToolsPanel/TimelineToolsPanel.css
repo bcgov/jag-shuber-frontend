@@ -14,15 +14,11 @@
 }
 
 .timeline-tools-title-background {
-    background-color:#003366;
+    background-color:#327AB7;
     flex: '0 0 60px';
     border: 0px;
     color: #FFF;
     text-align: center;
-}
-
-.timeline-tools-title-background.schedule {
-    background-color: #327AB7;
 }
 
 .timeline-tools-children {
