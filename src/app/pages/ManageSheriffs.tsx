@@ -17,14 +17,14 @@ class ManageSheriffs extends React.PureComponent {
                     minWidth: 800
                 }}
             >
+                
                 <div style={{flex: '1', alignSelf: 'center', paddingBottom: 15}}>
                     <h1>Manage Sheriffs</h1>
                 </div>
-                <SheriffList />
-                <br/>
                 <div style={{textAlign: 'right'}}>
-                <SheriffAddModal />
-                </div>
+                    <SheriffAddModal />
+                </div><br/>
+                <SheriffList />
             </Well>
             </div>
         );

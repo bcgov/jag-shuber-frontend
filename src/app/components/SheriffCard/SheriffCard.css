@@ -1,0 +1,7 @@
+.sheriff-card {
+    flex: 1 1 auto;
+    padding: 4px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    text-align: center;
+}

@@ -115,6 +115,14 @@ export interface Sheriff {
     lastName: string;
     badgeNo: string;
     imageUrl?: string;
+    alias?: string;
+    rankCode?: string;
+    homeCourthouseId?: IdType;
+}
+
+export interface SheriffRank {
+    code: string;
+    description: string;
 }
 
 export interface BaseAssignment {

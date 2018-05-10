@@ -1,27 +1,35 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Sheriff } from '../api/index';
+import {
+  Sheriff
+} from '../api/index';
 import { RootState } from '../store';
-import { default as SheriffGrid } from '../components/SheriffGrid';
 import { getSheriffList } from '../modules/sheriffs/actions';
 import {
   sheriffs,
   sheriffListLoading
 } from '../modules/sheriffs/selectors';
+import SheriffCard from '../components/SheriffCard/SheriffCard';
+import SheriffProfileModal from './SheriffProfileModal';
 
 export interface SheriffListProps {
-  getSheriffList: any;
-  sheriffs: Sheriff[];
-  loading: boolean;
+  sheriffs?: Sheriff[];
+  loading?: boolean;
   SheriffListComponent?: React.ReactType<{ sheriffs?: Sheriff[], SheriffRenderer?: React.ReactType<Sheriff> }>;
   SheriffRenderer?: React.ReactType<Sheriff>;
 }
 
-class SheriffList extends React.Component<SheriffListProps, any> {
+interface SheriffListDispatchProps {
+  showSheriffProfileModal: (sheriff: Sheriff) => void;
+  fetchSheriffList: () => void;
+}
+
+type CompositeProps = SheriffListProps & SheriffListDispatchProps;
+class SheriffList extends React.Component<CompositeProps> {
   componentWillMount() {
     // tslint:disable-next-line:no-shadowed-variable
-    const { getSheriffList } = this.props;
-    getSheriffList();
+    const { fetchSheriffList } = this.props;
+    fetchSheriffList();
   }
 
   render() {
@@ -29,8 +37,8 @@ class SheriffList extends React.Component<SheriffListProps, any> {
       // tslint:disable-next-line:no-shadowed-variable
       sheriffs = [],
       loading = true,
-      SheriffListComponent = SheriffGrid,
-      SheriffRenderer
+      SheriffRenderer,
+      showSheriffProfileModal
     } = this.props;
 
     if (loading) {
@@ -40,7 +48,17 @@ class SheriffList extends React.Component<SheriffListProps, any> {
     }
 
     return (
-      <SheriffListComponent sheriffs={sheriffs} SheriffRenderer={SheriffRenderer} />
+
+      <div style={{ display: 'flex', flexFlow: 'row wrap', justifyContent: 'space-around' }}>
+        {sheriffs.map(sheriff => (
+          <div
+            key={sheriff.badgeNo}
+          >
+            {SheriffRenderer && <SheriffRenderer {...sheriff} />}
+            {!SheriffRenderer && <SheriffCard sheriff={sheriff} onClick={() => showSheriffProfileModal(sheriff)}/>}
+          </div>
+        ))}
+      </div>
     );
   }
 }
@@ -52,15 +70,10 @@ const mapStateToProps = (state: RootState) => {
   };
 };
 
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    getSheriffList: () => dispatch(getSheriffList())
-  };
-};
-
-const ConnectedOnDutySherrifs = connect(
+export default connect<{}, SheriffListDispatchProps, SheriffListProps>(
   mapStateToProps,
-  mapDispatchToProps
+  {
+    fetchSheriffList: getSheriffList,
+    showSheriffProfileModal: SheriffProfileModal.ShowAction
+  }
 )(SheriffList);
-
-export default ConnectedOnDutySherrifs;
