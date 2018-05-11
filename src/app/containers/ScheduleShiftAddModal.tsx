@@ -3,8 +3,7 @@ import * as moment from 'moment';
 import ScheduleShiftCreateForm from './ScheduleShiftCreateForm';
 import ModalWrapper from './ModalWrapper/ModalWrapper';
 import { 
-    Button,
-    // Glyphicon
+    Button
 } from 'react-bootstrap';
 
 export interface ScheduleShiftAddModalProps {
@@ -21,7 +20,7 @@ export default class ScheduleShiftAddModal extends React.Component<ScheduleShift
                         <Button 
                             bsStyle="link" 
                             bsSize="medium" 
-                            style={{color: 'black', width: '100%', textAlign: 'left'}}  
+                            style={{color: '#494949', width: '100%', textAlign: 'left'}}  
                             onClick={() => handleShow()}
                         >
                             Add Shift

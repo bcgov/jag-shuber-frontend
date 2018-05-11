@@ -6,14 +6,12 @@ import {
     Button,
     Glyphicon,
     Dropdown,
-    // ButtonToolbar,
     MenuItem
 } from 'react-bootstrap';
 import { visibleTime } from '../modules/schedule/selectors';
 import { updateVisibleTime as setVisibleTime } from '../modules/schedule/actions';
 import CalendarButton from '../components/CalendarButton/CalendarButton';
 import ScheduleShiftMultiEditForm from './ScheduleShiftMultiEditForm';
-// import HamburgerMenu from '../components/HamburgerMenu';
 import ScheduleShiftAddModal from './ScheduleShiftAddModal';
 import ScheduleShiftCopyModal from './ScheduleShiftCopyModal';
 

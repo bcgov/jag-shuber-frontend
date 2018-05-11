@@ -45,7 +45,9 @@ export default class ScheduleControlPanelForm extends
                     />&nbsp;&nbsp;&nbsp;&nbsp;
                    <Button bsStyle="danger"><Glyphicon glyph="trash"/></Button>&nbsp;&nbsp;&nbsp;&nbsp;
                    <Button className="cancel-button">Cancel</Button>&nbsp;&nbsp;&nbsp;&nbsp;
-                   <Button className="apply-button">Apply &#9658;</Button>
+                   <Button className="apply-button">
+                        Apply <span style={{paddingTop: 2, fontSize: 10}}>&#9658;</span>
+                   </Button>
                 </Form>
             </div>
         );

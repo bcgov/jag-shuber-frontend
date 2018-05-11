@@ -1,8 +1,7 @@
 import * as React from 'react';
 import * as moment from 'moment';
 import {
-    Button,
-    // Glyphicon
+    Button
 } from 'react-bootstrap';
 import ModalWrapper from './ModalWrapper/ModalWrapper';
 import ScheduleShiftCopyForm from './ScheduleShiftCopyForm';
@@ -17,7 +16,12 @@ export default class ScheduleShiftCopyModal extends React.Component<ScheduleShif
                 <ModalWrapper
                     title=""
                     showButton={({ handleShow }) => (
-                        <Button bsStyle="link" bsSize="medium" style={{color: 'black', width: '100%', textAlign: 'left'}}  onClick={() => handleShow()}>
+                        <Button 
+                            bsStyle="link" 
+                            bsSize="medium" 
+                            style={{color: '#494949', width: '100%', textAlign: 'left'}}  
+                            onClick={() => handleShow()}
+                        >
                             Copy Shifts
                         </Button>
                     )}
