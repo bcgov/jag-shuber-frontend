@@ -22,6 +22,8 @@ import api from './api/index';
 import Client from './api/Client';
 import { Well } from 'react-bootstrap';
 import SheriffProfileModal from './containers/SheriffProfileModal';
+import ScheduleShiftCopyModal from './containers/ScheduleShiftCopyModal';
+import ScheduleShiftAddModal from './containers/ScheduleShiftAddModal';
 
 class Layout extends React.Component {
 
@@ -66,6 +68,8 @@ class Layout extends React.Component {
               <AssignmentDutyEditModal />
               <ScheduleShiftEditModal/>
               <SheriffProfileModal />
+              <ScheduleShiftCopyModal />
+              <ScheduleShiftAddModal />
             </div>}
           <div className="footerArea">
             <Footer />

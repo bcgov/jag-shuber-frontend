@@ -25,15 +25,23 @@ interface ScheduleControlsProps {
 
 interface ScheduleDistpatchProps {
     updateVisibleTime: (startTime: any, endTime: any) => void;
+    showShiftCopyModal: () => void;
+    showShiftAddModal: () => void;
 }
 
 class ScheduleControls extends React.PureComponent<
     ScheduleControlsProps & ScheduleControlsStateProps & ScheduleDistpatchProps> {
 
     render() {
-        const { visibleTimeStart, visibleTimeEnd, updateVisibleTime } = this.props;
-        return (
+        const { 
+            visibleTimeStart, 
+            visibleTimeEnd, 
+            updateVisibleTime, 
+            showShiftCopyModal,
+            showShiftAddModal 
+        } = this.props;
 
+        return (
             <div
                 style={{
                     display: 'flex',
@@ -103,8 +111,8 @@ class ScheduleControls extends React.PureComponent<
                                 <Glyphicon glyph="menu-hamburger" />
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
-                                <MenuItem eventKey="addShift"><ScheduleShiftAddModal /></MenuItem>
-                                <MenuItem eventKey="copyShifts"><ScheduleShiftCopyModal /></MenuItem>
+                                <MenuItem onClick={() => showShiftAddModal()}>Add Shift</MenuItem>
+                                <MenuItem onClick={() => showShiftCopyModal()}>Copy Shifts</MenuItem>
                             </Dropdown.Menu>
                         </Dropdown>
                     </div>
@@ -120,7 +128,9 @@ const mapStateToProps = (state: RootState) => {
 };
 
 const mapDispatchToProps = {
-    updateVisibleTime: setVisibleTime
+    updateVisibleTime: setVisibleTime,
+    showShiftCopyModal: () => ScheduleShiftCopyModal.ShowAction(),
+    showShiftAddModal: () => ScheduleShiftAddModal.ShowAction()
 };
 
 // tslint:disable-next-line:max-line-length

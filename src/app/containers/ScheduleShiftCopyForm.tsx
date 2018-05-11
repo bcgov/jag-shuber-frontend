@@ -35,7 +35,10 @@ const mapStateToProps = (state: RootState, props: ScheduleShiftCopyFormProps) =>
     const source = moment(currentVisibleStart).subtract('week', 1);
     return {
         weekStartDestination: destination,
-        weekStartSource: source
+        weekStartSource: source,
+        initialValues: {
+            shouldIncludeSheriffs: false
+        }
     };
 };
 
