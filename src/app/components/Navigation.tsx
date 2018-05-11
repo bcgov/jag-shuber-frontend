@@ -41,7 +41,6 @@ export default class Navigation extends React.Component<NavigationProps, any> {
                         <p><b>Courthouse: </b><CourthouseDisplay id={currentCourthouseId}/></p>
                     </Nav>
                 </Navbar>
-                <div style={{ zIndex: 1000 }} className="navigationRibbon hidden-xs" role="navigation" />
             </div>
         );
     }
