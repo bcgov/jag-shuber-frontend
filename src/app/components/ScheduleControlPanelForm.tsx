@@ -33,7 +33,7 @@ export default class ScheduleControlPanelForm extends
                     <Field
                         name="startTime"
                         component={TextField}
-                    /> &nbsp;
+                    />&nbsp;
                     <span style={{color: 'white', fontSize: 16}}>&mdash;</span>&nbsp;
                     <Field
                         name="endTime"
@@ -42,10 +42,10 @@ export default class ScheduleControlPanelForm extends
                     <Field
                         name="workSectioId"
                         component={WorkSectionSelector}
-                    />&nbsp;&nbsp; 
-                   <Button bsStyle="danger"><Glyphicon glyph="trash"/></Button>&nbsp;&nbsp;
-                   <Button>Cancel</Button>&nbsp;&nbsp;
-                   <Button>Apply &#8250;</Button>
+                    />&nbsp;&nbsp;&nbsp;&nbsp;
+                   <Button bsStyle="danger"><Glyphicon glyph="trash"/></Button>&nbsp;&nbsp;&nbsp;&nbsp;
+                   <Button className="cancel-button">Cancel</Button>&nbsp;&nbsp;&nbsp;&nbsp;
+                   <Button className="apply-button">Apply &#9658;</Button>
                 </Form>
             </div>
         );

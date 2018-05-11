@@ -7,7 +7,6 @@ import { ListGroup } from 'react-bootstrap';
 import SheriffDragSource from '../containers/SheriffDragSource';
 import DutyRosterSheriffCard from '../containers/DutyRosterSheriffCard';
 import DutyRosterControls from '../containers/DutyRosterControls';
-import './pages.css';
 
 class DutyRoster extends React.PureComponent {
     render() {
@@ -15,11 +14,8 @@ class DutyRoster extends React.PureComponent {
             <div >
                 <div
                     className="toolbar"
-                    style={{
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        maxHeight: 85,
-                        paddingTop: 5
+                    style={{                   
+                        justifyContent: 'center'
                     }}
                 >
                     <DutyRosterControls />

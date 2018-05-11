@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as moment from 'moment';
 import {
     Button,
-    Glyphicon
+    // Glyphicon
 } from 'react-bootstrap';
 import ModalWrapper from './ModalWrapper/ModalWrapper';
 import ScheduleShiftCopyForm from './ScheduleShiftCopyForm';
@@ -13,12 +13,12 @@ export interface ScheduleShiftCopyModalProps {
 export default class ScheduleShiftCopyModal extends React.Component<ScheduleShiftCopyModalProps> {
     render() {
         return (
-            <div style={{position: 'absolute', right: 50}}>
+            <div> 
                 <ModalWrapper
                     title=""
                     showButton={({ handleShow }) => (
-                        <Button bsStyle="link" bsSize="large" style={{color: 'white'}}  onClick={() => handleShow()}>
-                            <Glyphicon glyph="repeat" />
+                        <Button bsStyle="link" bsSize="medium" style={{color: 'black', width: '100%', textAlign: 'left'}}  onClick={() => handleShow()}>
+                            Copy Shifts
                         </Button>
                     )}
                     body={({handleClose}) => (

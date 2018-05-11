@@ -4,14 +4,18 @@ import { connect } from 'react-redux';
 import { RootState } from '../store';
 import {
     Button,
-    Glyphicon
+    Glyphicon,
+    Dropdown,
+    // ButtonToolbar,
+    MenuItem
 } from 'react-bootstrap';
 import { visibleTime } from '../modules/schedule/selectors';
 import { updateVisibleTime as setVisibleTime } from '../modules/schedule/actions';
-import CalendarButton from '../components/FormElements/CalendarButton/CalendarButton';
+import CalendarButton from '../components/CalendarButton/CalendarButton';
 import ScheduleShiftMultiEditForm from './ScheduleShiftMultiEditForm';
-// import ScheduleShiftAddModal from './ScheduleShiftAddModal';
-// import ScheduleShiftCopyModal from './ScheduleShiftCopyModal';
+// import HamburgerMenu from '../components/HamburgerMenu';
+import ScheduleShiftAddModal from './ScheduleShiftAddModal';
+import ScheduleShiftCopyModal from './ScheduleShiftCopyModal';
 
 interface ScheduleControlsStateProps {
     visibleTimeStart: any;
@@ -31,36 +35,38 @@ class ScheduleControls extends React.PureComponent<
     render() {
         const { visibleTimeStart, visibleTimeEnd, updateVisibleTime } = this.props;
         return (
-            
-            <div style={{display: 'flex'}}>
-                <div 
+
+            <div
+                style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                    paddingLeft: 200
+                }}
+            >
+                <div
                     style={{
-                        marginTop: 10
+                        margin: 10,
+                        paddingRight: 15
                     }}
                 >
                     <ScheduleShiftMultiEditForm />
                 </div>
-                <div 
-                    style={{ 
-                        textAlign: 'center', 
-                        display: 'flex', 
-                        backgroundColor: '#327AB7',
-                        marginTop: 5
-                    }}
-                >
+
+                <div className="toolbar-calendar-control">
                     <Button
                         onClick={() => updateVisibleTime(
                             moment(visibleTimeStart).subtract('week', 1),
                             moment(visibleTimeEnd).subtract('week', 1)
                         )}
-                        bsStyle="link" 
-                        bsSize="large" 
-                        style={{color: 'white'}}
+                        bsStyle="link"
+                        bsSize="large"
+                        style={{ color: 'white' }}
                     >
                         <Glyphicon glyph="chevron-left" />
                     </Button>
-                    
-                    <CalendarButton 
+
+                    <CalendarButton
                         onChange={(selectedDate) => updateVisibleTime(
                             moment(selectedDate).startOf('week').add(1, 'day'),
                             moment(selectedDate).endOf('week').subtract(1, 'day')
@@ -77,15 +83,33 @@ class ScheduleControls extends React.PureComponent<
                             moment(visibleTimeStart).add('week', 1),
                             moment(visibleTimeEnd).add('week', 1)
                         )}
-                        bsStyle="link" 
-                        bsSize="large" 
-                        style={{color: 'white'}}
+                        bsStyle="link"
+                        bsSize="large"
+                        style={{ color: 'white' }}
                     >
                         <Glyphicon glyph="chevron-right" />
-                    </Button> 
-                    
-                    {/* <ScheduleShiftAddModal />
-                    <ScheduleShiftCopyModal /> */}
+                    </Button>
+
+                    <div
+                        style={{
+                            paddingTop: 6,
+                            background: '#003366',
+                            zIndex: 1000,
+                            textAlign: 'left'
+                        }}
+                    >
+                        <Dropdown id="schedule-control-menu" pullRight={true}>
+                            <Dropdown.Toggle 
+                                noCaret={true} 
+                                style={{ fontSize: 18, background: 'transparent', color: 'white', border: 0 }}>
+                                <Glyphicon glyph="menu-hamburger" />
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                                <MenuItem eventKey="addShift"><ScheduleShiftAddModal /></MenuItem>
+                                <MenuItem eventKey="copyShifts"><ScheduleShiftCopyModal /></MenuItem>
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </div>
                 </div>
             </div>
 

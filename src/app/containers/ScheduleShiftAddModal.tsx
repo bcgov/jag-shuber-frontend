@@ -4,7 +4,7 @@ import ScheduleShiftCreateForm from './ScheduleShiftCreateForm';
 import ModalWrapper from './ModalWrapper/ModalWrapper';
 import { 
     Button,
-    Glyphicon
+    // Glyphicon
 } from 'react-bootstrap';
 
 export interface ScheduleShiftAddModalProps {
@@ -14,12 +14,17 @@ export interface ScheduleShiftAddModalProps {
 export default class ScheduleShiftAddModal extends React.Component<ScheduleShiftAddModalProps>{
     render() {
         return (
-            <div style={{position: 'absolute', right: 2}}>
+            <div> 
                 <ModalWrapper
                     title="Add a Shift"
                     showButton={({ handleShow }) => (
-                        <Button bsStyle="link" bsSize="large" style={{color: 'white'}}  onClick={() => handleShow()}>
-                            <Glyphicon glyph="plus" />
+                        <Button 
+                            bsStyle="link" 
+                            bsSize="medium" 
+                            style={{color: 'black', width: '100%', textAlign: 'left'}}  
+                            onClick={() => handleShow()}
+                        >
+                            Add Shift
                         </Button>
                     )}
                     body={({ handleClose }) => (

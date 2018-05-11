@@ -8,8 +8,7 @@ import AssignmentList from '../containers/AssignmentList';
 class DefaultAssignments extends React.PureComponent {
     render() {
         return (
-
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', justifyContent: 'center'}}>
                 <Well 
                     style={{ 
                         display: 'flex', 
@@ -17,7 +16,7 @@ class DefaultAssignments extends React.PureComponent {
                         flexDirection: 'column', 
                         flex: '1 1', 
                         maxWidth: '80%', 
-                        minWidth: 800 
+                        minWidth: 800
                         }}
                 >
                     <div style={{ flex: '1', alignSelf: 'center', paddingBottom: 15 }}>

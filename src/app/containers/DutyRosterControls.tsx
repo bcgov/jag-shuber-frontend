@@ -8,7 +8,7 @@ import {
 } from 'react-bootstrap';
 import { visibleTime } from '../modules/timeline/selectors';
 import { updateVisibleTime as setVisibleTime } from '../modules/timeline/actions';
-import CalendarButton from '../components/FormElements/CalendarButton/CalendarButton';
+import CalendarButton from '../components/CalendarButton/CalendarButton';
 import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 import ImportDefaultDutiesModal from '../containers/ImportDefaultDutiesModal';
 
