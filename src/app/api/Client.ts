@@ -26,6 +26,7 @@ import {
     ShiftUpdates
 } from './Api';
 import MockApi from './Mock/MockApi';
+import { SubmissionError } from 'redux-form';
 // import { isCourtAssignment, isEscortAssignment, isJailAssignment, isOtherAssignment } from './utils';
 
 export function extractWorksectionCode(workSectionCodePath: string): WorkSectionCode {
@@ -37,13 +38,47 @@ export function toWorkSectionCodePath(workSectionCode: WorkSectionCode = 'OTHER'
     return `/workSectionCodes/${workSectionCode}`;
 }
 
+class ShuberApiClient extends ShuberApi.Client {
+
+    constructor(baseUrl: string) {
+        super(baseUrl);
+    }
+
+    protected processError(err: any) {
+        // If we've got a validation error, we likely submitted a form
+        // so return a SubmissionError for the sake of redux forms
+        if (ShuberApi.Client.isValidationError(err)) {
+            const fields = err.response.body.fields || {};
+            const fieldKeys = Object.keys(fields);
+            if (fieldKeys.length > 0) {
+                const fieldErrors = {
+                    _error: 'Submission Error'
+                };
+                fieldKeys.forEach(fieldKey => {
+                    const fieldName = fieldKey.replace('model.', '');
+                    fieldErrors[fieldName] = fields[fieldKey].message;
+                });
+                return new SubmissionError(fieldErrors);
+            } else {
+                return new SubmissionError({
+                    _error: 'General Validation Error: todo, extract better error message from response'
+                });
+            }
+        }
+
+        // Otherwise just return the error
+        return super.processError(err);
+    }
+
+}
+
 export default class Client implements API {
     private _client: ShuberApi.Client;
     private _courthouseId: string;
     private _mockApi: MockApi;
 
     constructor(baseUrl: string = '/') {
-        this._client = new ShuberApi.Client(baseUrl);
+        this._client = new ShuberApiClient(baseUrl);
         this._mockApi = new MockApi();
     }
 
@@ -64,16 +99,23 @@ export default class Client implements API {
         return sheriffList;
     }
     async createSheriff(newSheriff: Sheriff): Promise<Sheriff> {
+        const {
+            homeCourthouseId = this.currentCourthouse,
+            rankCode = 'DEPUTYSHERIFF'
+        } = newSheriff;
         const sheriff = await this._client.CreateSheriff({
             ...newSheriff,
-            homeCourthouseId: this.currentCourthouse,
-            rankCode: 'DEPUTYSHERIFF',
+            homeCourthouseId,
+            rankCode
         });
         return sheriff as Sheriff;
     }
     async updateSheriff(sheriffToUpdate: Partial<Sheriff>): Promise<Sheriff> {
-        //return await this._halClient.update('/sheriffs', sheriffToUpdate, true, SheriffResource);
-        throw Error('Not Implemented');
+        const { id } = sheriffToUpdate;
+        if (!id) {
+            throw 'Sheriff to Update has no id';
+        }
+        return await this._client.UpdateSheriff(id, sheriffToUpdate) as Sheriff;
     }
 
     async getAssignments(): Promise<(CourtAssignment | JailAssignment | EscortAssignment | OtherAssignment)[]> {
@@ -129,10 +171,14 @@ export default class Client implements API {
     }
 
     async createAssignmentDuty(duty: Partial<AssignmentDuty>): Promise<AssignmentDuty> {
-        throw 'Not Implemented';
+        return (await this._client.CreateDuty(duty as any) as AssignmentDuty);
     }
     async updateAssignmentDuty(duty: Partial<AssignmentDuty>): Promise<AssignmentDuty> {
-        throw "Not Implemented";
+        const { id } = duty;
+        if (!id) {
+            throw 'Duty to update has no Id';
+        }
+        return (await this._client.UpdateDuty(id, duty as any)) as AssignmentDuty;
     }
 
     async deleteAssignmentDuty(idPath: IdType): Promise<void> {

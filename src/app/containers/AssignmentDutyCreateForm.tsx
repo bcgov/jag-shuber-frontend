@@ -8,8 +8,8 @@ import { default as AssignmentDutyForm, AssignmentDutyFormProps } from '../compo
 import { default as FormSubmitButton, SubmitButtonProps } from '../components/FormElements/SubmitButton';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
-import { 
-    createAssignmentDuty 
+import {
+    createAssignmentDuty
 } from '../modules/assignments/actions';
 import { getAssignment } from '../modules/assignments/selectors';
 import { visibleTime } from '../modules/timeline/selectors';
@@ -23,12 +23,12 @@ import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 // wrapping generic assignment form in redux-form
 const formConfig: ConfigProps<any, AssignmentDutyFormProps> = {
     form: 'CreateAssignmentDuty',
-    onSubmit: (values, dispatch, props) => {
+    onSubmit: async (values, dispatch, props) => {
         const { assignmentId = '-1' } = props;
         const { comments, ...rest } = values;
         let newAssignmentDuty = AssignmentDutyForm.parseAssignmentDutyFromValues(rest);
         newAssignmentDuty.assignmentId = assignmentId;
-        dispatch(createAssignmentDuty(newAssignmentDuty));
+        await dispatch(createAssignmentDuty(newAssignmentDuty));
     }
 };
 

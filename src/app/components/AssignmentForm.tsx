@@ -5,8 +5,7 @@ import {
     Button,
     ListGroup,
     ListGroupItem,
-    Glyphicon,
-    Alert
+    Glyphicon
 } from 'react-bootstrap';
 import {
     Field,
@@ -33,6 +32,7 @@ import TimeSliderField from './FormElements/TimeSliderField';
 import { getWorkSectionColour } from '../api/utils';
 import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 import { ConfirmationModal } from './ConfirmationModal';
+import FormWrapper from './FormElements/FormWrapper';
 class OtherFields extends React.PureComponent {
     render() {
         return (
@@ -333,20 +333,15 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
     }
 
     render() {
-        const { handleSubmit, error } = this.props;
+        const { handleSubmit } = this.props;
         return (
-            <div>
-                {error && (
-                    <Alert bsStyle="danger">
-                        <p>{error}</p>
-                    </Alert>
-                )}
+            <FormWrapper {...this.props}>
                 {this.renderHeading()}
                 <Form onSubmit={handleSubmit}>
                     {this.renderWorkSectionFields()}
                     {this.renderAssignmentTemplateFields()}
                 </Form>
-            </div>
+            </FormWrapper>
         );
     }
 }
