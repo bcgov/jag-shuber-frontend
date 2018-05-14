@@ -34,8 +34,6 @@ import {
     selectShift,
     unselectShift
 } from '../../modules/schedule/actions';
-// import ScheduleShiftEditModal from '../ScheduleShiftEditModal';
-
 
 interface LongTermScheduleProps extends Partial<ShiftScheduleProps> {
     sideBarWidth?: number;
@@ -47,7 +45,6 @@ interface LongTermScheduleDispatchProps {
     assignShift: (link: { sheriffId: IdType, shiftId: IdType }) => void;
     unassignShift: (link: { sheriffId: IdType, shiftId: IdType }) => void;
     fetchLeaves: () => void;
-    // showShiftEditModal: (id: IdType) => void;
     selectShift: (shiftId: IdType) => void;
     unselectShift: (shiftId: IdType) => void;
 }
@@ -113,8 +110,6 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
             assignShift,
             visibleTimeStart,
             visibleTimeEnd,
-            // showShiftEditModal,
-            // selectedShifts = []
         } = this.props;
 
         return (

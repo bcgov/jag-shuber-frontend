@@ -33,17 +33,19 @@ export default class ScheduleControlPanelForm extends
                     <Field
                         name="time"
                         component={TextField}
-                        onClick={() => alert('clicked')}
                     />&nbsp;
                     <Field
-                        name="workSectioId"
+                        name="workSectionId"
                         component={WorkSectionSelector}
                     />&nbsp;&nbsp;&nbsp;&nbsp;
                    <Button bsStyle="danger"><Glyphicon glyph="trash"/></Button>&nbsp;&nbsp;&nbsp;&nbsp;
                    <Button className="cancel-button">Cancel</Button>&nbsp;&nbsp;&nbsp;&nbsp;
-                   <Button className="apply-button">
+                   {/* <ScheduleShiftMultiEditForm.SubmitButton className="apply-button">
                         Apply <span style={{paddingTop: 2, fontSize: 10}}>&#9658;</span>
-                   </Button>
+                   </ScheduleShiftMultiEditForm.SubmitButton> */}
+                   {/* <Button className="apply-button">
+                        Apply <span style={{paddingTop: 2, fontSize: 10}}>&#9658;</span>
+                   </Button> */}
                 </Form>
             </div>
         );

@@ -57,6 +57,9 @@ class ScheduleControls extends React.PureComponent<
                     }}
                 >
                     <ScheduleShiftMultiEditForm />
+                    <ScheduleShiftMultiEditForm.SubmitButton style={{backgroundColor: 'red'}}>
+                        Apply <span style={{paddingTop: 2, fontSize: 10}}>&#9658;</span>
+                   </ScheduleShiftMultiEditForm.SubmitButton> 
                 </div>
 
                 <div className="toolbar-calendar-control">

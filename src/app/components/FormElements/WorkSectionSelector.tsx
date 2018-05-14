@@ -7,7 +7,13 @@ export default class WorkSectionSelector extends React.PureComponent<FormFieldWr
     render() {        
         let data = Object.keys(WORK_SECTIONS).map((key, index) => ({key, value: WORK_SECTIONS[key]}));
         return (
-            <Selector data={data} {...this.props} allowNone={true} noneLabel="Not Applicable"/>
+            <Selector 
+                data={data} 
+                {...this.props} 
+                allowNone={true} 
+                noneLabel="Not Applicable" 
+                showVariedOption={true}
+            />
         );
     }
 }

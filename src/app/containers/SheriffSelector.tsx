@@ -26,7 +26,13 @@ class SheriffList extends React.PureComponent<
             }));
         
         return (
-            <Selector {...restProps} data={selectorValues} allowNone={true} noneLabel="Not Assigned" />
+            <Selector 
+                {...restProps} 
+                data={selectorValues} 
+                allowNone={true} 
+                noneLabel="Not Assigned"
+                showVariedOption={true}
+            />
         );
     }
 
