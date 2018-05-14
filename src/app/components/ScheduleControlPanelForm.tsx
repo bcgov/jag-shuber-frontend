@@ -31,14 +31,10 @@ export default class ScheduleControlPanelForm extends
                         component={SheriffSelector}
                     /> &nbsp;
                     <Field
-                        name="startTime"
+                        name="time"
                         component={TextField}
+                        onClick={() => alert('clicked')}
                     />&nbsp;
-                    <span style={{color: 'white', fontSize: 16}}>&mdash;</span>&nbsp;
-                    <Field
-                        name="endTime"
-                        component={TextField}
-                    /> &nbsp;
                     <Field
                         name="workSectioId"
                         component={WorkSectionSelector}

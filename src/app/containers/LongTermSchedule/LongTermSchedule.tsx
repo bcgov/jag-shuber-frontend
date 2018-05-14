@@ -26,8 +26,16 @@ import './LongTermSchedule.css';
 import ShiftCard from '../../components/ShiftCard';
 import SheriffDropTarget from '../SheriffDropTarget';
 import SheriffDisplay from '../SheriffDisplay';
-import { visibleTime } from '../../modules/schedule/selectors';
-import ScheduleShiftEditModal from '../ScheduleShiftEditModal';
+import {
+    visibleTime,
+    selectedShifts
+} from '../../modules/schedule/selectors';
+import {
+    selectShift,
+    unselectShift
+} from '../../modules/schedule/actions';
+// import ScheduleShiftEditModal from '../ScheduleShiftEditModal';
+
 
 interface LongTermScheduleProps extends Partial<ShiftScheduleProps> {
     sideBarWidth?: number;
@@ -39,7 +47,9 @@ interface LongTermScheduleDispatchProps {
     assignShift: (link: { sheriffId: IdType, shiftId: IdType }) => void;
     unassignShift: (link: { sheriffId: IdType, shiftId: IdType }) => void;
     fetchLeaves: () => void;
-    showShiftEditModal: (id: IdType) => void;
+    // showShiftEditModal: (id: IdType) => void;
+    selectShift: (shiftId: IdType) => void;
+    unselectShift: (shiftId: IdType) => void;
 }
 
 interface LongTermScheduleStateProps {
@@ -47,6 +57,7 @@ interface LongTermScheduleStateProps {
     leaves: Leave[];
     visibleTimeStart: any;
     visibleTimeEnd: any;
+    selectedShifts: IdType[];
 }
 
 class LongTermSchedule extends React.Component<LongTermScheduleProps
@@ -80,13 +91,30 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
         return dateFilteredShifts.length > 0;
     }
 
+    private isShiftSelected(shiftId: IdType): boolean {
+        // tslint:disable-next-line:no-shadowed-variable
+        const { selectedShifts = [] } = this.props;
+        return selectedShifts.indexOf(shiftId) >= 0;
+    }
+
+    private toggleShiftSelect(shiftId: IdType) {
+        // tslint:disable-next-line:no-shadowed-variable
+        const { selectShift, unselectShift} = this.props;
+        if (this.isShiftSelected(shiftId)) {
+            unselectShift(shiftId);
+        } else {
+            selectShift(shiftId);
+        }
+    }
+
     render() {
         const {
             shifts = [],
             assignShift,
             visibleTimeStart,
             visibleTimeEnd,
-            showShiftEditModal
+            // showShiftEditModal,
+            // selectedShifts = []
         } = this.props;
 
         return (
@@ -108,11 +136,15 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
                                 && !this.isSheriffScheduledForDay(sheriff.id, moment(shift.startDateTime))
                             }
                             className="shift-card drop-shadow-hover"
-                            onClick={() => showShiftEditModal(shift.id)}
+                            onClick={() => this.toggleShiftSelect(shift.id)}
                         >
-                            <ShiftCard shift={shift}>
-                                <div style={{ paddingBottom: 5 }}>{shift.title}</div>
+                            <ShiftCard 
+                                shift={shift} 
+                                isSelected={this.isShiftSelected(shift.id)}
+                                isAssigned={shift.sheriffId != undefined}
+                            >
                                 <SheriffDisplay sheriffId={shift.sheriffId} />
+                                <div style={{ paddingBottom: 5 }}>{shift.title}</div>        
                             </ShiftCard>
                         </SheriffDropTarget>
                     )}
@@ -127,7 +159,8 @@ const mapStateToProps = (state: RootState, props: LongTermScheduleProps) => {
     return {
         shifts: allShifts(state),
         leaves: allLeaves(state),
-        ...currentVisibleTime
+        ...currentVisibleTime,
+        selectedShifts: selectedShifts(state)
     };
 };
 
@@ -136,7 +169,9 @@ const mapDispatchToProps = {
     assignShift: linkShift,
     unassignShift: unlinkShift,
     fetchLeaves: getLeaves,
-    showShiftEditModal: (id: IdType) => ScheduleShiftEditModal.ShowAction(id)
+    // showShiftEditModal: (id: IdType) => ScheduleShiftEditModal.ShowAction(id)
+    selectShift: selectShift,
+    unselectShift: unselectShift
 };
 
 export default connect<LongTermScheduleStateProps, LongTermScheduleDispatchProps, LongTermScheduleProps>(

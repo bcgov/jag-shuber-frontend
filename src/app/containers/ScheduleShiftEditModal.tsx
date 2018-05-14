@@ -60,7 +60,7 @@ class ScheduleShiftEditModal extends React.PureComponent<CompositeProps>{
                         confirmBtnStyle="danger"
                         message={deleteConfirmationMessage}
                         title="Delete Shift"
-                    />,
+                    />
                     <ScheduleShiftEditForm.SubmitButton key="save">Save</ScheduleShiftEditForm.SubmitButton>
                 </Modal.Footer>
             </Modal>

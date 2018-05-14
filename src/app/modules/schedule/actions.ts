@@ -1,4 +1,5 @@
 import { Action } from 'redux';
+import { IdType } from '../../api/Api';
 
 // The following gives us type-safe redux actions
 // see https://medium.com/@dhruvrajvanshi/some-tips-on-type-safety-with-redux-98588a85604c
@@ -6,6 +7,8 @@ import { Action } from 'redux';
 
 type IActionMap = {
   'SCHEDULE_UPDATE_VISIBLETIME': { visibleTimeStart: any, visibleTimeEnd: any };
+  'SCHEDULE_SHIFT_SELECT': IdType;
+  'SCHEDULE_SHIFT_UNSELECT': IdType;
 };
 
 export type IActionType = keyof IActionMap;
@@ -28,4 +31,12 @@ function actionCreator<Type extends IActionType>(type: Type) {
 
 export const updateVisibleTime = (visibleTimeStart: any, visibleTimeEnd: any) => (
   actionCreator('SCHEDULE_UPDATE_VISIBLETIME')({ visibleTimeStart, visibleTimeEnd })
+);
+
+export const selectShift = (shiftId: IdType) => (
+  actionCreator('SCHEDULE_SHIFT_SELECT')(shiftId)
+);
+
+export const unselectShift = (shiftId: IdType) => (
+  actionCreator('SCHEDULE_SHIFT_UNSELECT')(shiftId)
 );

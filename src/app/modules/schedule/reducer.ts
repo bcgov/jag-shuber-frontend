@@ -3,6 +3,7 @@ import {
   IActionPayload,
   IAction
 } from './actions';
+import { IdType } from '../../api/Api';
 
 export type ReducerResponse<State> = State;
 export type ReducerCases<State> = {
@@ -28,11 +29,36 @@ export function createReducer<State>(
 export interface ScheduleState {
   visibleTimeStart: any;
   visibleTimeEnd: any;
+  selectedShiftIds: IdType[];
 }
 
 const reducer = createReducer<ScheduleState>({
   SCHEDULE_UPDATE_VISIBLETIME: (state, { visibleTimeStart, visibleTimeEnd }) => {
     return { ...state, visibleTimeStart, visibleTimeEnd };
+  },
+  SCHEDULE_SHIFT_SELECT: (state, shiftId) => {
+    const { selectedShiftIds = [] } = state;
+    if (!shiftId || selectedShiftIds.indexOf(shiftId) >= 0) {
+      return { ...state };
+    }
+
+    let newSelectedShiftIds = selectedShiftIds.slice();
+    newSelectedShiftIds.push(shiftId);
+
+    return { ...state, selectedShiftIds: newSelectedShiftIds };
+  },
+  SCHEDULE_SHIFT_UNSELECT: (state, shiftId) => {
+    const { selectedShiftIds = [] } = state;
+    const shiftIdIndex = selectedShiftIds.indexOf(shiftId);
+
+    if (shiftIdIndex >= 0) {
+      let newSelectedShiftIds = selectedShiftIds.slice();
+      newSelectedShiftIds.splice(shiftIdIndex, 1);
+
+      return { ...state, selectedShiftIds: newSelectedShiftIds };
+    }
+
+    return { ...state };
   }
 });
 

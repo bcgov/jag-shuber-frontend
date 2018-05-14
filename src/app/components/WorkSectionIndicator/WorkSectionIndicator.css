@@ -2,7 +2,14 @@
     height: 0;
     width: 0;        
     border-top: 25px solid red;
-	border-right: 25px solid transparent;
-    /* top: 0;
-    position: absolute; */
+    position: absolute;
+}
+
+.work-section-indicator.top-left {
+    border-right: 25px solid transparent;
+}
+
+.work-section-indicator.top-right {
+    border-left: 25px solid transparent;   
+    right: 0px;
 }
