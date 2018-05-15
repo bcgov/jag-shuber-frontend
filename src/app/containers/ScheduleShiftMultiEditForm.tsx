@@ -18,7 +18,7 @@ import {
 } from '../modules/schedule/selectors';
 import { getShift } from '../modules/shifts/selectors';
 import { Shift } from '../api/Api';
-// import { editShift } from '../modules/shifts/actions';
+import { editShift } from '../modules/shifts/actions';
 // import { 
 //     IdType
 // } from '../api';
@@ -28,9 +28,11 @@ import { Shift } from '../api/Api';
 const formConfig: ConfigProps<any, ScheduleControlPanelFormProps> = {
     form: 'EditMultipleShift',
     onSubmit: (values, dispatch, props) => {
-        const updatedShift = { ...values };
-        console.log(updatedShift);
-        //dispatch(editShift(updatedShift));
+        const updateDetails = {
+            shiftIds: props.selectedShiftIds ? props.selectedShiftIds : [], 
+            updateDetails: ScheduleControlPanelForm.parseUpdateDetailsFromValues(values)
+        };
+        dispatch(editShift(updateDetails));
     },
     enableReinitialize: true
 };
@@ -69,7 +71,8 @@ const mapStateToProps = (state: RootState, props: ScheduleShiftMultiEditFormProp
                     workSectionId: doWorkSectionsMatch ? shiftToCompare.workSectionId : 'varied',
                     sheriffId: doAssignedSheriffMatch ? shiftToCompare.sheriffId : 'varied',
                     time: `${startTimeString} - ${endTimeString}`
-                }
+                },
+                selectedShiftIds: initialSelectedShiftIds
             };
         } else {
             return {};

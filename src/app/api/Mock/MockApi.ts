@@ -17,7 +17,8 @@ import {
     AlternateAssignment,
     SheriffDuty,
     AssignmentDutyDetails,
-    Courthouse
+    Courthouse,
+    ShiftUpdates
 } from '../Api';
 import {
     sheriffList,
@@ -110,6 +111,21 @@ export default class MockClient implements API {
 
     private getId(): IdType {
         return `0000-00000-${this.increasingId++}`;
+    }
+
+    private modifyShift(shiftToUpdate: Shift, updateDetails: ShiftUpdates): Shift {
+        let updatedShift = shiftToUpdate;
+        if (updateDetails) {
+            const newSheriffId = updateDetails.sheriffId;
+            const newWorkSectionId = updateDetails.workSectionId;
+            if (newSheriffId !== 'varied') {
+                updatedShift.sheriffId = updateDetails.sheriffId;
+            }
+            if (newWorkSectionId !== 'varied') {
+                updatedShift.workSectionId = updateDetails.workSectionId;
+            }
+        }
+        return updatedShift;
     }
 
     async init(): Promise<void> {
@@ -241,21 +257,24 @@ export default class MockClient implements API {
         return sheriffShifts;
     }
 
-    async updateShift(shiftToUpdate: Partial<Shift>): Promise<Shift> {
+    async updateShift(shiftIds: IdType[], shiftUpdates: ShiftUpdates): Promise<Shift[]> {
         await randomDelay();
-        if (shiftToUpdate.id == null) {
-            throw Error('No Shift Id Specified');
-        }
-        let updatedShift = shiftToUpdate as Shift;
-
-        let index = sheriffShifts.findIndex(s => s.id === updatedShift.id);
-        if (index < 0) {
-            throw Error(`No Shift could be located for ${updatedShift.id}`);
+        
+        if (!shiftIds) {
+            throw new Error('No ID specified');
         }
 
-        // todo: Should probably do a merge (i.e. patch of the objects here)
-        sheriffShifts[index] = updatedShift;
-        return updatedShift;
+        let updatedShifts: Shift[] = [];
+
+        shiftIds.forEach(shiftId => {
+            const shiftIndex = sheriffShifts.findIndex((shift) => shift.id === shiftId);
+            if (shiftIndex < 0) {
+                throw Error(`No shift could be located for ${shiftId}`);
+            }
+            updatedShifts.push(this.modifyShift(sheriffShifts[shiftIndex], shiftUpdates));
+        });
+
+        return updatedShifts;
     }
 
     async createShift(newShift: Partial<Shift>): Promise<Shift> {

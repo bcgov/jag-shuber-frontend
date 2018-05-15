@@ -9,7 +9,8 @@ import {
     Shift,
     IdType,
     ShiftMap,
-    ShiftCopyOptions
+    ShiftCopyOptions,
+    ShiftUpdates
 } from '../../../api/Api';
 
 // Get the Map
@@ -106,15 +107,44 @@ class CopyShiftsRequest extends RequestAction<ShiftCopyOptions, Shift[], ShiftMo
 
 export const copyShiftsFromPrevWeek = new CopyShiftsRequest();
 
+type ShiftUpdateOptions = { shiftIds: IdType[], updateDetails: ShiftUpdates };
 // Shift Edit
-class UpdateShiftRequest extends CreateShiftRequest {
+class UpdateShiftRequest  extends RequestAction<ShiftUpdateOptions, Shift[], ShiftModuleState> {
     constructor(namespace: string = STATE_KEY, actionName: string = 'updateShift') {
         super(namespace, actionName);
     }
 
-    public async doWork(shift: Partial<Shift>, { api }: ThunkExtra): Promise<Shift> {
-        let newShift = await api.updateShift(shift);
-        return newShift;
+    public async doWork(shiftUpdateDetails: ShiftUpdateOptions, { api }: ThunkExtra): Promise<Shift[]> {
+        let updatedShifts = await api.updateShift(shiftUpdateDetails.shiftIds, shiftUpdateDetails.updateDetails);
+        return updatedShifts;
+    }
+
+    reduceSuccess(moduleState: ShiftModuleState, action: { type: string, payload: Shift[] }): ShiftModuleState {
+        // Call the super's reduce success and pull out our state and
+        // the shiftMap state
+        const {
+            shiftMap: {
+                data: currentMap = {},
+                ...restMap
+            } = {},
+            ...restState
+        } = super.reduceSuccess(moduleState, action);
+ 
+        // Create a new map and update the assignments in it
+        const newMap = { ...currentMap };
+        action.payload.forEach(shift => {
+            newMap[shift.id] = shift;
+        });
+        
+        // Merge the state back together with the original in a new object
+        const newState: Partial<ShiftModuleState> = {
+            ...restState,
+            shiftMap: {
+                ...restMap,
+                data: newMap
+            }
+        };
+        return newState;
     }
 }
 

@@ -14,6 +14,7 @@ import SheriffSelector from '../containers/SheriffSelector';
 import TextField from '../components/FormElements/TextField';
 import WorkSectionSelector from '../components/FormElements/WorkSectionSelector';
 import { ConfirmationModal } from './ConfirmationModal';
+import { IdType, ShiftUpdates } from '../api/Api';
 
 export interface ScheduleControlPanelFormProps {
     handleSubmit?: () => void;
@@ -21,10 +22,19 @@ export interface ScheduleControlPanelFormProps {
     onCancel?: () => void;
     onDelete?: () => void;
     onApply?: () => void;
+    selectedShiftIds?: IdType[];
 }
 
 export default class ScheduleControlPanelForm extends
     React.Component<ScheduleControlPanelFormProps & InjectedFormProps<{}, ScheduleControlPanelFormProps>, {}> {
+
+    static parseUpdateDetailsFromValues(values: any): ShiftUpdates {
+        // const {sheriffId, workSectionId, ...rest} = values;
+        // const updateDetails: ShiftUpdates = { ...rest };
+        // updateDetails.sheriffId = sheriffId === 'varied' ? 
+        return {...values} as ShiftUpdates;
+    }
+
     render() {
         const { handleSubmit, onApply, onCancel, onDelete } = this.props;
         return (
@@ -53,7 +63,7 @@ export default class ScheduleControlPanelForm extends
                         message={<p style={{ fontSize: 14 }}>Please confirm that you would like to <b>permanently delete</b> the selected shift(s).</p>}
                         title="Delete Shift(s)"
                     />
-                   <Button className="cancel-button" onClick={() => onCancel && onCancel()}>
+                    <Button className="cancel-button" onClick={() => onCancel && onCancel()}>
                         Cancel
                     </Button>&nbsp;&nbsp;&nbsp;&nbsp;
                    <Button className="apply-button" onClick={() => onApply && onApply()}>

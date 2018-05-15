@@ -10,7 +10,7 @@ export type SheriffMap = { [key: number]: Sheriff };
 export type AssignmentMap = { [key: number]: Assignment };
 export type AssignmentDutyMap = { [key: number]: AssignmentDuty };
 export type AssignmentDutyDetailsMap = { [key: number]: AssignmentDutyDetails };
-export type WorkSectionCode = 'COURTS' | 'JAIL' | 'ESCORTS' | 'OTHER';
+export type WorkSectionCode = 'COURTS' | 'JAIL' | 'ESCORTS' | 'OTHER' | 'varied';
 export type Assignment = CourtAssignment | JailAssignment | EscortAssignment | OtherAssignment;
 export type TimeType = string | number;
 export type CourtroomMap = { [key: number]: Courtroom };
@@ -218,6 +218,13 @@ export interface Shift {
     endDateTime: DateType;
 }
 
+export interface ShiftUpdates {
+    sheriffId?: IdType; 
+    startTime?: DateType;
+    endTime?: DateType;
+    workSectionId?: WorkSectionCode;
+}
+
 export interface ShiftCopyOptions {
     shouldIncludeSheriffs: boolean;
     startOfWeekSource: DateType;
@@ -274,7 +281,7 @@ export interface API {
 
     // Sheriff Shifts
     getShifts(): Promise<Shift[]>;
-    updateShift(shiftToUpdate: Partial<Shift>): Promise<Shift>;
+    updateShift(shiftIds: IdType[], shiftUpdates: ShiftUpdates): Promise<Shift[]>;
     createShift(newShift: Partial<Shift>): Promise<Shift>;
     deleteShift(shiftIds: IdType[]): Promise<void>;
     copyShifts(shiftCopyDetails: ShiftCopyOptions): Promise<Shift[]>;

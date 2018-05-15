@@ -74,7 +74,12 @@ class ScheduleControls extends React.PureComponent<
                     }}
                 >
                     <ScheduleShiftMultiEditForm
-                        onApply={() => submit && submit()}
+                        onApply={
+                            () => {
+                                submit && submit();
+                                cancel && cancel();
+                            }
+                        }
                         onCancel={() => cancel && cancel()}
                         onDelete={
                             () => {
