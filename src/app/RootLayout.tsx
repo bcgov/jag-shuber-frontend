@@ -16,7 +16,6 @@ import ManageSheriffs from './pages/ManageSheriffs';
 import DefaultAssignments from './pages/DefaultAssignments';
 import Scheduling from './pages/Scheduling';
 import AssignmentDutyEditModal from './containers/AssignmentDutyEditModal';
-import ScheduleShiftEditModal from './containers/ScheduleShiftEditModal';
 import CourthouseSelector from './containers/CourthouseSelector';
 import api from './api/index';
 import Client from './api/Client';
@@ -66,7 +65,6 @@ class Layout extends React.Component {
               <Route path="/sheriffs/manage" component={ManageSheriffs} />
               <Route path="/assignments/manage/default" component={DefaultAssignments} />
               <AssignmentDutyEditModal />
-              <ScheduleShiftEditModal/>
               <SheriffProfileModal />
               <ScheduleShiftCopyModal />
               <ScheduleShiftAddModal />
