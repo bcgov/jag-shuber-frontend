@@ -53,7 +53,7 @@ export default class CalendarButton extends React.Component<CalendarButtonProps,
         const { isOpen } = this.state;
         const display = isOpen ? 'block' : 'none';
         return (
-            <div >
+            <div>
                 <Button
                     onClick={() => this.toggleShow()}
                     bsStyle="link"

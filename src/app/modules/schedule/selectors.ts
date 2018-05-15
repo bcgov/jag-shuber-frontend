@@ -14,4 +14,4 @@ export const isSelected = (shiftId: IdType) => (state: RootState): boolean => {
 export const selectedShifts = (state: RootState): IdType[] => {
     const { selectedShiftIds = [] } = state.schedule;
     return selectedShiftIds;
-}
+};

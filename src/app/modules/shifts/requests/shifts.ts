@@ -121,16 +121,16 @@ class UpdateShiftRequest extends CreateShiftRequest {
 export const updateShiftRequest = new UpdateShiftRequest();
 
 // Shift Delete
-class DeleteShiftRequest extends RequestAction<IdType, IdType, ShiftModuleState> {
+class DeleteShiftRequest extends RequestAction<IdType[], IdType[], ShiftModuleState> {
     constructor(namespace: string = STATE_KEY, actionName: string = 'deleteShift') {
         super(namespace, actionName);
     }
-    public async doWork(request: IdType, { api }: ThunkExtra): Promise<IdType> {
+    public async doWork(request: IdType[], { api }: ThunkExtra): Promise<IdType[]> {
         await api.deleteShift(request);
         return request;
     }
 
-    reduceSuccess(moduleState: ShiftModuleState, action: { type: string, payload: IdType }): ShiftModuleState {
+    reduceSuccess(moduleState: ShiftModuleState, action: { type: string, payload: IdType[] }): ShiftModuleState {
         // Call the super's reduce success and pull out our state and
         // the shiftMap state
         const {
@@ -143,7 +143,9 @@ class DeleteShiftRequest extends RequestAction<IdType, IdType, ShiftModuleState>
  
         // Create a new map and remove the assignment from it
         const newMap = { ...currentMap };
-        delete newMap[action.payload];
+        action.payload.forEach(shiftId => {
+            delete newMap[shiftId];
+        });
         
         // Merge the state back together with the original in a new object
         const newState: Partial<ShiftModuleState> = {

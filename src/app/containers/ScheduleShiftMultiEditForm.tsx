@@ -2,7 +2,8 @@ import * as React from 'react';
 import * as moment from 'moment';
 import {
     reduxForm,
-    ConfigProps
+    ConfigProps,
+    submit
 } from 'redux-form';
 import {
     default as ScheduleControlPanelForm,
@@ -42,24 +43,24 @@ const mapStateToProps = (state: RootState, props: ScheduleShiftMultiEditFormProp
     const initialSelectedShiftIds = selectedShifts(state);
     if (initialSelectedShiftIds.length > 0) {
         const selectedShiftsList = initialSelectedShiftIds.map((value) => getShift(value)(state));
-        
+
         if (selectedShiftsList) {
             const shiftToCompare = selectedShiftsList[0] as Shift;
-            const { 
-                workSectionId: workSectionIdToCompare, 
+            const {
+                workSectionId: workSectionIdToCompare,
                 sheriffId: sheriffIdToCompare,
-                startDateTime, 
+                startDateTime,
                 endDateTime
             } = shiftToCompare;
             const startTimeToCompare = moment(startDateTime).format('HH:mm');
             const endTimeToCompare = moment(endDateTime).format('HH:mm');
-            const doWorkSectionsMatch: boolean = 
+            const doWorkSectionsMatch: boolean =
                 selectedShiftsList.every(s => s.workSectionId === workSectionIdToCompare);
-            const doAssignedSheriffMatch: boolean = 
+            const doAssignedSheriffMatch: boolean =
                 selectedShiftsList.every(s => s.sheriffId === sheriffIdToCompare);
-            const doStartTimesMatch: boolean = 
+            const doStartTimesMatch: boolean =
                 selectedShiftsList.every(s => moment(s.startDateTime).format('HH:mm') === startTimeToCompare);
-            const doEndTimesMatch: boolean = 
+            const doEndTimesMatch: boolean =
                 selectedShiftsList.every(s => moment(s.endDateTime).format('HH:mm') === endTimeToCompare);
             const startTimeString = doStartTimesMatch ? startTimeToCompare : 'varied';
             const endTimeString = doEndTimesMatch ? endTimeToCompare : 'varied';
@@ -69,7 +70,7 @@ const mapStateToProps = (state: RootState, props: ScheduleShiftMultiEditFormProp
                     sheriffId: doAssignedSheriffMatch ? shiftToCompare.sheriffId : 'varied',
                     time: `${startTimeString} - ${endTimeString}`
                 }
-            };            
+            };
         } else {
             return {};
         }
@@ -84,4 +85,8 @@ export default class ScheduleShiftMultiEditForm extends
     connect<any, {}, ScheduleShiftMultiEditFormProps>(mapStateToProps)(reduxForm(formConfig)(ScheduleControlPanelForm)) {
     static SubmitButton = (props: Partial<SubmitButtonProps>) =>
         <FormSubmitButton {...props} formName={formConfig.form} />
+
+    static submitAction() {
+        return submit(formConfig.form);
+    }
 }

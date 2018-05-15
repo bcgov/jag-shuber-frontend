@@ -8,12 +8,20 @@ import {
     Dropdown,
     MenuItem
 } from 'react-bootstrap';
-import { visibleTime } from '../modules/schedule/selectors';
-import { updateVisibleTime as setVisibleTime } from '../modules/schedule/actions';
+import {
+    visibleTime,
+    selectedShifts
+} from '../modules/schedule/selectors';
+import {
+    updateVisibleTime as setVisibleTime,
+    clearSelectedShifts
+} from '../modules/schedule/actions';
+import { deleteShift } from '../modules/shifts/actions';
 import CalendarButton from '../components/CalendarButton/CalendarButton';
 import ScheduleShiftMultiEditForm from './ScheduleShiftMultiEditForm';
 import ScheduleShiftAddModal from './ScheduleShiftAddModal';
 import ScheduleShiftCopyModal from './ScheduleShiftCopyModal';
+import { IdType } from '../api/Api';
 
 interface ScheduleControlsStateProps {
     visibleTimeStart: any;
@@ -21,6 +29,10 @@ interface ScheduleControlsStateProps {
 }
 
 interface ScheduleControlsProps {
+    submit?: () => void;
+    cancel?: () => void;
+    deleteShift?: (shiftIds: IdType[]) => void;
+    selectedShifts?: IdType[];
 }
 
 interface ScheduleDistpatchProps {
@@ -33,12 +45,17 @@ class ScheduleControls extends React.PureComponent<
     ScheduleControlsProps & ScheduleControlsStateProps & ScheduleDistpatchProps> {
 
     render() {
-        const { 
-            visibleTimeStart, 
-            visibleTimeEnd, 
-            updateVisibleTime, 
+        const {
+            visibleTimeStart,
+            visibleTimeEnd,
+            updateVisibleTime,
             showShiftCopyModal,
-            showShiftAddModal 
+            showShiftAddModal,
+            submit,
+            cancel,
+            // tslint:disable:no-shadowed-variable
+            deleteShift,
+            selectedShifts = []
         } = this.props;
 
         return (
@@ -56,10 +73,16 @@ class ScheduleControls extends React.PureComponent<
                         paddingRight: 15
                     }}
                 >
-                    <ScheduleShiftMultiEditForm />
-                    <ScheduleShiftMultiEditForm.SubmitButton style={{backgroundColor: 'red'}}>
-                        Apply <span style={{paddingTop: 2, fontSize: 10}}>&#9658;</span>
-                   </ScheduleShiftMultiEditForm.SubmitButton> 
+                    <ScheduleShiftMultiEditForm
+                        onApply={() => submit && submit()}
+                        onCancel={() => cancel && cancel()}
+                        onDelete={
+                            () => {
+                                deleteShift && deleteShift(selectedShifts);
+                                cancel && cancel();
+                            }
+                        }
+                    />
                 </div>
 
                 <div className="toolbar-calendar-control">
@@ -75,18 +98,19 @@ class ScheduleControls extends React.PureComponent<
                         <Glyphicon glyph="chevron-left" />
                     </Button>
 
-                    <CalendarButton
-                        onChange={(selectedDate) => updateVisibleTime(
-                            moment(selectedDate).startOf('week').add(1, 'day'),
-                            moment(selectedDate).endOf('week').subtract(1, 'day')
-                        )}
-                        defaultValue={visibleTimeStart}
-                        todayOnClick={() => updateVisibleTime(
-                            moment().startOf('week').add(1, 'day'),
-                            moment().endOf('week').subtract(1, 'day')
-                        )}
-                    />
-
+                    <div style={{ paddingTop: 5 }}>
+                        <CalendarButton
+                            onChange={(selectedDate) => updateVisibleTime(
+                                moment(selectedDate).startOf('week').add(1, 'day'),
+                                moment(selectedDate).endOf('week').subtract(1, 'day')
+                            )}
+                            defaultValue={visibleTimeStart}
+                            todayOnClick={() => updateVisibleTime(
+                                moment().startOf('week').add(1, 'day'),
+                                moment().endOf('week').subtract(1, 'day')
+                            )}
+                        />
+                    </div>
                     <Button
                         onClick={() => updateVisibleTime(
                             moment(visibleTimeStart).add('week', 1),
@@ -108,8 +132,8 @@ class ScheduleControls extends React.PureComponent<
                         }}
                     >
                         <Dropdown id="schedule-control-menu" pullRight={true}>
-                            <Dropdown.Toggle 
-                                noCaret={true} 
+                            <Dropdown.Toggle
+                                noCaret={true}
                                 style={{ fontSize: 18, background: 'transparent', color: 'white', border: 0 }}>
                                 <Glyphicon glyph="menu-hamburger" />
                             </Dropdown.Toggle>
@@ -127,13 +151,20 @@ class ScheduleControls extends React.PureComponent<
 }
 
 const mapStateToProps = (state: RootState) => {
-    return visibleTime(state);
+    const currentVisibleTime = visibleTime(state);
+    return {
+        ...currentVisibleTime,
+        selectedShifts: selectedShifts(state)
+    };
 };
 
 const mapDispatchToProps = {
     updateVisibleTime: setVisibleTime,
     showShiftCopyModal: () => ScheduleShiftCopyModal.ShowAction(),
-    showShiftAddModal: () => ScheduleShiftAddModal.ShowAction()
+    showShiftAddModal: () => ScheduleShiftAddModal.ShowAction(),
+    submit: ScheduleShiftMultiEditForm.submitAction,
+    cancel: clearSelectedShifts,
+    deleteShift: deleteShift
 };
 
 // tslint:disable-next-line:max-line-length

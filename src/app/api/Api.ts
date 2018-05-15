@@ -276,7 +276,7 @@ export interface API {
     getShifts(): Promise<Shift[]>;
     updateShift(shiftToUpdate: Partial<Shift>): Promise<Shift>;
     createShift(newShift: Partial<Shift>): Promise<Shift>;
-    deleteShift(shiftId: IdType): Promise<void>;
+    deleteShift(shiftIds: IdType[]): Promise<void>;
     copyShifts(shiftCopyDetails: ShiftCopyOptions): Promise<Shift[]>;
 
     // Sheriff Leaves

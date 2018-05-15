@@ -164,7 +164,6 @@ const mapDispatchToProps = {
     assignShift: linkShift,
     unassignShift: unlinkShift,
     fetchLeaves: getLeaves,
-    // showShiftEditModal: (id: IdType) => ScheduleShiftEditModal.ShowAction(id)
     selectShift: selectShift,
     unselectShift: unselectShift
 };

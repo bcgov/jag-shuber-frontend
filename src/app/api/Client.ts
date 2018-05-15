@@ -512,9 +512,9 @@ export default class Client implements API {
         console.warn('Using Mock API');
         return this._mockApi.createShift(newShift);
     }
-    deleteShift(shiftId: IdType): Promise<void> {
+    deleteShift(shiftIds: IdType[]): Promise<void> {
         console.warn('Using Mock API');
-        return this._mockApi.deleteShift(shiftId);
+        return this._mockApi.deleteShift(shiftIds);
     }
 
     copyShifts(shiftCopyDetails: ShiftCopyOptions): Promise<Shift[]> {

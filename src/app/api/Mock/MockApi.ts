@@ -271,18 +271,19 @@ export default class MockClient implements API {
         return shiftToAdd as Shift;
     }
 
-    async deleteShift(shiftId: IdType): Promise<void> {
+    async deleteShift(shiftIds: IdType[]): Promise<void> {
         await randomDelay();
-        if (shiftId == null) {
+        if (!shiftIds) {
             throw new Error('No ID specified');
         }
 
-        const shiftIndex = sheriffShifts.findIndex((shift) => shift.id === shiftId);
-        if (shiftIndex < 0) {
-            throw Error(`No shift could be located for ${shiftId}`);
-        }
-
-        sheriffShifts.splice(shiftIndex, 1);
+        shiftIds.forEach(shiftId => {
+            const shiftIndex = sheriffShifts.findIndex((shift) => shift.id === shiftId);
+            if (shiftIndex < 0) {
+                throw Error(`No shift could be located for ${shiftId}`);
+            }
+            sheriffShifts.splice(shiftIndex, 1);
+        });
     }
 
     async copyShifts(shiftCopyDetails: ShiftCopyOptions): Promise<Shift[]> {

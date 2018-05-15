@@ -9,6 +9,7 @@ type IActionMap = {
   'SCHEDULE_UPDATE_VISIBLETIME': { visibleTimeStart: any, visibleTimeEnd: any };
   'SCHEDULE_SHIFT_SELECT': IdType;
   'SCHEDULE_SHIFT_UNSELECT': IdType;
+  'SCHEDULE_SHIFT_CLEAR_SELECTED': void;
 };
 
 export type IActionType = keyof IActionMap;
@@ -40,3 +41,5 @@ export const selectShift = (shiftId: IdType) => (
 export const unselectShift = (shiftId: IdType) => (
   actionCreator('SCHEDULE_SHIFT_UNSELECT')(shiftId)
 );
+
+export const clearSelectedShifts = actionCreator('SCHEDULE_SHIFT_CLEAR_SELECTED');

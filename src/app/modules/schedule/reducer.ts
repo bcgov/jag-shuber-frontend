@@ -59,6 +59,9 @@ const reducer = createReducer<ScheduleState>({
     }
 
     return { ...state };
+  },
+  SCHEDULE_SHIFT_CLEAR_SELECTED: (state) => {
+    return { ...state, selectedShiftIds: [] };
   }
 });
 

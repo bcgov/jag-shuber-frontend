@@ -13,16 +13,20 @@ import {
 import SheriffSelector from '../containers/SheriffSelector';
 import TextField from '../components/FormElements/TextField';
 import WorkSectionSelector from '../components/FormElements/WorkSectionSelector';
+import { ConfirmationModal } from './ConfirmationModal';
 
 export interface ScheduleControlPanelFormProps {
     handleSubmit?: () => void;
     onSubmitSuccess?: () => void;
+    onCancel?: () => void;
+    onDelete?: () => void;
+    onApply?: () => void;
 }
 
-export default class ScheduleControlPanelForm extends 
+export default class ScheduleControlPanelForm extends
     React.Component<ScheduleControlPanelFormProps & InjectedFormProps<{}, ScheduleControlPanelFormProps>, {}> {
     render() {
-        const { handleSubmit } = this.props;
+        const { handleSubmit, onApply, onCancel, onDelete } = this.props;
         return (
             <div>
                 <Form onSubmit={handleSubmit} inline={true}>
@@ -38,14 +42,23 @@ export default class ScheduleControlPanelForm extends
                         name="workSectionId"
                         component={WorkSectionSelector}
                     />&nbsp;&nbsp;&nbsp;&nbsp;
-                   <Button bsStyle="danger"><Glyphicon glyph="trash"/></Button>&nbsp;&nbsp;&nbsp;&nbsp;
-                   <Button className="cancel-button">Cancel</Button>&nbsp;&nbsp;&nbsp;&nbsp;
-                   {/* <ScheduleShiftMultiEditForm.SubmitButton className="apply-button">
-                        Apply <span style={{paddingTop: 2, fontSize: 10}}>&#9658;</span>
-                   </ScheduleShiftMultiEditForm.SubmitButton> */}
-                   {/* <Button className="apply-button">
-                        Apply <span style={{paddingTop: 2, fontSize: 10}}>&#9658;</span>
-                   </Button> */}
+                    <ConfirmationModal
+                        key="confirmationModal"
+                        onConfirm={() => onDelete && onDelete()}
+                        actionBtnLabel={<Glyphicon glyph="trash" />}
+                        actionBtnStyle="danger"
+                        confirmBtnLabel="Delete"
+                        confirmBtnStyle="danger"
+                        // tslint:disable-next-line:max-line-length
+                        message={<p style={{ fontSize: 14 }}>Please confirm that you would like to <b>permanently delete</b> the selected shift(s).</p>}
+                        title="Delete Shift(s)"
+                    />
+                   <Button className="cancel-button" onClick={() => onCancel && onCancel()}>
+                        Cancel
+                    </Button>&nbsp;&nbsp;&nbsp;&nbsp;
+                   <Button className="apply-button" onClick={() => onApply && onApply()}>
+                        Apply <span style={{ paddingTop: 2, fontSize: 10 }}>&#9658;</span>
+                    </Button>
                 </Form>
             </div>
         );
