@@ -42,7 +42,7 @@ export default class ScheduleControlPanelForm extends
                 <Form onSubmit={handleSubmit} inline={true}>
                     <Field
                         name="sheriffId"
-                        component={SheriffSelector}
+                        component={(p) => <SheriffSelector {...p} showVariedOption={true}/>}
                     /> &nbsp;
                     <Field
                         name="time"
@@ -50,7 +50,7 @@ export default class ScheduleControlPanelForm extends
                     />&nbsp;
                     <Field
                         name="workSectionId"
-                        component={WorkSectionSelector}
+                        component={(p) => <WorkSectionSelector {...p} showVariedOption={true}/>}
                     />&nbsp;&nbsp;&nbsp;&nbsp;
                     <ConfirmationModal
                         key="confirmationModal"
