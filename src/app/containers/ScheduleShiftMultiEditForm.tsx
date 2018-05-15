@@ -18,7 +18,7 @@ import {
 } from '../modules/schedule/selectors';
 import { getShift } from '../modules/shifts/selectors';
 import { Shift } from '../api/Api';
-import { editShift } from '../modules/shifts/actions';
+import { editMultipleShifts } from '../modules/shifts/actions';
 // import { 
 //     IdType
 // } from '../api';
@@ -32,7 +32,7 @@ const formConfig: ConfigProps<any, ScheduleControlPanelFormProps> = {
             shiftIds: props.selectedShiftIds ? props.selectedShiftIds : [], 
             updateDetails: ScheduleControlPanelForm.parseUpdateDetailsFromValues(values)
         };
-        dispatch(editShift(updateDetails));
+        dispatch(editMultipleShifts(updateDetails));
     },
     enableReinitialize: true
 };

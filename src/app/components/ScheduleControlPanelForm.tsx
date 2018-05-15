@@ -11,10 +11,13 @@ import {
     InjectedFormProps
 } from 'redux-form';
 import SheriffSelector from '../containers/SheriffSelector';
-import TextField from '../components/FormElements/TextField';
+// import TextField from '../components/FormElements/TextField';
 import WorkSectionSelector from '../components/FormElements/WorkSectionSelector';
 import { ConfirmationModal } from './ConfirmationModal';
 import { IdType, ShiftUpdates } from '../api/Api';
+import TimeSliderInputField from './FormElements/TimeSliderInputField';
+// import TimeSliderField from './FormElements/TimeSliderField';
+// import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 
 export interface ScheduleControlPanelFormProps {
     handleSubmit?: () => void;
@@ -32,7 +35,7 @@ export default class ScheduleControlPanelForm extends
         // const {sheriffId, workSectionId, ...rest} = values;
         // const updateDetails: ShiftUpdates = { ...rest };
         // updateDetails.sheriffId = sheriffId === 'varied' ? 
-        return {...values} as ShiftUpdates;
+        return { ...values } as ShiftUpdates;
     }
 
     render() {
@@ -42,15 +45,16 @@ export default class ScheduleControlPanelForm extends
                 <Form onSubmit={handleSubmit} inline={true}>
                     <Field
                         name="sheriffId"
-                        component={(p) => <SheriffSelector {...p} showVariedOption={true}/>}
+                        component={(p) => <SheriffSelector {...p} showVariedOption={true} />}
                     /> &nbsp;
                     <Field
                         name="time"
-                        component={TextField}
+                        component={TimeSliderInputField}
+                        label="Time"
                     />&nbsp;
                     <Field
                         name="workSectionId"
-                        component={(p) => <WorkSectionSelector {...p} showVariedOption={true}/>}
+                        component={(p) => <WorkSectionSelector {...p} showVariedOption={true} />}
                     />&nbsp;&nbsp;&nbsp;&nbsp;
                     <ConfirmationModal
                         key="confirmationModal"

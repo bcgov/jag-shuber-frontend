@@ -281,7 +281,8 @@ export interface API {
 
     // Sheriff Shifts
     getShifts(): Promise<Shift[]>;
-    updateShift(shiftIds: IdType[], shiftUpdates: ShiftUpdates): Promise<Shift[]>;
+    updateSelectedShifts(shiftIds: IdType[], shiftUpdates: ShiftUpdates): Promise<Shift[]>;
+    updateShift(updatedShift: Partial<Shift>): Promise<Shift>;
     createShift(newShift: Partial<Shift>): Promise<Shift>;
     deleteShift(shiftIds: IdType[]): Promise<void>;
     copyShifts(shiftCopyDetails: ShiftCopyOptions): Promise<Shift[]>;

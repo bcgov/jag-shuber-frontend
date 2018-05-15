@@ -14,8 +14,9 @@ import {
 export const getShifts = shiftRequests.shiftMapRequest.actionCreator;
 export const createShift = shiftRequests.createShiftRequest.actionCreator;
 export const copyShiftsFromPrevWeek = shiftRequests.copyShiftsFromPrevWeek.actionCreator;
-export const editShift = shiftRequests.updateShiftRequest.actionCreator;
+export const editMultipleShifts = shiftRequests.updateSelectedShiftsRequest.actionCreator;
 export const deleteShift = shiftRequests.deleteShiftRequest.actionCreator;
+export const editShift = shiftRequests.updateShiftRequest.actionCreator;
 
 export const getLeaves = leaveRequests.leaveMapRequest.actionCreator;
 

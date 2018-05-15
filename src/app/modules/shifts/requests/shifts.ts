@@ -107,15 +107,31 @@ class CopyShiftsRequest extends RequestAction<ShiftCopyOptions, Shift[], ShiftMo
 
 export const copyShiftsFromPrevWeek = new CopyShiftsRequest();
 
-type ShiftUpdateOptions = { shiftIds: IdType[], updateDetails: ShiftUpdates };
 // Shift Edit
-class UpdateShiftRequest  extends RequestAction<ShiftUpdateOptions, Shift[], ShiftModuleState> {
+class UpdateShiftRequest extends CreateShiftRequest {
     constructor(namespace: string = STATE_KEY, actionName: string = 'updateShift') {
         super(namespace, actionName);
     }
 
+    public async doWork(shift: Partial<Shift>, { api }: ThunkExtra): Promise<Shift> {
+        let newShift = await api.updateShift(shift);
+        return newShift;
+    }
+}
+
+export const updateShiftRequest = new UpdateShiftRequest();
+
+
+type ShiftUpdateOptions = { shiftIds: IdType[], updateDetails: ShiftUpdates };
+// Mulitple Shift Edit
+class UpdateSelectedShiftsRequest  extends RequestAction<ShiftUpdateOptions, Shift[], ShiftModuleState> {
+    constructor(namespace: string = STATE_KEY, actionName: string = 'updateSelectedShifts') {
+        super(namespace, actionName);
+    }
+
     public async doWork(shiftUpdateDetails: ShiftUpdateOptions, { api }: ThunkExtra): Promise<Shift[]> {
-        let updatedShifts = await api.updateShift(shiftUpdateDetails.shiftIds, shiftUpdateDetails.updateDetails);
+        let updatedShifts = 
+            await api.updateSelectedShifts(shiftUpdateDetails.shiftIds, shiftUpdateDetails.updateDetails);
         return updatedShifts;
     }
 
@@ -148,7 +164,7 @@ class UpdateShiftRequest  extends RequestAction<ShiftUpdateOptions, Shift[], Shi
     }
 }
 
-export const updateShiftRequest = new UpdateShiftRequest();
+export const updateSelectedShiftsRequest = new UpdateSelectedShiftsRequest();
 
 // Shift Delete
 class DeleteShiftRequest extends RequestAction<IdType[], IdType[], ShiftModuleState> {

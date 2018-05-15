@@ -257,7 +257,7 @@ export default class MockClient implements API {
         return sheriffShifts;
     }
 
-    async updateShift(shiftIds: IdType[], shiftUpdates: ShiftUpdates): Promise<Shift[]> {
+    async updateSelectedShifts(shiftIds: IdType[], shiftUpdates: ShiftUpdates): Promise<Shift[]> {
         await randomDelay();
         
         if (!shiftIds) {
@@ -276,6 +276,24 @@ export default class MockClient implements API {
 
         return updatedShifts;
     }
+
+    async updateShift(shiftToUpdate: Partial<Shift>): Promise<Shift> {
+        await randomDelay();
+        if (shiftToUpdate.id == null) {
+            throw Error('No Shift Id Specified');
+        }
+        let updatedShift = shiftToUpdate as Shift;
+
+        let index = sheriffShifts.findIndex(s => s.id === updatedShift.id);
+        if (index < 0) {
+            throw Error(`No Shift could be located for ${updatedShift.id}`);
+        }
+
+        // todo: Should probably do a merge (i.e. patch of the objects here)
+        sheriffShifts[index] = updatedShift;
+        return updatedShift;
+    }
+
 
     async createShift(newShift: Partial<Shift>): Promise<Shift> {
         await randomDelay();

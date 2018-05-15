@@ -18,7 +18,7 @@ export default class WorkSectionIndicator extends React.PureComponent<WorkSectio
                 className={`work-section-indicator ${orientation}`}
                 style={{ borderTopColor: getWorkSectionColour(workSectionId) }}
             >
-            {this.props.children}
+             
             </div>
         );
     }

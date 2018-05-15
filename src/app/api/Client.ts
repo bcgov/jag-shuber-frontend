@@ -505,9 +505,13 @@ export default class Client implements API {
         console.warn('Using Mock API');
         return this._mockApi.getShifts();
     }
-    updateShift(shiftIds: IdType[], shiftUpdates: ShiftUpdates): Promise<Shift[]> {
+    updateSelectedShifts(shiftIds: IdType[], shiftUpdates: ShiftUpdates): Promise<Shift[]> {
         console.warn('Using Mock API');
-        return this._mockApi.updateShift(shiftIds, shiftUpdates);
+        return this._mockApi.updateSelectedShifts(shiftIds, shiftUpdates);
+    }
+    updateShift(shiftToUpdate: Partial<Shift>): Promise<Shift> {
+        console.warn('Using Mock API');
+        return this._mockApi.updateShift(shiftToUpdate);
     }
     createShift(newShift: Partial<Shift>): Promise<Shift> {
         console.warn('Using Mock API');
