@@ -44,18 +44,19 @@ class DutyRosterControls extends React.PureComponent<
                     <Glyphicon glyph="chevron-left" />
                 </Button>
                 
-                <CalendarButton 
-                    onChange={(selectedDate) => updateVisibleTime(
-                        TimeUtils.getDefaultStartTime(moment(selectedDate)),
-                        TimeUtils.getDefaultEndTime(moment(selectedDate))
-                    )}
-                    defaultValue={visibleTimeStart}
-                    todayOnClick={() => updateVisibleTime(
-                        TimeUtils.getDefaultStartTime(),
-                        TimeUtils.getDefaultEndTime()
-                    )}
-                />
-
+                <div style={{paddingTop: 3}}>
+                    <CalendarButton 
+                        onChange={(selectedDate) => updateVisibleTime(
+                            TimeUtils.getDefaultStartTime(moment(selectedDate)),
+                            TimeUtils.getDefaultEndTime(moment(selectedDate))
+                        )}
+                        defaultValue={visibleTimeStart}
+                        todayOnClick={() => updateVisibleTime(
+                            TimeUtils.getDefaultStartTime(),
+                            TimeUtils.getDefaultEndTime()
+                        )}
+                    />
+                </div>
                 <Button
                     onClick={() => updateVisibleTime(
                         moment(visibleTimeStart).add('day', 1),

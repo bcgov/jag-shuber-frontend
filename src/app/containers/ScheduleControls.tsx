@@ -103,7 +103,7 @@ class ScheduleControls extends React.PureComponent<
                         <Glyphicon glyph="chevron-left" />
                     </Button>
 
-                    <div style={{ paddingTop: 5 }}>
+                    <div style={{ paddingTop: 8 }}>
                         <CalendarButton
                             onChange={(selectedDate) => updateVisibleTime(
                                 moment(selectedDate).startOf('week').add(1, 'day'),
@@ -132,7 +132,7 @@ class ScheduleControls extends React.PureComponent<
                         style={{
                             paddingTop: 8,
                             background: '#003366',
-                            zIndex: 1000,
+                            zIndex: 900,
                             textAlign: 'left'
                         }}
                     >

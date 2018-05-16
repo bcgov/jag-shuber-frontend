@@ -20,8 +20,8 @@ export default class TimePickerField extends
             nullTimeLabel = 'missing time'
         } = this.props;
         const selectedTimeDisplay = value ? moment(value).format('HH:mm') : nullTimeLabel;
-        const minTime = TimeUtils.getDefaultStartTime(moment(value)).toISOString();
-        const maxTime = TimeUtils.getDefaultEndTime(moment(value)).toISOString();
+        const minTime = TimeUtils.getDefaultTimePickerMinTime(moment(value)).toISOString();
+        const maxTime = TimeUtils.getDefaultTimePickerMaxTime(moment(value)).toISOString();
 
         return (
             <FormFieldWrapper {...this.props} showLabel={false}>
