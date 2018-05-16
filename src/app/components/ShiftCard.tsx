@@ -36,6 +36,16 @@ export default class ShiftCard extends React.Component<ShiftCardProps, {}> {
         }}
       >
         <WorkSectionIndicator workSectionId={shift.workSectionId} orientation={'top-right'}/>
+        <div 
+          style={{
+            position: 'absolute', 
+            right: 2, 
+            color: foreground,
+            fontWeight: 'bold'
+          }}
+        >
+          {shift.workSectionId && shift.workSectionId.charAt(0)}
+        </div>
         <div style={{ flex: '1', paddingTop: 22 }}>
           {this.props.children}
         </div>
