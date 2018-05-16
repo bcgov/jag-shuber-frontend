@@ -33,7 +33,7 @@ export function doTimeRangesOverlap (
 }
 
 export function getDefaultStartTime (dayForTime?: moment.Moment): moment.Moment {
-    if (dayForTime) {
+    if (dayForTime && dayForTime.isValid()) {
         return dayForTime.startOf('day').add(6, 'hour');
     } else {
         return moment().startOf('day').add(6, 'hour');
@@ -41,7 +41,7 @@ export function getDefaultStartTime (dayForTime?: moment.Moment): moment.Moment 
 }
 
 export function getDefaultEndTime (dayForTime?: moment.Moment): moment.Moment {
-    if (dayForTime) {
+    if (dayForTime && dayForTime.isValid()) {
         return dayForTime.startOf('day').add(18, 'hour');
     } else {
         return moment().startOf('day').add(18, 'hour');
@@ -49,7 +49,7 @@ export function getDefaultEndTime (dayForTime?: moment.Moment): moment.Moment {
 }
 
 export function getDefaultTimeRange (dayForTime?: moment.Moment): {startTime: moment.Moment, endTime: moment.Moment} {
-   if (dayForTime) {
+   if (dayForTime && dayForTime.isValid()) {
        return {
             startTime: getDefaultStartTime(dayForTime),
             endTime: getDefaultEndTime(dayForTime)
@@ -63,7 +63,7 @@ export function getDefaultTimeRange (dayForTime?: moment.Moment): {startTime: mo
 }
 
 export function getDefaultTimePickerMinTime (dayForTime?: moment.Moment): moment.Moment {
-    if (dayForTime) {
+    if (dayForTime && dayForTime.isValid()) {
         return dayForTime.startOf('day').add(6, 'hour');
     } else {
         return moment().startOf('day').add(6, 'hour');
@@ -71,7 +71,7 @@ export function getDefaultTimePickerMinTime (dayForTime?: moment.Moment): moment
 }
 
 export function getDefaultTimePickerMaxTime (dayForTime?: moment.Moment): moment.Moment {
-    if (dayForTime) {
+    if (dayForTime && dayForTime.isValid()) {
         return dayForTime.startOf('day').add(22, 'hour');
     } else {
         return moment().startOf('day').add(22, 'hour');
@@ -79,7 +79,7 @@ export function getDefaultTimePickerMaxTime (dayForTime?: moment.Moment): moment
 }
 
 export function getDefaultTimePickerRange (dayForTime?: moment.Moment): {startTime: moment.Moment, endTime: moment.Moment} {
-    if (dayForTime) {
+    if (dayForTime && dayForTime.isValid()) {
         return {
              startTime: getDefaultTimePickerMinTime(dayForTime),
              endTime: getDefaultTimePickerMaxTime(dayForTime)

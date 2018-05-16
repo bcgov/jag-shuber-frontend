@@ -11,13 +11,10 @@ import {
     InjectedFormProps
 } from 'redux-form';
 import SheriffSelector from '../containers/SheriffSelector';
-// import TextField from '../components/FormElements/TextField';
 import WorkSectionSelector from '../components/FormElements/WorkSectionSelector';
 import { ConfirmationModal } from './ConfirmationModal';
 import { IdType, ShiftUpdates } from '../api/Api';
-import TimeSliderInputField from './FormElements/TimeSliderInputField';
-// import TimeSliderField from './FormElements/TimeSliderField';
-// import * as TimeUtils from '../infrastructure/TimeRangeUtils';
+import TimePickerField from './FormElements/TimePickerField';
 
 export interface ScheduleControlPanelFormProps {
     handleSubmit?: () => void;
@@ -32,14 +29,11 @@ export default class ScheduleControlPanelForm extends
     React.Component<ScheduleControlPanelFormProps & InjectedFormProps<{}, ScheduleControlPanelFormProps>, {}> {
 
     static parseUpdateDetailsFromValues(values: any): ShiftUpdates {
-        // const {sheriffId, workSectionId, ...rest} = values;
-        // const updateDetails: ShiftUpdates = { ...rest };
-        // updateDetails.sheriffId = sheriffId === 'varied' ? 
         return { ...values } as ShiftUpdates;
     }
 
     render() {
-        const { handleSubmit, onApply, onCancel, onDelete } = this.props;
+        const { handleSubmit, onApply, onCancel, onDelete, selectedShiftIds } = this.props;
         return (
             <div>
                 <Form onSubmit={handleSubmit} inline={true}>
@@ -48,9 +42,30 @@ export default class ScheduleControlPanelForm extends
                         component={(p) => <SheriffSelector {...p} showVariedOption={true} />}
                     /> &nbsp;
                     <Field
-                        name="time"
-                        component={TimeSliderInputField}
-                        label="Time"
+                        name="startTime"
+                        component={
+                            (p) => 
+                                <TimePickerField 
+                                    {...p} 
+                                    nullTimeLabel={
+                                        (selectedShiftIds && selectedShiftIds.length > 0)
+                                            ? 'Start Time Varied' : 'Select Start Time'}
+                                />
+                        }
+                        label="Start Time"
+                    />&nbsp;
+                    <Field
+                        name="endTime"
+                        component={
+                            (p) => 
+                                <TimePickerField 
+                                    {...p} 
+                                    nullTimeLabel={
+                                        (selectedShiftIds && selectedShiftIds.length > 0)
+                                            ? 'End Time Varied' : 'Select End Time'}
+                                />
+                        }
+                        label="End Time"
                     />&nbsp;
                     <Field
                         name="workSectionId"

@@ -37,8 +37,8 @@ export default class TimeSlider extends React.Component<TimeSliderProps> {
     } = this.props;
     const minTime = moment(_minTime);
     const maxTime = moment(_maxTime);
-    const startTime = _startTime ? moment(_startTime) : undefined;
-    const endTime = _endTime ? moment(_endTime) : undefined;
+    const startTime = _startTime ? moment(_startTime) : minTime;
+    const endTime = _endTime ? moment(_endTime) : maxTime;
 
     // Here we need to issue onTimeChange events if the min/max times
     // are larger or smaller than the current start/end
@@ -68,8 +68,8 @@ export default class TimeSlider extends React.Component<TimeSliderProps> {
     } = this.props;
     const minTime = moment(_minTime);
     const maxTime = moment(_maxTime);
-    const startTime = _startTime ? moment(_startTime) : undefined;
-    const endTime = _endTime ? moment(_endTime) : undefined;
+    const startTime = _startTime ? moment(_startTime) : minTime;
+    const endTime = _endTime ? moment(_endTime) : maxTime;
 
     const durationMinutes: number = moment.duration(maxTime.diff(minTime)).asMinutes();
     const numberOfMarks: number = durationMinutes / timeIncrement;

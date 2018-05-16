@@ -130,7 +130,7 @@ class ScheduleControls extends React.PureComponent<
 
                     <div
                         style={{
-                            paddingTop: 6,
+                            paddingTop: 8,
                             background: '#003366',
                             zIndex: 1000,
                             textAlign: 'left'

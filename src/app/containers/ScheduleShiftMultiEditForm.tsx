@@ -13,16 +13,11 @@ import { default as FormSubmitButton, SubmitButtonProps } from '../components/Fo
 import { connect } from 'react-redux';
 import { RootState } from '../store';
 import {
-    // visibleTime,
     selectedShifts
 } from '../modules/schedule/selectors';
 import { getShift } from '../modules/shifts/selectors';
 import { Shift } from '../api/Api';
 import { editMultipleShifts } from '../modules/shifts/actions';
-// import { 
-//     IdType
-// } from '../api';
-// import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 
 // wrapping generic assignment form in redux-form
 const formConfig: ConfigProps<any, ScheduleControlPanelFormProps> = {
@@ -38,7 +33,6 @@ const formConfig: ConfigProps<any, ScheduleControlPanelFormProps> = {
 };
 
 export interface ScheduleShiftMultiEditFormProps extends ScheduleControlPanelFormProps {
-    // id: IdType;
 }
 
 const mapStateToProps = (state: RootState, props: ScheduleShiftMultiEditFormProps) => {
@@ -64,13 +58,12 @@ const mapStateToProps = (state: RootState, props: ScheduleShiftMultiEditFormProp
                 selectedShiftsList.every(s => moment(s.startDateTime).format('HH:mm') === startTimeToCompare);
             const doEndTimesMatch: boolean =
                 selectedShiftsList.every(s => moment(s.endDateTime).format('HH:mm') === endTimeToCompare);
-            const startTimeString = doStartTimesMatch ? startTimeToCompare : 'varied';
-            const endTimeString = doEndTimesMatch ? endTimeToCompare : 'varied';
             return {
                 initialValues: {
                     workSectionId: doWorkSectionsMatch ? shiftToCompare.workSectionId : 'varied',
                     sheriffId: doAssignedSheriffMatch ? shiftToCompare.sheriffId : 'varied',
-                    time: `${startTimeString} - ${endTimeString}`
+                    startTime: doStartTimesMatch ? moment(startDateTime).toISOString() : null,
+                    endTime: doEndTimesMatch ? moment(endDateTime).toISOString() : null
                 },
                 selectedShiftIds: initialSelectedShiftIds
             };
