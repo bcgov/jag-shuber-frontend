@@ -10,7 +10,7 @@ import {
 } from 'react-bootstrap';
 import {
     visibleTime,
-    selectedShifts
+    selectedShiftIds
 } from '../modules/schedule/selectors';
 import {
     updateVisibleTime as setVisibleTime,
@@ -159,7 +159,7 @@ const mapStateToProps = (state: RootState) => {
     const currentVisibleTime = visibleTime(state);
     return {
         ...currentVisibleTime,
-        selectedShifts: selectedShifts(state)
+        selectedShifts: selectedShiftIds(state)
     };
 };
 

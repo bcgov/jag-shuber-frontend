@@ -13,13 +13,14 @@ interface SheriffListStateProps {
 interface SheriffListProps extends FormFieldWrapperProps {
     sheriffList?: Sheriff[];
     showVariedOption?: boolean;
+    isDisabled?: boolean;
 }
 
 class SheriffList extends React.PureComponent<
     SheriffListProps & SheriffListStateProps> {
 
     render() {
-        const { sheriffList = [], showVariedOption = false, ...restProps } = this.props;
+        const { sheriffList = [], showVariedOption = false, isDisabled = false, ...restProps } = this.props;
         const selectorValues = Object.keys(sheriffList).map((key, index) =>
             ({
                 key: sheriffList[key].id,
@@ -34,6 +35,7 @@ class SheriffList extends React.PureComponent<
                 noneLabel="Not Assigned"
                 showVariedOption={showVariedOption}
                 variedLabel="Sheriffs Varied"
+                isDisabled={isDisabled}
             />
         );
     }

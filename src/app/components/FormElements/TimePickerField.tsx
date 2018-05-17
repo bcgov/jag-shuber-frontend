@@ -32,6 +32,7 @@ export default class TimePickerField extends
                     value={selectedTimeDisplay}
                     onFocus={onFocus}
                     onBlur={e => onBlur(undefined)}
+                    style={{maxWidth: 60}}
                 />
                 {active && (
                     <div
@@ -41,13 +42,14 @@ export default class TimePickerField extends
                             position: 'absolute',
                             width: '80%',
                             zIndex: 2000,
-                            height: 50,
+                            height: 70,
                             padding: '10px 20px',
                             left: '10%',
                             borderRadius: 8,
                             marginTop: 4
                         }}
                     >
+                        <span style={{fontWeight: 'bold', color: '#888'}}>{label}</span>
                         <TimePicker
                             minTime={minTime}
                             maxTime={maxTime}

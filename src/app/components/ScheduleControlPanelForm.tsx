@@ -23,6 +23,7 @@ export interface ScheduleControlPanelFormProps {
     onDelete?: () => void;
     onApply?: () => void;
     selectedShiftIds?: IdType[];
+    canAssignSheriff?: boolean;
 }
 
 export default class ScheduleControlPanelForm extends
@@ -33,14 +34,15 @@ export default class ScheduleControlPanelForm extends
     }
 
     render() {
-        const { handleSubmit, onApply, onCancel, onDelete, selectedShiftIds } = this.props;
+        const { handleSubmit, onApply, onCancel, onDelete, selectedShiftIds, canAssignSheriff = true } = this.props;
         return (
             <div>
                 <Form onSubmit={handleSubmit} inline={true}>
                     <Field
                         name="sheriffId"
-                        component={(p) => <SheriffSelector {...p} showVariedOption={true} />}
-                    /> &nbsp;
+                        component={(p) => 
+                            <SheriffSelector {...p} showVariedOption={true} isDisabled={canAssignSheriff} />}
+                    />
                     <Field
                         name="startTime"
                         component={
@@ -49,11 +51,12 @@ export default class ScheduleControlPanelForm extends
                                     {...p} 
                                     nullTimeLabel={
                                         (selectedShiftIds && selectedShiftIds.length > 0)
-                                            ? 'Start Time Varied' : 'Select Start Time'}
+                                            ? '--:--' : 'Start'}
                                 />
                         }
                         label="Start Time"
-                    />&nbsp;
+                    />
+                    <span style={{color: 'white'}}>&mdash;</span>
                     <Field
                         name="endTime"
                         component={
@@ -62,15 +65,15 @@ export default class ScheduleControlPanelForm extends
                                     {...p} 
                                     nullTimeLabel={
                                         (selectedShiftIds && selectedShiftIds.length > 0)
-                                            ? 'End Time Varied' : 'Select End Time'}
+                                            ? '--:--' : 'End'}
                                 />
                         }
                         label="End Time"
-                    />&nbsp;
+                    />
                     <Field
                         name="workSectionId"
                         component={(p) => <WorkSectionSelector {...p} showVariedOption={true} />}
-                    />&nbsp;&nbsp;&nbsp;&nbsp;
+                    />
                     <ConfirmationModal
                         key="confirmationModal"
                         onConfirm={() => onDelete && onDelete()}
@@ -82,9 +85,9 @@ export default class ScheduleControlPanelForm extends
                         message={<p style={{ fontSize: 14 }}>Please confirm that you would like to <b>permanently delete</b> the selected shift(s).</p>}
                         title="Delete Shift(s)"
                     />
-                    <Button className="cancel-button" onClick={() => onCancel && onCancel()}>
-                        Cancel
-                    </Button>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <Button className="cancel-button" style={{marginRight: 6}} onClick={() => onCancel && onCancel()}>
+                        Clear
+                    </Button>
                    <Button className="apply-button" onClick={() => onApply && onApply()}>
                         Apply <span style={{ paddingTop: 2, fontSize: 10 }}>&#9658;</span>
                     </Button>

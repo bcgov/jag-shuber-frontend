@@ -28,7 +28,7 @@ import SheriffDropTarget from '../SheriffDropTarget';
 import SheriffDisplay from '../SheriffDisplay';
 import {
     visibleTime,
-    selectedShifts
+    selectedShiftIds
 } from '../../modules/schedule/selectors';
 import {
     selectShift,
@@ -155,7 +155,7 @@ const mapStateToProps = (state: RootState, props: LongTermScheduleProps) => {
         shifts: allShifts(state),
         leaves: allLeaves(state),
         ...currentVisibleTime,
-        selectedShifts: selectedShifts(state)
+        selectedShifts: selectedShiftIds(state)
     };
 };
 
