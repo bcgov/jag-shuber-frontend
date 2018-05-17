@@ -11,6 +11,9 @@ import {
     getShifts
 } from '../modules/shifts/actions';
 import {
+    visibleTime
+} from '../modules/schedule/selectors';
+import {
     default as ScheduleSummary,
     StatusEnum
 } from '../components/ScheduleSummary/ScheduleSummary';
@@ -23,8 +26,8 @@ import {
 
 interface ConnectedScheduleSummaryProps {
     sheriffId: IdType;
-    start?: TimeType;
-    end?: TimeType; 
+    visibleTimeStart?: TimeType;
+    visibleTimeEnd?: TimeType; 
 }
 
 interface ConnectedScheduleSummaryDispatchProps {
@@ -66,12 +69,14 @@ class ConnectedScheduleSummary extends React.Component<ConnectedScheduleSummaryP
         const { 
             leaves, 
             shifts, 
-            start = moment().startOf('week'), 
-            end = moment().endOf('week'),
+            visibleTimeStart, 
+            visibleTimeEnd,
         } = this.props;
 
-        const leavesForWeek = leaves.filter(l => moment(l.date).isBetween(start, end, 'days', '[]'));
-        const shiftsForWeek = shifts.filter(s => moment(s.startDateTime).isBetween(start, end, 'days', '[]'));
+        const leavesForWeek = leaves
+            .filter(l => moment(l.date).isBetween(visibleTimeStart, visibleTimeEnd, 'days', '[]'));
+        const shiftsForWeek = shifts
+            .filter(s => moment(s.startDateTime).isBetween(visibleTimeStart, visibleTimeEnd, 'days', '[]'));
         
         let weekStatus = {
             monday: StatusEnum.EMPTY,
@@ -104,7 +109,9 @@ class ConnectedScheduleSummary extends React.Component<ConnectedScheduleSummaryP
 }
 
 const mapStateToProps = (state: RootState, { sheriffId }: ConnectedScheduleSummaryProps) => {
+    const currentVisibleTime = visibleTime(state);
     return {
+        ...currentVisibleTime,
         shifts: getSheriffShifts(sheriffId)(state),
         leaves: getSheriffLeaves(sheriffId)(state)
     };
