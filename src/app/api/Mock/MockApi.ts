@@ -121,10 +121,10 @@ export default class MockClient implements API {
             const newStartTime = updateDetails.startTime;
             const newEndTime = updateDetails.endTime;
             if (newSheriffId !== 'varied') {
-                updatedShift.sheriffId = updateDetails.sheriffId;
+                updatedShift.sheriffId = newSheriffId;
             }
             if (newWorkSectionId !== 'varied') {
-                updatedShift.workSectionId = updateDetails.workSectionId;
+                updatedShift.workSectionId = newWorkSectionId;
             }
             if (newStartTime) {
                 const newHours = moment(newStartTime).hour();

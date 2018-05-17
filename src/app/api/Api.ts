@@ -10,7 +10,7 @@ export type SheriffMap = { [key: number]: Sheriff };
 export type AssignmentMap = { [key: number]: Assignment };
 export type AssignmentDutyMap = { [key: number]: AssignmentDuty };
 export type AssignmentDutyDetailsMap = { [key: number]: AssignmentDutyDetails };
-export type WorkSectionCode = 'COURTS' | 'JAIL' | 'ESCORTS' | 'OTHER' | 'varied';
+export type WorkSectionCode = 'COURTS' | 'JAIL' | 'ESCORTS' | 'OTHER';
 export type Assignment = CourtAssignment | JailAssignment | EscortAssignment | OtherAssignment;
 export type TimeType = string | number;
 export type CourtroomMap = { [key: number]: Courtroom };
@@ -222,7 +222,7 @@ export interface ShiftUpdates {
     sheriffId?: IdType; 
     startTime?: DateType;
     endTime?: DateType;
-    workSectionId?: WorkSectionCode;
+    workSectionId?: WorkSectionCode | 'varied';
 }
 
 export interface ShiftCopyOptions {
