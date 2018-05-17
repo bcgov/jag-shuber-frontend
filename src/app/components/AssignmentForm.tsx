@@ -38,7 +38,7 @@ class OtherFields extends React.PureComponent {
         return (
             <div>
                 <Field
-                    name="otherAssignmentTypeId"
+                    name="otherAssignCode"
                     label="Assignment"
                     component={AlternateAssignmentSelector}
                     validate={[Validators.required]}
@@ -68,7 +68,7 @@ class JailFeilds extends React.PureComponent {
         return (
             <div>
                 <Field
-                    name="jailRoleId"
+                    name="jailRoleCode"
                     component={JailRolesSelector}
                     label="Assignment"
                     validate={[Validators.required]}
@@ -227,8 +227,8 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
             maxTime = TimeUtils.getDefaultTimePickerMaxTime().toISOString(),
             workSectionId = 'OTHER',
             onRemoveDutyRecurrence,
-            allowDelete = false,
-            allowEdit = false
+            allowDelete = true,
+            allowEdit = true
         } = this.props;
         if (isDefaultTemplate) {
             return (

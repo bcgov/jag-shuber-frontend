@@ -19,7 +19,7 @@ class CourthouseJailRoleList extends React.PureComponent<
 
     render() {
         const { jailRoles = [], ...restProps } = this.props;
-        const selectorValues = Object.keys(jailRoles).map((key, index) => ({key, value: jailRoles[key].title}));
+        const selectorValues = Object.keys(jailRoles).map((key, index) => ({key, value: jailRoles[key].description}));
         return (
             <Selector {...restProps} data={selectorValues} />
         );

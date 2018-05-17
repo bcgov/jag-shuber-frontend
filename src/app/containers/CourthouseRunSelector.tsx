@@ -19,7 +19,7 @@ class CourthouseRunList extends React.PureComponent<
 
     render() {
         const { runs = [], ...restProps } = this.props;
-        const selectorValues = Object.keys(runs).map((key, index) => ({key, value: runs[key].description}));
+        const selectorValues = Object.keys(runs).map((key, index) => ({key, value: runs[key].title}));
         return (
             <Selector {...restProps} data={selectorValues} />
         );

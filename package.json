@@ -155,7 +155,7 @@
   },
   "proxy": {
     "/api/v1/": {
-      "target": "https://api-dev.192.168.99.100.nip.io",
+      "target": "http://localhost:3001",
       "changeOrigin": true,
       "ignorePath": false,
       "secure": false

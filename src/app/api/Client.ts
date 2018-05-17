@@ -16,7 +16,6 @@ import {
     JailRole,
     Leave,
     OtherAssignment,
-    RecurrenceInfo,
     Run,
     Sheriff,
     SheriffDuty,
@@ -79,6 +78,10 @@ export default class Client implements API {
 
     constructor(baseUrl: string = '/') {
         this._client = new ShuberApiClient(baseUrl);
+        this._client.requestInterceptor = (req) => {
+            req.set('TOKEN', 'TESTING');
+            return req;
+        };
         this._mockApi = new MockApi();
     }
 
@@ -123,10 +126,12 @@ export default class Client implements API {
         return list as Assignment[];
     }
     async createAssignment(assignment: Partial<Assignment>): Promise<Assignment> {
-        throw "Not Implemented"
-    }
-    async createRecurrences(assignmentId: IdType, recurrences: RecurrenceInfo[] = []): Promise<any[]> {
-        throw "Not Implemented";
+        const assignmentToCreate: any = {
+            ...assignment,
+            courthouseId: this.currentCourthouse
+        };
+        const created = await this._client.CreateAssignment(assignmentToCreate);
+        return created as Assignment;
     }
 
     async deleteDutyRecurrence(recurrenceId: string): Promise<void> {
@@ -137,10 +142,13 @@ export default class Client implements API {
         await this._client.ExpireDutyRecurrence(recurrenceId);
     }
 
-    updateAssignment(assignment: Partial<Assignment>): Promise<Assignment> {
-        throw Error('Coming Soon!!');
-        // console.warn('Using Mock API');
-        // return this._mockApi.updateAssignment(assignment);
+    async updateAssignment(assignment: Partial<Assignment>): Promise<Assignment> {
+        const { id } = assignment;
+        if (!id) {
+            throw 'Assignment to Update has no id';
+        }
+        const updated = await this._client.UpdateAssignment(id, assignment as any);
+        return updated as Assignment;
     }
 
     async deleteAssignment(assignmentId: IdType): Promise<void> {

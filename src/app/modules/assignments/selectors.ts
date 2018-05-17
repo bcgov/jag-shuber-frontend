@@ -41,12 +41,12 @@ export const allAssignments = createSelector(
             if (isCourtAssignment(a)) {
                 a.title = courtRooms[a.courtroomId] ? courtRooms[a.courtroomId].name : 'Courtroom Not Found';
             } else if (isJailAssignment(a)) {
-                a.title = jailRoles[a.jailRoleId] ? jailRoles[a.jailRoleId].title : 'Jail Role Not Found';
+                a.title = jailRoles[a.jailRoleCode] ? jailRoles[a.jailRoleCode].description : 'Jail Role Not Found';
             } else if (isEscortAssignment(a)) {
-                a.title = runs[a.runId] ? runs[a.runId].description : 'Run Not Found';
+                a.title = runs[a.runId] ? runs[a.runId].title : 'Run Not Found';
             } else if (isOtherAssignment(a)) {
-                a.title = altAssignmentTypes[a.otherAssignmentTypeId] 
-                    ? altAssignmentTypes[a.otherAssignmentTypeId].description : 'Other Type Not Found';
+                a.title = altAssignmentTypes[a.otherAssignCode] 
+                    ? altAssignmentTypes[a.otherAssignCode].description : 'Other Type Not Found';
             }
             return a;
         });

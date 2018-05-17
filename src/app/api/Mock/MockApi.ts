@@ -53,9 +53,9 @@ function getAssignmentTitle(assignment: Partial<Assignment>): string {
     } else if (isEscortAssignment(assignment)) {
         assignmentTitle = RUNS[assignment.runId];
     } else if (isJailAssignment(assignment)) {
-        assignmentTitle = JAIL_ROLES[assignment.jailRoleId];
+        assignmentTitle = JAIL_ROLES[assignment.jailRoleCode];
     } else if (isOtherAssignment(assignment)) {
-        assignmentTitle = ALTERNATE_ASSIGNMENTS[assignment.otherAssignmentTypeId];
+        assignmentTitle = ALTERNATE_ASSIGNMENTS[assignment.otherAssignCode];
     }
 
     return assignmentTitle;

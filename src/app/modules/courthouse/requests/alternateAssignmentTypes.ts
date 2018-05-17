@@ -15,7 +15,7 @@ class AlternateAssignmentTypeMapRequest extends RequestAction<void, AlternateAss
     }
     public async doWork(request: void, { api }: ThunkExtra): Promise<AlternateAssignmentMap> {
         let alternateAssignmentTypes = await api.getAlternateAssignmentTypes();
-        return arrayToMap(alternateAssignmentTypes, a => a.id);
+        return arrayToMap(alternateAssignmentTypes, a => a.code);
     }
 }
 

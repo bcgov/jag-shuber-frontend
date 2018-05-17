@@ -94,7 +94,7 @@ export const BLANK_COURTHOUSE: Courthouse = {
     code: ''
 };
 
-export const DEFAULT_RECURRENCE: RecurrenceInfo[] = [
+export const DEFAULT_RECURRENCE: DutyRecurrence[] = [
     {
         daysBitmap: DaysOfWeek.Weekdays,
         startTime: moment().hour(9).minute(0),
@@ -130,7 +130,7 @@ export interface BaseAssignment {
     title: string;
     courthouseId: IdType;
     workSectionId: WorkSectionCode;
-    dutyRecurrences?: RecurrenceInfo[];
+    dutyRecurrences?: DutyRecurrence[];
 }
 
 export interface CourtAssignment extends BaseAssignment {
@@ -140,7 +140,7 @@ export interface CourtAssignment extends BaseAssignment {
 
 export interface JailAssignment extends BaseAssignment {
     workSectionId: 'JAIL';
-    jailRoleId: IdType;
+    jailRoleCode: IdType;
 }
 
 export interface EscortAssignment extends BaseAssignment {
@@ -150,7 +150,7 @@ export interface EscortAssignment extends BaseAssignment {
 
 export interface OtherAssignment extends BaseAssignment {
     workSectionId: 'OTHER';
-    otherAssignmentTypeId: IdType;
+    otherAssignCode: IdType;
 }
 
 export interface AssignmentDutyDetails {
@@ -177,9 +177,9 @@ export interface SheriffDuty {
     endDateTime: DateType;
 }
 
-export interface RecurrenceInfo {
+export interface DutyRecurrence {
     id?: IdType;
-    assignmentIdPath?: IdType;
+    assignmentId?: IdType;
     startTime: DateType;
     endTime: DateType;
     daysBitmap: DaysOfWeek;
@@ -205,8 +205,8 @@ export interface Courtroom {
 }
 
 export interface JailRole {
-    id: IdType;
-    title: string;
+    code: IdType;
+    description: string;
 }
 
 export interface Shift {
@@ -241,11 +241,11 @@ export interface Leave {
 export interface Run {
     id: IdType;
     courthouseId: IdType | string;
-    description: string;
+    title: string;
 }
 
 export interface AlternateAssignment {
-    id: IdType | string;
+    code: IdType | string;
     description: string;
 }
 

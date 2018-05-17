@@ -11,7 +11,7 @@ export {
     DateType,
     DaysOfWeek,
     DEFAULT_RECURRENCE,
-    RecurrenceInfo,
+    DutyRecurrence,
     Courthouse,
     Region,
     Courtroom,
