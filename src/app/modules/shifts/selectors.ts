@@ -18,6 +18,8 @@ export const allShifts = createSelector(
     }
 );
 
+export const shiftMap = shiftRequests.shiftMapRequest.getData;
+
 export const getShift = (id?: IdType) => (state: RootState) => {
     if (state && id != null) {
         const map: ShiftMap = shiftRequests.shiftMapRequest.getData(state);

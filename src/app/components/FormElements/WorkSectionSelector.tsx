@@ -3,11 +3,22 @@ import { FormFieldWrapperProps } from './FormFieldWrapper';
 import { WORK_SECTIONS } from '../../api';
 import Selector from './Selector';
 
-export default class WorkSectionSelector extends React.PureComponent<FormFieldWrapperProps> {
-    render() {        
-        let data = Object.keys(WORK_SECTIONS).map((key, index) => ({key, value: WORK_SECTIONS[key]}));
+export interface WorkSectionSelectorProps {
+    showVariedOption?: boolean;
+}
+export default class WorkSectionSelector extends React.PureComponent<FormFieldWrapperProps & WorkSectionSelectorProps> {
+    render() {
+        const { showVariedOption = false } = this.props;
+        let data = Object.keys(WORK_SECTIONS).map((key, index) => ({ key, value: WORK_SECTIONS[key] }));
         return (
-            <Selector data={data} {...this.props} allowNone={true} noneLabel="Not Applicable"/>
+            <Selector
+                data={data}
+                {...this.props}
+                allowNone={true}
+                noneLabel="Not Applicable"
+                showVariedOption={showVariedOption}
+                variedLabel="Work Section Varied"
+            />
         );
     }
 }

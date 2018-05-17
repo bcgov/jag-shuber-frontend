@@ -17,7 +17,8 @@ import {
     AlternateAssignment,
     SheriffDuty,
     AssignmentDutyDetails,
-    Courthouse
+    Courthouse,
+    ShiftUpdates
 } from '../Api';
 import {
     sheriffList,
@@ -110,6 +111,35 @@ export default class MockClient implements API {
 
     private getId(): IdType {
         return `0000-00000-${this.increasingId++}`;
+    }
+
+    private modifyShift(shiftToUpdate: Shift, updateDetails: ShiftUpdates): Shift {
+        let updatedShift = shiftToUpdate;
+        if (updateDetails) {
+            const newSheriffId = updateDetails.sheriffId;
+            const newWorkSectionId = updateDetails.workSectionId;
+            const newStartTime = updateDetails.startTime;
+            const newEndTime = updateDetails.endTime;
+            if (newSheriffId !== 'varied') {
+                updatedShift.sheriffId = newSheriffId;
+            }
+            if (newWorkSectionId !== 'varied') {
+                updatedShift.workSectionId = newWorkSectionId;
+            }
+            if (newStartTime) {
+                const newHours = moment(newStartTime).hour();
+                const newMinutes = moment(newStartTime).minute();
+                
+                updatedShift.startDateTime = moment(updatedShift.startDateTime).hour(newHours).minute(newMinutes);
+            }
+            if (newEndTime) {
+                const newHours = moment(newEndTime).hour();
+                const newMinutes = moment(newEndTime).minute();
+                
+                updatedShift.endDateTime = moment(updatedShift.endDateTime).hour(newHours).minute(newMinutes);
+            }
+        }
+        return updatedShift;
     }
 
     async init(): Promise<void> {
@@ -241,6 +271,26 @@ export default class MockClient implements API {
         return sheriffShifts;
     }
 
+    async updateMultipleShifts(shiftIds: IdType[], shiftUpdates: ShiftUpdates): Promise<Shift[]> {
+        await randomDelay();
+        
+        if (!shiftIds) {
+            throw new Error('No ID specified');
+        }
+
+        let updatedShifts: Shift[] = [];
+
+        shiftIds.forEach(shiftId => {
+            const shiftIndex = sheriffShifts.findIndex((shift) => shift.id === shiftId);
+            if (shiftIndex < 0) {
+                throw Error(`No shift could be located for ${shiftId}`);
+            }
+            updatedShifts.push(this.modifyShift(sheriffShifts[shiftIndex], shiftUpdates));
+        });
+
+        return updatedShifts;
+    }
+
     async updateShift(shiftToUpdate: Partial<Shift>): Promise<Shift> {
         await randomDelay();
         if (shiftToUpdate.id == null) {
@@ -258,6 +308,7 @@ export default class MockClient implements API {
         return updatedShift;
     }
 
+
     async createShift(newShift: Partial<Shift>): Promise<Shift> {
         await randomDelay();
         const shiftToAdd = {
@@ -271,18 +322,19 @@ export default class MockClient implements API {
         return shiftToAdd as Shift;
     }
 
-    async deleteShift(shiftId: IdType): Promise<void> {
+    async deleteShift(shiftIds: IdType[] = []): Promise<void> {
         await randomDelay();
-        if (shiftId == null) {
+        if (!shiftIds || shiftIds.length < 1) {
             throw new Error('No ID specified');
         }
 
-        const shiftIndex = sheriffShifts.findIndex((shift) => shift.id === shiftId);
-        if (shiftIndex < 0) {
-            throw Error(`No shift could be located for ${shiftId}`);
-        }
-
-        sheriffShifts.splice(shiftIndex, 1);
+        shiftIds.forEach(shiftId => {
+            const shiftIndex = sheriffShifts.findIndex((shift) => shift.id === shiftId);
+            if (shiftIndex < 0) {
+                throw Error(`No shift could be located for ${shiftId}`);
+            }
+            sheriffShifts.splice(shiftIndex, 1);
+        });
     }
 
     async copyShifts(shiftCopyDetails: ShiftCopyOptions): Promise<Shift[]> {

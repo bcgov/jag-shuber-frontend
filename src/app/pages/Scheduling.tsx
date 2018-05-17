@@ -1,12 +1,11 @@
 import * as React from 'react';
 import SchedulingTimeline from '../containers/LongTermSchedule/LongTermSchedule';
-import TimelineToolsPanel from '../components/TimelineToolsPanel';
+import TimelineToolsPanel from '../components/TimelineToolsPanel/TimelineToolsPanel';
 import SheriffList from '../containers/SheriffList';
 import { Sheriff } from '../api';
 import SheriffListCard from '../components/SheriffListCard/SheriffListCard';
 import { ListGroup } from 'react-bootstrap';
 import SheriffDragSource from '../containers/SheriffDragSource';
-import './pages.css';
 import ScheduleSummary from '../containers/ScheduleSummary';
 import ScheduleControls from '../containers/ScheduleControls';
 
@@ -14,16 +13,7 @@ class SchedulingPage extends React.PureComponent {
     render() {
         return (
             <div>
-                <div
-                    className="toolbar"
-                    style={{
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        maxHeight: 85,
-                        paddingTop: 5,
-                        paddingLeft: 210
-                    }}
-                >
+                <div className="toolbar">
                     <ScheduleControls />
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'row' }}>

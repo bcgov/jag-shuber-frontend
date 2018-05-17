@@ -218,6 +218,13 @@ export interface Shift {
     endDateTime: DateType;
 }
 
+export interface ShiftUpdates {
+    sheriffId?: IdType; 
+    startTime?: DateType;
+    endTime?: DateType;
+    workSectionId?: WorkSectionCode | 'varied';
+}
+
 export interface ShiftCopyOptions {
     shouldIncludeSheriffs: boolean;
     startOfWeekSource: DateType;
@@ -274,9 +281,10 @@ export interface API {
 
     // Sheriff Shifts
     getShifts(): Promise<Shift[]>;
-    updateShift(shiftToUpdate: Partial<Shift>): Promise<Shift>;
+    updateMultipleShifts(shiftIds: IdType[], shiftUpdates: ShiftUpdates): Promise<Shift[]>;
+    updateShift(updatedShift: Partial<Shift>): Promise<Shift>;
     createShift(newShift: Partial<Shift>): Promise<Shift>;
-    deleteShift(shiftId: IdType): Promise<void>;
+    deleteShift(shiftIds: IdType[]): Promise<void>;
     copyShifts(shiftCopyDetails: ShiftCopyOptions): Promise<Shift[]>;
 
     // Sheriff Leaves

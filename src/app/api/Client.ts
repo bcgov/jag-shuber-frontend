@@ -21,7 +21,8 @@ import {
     DateType,
     SheriffDuty,
     AssignmentDutyDetails,
-    Courthouse
+    Courthouse,
+    ShiftUpdates
 } from './Api';
 import {
     isCourtAssignment,
@@ -504,6 +505,10 @@ export default class Client implements API {
         console.warn('Using Mock API');
         return this._mockApi.getShifts();
     }
+    updateMultipleShifts(shiftIds: IdType[], shiftUpdates: ShiftUpdates): Promise<Shift[]> {
+        console.warn('Using Mock API');
+        return this._mockApi.updateMultipleShifts(shiftIds, shiftUpdates);
+    }
     updateShift(shiftToUpdate: Partial<Shift>): Promise<Shift> {
         console.warn('Using Mock API');
         return this._mockApi.updateShift(shiftToUpdate);
@@ -512,9 +517,9 @@ export default class Client implements API {
         console.warn('Using Mock API');
         return this._mockApi.createShift(newShift);
     }
-    deleteShift(shiftId: IdType): Promise<void> {
+    deleteShift(shiftIds: IdType[]): Promise<void> {
         console.warn('Using Mock API');
-        return this._mockApi.deleteShift(shiftId);
+        return this._mockApi.deleteShift(shiftIds);
     }
 
     copyShifts(shiftCopyDetails: ShiftCopyOptions): Promise<Shift[]> {

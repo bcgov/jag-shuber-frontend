@@ -1,0 +1,27 @@
+.timeline-tools-panel {
+    flex: 0 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    /* border-left: 2px solid #BBB; */
+}
+
+.timeline-tools-title {
+    line-height: 60px;
+    padding: 0px;
+    margin: 0px;
+    color: #FFF;
+}
+
+.timeline-tools-title-background {
+    background-color:#327AB7;
+    flex: '0 0 60px';
+    border: 0px;
+    color: #FFF;
+    text-align: center;
+}
+
+.timeline-tools-children {
+    flex: 1 1 auto;
+    overflow-Y: auto;
+}

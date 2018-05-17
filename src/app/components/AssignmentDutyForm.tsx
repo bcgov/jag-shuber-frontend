@@ -90,7 +90,7 @@ export default class AssignmentDutyForm extends
             const {
                 timeRange: {
                     startTime: minTime = TimeUtils.getDefaultStartTime().toISOString(),
-                endTime: maxTime = TimeUtils.getDefaultEndTime().toISOString()
+                    endTime: maxTime = TimeUtils.getDefaultEndTime().toISOString()
                 }
             } = timeRangeProps;
             return (

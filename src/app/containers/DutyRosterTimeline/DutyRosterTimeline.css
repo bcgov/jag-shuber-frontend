@@ -18,3 +18,8 @@
 .duty-roster-timeline .react-calendar-timeline .rct-sidebar .rct-sidebar-header {
     z-index: 90;
 }
+
+.duty-roster-timeline .react-calendar-timeline .rct-header .rct-label-group{
+    background: #327AB7;
+    border-right: 2px solid #bbb;
+}

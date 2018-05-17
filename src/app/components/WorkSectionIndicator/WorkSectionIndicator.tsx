@@ -6,15 +6,16 @@ import {
 } from '../../api/utils';
 
 export interface WorkSectionIndicatorProps {
-    workSectionId: WorkSectionCode;
+    workSectionId?: WorkSectionCode;
+    orientation?: 'top-left' | 'top-right';
 }
 
 export default class WorkSectionIndicator extends React.PureComponent<WorkSectionIndicatorProps, any> {
     render() {
-        const { workSectionId = 'OTHER' } = this.props;
+        const { workSectionId, orientation = 'top-left' } = this.props;
         return (
             <div 
-                className="work-section-indicator" 
+                className={`work-section-indicator ${orientation}`}
                 style={{ borderTopColor: getWorkSectionColour(workSectionId) }}
             />
         );

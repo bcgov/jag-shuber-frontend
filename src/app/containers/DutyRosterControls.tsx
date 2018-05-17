@@ -8,7 +8,7 @@ import {
 } from 'react-bootstrap';
 import { visibleTime } from '../modules/timeline/selectors';
 import { updateVisibleTime as setVisibleTime } from '../modules/timeline/actions';
-import CalendarButton from '../components/FormElements/CalendarButton/CalendarButton';
+import CalendarButton from '../components/CalendarButton/CalendarButton';
 import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 import ImportDefaultDutiesModal from '../containers/ImportDefaultDutiesModal';
 
@@ -44,18 +44,19 @@ class DutyRosterControls extends React.PureComponent<
                     <Glyphicon glyph="chevron-left" />
                 </Button>
                 
-                <CalendarButton 
-                    onChange={(selectedDate) => updateVisibleTime(
-                        TimeUtils.getDefaultStartTime(moment(selectedDate)),
-                        TimeUtils.getDefaultEndTime(moment(selectedDate))
-                    )}
-                    defaultValue={visibleTimeStart}
-                    todayOnClick={() => updateVisibleTime(
-                        TimeUtils.getDefaultStartTime(),
-                        TimeUtils.getDefaultEndTime()
-                    )}
-                />
-
+                <div style={{paddingTop: 3}}>
+                    <CalendarButton 
+                        onChange={(selectedDate) => updateVisibleTime(
+                            TimeUtils.getDefaultStartTime(moment(selectedDate)),
+                            TimeUtils.getDefaultEndTime(moment(selectedDate))
+                        )}
+                        defaultValue={visibleTimeStart}
+                        todayOnClick={() => updateVisibleTime(
+                            TimeUtils.getDefaultStartTime(),
+                            TimeUtils.getDefaultEndTime()
+                        )}
+                    />
+                </div>
                 <Button
                     onClick={() => updateVisibleTime(
                         moment(visibleTimeStart).add('day', 1),
