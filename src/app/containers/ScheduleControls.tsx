@@ -30,7 +30,7 @@ interface ScheduleControlsStateProps {
 
 interface ScheduleControlsProps {
     submit?: () => void;
-    cancel?: () => void;
+    clear?: () => void;
     deleteShift?: (shiftIds: IdType[]) => void;
     selectedShifts?: IdType[];
 }
@@ -52,7 +52,7 @@ class ScheduleControls extends React.PureComponent<
             showShiftCopyModal,
             showShiftAddModal,
             submit,
-            cancel,
+            clear,
             // tslint:disable:no-shadowed-variable
             deleteShift,
             selectedShifts = []
@@ -77,14 +77,14 @@ class ScheduleControls extends React.PureComponent<
                         onApply={
                             () => {
                                 submit && submit();
-                                cancel && cancel();
+                                clear && clear();
                             }
                         }
-                        onCancel={() => cancel && cancel()}
+                        onClear={() => clear && clear()}
                         onDelete={
                             () => {
                                 deleteShift && deleteShift(selectedShifts);
-                                cancel && cancel();
+                                clear && clear();
                             }
                         }
                     />
@@ -168,7 +168,7 @@ const mapDispatchToProps = {
     showShiftCopyModal: () => ScheduleShiftCopyModal.ShowAction(),
     showShiftAddModal: () => ScheduleShiftAddModal.ShowAction(),
     submit: ScheduleShiftMultiEditForm.submitAction,
-    cancel: clearSelectedShifts,
+    clear: clearSelectedShifts,
     deleteShift: deleteShift
 };
 

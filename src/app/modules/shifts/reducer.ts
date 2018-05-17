@@ -14,7 +14,7 @@ const nestedReducer = new NestedReducer([
   // Shifts
   shiftRequests.shiftMapRequest.reducer,
   shiftRequests.createShiftRequest.reducer,
-  shiftRequests.updateSelectedShiftsRequest.reducer,
+  shiftRequests.updateMultipleShiftsRequest.reducer,
   shiftRequests.deleteShiftRequest.reducer,
   shiftRequests.copyShiftsFromPrevWeek.reducer,
   shiftRequests.updateShiftRequest.reducer,

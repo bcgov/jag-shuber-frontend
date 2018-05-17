@@ -271,7 +271,7 @@ export default class MockClient implements API {
         return sheriffShifts;
     }
 
-    async updateSelectedShifts(shiftIds: IdType[], shiftUpdates: ShiftUpdates): Promise<Shift[]> {
+    async updateMultipleShifts(shiftIds: IdType[], shiftUpdates: ShiftUpdates): Promise<Shift[]> {
         await randomDelay();
         
         if (!shiftIds) {
@@ -322,9 +322,9 @@ export default class MockClient implements API {
         return shiftToAdd as Shift;
     }
 
-    async deleteShift(shiftIds: IdType[]): Promise<void> {
+    async deleteShift(shiftIds: IdType[] = []): Promise<void> {
         await randomDelay();
-        if (!shiftIds) {
+        if (!shiftIds || shiftIds.length < 1) {
             throw new Error('No ID specified');
         }
 

@@ -19,7 +19,7 @@ import TimePickerField from './FormElements/TimePickerField';
 export interface ScheduleControlPanelFormProps {
     handleSubmit?: () => void;
     onSubmitSuccess?: () => void;
-    onCancel?: () => void;
+    onClear?: () => void;
     onDelete?: () => void;
     onApply?: () => void;
     selectedShiftIds?: IdType[];
@@ -34,7 +34,7 @@ export default class ScheduleControlPanelForm extends
     }
 
     render() {
-        const { handleSubmit, onApply, onCancel, onDelete, selectedShiftIds, canAssignSheriff = true } = this.props;
+        const { handleSubmit, onApply, onClear, onDelete, selectedShiftIds, canAssignSheriff = true } = this.props;
         return (
             <div>
                 <Form onSubmit={handleSubmit} inline={true}>
@@ -85,7 +85,7 @@ export default class ScheduleControlPanelForm extends
                         message={<p style={{ fontSize: 14 }}>Please confirm that you would like to <b>permanently delete</b> the selected shift(s).</p>}
                         title="Delete Shift(s)"
                     />
-                    <Button className="cancel-button" style={{marginRight: 6}} onClick={() => onCancel && onCancel()}>
+                    <Button className="cancel-button" style={{marginRight: 6}} onClick={() => onClear && onClear()}>
                         Clear
                     </Button>
                    <Button className="apply-button" onClick={() => onApply && onApply()}>
