@@ -152,3 +152,8 @@ body {
   background-color: #327AB7;
   margin-top: 10px;
 }
+
+.form-inline .form-group {
+  margin-left: 3px;
+  margin-right: 3px;
+}
