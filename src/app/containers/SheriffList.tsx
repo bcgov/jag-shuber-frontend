@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import {
-  Sheriff
+  Sheriff, IdType
 } from '../api/index';
 import { RootState } from '../store';
 import { getSheriffList } from '../modules/sheriffs/actions';
@@ -20,7 +20,7 @@ export interface SheriffListProps {
 }
 
 interface SheriffListDispatchProps {
-  showSheriffProfileModal: (sheriff: Sheriff) => void;
+  showSheriffProfileModal: (sheriffId: IdType) => void;
   fetchSheriffList: () => void;
 }
 
@@ -55,7 +55,7 @@ class SheriffList extends React.Component<CompositeProps> {
             key={sheriff.badgeNo}
           >
             {SheriffRenderer && <SheriffRenderer {...sheriff} />}
-            {!SheriffRenderer && <SheriffCard sheriff={sheriff} onClick={() => showSheriffProfileModal(sheriff)}/>}
+            {!SheriffRenderer && <SheriffCard sheriff={sheriff} onClick={() => showSheriffProfileModal(sheriff.id)}/>}
           </div>
         ))}
       </div>
