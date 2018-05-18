@@ -10,6 +10,7 @@ import TextField from './FormElements/TextField';
 import * as Validators from '../infrastructure/Validators';
 import SheriffLocationSelector from '../containers/SheriffLocationSelector';
 import { Sheriff } from '../api/Api';
+import SheriffRankSelector from '../containers/CourthouseSheriffRankCodeSelector';
 
 export interface SheriffFormProps {
     handleSubmit?: () => void;
@@ -46,8 +47,8 @@ export default class SheriffForm extends
                     />
                     <Field
                         name="rankCode"
-                        component={TextField}
-                        label="Rank - TO DO add selector"
+                        component={SheriffRankSelector}
+                        label="Rank"
                         validate={[Validators.required]}
                     />
                     <Field

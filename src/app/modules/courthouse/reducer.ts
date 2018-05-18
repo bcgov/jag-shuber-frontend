@@ -3,6 +3,7 @@ import * as runRequests from './requests/runs';
 import * as jailRoleRequests from './requests/jailRoles';
 import * as alternateAssignmentTypeRequests from './requests/alternateAssignmentTypes';
 import * as courthouseRequests from './requests/courthouses';
+import * as sheriffRankRequests from './requests/sheriffRankCodes';
 import NestedReducer from '../../infrastructure/NestedReducer';
 import { ReducersMapObject } from 'redux';
 import { STATE_KEY } from './common';
@@ -27,7 +28,10 @@ const nestedReducer = new NestedReducer ([
     alternateAssignmentTypeRequests.alternateAssignmentTypeMapRequest.reducer,
 
     // Courthouses
-    courthouseRequests.courthouseMapRequest.reducer
+    courthouseRequests.courthouseMapRequest.reducer,
+
+    // Sheriff Rank
+    sheriffRankRequests.sheriffRankCodeMapRequest.reducer
 ]);
 
 const reducer = nestedReducer.reducer;

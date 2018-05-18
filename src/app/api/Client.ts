@@ -22,7 +22,8 @@ import {
     Shift,
     ShiftCopyOptions,
     WorkSectionCode,
-    ShiftUpdates
+    ShiftUpdates,
+    SheriffRank
 } from './Api';
 import MockApi from './Mock/MockApi';
 import { SubmissionError } from 'redux-form';
@@ -261,6 +262,11 @@ export default class Client implements API {
     async getAlternateAssignmentTypes(): Promise<AlternateAssignment[]> {
         const list = await this._client.GetOtherAssignCodes();
         return list as AlternateAssignment[];
+    }
+
+    async getSheriffRankCodes(): Promise<SheriffRank[]> {
+        const list = await this._client.GetSheriffRankCodes();
+        return list as SheriffRank[];
     }
 
 }

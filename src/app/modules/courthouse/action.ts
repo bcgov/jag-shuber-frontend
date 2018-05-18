@@ -3,6 +3,7 @@ import * as runRequests from './requests/runs';
 import * as jailRoleRequests from './requests/jailRoles';
 import * as alternateAssignmentTypeRequests from './requests/alternateAssignmentTypes';
 import * as courthouseRequests from './requests/courthouses';
+import * as sherriffRankRequests from './requests/sheriffRankCodes';
 
 // Courtrooms
 export const getCourtrooms = courtroomRequests.courtroomMapRequest.actionCreator;
@@ -19,3 +20,6 @@ export const getAlternateAssignmentTypes =
 
 // Courthouses
 export const getCourthouses = courthouseRequests.courthouseMapRequest.actionCreator;
+
+// Sheriff Rank Codes
+export const getSheriffRankCodes = sherriffRankRequests.sheriffRankCodeMapRequest.actionCreator;

@@ -18,7 +18,8 @@ import {
     SheriffDuty,
     AssignmentDutyDetails,
     Courthouse,
-    ShiftUpdates
+    ShiftUpdates,
+    SheriffRank
 } from '../Api';
 import {
     sheriffList,
@@ -62,6 +63,9 @@ function getAssignmentTitle(assignment: Partial<Assignment>): string {
 }
 
 export default class MockClient implements API {
+    getSheriffRankCodes(): Promise<SheriffRank[]> {
+        throw new Error("Method not implemented.");
+    }
     getCourthouses(): Promise<Courthouse[]> {
         throw new Error("Method not implemented.");
     }
