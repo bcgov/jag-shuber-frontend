@@ -126,7 +126,7 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
                             }}
                             onDropItem={(sheriff) => assignShift({ sheriffId: sheriff.id, shiftId: shift.id })}
                             canDropItem={(sheriff) =>
-                                shift.sheriffId === undefined
+                                shift.sheriffId == undefined
                                 && !this.isSheriffOnLeave(sheriff.id, shift)
                                 && !this.isSheriffScheduledForDay(sheriff.id, moment(shift.startDateTime))
                             }
