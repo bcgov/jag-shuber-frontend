@@ -241,9 +241,9 @@ export default class Client implements API {
         const created = await this._client.CreateShift(shiftToCreate);
         return created as Shift;
     }
-    deleteShift(shiftIds: IdType[]): Promise<void> {
-        console.warn('Using Mock API');
-        return this._mockApi.deleteShift(shiftIds);
+    
+    async deleteShift(shiftIds: IdType[]): Promise<void> {
+        await Promise.all(shiftIds.map(id => this._client.DeleteShift(id)));
     }
 
     copyShifts(shiftCopyDetails: ShiftCopyOptions): Promise<Shift[]> {
