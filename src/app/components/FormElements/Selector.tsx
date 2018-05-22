@@ -12,6 +12,12 @@ export interface SelectorProps {
 }
 
 export default class Selector extends React.PureComponent<FormFieldWrapperProps & SelectorProps> {
+    static VARIED_VALUE = 'varied';
+
+    static isVaried(value: any) {
+        return value === Selector.VARIED_VALUE;
+    }
+
     render() {
         const { 
             input: { value, onChange }, 
@@ -30,7 +36,13 @@ export default class Selector extends React.PureComponent<FormFieldWrapperProps 
                          <option disabled={true} selected={value === ''} value="">{`Select ${label}`}</option>}
                     {allowNone && <option selected={value === ''} value="">{noneLabel}</option>}
                     {showVariedOption && 
-                        <option disabled={true} selected={value === 'varied'} value="varied">{variedLabel}</option>}
+                        <option 
+                            disabled={true} 
+                            selected={Selector.isVaried(value)} 
+                            value={Selector.VARIED_VALUE}
+                        >
+                            {variedLabel}
+                        </option>}
                     {data.map((keyValue, index) => 
                         <option 
                             key={index}

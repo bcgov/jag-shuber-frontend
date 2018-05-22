@@ -29,7 +29,7 @@ export const shiftMapRequest = new ShiftMapRequest();
 // Assignment Template Create
 class CreateShiftRequest extends RequestAction<Partial<Shift>, Shift, ShiftModuleState> {
     constructor(namespace: string = STATE_KEY, actionName: string = 'createShift') {
-        super(namespace, actionName);
+        super(namespace, actionName, true);
     }
     public async doWork(shift: Partial<Shift>, { api }: ThunkExtra): Promise<Shift> {
         let newShift = await api.createShift(shift);
@@ -126,7 +126,7 @@ type ShiftUpdateOptions = { shiftIds: IdType[], updateDetails: ShiftUpdates };
 // Mulitple Shift Edit
 class UpdateMultipleShiftsRequest  extends RequestAction<ShiftUpdateOptions, Shift[], ShiftModuleState> {
     constructor(namespace: string = STATE_KEY, actionName: string = 'updateSelectedShifts') {
-        super(namespace, actionName);
+        super(namespace, actionName, true);
     }
 
     public async doWork(shiftUpdateDetails: ShiftUpdateOptions, { api }: ThunkExtra): Promise<Shift[]> {

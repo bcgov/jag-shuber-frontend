@@ -209,21 +209,37 @@ export default class Client implements API {
         throw "Not Implemented";
     }
 
-    getShifts(): Promise<Shift[]> {
-        console.warn('Using Mock API');
-        return this._mockApi.getShifts();
+    async getShifts(): Promise<Shift[]> {
+        const list = await this._client.GetShifts(this.currentCourthouse);
+        return list as Shift[];
     }
-    updateMultipleShifts(shiftIds: IdType[], shiftUpdates: ShiftUpdates): Promise<Shift[]> {
-        console.warn('Using Mock API');
-        return this._mockApi.updateMultipleShifts(shiftIds, shiftUpdates);
+    
+    async updateMultipleShifts(shiftIds: IdType[], shiftUpdates: ShiftUpdates): Promise<Shift[]> {
+        const {sheriffId, startTime, endTime, workSectionId} = shiftUpdates;
+        return await this._client.UpdateMultipleShifts({
+            shiftIds,
+            sheriffId, 
+            workSectionId, 
+            startTime: startTime ? moment(startTime).toISOString() : undefined,
+            endTime: endTime ? moment(endTime).toISOString() : undefined            
+        }) as Shift[];
     }
-    updateShift(shiftToUpdate: Partial<Shift>): Promise<Shift> {
-        console.warn('Using Mock API');
-        return this._mockApi.updateShift(shiftToUpdate);
+
+    async updateShift(shiftToUpdate: Partial<Shift>): Promise<Shift> {
+        const { id } = shiftToUpdate;
+        if (!id) {
+            throw 'Shift to Update has no id';
+        }
+        return await this._client.UpdateShift(id, shiftToUpdate as any) as Shift;
     }
-    createShift(newShift: Partial<Shift>): Promise<Shift> {
-        console.warn('Using Mock API');
-        return this._mockApi.createShift(newShift);
+
+    async createShift(newShift: Partial<Shift>): Promise<Shift> {
+        const shiftToCreate: any = {
+            ...newShift,
+            courthouseId: this.currentCourthouse
+        };
+        const created = await this._client.CreateShift(shiftToCreate);
+        return created as Shift;
     }
     deleteShift(shiftIds: IdType[]): Promise<void> {
         console.warn('Using Mock API');
@@ -234,6 +250,7 @@ export default class Client implements API {
         console.warn('Using Mock API');
         return this._mockApi.copyShifts(shiftCopyDetails);
     }
+
     getLeaves(): Promise<Leave[]> {
         console.warn('Using Mock API');
         return this._mockApi.getLeaves();
