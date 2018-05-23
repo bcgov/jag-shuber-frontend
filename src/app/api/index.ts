@@ -11,7 +11,7 @@ export {
     DateType,
     DaysOfWeek,
     DEFAULT_RECURRENCE,
-    RecurrenceInfo,
+    DutyRecurrence,
     Courthouse,
     Region,
     Courtroom,
@@ -42,13 +42,11 @@ export {
     ALTERNATE_ASSIGNMENTS
 } from './Mock/MockData';
 
-import MockClient from './Mock/MockApi';
 import Client from './Client';
+import MockClient from './Mock/MockApi';
 
 const mock = false;
 
-export const courthouseCode = '1201';
-
-const client = mock ? new MockClient() : new Client(`/api`, courthouseCode);
+const client = mock ? new MockClient() : new Client(`/api/v1`);
 
 export default client;

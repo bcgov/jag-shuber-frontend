@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@types/superagent": "^3.5.8",
     "autoprefixer": "7.1.2",
     "bootstrap": "^3.3.7",
     "case-sensitive-paths-webpack-plugin": "2.1.1",
@@ -16,8 +17,9 @@
     "hal-rest-client": "^0.3.4",
     "html-webpack-plugin": "2.29.0",
     "interact.js": "^1.2.8",
+    "jag-shuber-api": "github:bcgov/jag-shuber-api",
     "jest": "20.0.4",
-    "moment": "^2.20.1",
+    "moment": "^2.22.1",
     "object-assign": "4.1.1",
     "postcss-flexbugs-fixes": "3.2.0",
     "postcss-loader": "2.0.6",
@@ -40,6 +42,7 @@
     "reselect": "^3.0.1",
     "source-map-loader": "^0.2.1",
     "style-loader": "0.18.2",
+    "superagent": "^3.8.3",
     "sw-precache-webpack-plugin": "0.11.4",
     "ts-jest": "^20.0.7",
     "ts-loader": "^2.3.7",
@@ -151,9 +154,11 @@
     "extends": "react-app"
   },
   "proxy": {
-    "/api": {
-      "target": "http://api-test.192.168.99.100.nip.io",
-      "changeOrigin": true
+    "/api/v1/": {
+      "target": "http://localhost:3001",
+      "changeOrigin": true,
+      "ignorePath": false,
+      "secure": false
     }
   }
 }

@@ -13,7 +13,8 @@ import { reducer as formReducer } from 'redux-form';
 import {
     getAlternateAssignmentTypes,
     getJailRoles,
-    getCourthouses
+    getCourthouses,
+    getSheriffRankCodes
 } from './modules/courthouse/action';
 import { updateVisibleTime as updateTimelineVisibleTime } from './modules/timeline/actions';
 import { default as scheduleReducer, ScheduleState } from './modules/schedule/reducer';
@@ -41,7 +42,8 @@ const initialActions: any[] = [
     getCourthouses,
     () => updateTimelineVisibleTime(
             TimeUtils.getDefaultStartTime(), TimeUtils.getDefaultEndTime()),
-    () => updateScheduleVisibleTime(moment().startOf('week').add(1, 'day'), moment().endOf('week').subtract(1, 'day'))
+    () => updateScheduleVisibleTime(moment().startOf('week').add(1, 'day'), moment().endOf('week').subtract(1, 'day')),
+    getSheriffRankCodes
 ];
 
 const reducers = {

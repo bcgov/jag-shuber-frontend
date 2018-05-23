@@ -12,6 +12,7 @@ import {
 } from 'redux-form';
 import SheriffSelector from '../containers/SheriffSelector';
 import WorkSectionSelector from '../components/FormElements/WorkSectionSelector';
+import Selector from '../components/FormElements/Selector';
 import { ConfirmationModal } from './ConfirmationModal';
 import { IdType, ShiftUpdates } from '../api/Api';
 import TimePickerField from './FormElements/TimePickerField';
@@ -30,7 +31,14 @@ export default class ScheduleControlPanelForm extends
     React.Component<ScheduleControlPanelFormProps & InjectedFormProps<{}, ScheduleControlPanelFormProps>, {}> {
 
     static parseUpdateDetailsFromValues(values: any): ShiftUpdates {
-        return { ...values } as ShiftUpdates;
+        const {sheriffId, startTime, endTime, workSectionId} = values;
+        
+        return { 
+            sheriffId: !Selector.isVaried(sheriffId) ? sheriffId : undefined,
+            startTime, 
+            endTime,
+            workSectionId: !Selector.isVaried(workSectionId) ? workSectionId : undefined
+        } as ShiftUpdates;
     }
 
     render() {

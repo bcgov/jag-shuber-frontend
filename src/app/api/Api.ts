@@ -1,24 +1,27 @@
 import * as moment from 'moment';
 import { displayEnum } from '../infrastructure/EnumUtils';
 
+type MapType<T> = { [key: string]: T };
+
 export type DateType = Date | moment.Moment | string;
-export type StringMap = { [key: string]: string };
+export type StringMap = MapType<string>;
 export type IdType = string;
-export type ShiftMap = { [key: number]: Shift };
-export type LeaveMap = { [key: number]: Leave };
-export type SheriffMap = { [key: number]: Sheriff };
-export type AssignmentMap = { [key: number]: Assignment };
-export type AssignmentDutyMap = { [key: number]: AssignmentDuty };
-export type AssignmentDutyDetailsMap = { [key: number]: AssignmentDutyDetails };
+export type ShiftMap = MapType<Shift>;
+export type LeaveMap = MapType<Leave>;
+export type SheriffMap = MapType<Sheriff>;
+export type AssignmentMap = MapType<Assignment>;
+export type AssignmentDutyMap = MapType<AssignmentDuty>;
+export type AssignmentDutyDetailsMap = MapType<AssignmentDutyDetails>;
 export type WorkSectionCode = 'COURTS' | 'JAIL' | 'ESCORTS' | 'OTHER';
 export type Assignment = CourtAssignment | JailAssignment | EscortAssignment | OtherAssignment;
 export type TimeType = string | number;
-export type CourtroomMap = { [key: number]: Courtroom };
-export type RunMap = { [key: number]: Run };
-export type JailRoleMap = { [key: number]: JailRole };
-export type AlternateAssignmentMap = { [key: number]: AlternateAssignment };
+export type CourtroomMap = MapType<Courtroom>;
+export type RunMap = MapType<Run>;
+export type JailRoleMap = MapType<JailRole>;
+export type AlternateAssignmentMap = MapType<AlternateAssignment>;
 export type DateRange = { startDate?: DateType, endDate?: DateType };
-export type CourthouseMap = {[key: number]: Courthouse};
+export type CourthouseMap = MapType<Courthouse>;
+export type SheriffRankCodeMap = MapType<SheriffRank>;
 
 /* tslint:disable:no-bitwise */
 export enum DaysOfWeek {
@@ -94,7 +97,7 @@ export const BLANK_COURTHOUSE: Courthouse = {
     code: ''
 };
 
-export const DEFAULT_RECURRENCE: RecurrenceInfo[] = [
+export const DEFAULT_RECURRENCE: DutyRecurrence[] = [
     {
         daysBitmap: DaysOfWeek.Weekdays,
         startTime: moment().hour(9).minute(0),
@@ -130,7 +133,7 @@ export interface BaseAssignment {
     title: string;
     courthouseId: IdType;
     workSectionId: WorkSectionCode;
-    dutyRecurrences?: RecurrenceInfo[];
+    dutyRecurrences?: DutyRecurrence[];
 }
 
 export interface CourtAssignment extends BaseAssignment {
@@ -140,7 +143,7 @@ export interface CourtAssignment extends BaseAssignment {
 
 export interface JailAssignment extends BaseAssignment {
     workSectionId: 'JAIL';
-    jailRoleId: IdType;
+    jailRoleCode: IdType;
 }
 
 export interface EscortAssignment extends BaseAssignment {
@@ -150,7 +153,7 @@ export interface EscortAssignment extends BaseAssignment {
 
 export interface OtherAssignment extends BaseAssignment {
     workSectionId: 'OTHER';
-    otherAssignmentTypeId: IdType;
+    otherAssignCode: IdType;
 }
 
 export interface AssignmentDutyDetails {
@@ -177,9 +180,9 @@ export interface SheriffDuty {
     endDateTime: DateType;
 }
 
-export interface RecurrenceInfo {
+export interface DutyRecurrence {
     id?: IdType;
-    assignmentIdPath?: IdType;
+    assignmentId?: IdType;
     startTime: DateType;
     endTime: DateType;
     daysBitmap: DaysOfWeek;
@@ -205,8 +208,8 @@ export interface Courtroom {
 }
 
 export interface JailRole {
-    id: IdType;
-    title: string;
+    code: IdType;
+    description: string;
 }
 
 export interface Shift {
@@ -219,7 +222,7 @@ export interface Shift {
 }
 
 export interface ShiftUpdates {
-    sheriffId?: IdType; 
+    sheriffId?: IdType;
     startTime?: DateType;
     endTime?: DateType;
     workSectionId?: WorkSectionCode | 'varied';
@@ -241,11 +244,11 @@ export interface Leave {
 export interface Run {
     id: IdType;
     courthouseId: IdType | string;
-    description: string;
+    title: string;
 }
 
 export interface AlternateAssignment {
-    id: IdType | string;
+    code: IdType | string;
     description: string;
 }
 
@@ -257,7 +260,7 @@ export interface API {
     updateSheriff(sheriffToUpdate: Partial<Sheriff>): Promise<Sheriff>;
 
     // Assignments
-    getAssignments(): Promise<Assignment[]>;
+    getAssignments(dateRange: DateRange): Promise<Assignment[]>;
     createAssignment(assignment: Partial<Assignment>): Promise<Assignment>;
     updateAssignment(assignment: Partial<Assignment>): Promise<Assignment>;
     deleteAssignment(assignmentId: IdType): Promise<void>;
@@ -294,6 +297,7 @@ export interface API {
     getRuns(): Promise<Run[]>;
     getJailRoles(): Promise<JailRole[]>;
     getAlternateAssignmentTypes(): Promise<AlternateAssignment[]>;
+    getSheriffRankCodes(): Promise<SheriffRank[]>;
 
     getCourthouses(): Promise<Courthouse[]>;
 }

@@ -256,7 +256,7 @@ const jailAssingments: JailAssignment[] = [
         title: JAIL_ROLES[1],
         workSectionId: 'JAIL',
         courthouseId: '1',
-        jailRoleId: '1',
+        jailRoleCode: '1',
         dutyRecurrences: DEFAULT_RECURRENCE
     },
     {
@@ -264,7 +264,7 @@ const jailAssingments: JailAssignment[] = [
         title: JAIL_ROLES[2],
         workSectionId: 'JAIL',
         courthouseId: '1',
-        jailRoleId: '1',
+        jailRoleCode: '1',
         dutyRecurrences: DEFAULT_RECURRENCE
     }
 ];
@@ -294,7 +294,7 @@ const otherAssignments: OtherAssignment[] = [
         title: ALTERNATE_ASSIGNMENTS[1],
         workSectionId: 'OTHER',
         courthouseId: '1',
-        otherAssignmentTypeId: '1',
+        otherAssignCode: '1',
         dutyRecurrences: DEFAULT_RECURRENCE
     },
     {
@@ -302,7 +302,7 @@ const otherAssignments: OtherAssignment[] = [
         title: ALTERNATE_ASSIGNMENTS['3'],
         workSectionId: 'OTHER',
         courthouseId: '1',
-        otherAssignmentTypeId: '3',
+        otherAssignCode: '3',
         dutyRecurrences: DEFAULT_RECURRENCE
     }
 ];

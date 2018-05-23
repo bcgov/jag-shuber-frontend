@@ -5,6 +5,7 @@ import {
     Table
 } from 'react-bootstrap';
 import CourthouseDisplay from '../containers/CourthouseDisplay';
+import SheriffRankDisplay from '../containers/SheriffRankDisplay';
 export interface SheriffProfileDetailsProps {
     sheriff: Sheriff;
     isCompactView?: boolean;
@@ -12,7 +13,17 @@ export interface SheriffProfileDetailsProps {
 
 export default class SheriffProfileDetails extends React.Component<SheriffProfileDetailsProps, any>{
     render() {
-        const {sheriff: {firstName, lastName, imageUrl, badgeNo, alias, homeCourthouseId = ''}} = this.props;
+        const {
+            sheriff: {
+                firstName, 
+                lastName, 
+                imageUrl, 
+                badgeNo, 
+                alias, 
+                homeCourthouseId = '', 
+                rankCode = ''
+            }
+        } = this.props;
         return (
             <div>
                 <div style={{textAlign: 'center'}}>
@@ -36,7 +47,7 @@ export default class SheriffProfileDetails extends React.Component<SheriffProfil
                         </tr>
                         <tr>
                             <td><strong>Rank</strong></td>
-                            <td>TO DO</td>
+                            <td><SheriffRankDisplay code={rankCode}/></td>
                         </tr>
                         <tr>
                             <td><strong>Badge No</strong></td>

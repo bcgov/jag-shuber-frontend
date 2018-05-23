@@ -15,7 +15,7 @@ class JailRoleMapRequest extends RequestAction<void, JailRoleMap, CourthouseModu
     }
     public async doWork(request: void, { api }: ThunkExtra): Promise<JailRoleMap> {
         let jailRoles = await api.getJailRoles();
-        return arrayToMap(jailRoles, j => j.id);
+        return arrayToMap(jailRoles, j => j.code);
     }
 }
 

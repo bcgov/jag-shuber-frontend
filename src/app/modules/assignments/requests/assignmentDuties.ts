@@ -9,9 +9,9 @@ import {
     AssignmentDutyMap,
     AssignmentDuty,
     IdType,
-    DateRange, 
+    DateRange,
     DateType,
-    AssignmentDutyDetailsMap, 
+    AssignmentDutyDetailsMap,
     AssignmentDutyDetails
 } from '../../../api/Api';
 
@@ -33,7 +33,7 @@ export const assignmentDutyMapRequest = new AssignmentDutyMapRequest();
 class CreateAssignmentDutyRequest extends
     RequestAction<Partial<AssignmentDuty>, AssignmentDuty, AssignmentModuleState> {
     constructor(namespace: string = STATE_KEY, actionName: string = 'createAssignmentDuty') {
-        super(namespace, actionName);
+        super(namespace, actionName, true);
     }
     public async doWork(assignment: Partial<AssignmentDuty>, { api }: ThunkExtra): Promise<AssignmentDuty> {
         let newAssignment = await api.createAssignmentDuty(assignment);
@@ -47,7 +47,7 @@ class CreateAssignmentDutyRequest extends
         const {
             assignmentDutyMap: {
                 data: currentMap = {},
-            ...restMap
+                ...restMap
             } = {},
             ...restState
         } = super.reduceSuccess(moduleState, action);
@@ -102,7 +102,7 @@ class DeleteAssignmentDutyRequest extends RequestAction<IdType, IdType, Assignme
         const {
             assignmentDutyMap: {
                 data: currentMap = {},
-            ...restMap
+                ...restMap
             } = {},
             ...restState
         } = super.reduceSuccess(moduleState, action);
@@ -142,7 +142,7 @@ class CreateDefaultDutiesRequest extends RequestAction<DateType, AssignmentDuty[
         const {
             assignmentDutyMap: {
                 data: currentMap = {},
-            ...restMap
+                ...restMap
             } = {},
             ...restState
         } = super.reduceSuccess(moduleState, action);
@@ -184,21 +184,21 @@ class DeleteSheriffDutyRequest extends RequestAction<IdType, IdType, AssignmentM
         const {
             assignmentDutyMap: {
                 data: currentMap = {},
-            ...restMap
+                ...restMap
             } = {},
             ...restState
         } = super.reduceSuccess(moduleState, action);
 
         // Create a new map and remvoe the sheriff duty from it
         const newMap: AssignmentDutyMap = { ...currentMap };
-        let sheriffDutyParent: AssignmentDuty | undefined = 
+        let sheriffDutyParent: AssignmentDuty | undefined =
             Object.keys(newMap).map((key) => newMap[key] as AssignmentDuty)
-            .find(ad => ad.sheriffDuties.some(sd => sd.id === action.payload));
-        
+                .find(ad => ad.sheriffDuties.some(sd => sd.id === action.payload));
+
         if (sheriffDutyParent) {
             const sheriffDutyIndex = sheriffDutyParent.sheriffDuties.findIndex(sd => sd.id === action.payload);
             sheriffDutyParent.sheriffDuties.splice(sheriffDutyIndex, 1);
-            
+
             newMap[sheriffDutyParent.id] = sheriffDutyParent;
         }
 
@@ -231,30 +231,30 @@ class AssignmentDutyDetailsMapRequest extends RequestAction<void, AssignmentDuty
 export const assignmentDutyDetailsMapRequest = new AssignmentDutyDetailsMapRequest();
 
 // Create Assignment Duty Details
-class CreateAssignmentDutyDetailsRequest extends 
+class CreateAssignmentDutyDetailsRequest extends
     RequestAction<Partial<AssignmentDutyDetails>, AssignmentDutyDetails, AssignmentModuleState> {
-    
+
     constructor(
-        namespace: string = STATE_KEY, 
-        actionName: string = 'createAssignmentDutyDetails', 
+        namespace: string = STATE_KEY,
+        actionName: string = 'createAssignmentDutyDetails',
         throwOnError: boolean = true) {
-            super(namespace, actionName, throwOnError);
+        super(namespace, actionName, throwOnError);
     }
     public async doWork(
         assignmentDutyDetails: Partial<AssignmentDutyDetails>, { api }: ThunkExtra): Promise<AssignmentDutyDetails> {
-            let newAssignmentDutyDetails = await api.createAssignmentDutyDetails(assignmentDutyDetails);
-            return newAssignmentDutyDetails;
+        let newAssignmentDutyDetails = await api.createAssignmentDutyDetails(assignmentDutyDetails);
+        return newAssignmentDutyDetails;
     }
 
     reduceSuccess(
-        moduleState: AssignmentModuleState, 
+        moduleState: AssignmentModuleState,
         action: { type: string, payload: AssignmentDutyDetails }): AssignmentModuleState {
         // Call the super's reduce success and pull out our state and
         // the assignmentMap state
         const {
             assignmentDutyDetailsMap: {
                 data: currentMap = {},
-            ...restMap
+                ...restMap
             } = {},
             ...restState
         } = super.reduceSuccess(moduleState, action);
@@ -285,8 +285,8 @@ class UpdateAssignmentDutyDetailsRequest extends CreateAssignmentDutyDetailsRequ
 
     public async doWork(
         dutyDetails: Partial<AssignmentDutyDetails>, { api }: ThunkExtra): Promise<AssignmentDutyDetails> {
-            let updatedDutyDetails = await api.updateAssignmentDutyDetails(dutyDetails);
-            return updatedDutyDetails;
+        let updatedDutyDetails = await api.updateAssignmentDutyDetails(dutyDetails);
+        return updatedDutyDetails;
     }
 }
 

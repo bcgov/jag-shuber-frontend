@@ -1,12 +1,12 @@
 import * as React from 'react';
 import {
-    RecurrenceInfo,
+    DutyRecurrence,
     DaysOfWeek
 } from '../api';
 import { Badge } from 'react-bootstrap';
 
 export interface AssignmentDefaultRecurrenceDetailsProps {
-    data: RecurrenceInfo;
+    data: DutyRecurrence;
 }
 
 export default class AssignmentDefaultRecurrenceDetails 

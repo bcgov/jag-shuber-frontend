@@ -18,7 +18,8 @@ import {
     SheriffDuty,
     AssignmentDutyDetails,
     Courthouse,
-    ShiftUpdates
+    ShiftUpdates,
+    SheriffRank
 } from '../Api';
 import {
     sheriffList,
@@ -53,15 +54,18 @@ function getAssignmentTitle(assignment: Partial<Assignment>): string {
     } else if (isEscortAssignment(assignment)) {
         assignmentTitle = RUNS[assignment.runId];
     } else if (isJailAssignment(assignment)) {
-        assignmentTitle = JAIL_ROLES[assignment.jailRoleId];
+        assignmentTitle = JAIL_ROLES[assignment.jailRoleCode];
     } else if (isOtherAssignment(assignment)) {
-        assignmentTitle = ALTERNATE_ASSIGNMENTS[assignment.otherAssignmentTypeId];
+        assignmentTitle = ALTERNATE_ASSIGNMENTS[assignment.otherAssignCode];
     }
 
     return assignmentTitle;
 }
 
 export default class MockClient implements API {
+    getSheriffRankCodes(): Promise<SheriffRank[]> {
+        throw new Error("Method not implemented.");
+    }
     getCourthouses(): Promise<Courthouse[]> {
         throw new Error("Method not implemented.");
     }

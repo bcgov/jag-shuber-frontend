@@ -4,6 +4,7 @@ import * as runRequests from './requests/runs';
 import * as jailRoleRequests from './requests/jailRoles';
 import * as alternateAssignmentTypeRequests from './requests/alternateAssignmentTypes';
 import * as courthouseRequests from './requests/courthouses';
+import * as sheriffRankCodeRequests from './requests/sheriffRankCodes';
 import { IdType } from '../../api/Api';
 
 // Courtrooms
@@ -25,3 +26,6 @@ export const selectedCourthouse = (id: IdType) => (state: RootState) => {
     const { courthouseMap } = state.courthouse;
     return courthouseMap ? courthouseMap[id] : '';
 };
+
+// Sheriff Rank Codes
+export const allSheriffRankCodes = sheriffRankCodeRequests.sheriffRankCodeMapRequest.getData;

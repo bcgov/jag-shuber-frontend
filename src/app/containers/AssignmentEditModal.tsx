@@ -27,8 +27,8 @@ class AssignmentEditModal extends React.PureComponent<
             assignmentId,
             // tslint:disable-next-line:no-shadowed-variable
             deleteAssignment,
-            allowDelete = false,
-            allowSave = false
+            allowDelete = true,
+            allowSave = true
         } = this.props;
 
         const deleteConfirmationMessage =

@@ -4,7 +4,8 @@ import {
    RunMap,
    JailRoleMap,
    AlternateAssignmentMap,
-   CourthouseMap
+   CourthouseMap,
+   SheriffRankCodeMap
 } from '../../api/Api';
 
 export interface CourthouseModuleState {
@@ -22,5 +23,8 @@ export interface CourthouseModuleState {
 
     // Courthouses
     courthouseMap?: RequestActionState<CourthouseMap>;
+
+    // Sheriff Rank Codes
+    sheriffRankCodeMap?: RequestActionState<SheriffRankCodeMap>;
 }
 export const STATE_KEY: string = 'courthouse';

@@ -98,7 +98,7 @@ export default class SheriffDutyBar extends React.PureComponent<SheriffDutyBarPr
             canDropSheriff = (s: Sheriff) => this.canAssignSheriff(s),
             onDropSheriff,
         } = this.props;
-        const isAssigned = sheriffId !== undefined && sheriffId !== '';
+        const isAssigned = sheriffId != undefined && sheriffId !== '';
         const title = !this.props.title ? (isAssigned ? `Sheriff #${sheriffId}` : '') : this.props.title.toUpperCase();
 
         return (
