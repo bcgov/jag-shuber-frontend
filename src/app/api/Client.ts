@@ -246,9 +246,14 @@ export default class Client implements API {
         await Promise.all(shiftIds.map(id => this._client.DeleteShift(id)));
     }
 
-    copyShifts(shiftCopyDetails: ShiftCopyOptions): Promise<Shift[]> {
-        console.warn('Using Mock API');
-        return this._mockApi.copyShifts(shiftCopyDetails);
+    async copyShifts(shiftCopyDetails: ShiftCopyOptions): Promise<Shift[]> {
+        const {startOfWeekDestination, startOfWeekSource, shouldIncludeSheriffs} = shiftCopyDetails;
+        return await this._client.CopyShifts({
+            startOfWeekDestination: moment(startOfWeekDestination).toISOString(),
+            startOfWeekSource: moment(startOfWeekSource).toISOString(),
+            shouldIncludeSheriffs,
+            courthouseId: this.currentCourthouse
+        }) as Shift[];
     }
 
     getLeaves(): Promise<Leave[]> {
