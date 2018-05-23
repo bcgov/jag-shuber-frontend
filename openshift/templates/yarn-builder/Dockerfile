@@ -1,5 +1,5 @@
 # Get community edition of nodejs v6.x
-FROM centos/nodejs-6-centos7
+FROM centos/nodejs-8-centos7
 
 RUN curl -o- -L https://yarnpkg.com/install.sh | bash
 
