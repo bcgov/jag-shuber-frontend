@@ -9,7 +9,7 @@ import {
 const mapStateToProps = (state: RootState, props: SheriffDutyBarProps) => {
     const { sheriffId } = props;
     const sheriff = getSheriff(sheriffId)(state);
-    const title = sheriff == null ? '' : `${sheriff.lastName}, ${sheriff.firstName.charAt(0)}`;
+    const title = sheriff == undefined ? '' : `${sheriff.lastName}, ${sheriff.firstName.charAt(0)}`;
     return {
         title,
         ...props
