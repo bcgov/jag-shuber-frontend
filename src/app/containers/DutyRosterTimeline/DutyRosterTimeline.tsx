@@ -39,7 +39,7 @@ interface DutyRosterTimelineProps extends TimelineProps {
 
 interface DutyRosterTimelineDispatchProps {
     fetchAssignmentDuties: (dateRange: DateRange) => void;
-    fetchAssignments: () => void;
+    fetchAssignments: (dateRange:DateRange) => void;
     linkSheriff: (link: { sheriffId: IdType, dutyId: IdType, sheriffDutyId: IdType }) => void;
     fetchAssignmentDutyDetails: () => void;
     showAssignmentDutyEditModal: (id: IdType) => void;
@@ -65,20 +65,24 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
             fetchAssignmentDutyDetails
         } = this.props;
 
+        const dateRange = {startDate,endDate};
         /* tslint:disable:no-unused-expression */
-        fetchAssignments && fetchAssignments();
-        fetchAssignmentDuties && fetchAssignmentDuties({ startDate, endDate });
+        fetchAssignments && fetchAssignments(dateRange);
+        fetchAssignmentDuties && fetchAssignmentDuties(dateRange);
         fetchAssignmentDutyDetails && fetchAssignmentDutyDetails();
         /* tslint:enable:no-unused-expression */
     }
 
     componentWillReceiveProps(nextProps: CompositeProps) {
         const { visibleTimeStart: prevStartDate, visibleTimeEnd: prevEndDate } = this.props;
-        const { visibleTimeStart: nextStartDate, visibleTimeEnd: nextEndDate, fetchAssignmentDuties } = nextProps;
+        const { visibleTimeStart: nextStartDate, visibleTimeEnd: nextEndDate, fetchAssignmentDuties, fetchAssignments } = nextProps;
 
         if (!moment(prevStartDate).isSame(moment(nextStartDate)) || !moment(prevEndDate).isSame(moment(nextEndDate))) {
-            // tslint:disable-next-line:no-unused-expression
-            fetchAssignmentDuties && fetchAssignmentDuties({ startDate: nextStartDate, endDate: nextEndDate });
+            const dateRange = { startDate: nextStartDate, endDate: nextEndDate };
+            // tslint:disable:no-unused-expression
+            fetchAssignments && fetchAssignments(dateRange);
+            fetchAssignmentDuties && fetchAssignmentDuties(dateRange);
+            // tslint:enable:no-unused-expression           
         }
     }
 

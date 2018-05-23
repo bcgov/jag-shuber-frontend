@@ -23,7 +23,8 @@ import {
     ShiftCopyOptions,
     WorkSectionCode,
     ShiftUpdates,
-    SheriffRank
+    SheriffRank,
+    DateRange
 } from './Api';
 import MockApi from './Mock/MockApi';
 import { SubmissionError } from 'redux-form';
@@ -122,8 +123,9 @@ export default class Client implements API {
         return await this._client.UpdateSheriff(id, sheriffToUpdate) as Sheriff;
     }
 
-    async getAssignments(): Promise<(CourtAssignment | JailAssignment | EscortAssignment | OtherAssignment)[]> {
-        const list = await this._client.GetAssignments(this.currentCourthouse);
+    async getAssignments(dateRange: DateRange = {}): Promise<(CourtAssignment | JailAssignment | EscortAssignment | OtherAssignment)[]> {
+        const { startDate, endDate } = dateRange;
+        const list = await this._client.GetAssignments(this.currentCourthouse, startDate, endDate);
         return list as Assignment[];
     }
     async createAssignment(assignment: Partial<Assignment>): Promise<Assignment> {
@@ -195,33 +197,39 @@ export default class Client implements API {
     }
 
     async createSheriffDuty(sheriffDuty: Partial<SheriffDuty>): Promise<SheriffDuty> {
-        throw "Not Implemented";
+        return await this._client.CreateSheriffDuty(sheriffDuty as any) as SheriffDuty;
     }
     async updateSheriffDuty(sheriffDuty: Partial<SheriffDuty>): Promise<SheriffDuty> {
-        throw "Not Implemented"
+        const { id } = sheriffDuty;
+        if (!id) {
+            throw "No Id included in sheriffDuty to update";
+        }
+        return await this._client.UpdateSheriffDuty(id, sheriffDuty as any) as SheriffDuty;
     }
     async deleteSheriffDuty(sheriffDutyId: string): Promise<void> {
-        //await this._client.(sheriffDutyId);
-        throw "Not Implemented";
+        await this._client.DeleteSheriffDuty(sheriffDutyId);
     }
 
     async createDefaultDuties(date: moment.Moment = moment()): Promise<AssignmentDuty[]> {
-        throw "Not Implemented";
+        return await this._client.ImportDefaultDuties({
+            courthouseId: this.currentCourthouse,
+            date: date.toISOString()
+        }) as AssignmentDuty[];
     }
 
     async getShifts(): Promise<Shift[]> {
         const list = await this._client.GetShifts(this.currentCourthouse);
         return list as Shift[];
     }
-    
+
     async updateMultipleShifts(shiftIds: IdType[], shiftUpdates: ShiftUpdates): Promise<Shift[]> {
-        const {sheriffId, startTime, endTime, workSectionId} = shiftUpdates;
+        const { sheriffId, startTime, endTime, workSectionId } = shiftUpdates;
         return await this._client.UpdateMultipleShifts({
             shiftIds,
-            sheriffId, 
-            workSectionId, 
+            sheriffId,
+            workSectionId,
             startTime: startTime ? moment(startTime).toISOString() : undefined,
-            endTime: endTime ? moment(endTime).toISOString() : undefined            
+            endTime: endTime ? moment(endTime).toISOString() : undefined
         }) as Shift[];
     }
 
@@ -241,7 +249,7 @@ export default class Client implements API {
         const created = await this._client.CreateShift(shiftToCreate);
         return created as Shift;
     }
-    
+
     async deleteShift(shiftIds: IdType[]): Promise<void> {
         await Promise.all(shiftIds.map(id => this._client.DeleteShift(id)));
     }
