@@ -17,7 +17,7 @@
     "hal-rest-client": "^0.3.4",
     "html-webpack-plugin": "2.29.0",
     "interact.js": "^1.2.8",
-    "jag-shuber-api": "github:bcgov/jag-shuber-api#node-api",
+    "jag-shuber-api": "github:bcgov/jag-shuber-api",
     "jest": "20.0.4",
     "moment": "^2.22.1",
     "object-assign": "4.1.1",

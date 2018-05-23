@@ -5226,9 +5226,9 @@ istanbul-reports@^1.1.3:
   dependencies:
     handlebars "^4.0.3"
 
-"jag-shuber-api@github:bcgov/jag-shuber-api#node-api":
+"jag-shuber-api@github:bcgov/jag-shuber-api":
   version "1.0.0"
-  resolved "https://codeload.github.com/bcgov/jag-shuber-api/tar.gz/34835efe670ebaaa6a417cd551bd1f6891049f42"
+  resolved "https://codeload.github.com/bcgov/jag-shuber-api/tar.gz/7a638f7a06c49547c93678cc01d2076fcc447734"
   dependencies:
     koa "^2.5.0"
     koa-bodyparser "^4.2.0"
@@ -5237,6 +5237,7 @@ istanbul-reports@^1.1.3:
     pg "^7.4.1"
     squel "^5.12.1"
     superagent-absolute "^1.0.1"
+    superagent-use "^0.1.0"
     tsoa "^2.1.4"
     uuid "^3.2.1"
 
@@ -8840,6 +8841,13 @@ success-symbol@^0.1.0:
 superagent-absolute@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/superagent-absolute/-/superagent-absolute-1.0.1.tgz#781c76c54939d9a3371ff0f76f650a3be2eef5e5"
+
+superagent-use@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/superagent-use/-/superagent-use-0.1.0.tgz#d28dbbbf573ba980329b4645897608bc99501cff"
+  dependencies:
+    extend "^3.0.0"
+    methods "~1.1.2"
 
 superagent@^3.8.3:
   version "3.8.3"
