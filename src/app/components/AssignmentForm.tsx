@@ -40,7 +40,7 @@ class OtherFields extends React.PureComponent {
                 <Field
                     name="otherAssignCode"
                     label="Assignment"
-                    component={AlternateAssignmentSelector}
+                    component={(p) => <AlternateAssignmentSelector {...p}/>}
                     validate={[Validators.required]}
                 />
             </div>
@@ -54,7 +54,7 @@ class EscortsFields extends React.PureComponent {
             <div>
                 <Field
                     name="runId"
-                    component={RunSelector}
+                    component={(p) => <RunSelector {...p}/>}
                     label="Assignment"
                     validate={[Validators.required]}
                 />
@@ -69,7 +69,7 @@ class JailFeilds extends React.PureComponent {
             <div>
                 <Field
                     name="jailRoleCode"
-                    component={JailRolesSelector}
+                    component={(p) => <JailRolesSelector {...p}/>}
                     label="Assignment"
                     validate={[Validators.required]}
                 />
@@ -84,7 +84,7 @@ class CourtSecurityFields extends React.PureComponent {
             <div>
                 <Field
                     name="courtroomId"
-                    component={CourtroomSelector}
+                    component={(p) => <CourtroomSelector {...p}/>}
                     label="Courtroom"
                     validate={[Validators.required]}
                 />
@@ -273,7 +273,7 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
                                                 )}
                                                 <Field
                                                     name={`${recurrenceInfoFieldName}.daysBitmap`}
-                                                    component={DaysOfWeekChecklist}
+                                                    component={(p) => <DaysOfWeekChecklist {...p}/>}
                                                     label="Days"
                                                 />
                                                 <Field

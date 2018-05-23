@@ -59,13 +59,13 @@ export default class ScheduleShiftForm extends
             <div>
                 <Field
                     name="days"
-                    component={DaysOfWeekChecklist}
+                    component={(p) => <DaysOfWeekChecklist {...p}/>}
                     label="Days"
                     validate={[Validators.required]}
                 />
                 <Field
                     name="repeatNumber"
-                    component={NumberSpinner}
+                    component={(p) => <NumberSpinner {...p}/>}
                     label="Number of FTEs required"
                     validate={[
                         Validators.required,
@@ -88,7 +88,7 @@ export default class ScheduleShiftForm extends
             <div>
                 <Field
                     name="workSectionId"
-                    component={WorkSectionSelector}
+                    component={(p) => <WorkSectionSelector {...p}/>}
                     label="Work Section"
                 />
                 <Field
@@ -111,7 +111,7 @@ export default class ScheduleShiftForm extends
         return (
             <Field
                 name="sheriffId"
-                component={SheriffSelector}
+                component={(p) => <SheriffSelector {...p}/>}
                 label="Sheriff"
             />
         );

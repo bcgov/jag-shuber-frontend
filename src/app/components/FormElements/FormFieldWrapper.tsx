@@ -3,7 +3,7 @@ import { FormGroup, ControlLabel, HelpBlock } from 'react-bootstrap';
 import { WrappedFieldProps } from 'redux-form';
 
 export interface FormFieldWrapperProps extends WrappedFieldProps {
-    label?: string | React.ReactNode;
+    label?: string | React.ReactNode | any;
     showLabel?: boolean;
 }
 

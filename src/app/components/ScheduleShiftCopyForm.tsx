@@ -25,8 +25,12 @@ export default class ScheduleShiftForm extends
         return (
             <div>
                 <Form onSubmit={handleSubmit}>
-                    <h3>Duplicate Shifts from Previous Week</h3> 
-                    <Field name="shouldIncludeSheriffs" component={CheckboxField} label="Include sheriffs" />
+                    <h3>Duplicate Shifts from Previous Week</h3>
+                    <Field
+                        name="shouldIncludeSheriffs"
+                        component={(p) => <CheckboxField {...p} />}
+                        label="Include sheriffs"
+                    />
                 </Form>
             </div>
         );

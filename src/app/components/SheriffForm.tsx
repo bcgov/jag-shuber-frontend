@@ -35,36 +35,36 @@ export default class SheriffForm extends
                 <Form onSubmit={handleSubmit} >
                     <Field
                         name="firstName"
-                        component={TextField}
+                        component={(p) => <TextField {...p} />}
                         label="First Name"
                         validate={[Validators.required]}
                     />
                     <Field
                         name="lastName"
-                        component={TextField}
+                        component={(p) => <TextField {...p} />}
                         label="Last Name"
                         validate={[Validators.required]}
                     />
                     <Field
                         name="rankCode"
-                        component={SheriffRankSelector}
+                        component={(p) => <SheriffRankSelector {...p}/>}
                         label="Rank"
                         validate={[Validators.required]}
                     />
                     <Field
                         name="badgeNo"
-                        component={TextField}
+                        component={(p) => <TextField {...p}/>}
                         label="Badge Number"
                         validate={[Validators.required]}
                     />
                     <Field
                         name="alias"
-                        component={TextField}
+                        component={(p) => <TextField {...p}/>}
                         label="Alias"
                     />
                     <Field
                         name="homeCourthouseId"
-                        component={SheriffLocationSelector}
+                        component={(p) => <SheriffLocationSelector {...p}/>}
                         label="Home Location"
                         validate={[Validators.required]}
                     />
