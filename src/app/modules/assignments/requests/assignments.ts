@@ -10,14 +10,15 @@ import {
     AssignmentMap,
     Assignment
 } from '../../../api/index';
+import { DateRange } from '../../../api/Api';
 
 // Assignment Map
-class AssignmentMapRequest extends RequestAction<void, AssignmentMap, AssignmentModuleState> {
+class AssignmentMapRequest extends RequestAction<DateRange, AssignmentMap, AssignmentModuleState> {
     constructor(namespace: string = STATE_KEY, actionName: string = 'assignmentMap') {
         super(namespace, actionName);
     }
-    public async doWork(request: void, { api }: ThunkExtra): Promise<AssignmentMap> {
-        let templates = await api.getAssignments();
+    public async doWork(request: DateRange, { api }: ThunkExtra): Promise<AssignmentMap> {
+        let templates = await api.getAssignments(request);
         return arrayToMap(templates, t => t.id);
     }
 }

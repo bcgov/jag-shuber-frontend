@@ -1,7 +1,7 @@
 import * as moment from 'moment';
 import { displayEnum } from '../infrastructure/EnumUtils';
 
-type MapType<T> = {[key: string]: T};
+type MapType<T> = { [key: string]: T };
 
 export type DateType = Date | moment.Moment | string;
 export type StringMap = MapType<string>;
@@ -222,7 +222,7 @@ export interface Shift {
 }
 
 export interface ShiftUpdates {
-    sheriffId?: IdType; 
+    sheriffId?: IdType;
     startTime?: DateType;
     endTime?: DateType;
     workSectionId?: WorkSectionCode | 'varied';
@@ -260,7 +260,7 @@ export interface API {
     updateSheriff(sheriffToUpdate: Partial<Sheriff>): Promise<Sheriff>;
 
     // Assignments
-    getAssignments(): Promise<Assignment[]>;
+    getAssignments(dateRange: DateRange): Promise<Assignment[]>;
     createAssignment(assignment: Partial<Assignment>): Promise<Assignment>;
     updateAssignment(assignment: Partial<Assignment>): Promise<Assignment>;
     deleteAssignment(assignmentId: IdType): Promise<void>;
