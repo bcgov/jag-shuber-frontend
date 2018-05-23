@@ -322,9 +322,9 @@
   version "16.0.35"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.0.35.tgz#7ce8a83cad9690fd965551fc513217a74fc9e079"
 
-"@types/redux-form@^7.0.12":
-  version "7.0.12"
-  resolved "https://registry.yarnpkg.com/@types/redux-form/-/redux-form-7.0.12.tgz#ff3ec834d0a2436b30c9c6ba7d044cf534069e16"
+"@types/redux-form@^7.2.5":
+  version "7.2.5"
+  resolved "https://registry.yarnpkg.com/@types/redux-form/-/redux-form-7.2.5.tgz#26faf46106805fc4601395420f1d5bbab7469c4b"
   dependencies:
     "@types/react" "*"
     redux "^3.6.0"
@@ -5227,8 +5227,8 @@ istanbul-reports@^1.1.3:
     handlebars "^4.0.3"
 
 "jag-shuber-api@github:bcgov/jag-shuber-api":
-  version "1.0.0"
-  resolved "https://codeload.github.com/bcgov/jag-shuber-api/tar.gz/7a638f7a06c49547c93678cc01d2076fcc447734"
+  version "1.0.1"
+  resolved "https://codeload.github.com/bcgov/jag-shuber-api/tar.gz/f6658fb4139fbb9228f27450f744d887967da32b"
   dependencies:
     koa "^2.5.0"
     koa-bodyparser "^4.2.0"
@@ -5236,7 +5236,7 @@ istanbul-reports@^1.1.3:
     moment "^2.22.1"
     pg "^7.4.1"
     squel "^5.12.1"
-    superagent-absolute "^1.0.1"
+    superagent-prefix "^0.0.2"
     superagent-use "^0.1.0"
     tsoa "^2.1.4"
     uuid "^3.2.1"
@@ -8842,6 +8842,10 @@ superagent-absolute@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/superagent-absolute/-/superagent-absolute-1.0.1.tgz#781c76c54939d9a3371ff0f76f650a3be2eef5e5"
 
+superagent-prefix@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/superagent-prefix/-/superagent-prefix-0.0.2.tgz#b15bbb1353f889b00d25af10b4f11b350d203b06"
+
 superagent-use@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/superagent-use/-/superagent-use-0.1.0.tgz#d28dbbbf573ba980329b4645897608bc99501cff"
@@ -9236,13 +9240,9 @@ typescript-formatter@^7.0.1:
     commandpost "^1.0.0"
     editorconfig "^0.15.0"
 
-typescript@^2.7.2:
+typescript@^2.7.2, typescript@^2.8.3:
   version "2.8.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.8.3.tgz#5d817f9b6f31bb871835f4edf0089f21abe6c170"
-
-typescript@~2.5.3:
-  version "2.5.3"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.5.3.tgz#df3dcdc38f3beb800d4bc322646b04a3f6ca7f0d"
 
 ua-parser-js@^0.7.9:
   version "0.7.17"
