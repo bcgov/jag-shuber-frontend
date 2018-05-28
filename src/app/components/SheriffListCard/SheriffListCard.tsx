@@ -14,13 +14,14 @@ export interface SheriffListCardProps {
 export default class SheriffListCard extends React.PureComponent<SheriffListCardProps, {}> {
     render() {
         const { sheriff, disabled = false } = this.props;
-        const { firstName, lastName, badgeNo, rankCode = '' } = sheriff;
+        const { firstName, lastName, badgeNo, rankCode = '', alias = 'D-15' } = sheriff;
 
         return (
             <ListGroupItem className={`sheriff-list-card drop-shadow-hover ${disabled ? 'not-active' : ''}`}>
-                <span className="sheriff-card-badge-number">#{badgeNo}</span><br/>
+                <span className="sheriff-card-badge-number">#{badgeNo}</span>
+                <span className="sheriff-card-alias">{alias}</span><br />
                 <SheriffRankDisplay code={rankCode} /><br/>
-                <b style={{ fontSize: 16.5 }}>{lastName}, {firstName.charAt(0)}</b><br />
+                <span className="sheriff-card-name">{lastName}, {firstName.charAt(0)}</span><br />
                 {this.props.children}
             </ListGroupItem>
         );
