@@ -7,16 +7,17 @@ import {
 
 export interface WorkSectionIndicatorProps {
     workSectionId?: WorkSectionCode;
-    orientation?: 'top-left' | 'top-right';
+    orientation?: 'top-left' | 'top-right' | 'bottom-right';
 }
 
 export default class WorkSectionIndicator extends React.PureComponent<WorkSectionIndicatorProps, any> {
     render() {
         const { workSectionId, orientation = 'top-left' } = this.props;
+        const workSectionColor = getWorkSectionColour(workSectionId);
         return (
             <div 
                 className={`work-section-indicator ${orientation}`}
-                style={{ borderTopColor: getWorkSectionColour(workSectionId) }}
+                style={{ borderTopColor: workSectionColor, borderBottomColor: workSectionColor }}
             />
         );
     }

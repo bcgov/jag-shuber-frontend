@@ -1,12 +1,13 @@
 .sheriff-list-card {
     border-color: #C8C8C8; 
     border-width: 2px;
-    font-size: 16px;
+    font-size: 14px;
     width: 190px;
     margin-left: 1.5px;
     margin-right: 1.5px;
     margin-top: 6px;
     transition: box-shadow .5s;
+    text-align: center;
 }
 
 .sheriff-list-card.not-active { 

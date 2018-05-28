@@ -1,15 +1,24 @@
 .work-section-indicator {
     height: 0;
     width: 0;        
-    border-top: 25px solid red;
+    
     position: absolute;
 }
 
 .work-section-indicator.top-left {
+    border-top: 25px solid red;
     border-right: 25px solid transparent;
 }
 
 .work-section-indicator.top-right {
+    border-top: 25px solid red;
     border-left: 25px solid transparent;   
     right: 0px;
+}
+
+.work-section-indicator.bottom-right {
+    border-bottom: 30px solid red;
+    border-left: 30px solid transparent;   
+    right: 0px;
+    bottom: 0px;
 }
