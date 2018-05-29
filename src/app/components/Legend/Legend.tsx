@@ -14,7 +14,7 @@ export default class Legend extends React.PureComponent<LegendProps> {
         return (
             <div className="legend-background">
                 <div className="legend"> 
-                    <h1 style={{color: '#003366'}}>Legend</h1>
+                    <span className="legend-title">Legend</span>
                     {workSectionList.map(wsc => <WorkSectionLabel key={`lenged_ws_${wsc}`} workSectionId={wsc}/>)}
                     <WorkSectionLabel key="lenged_ws_na"/>
                     <Symbols />

@@ -63,6 +63,12 @@
   grid-area: content;  
 }
 
+#footer {
+  border-top: 2px solid #327AB7;
+  background: #003366;
+  height: 58px;
+}
+
 .footerArea {
   grid-area: footer;
 }
