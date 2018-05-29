@@ -14,7 +14,7 @@ export default class TimelineToolsPanel extends React.PureComponent<TimelineTool
         } = this.props;
     
         return (
-            <div className="timeline-tools-panel">
+            <div className="timeline-tools-panel" style={{maxHeight: 400}}>
                 <div className="timeline-tools-title-background">
                     <h3 className="timeline-tools-title">
                         {titleText}

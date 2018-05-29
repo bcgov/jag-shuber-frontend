@@ -1,9 +1,8 @@
 .legend-background {
-    width: 80%;
     height: 45px;
-    background: white;
-    border-radius: 8px;
-    margin: 5px;
+    background:#F1F1F1;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 .legend {
@@ -12,7 +11,7 @@
     top: 8px;
     display: flex;
     width: 80%;
-    justify-content: space-evenly;  
+    justify-content: flex-start;  
 }
 
 .legend-title {
@@ -41,7 +40,7 @@
     -moz-border-radius:50%;
     -webkit-border-radius: 50%;   
     border-radius: 50%;
-    background-color: white;
+    background-color: #F1F1F1;
     border: 1px solid;
     margin-right: 2px;
     margin-left: 2px;

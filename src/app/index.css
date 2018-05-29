@@ -64,13 +64,26 @@
 }
 
 #footer {
-  border-top: 2px solid #327AB7;
+  border-top: 2px solid #003366;
   background: #003366;
   height: 58px;
 }
 
 .footerArea {
   grid-area: footer;
+}
+
+.footerArrow {
+    width: 85px;
+    height: 70px;
+    text-align: center;
+    -moz-border-radius:50%;
+    -webkit-border-radius: 50%;   
+    border-radius: 70%;
+    background-color: #003366;
+    position: relative;
+    left: 93%;
+    bottom: -41px;
 }
 
 .App-logo {

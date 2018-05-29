@@ -13,7 +13,7 @@ export default class Symbols extends React.PureComponent<SymbolsProps> {
                 <Glyphicon
                     className="legend-symbol"
                     glyph="remove"
-                    style={{ borderColor: 'red', color: 'red' }}
+                    style={{ borderColor: 'red', color: 'red', paddingTop: 2}}
                 />
                 <span style={{paddingRight: 10}}>Unavailable</span>
             
@@ -27,7 +27,7 @@ export default class Symbols extends React.PureComponent<SymbolsProps> {
                 <Glyphicon
                     className="legend-symbol"
                     glyph="alert"
-                    style={{ borderColor: 'darkorange', color: 'darkorange' }}
+                    style={{ borderColor: 'darkorange', color: 'darkorange'}}
                 />
                  <span style={{paddingRight: 10}}>Alert - click for details</span>
             </div>

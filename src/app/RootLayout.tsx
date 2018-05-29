@@ -23,6 +23,7 @@ import { Well } from 'react-bootstrap';
 import SheriffProfileModal from './containers/SheriffProfileModal';
 import ScheduleShiftCopyModal from './containers/ScheduleShiftCopyModal';
 import ScheduleShiftAddModal from './containers/ScheduleShiftAddModal';
+import { Glyphicon } from 'react-bootstrap';
 
 class Layout extends React.Component {
 
@@ -39,7 +40,7 @@ class Layout extends React.Component {
             <Navigation />
           </div>
           {needCourthouse &&
-            <div style={{ display: 'flex', justifyContent: 'center',  }}>
+            <div style={{ display: 'flex', justifyContent: 'center', }}>
               <Well
                 style={{
                   display: 'flex',
@@ -51,7 +52,7 @@ class Layout extends React.Component {
                   height: '70%'
                 }}
               >
-                <div style={{paddingTop: 10 }}>
+                <div style={{ paddingTop: 10 }}>
                   <h1>Select your Courthouse</h1>
                   <CourthouseSelector onChange={(id: string) => this.onSelectCourthouse(id)} />
                 </div>
@@ -70,6 +71,17 @@ class Layout extends React.Component {
               <ScheduleShiftAddModal />
             </div>}
           <div className="footerArea">
+            <div className="footerArrow">
+              <Glyphicon
+                style={{
+                  color: 'white',
+                  marginTop: 6,
+                  fontSize: 25,
+                  zIndex: 1000
+                }}
+                glyph="arrow-down"
+              />
+            </div>
             <Footer />
           </div>
         </div>
