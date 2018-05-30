@@ -12,8 +12,6 @@ import {
 } from '../api';
 import SheriffListCard from '../components/SheriffListCard/SheriffListCard';
 import { visibleTime } from '../modules/timeline/selectors';
-import { getForegroundColor } from '../infrastructure/colorUtils';
-import { getWorkSectionColour } from '../api/utils';
 import WorkSectionIndicator from '../components/WorkSectionIndicator/WorkSectionIndicator';
 
 interface ConnectedDutyRosterSheriffCardProps {
@@ -36,7 +34,11 @@ class ConnectedDutyRosterSheriffCard extends React.Component<ConnectedDutyRoster
     getShiftDisplayForDate(date: TimeType): { shiftTime: string, workSectionId?: WorkSectionCode } {
         const { shifts } = this.props;
         const shiftsForDay = shifts.filter(s => moment(date).isSame(s.startDateTime, 'day'));
-        if (shiftsForDay.length > 0) {
+        if (shiftsForDay.length > 1) {
+            return {
+                shiftTime: 'Multiple Shifts'
+            };
+        } else if (shiftsForDay.length === 1) {
             const { startDateTime, endDateTime, workSectionId } = shiftsForDay[0];
             return {
                 shiftTime: `${moment(startDateTime).format('HH:mm')} 
@@ -51,7 +53,7 @@ class ConnectedDutyRosterSheriffCard extends React.Component<ConnectedDutyRoster
         const { visibleTimeStart, sheriff } = this.props;
         const {shiftTime, workSectionId} = this.getShiftDisplayForDate(moment(visibleTimeStart).toISOString());
         const isCardDisabled = shiftTime === '';
-        const foreground = getForegroundColor(getWorkSectionColour(workSectionId));
+        
         return (
             <SheriffListCard sheriff={sheriff} disabled={isCardDisabled} >
                 {!isCardDisabled &&
@@ -63,17 +65,7 @@ class ConnectedDutyRosterSheriffCard extends React.Component<ConnectedDutyRoster
                     >
                         {shiftTime}
                         <WorkSectionIndicator workSectionId={workSectionId} orientation={'bottom-right'}/>
-                        <div
-                            style={{
-                                position: 'absolute',
-                                right: 2,
-                                bottom: 0,
-                                color: foreground,
-                                fontWeight: 'bold'
-                            }}
-                        >
-                            {workSectionId && workSectionId.charAt(0)}
-                        </div>
+                        
                     </div>}
             </SheriffListCard>
         );
