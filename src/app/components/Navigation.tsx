@@ -2,7 +2,9 @@ import * as React from 'react';
 import {
     Nav,
     Navbar,
-    NavbarBrand
+    NavbarBrand, 
+    NavDropdown, 
+    MenuItem
 } from 'react-bootstrap';
 import NavigationLink from './NavigationLink';
 import api from '../api/index';
@@ -33,7 +35,10 @@ export default class Navigation extends React.Component<NavigationProps, any> {
                     </Navbar.Header>
                     <Nav bsStyle="tabs">
                         <NavigationLink exactMatch={true} to="/" label="Duty Roster" />
-                        <NavigationLink to="/sheriffs/schedule" label="Schedule" />
+                        <NavDropdown title="Schedule" id="schedule_dropdown">
+                            <MenuItem><NavigationLink to="/sheriffs/schedule" label="Manage Schedule" /></MenuItem>
+                            <MenuItem><NavigationLink to="/schedule/deputyView" label="Deputy View" /></MenuItem>
+                        </NavDropdown>
                         <NavigationLink to="/sheriffs/manage" label="My Team" />
                         <NavigationLink to="/assignments/manage/default" label="Duty Roster Set-Up" />
                     </Nav>
