@@ -14,7 +14,7 @@ export interface SheriffListCardProps {
 export default class SheriffListCard extends React.PureComponent<SheriffListCardProps, {}> {
     render() {
         const { sheriff, disabled = false } = this.props;
-        const { firstName, lastName, badgeNo, rankCode = '', alias = 'D-15' } = sheriff;
+        const { firstName, lastName, badgeNo, rankCode = '', alias = '' } = sheriff;
 
         return (
             <ListGroupItem className={`sheriff-list-card drop-shadow-hover ${disabled ? 'not-active' : ''}`}>
