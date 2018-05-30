@@ -3,6 +3,7 @@ import { Sheriff } from '../../api/index';
 import {
     ListGroupItem
 } from 'react-bootstrap';
+import SheriffRankDisplay from '../../containers/SheriffRankDisplay';
 import './SheriffListCard.css';
 
 export interface SheriffListCardProps {
@@ -13,12 +14,14 @@ export interface SheriffListCardProps {
 export default class SheriffListCard extends React.PureComponent<SheriffListCardProps, {}> {
     render() {
         const { sheriff, disabled = false } = this.props;
-        const { firstName, lastName, badgeNo} = sheriff;
+        const { firstName, lastName, badgeNo, rankCode = '', alias = '' } = sheriff;
 
         return (
             <ListGroupItem className={`sheriff-list-card drop-shadow-hover ${disabled ? 'not-active' : ''}`}>
-                <b>{lastName}, {firstName.charAt(0)}</b>
-                <p className="sheriff-card-badge-number">{badgeNo}</p>
+                <span className="sheriff-card-badge-number">#{badgeNo}</span>
+                <span className="sheriff-card-alias">{alias}</span><br />
+                <SheriffRankDisplay code={rankCode} /><br/>
+                <span className="sheriff-card-name">{lastName}, {firstName.charAt(0)}</span><br />
                 {this.props.children}
             </ListGroupItem>
         );

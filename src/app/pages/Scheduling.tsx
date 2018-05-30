@@ -23,9 +23,7 @@ class SchedulingPage extends React.PureComponent {
                                 SheriffRenderer={(s: Sheriff) => (
                                     <SheriffDragSource sheriff={s}>
                                         <SheriffListCard sheriff={s} >
-                                            <ScheduleSummary
-                                                sheriffId={s.id}
-                                            />
+                                            <div style={{paddingLeft: 25}}><ScheduleSummary sheriffId={s.id}/></div>
                                         </SheriffListCard>
                                     </SheriffDragSource>
                                 )}

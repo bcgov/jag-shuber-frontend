@@ -7,10 +7,12 @@ import { getShifts } from '../modules/shifts/actions';
 import {
     Shift,
     Sheriff,
-    TimeType
+    TimeType,
+    WorkSectionCode
 } from '../api';
 import SheriffListCard from '../components/SheriffListCard/SheriffListCard';
 import { visibleTime } from '../modules/timeline/selectors';
+import WorkSectionIndicator from '../components/WorkSectionIndicator/WorkSectionIndicator';
 
 interface ConnectedDutyRosterSheriffCardProps {
     sheriff: Sheriff;
@@ -28,25 +30,44 @@ interface ConnectedDutyRosterSheriffCardStateProps {
 class ConnectedDutyRosterSheriffCard extends React.Component<ConnectedDutyRosterSheriffCardProps
     & ConnectedDutyRosterSheriffCardStateProps
     & ConnectedDutyRosterSheriffCardDispatchProps> {
-        
-    getShiftDisplayForDate(date: TimeType): string {
+
+    getShiftDisplayForDate(date: TimeType): { shiftTime: string, workSectionId?: WorkSectionCode } {
         const { shifts } = this.props;
         const shiftsForDay = shifts.filter(s => moment(date).isSame(s.startDateTime, 'day'));
-        if (shiftsForDay.length > 0) {
-            return `${moment(shiftsForDay[0].startDateTime).format('HH:mm')} 
-                    - ${moment(shiftsForDay[0].endDateTime).format('HH:mm')}`;
-        } 
-        return '';
+        if (shiftsForDay.length > 1) {
+            return {
+                shiftTime: 'Multiple Shifts'
+            };
+        } else if (shiftsForDay.length === 1) {
+            const { startDateTime, endDateTime, workSectionId } = shiftsForDay[0];
+            return {
+                shiftTime: `${moment(startDateTime).format('HH:mm')} 
+                    - ${moment(endDateTime).format('HH:mm')}`,
+                workSectionId: workSectionId
+            };
+        }
+        return { shiftTime: '', workSectionId: undefined };
     }
 
     render() {
         const { visibleTimeStart, sheriff } = this.props;
-        const shiftSummary = this.getShiftDisplayForDate(moment(visibleTimeStart).toISOString());
-        const isCardDisabled = shiftSummary === '';
+        const {shiftTime, workSectionId} = this.getShiftDisplayForDate(moment(visibleTimeStart).toISOString());
+        const isCardDisabled = shiftTime === '';
+        
         return (
             <SheriffListCard sheriff={sheriff} disabled={isCardDisabled} >
-                {!isCardDisabled && <div style={{fontSize: 14}}>{shiftSummary}</div>}
-            </SheriffListCard> 
+                {!isCardDisabled &&
+                    <div
+                        style={{
+                            fontSize: 14,
+                            fontWeight: 'bold'
+                        }}
+                    >
+                        {shiftTime}
+                        <WorkSectionIndicator workSectionId={workSectionId} orientation={'bottom-right'}/>
+                        
+                    </div>}
+            </SheriffListCard>
         );
     }
 

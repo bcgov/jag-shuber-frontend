@@ -16,6 +16,7 @@ import {
     getCourthouses,
     getSheriffRankCodes
 } from './modules/courthouse/action';
+import { getShifts } from './modules/shifts/actions';
 import { updateVisibleTime as updateTimelineVisibleTime } from './modules/timeline/actions';
 import { default as scheduleReducer, ScheduleState } from './modules/schedule/reducer';
 import { updateVisibleTime as updateScheduleVisibleTime } from './modules/schedule/actions';
@@ -43,7 +44,8 @@ const initialActions: any[] = [
     () => updateTimelineVisibleTime(
             TimeUtils.getDefaultStartTime(), TimeUtils.getDefaultEndTime()),
     () => updateScheduleVisibleTime(moment().startOf('week').add(1, 'day'), moment().endOf('week').subtract(1, 'day')),
-    getSheriffRankCodes
+    getSheriffRankCodes,
+    getShifts
 ];
 
 const reducers = {
