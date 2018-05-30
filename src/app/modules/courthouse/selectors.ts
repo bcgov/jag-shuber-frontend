@@ -55,3 +55,8 @@ export const allSheriffRankCodes = createSelector(
     sheriffRankCodeRequests.sheriffRankCodeMapRequest.getData,
     (roles) => mapToArray(roles).sort((a, b) => a.description.localeCompare(b.description))
 );
+
+export const getSheriffRankByCode = (code: IdType) => (state: RootState) => {
+    const map = sheriffRankCodeRequests.sheriffRankCodeMapRequest.getData(state);
+    return map ? map[code] : undefined;
+};
