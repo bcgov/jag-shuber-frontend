@@ -25,6 +25,7 @@
     width: 400px;
     margin-left: 20px;
     margin-right: 20px;
+    padding-top: 3px;
 }
 
 .legend-work-section {
@@ -32,10 +33,11 @@
     height: 17px;
     background: blue;
     border-radius: 55px;
-    margin-top: 4px;
+    margin-top: 2px;
     text-align: center;
 }
 
 .legend-symbol-text {
     padding-right: 10px;
+    padding-left: 3px;
 }

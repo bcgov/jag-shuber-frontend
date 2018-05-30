@@ -11,7 +11,7 @@ export interface SymbolsProps {
 export default class Symbols extends React.PureComponent<SymbolsProps> {
     render() {
         return (
-            <div>
+            <div style={{paddingTop: 3}}>
                 <UnavailableIcon backgroundColor="#F1F1F1" />
                 <span className="legend-symbol-text">Unavailable</span>
             
