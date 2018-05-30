@@ -27,22 +27,23 @@ import { Glyphicon } from 'react-bootstrap';
 import { Collapse } from 'react-bootstrap';
 import Legend from './components/Legend/Legend';
 
-class Layout extends React.Component<{}, {open: boolean, initialize?: boolean}> {
+class Layout extends React.Component<{}, { isLegendOpen: boolean, initialize?: boolean }> {
   static defaultState = {
-    open: true
+    isLegendOpen: true
   };
 
   constructor(props: any, context: any) {
     super(props, context);
-    this.state = { open: true };
+    this.state = { isLegendOpen: true };
   }
-  
+
   private onSelectCourthouse(id: string) {
     this.setState({ initialize: true });
   }
 
   render() {
     const needCourthouse = !(api as Client).isCourthouseSet;
+    const { isLegendOpen } = this.state;
     return (
       <Router>
         <div className="App">
@@ -81,7 +82,7 @@ class Layout extends React.Component<{}, {open: boolean, initialize?: boolean}> 
               <ScheduleShiftAddModal />
             </div>}
           <div className="footerArea">
-            <div className="footerArrow" onClick={() => this.setState({open: !this.state.open})}>
+            <div className="footerArrow" onClick={() => this.setState({ isLegendOpen: !this.state.isLegendOpen })}>
               <Glyphicon
                 style={{
                   color: 'white',
@@ -89,14 +90,16 @@ class Layout extends React.Component<{}, {open: boolean, initialize?: boolean}> 
                   fontSize: 25,
                   zIndex: 1000
                 }}
-                glyph="arrow-down"             
+                glyph={isLegendOpen ? 'arrow-down' : 'arrow-up'}
               />
             </div>
-             <Collapse in={this.state.open}>
-                <div id="footer">
+              <div id="footer" style={{height: isLegendOpen ? 58 : 41}}>
+                <Collapse in={isLegendOpen}>
+                  <div>
                     <Legend />
-                </div>
-             </Collapse>
+                  </div>
+                </Collapse>
+              </div>
           </div>
         </div>
       </Router>
