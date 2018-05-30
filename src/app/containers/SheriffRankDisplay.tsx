@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
-import { 
-    SheriffRank, 
-    IdType 
+import {
+    SheriffRank,
+    IdType
 } from '../api/Api';
-import { allSheriffRankCodes } from '../modules/courthouse/selectors';
+import { getSheriffRankByCode } from '../modules/courthouse/selectors';
 
 interface SheriffRankDisplayListStateProps {
-    sheriffRank: SheriffRank[];
+    sheriffRank?: SheriffRank;
 }
 
 interface SheriffRankDisplayListProps {
@@ -19,20 +19,16 @@ class SheriffRankDisplay extends React.PureComponent<
     SheriffRankDisplayListProps & SheriffRankDisplayListStateProps> {
 
     render() {
-        const { sheriffRank = [], code } = this.props;
+        const { sheriffRank, code } = this.props;
         return (
-               code ? sheriffRank[code].description : 'not selected'
+            code ? (sheriffRank ? sheriffRank.description : `Unknown rank '${code}'`) : 'not selected'
         );
     }
 }
 
-const mapStateToProps = (state: RootState) => {
-    return {
-        sheriffRank: allSheriffRankCodes(state)
-    };
-};
-
 // tslint:disable-next-line:max-line-length
-export default connect<SheriffRankDisplayListStateProps, {}, SheriffRankDisplayListProps>(
-    mapStateToProps
+export default connect<SheriffRankDisplayListStateProps, {}, SheriffRankDisplayListProps, RootState>(
+    (state, { code }) => ({
+        sheriffRank: getSheriffRankByCode(code)(state)
+    })
 )(SheriffRankDisplay);

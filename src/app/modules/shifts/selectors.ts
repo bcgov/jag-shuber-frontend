@@ -3,26 +3,24 @@ import { createSelector } from 'reselect';
 import * as shiftRequests from './requests/shifts';
 import * as leaveRequests from './requests/leaves';
 import {
-    Shift,
-    ShiftMap,
     LeaveMap,
     Leave,
     IdType
 } from '../../api/Api';
+import mapToArray from '../../infrastructure/mapToArray';
 
 export const allShifts = createSelector(
     shiftRequests.shiftMapRequest.getData,
-    (map: ShiftMap = {}): Shift[] => {
-        const list: Shift[] = Object.keys(map).map((k, i) => map[k]);
-        return list;
-    }
+    (map) => mapToArray(map)
+        .sort((a, b) => `${a.workSectionId ? a.workSectionId : ''}:${a.startDateTime}`
+            .localeCompare(`${b.workSectionId ? b.workSectionId : ''}:${b.startDateTime}`))
 );
 
 export const shiftMap = shiftRequests.shiftMapRequest.getData;
 
 export const getShift = (id?: IdType) => (state: RootState) => {
     if (state && id != null) {
-        const map: ShiftMap = shiftRequests.shiftMapRequest.getData(state);
+        const map = shiftRequests.shiftMapRequest.getData(state);
         return map[id];
     }
     return null;
