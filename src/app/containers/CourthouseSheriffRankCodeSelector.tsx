@@ -18,8 +18,7 @@ class CourthouseSheriffRankList extends React.PureComponent<
 
     render() {
         const { sheriffRanks = [], ...restProps } = this.props;
-        const selectorValues = 
-            Object.keys(sheriffRanks).map((key, index) => ({key, value: sheriffRanks[key].description}));
+        const selectorValues = sheriffRanks.map(rank => ({ key: rank.code, value: rank.description }));
         return (
             <Selector {...restProps} data={selectorValues} />
         );
@@ -36,4 +35,4 @@ const mapStateToProps = (state: RootState) => {
 // tslint:disable-next-line:max-line-length
 export default connect<CourthouseSheriffRankListStateProps, {}, CourthouseSheriffRankListProps>(
     mapStateToProps
-  )(CourthouseSheriffRankList);
+)(CourthouseSheriffRankList);

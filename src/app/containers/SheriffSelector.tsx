@@ -21,10 +21,10 @@ class SheriffList extends React.PureComponent<
 
     render() {
         const { sheriffList = [], showVariedOption = false, isDisabled = false, ...restProps } = this.props;
-        const selectorValues = Object.keys(sheriffList).map((key, index) =>
+        const selectorValues = sheriffList.map(sheriff =>
             ({
-                key: sheriffList[key].id,
-                value: `${sheriffList[key].lastName}, ${sheriffList[key].firstName}`
+                key: sheriff.id,
+                value: `${sheriff.lastName}, ${sheriff.firstName}`
             }));
 
         return (

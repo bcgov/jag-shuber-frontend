@@ -1,10 +1,10 @@
 import {
     ThunkAction,
     ThunkExtra
-} from "../store";
-import { AnyAction } from "redux";
-import { Dispatch } from "react-redux";
-import { Reducer } from "redux";
+} from '../store';
+import { AnyAction } from 'redux';
+import { Dispatch } from 'react-redux';
+import { Reducer } from 'redux';
 
 export interface RequestActionState<T> {
     isBusy?: boolean;
@@ -32,8 +32,8 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
             begin: `${upperNamespace}_${upperAction}_REQUEST`,
             success: `${upperNamespace}_${upperAction}_SUCCESS`,
             fail: `${upperNamespace}_${upperAction}_FAIL`
-        }
-        this.beginAction = { type: this.actionNames.begin }
+        };
+        this.beginAction = { type: this.actionNames.begin };
     }
 
     public abstract doWork(request: TRequest, extra: ThunkExtra, getState: (() => any)): Promise<TResponse>;
@@ -131,7 +131,7 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
         return requestState && requestState.isBusy === true ? true : false;
     }
 
-    get getIsBusy() {
+    get getIsBusy(): (state: any) => boolean {
         return this._getIsBusy.bind(this);
     }
 
@@ -140,7 +140,7 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
         return requestState ? requestState.error : undefined;
     }
 
-    get getError() {
+    get getError(): (state: any) => string {
         return this._getError.bind(this);
     }
 
@@ -149,7 +149,7 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
         return (requestState ? requestState.data : {}) as TResponse;
     }
 
-    get getData() {
+    get getData(): (state: any) => TResponse {
         return this._getData.bind(this);
     }
 }

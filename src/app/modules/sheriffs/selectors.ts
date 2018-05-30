@@ -2,17 +2,13 @@ import { createSelector } from 'reselect';
 import * as requests from './requests';
 import { RootState } from '../../store';
 import {
-    Sheriff,
-    SheriffMap,
     IdType
 } from '../../api/Api';
+import mapToArray from '../../infrastructure/mapToArray';
 
 export const sheriffs = createSelector(
     requests.sheriffMapRequest.getData,
-    (map: SheriffMap = {}): Sheriff[] => {
-        const list: Sheriff[] = Object.keys(map).map((k, i) => map[k]);
-        return list;
-    }
+    (map) => mapToArray(map).sort((a, b) => a.lastName.localeCompare(b.lastName)) 
 );
 
 export const getSheriff = (id?: IdType) => (state: RootState) => {
@@ -20,7 +16,7 @@ export const getSheriff = (id?: IdType) => (state: RootState) => {
         const map = requests.sheriffMapRequest.getData(state) || {};
         return map[id];
     }
-    return null;
+    return undefined;
 };
 
 export const sheriffListLoading = requests.sheriffMapRequest.getIsBusy;

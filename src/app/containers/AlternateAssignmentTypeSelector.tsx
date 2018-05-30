@@ -16,13 +16,14 @@ interface AlternateAssignmentTypeListProps extends FormFieldWrapperProps {
 }
 
 class AlternateAssignmentTypeList extends React.PureComponent<
-    AlternateAssignmentTypeListProps & 
+    AlternateAssignmentTypeListProps &
     AlternateAssignmentTypeListStateProps> {
 
     render() {
         const { alternateAssignmentTypes = [], ...restProps } = this.props;
-        const selectorValues = Object.keys(alternateAssignmentTypes).map(
-            (key, index) => ({key, value: alternateAssignmentTypes[key].description}));
+        const selectorValues = alternateAssignmentTypes.map(
+            (type) => ({ key: type.code, value: type.description })
+        );
         return (
             <Selector {...restProps} data={selectorValues} />
         );
@@ -39,4 +40,4 @@ const mapStateToProps = (state: RootState) => {
 // tslint:disable-next-line:max-line-length
 export default connect<AlternateAssignmentTypeListStateProps, {}, AlternateAssignmentTypeListProps>(
     mapStateToProps
-  )(AlternateAssignmentTypeList);
+)(AlternateAssignmentTypeList);

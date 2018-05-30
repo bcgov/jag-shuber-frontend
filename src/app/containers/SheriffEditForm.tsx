@@ -17,7 +17,6 @@ import { getSheriff } from '../modules/sheriffs/selectors';
 import { updateSheriff } from '../modules/sheriffs/actions';
 import {
     IdType,
-    Sheriff
 } from '../api';
 
 // wrapping generic assignment form in redux-form
@@ -34,7 +33,7 @@ export interface SheriffEditFormProps extends SheriffFormProps {
 }
 
 const mapStateToProps = (state: RootState, props: SheriffEditFormProps) => {
-    const initialSheriff: Sheriff = getSheriff(props.id)(state);
+    const initialSheriff = getSheriff(props.id)(state);
     if (initialSheriff) {
         return {
             // initialValues: AssignmentForm.assignmentToFormValues(initialAssignment),

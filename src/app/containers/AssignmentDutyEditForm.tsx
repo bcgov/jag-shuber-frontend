@@ -25,7 +25,6 @@ import {
 } from '../modules/assignments/actions';
 import { 
     IdType, 
-    Assignment, 
     AssignmentDutyDetails
 } from '../api';
 import * as TimeUtils from '../infrastructure/TimeRangeUtils';
@@ -56,16 +55,17 @@ const mapStateToProps = (state: RootState, props: AssignmentDutyEditFormProps) =
     const initialAssignmentDutyDetails: AssignmentDutyDetails | undefined 
         = getAssignmentDutyDetailsByDutyId(props.id)(state);
     if (initialAssignmentDuty) {
-        const initialAssignment: Assignment = getAssignment(initialAssignmentDuty.assignmentId)(state);
+        const initialAssignment = getAssignment(initialAssignmentDuty.assignmentId)(state);
+
         return {
             initialValues: {
                 ...AssignmentDutyForm.assignmentDutyToFormValues(initialAssignmentDuty),
                 comments: initialAssignmentDutyDetails ? initialAssignmentDutyDetails.comments : ''
             }, 
-            assignmentTitle: initialAssignment.title,
+            assignmentTitle: initialAssignment ? initialAssignment.title : '',
             minTime: TimeUtils.getDefaultTimePickerMinTime(moment(initialAssignmentDuty.startDateTime)),
             maxTime: TimeUtils.getDefaultTimePickerMaxTime(moment(initialAssignmentDuty.endDateTime)),
-            workSectionId: initialAssignment.workSectionId,
+            workSectionId: initialAssignment ? initialAssignment.workSectionId : undefined,
             isNewDuty: false  
         };
     } else {

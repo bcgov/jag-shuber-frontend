@@ -19,7 +19,7 @@ class SheriffLocationSelector extends React.PureComponent<
 
     render() {
         const { courthouses = [], ...restProps } = this.props;
-        const selectorValues = Object.keys(courthouses).map((key, index) => ({key, value: courthouses[key].name}));
+        const selectorValues = courthouses.map(courthouse => ({ key: courthouse.id, value: courthouse.name }));
         return (
             <Selector {...restProps} data={selectorValues} />
         );
@@ -36,4 +36,4 @@ const mapStateToProps = (state: RootState) => {
 // tslint:disable-next-line:max-line-length
 export default connect<SheriffLocationSelectorStateProps, {}, SheriffLocationSelectorProps>(
     mapStateToProps
-  )(SheriffLocationSelector);
+)(SheriffLocationSelector);

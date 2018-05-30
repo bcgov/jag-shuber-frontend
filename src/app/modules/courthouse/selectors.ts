@@ -6,21 +6,44 @@ import * as alternateAssignmentTypeRequests from './requests/alternateAssignment
 import * as courthouseRequests from './requests/courthouses';
 import * as sheriffRankCodeRequests from './requests/sheriffRankCodes';
 import { IdType } from '../../api/Api';
+import { createSelector } from 'reselect';
+import mapToArray from '../../infrastructure/mapToArray';
 
 // Courtrooms
-export const allCourtrooms = courtroomRequests.courtroomMapRequest.getData;
+export const allCourtrooms = createSelector(
+    courtroomRequests.courtroomMapRequest.getData,
+    (courtrooms) => mapToArray(courtrooms).sort((a, b) => a.name.localeCompare(b.name))
+);
 
 // Runs
-export const allRuns = runRequests.runMapRequest.getData;
+export const allRuns = createSelector(
+    runRequests.runMapRequest.getData,
+    (runs) => mapToArray(runs).sort((a, b) => a.title.localeCompare(b.title))
+);
 
 // Jail Roles
-export const allJailRoles = jailRoleRequests.jailRoleMapRequest.getData;
+export const allJailRoles = createSelector(
+    jailRoleRequests.jailRoleMapRequest.getData,
+    (jailRoles) => mapToArray(jailRoles).sort((a, b) => a.description.localeCompare(b.description))
+);
 
 // Alternate Assignment Types
-export const allAlternateAssignmentTypes = alternateAssignmentTypeRequests.alternateAssignmentTypeMapRequest.getData;
+export const allAlternateAssignmentTypes = createSelector(
+    alternateAssignmentTypeRequests.alternateAssignmentTypeMapRequest.getData,
+    (altAssignmentTypes) => mapToArray(altAssignmentTypes)
+        .sort((a, b) => a.description.localeCompare(b.description))
+);
 
 // Courthouses
-export const allCourthouses = courthouseRequests.courthouseMapRequest.getData;
+export const allCourthouses = createSelector(
+    courthouseRequests.courthouseMapRequest.getData,
+    (courthouses) => mapToArray(courthouses)
+        .sort((a, b) => a.name.localeCompare(b.name))
+);
+
+export const courthouseById = (id: IdType) => (state: RootState) => {
+    return id ? courthouseRequests.courthouseMapRequest.getData(state)[id] : undefined;
+}
 
 export const selectedCourthouse = (id: IdType) => (state: RootState) => {
     const { courthouseMap } = state.courthouse;
@@ -28,4 +51,7 @@ export const selectedCourthouse = (id: IdType) => (state: RootState) => {
 };
 
 // Sheriff Rank Codes
-export const allSheriffRankCodes = sheriffRankCodeRequests.sheriffRankCodeMapRequest.getData;
+export const allSheriffRankCodes = createSelector(
+    sheriffRankCodeRequests.sheriffRankCodeMapRequest.getData,
+    (roles) => mapToArray(roles).sort((a, b) => a.description.localeCompare(b.description))
+);

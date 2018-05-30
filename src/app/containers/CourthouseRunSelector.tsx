@@ -19,7 +19,9 @@ class CourthouseRunList extends React.PureComponent<
 
     render() {
         const { runs = [], ...restProps } = this.props;
-        const selectorValues = Object.keys(runs).map((key, index) => ({key, value: runs[key].title}));
+        const selectorValues = runs.map(run => ({
+            key: run.id, value: run.title
+        }));
         return (
             <Selector {...restProps} data={selectorValues} />
         );
@@ -36,4 +38,4 @@ const mapStateToProps = (state: RootState) => {
 // tslint:disable-next-line:max-line-length
 export default connect<CourthouseRunListStateProps, {}, CourthouseRunListProps>(
     mapStateToProps
-  )(CourthouseRunList);
+)(CourthouseRunList);

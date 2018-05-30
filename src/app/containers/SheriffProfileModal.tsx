@@ -96,7 +96,9 @@ const showAction = (sheriffId: IdType, isEditing: boolean = false) => (
 // members that can be used to hide the modal configuration from consumers
 export default class extends connectModal(modalConfig)(
     connect<SheriffProfileModalStateProps, SheriffProfileModalDispatchProps, SheriffProfileModalProps, RootState>(
-        (state, {sheriffId}) => ({sheriff: getSheriff(sheriffId)(state)}), 
+        (state, {sheriffId}) => ({
+            sheriff: getSheriff(sheriffId)(state) as Sheriff
+        }), 
         {showSheriffProfileModal: showAction})
         (SheriffProfileModal) as any
 ) {

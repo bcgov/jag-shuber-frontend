@@ -17,7 +17,6 @@ import { getAssignment } from '../modules/assignments/selectors';
 import { editAssignment } from '../modules/assignments/actions';
 import {
     IdType,
-    Assignment
 } from '../api';
 import { deleteDutyRecurrence } from '../modules/assignments/actions';
 
@@ -35,7 +34,7 @@ export interface AssignmentEditFormProps extends AssignmentFormProps {
 }
 
 const mapStateToProps = (state: RootState, props: AssignmentEditFormProps) => {
-    const initialAssignment: Assignment = getAssignment(props.id)(state);
+    const initialAssignment = getAssignment(props.id)(state);
     if (initialAssignment) {
         return {
             initialValues: AssignmentForm.assignmentToFormValues(initialAssignment),
