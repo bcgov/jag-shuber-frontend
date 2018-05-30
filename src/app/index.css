@@ -73,17 +73,17 @@
   grid-area: footer;
 }
 
-.footerArrow {
-    width: 85px;
-    height: 70px;
+.footerArrow { 
+    height: 45px;
+    width: 90px;
     text-align: center;
-    -moz-border-radius:50%;
-    -webkit-border-radius: 50%;   
-    border-radius: 70%;
+    -moz-border-radius: 90px 90px 0 0;
+    -webkit-border-radius: 90px 90px 0 0;   
+    border-radius: 90px 90px 0 0;
     background-color: #003366;
     position: relative;
     left: 93%;
-    bottom: -41px;
+    bottom: -12px;
 }
 
 .App-logo {

@@ -93,7 +93,7 @@ class Layout extends React.Component<{}, { isLegendOpen: boolean, initialize?: b
                 glyph={isLegendOpen ? 'arrow-down' : 'arrow-up'}
               />
             </div>
-              <div id="footer" style={{height: isLegendOpen ? 58 : 41}}>
+              <div id="footer" style={{height: isLegendOpen ? 58 : 12}}>
                 <Collapse in={isLegendOpen}>
                   <div>
                     <Legend />
