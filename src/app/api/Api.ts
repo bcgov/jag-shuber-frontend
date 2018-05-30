@@ -22,6 +22,7 @@ export type AlternateAssignmentMap = MapType<AlternateAssignment>;
 export type DateRange = { startDate?: DateType, endDate?: DateType };
 export type CourthouseMap = MapType<Courthouse>;
 export type SheriffRankCodeMap = MapType<SheriffRank>;
+export type SheriffShiftDisplay = { sheriffName: string, details: { workSectionId: WorkSectionCode, time: string }[] };
 
 /* tslint:disable:no-bitwise */
 export enum DaysOfWeek {
