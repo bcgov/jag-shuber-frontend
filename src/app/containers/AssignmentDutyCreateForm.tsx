@@ -15,7 +15,6 @@ import { getAssignment } from '../modules/assignments/selectors';
 import { visibleTime } from '../modules/timeline/selectors';
 import {
     IdType,
-    Assignment,
     DateType
 } from '../api';
 import * as TimeUtils from '../infrastructure/TimeRangeUtils';
@@ -38,7 +37,7 @@ export interface AssignmentDutyCreateFormProps extends AssignmentDutyFormProps {
 }
 
 const mapStateToProps = (state: RootState, props: AssignmentDutyCreateFormProps) => {
-    const assignment: Assignment = getAssignment(props.assignmentId)(state);
+    const assignment = getAssignment(props.assignmentId)(state);
     const currentVisibleTime = visibleTime(state);
     const currentVisibleStartMoment = moment(currentVisibleTime.visibleTimeStart);
 
@@ -60,8 +59,8 @@ const mapStateToProps = (state: RootState, props: AssignmentDutyCreateFormProps)
         },
         minTime: TimeUtils.getDefaultTimePickerMinTime(currentVisibleStartMoment).toISOString(),
         maxTime: TimeUtils.getDefaultTimePickerMaxTime(currentVisibleStartMoment).toISOString(),
-        assignmentTitle: assignment.title,
-        workSectionId: assignment.workSectionId,
+        assignmentTitle: assignment ? assignment.title : '',
+        workSectionId: assignment ? assignment.workSectionId : undefined,
         isNewDuty: true
     };
 };

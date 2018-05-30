@@ -19,7 +19,7 @@ class CourthouseJailRoleList extends React.PureComponent<
 
     render() {
         const { jailRoles = [], ...restProps } = this.props;
-        const selectorValues = Object.keys(jailRoles).map((key, index) => ({key, value: jailRoles[key].description}));
+        const selectorValues = jailRoles.map(role => ({ key: role.code, value: role.description }));
         return (
             <Selector {...restProps} data={selectorValues} />
         );
@@ -36,4 +36,4 @@ const mapStateToProps = (state: RootState) => {
 // tslint:disable-next-line:max-line-length
 export default connect<CourthouseJailRoleListStateProps, {}, CourthouseJailRoleListProps>(
     mapStateToProps
-  )(CourthouseJailRoleList);
+)(CourthouseJailRoleList);

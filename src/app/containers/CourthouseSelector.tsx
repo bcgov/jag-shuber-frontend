@@ -4,8 +4,8 @@ import { RootState } from '../store';
 import { Courthouse } from '../api/index';
 import { allCourthouses } from '../modules/courthouse/selectors';
 import { FormControl } from 'react-bootstrap';
-import { 
-    getCourtrooms, 
+import {
+    getCourtrooms,
     getRuns
 } from '../modules/courthouse/action';
 import {
@@ -43,7 +43,6 @@ class CourthouseList extends React.PureComponent<
 
     render() {
         const { courthouses = [] } = this.props;
-        const selectorValues = Object.keys(courthouses).map((key, index) => ({ key, value: courthouses[key].name }));
         return (
             <FormControl
                 componentClass="select"
@@ -51,12 +50,12 @@ class CourthouseList extends React.PureComponent<
                 onChange={(ev) => this.onChange((ev.target as any).value)}
             >
                 <option value="">Select Courthouse</option>
-                {selectorValues.map(sv => (
+                {courthouses.map(courthouse => (
                     <option
-                        key={sv.key}
-                        value={sv.key}
+                        key={courthouse.id}
+                        value={courthouse.id}
                     >
-                        {sv.value}
+                        {courthouse.name}
                     </option>
                 ))}
             </FormControl>
@@ -72,7 +71,7 @@ const mapStateToProps = (state: RootState) => {
 
 // tslint:disable-next-line:max-line-length
 export default connect<CourthouseListStateProps, CourthouseListDispatchProps, CourthouseListProps>(
-    mapStateToProps, 
+    mapStateToProps,
     {
         fetchCourtrooms: getCourtrooms,
         fetchRuns: getRuns,
