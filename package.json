@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@types/superagent": "^3.5.8",
     "autoprefixer": "7.1.2",
     "bootstrap": "^3.3.7",
     "case-sensitive-paths-webpack-plugin": "2.1.1",
@@ -52,6 +51,7 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
+    "start:dev":"API_URL=http://localhost:3001/ yarn start",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
     "prepare": "patch-package",
@@ -60,6 +60,7 @@
     "test-api": "yarn test --runIntegrationTests"
   },
   "devDependencies": {
+    "@types/superagent": "^3.5.8",
     "@storybook/addon-actions": "^3.3.10",
     "@storybook/addon-knobs": "^3.3.10",
     "@storybook/addon-links": "^3.3.10",
@@ -152,13 +153,5 @@
   },
   "eslintConfig": {
     "extends": "react-app"
-  },
-  "proxy": {
-    "/api/v1/": {
-      "target": "http://localhost:3001",
-      "changeOrigin": true,
-      "ignorePath": false,
-      "secure": false
-    }
   }
 }

@@ -46,6 +46,7 @@ module.exports = {
   appHtml: resolveApp('public/index.html'),
   appIndexJs: resolveApp('src/app/index.tsx'),
   appPackageJson: resolveApp('package.json'),
+  proxyConfig: resolveApp('config/proxy.config'),
   appSrc: resolveApp('src/app'),
   yarnLockFile: resolveApp('yarn.lock'),
   testsSetup: resolveApp('src/setupTests.ts'),
