@@ -5227,13 +5227,14 @@ istanbul-reports@^1.1.3:
     handlebars "^4.0.3"
 
 "jag-shuber-api@github:bcgov/jag-shuber-api":
-  version "1.0.1"
-  resolved "https://codeload.github.com/bcgov/jag-shuber-api/tar.gz/f6658fb4139fbb9228f27450f744d887967da32b"
+  version "1.1.0"
+  resolved "https://codeload.github.com/bcgov/jag-shuber-api/tar.gz/83e7520d04b05081b2a01c5273a664eee429d40e"
   dependencies:
     koa "^2.5.0"
     koa-bodyparser "^4.2.0"
     koa-router "^7.4.0"
     moment "^2.22.1"
+    moment-timezone "^0.5.17"
     pg "^7.4.1"
     squel "^5.12.1"
     superagent-prefix "^0.0.2"
@@ -6207,11 +6208,17 @@ mkdirp@0.5.x, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0, mkd
   dependencies:
     minimist "0.0.8"
 
+moment-timezone@^0.5.17:
+  version "0.5.17"
+  resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.17.tgz#3c8fef32051d84c3af174d91dc52977dcb0ad7e5"
+  dependencies:
+    moment ">= 2.9.0"
+
 moment@*, moment@^2.20.1:
   version "2.20.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.20.1.tgz#d6eb1a46cbcc14a2b2f9434112c1ff8907f313fd"
 
-moment@^2.18.1, moment@^2.22.1:
+"moment@>= 2.9.0", moment@^2.18.1, moment@^2.22.1:
   version "2.22.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.1.tgz#529a2e9bf973f259c9643d237fda84de3a26e8ad"
 
@@ -8837,10 +8844,6 @@ style-loader@^0.19.1:
 success-symbol@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/success-symbol/-/success-symbol-0.1.0.tgz#24022e486f3bf1cdca094283b769c472d3b72897"
-
-superagent-absolute@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/superagent-absolute/-/superagent-absolute-1.0.1.tgz#781c76c54939d9a3371ff0f76f650a3be2eef5e5"
 
 superagent-prefix@^0.0.2:
   version "0.0.2"
