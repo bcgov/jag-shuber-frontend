@@ -7,7 +7,7 @@ import {
   DragDropContext
 } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
-import Footer from './components/Footer';
+// import Footer from './components/Footer';
 import Navigation from './components/Navigation';
 import './assets/styles/Glyphicons.css';
 import './index.css';
@@ -24,9 +24,19 @@ import SheriffProfileModal from './containers/SheriffProfileModal';
 import ScheduleShiftCopyModal from './containers/ScheduleShiftCopyModal';
 import ScheduleShiftAddModal from './containers/ScheduleShiftAddModal';
 import { Glyphicon } from 'react-bootstrap';
+import { Collapse } from 'react-bootstrap';
+import Legend from './components/Legend/Legend';
 
-class Layout extends React.Component {
+class Layout extends React.Component<{}, {open: boolean, initialize?: boolean}> {
+  static defaultState = {
+    open: true
+  };
 
+  constructor(props: any, context: any) {
+    super(props, context);
+    this.state = { open: true };
+  }
+  
   private onSelectCourthouse(id: string) {
     this.setState({ initialize: true });
   }
@@ -71,7 +81,7 @@ class Layout extends React.Component {
               <ScheduleShiftAddModal />
             </div>}
           <div className="footerArea">
-            <div className="footerArrow">
+            <div className="footerArrow" onClick={() => this.setState({open: !this.state.open})}>
               <Glyphicon
                 style={{
                   color: 'white',
@@ -79,10 +89,14 @@ class Layout extends React.Component {
                   fontSize: 25,
                   zIndex: 1000
                 }}
-                glyph="arrow-down"
+                glyph="arrow-down"             
               />
             </div>
-            <Footer />
+             <Collapse in={this.state.open}>
+                <div id="footer">
+                    <Legend />
+                </div>
+             </Collapse>
           </div>
         </div>
       </Router>
