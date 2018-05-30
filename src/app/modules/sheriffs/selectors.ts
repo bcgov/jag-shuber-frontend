@@ -8,7 +8,8 @@ import mapToArray from '../../infrastructure/mapToArray';
 
 export const sheriffs = createSelector(
     requests.sheriffMapRequest.getData,
-    (map) => mapToArray(map).sort((a, b) => `${a.lastName} ${a.firstName}`.localeCompare(`${b.lastName} ${b.firstName}`)) 
+    (map) => mapToArray(map)
+        .sort((a, b) => `${a.lastName} ${a.firstName}`.localeCompare(`${b.lastName} ${b.firstName}`)) 
 );
 
 export const getSheriff = (id?: IdType) => (state: RootState) => {
