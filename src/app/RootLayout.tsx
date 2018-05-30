@@ -82,16 +82,11 @@ class Layout extends React.Component<{}, { isLegendOpen: boolean, initialize?: b
               <ScheduleShiftAddModal />
             </div>}
           <div className="footerArea">
-            <div className="footerArrow" onClick={() => this.setState({ isLegendOpen: !this.state.isLegendOpen })}>
-              <Glyphicon
-                style={{
-                  color: 'white',
-                  marginTop: 6,
-                  fontSize: 25,
-                  zIndex: 1000
-                }}
-                glyph={isLegendOpen ? 'arrow-down' : 'arrow-up'}
-              />
+            <div 
+              className="footerArrowBackground" 
+              onClick={() => this.setState({ isLegendOpen: !this.state.isLegendOpen })}
+            >
+              <Glyphicon className="footerArrow" glyph={isLegendOpen ? 'arrow-down' : 'arrow-up'} />
             </div>
               <div id="footer" style={{height: isLegendOpen ? 58 : 12}}>
                 <Collapse in={isLegendOpen}>

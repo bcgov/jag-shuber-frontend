@@ -4,18 +4,22 @@ import './TimelineToolsPanel.css';
 interface TimelineToolsPanelProps {
     titleText?: string;
     legendChildren?: React.ReactNode;
+    titleBackgroundBorderRight?: string;
+    titleBackgroundBorderLeft?: string;
 }
 
 export default class TimelineToolsPanel extends React.PureComponent<TimelineToolsPanelProps> {
     render() {
         const {
             legendChildren,
-            titleText = 'Tools'
+            titleText = 'Tools',
+            titleBackgroundBorderLeft: borderLeft,
+            titleBackgroundBorderRight: borderRight
         } = this.props;
     
         return (
             <div className="timeline-tools-panel" style={{maxHeight: 400}}>
-                <div className="timeline-tools-title-background">
+                <div className="timeline-tools-title-background" style={{borderRight, borderLeft}}>
                     <h3 className="timeline-tools-title">
                         {titleText}
                     </h3>

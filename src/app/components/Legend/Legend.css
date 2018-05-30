@@ -36,24 +36,6 @@
     text-align: center;
 }
 
-.legend-symbol {
-    width: 20px;
-    height: 20px;
-    padding-top: 1px;
-    padding-bottom: 1px;
-    padding-left: 1px;
-    padding-right: 1px;
-    text-align: center;
-    -moz-border-radius:50%;
-    -webkit-border-radius: 50%;   
-    border-radius: 50%;
-    background-color: #F1F1F1;
-    border: 1px solid;
-    margin-right: 3px;
-    margin-left: 2px;
-    margin-top: 1px;
-}
-
 .legend-symbol-text {
     padding-right: 10px;
 }

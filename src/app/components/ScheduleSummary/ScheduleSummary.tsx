@@ -1,6 +1,9 @@
 import * as React from 'react';
 import './ScheduleSummary.css';
-import { Glyphicon } from 'react-bootstrap';
+import AssignedIcon from '../Icons/Assigned';
+import UnavailableIcon from '../Icons/Unavailable';
+import AlertIcon from '../Icons/Alert';
+import CircleIconWithText from '../Icons/CircleIconWithText';
 
 export enum StatusEnum {
     GOOD,
@@ -24,27 +27,19 @@ export default class ScheduleSummary extends React.PureComponent<ScheduleSummary
         switch (status) {
             case StatusEnum.GOOD:
                 return (
-                    <div className="schedule-summary-day good-day non-empty-day">
-                        <Glyphicon glyph="ok" />
-                    </div>
+                    <AssignedIcon />
                 );
             case StatusEnum.BAD:
                 return (
-                    <div className="schedule-summary-day bad-day non-empty-day">
-                        <Glyphicon glyph="remove" />
-                    </div>
+                    <UnavailableIcon />
                 );
             case StatusEnum.WARNING:
                 return (
-                    <div className="schedule-summary-day warning-day non-empty-day">
-                        <Glyphicon glyph="alert" />
-                    </div>
+                   <AlertIcon />
                 );
             default:
                 return (
-                    <div className="schedule-summary-day empty-day">
-                        {day.charAt(0).toUpperCase()}
-                    </div>
+                    <CircleIconWithText text={day.charAt(0).toUpperCase()}/>
                 );
         }
     }

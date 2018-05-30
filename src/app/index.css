@@ -73,7 +73,7 @@
   grid-area: footer;
 }
 
-.footerArrow { 
+.footerArrowBackground { 
     height: 45px;
     width: 90px;
     text-align: center;
@@ -86,6 +86,12 @@
     bottom: -12px;
 }
 
+.footerArrow { 
+  color: white;
+  margin-top: 6px;
+  font-size: 25px;
+  z-index: 1000
+}
 .App-logo {
   /* animation: App-logo-spin infinite 20s linear; */
   /* height: 80px; */
