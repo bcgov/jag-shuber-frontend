@@ -35,6 +35,7 @@
     "react-dom": "^16.1.1",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
+    "react-svg-loader": "^2.1.0",
     "redux": "^3.7.2",
     "redux-form": "^7.2.0",
     "redux-modal": "^1.7.3",
@@ -52,7 +53,7 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
-    "start:dev":"API_URL=http://localhost:3001/ yarn start",
+    "start:dev": "API_URL=http://localhost:3001/ yarn start",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
     "prepare": "patch-package",
@@ -61,7 +62,6 @@
     "test-api": "yarn test --runIntegrationTests"
   },
   "devDependencies": {
-    "@types/superagent": "^3.5.8",
     "@storybook/addon-actions": "^3.3.10",
     "@storybook/addon-knobs": "^3.3.10",
     "@storybook/addon-links": "^3.3.10",
@@ -89,6 +89,7 @@
     "@types/storybook__addon-knobs": "^3.2.1",
     "@types/storybook__addon-links": "^3.0.2",
     "@types/storybook__react": "^3.0.6",
+    "@types/superagent": "^3.5.8",
     "babel-core": "^6.26.0",
     "fetch-mock": "^6.0.0",
     "isomorphic-fetch": "^2.2.1",
