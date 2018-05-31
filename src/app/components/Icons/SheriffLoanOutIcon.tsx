@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { loadIcon } from './open-iconic-utils';
-const Icon = loadIcon('account-login');
+import { loadIcon } from '../../infrastructure/openIconicUtils';
+const Icon = loadIcon('account-logout');
 
 export interface SheriffLoanInIconProps {
     width?: number;
@@ -14,7 +14,7 @@ export default class SheriffLoanInIcon extends React.PureComponent<SheriffLoanIn
                 style={{
                     width,
                     height,
-                    fill: 'green'
+                    fill: 'red'
                 }}
             />
         );

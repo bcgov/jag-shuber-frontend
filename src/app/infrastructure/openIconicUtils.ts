@@ -1,5 +1,3 @@
-import { loadSvg } from '../../infrastructure/svgUtils'
-
 interface IconNames {
     'account-login': {};
     'account-logout': {};
@@ -224,9 +222,8 @@ interface IconNames {
     'yen': {};
     'zoom-in': {};
     'zoom-out': {};
-
 }
 
-export function loadIcon(name: keyof IconNames) {
-    return loadSvg(`open-iconic/svg/${name}.svg`);
+export function loadIcon(name: keyof IconNames): React.ComponentType<React.SVGProps<SVGSVGElement>> {
+    return require(`open-iconic/svg/${name}.svg`).default;
 }
