@@ -5,7 +5,7 @@ import StorySection from '../../StoryUI/StorySection';
 import ScheduleDeputyViewList from '../../../app/components/ScheduleDeputyViewList';
 
 storiesOf('Components/Schedule')
-  .add('Schedule Depty View', () => (
+  .add('Schedule Deputy View', () => (
     <StoryPage title="Deputy View of Schedule">
 
       <StorySection title="Deputy Schedule - No Work Section">
@@ -31,15 +31,15 @@ storiesOf('Components/Schedule')
                 },
                 {
                   time: '08:30-16:30',
-                  workSectionId: 'COURTS'
+                  workSectionId: 'JAIL'
                 },
                 {
                   time: '08:30-16:30',
-                  workSectionId: 'COURTS'
+                  workSectionId: 'JAIL'
                 },
                 {
                   time: '08:30-16:30',
-                  workSectionId: 'COURTS'
+                  workSectionId: 'JAIL'
                 }
               ]
             },
@@ -48,7 +48,7 @@ storiesOf('Components/Schedule')
               details: [
                 {
                   time: '08:30-16:30',
-                  workSectionId: 'COURTS'
+                  workSectionId: 'ESCORTS'
                 },
                 {
                   time: '08:30-16:30',
@@ -56,15 +56,15 @@ storiesOf('Components/Schedule')
                 },
                 {
                   time: '08:30-16:30',
-                  workSectionId: 'COURTS'
+                  workSectionId: 'ESCORTS'
                 },
                 {
                   time: '08:30-16:30',
-                  workSectionId: 'COURTS'
+                  workSectionId: 'OTHER'
                 },
                 {
                   time: '08:30-16:30',
-                  workSectionId: 'COURTS'
+                  workSectionId: 'OTHER'
                 }
               ]
             },
@@ -72,24 +72,19 @@ storiesOf('Components/Schedule')
               sheriffName: 'Smith, Jane',
               details: [
                 {
-                  time: '08:30-16:30',
-                  workSectionId: 'COURTS'
+                  time: '08:30-16:30'
                 },
                 {
-                  time: '08:30-16:30',
-                  workSectionId: 'COURTS'
+                  time: '08:30-16:30'
                 },
                 {
-                  time: '08:30-16:30',
-                  workSectionId: 'COURTS'
+                  time: '08:30-16:30'
                 },
                 {
-                  time: '08:30-16:30',
-                  workSectionId: 'COURTS'
+                  time: '08:30-16:30'
                 },
                 {
-                  time: '08:30-16:30',
-                  workSectionId: 'COURTS'
+                  time: '08:30-16:30'
                 }
               ]
             }
@@ -121,15 +116,15 @@ storiesOf('Components/Schedule')
                 },
                 {
                   time: '08:30-16:30',
-                  workSectionId: 'COURTS'
+                  workSectionId: 'JAIL'
                 },
                 {
                   time: '08:30-16:30',
-                  workSectionId: 'COURTS'
+                  workSectionId: 'JAIL'
                 },
                 {
                   time: '08:30-16:30',
-                  workSectionId: 'COURTS'
+                  workSectionId: 'JAIL'
                 }
               ]
             },
@@ -138,7 +133,7 @@ storiesOf('Components/Schedule')
               details: [
                 {
                   time: '08:30-16:30',
-                  workSectionId: 'COURTS'
+                  workSectionId: 'ESCORTS'
                 },
                 {
                   time: '08:30-16:30',
@@ -146,15 +141,15 @@ storiesOf('Components/Schedule')
                 },
                 {
                   time: '08:30-16:30',
-                  workSectionId: 'COURTS'
+                  workSectionId: 'ESCORTS'
                 },
                 {
                   time: '08:30-16:30',
-                  workSectionId: 'COURTS'
+                  workSectionId: 'OTHER'
                 },
                 {
                   time: '08:30-16:30',
-                  workSectionId: 'COURTS'
+                  workSectionId: 'OTHER'
                 }
               ]
             },
@@ -162,24 +157,19 @@ storiesOf('Components/Schedule')
               sheriffName: 'Smith, Jane',
               details: [
                 {
-                  time: '08:30-16:30',
-                  workSectionId: 'COURTS'
+                  time: '08:30-16:30'
                 },
                 {
-                  time: '08:30-16:30',
-                  workSectionId: 'COURTS'
+                  time: '08:30-16:30'
                 },
                 {
-                  time: '08:30-16:30',
-                  workSectionId: 'COURTS'
+                  time: '08:30-16:30'
                 },
                 {
-                  time: '08:30-16:30',
-                  workSectionId: 'COURTS'
+                  time: '08:30-16:30'
                 },
                 {
-                  time: '08:30-16:30',
-                  workSectionId: 'COURTS'
+                  time: '08:30-16:30'
                 }
               ]
             }

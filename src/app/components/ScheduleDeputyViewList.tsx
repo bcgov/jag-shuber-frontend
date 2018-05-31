@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { Table } from 'react-bootstrap';
-import { 
-    SheriffShiftDisplay 
+import {
+    SheriffShiftDisplay
 } from '../api/Api';
 import CirlceIconWithText from '../components/Icons/CircleIconWithText';
+import { getWorkSectionColour } from '../api/utils';
+import { getForegroundColor } from '../infrastructure/colorUtils';
 
 export interface ScheduleDeputyViewListProps {
     weekDayLabels: string[];
@@ -25,17 +27,28 @@ export default class ScheduleDeputyViewList extends React.PureComponent<Schedule
                     <tbody>
                         {sheriffShifts.map(ss => {
                             return (
-                                <tr id={ss.sheriffName}>
+                                <tr id={ss.sheriffName} key={ss.sheriffName}>
                                     <td>{ss.sheriffName}</td>
                                     {ss.details.map(details => {
-                                        const {workSectionId, time} = details;
+                                        const { workSectionId, time } = details;
+                                        const backgroundColor = getWorkSectionColour(workSectionId);
+                                        const foregroundColor = getForegroundColor(backgroundColor);
                                         return (
-                                        <td>
-                                            {time}{includeWorkSection && <CirlceIconWithText text={workSectionId.charAt(0)}/>} 
-                                        </td>)})}
+                                            <td key={details.time}>
+                                                <div style={{ display: 'flex' }}>{includeWorkSection &&
+                                                    <CirlceIconWithText
+                                                        text={workSectionId ? workSectionId.charAt(0) : ''}
+                                                        backgroundColor={backgroundColor}
+                                                        borderColor={backgroundColor}
+                                                        color={foregroundColor}
+                                                    />}
+                                                    <span style={{marginTop: 3, marginLeft: 5}}>{time}</span>
+                                                </div>
+                                            </td>);
+                                    })};
                                 </tr>
                             );
-                        })}        
+                        })};
                     </tbody>
                 </Table>
             </div>
