@@ -1,5 +1,6 @@
 import * as React from 'react';
-const loanOutImg = require('open-iconic/svg/account-logout.svg');
+import { loadIcon } from './open-iconic-utils';
+const Icon = loadIcon('account-login');
 
 export interface SheriffLoanInIconProps {
     width?: number;
@@ -9,12 +10,11 @@ export default class SheriffLoanInIcon extends React.PureComponent<SheriffLoanIn
     render() {
         const { width = 23, height = 23 } = this.props;
         return (
-            <img
-                src={loanOutImg}
-                alt="account login"
+            <Icon
                 style={{
                     width,
-                    height
+                    height,
+                    fill: 'green'
                 }}
             />
         );
