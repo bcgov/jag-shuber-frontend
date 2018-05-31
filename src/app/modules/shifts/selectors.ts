@@ -29,6 +29,8 @@ export const getShift = (id?: IdType) => (state: RootState) => {
 export const getSheriffShifts = (sheriffId?: IdType) => (state: RootState) => {
     if (state && sheriffId != null) {
         return allShifts(state).filter(s => s.sheriffId === sheriffId);
+    } else if (state) {
+        return allShifts(state);
     }
     return [];
 };
