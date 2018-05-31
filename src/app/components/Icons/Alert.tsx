@@ -7,12 +7,18 @@ export interface AlertIconProps {
 }
 export default class AlertIcon extends React.PureComponent<AlertIconProps> {
     render() {
-        const {backgroundColor = 'white'} = this.props;
+        const { backgroundColor = 'white' } = this.props;
         return (
             <Glyphicon
                 className="circle-icon"
                 glyph="alert"
-                style={{ borderColor: 'darkorange', color: 'darkorange', backgroundColor, paddingTop: 2 }}
+                style={{
+                    borderColor: 'darkorange',
+                    color: 'darkorange',
+                    backgroundColor,
+                    paddingTop: 2,
+                    top: 0
+                }}
             />
         );
     }

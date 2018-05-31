@@ -16,7 +16,6 @@ export default class CircleIconWithText extends React.PureComponent<CircleIconWi
                     borderColor: 'grey', 
                     color: 'grey', 
                     backgroundColor, 
-                    marginTop: 1, 
                     fontWeight: 'normal' 
                 }}
             >

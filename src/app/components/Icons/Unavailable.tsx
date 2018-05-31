@@ -7,12 +7,18 @@ export interface UnavailableIconProps {
 }
 export default class UnavailableIcon extends React.PureComponent<UnavailableIconProps> {
     render() {
-        const {backgroundColor = 'white'} = this.props;
+        const { backgroundColor = 'white' } = this.props;
         return (
             <Glyphicon
                 className="circle-icon"
                 glyph="remove"
-                style={{ borderColor: 'red', color: 'red', paddingTop: 3, backgroundColor }}
+                style={{
+                    borderColor: 'red',
+                    color: 'red',
+                    paddingTop: 3,
+                    backgroundColor,
+                    top: 0
+                }}
             />
         );
     }

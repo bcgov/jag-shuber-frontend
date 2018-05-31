@@ -7,11 +7,17 @@ export interface AssignedIconProps {
 }
 export default class AssignedIcon extends React.PureComponent<AssignedIconProps> {
     render() {
-        const {backgroundColor = 'white'} = this.props;
+        const { backgroundColor = 'white' } = this.props;
         return (
             <Glyphicon
                 className="circle-icon"
-                style={{ borderColor: 'green', color: 'green', backgroundColor, paddingTop: 2 }}
+                style={{
+                    borderColor: 'green',
+                    color: 'green',
+                    backgroundColor,
+                    paddingTop: 2,
+                    top: 0
+                }}
                 glyph="ok"
             />
         );
