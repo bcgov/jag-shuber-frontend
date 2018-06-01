@@ -30,7 +30,7 @@ export default class ScheduleDeputyViewList extends React.PureComponent<Schedule
         const displayDayNumbers = DaysOfWeek.getWeekdayNumbers(daysToDisplay);
 
         const weekStart = moment(shifts[0].startDateTime).startOf('week');
-        const dayDisplay = displayDayNumbers.map(dayNum => moment(weekStart).add(dayNum, 'day').format('ddd, MMM D'));
+        const dayDisplay = displayDayNumbers.map(dayNum => moment(weekStart).add(dayNum, 'day').format('dddd, MMM D'));
 
         const sheriffShiftMap = shifts.reduce<MapType<Shift[]>>((map, currentShift) => {
             const key = currentShift.sheriffId as string;
@@ -47,7 +47,7 @@ export default class ScheduleDeputyViewList extends React.PureComponent<Schedule
                     <thead>
                         <tr>
                             <th className="text-left">Name</th>
-                            {dayDisplay.map(d => <th key={d}>{d}</th>)}
+                            {dayDisplay.map(d => <th className="text-left" key={d}>{d}</th>)}
                         </tr>
                     </thead>
                     <tbody>
