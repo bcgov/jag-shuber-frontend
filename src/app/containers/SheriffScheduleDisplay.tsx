@@ -16,10 +16,12 @@ import {
     Sheriff
 } from '../api/Api';
 import ScheduleDeputyViewList from '../components/ScheduleDeputyViewList';
-import { deputyViewVisibleWeek } from '../modules/schedule/selectors';
+import { 
+    deputyViewVisibleWeek,
+    isShowWorkSections 
+} from '../modules/schedule/selectors';
 
 interface SheriffScheduleDisplayProps {
-    includeWorkSection?: boolean;
 }
 
 interface SheriffScheduleDisplayDispatchProps {
@@ -30,7 +32,8 @@ interface SheriffScheduleDisplayDispatchProps {
 interface SheriffScheduleDisplayStateProps {
     shifts: Shift[];
     sheriffs: Sheriff[];
-    weekStart?: TimeType;    
+    weekStart?: TimeType;
+    includeWorkSection?: boolean;  
 }
 
 class SheriffScheduleDisplay extends React.Component<SheriffScheduleDisplayProps
@@ -68,7 +71,8 @@ const mapStateToProps = (state: RootState) => {
     return {
         shifts: getSheriffShifts()(state),
         sheriffs: sheriffs(state),
-        weekStart: deputyViewVisibleWeek(state)
+        weekStart: deputyViewVisibleWeek(state),
+        includeWorkSection: isShowWorkSections(state)
     };
 };
 

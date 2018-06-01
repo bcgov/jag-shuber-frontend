@@ -11,6 +11,7 @@ type IActionMap = {
   'SCHEDULE_SHIFT_UNSELECT': IdType;
   'SCHEDULE_SHIFT_CLEAR_SELECTED': void;
   'SCHEDULE_DEPUTY_VIEW_UPDATE_WEEK_START': any;
+  'SCHEDULE_DEPUTY_VIEW_SHOW_WORKSECTION': boolean;
 };
 
 export type IActionType = keyof IActionMap;
@@ -47,4 +48,8 @@ export const clearSelectedShifts = actionCreator('SCHEDULE_SHIFT_CLEAR_SELECTED'
 
 export const updateDeputyViewWeekStart = (deputyViewWeekStart: any) => (
   actionCreator('SCHEDULE_DEPUTY_VIEW_UPDATE_WEEK_START')(deputyViewWeekStart)
+);
+
+export const updateShowWorkSections = (showWorkSections: boolean) => (
+  actionCreator('SCHEDULE_DEPUTY_VIEW_SHOW_WORKSECTION')(showWorkSections)
 );
