@@ -41,7 +41,7 @@ node{
   }
 }
 
-if(hasRepoChanged){
+// if(hasRepoChanged){
   stage('Build ' + APP_NAME) {
     node{
       try{
@@ -143,10 +143,10 @@ if(hasRepoChanged){
           ])
     }  
   }
-}else{
-  stage('No Changes to Build 👍'){
-    currentBuild.result = 'SUCCESS'
-  }
-}
+// }else{
+//   stage('No Changes to Build 👍'){
+//     currentBuild.result = 'SUCCESS'
+//   }
+// }
 
 
