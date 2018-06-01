@@ -55,6 +55,7 @@ class ScheduleDeputyViewControls extends React.Component<ScheduleDeputyViewContr
                 }}
             >
                 <div style={{ display: 'flex', alignItems: 'center'}}>
+                    <span title="Display Work Section">
                     <Toggle
                         style={{marginRight: 5}}
                         defaultChecked={includeWorkSection}
@@ -63,7 +64,9 @@ class ScheduleDeputyViewControls extends React.Component<ScheduleDeputyViewContr
                             checked: <span style={{ color: 'white'}}>WS</span>,
                             unchecked: <span style={{ color: 'white'}}>WS</span>,
                         }}
+
                     />
+                    </span>
                     {/* <span style={{ color: 'white', marginTop: 2, marginLeft: 3 }}>Work Sections</span> */}
                     <Button
                         bsStyle="link"
