@@ -22,18 +22,20 @@
     text-align: center;
 }
 
+#deputySchedule .well{
+    max-width: 80%;
+    min-width: 800px;
+}
+
 @media print {
-    .headerArea,.footerArea,.toolbar {
-      display: none
-    }
-  
-    #main {
-        width: 90%;
-        margin: 0px;
-        padding: 0px;
+    
+    #deputySchedule .well{
+        border: 0px;
+        width: 100%;
+        max-width: 100%;
     }
 
-    #deputySchedule .well{
-        background-color: red
+    @page {
+        orientation: landscape;
     }
 }

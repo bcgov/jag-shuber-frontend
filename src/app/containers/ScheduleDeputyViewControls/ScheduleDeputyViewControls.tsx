@@ -1,23 +1,24 @@
 import * as React from 'react';
 import * as moment from 'moment';
 import { connect } from 'react-redux';
-import { RootState } from '../store';
+import { RootState } from '../../store';
 import {
     deputyViewVisibleWeek,
     isShowWorkSections
-} from '../modules/schedule/selectors';
+} from '../../modules/schedule/selectors';
 import {
     updateDeputyViewWeekStart,
     updateShowWorkSections
-} from '../modules/schedule/actions';
-import { TimeType } from '../api';
-import CalendarButton from '../components/CalendarButton/CalendarButton';
+} from '../../modules/schedule/actions';
+import { TimeType } from '../../api';
+import CalendarButton from '../../components/CalendarButton/CalendarButton';
 import {
     Button,
     Glyphicon
 } from 'react-bootstrap';
 import Toggle from 'react-toggle';
 import 'react-toggle/style.css';
+import './ScheduleDeputyViewControl.css';
 
 interface ScheduleDeputyViewControlsProps {
 }
@@ -48,13 +49,32 @@ class ScheduleDeputyViewControls extends React.Component<ScheduleDeputyViewContr
             <div
                 style={{
                     display: 'flex',
-                    justifyContent: 'space-between',
-                    alignContent: 'center',
                     width: '100%',
-                    paddingLeft: 625
+                    flexDirection: 'row-reverse',
+                    marginRight: '10%'
                 }}
             >
-                <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div style={{ display: 'flex', alignItems: 'center'}}>
+                    <Toggle
+                        style={{marginRight: 5}}
+                        defaultChecked={includeWorkSection}
+                        onChange={() => updateShowWorkSections(!includeWorkSection)}
+                        icons={{
+                            checked: <span style={{ color: 'white'}}>WS</span>,
+                            unchecked: <span style={{ color: 'white'}}>WS</span>,
+                        }}
+                    />
+                    {/* <span style={{ color: 'white', marginTop: 2, marginLeft: 3 }}>Work Sections</span> */}
+                    <Button
+                        bsStyle="link"
+                        bsSize="large"
+                        style={{ color: 'white' }}
+                        onClick={() => window.print()}
+                    >
+                        <Glyphicon glyph="print" />
+                    </Button>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', marginRight: 5}}>
                     <Button
                         onClick={() => updateVisibleWeek(
                             moment(weekStart).subtract('week', 1)
@@ -83,20 +103,6 @@ class ScheduleDeputyViewControls extends React.Component<ScheduleDeputyViewContr
                         style={{ color: 'white' }}
                     >
                         <Glyphicon glyph="chevron-right" />
-                    </Button>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Toggle
-                        defaultChecked={includeWorkSection}
-                        onChange={() => updateShowWorkSections(!includeWorkSection)}
-                    />
-                    <span style={{color: 'white', marginTop: 2, marginLeft: 3}}>Work Sections</span>
-                    <Button
-                        bsStyle="link"
-                        bsSize="large"
-                        style={{ color: 'white' }}
-                    >
-                        <Glyphicon glyph="print" />
                     </Button>
                 </div>
             </div>

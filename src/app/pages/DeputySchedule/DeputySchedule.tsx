@@ -9,7 +9,7 @@ import './DeputySchedule.css';
 import api from '../../api/index';
 import Client from '../../api/Client';
 import CourthouseDisplay from '../../containers/CourthouseDisplay';
-import ScheduleDeputyViewControls from '../../containers/ScheduleDeputyViewControls';
+import ScheduleDeputyViewControls from '../../containers/ScheduleDeputyViewControls/ScheduleDeputyViewControls';
 import ScheduleDeputyViewSelectedWeekDisplay from '../../containers/ScheduleDeputyViewSelectedWeekDisplay';
 
 class DeputySchedule extends React.PureComponent {
@@ -26,9 +26,7 @@ class DeputySchedule extends React.PureComponent {
                             display: 'flex',
                             backgroundColor: 'white',
                             flexDirection: 'column',
-                            flex: '1 1',
-                            maxWidth: '80%',
-                            minWidth: 800
+                            flex: '1 1'
                         }}
                     >
 
