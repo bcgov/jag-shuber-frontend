@@ -30,6 +30,7 @@ export interface ScheduleState {
   visibleTimeStart: any;
   visibleTimeEnd: any;
   selectedShiftIds: IdType[];
+  deputyViewWeekStart: any;
 }
 
 const reducer = createReducer<ScheduleState>({
@@ -62,6 +63,9 @@ const reducer = createReducer<ScheduleState>({
   },
   SCHEDULE_SHIFT_CLEAR_SELECTED: (state) => {
     return { ...state, selectedShiftIds: [] };
+  },
+  SCHEDULE_DEPUTY_VIEW_UPDATE_WEEK_START: (state, deputyViewWeekStart) => {
+    return { ...state, deputyViewWeekStart };
   }
 });
 

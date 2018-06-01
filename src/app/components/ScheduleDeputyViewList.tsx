@@ -5,7 +5,8 @@ import {
     DaysOfWeek,
     Sheriff,
     Shift,
-    MapType
+    MapType,
+    TimeType
 } from '../api/Api';
 import CirlceIconWithText from '../components/Icons/CircleIconWithText';
 import { getWorkSectionColour } from '../api/utils';
@@ -17,6 +18,7 @@ export interface ScheduleDeputyViewListProps {
     sheriffs: Sheriff[];
     shifts: Shift[];
     includeWorkSection?: boolean;
+    weekStart?: TimeType;
 }
 export default class ScheduleDeputyViewList extends React.PureComponent<ScheduleDeputyViewListProps> {
     render() {
@@ -24,12 +26,12 @@ export default class ScheduleDeputyViewList extends React.PureComponent<Schedule
             sheriffs = [],
             shifts = [],
             daysToDisplay = DaysOfWeek.Weekdays,
-            includeWorkSection = true
+            includeWorkSection = true,
+            weekStart = moment().startOf('week')
         } = this.props;
 
         const displayDayNumbers = DaysOfWeek.getWeekdayNumbers(daysToDisplay);
-
-        const weekStart = moment(shifts[0].startDateTime).startOf('week');
+        
         const dayDisplay = displayDayNumbers.map(dayNum => moment(weekStart).add(dayNum, 'day').format('dddd, MMM D'));
 
         const sheriffShiftMap = shifts.reduce<MapType<Shift[]>>((map, currentShift) => {
@@ -66,14 +68,14 @@ export default class ScheduleDeputyViewList extends React.PureComponent<Schedule
                                             const foregroundColor = getForegroundColor(backgroundColor);
                                             return (
                                                 <td>
-                                                    <div style={{ display: 'flex' }}>
+                                                    <div style={{ display: 'flex', alignItems: 'center' }}>
                                                         {includeWorkSection && <CirlceIconWithText
                                                             text={workSectionId ? workSectionId.charAt(0) : ''}
                                                             backgroundColor={backgroundColor}
                                                             borderColor={backgroundColor}
                                                             color={foregroundColor}
                                                         />}
-                                                        <span style={{marginTop: 3}}>
+                                                        <span style={{marginLeft: 4}}>
                                                             {`${moment(startDateTime).format('HH:mm')}
                                                             - ${moment(endDateTime).format('HH:mm')}`}
                                                         </span>
