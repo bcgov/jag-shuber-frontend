@@ -40,7 +40,7 @@ class OtherFields extends React.PureComponent {
                 <Field
                     name="otherAssignCode"
                     label="Assignment"
-                    component={(p) => <AlternateAssignmentSelector {...p}/>}
+                    component={AlternateAssignmentSelector as any}
                     validate={[Validators.required]}
                 />
             </div>
@@ -54,7 +54,7 @@ class EscortsFields extends React.PureComponent {
             <div>
                 <Field
                     name="runId"
-                    component={(p) => <RunSelector {...p}/>}
+                    component={RunSelector as any}
                     label="Assignment"
                     validate={[Validators.required]}
                 />
@@ -69,7 +69,7 @@ class JailFeilds extends React.PureComponent {
             <div>
                 <Field
                     name="jailRoleCode"
-                    component={(p) => <JailRolesSelector {...p}/>}
+                    component={JailRolesSelector as any}
                     label="Assignment"
                     validate={[Validators.required]}
                 />
@@ -84,7 +84,7 @@ class CourtSecurityFields extends React.PureComponent {
             <div>
                 <Field
                     name="courtroomId"
-                    component={(p) => <CourtroomSelector {...p}/>}
+                    component={CourtroomSelector as any}
                     label="Courtroom"
                     validate={[Validators.required]}
                 />
@@ -273,7 +273,7 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
                                                 )}
                                                 <Field
                                                     name={`${recurrenceInfoFieldName}.daysBitmap`}
-                                                    component={(p) => <DaysOfWeekChecklist {...p}/>}
+                                                    component={DaysOfWeekChecklist as any}
                                                     label="Days"
                                                 />
                                                 <Field

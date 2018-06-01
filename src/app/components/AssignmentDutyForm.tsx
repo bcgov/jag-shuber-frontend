@@ -137,7 +137,7 @@ export default class AssignmentDutyForm extends
                                             <div style={{ marginTop: 20 }}>
                                                 <Field
                                                     name={`${fieldInstanceName}.sheriffId`}
-                                                    component={(p) => <SheriffSelector {...p}/>}
+                                                    component={SheriffSelector as any}
                                                     label="Sheriff"
                                                 />
                                                 <Field
@@ -203,7 +203,7 @@ export default class AssignmentDutyForm extends
                         <br />
                         {!isNewDuty && <Field
                             name="comments"
-                            component={(p) => <TextArea {...p}/>}
+                            component={TextArea as any}
                             label="Comments"
                         />}
                         <div style={{ marginTop: 40 }}>
