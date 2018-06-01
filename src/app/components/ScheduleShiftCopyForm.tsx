@@ -28,7 +28,7 @@ export default class ScheduleShiftForm extends
                     <h3>Duplicate Shifts from Previous Week</h3>
                     <Field
                         name="shouldIncludeSheriffs"
-                        component={(p) => <CheckboxField {...p} />}
+                        component={CheckboxField as any}
                         label="Include sheriffs"
                     />
                 </Form>

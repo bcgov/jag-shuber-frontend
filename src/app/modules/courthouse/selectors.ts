@@ -42,7 +42,8 @@ export const allCourthouses = createSelector(
 );
 
 export const courthouseById = (id: IdType) => (state: RootState) => {
-    return id ? courthouseRequests.courthouseMapRequest.getData(state)[id] : undefined;
+    const map = courthouseRequests.courthouseMapRequest.getData(state);
+    return id && map ? map[id] : undefined;
 };
 
 export const selectedCourthouse = (id: IdType) => (state: RootState) => {
