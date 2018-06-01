@@ -36,12 +36,16 @@ module.exports = (baseConfig, env) => {
       test: /\.svg$/,
       use: [
         {
-          loader: require.resolve('@storybook/react/node_modules/babel-loader')
+          loader: 'babel-loader'
         },
         {
           loader: require.resolve('react-svg-loader'),
           options:{
-            jsx:true
+            jsx:true,
+            svgo: {
+              pretty: true,
+              plugins: [{ removeStyleElement: true }]
+            }
           }
         }]
     }

@@ -153,9 +153,10 @@ module.exports = {
           {
             test: /\.svg$/,
             use: [
+              "babel-loader",
               {
                 loader: require.resolve('react-svg-loader'), // 'react-svg'
-                query: {
+                options: {
                   svgo: {
                     pretty: true,
                     plugins: [{ removeStyleElement: true }]
