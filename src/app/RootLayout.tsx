@@ -22,7 +22,7 @@ import { Well } from 'react-bootstrap';
 import SheriffProfileModal from './containers/SheriffProfileModal';
 import ScheduleShiftCopyModal from './containers/ScheduleShiftCopyModal';
 import ScheduleShiftAddModal from './containers/ScheduleShiftAddModal';
-import DeputySchedule from './pages/DeputySchedule';
+import DeputySchedule from './pages/DeputySchedule/DeputySchedule';
 import Footer from './components/Footer';
 
 class Layout extends React.Component<{}, { initialize?: boolean }> {

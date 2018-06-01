@@ -183,3 +183,15 @@ body {
   margin-left: 3px;
   margin-right: 3px;
 }
+
+@media print {
+  .headerArea,.footerArea,.toolbar {
+    display: none
+  }
+
+  #main {
+      width: 90%;
+      margin: 0px;
+      padding: 0px;
+  }
+}

@@ -4,24 +4,23 @@ import {
     Well,
     Image
 } from 'react-bootstrap';
-import SheriffScheduleDisplay from '../containers/SheriffScheduleDisplay';
-import './Pages.css';
-import api from '../api/index';
-import Client from '../api/Client';
-import CourthouseDisplay from '../containers/CourthouseDisplay';
-import ScheduleDeputyViewControls from '../containers/ScheduleDeputyViewControls';
-import ScheduleDeputyViewSelectedWeekDisplay from '../containers/ScheduleDeputyViewSelectedWeekDisplay';
+import SheriffScheduleDisplay from '../../containers/SheriffScheduleDisplay';
+import './DeputySchedule.css';
+import api from '../../api/index';
+import Client from '../../api/Client';
+import CourthouseDisplay from '../../containers/CourthouseDisplay';
+import ScheduleDeputyViewControls from '../../containers/ScheduleDeputyViewControls';
+import ScheduleDeputyViewSelectedWeekDisplay from '../../containers/ScheduleDeputyViewSelectedWeekDisplay';
 
 class DeputySchedule extends React.PureComponent {
     render() {
         const currentCourthouseId = (api as Client).currentCourthouse;
         return (
-            <div>
+            <div id="deputySchedule">
                 <div className="toolbar" style={{justifyContent: 'center'}}>
                     <ScheduleDeputyViewControls />
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
-
                     <Well
                         style={{
                             display: 'flex',

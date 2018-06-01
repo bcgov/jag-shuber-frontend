@@ -21,3 +21,19 @@
     padding-right: 35px;
     text-align: center;
 }
+
+@media print {
+    .headerArea,.footerArea,.toolbar {
+      display: none
+    }
+  
+    #main {
+        width: 90%;
+        margin: 0px;
+        padding: 0px;
+    }
+
+    #deputySchedule .well{
+        background-color: red
+    }
+}
