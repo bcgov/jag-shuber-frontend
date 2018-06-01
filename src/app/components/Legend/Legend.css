@@ -1,0 +1,41 @@
+.legend-background {
+    height: 45px;
+    background:#F1F1F1;
+}
+
+.legend {
+    position: relative;
+    left: 10px;
+    top: 8px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.legend-title {
+    font-size: 20px;
+    font-weight: bold; 
+    color:#003366;
+}
+
+.legend-work-section-group {
+    display: flex;
+    justify-content: space-around; 
+    width: 400px;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding-top: 3px;
+}
+
+.legend-work-section {
+    width: 70px;
+    height: 17px;
+    background: blue;
+    border-radius: 55px;
+    margin-top: 2px;
+    text-align: center;
+}
+
+.legend-symbol-text {
+    padding-right: 10px;
+    padding-left: 3px;
+}

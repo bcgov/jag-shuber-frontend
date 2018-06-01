@@ -149,12 +149,29 @@ module.exports = {
               name: 'static/media/[name].[hash:8].[ext]',
             },
           },
+          // Use the SVG Loader to load svg files as react components
+          {
+            test: /\.svg$/,
+            exclude: /node_modules/,
+            use: [
+              "babel-loader",
+              {
+                loader: require.resolve('react-svg-loader'), // 'react-svg'
+                query: {
+                  svgo: {
+                    pretty: true,
+                    plugins: [{ removeStyleElement: true }]
+                  }
+                }
+              }
+            ]
+          },
           //Compile .tsx?
           {
             test: /\.(ts|tsx)$/,
             include: paths.appSrc,
             loader: require.resolve('ts-loader')
-          },
+          },          
           // The notation here is somewhat confusing.
           // "postcss" loader applies autoprefixer to our CSS.
           // "css" loader resolves paths in CSS and adds assets as dependencies.

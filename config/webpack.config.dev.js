@@ -92,10 +92,10 @@ module.exports = {
       '.js',
       '.json',
       '.web.jsx',
-      '.jsx',
+      '.jsx'
     ],
     alias: {
-      
+
       // Support React Native Web
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
       'react-native': 'react-native-web',
@@ -145,6 +145,21 @@ module.exports = {
               limit: 10000,
               name: 'static/media/[name].[hash:8].[ext]',
             },
+          },
+          // Use the SVG Loader to load svg files as react components
+          {
+            test: /\.svg$/,
+            use: [
+              {
+                loader: require.resolve('react-svg-loader'), // 'react-svg'
+                query: {
+                  svgo: {
+                    pretty: true,
+                    plugins: [{ removeStyleElement: true }]
+                  }
+                }
+              }
+            ]
           },
           // Compile .tsx?
           {

@@ -24,18 +24,37 @@ var genDefaultConfig = require('@storybook/react/dist/server/config/defaults/web
 
 module.exports = (baseConfig, env) => {
   let defaultConfig = genDefaultConfig(baseConfig, env);
-  console.log(paths.storiesPath,paths.appSrc);
 
   defaultConfig.module.rules.unshift({
     test: /\.(ts|tsx)$/,
-    include: [paths.appSrc,paths.storiesPath],
+    include: [paths.appSrc, paths.storiesPath],
     loader: require.resolve('ts-loader'),
   });
+
+  defaultConfig.module.rules.unshift(
+    {
+      test: /\.svg$/,
+      use: [
+        {
+          loader: require.resolve('@storybook/react/node_modules/babel-loader')
+        },
+        {
+          loader: require.resolve('react-svg-loader'),
+          options:{
+            jsx:true
+          }
+        }]
+    }
+  )
+
+
 
   // Push in resolve rules from dev config
   devWebpackConfig.resolve.extensions.forEach(e => {
     defaultConfig.resolve.extensions.push(e);
   })
+
+
 
   // // Push in extensions for dev config
   // devWebpackConfig.plugins.forEach(p => {

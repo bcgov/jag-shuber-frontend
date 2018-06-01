@@ -24,7 +24,7 @@ class DutyRoster extends React.PureComponent {
                 <div style={{ flex: '1 0px', minWidth: 500 }}>
                     <DutyRosterTimeline />
                 </div>
-                <TimelineToolsPanel titleText="My Team">
+                <TimelineToolsPanel titleText="My Team" titleBackgroundBorderLeft="1px solid #003366">
                     <ListGroup>
                         <SheriffList 
                             SheriffRenderer={(s: Sheriff) => 

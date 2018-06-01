@@ -24,8 +24,8 @@ import SheriffProfileModal from './containers/SheriffProfileModal';
 import ScheduleShiftCopyModal from './containers/ScheduleShiftCopyModal';
 import ScheduleShiftAddModal from './containers/ScheduleShiftAddModal';
 
-class Layout extends React.Component {
-
+class Layout extends React.Component<{}, { initialize?: boolean }> {
+  
   private onSelectCourthouse(id: string) {
     this.setState({ initialize: true });
   }
@@ -39,7 +39,7 @@ class Layout extends React.Component {
             <Navigation />
           </div>
           {needCourthouse &&
-            <div style={{ display: 'flex', justifyContent: 'center',  }}>
+            <div style={{ display: 'flex', justifyContent: 'center', }}>
               <Well
                 style={{
                   display: 'flex',
@@ -51,7 +51,7 @@ class Layout extends React.Component {
                   height: '70%'
                 }}
               >
-                <div style={{paddingTop: 10 }}>
+                <div style={{ paddingTop: 10 }}>
                   <h1>Select your Courthouse</h1>
                   <CourthouseSelector onChange={(id: string) => this.onSelectCourthouse(id)} />
                 </div>

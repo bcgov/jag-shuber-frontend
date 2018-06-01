@@ -9,11 +9,12 @@ import { getForegroundColor } from '../../infrastructure/colorUtils';
 export interface WorkSectionIndicatorProps {
     workSectionId?: WorkSectionCode;
     orientation?: 'top-left' | 'top-right' | 'bottom-right';
+    includeCode?: boolean; 
 }
 
 export default class WorkSectionIndicator extends React.PureComponent<WorkSectionIndicatorProps, any> {
     render() {
-        const { workSectionId, orientation = 'top-left' } = this.props;
+        const { workSectionId, orientation = 'top-left', includeCode = true } = this.props;
         const workSectionColor = getWorkSectionColour(workSectionId);
         const foreground = getForegroundColor(workSectionColor);
         return (
@@ -22,9 +23,9 @@ export default class WorkSectionIndicator extends React.PureComponent<WorkSectio
                     className="work-section-flag"
                     style={{ borderTopColor: workSectionColor, borderBottomColor: workSectionColor }}
                 />
-                <div className="work-section-code" style={{ color: foreground }} >
+                {includeCode && <div className="work-section-code" style={{ color: foreground }} >
                     {workSectionId && workSectionId.charAt(0)}
-                </div>
+                </div>}
             </div>
         );
     }

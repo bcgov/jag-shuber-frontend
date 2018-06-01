@@ -17,7 +17,7 @@ class SchedulingPage extends React.PureComponent {
                     <ScheduleControls />
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'row' }}>
-                    <TimelineToolsPanel titleText="My Team">
+                    <TimelineToolsPanel titleText="My Team" titleBackgroundBorderRight="1px solid #003366">
                         <ListGroup>
                             <SheriffList
                                 SheriffRenderer={(s: Sheriff) => (
