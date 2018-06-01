@@ -152,9 +152,7 @@ module.exports = {
           // Use the SVG Loader to load svg files as react components
           {
             test: /\.svg$/,
-            exclude: /node_modules/,
             use: [
-              "babel-loader",
               {
                 loader: require.resolve('react-svg-loader'), // 'react-svg'
                 query: {
