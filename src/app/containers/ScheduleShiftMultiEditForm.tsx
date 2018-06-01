@@ -21,16 +21,28 @@ import {
     selectedShiftsWorkSectionId
 } from '../modules/schedule/selectors';
 import { editMultipleShifts } from '../modules/shifts/actions';
+import { toTimeString } from 'jag-shuber-api/dist/client';
 
 // wrapping generic assignment form in redux-form
 const formConfig: ConfigProps<any, ScheduleControlPanelFormProps> = {
     form: 'EditMultipleShift',
     onSubmit: (values, dispatch, props) => {
-        const updateDetails = {
-            shiftIds: props.selectedShiftIds ? props.selectedShiftIds : [],
-            updateDetails: ScheduleControlPanelForm.parseUpdateDetailsFromValues(values)
-        };
-        dispatch(editMultipleShifts(updateDetails));
+
+        const updateDetails = ScheduleControlPanelForm.parseUpdateDetailsFromValues(values);
+        if (toTimeString(updateDetails.endTime) === toTimeString(props.initialValues.endTime)) {
+            delete updateDetails.endTime;
+        }
+
+        if (toTimeString(updateDetails.startTime) === toTimeString(props.initialValues.startTime)) {
+            delete updateDetails.startTime;
+        }
+
+        if (props.selectedShiftIds) {
+            dispatch(editMultipleShifts({
+                shiftIds: props.selectedShiftIds,
+                updateDetails
+            }));
+        }
     },
     enableReinitialize: true
 };
