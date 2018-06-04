@@ -6,7 +6,6 @@ import {
 import { WORK_SECTIONS } from '../api';
 import AssignmentTemplateCreateForm from './AssignmentTemplateCreateForm';
 import ModalWrapper from './ModalWrapper/ModalWrapper';
-// import AssignmentCreateForm from './X_AssignmentCreateForm';
 
 export interface AssignmentAddModalProps {
     isDefaultTemplate?: boolean;
