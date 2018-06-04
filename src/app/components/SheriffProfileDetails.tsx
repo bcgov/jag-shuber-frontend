@@ -21,7 +21,8 @@ export default class SheriffProfileDetails extends React.Component<SheriffProfil
                 badgeNo, 
                 alias, 
                 homeCourthouseId = '', 
-                rankCode = ''
+                rankCode = '',
+                currentCourthouseId = ''
             }
         } = this.props;
         return (
@@ -60,6 +61,10 @@ export default class SheriffProfileDetails extends React.Component<SheriffProfil
                         <tr>
                             <td><strong>Home Location</strong></td>
                             <td><CourthouseDisplay id={homeCourthouseId}/></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Current Location</strong></td>
+                            <td><CourthouseDisplay id={currentCourthouseId}/></td>
                         </tr>
                     </tbody>
                 </Table>
