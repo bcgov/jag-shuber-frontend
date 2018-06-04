@@ -116,6 +116,6 @@ export const selectedShiftsEndTimes = (variedValue: string | null = null) => cre
 );
 
 export const isShowWorkSections = (state: RootState): boolean => {
-    const { showWorkSections } = state.schedule;
+    const { showWorkSections = true } = state.schedule;
     return showWorkSections;
 };
