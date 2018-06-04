@@ -1,20 +1,20 @@
 import * as React from 'react';
-import Toggle from 'react-toggle';
+import { default as ReactToggle } from 'react-toggle';
 import 'react-toggle/style.css';
-import './ToggleField.css';
+import './Toggle.css';
 
-export interface ToggleFieldProps {
+export interface ToggleProps {
   defaultChecked?: boolean;
   checkedLabel?: React.ReactNode;
   uncheckedLabel?: React.ReactNode;
   onChange: () => void;
 }
 
-export default class ToggleField extends React.Component<ToggleFieldProps, any> {
+export default class Toggle extends React.Component<ToggleProps, any> {
   render() {
     const { defaultChecked, checkedLabel, uncheckedLabel, onChange } = this.props;
     return (
-      <Toggle
+      <ReactToggle
         style={{ marginRight: 5 }}
         defaultChecked={defaultChecked}
         onChange={() => onChange && onChange()}

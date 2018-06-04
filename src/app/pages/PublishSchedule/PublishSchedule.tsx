@@ -9,7 +9,7 @@ import './PublishSchedule.css';
 import api from '../../api/index';
 import Client from '../../api/Client';
 import CourthouseDisplay from '../../containers/CourthouseDisplay';
-import SchedulePublishViewControls from '../../containers/SchedulePubilshViewControls';
+import SchedulePublishViewControls from '../../containers/SchedulePublishViewControls';
 import SchedulePublishViewSelectedWeekDisplay from '../../containers/SchedulePublishViewSelectedWeekDisplay';
 
 class DeputySchedule extends React.PureComponent {

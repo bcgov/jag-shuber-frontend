@@ -15,7 +15,7 @@ import {
     Button,
     Glyphicon
 } from 'react-bootstrap';
-import ToggleField from '../components/ToggleField/ToggleField';
+import Toggle from '../components/Toggle/Toggle';
 import DateRangeControls from '../components/DateRangeControls';
 
 interface SchedulePublishViewControlsProps {
@@ -54,7 +54,7 @@ class SchedulePublishViewControls extends React.Component<SchedulePublishViewCon
             >
                 <div style={{ display: 'flex', alignItems: 'center'}}>
                     <span title="Display Work Section">
-                    <ToggleField
+                    <Toggle
                         defaultChecked={includeWorkSection}
                         onChange={() => updateShowWorkSections(!includeWorkSection)}
                         checkedLabel={<span style={{ color: 'white'}}>WS</span>}
