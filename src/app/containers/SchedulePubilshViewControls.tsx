@@ -1,24 +1,22 @@
 import * as React from 'react';
 import * as moment from 'moment';
 import { connect } from 'react-redux';
-import { RootState } from '../../store';
+import { RootState } from '../store';
 import {
     publishViewVisibleWeek,
     isShowWorkSections
-} from '../../modules/schedule/selectors';
+} from '../modules/schedule/selectors';
 import {
     updateDeputyViewWeekStart,
     updateShowWorkSections
-} from '../../modules/schedule/actions';
-import { TimeType } from '../../api';
-import CalendarButton from '../../components/CalendarButton/CalendarButton';
+} from '../modules/schedule/actions';
+import { TimeType } from '../api';
+import CalendarButton from '../components/CalendarButton/CalendarButton';
 import {
     Button,
     Glyphicon
 } from 'react-bootstrap';
-import Toggle from 'react-toggle';
-import 'react-toggle/style.css';
-import './SchedulePublishViewControl.css';
+import ToggleField from '../components/ToggleField/ToggleField';
 
 interface SchedulePublishViewControlsProps {
 }
@@ -56,15 +54,11 @@ class SchedulePublishViewControls extends React.Component<SchedulePublishViewCon
             >
                 <div style={{ display: 'flex', alignItems: 'center'}}>
                     <span title="Display Work Section">
-                    <Toggle
-                        style={{marginRight: 5}}
+                    <ToggleField
                         defaultChecked={includeWorkSection}
                         onChange={() => updateShowWorkSections(!includeWorkSection)}
-                        icons={{
-                            checked: <span style={{ color: 'white'}}>WS</span>,
-                            unchecked: <span style={{ color: 'white'}}>WS</span>,
-                        }}
-
+                        checkedLabel={<span style={{ color: 'white'}}>WS</span>}
+                        uncheckedLabel={<span style={{ color: 'white'}}>WS</span>}
                     />
                     </span>
                     <Button
