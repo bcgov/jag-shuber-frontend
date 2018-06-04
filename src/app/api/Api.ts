@@ -1,7 +1,7 @@
-import * as moment from 'moment';
+import moment from 'moment';
 import { displayEnum } from '../infrastructure/EnumUtils';
 
-type MapType<T> = { [key: string]: T };
+export type MapType<T> = { [key: string]: T };
 
 export type DateType = Date | moment.Moment | string;
 export type StringMap = MapType<string>;
@@ -39,7 +39,7 @@ export enum DaysOfWeek {
 /* tslint:enable:no-bitwise */
 
 export namespace DaysOfWeek {
-    export function getDisplayValues(value: DaysOfWeek): string[] {
+    export function getDisplayValues(value: DaysOfWeek, getIndividualDays: boolean = false): string[] {
         let dayDisplay = displayEnum(DaysOfWeek, value);
 
         const weekdaysIndex = dayDisplay.indexOf('Weekdays');
@@ -49,6 +49,13 @@ export namespace DaysOfWeek {
         if (weekdaysIndex > -1) {
             if (satIndex > -1 || sunIndex > -1) {
                 dayDisplay.splice(weekdaysIndex, 1);
+            }
+        }
+        if (getIndividualDays) {
+            if (dayDisplay.indexOf('Weekdays') > -1) {
+                dayDisplay = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+            } else if (dayDisplay.indexOf('Everyday') > -1) {
+                dayDisplay = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
             }
         }
 

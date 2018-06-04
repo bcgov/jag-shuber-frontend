@@ -314,6 +314,12 @@
     "@types/history" "*"
     "@types/react" "*"
 
+"@types/react-toggle@^4.0.1":
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/@types/react-toggle/-/react-toggle-4.0.1.tgz#954bee09c059c2de6088c54c97d5759d7a3af4ff"
+  dependencies:
+    "@types/react" "*"
+
 "@types/react@*", "@types/react@16.0.25":
   version "16.0.25"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.0.25.tgz#bf696b83fe480c5e0eff4335ee39ebc95884a1ed"
@@ -7780,6 +7786,12 @@ react-textarea-autosize@^5.2.1:
   resolved "https://registry.yarnpkg.com/react-textarea-autosize/-/react-textarea-autosize-5.2.1.tgz#2b78f9067180f41b08ac59f78f1581abadd61e54"
   dependencies:
     prop-types "^15.6.0"
+
+react-toggle@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/react-toggle/-/react-toggle-4.0.2.tgz#77f487860efb87fafd197672a2db8c885be1440f"
+  dependencies:
+    classnames "^2.2.5"
 
 react-transition-group@^1.1.2:
   version "1.2.1"

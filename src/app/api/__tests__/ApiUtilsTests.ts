@@ -37,6 +37,16 @@ describe('DaysOfWeek.getDisplayValues', () => {
         expect(util(DaysOfWeek.Everyday)).toEqual(['Everyday']);
     }); 
 
+    it('Should return each day of the week, if weekday is selected and getIndividualDays is set to true', () => {
+        expect(util(DaysOfWeek.Weekdays, true))
+            .toEqual(['Mon', 'Tue', 'Wed', 'Thu', 'Fri']);
+    }); 
+
+    it('Should return everyday of the week, if everyday is selected and getIndividualDays is set to true', () => {
+        expect(util(DaysOfWeek.Everyday, true))
+            .toEqual(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']);
+    }); 
+
 });
 
 describe('DaysOfWeek.getWeekdayNumbers', () => {

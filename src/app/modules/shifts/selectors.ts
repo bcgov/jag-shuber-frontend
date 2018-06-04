@@ -27,10 +27,11 @@ export const getShift = (id?: IdType) => (state: RootState) => {
 };
 
 export const getSheriffShifts = (sheriffId?: IdType) => (state: RootState) => {
-    if (state && sheriffId != null) {
-        return allShifts(state).filter(s => s.sheriffId === sheriffId);
+    const shifts = allShifts(state);
+    if (sheriffId != null) {
+        return shifts.filter(s => s.sheriffId === sheriffId);
     }
-    return [];
+    return shifts;
 };
 
 export const allLeaves = createSelector(

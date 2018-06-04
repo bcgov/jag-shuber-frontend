@@ -3,7 +3,6 @@ import * as moment from 'moment';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
 import {
-    Button,
     Glyphicon,
     Dropdown,
     MenuItem
@@ -17,11 +16,11 @@ import {
     clearSelectedShifts
 } from '../modules/schedule/actions';
 import { deleteShift } from '../modules/shifts/actions';
-import CalendarButton from '../components/CalendarButton/CalendarButton';
 import ScheduleShiftMultiEditForm from './ScheduleShiftMultiEditForm';
 import ScheduleShiftAddModal from './ScheduleShiftAddModal';
 import ScheduleShiftCopyModal from './ScheduleShiftCopyModal';
 import { IdType } from '../api/Api';
+import DateRangeControls from '../components/DateRangeControls';
 
 interface ScheduleControlsStateProps {
     visibleTimeStart: any;
@@ -91,43 +90,25 @@ class ScheduleControls extends React.PureComponent<
                 </div>
 
                 <div className="toolbar-calendar-control">
-                    <Button
-                        onClick={() => updateVisibleTime(
-                            moment(visibleTimeStart).subtract('week', 1),
-                            moment(visibleTimeEnd).subtract('week', 1)
-                        )}
-                        bsStyle="link"
-                        bsSize="large"
-                        style={{ color: 'white' }}
-                    >
-                        <Glyphicon glyph="chevron-left" />
-                    </Button>
-
-                    <div style={{ paddingTop: 8 }}>
-                        <CalendarButton
-                            onChange={(selectedDate) => updateVisibleTime(
-                                moment(selectedDate).startOf('week').add(1, 'day'),
-                                moment(selectedDate).endOf('week').subtract(1, 'day')
-                            )}
-                            defaultValue={visibleTimeStart}
-                            todayOnClick={() => updateVisibleTime(
-                                moment().startOf('week').add(1, 'day'),
-                                moment().endOf('week').subtract(1, 'day')
-                            )}
-                        />
-                    </div>
-                    <Button
-                        onClick={() => updateVisibleTime(
+                    <DateRangeControls
+                        defaultDate={moment(visibleTimeStart)}
+                        onNext={() => updateVisibleTime(
                             moment(visibleTimeStart).add('week', 1),
                             moment(visibleTimeEnd).add('week', 1)
                         )}
-                        bsStyle="link"
-                        bsSize="large"
-                        style={{ color: 'white' }}
-                    >
-                        <Glyphicon glyph="chevron-right" />
-                    </Button>
-
+                        onPrevious={() => updateVisibleTime(
+                            moment(visibleTimeStart).subtract('week', 1),
+                            moment(visibleTimeEnd).subtract('week', 1)
+                        )}
+                        onSelect={(selectedDate) => updateVisibleTime(
+                            moment(selectedDate).startOf('week').add(1, 'day'),
+                            moment(selectedDate).endOf('week').subtract(1, 'day')
+                        )}
+                        onToday={() => updateVisibleTime(
+                            moment().startOf('week').add(1, 'day'),
+                            moment().endOf('week').subtract(1, 'day')
+                        )}
+                    />
                     <div
                         style={{
                             paddingTop: 8,

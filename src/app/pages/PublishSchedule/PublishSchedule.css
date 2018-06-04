@@ -1,0 +1,41 @@
+.deputy-schedule-header {
+    margin: 15px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #999999;
+}
+
+.deputy-schedule-header-text {
+    margin-left: 20px; 
+    margin-top: 10px;
+}
+
+.deputy-schedule-header-date-box {
+    border: 1px solid #999999;
+    border-radius: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px; 
+    padding-left: 35px;
+    padding-right: 35px;
+    text-align: center;
+}
+
+#deputySchedule .well{
+    max-width: 80%;
+    min-width: 800px;
+}
+
+@media print {
+    
+    #deputySchedule .well{
+        border: 0px;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    @page {
+        orientation: landscape;
+    }
+}
