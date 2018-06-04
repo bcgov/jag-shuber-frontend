@@ -36,8 +36,12 @@ export default class Navigation extends React.Component<NavigationProps, any> {
                     <Nav bsStyle="tabs">
                         <NavigationLink exactMatch={true} to="/" label="Duty Roster" />
                         <NavDropdown title="Schedule" id="schedule_dropdown">
-                            <MenuItem><NavigationLink to="/sheriffs/schedule" label="Manage Schedule" /></MenuItem>
-                            <MenuItem><NavigationLink to="/schedule/deputyView" label="Deputy View" /></MenuItem>
+                            <MenuItem>
+                                <NavigationLink to="/sheriffs/schedule" label="Manage Schedule" />
+                            </MenuItem>
+                            <MenuItem>
+                                <NavigationLink to="/schedule/deputyView" label="Distribute Schedule" />
+                            </MenuItem>
                         </NavDropdown>
                         <NavigationLink to="/sheriffs/manage" label="My Team" />
                         <NavigationLink to="/assignments/manage/default" label="Duty Roster Set-Up" />
