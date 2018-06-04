@@ -40,7 +40,7 @@ export default class Navigation extends React.Component<NavigationProps, any> {
                                 <NavigationLink to="/sheriffs/schedule" label="Manage Schedule" />
                             </MenuItem>
                             <MenuItem>
-                                <NavigationLink to="/schedule/deputyView" label="Distribute Schedule" />
+                                <NavigationLink to="/schedule/publishView" label="Distribute Schedule" />
                             </MenuItem>
                         </NavDropdown>
                         <NavigationLink to="/sheriffs/manage" label="My Team" />

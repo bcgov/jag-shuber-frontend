@@ -22,7 +22,7 @@ import { Well } from 'react-bootstrap';
 import SheriffProfileModal from './containers/SheriffProfileModal';
 import ScheduleShiftCopyModal from './containers/ScheduleShiftCopyModal';
 import ScheduleShiftAddModal from './containers/ScheduleShiftAddModal';
-import DeputySchedule from './pages/DeputySchedule/DeputySchedule';
+import PublishSchedule from './pages/PublishSchedule/PublishSchedule';
 import Footer from './components/Footer';
 
 class Layout extends React.Component<{}, { initialize?: boolean }> {
@@ -65,7 +65,7 @@ class Layout extends React.Component<{}, { initialize?: boolean }> {
               <Route path="/sheriffs/schedule" component={Scheduling} />
               <Route path="/sheriffs/manage" component={ManageSheriffs} />
               <Route path="/assignments/manage/default" component={DefaultAssignments} />
-              <Route path="/schedule/deputyView" component={DeputySchedule} />          
+              <Route path="/schedule/publishView" component={PublishSchedule} />          
 
               <AssignmentDutyEditModal />
               <SheriffProfileModal />

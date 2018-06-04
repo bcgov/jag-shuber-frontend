@@ -5,7 +5,7 @@ import {
     Image
 } from 'react-bootstrap';
 import SheriffScheduleDisplay from '../../containers/SheriffScheduleDisplay';
-import './DeputySchedule.css';
+import './PublishSchedule.css';
 import api from '../../api/index';
 import Client from '../../api/Client';
 import CourthouseDisplay from '../../containers/CourthouseDisplay';
