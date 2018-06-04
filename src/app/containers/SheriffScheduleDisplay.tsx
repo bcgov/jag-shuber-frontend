@@ -17,7 +17,7 @@ import {
 } from '../api/Api';
 import ScheduleDeputyViewList from '../components/ScheduleDeputyViewList';
 import { 
-    deputyViewVisibleWeek,
+    publishViewVisibleWeek,
     isShowWorkSections 
 } from '../modules/schedule/selectors';
 
@@ -71,7 +71,7 @@ const mapStateToProps = (state: RootState) => {
     return {
         shifts: getSheriffShifts()(state),
         sheriffs: sheriffs(state),
-        weekStart: deputyViewVisibleWeek(state),
+        weekStart: publishViewVisibleWeek(state),
         includeWorkSection: isShowWorkSections(state)
     };
 };

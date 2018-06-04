@@ -3,7 +3,7 @@ import * as moment from 'moment';
 import { connect } from 'react-redux';
 import { RootState } from '../../store';
 import {
-    deputyViewVisibleWeek,
+    publishViewVisibleWeek,
     isShowWorkSections
 } from '../../modules/schedule/selectors';
 import {
@@ -18,24 +18,24 @@ import {
 } from 'react-bootstrap';
 import Toggle from 'react-toggle';
 import 'react-toggle/style.css';
-import './ScheduleDeputyViewControl.css';
+import './SchedulePublishViewControl.css';
 
-interface ScheduleDeputyViewControlsProps {
+interface SchedulePublishViewControlsProps {
 }
 
-interface ScheduleDeputyViewControlsDispatchProps {
+interface SchedulePublishViewControlsDispatchProps {
     updateVisibleWeek: (weekStart: any) => void;
     updateShowWorkSections: (show: boolean) => void;
 }
 
-interface ScheduleDeputyViewControlsStateProps {
+interface SchedulePublishViewControlsStateProps {
     weekStart?: TimeType;
     includeWorkSection?: boolean;
 }
 
-class ScheduleDeputyViewControls extends React.Component<ScheduleDeputyViewControlsProps
-    & ScheduleDeputyViewControlsDispatchProps
-    & ScheduleDeputyViewControlsStateProps> {
+class SchedulePublishViewControls extends React.Component<SchedulePublishViewControlsProps
+    & SchedulePublishViewControlsDispatchProps
+    & SchedulePublishViewControlsStateProps> {
 
     render() {
         const {
@@ -67,7 +67,6 @@ class ScheduleDeputyViewControls extends React.Component<ScheduleDeputyViewContr
 
                     />
                     </span>
-                    {/* <span style={{ color: 'white', marginTop: 2, marginLeft: 3 }}>Work Sections</span> */}
                     <Button
                         bsStyle="link"
                         bsSize="large"
@@ -116,7 +115,7 @@ class ScheduleDeputyViewControls extends React.Component<ScheduleDeputyViewContr
 
 const mapStateToProps = (state: RootState) => {
     return {
-        weekStart: deputyViewVisibleWeek(state),
+        weekStart: publishViewVisibleWeek(state),
         includeWorkSection: isShowWorkSections(state)
     };
 };
@@ -127,5 +126,5 @@ const mapDispatchToProps = {
 };
 
 // tslint:disable-next-line:max-line-length
-export default connect<ScheduleDeputyViewControlsStateProps, ScheduleDeputyViewControlsDispatchProps, ScheduleDeputyViewControlsProps>(
-    mapStateToProps, mapDispatchToProps)(ScheduleDeputyViewControls);
+export default connect<SchedulePublishViewControlsStateProps, SchedulePublishViewControlsDispatchProps, SchedulePublishViewControlsProps>(
+    mapStateToProps, mapDispatchToProps)(SchedulePublishViewControls);

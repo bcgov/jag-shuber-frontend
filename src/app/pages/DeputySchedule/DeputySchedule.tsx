@@ -9,8 +9,8 @@ import './DeputySchedule.css';
 import api from '../../api/index';
 import Client from '../../api/Client';
 import CourthouseDisplay from '../../containers/CourthouseDisplay';
-import ScheduleDeputyViewControls from '../../containers/ScheduleDeputyViewControls/ScheduleDeputyViewControls';
-import ScheduleDeputyViewSelectedWeekDisplay from '../../containers/ScheduleDeputyViewSelectedWeekDisplay';
+import SchedulePublishViewControls from '../../containers/SchedulePublishViewControls/SchedulePubilshViewControls';
+import SchedulePublishViewSelectedWeekDisplay from '../../containers/SchedulePublishViewSelectedWeekDisplay';
 
 class DeputySchedule extends React.PureComponent {
     render() {
@@ -18,7 +18,7 @@ class DeputySchedule extends React.PureComponent {
         return (
             <div id="deputySchedule">
                 <div className="toolbar" style={{justifyContent: 'center'}}>
-                    <ScheduleDeputyViewControls />
+                    <SchedulePublishViewControls />
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <Well
@@ -48,7 +48,7 @@ class DeputySchedule extends React.PureComponent {
                                         <CourthouseDisplay id={currentCourthouseId} /> Schedule
                             </div>
                                     <div style={{ fontSize: 20, fontWeight: 'bold' }}>
-                                        <ScheduleDeputyViewSelectedWeekDisplay />
+                                        <SchedulePublishViewSelectedWeekDisplay />
                                     </div>
                                     <div>
                                         Summary as of: <i>{moment().format('dddd MMM D, YYYY HH:mm')}</i>

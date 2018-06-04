@@ -8,9 +8,9 @@ import {
     anySame 
 } from '../../infrastructure/arrayUtils';
 
-export const deputyViewVisibleWeek = (state: RootState): any => {
-    const { deputyViewWeekStart } = state.schedule;
-    return deputyViewWeekStart;
+export const publishViewVisibleWeek = (state: RootState): any => {
+    const { publishViewWeekStart } = state.schedule;
+    return publishViewWeekStart;
 };
 
 export const visibleTime = (state: RootState): { visibleTimeStart: any, visibleTimeEnd: any } => {
