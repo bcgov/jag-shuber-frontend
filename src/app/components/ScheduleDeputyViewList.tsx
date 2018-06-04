@@ -45,7 +45,7 @@ export default class ScheduleDeputyViewList extends React.PureComponent<Schedule
 
         return (
             <div>
-                <Table responsive={true} striped={true} >
+                <Table responsive={true} striped={true}>
                     <thead>
                         <tr>
                             <th className="text-left">Name</th>

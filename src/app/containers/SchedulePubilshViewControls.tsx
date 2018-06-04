@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as moment from 'moment';
+import React from 'react';
+import moment from 'moment';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
 import {
@@ -11,12 +11,12 @@ import {
     updateShowWorkSections
 } from '../modules/schedule/actions';
 import { TimeType } from '../api';
-import CalendarButton from '../components/CalendarButton/CalendarButton';
 import {
     Button,
     Glyphicon
 } from 'react-bootstrap';
 import ToggleField from '../components/ToggleField/ToggleField';
+import DateRangeControls from '../components/DateRangeControls';
 
 interface SchedulePublishViewControlsProps {
 }
@@ -70,36 +70,14 @@ class SchedulePublishViewControls extends React.Component<SchedulePublishViewCon
                         <Glyphicon glyph="print" />
                     </Button>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', marginRight: 5}}>
-                    <Button
-                        onClick={() => updateVisibleWeek(
-                            moment(weekStart).subtract('week', 1)
-                        )}
-                        bsStyle="link"
-                        bsSize="large"
-                        style={{ color: 'white' }}
-                    >
-                        <Glyphicon glyph="chevron-left" />
-                    </Button>
-                    <CalendarButton
-                        onChange={(selectedDate) => updateVisibleWeek(
-                            moment(selectedDate).startOf('week')
-                        )}
-                        defaultValue={moment(weekStart)}
-                        todayOnClick={() => updateVisibleWeek(
-                            moment().startOf('week')
-                        )}
+                <div>
+                    <DateRangeControls 
+                        defaultDate={moment(weekStart)}
+                        onNext={() => updateVisibleWeek(moment(weekStart).add('week', 1))}
+                        onPrevious={() => updateVisibleWeek(moment(weekStart).subtract('week', 1))}
+                        onSelect={(selectedDate) => updateVisibleWeek(moment(selectedDate).startOf('week'))}
+                        onToday={() => updateVisibleWeek(moment().startOf('week'))}
                     />
-                    <Button
-                        onClick={() => updateVisibleWeek(
-                            moment(weekStart).add('week', 1)
-                        )}
-                        bsStyle="link"
-                        bsSize="large"
-                        style={{ color: 'white' }}
-                    >
-                        <Glyphicon glyph="chevron-right" />
-                    </Button>
                 </div>
             </div>
         );
