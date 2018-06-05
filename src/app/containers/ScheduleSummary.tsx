@@ -17,27 +17,30 @@ import {
     default as ScheduleSummary,
     StatusEnum
 } from '../components/ScheduleSummary/ScheduleSummary';
+import { sheriffLoanMap } from '../modules/sheriffs/selectors';
 import {
     Leave,
     Shift,
     IdType,
     TimeType
 } from '../api';
+import { MapType } from '../api/Api';
 
 interface ConnectedScheduleSummaryProps {
     sheriffId: IdType;
     visibleTimeStart?: TimeType;
-    visibleTimeEnd?: TimeType; 
+    visibleTimeEnd?: TimeType;
 }
 
 interface ConnectedScheduleSummaryDispatchProps {
     fetchShifts: () => void;
-    fetchLeaves: () => void;    
+    fetchLeaves: () => void;
 }
 
 interface ConnectedScheduleSummaryStateProps {
     leaves: Leave[];
     shifts: Shift[];
+    sheriffLoanMap?: MapType<{ isLoanedIn: boolean, isLoanedOut: boolean }>;
 }
 
 class ConnectedScheduleSummary extends React.Component<ConnectedScheduleSummaryProps
@@ -54,30 +57,35 @@ class ConnectedScheduleSummary extends React.Component<ConnectedScheduleSummaryP
                 return 'wednesday';
             case 4:
                 return 'thursday';
-            case 5: 
+            case 5:
                 return 'friday';
-            case 6: 
+            case 6:
                 return 'saturday';
-            case 7: 
+            case 7:
                 return 'sunday';
             default:
                 return '';
         }
     }
-    
+
     createWeekStatus() {
-        const { 
-            leaves, 
-            shifts, 
-            visibleTimeStart, 
+        const {
+            leaves,
+            shifts,
+            visibleTimeStart,
             visibleTimeEnd,
+            // tslint:disable-next-line:no-shadowed-variable
+            sheriffLoanMap = {},
+            sheriffId
         } = this.props;
 
+        const { isLoanedIn, isLoanedOut } = sheriffLoanMap[sheriffId];
+        const today = moment().format('dddd').toLowerCase();
         const leavesForWeek = leaves
             .filter(l => moment(l.date).isBetween(visibleTimeStart, visibleTimeEnd, 'days', '[]'));
         const shiftsForWeek = shifts
             .filter(s => moment(s.startDateTime).isBetween(visibleTimeStart, visibleTimeEnd, 'days', '[]'));
-        
+
         let weekStatus = {
             monday: StatusEnum.EMPTY,
             tuesday: StatusEnum.EMPTY,
@@ -85,7 +93,11 @@ class ConnectedScheduleSummary extends React.Component<ConnectedScheduleSummaryP
             thursday: StatusEnum.EMPTY,
             friday: StatusEnum.EMPTY,
         };
-        
+
+        if (isLoanedIn) {
+            weekStatus[today] = StatusEnum.LOANED_IN;
+        }
+
         leavesForWeek.forEach(leave => {
             let day = this.getDay(moment(leave.date));
             weekStatus[day] = StatusEnum.BAD;
@@ -95,7 +107,11 @@ class ConnectedScheduleSummary extends React.Component<ConnectedScheduleSummaryP
             let day = this.getDay(moment(shift.startDateTime));
             weekStatus[day] = StatusEnum.GOOD;
         });
-       
+
+        if (isLoanedOut) {
+            weekStatus[today] = StatusEnum.LOANED_OUT;
+        }
+
         return weekStatus;
     }
 
@@ -113,7 +129,8 @@ const mapStateToProps = (state: RootState, { sheriffId }: ConnectedScheduleSumma
     return {
         ...currentVisibleTime,
         shifts: getSheriffShifts(sheriffId)(state),
-        leaves: getSheriffLeaves(sheriffId)(state)
+        leaves: getSheriffLeaves(sheriffId)(state),
+        sheriffLoanMap: sheriffLoanMap(state)
     };
 };
 

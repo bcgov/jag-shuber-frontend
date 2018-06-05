@@ -8,7 +8,7 @@ import {
     MapType,
     TimeType
 } from '../api/Api';
-import CirlceIconWithText from '../components/Icons/CircleIconWithText';
+import CircleIcon from '../components/Icons/CircleIconWithChildren';
 import { getWorkSectionColour } from '../api/utils';
 import { getForegroundColor } from '../infrastructure/colorUtils';
 import toTitleCase from '../infrastructure/toTitleCase';
@@ -69,12 +69,14 @@ export default class ScheduleDeputyViewList extends React.PureComponent<Schedule
                                             return (
                                                 <td>
                                                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                                                        {includeWorkSection && <CirlceIconWithText
-                                                            text={workSectionId ? workSectionId.charAt(0) : ''}
-                                                            backgroundColor={backgroundColor}
-                                                            borderColor={backgroundColor}
-                                                            color={foregroundColor}
-                                                        />}
+                                                        {includeWorkSection && 
+                                                            <CircleIcon
+                                                                backgroundColor={backgroundColor}
+                                                                borderColor={backgroundColor}
+                                                                color={foregroundColor}
+                                                            >
+                                                                {workSectionId ? workSectionId.charAt(0) : ''}
+                                                            </CircleIcon>}
                                                         <span style={{marginLeft: 4}}>
                                                             {`${moment(startDateTime).format('HH:mm')}
                                                             - ${moment(endDateTime).format('HH:mm')}`}

@@ -1,19 +1,17 @@
-import * as React from 'react';
+import React from 'react';
 import './Icons.css';
 
-export interface CircleIconWithTextProps {
+export interface CircleIconWithChildrenProps {
     backgroundColor?: string;
-    text?: string;
     borderColor?: string;
     color?: string;
 }
-export default class CircleIconWithText extends React.PureComponent<CircleIconWithTextProps> {
+export default class CircleIconWithChildren extends React.PureComponent<CircleIconWithChildrenProps> {
     render() {
         const {
             backgroundColor = 'white', 
-            text,
             borderColor = 'grey',
-            color = 'grey'
+            color = 'grey',
         } = this.props;
         return (
             <div 
@@ -23,10 +21,10 @@ export default class CircleIconWithText extends React.PureComponent<CircleIconWi
                     borderColor, 
                     color, 
                     backgroundColor, 
-                    fontWeight: 'normal' 
+                    fontWeight: 'normal'
                 }}
             >
-                {text}
+                {this.props.children}
             </div>
         );
     }

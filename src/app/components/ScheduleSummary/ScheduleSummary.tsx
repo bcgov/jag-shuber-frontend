@@ -3,13 +3,17 @@ import './ScheduleSummary.css';
 import AssignedIcon from '../Icons/Assigned';
 import UnavailableIcon from '../Icons/Unavailable';
 import AlertIcon from '../Icons/Alert';
-import CircleIconWithText from '../Icons/CircleIconWithText';
+import CircleIcon from '../Icons/CircleIconWithChildren';
+import { Glyphicon } from 'react-bootstrap';
 
 export enum StatusEnum {
     GOOD,
     BAD,
     WARNING,
-    EMPTY
+    EMPTY,
+    LOANED_IN,
+    LOANED_OUT,
+
 }
 export interface ScheduleSummaryProps {
     weekStatus: {
@@ -35,11 +39,19 @@ export default class ScheduleSummary extends React.PureComponent<ScheduleSummary
                 );
             case StatusEnum.WARNING:
                 return (
-                   <AlertIcon />
+                    <AlertIcon />
+                );
+            case StatusEnum.LOANED_IN:
+                return (
+                    <CircleIcon><Glyphicon glyph="arrow-right" /></CircleIcon>
+                );
+            case StatusEnum.LOANED_OUT:
+                return (
+                    <CircleIcon><Glyphicon glyph="arrow-left" /></CircleIcon>
                 );
             default:
                 return (
-                    <CircleIconWithText text={day.charAt(0).toUpperCase()}/>
+                    <CircleIcon>{day.charAt(0).toUpperCase()}</CircleIcon>
                 );
         }
     }
