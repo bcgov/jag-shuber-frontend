@@ -1,4 +1,6 @@
-import * as React from 'react';
+import React from 'react';
+import { connect } from 'react-redux';
+import { RootState } from './store';
 import {
   Route,
   BrowserRouter as Router
@@ -15,24 +17,28 @@ import ManageSheriffs from './pages/ManageSheriffs';
 import DefaultAssignments from './pages/DefaultAssignments';
 import Scheduling from './pages/Scheduling';
 import AssignmentDutyEditModal from './containers/AssignmentDutyEditModal';
-import CourthouseSelector from './containers/CourthouseSelector';
-import api from './api/index';
-import Client from './api/Client';
+import CurrentCourthouseSelector from './containers/CurrentCourthouseSelector';
 import { Well } from 'react-bootstrap';
 import SheriffProfileModal from './containers/SheriffProfileModal';
 import ScheduleShiftCopyModal from './containers/ScheduleShiftCopyModal';
 import ScheduleShiftAddModal from './containers/ScheduleShiftAddModal';
 import PublishSchedule from './pages/PublishSchedule/PublishSchedule';
 import Footer from './components/Footer';
+import { isCourthouseSet } from '../app/modules/user/selectors';
 
-class Layout extends React.Component<{}, { initialize?: boolean }> {
-  
-  private onSelectCourthouse(id: string) {
-    this.setState({ initialize: true });
-  }
+export interface LayoutStateProps {
+  needCourthouse?: boolean;
+}
+
+export interface LayoutDispatchProps {
+}
+class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
 
   render() {
-    const needCourthouse = !(api as Client).isCourthouseSet;
+    const { 
+      needCourthouse = true, 
+    } = this.props;
+
     return (
       <Router>
         <div className="App">
@@ -54,7 +60,7 @@ class Layout extends React.Component<{}, { initialize?: boolean }> {
               >
                 <div style={{ paddingTop: 10 }}>
                   <h1>Select your Courthouse</h1>
-                  <CourthouseSelector onChange={(id: string) => this.onSelectCourthouse(id)} />
+                  <CurrentCourthouseSelector />
                 </div>
               </Well>
             </div>}
@@ -65,7 +71,7 @@ class Layout extends React.Component<{}, { initialize?: boolean }> {
               <Route path="/sheriffs/schedule" component={Scheduling} />
               <Route path="/sheriffs/manage" component={ManageSheriffs} />
               <Route path="/assignments/manage/default" component={DefaultAssignments} />
-              <Route path="/schedule/publishView" component={PublishSchedule} />          
+              <Route path="/schedule/publishView" component={PublishSchedule} />
 
               <AssignmentDutyEditModal />
               <SheriffProfileModal />
@@ -81,5 +87,17 @@ class Layout extends React.Component<{}, { initialize?: boolean }> {
   }
 }
 
+const mapStateToProps = (state: RootState) => {
+  return {
+    needCourthouse: !isCourthouseSet()
+  };
+};
+
+const mapDispatchToProps = {};
+
+const connectedLayout = connect<LayoutStateProps, LayoutDispatchProps, {}>(
+  mapStateToProps, 
+  mapDispatchToProps
+)(Layout);
 // Make our Layout the root of the Drag Drop Context
-export default DragDropContext(HTML5Backend)(Layout);
+export default DragDropContext(HTML5Backend)(connectedLayout);

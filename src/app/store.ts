@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+import moment from 'moment';
 import * as TimeUtils from './infrastructure/TimeRangeUtils';
 import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
 import { default as thunk, ThunkAction as _ThunkAction } from 'redux-thunk';
@@ -20,7 +20,7 @@ import { getShifts } from './modules/shifts/actions';
 import { updateVisibleTime as updateTimelineVisibleTime } from './modules/timeline/actions';
 import { default as scheduleReducer, ScheduleState } from './modules/schedule/reducer';
 import { updateVisibleTime as updateScheduleVisibleTime } from './modules/schedule/actions';
-
+import { UserState, registerReducer as registerUserReducer } from './modules/user/reducer';
 
 export interface ThunkExtra {
     api: API;
@@ -35,6 +35,7 @@ export interface RootState {
     shifts: ShiftModuleState;
     courthouse: CourthouseModuleState;
     schedule: ScheduleState;
+    user: UserState;
 }
 
 const initialActions: any[] = [
@@ -59,6 +60,7 @@ registerSheriffReducer(reducers);
 registerShiftReducer(reducers);
 registerAssignmentReducer(reducers);
 registerCourthouseReducer(reducers);
+registerUserReducer(reducers);
 
 const rootReducer = combineReducers(reducers);
 

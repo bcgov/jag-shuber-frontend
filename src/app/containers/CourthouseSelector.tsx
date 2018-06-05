@@ -1,66 +1,30 @@
-import * as React from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { Courthouse } from '../api/index';
 import { allCourthouses } from '../modules/courthouse/selectors';
-import { FormControl } from 'react-bootstrap';
-import {
-    getCourtrooms,
-    getRuns
-} from '../modules/courthouse/action';
-import {
-    getSheriffList
-} from '../modules/sheriffs/actions';
-import api from '../api/index';
-import Client from '../api/Client';
-interface CourthouseListStateProps {
-    courthouses: Courthouse[];
+import { FormFieldWrapperProps } from '../components/FormElements/FormFieldWrapper';
+import Selector from '../components/FormElements/Selector';
+
+interface CourthouseSelectorStateProps {
+    courthouses?: Courthouse[];
 }
 
-interface CourthouseListDispatchProps {
-    fetchCourtrooms: () => void;
-    fetchSheriffs: () => void;
-    fetchRuns: () => void;
+export interface CourthouseSelectorProps extends FormFieldWrapperProps {
+    courthouses?: Courthouse[];
 }
 
-interface CourthouseListProps {
-    onChange?: (id: string) => void;
-}
-
-class CourthouseList extends React.PureComponent<
-    CourthouseListProps & CourthouseListStateProps & CourthouseListDispatchProps> {
-
-    private onChange(courthouseId: string) {
-        const { onChange, fetchCourtrooms, fetchRuns, fetchSheriffs } = this.props;
-        (api as Client).setCurrentCourthouse(courthouseId);
-        fetchCourtrooms();
-        fetchRuns();
-        fetchSheriffs();
-        if (onChange) {
-            onChange(courthouseId);
-        }
-    }
+class CourthouseSelector extends React.PureComponent<
+    CourthouseSelectorStateProps & CourthouseSelectorProps> {
 
     render() {
-        const { courthouses = [] } = this.props;
+        const { courthouses = [], ...restProps } = this.props;
+        const selectorValues = courthouses.map(courthouse => ({ key: courthouse.id, value: courthouse.name }));
         return (
-            <FormControl
-                componentClass="select"
-                placeholder="select"
-                onChange={(ev) => this.onChange((ev.target as any).value)}
-            >
-                <option value="">Select Courthouse</option>
-                {courthouses.map(courthouse => (
-                    <option
-                        key={courthouse.id}
-                        value={courthouse.id}
-                    >
-                        {courthouse.name}
-                    </option>
-                ))}
-            </FormControl>
+            <Selector {...restProps} data={selectorValues} />
         );
     }
+
 }
 
 const mapStateToProps = (state: RootState) => {
@@ -70,11 +34,6 @@ const mapStateToProps = (state: RootState) => {
 };
 
 // tslint:disable-next-line:max-line-length
-export default connect<CourthouseListStateProps, CourthouseListDispatchProps, CourthouseListProps>(
-    mapStateToProps,
-    {
-        fetchCourtrooms: getCourtrooms,
-        fetchRuns: getRuns,
-        fetchSheriffs: getSheriffList
-    }
-)(CourthouseList);
+export default connect<CourthouseSelectorStateProps, {}, CourthouseSelectorProps>(
+    mapStateToProps
+)(CourthouseSelector);
