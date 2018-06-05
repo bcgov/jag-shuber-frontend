@@ -5,6 +5,8 @@ import {
   getCourtrooms 
 } from '../courthouse/action';
 import {getSheriffList} from '../sheriffs/actions';
+import { getAssignments, getAssignmentDuties, getAssignmentDutyDetails } from '../assignments/actions';
+import { getShifts } from '../shifts/actions';
 
 // The following gives us type-safe redux actions
 // see https://medium.com/@dhruvrajvanshi/some-tips-on-type-safety-with-redux-98588a85604c
@@ -42,4 +44,8 @@ export const updateCurrentCourthouse: ThunkAction<string> =
     dispatch(getRuns());
     dispatch(getCourtrooms());
     dispatch(getSheriffList());
+    dispatch(getAssignments());
+    dispatch(getAssignmentDuties());
+    dispatch(getAssignmentDutyDetails());
+    dispatch(getShifts());
   };
