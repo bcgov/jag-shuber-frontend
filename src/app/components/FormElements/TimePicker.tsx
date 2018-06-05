@@ -18,7 +18,7 @@ export default class TimePicker extends React.Component<TimePickerProps> {
   private handleAfterChange(selectedMinutes: any) {
     const { minTime, onTimeChanged } = this.props;
     if (onTimeChanged) {
-      const newTime = moment(minTime).add('minutes', selectedMinutes).toISOString();
+      const newTime = moment(minTime).add('minutes', selectedMinutes).format();
       onTimeChanged(newTime);
     }
   }
@@ -38,7 +38,7 @@ export default class TimePicker extends React.Component<TimePickerProps> {
       const adjustedSelectedTime = minTime.isAfter(selectedTime) ? minTime : selectedTime;
       if (adjustedSelectedTime !== selectedTime) {
         if (onTimeChanged) {
-          onTimeChanged(adjustedSelectedTime.toISOString());
+          onTimeChanged(adjustedSelectedTime.format());
         }
       }
     }
