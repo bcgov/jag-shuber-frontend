@@ -12,6 +12,8 @@ import CircleIcon from '../components/Icons/CircleIconWithChildren';
 import { getWorkSectionColour } from '../api/utils';
 import { getForegroundColor } from '../infrastructure/colorUtils';
 import toTitleCase from '../infrastructure/toTitleCase';
+import SheriffLoanOutIcon from './Icons/SheriffLoanOutIcon';
+import CourthouseDisplay from '../containers/CourthouseDisplay';
 
 export interface ScheduleDeputyViewListProps {
     daysToDisplay?: DaysOfWeek;
@@ -19,6 +21,7 @@ export interface ScheduleDeputyViewListProps {
     shifts: Shift[];
     includeWorkSection?: boolean;
     weekStart?: TimeType;
+    sheriffLoanMap?: MapType<{isLoanedIn: boolean, isLoanedOut: boolean}>;
 }
 export default class ScheduleDeputyViewList extends React.PureComponent<ScheduleDeputyViewListProps> {
     render() {
@@ -27,11 +30,12 @@ export default class ScheduleDeputyViewList extends React.PureComponent<Schedule
             shifts = [],
             daysToDisplay = DaysOfWeek.Weekdays,
             includeWorkSection = true,
-            weekStart = moment().startOf('week')
+            weekStart = moment().startOf('week'),
+            sheriffLoanMap = {}
         } = this.props;
 
         const displayDayNumbers = DaysOfWeek.getWeekdayNumbers(daysToDisplay);
-        
+
         const dayDisplay = displayDayNumbers.map(dayNum => moment(weekStart).add(dayNum, 'day').format('dddd, MMM D'));
 
         const sheriffShiftMap = shifts.reduce<MapType<Shift[]>>((map, currentShift) => {
@@ -54,7 +58,7 @@ export default class ScheduleDeputyViewList extends React.PureComponent<Schedule
                     </thead>
                     <tbody>
                         {sheriffs.map(sheriff => {
-                            const {id, firstName, lastName} = sheriff;
+                            const { id, firstName, lastName } = sheriff;
                             const sheriffShifts: Shift[] = sheriffShiftMap[id] ? sheriffShiftMap[id] : [];
                             return (
                                 <tr key={id}>
@@ -62,14 +66,29 @@ export default class ScheduleDeputyViewList extends React.PureComponent<Schedule
                                     {displayDayNumbers.map(dayNum => {
                                         const shiftForDay = sheriffShifts
                                             .find(shift => moment(shift.startDateTime).weekday() === dayNum);
-                                        if (shiftForDay) {
+                                        const loanedOutForDay = 
+                                            sheriffLoanMap[sheriff.id].isLoanedOut && moment().weekday() === dayNum;
+                                        if (loanedOutForDay) {
+                                            const { currentCourthouseId = '' } = sheriff;
+                                            return (
+                                                <td>
+                                                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                                                        <SheriffLoanOutIcon />
+                                                        <span style={{marginLeft: 8}}>
+                                                            <CourthouseDisplay id={currentCourthouseId} />
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                            );
+
+                                        } else if (shiftForDay) {
                                             const { workSectionId, startDateTime, endDateTime } = shiftForDay;
                                             const backgroundColor = getWorkSectionColour(workSectionId);
                                             const foregroundColor = getForegroundColor(backgroundColor);
                                             return (
                                                 <td>
                                                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                                                        {includeWorkSection && 
+                                                        {includeWorkSection &&
                                                             <CircleIcon
                                                                 backgroundColor={backgroundColor}
                                                                 borderColor={backgroundColor}
@@ -77,7 +96,7 @@ export default class ScheduleDeputyViewList extends React.PureComponent<Schedule
                                                             >
                                                                 {workSectionId ? workSectionId.charAt(0) : ''}
                                                             </CircleIcon>}
-                                                        <span style={{marginLeft: 4}}>
+                                                        <span style={{ marginLeft: 4 }}>
                                                             {`${moment(startDateTime).format('HH:mm')}
                                                             - ${moment(endDateTime).format('HH:mm')}`}
                                                         </span>
@@ -85,7 +104,7 @@ export default class ScheduleDeputyViewList extends React.PureComponent<Schedule
                                                 </td>
                                             );
                                         } else {
-                                            return <td/>;
+                                            return <td />;
                                         }
                                     }
                                     )

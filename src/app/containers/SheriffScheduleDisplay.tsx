@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as moment from 'moment';
+import React from 'react';
+import moment from 'moment';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
 import {
@@ -9,11 +9,15 @@ import {
     getShifts
 } from '../modules/shifts/actions';
 import { getSheriffList } from '../modules/sheriffs/actions';
-import { sheriffs } from '../modules/sheriffs/selectors';
+import { 
+    sheriffs, 
+    sheriffLoanMap
+} from '../modules/sheriffs/selectors';
 import {
     Shift,
     TimeType,
-    Sheriff
+    Sheriff,
+    MapType
 } from '../api/Api';
 import ScheduleDeputyViewList from '../components/ScheduleDeputyViewList';
 import { 
@@ -34,6 +38,7 @@ interface SheriffScheduleDisplayStateProps {
     sheriffs: Sheriff[];
     weekStart?: TimeType;
     includeWorkSection?: boolean;  
+    sheriffLoanMap?: MapType<{isLoanedIn: boolean, isLoanedOut: boolean}>;
 }
 
 class SheriffScheduleDisplay extends React.Component<SheriffScheduleDisplayProps
@@ -54,13 +59,19 @@ class SheriffScheduleDisplay extends React.Component<SheriffScheduleDisplayProps
     }
 
     render() {
-        const {includeWorkSection, sheriffs: sheriffList, weekStart} = this.props;
+        const {
+            includeWorkSection, 
+            sheriffs: sheriffList, 
+            weekStart,
+            sheriffLoanMap: loanMap = {}
+        } = this.props;
         return (
             <ScheduleDeputyViewList
                 includeWorkSection={includeWorkSection}
                 sheriffs={sheriffList}
                 shifts={this.getShiftsForWeek()}
                 weekStart={weekStart}
+                sheriffLoanMap={loanMap}
             />
         );
     }
@@ -72,7 +83,8 @@ const mapStateToProps = (state: RootState) => {
         shifts: getSheriffShifts()(state),
         sheriffs: sheriffs(state),
         weekStart: publishViewVisibleWeek(state),
-        includeWorkSection: isShowWorkSections(state)
+        includeWorkSection: isShowWorkSections(state),
+        sheriffLoanMap: sheriffLoanMap(state)
     };
 };
 
