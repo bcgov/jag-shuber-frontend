@@ -45,6 +45,7 @@ class SheriffList extends React.Component<CompositeProps> {
       loading = true,
       SheriffRenderer,
       showSheriffProfileModal,
+      // tslint:disable-next-line:no-shadowed-variable
       sheriffLoanMap = {}
     } = this.props;
 
@@ -55,7 +56,7 @@ class SheriffList extends React.Component<CompositeProps> {
     }
 
     return (
-      <div style={{ display: 'flex', flexFlow: 'row wrap', justifyContent: 'space-around' }}>
+      <div style={{ display: 'flex', flexFlow: 'row wrap' }}>
         {sheriffs.map(sheriff => (
           <div
             key={sheriff.badgeNo}

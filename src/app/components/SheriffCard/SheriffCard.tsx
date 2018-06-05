@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {
     Image
 } from 'react-bootstrap';
@@ -6,6 +6,7 @@ import { Sheriff } from '../../api/Api';
 import './SheriffCard.css';
 import SheriffLoanInIcon from '../Icons/SheriffLoanInIcon';
 import SheriffLoanOutIcon from '../Icons/SheriffLoanOutIcon';
+import SheriffRankDisplay from '../../containers/SheriffRankDisplay';
 
 export interface SheriffCardProps {
     sheriff: Sheriff;
@@ -17,25 +18,28 @@ export interface SheriffCardProps {
 export default class SheriffCard extends React.PureComponent<SheriffCardProps, any> {
 
     render() {
-        const { 
-            sheriff: {firstName, lastName, badgeNo, imageUrl}, 
+        const {
+            sheriff: { firstName, lastName, badgeNo, imageUrl, rankCode = '' },
             onClick,
             isLoanedIn = false,
-            isLoanedOut = false 
+            isLoanedOut = false
         } = this.props;
         return (
-            <div 
-                key={badgeNo} 
+            <div
+                key={badgeNo}
                 className="sheriff-card drop-shadow-hover"
                 onMouseDown={() => onClick && onClick()}
             >
-                <div style={{position: 'relative', left: '40%', marginTop: 4 }}>
+                <div style={{ position: 'relative', right: '40%', marginTop: 10 }}>
                     {isLoanedIn && <SheriffLoanInIcon />}
-                    {isLoanedOut && <SheriffLoanOutIcon />} 
-                </div>              
-                <Image src={imageUrl ? imageUrl : '/img/avatar.png'} circle={true} width="120" height="120" />
-                <br/><br/>
-                {firstName} {lastName} <br /> #{badgeNo}
+                    {isLoanedOut && <SheriffLoanOutIcon />}
+                    {!isLoanedIn && !isLoanedOut && <div style={{ width: 23, height: 23 }} />}
+                </div>
+                <Image src={imageUrl ? imageUrl : '/img/avatar.png'} circle={true} width="90" height="90" />
+               
+                <div style={{marginTop: 30, fontSize: 14}}>#{badgeNo}</div>
+                <div style={{fontWeight: 'bold', fontSize: 18}}>{firstName.toUpperCase()} {lastName.toUpperCase()}</div>
+                <div style={{fontSize: 14}}><SheriffRankDisplay code={rankCode} /></div>
             </div>
         );
     }
