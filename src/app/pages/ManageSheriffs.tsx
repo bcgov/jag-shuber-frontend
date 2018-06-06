@@ -18,7 +18,7 @@ class ManageSheriffs extends React.PureComponent {
                 }}
             >
                 
-                <div style={{flex: '1', alignSelf: 'center', paddingBottom: 15}}>
+                <div style={{alignSelf: 'center', paddingBottom: 15}}>
                     <h1>Manage Sheriffs</h1>
                 </div>
                 <div style={{textAlign: 'right'}}>
