@@ -13,7 +13,7 @@ import {
 import SheriffListCard from '../components/SheriffListCard/SheriffListCard';
 import { visibleTime } from '../modules/timeline/selectors';
 import WorkSectionIndicator from '../components/WorkSectionIndicator/WorkSectionIndicator';
-import { sheriffLoanMap } from '../modules/sheriffs/selectors';
+import { sheriffLoanMap as sheriffLoanMapSelecor } from '../modules/sheriffs/selectors';
 import { currentCourthouse as userCourthouse } from '../modules/user/selectors';
 import { MapType, IdType } from '../api/Api';
 import CourthouseDisplay from './CourthouseDisplay';
@@ -64,7 +64,6 @@ class ConnectedDutyRosterSheriffCard extends React.Component<ConnectedDutyRoster
             visibleTimeStart,
             sheriff,
             sheriff: { id, currentCourthouseId = '' },
-            // tslint:disable-next-line:no-shadowed-variable
             sheriffLoanMap = {}
         } = this.props;
         const { shiftTime, workSectionId } = this.getShiftDisplayForDate(moment(visibleTimeStart).toISOString());
@@ -102,7 +101,7 @@ const mapStateToProps = (state: RootState, { sheriff }: ConnectedDutyRosterSheri
     return {
         shifts: getSheriffShifts(sheriff.id)(state),
         visibleTimeStart: visibleTime(state).visibleTimeStart,
-        sheriffLoanMap: sheriffLoanMap(state),
+        sheriffLoanMap: sheriffLoanMapSelecor(state),
         userCourthouseId: userCourthouse(state)
     };
 };

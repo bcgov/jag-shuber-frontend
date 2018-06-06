@@ -6,9 +6,9 @@ import {
 import { RootState } from '../store';
 import { getSheriffList } from '../modules/sheriffs/actions';
 import {
-  sheriffs,
+  sheriffs as sheriffsSelector,
   sheriffListLoading,
-  sheriffLoanMap
+  sheriffLoanMap as sheriffLoanMapSelector
 } from '../modules/sheriffs/selectors';
 import SheriffCard from '../components/SheriffCard/SheriffCard';
 import SheriffProfileModal from './SheriffProfileModal';
@@ -33,19 +33,16 @@ interface SheriffListDispatchProps {
 type CompositeProps = SheriffListProps & SheriffListDispatchProps & SheriffListStateProps;
 class SheriffList extends React.Component<CompositeProps> {
   componentWillMount() {
-    // tslint:disable-next-line:no-shadowed-variable
     const { fetchSheriffList } = this.props;
     fetchSheriffList();
   }
 
   render() {
     const {
-      // tslint:disable-next-line:no-shadowed-variable
       sheriffs = [],
       loading = true,
       SheriffRenderer,
       showSheriffProfileModal,
-      // tslint:disable-next-line:no-shadowed-variable
       sheriffLoanMap = {}
     } = this.props;
 
@@ -79,9 +76,9 @@ class SheriffList extends React.Component<CompositeProps> {
 
 export default connect<SheriffListStateProps, SheriffListDispatchProps, SheriffListProps, RootState>(
   (state, props) => ({
-    sheriffs: sheriffs(state),
+    sheriffs: sheriffsSelector(state),
     loading: sheriffListLoading(state),
-    sheriffLoanMap: sheriffLoanMap(state)
+    sheriffLoanMap: sheriffLoanMapSelector(state)
   }),
   {
     fetchSheriffList: getSheriffList,

@@ -31,8 +31,8 @@ import {
     selectedShiftIds
 } from '../../modules/schedule/selectors';
 import {
-    selectShift,
-    unselectShift
+    selectShift as selectShiftAction,
+    unselectShift as unselectShiftAction
 } from '../../modules/schedule/actions';
 import { sheriffLoanMap } from '../../modules/sheriffs/selectors';
 import { MapType } from '../../api/Api';
@@ -97,13 +97,11 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
     }
 
     private isShiftSelected(shiftId: IdType): boolean {
-        // tslint:disable-next-line:no-shadowed-variable
         const { selectedShifts = [] } = this.props;
         return selectedShifts.indexOf(shiftId) >= 0;
     }
 
     private toggleShiftSelect(shiftId: IdType) {
-        // tslint:disable-next-line:no-shadowed-variable
         const { selectShift, unselectShift } = this.props;
         if (this.isShiftSelected(shiftId)) {
             unselectShift(shiftId);
@@ -173,8 +171,8 @@ const mapDispatchToProps = {
     assignShift: linkShift,
     unassignShift: unlinkShift,
     fetchLeaves: getLeaves,
-    selectShift: selectShift,
-    unselectShift: unselectShift
+    selectShift: selectShiftAction,
+    unselectShift: unselectShiftAction
 };
 
 export default connect<LongTermScheduleStateProps, LongTermScheduleDispatchProps, LongTermScheduleProps>(

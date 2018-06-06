@@ -8,7 +8,7 @@ import {
 } from '../modules/schedule/selectors';
 import {
     updateDeputyViewWeekStart,
-    updateShowWorkSections
+    updateShowWorkSections as updateShowWorkSectionsAction
 } from '../modules/schedule/actions';
 import { TimeType } from '../api';
 import {
@@ -40,7 +40,6 @@ class SchedulePublishViewControls extends React.Component<SchedulePublishViewCon
             updateVisibleWeek,
             weekStart = moment().startOf('week').toISOString(),
             includeWorkSection = true,
-            // tslint:disable-next-line:no-shadowed-variable
             updateShowWorkSections
         } = this.props;
         return (
@@ -94,7 +93,7 @@ const mapStateToProps = (state: RootState) => {
 
 const mapDispatchToProps = {
     updateVisibleWeek: updateDeputyViewWeekStart,
-    updateShowWorkSections: updateShowWorkSections
+    updateShowWorkSections: updateShowWorkSectionsAction
 };
 
 // tslint:disable-next-line:max-line-length

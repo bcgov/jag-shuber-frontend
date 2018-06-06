@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as moment from 'moment';
+import React from 'react';
+import moment from 'moment';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
 import {
@@ -17,7 +17,7 @@ import {
     default as ScheduleSummary,
     StatusEnum
 } from '../components/ScheduleSummary/ScheduleSummary';
-import { sheriffLoanMap } from '../modules/sheriffs/selectors';
+import { sheriffLoanMap as sheriffLoanMapSelector } from '../modules/sheriffs/selectors';
 import {
     Leave,
     Shift,
@@ -74,7 +74,6 @@ class ConnectedScheduleSummary extends React.Component<ConnectedScheduleSummaryP
             shifts,
             visibleTimeStart,
             visibleTimeEnd,
-            // tslint:disable-next-line:no-shadowed-variable
             sheriffLoanMap = {},
             sheriffId
         } = this.props;
@@ -130,7 +129,7 @@ const mapStateToProps = (state: RootState, { sheriffId }: ConnectedScheduleSumma
         ...currentVisibleTime,
         shifts: getSheriffShifts(sheriffId)(state),
         leaves: getSheriffLeaves(sheriffId)(state),
-        sheriffLoanMap: sheriffLoanMap(state)
+        sheriffLoanMap: sheriffLoanMapSelector(state)
     };
 };
 
