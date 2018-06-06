@@ -34,6 +34,8 @@ import {
     selectShift,
     unselectShift
 } from '../../modules/schedule/actions';
+import { sheriffLoanMap } from '../../modules/sheriffs/selectors';
+import { MapType } from '../../api/Api';
 
 interface LongTermScheduleProps extends Partial<ShiftScheduleProps> {
     sideBarWidth?: number;
@@ -55,6 +57,7 @@ interface LongTermScheduleStateProps {
     visibleTimeStart: any;
     visibleTimeEnd: any;
     selectedShifts: IdType[];
+    loanMap?: MapType<{ isLoanedIn: boolean, isLoanedOut: boolean }>;
 }
 
 class LongTermSchedule extends React.Component<LongTermScheduleProps
@@ -88,6 +91,11 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
         return dateFilteredShifts.length > 0;
     }
 
+    isSheriffLoanedOut(sheriffId: IdType): boolean {
+        const { loanMap = {} } = this.props;
+        return loanMap[sheriffId].isLoanedOut;
+    }
+
     private isShiftSelected(shiftId: IdType): boolean {
         // tslint:disable-next-line:no-shadowed-variable
         const { selectedShifts = [] } = this.props;
@@ -96,7 +104,7 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
 
     private toggleShiftSelect(shiftId: IdType) {
         // tslint:disable-next-line:no-shadowed-variable
-        const { selectShift, unselectShift} = this.props;
+        const { selectShift, unselectShift } = this.props;
         if (this.isShiftSelected(shiftId)) {
             unselectShift(shiftId);
         } else {
@@ -126,20 +134,20 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
                             }}
                             onDropItem={(sheriff) => assignShift({ sheriffId: sheriff.id, shiftId: shift.id })}
                             canDropItem={(sheriff) =>
-                                shift.sheriffId == undefined
+                                !this.isSheriffLoanedOut(sheriff.id)
                                 && !this.isSheriffOnLeave(sheriff.id, shift)
                                 && !this.isSheriffScheduledForDay(sheriff.id, moment(shift.startDateTime))
                             }
                             className="shift-card drop-shadow-hover"
                             onClick={() => this.toggleShiftSelect(shift.id)}
                         >
-                            <ShiftCard 
-                                shift={shift} 
+                            <ShiftCard
+                                shift={shift}
                                 isSelected={this.isShiftSelected(shift.id)}
                                 isAssigned={shift.sheriffId != undefined}
                             >
                                 <SheriffDisplay sheriffId={shift.sheriffId} />
-                                <div style={{ paddingBottom: 5 }}>{shift.title}</div>        
+                                <div style={{ paddingBottom: 5 }}>{shift.title}</div>
                             </ShiftCard>
                         </SheriffDropTarget>
                     )}
@@ -155,7 +163,8 @@ const mapStateToProps = (state: RootState, props: LongTermScheduleProps) => {
         shifts: allShifts(state),
         leaves: allLeaves(state),
         ...currentVisibleTime,
-        selectedShifts: selectedShiftIds(state)
+        selectedShifts: selectedShiftIds(state),
+        loanMap: sheriffLoanMap(state)
     };
 };
 
