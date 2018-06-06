@@ -5,9 +5,11 @@ import { Courthouse, IdType } from '../api/index';
 import { allCourthouses } from '../modules/courthouse/selectors';
 import { FormControl } from 'react-bootstrap';
 import { updateCurrentCourthouse } from '../modules/user/actions';
+import { currentCourthouse as currentCourthouseSelector } from '../modules/user/selectors';
 
 interface CourthouseListStateProps {
     courthouses: Courthouse[];
+    currentCourthouse: IdType;
 }
 
 interface CurrentCourthouseSelectorDispatchProps {
@@ -29,12 +31,13 @@ class CurrentCourthouseSelector extends React.PureComponent<
     }
 
     render() {
-        const { courthouses = [] } = this.props;
+        const { courthouses = [], currentCourthouse = '' } = this.props;
         return (
             <FormControl
                 componentClass="select"
                 placeholder="select"
                 onChange={(ev) => this.onChange((ev.target as any).value)}
+                value={currentCourthouse}
             >
                 <option value="">Select Location</option>
                 {courthouses.map(courthouse => (
@@ -52,7 +55,8 @@ class CurrentCourthouseSelector extends React.PureComponent<
 
 const mapStateToProps = (state: RootState) => {
     return {
-        courthouses: allCourthouses(state)
+        courthouses: allCourthouses(state),
+        currentCourthouse: currentCourthouseSelector(state)
     };
 };
 

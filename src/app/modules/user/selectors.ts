@@ -1,12 +1,15 @@
 import { RootState } from '../../store';
-import api from '../../api/index';
-import Client from '../../api/Client';
+import { createSelector } from 'reselect';
 
 export const currentCourthouse = (state: RootState): string => {
     const { user: { currentCourthouse: courthouse = '' } = {} } = state;
     return courthouse;
 };
 
-export const isCourthouseSet = (): boolean => {
-    return (api as Client).isCourthouseSet;
-};
+export const isCourthouseSet = createSelector(
+    currentCourthouse,
+    (courthouse: string) => {
+        // tslint:disable-next-line:triple-equals
+        return courthouse != undefined && courthouse !== '';
+    }
+);

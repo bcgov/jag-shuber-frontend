@@ -89,7 +89,7 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
 
 const mapStateToProps = (state: RootState) => {
   return {
-    isCourthouseSet: isCourthouseSet()
+    isCourthouseSet: isCourthouseSet(state)
   };
 };
 
