@@ -36,7 +36,7 @@ class CurrentCourthouseSelector extends React.PureComponent<
                 placeholder="select"
                 onChange={(ev) => this.onChange((ev.target as any).value)}
             >
-                <option value="">Select Courthouse</option>
+                <option value="">Select Location</option>
                 {courthouses.map(courthouse => (
                     <option
                         key={courthouse.id}

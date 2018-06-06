@@ -59,7 +59,7 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
                 }}
               >
                 <div style={{ paddingTop: 10 }}>
-                  <h1>Select your Courthouse</h1>
+                  <h1>Select your Location</h1>
                   <CurrentCourthouseSelector />
                 </div>
               </Well>
