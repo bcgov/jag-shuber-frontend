@@ -42,7 +42,7 @@ export default class Navigation extends React.Component<NavigationProps, any> {
                         <NavigationLink to="/assignments/manage/default" label="Duty Roster Set-Up" />
                     </Nav>
                     <Nav pullRight={true} style={{ paddingTop: 13, paddingRight: 10 }}>
-                        <span><b>Current Courthouse:</b> <CurrentCourthouseDisplay /></span>
+                        <span><b>Current Location:</b> <CurrentCourthouseDisplay /></span>
                     </Nav>
                 </Navbar>
             </div>

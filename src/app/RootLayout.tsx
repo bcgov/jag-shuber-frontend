@@ -27,7 +27,7 @@ import Footer from './components/Footer';
 import { isCourthouseSet } from '../app/modules/user/selectors';
 
 export interface LayoutStateProps {
-  needCourthouse?: boolean;
+  isCourthouseSet?: boolean;
 }
 
 export interface LayoutDispatchProps {
@@ -36,7 +36,7 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
 
   render() {
     const { 
-      needCourthouse = true, 
+      isCourthouseSet = false, 
     } = this.props;
 
     return (
@@ -45,7 +45,7 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
           <div className="headerArea">
             <Navigation />
           </div>
-          {needCourthouse &&
+          {!isCourthouseSet &&
             <div style={{ display: 'flex', justifyContent: 'center', }}>
               <Well
                 style={{
@@ -65,7 +65,7 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
               </Well>
             </div>}
 
-          {!needCourthouse &&
+          {isCourthouseSet &&
             <div className="mainArea">
               <Route exact={true} path="/" component={DutyRoster} />
               <Route path="/sheriffs/schedule" component={Scheduling} />
@@ -89,7 +89,7 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
 
 const mapStateToProps = (state: RootState) => {
   return {
-    needCourthouse: !isCourthouseSet()
+    isCourthouseSet: isCourthouseSet()
   };
 };
 
