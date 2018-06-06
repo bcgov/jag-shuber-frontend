@@ -13,6 +13,12 @@ import {
 import SheriffListCard from '../components/SheriffListCard/SheriffListCard';
 import { visibleTime } from '../modules/timeline/selectors';
 import WorkSectionIndicator from '../components/WorkSectionIndicator/WorkSectionIndicator';
+import { sheriffLoanMap as sheriffLoanMapSelecor } from '../modules/sheriffs/selectors';
+import { currentCourthouse as userCourthouse } from '../modules/user/selectors';
+import { MapType, IdType } from '../api/Api';
+import CourthouseDisplay from './CourthouseDisplay';
+import SheriffLoanOutIcon from '../components/Icons/SheriffLoanOutIcon';
+import SheriffLoanInIcon from '../components/Icons/SheriffLoanInIcon';
 
 interface ConnectedDutyRosterSheriffCardProps {
     sheriff: Sheriff;
@@ -25,6 +31,8 @@ interface ConnectedDutyRosterSheriffCardDispatchProps {
 interface ConnectedDutyRosterSheriffCardStateProps {
     shifts: Shift[];
     visibleTimeStart: any;
+    sheriffLoanMap?: MapType<{ isLoanedIn: boolean, isLoanedOut: boolean }>;
+    userCourthouseId?: IdType;
 }
 
 class ConnectedDutyRosterSheriffCard extends React.Component<ConnectedDutyRosterSheriffCardProps
@@ -32,8 +40,10 @@ class ConnectedDutyRosterSheriffCard extends React.Component<ConnectedDutyRoster
     & ConnectedDutyRosterSheriffCardDispatchProps> {
 
     getShiftDisplayForDate(date: TimeType): { shiftTime: string, workSectionId?: WorkSectionCode } {
-        const { shifts } = this.props;
-        const shiftsForDay = shifts.filter(s => moment(date).isSame(s.startDateTime, 'day'));
+        const { shifts, userCourthouseId } = this.props;
+        const shiftsForDay =
+            shifts.filter(s => s.courthouseId == userCourthouseId)
+                .filter(s => moment(date).isSame(s.startDateTime, 'day'));
         if (shiftsForDay.length > 1) {
             return {
                 shiftTime: 'Multiple Shifts'
@@ -50,23 +60,37 @@ class ConnectedDutyRosterSheriffCard extends React.Component<ConnectedDutyRoster
     }
 
     render() {
-        const { visibleTimeStart, sheriff } = this.props;
-        const {shiftTime, workSectionId} = this.getShiftDisplayForDate(moment(visibleTimeStart).toISOString());
-        const isCardDisabled = shiftTime === '';
-        
+        const {
+            visibleTimeStart,
+            sheriff,
+            sheriff: { id, currentCourthouseId = '' },
+            sheriffLoanMap = {}
+        } = this.props;
+        const { shiftTime, workSectionId } = this.getShiftDisplayForDate(moment(visibleTimeStart).toISOString());
+        const hasShift = shiftTime != '';
+        const { isLoanedIn, isLoanedOut } = sheriffLoanMap[id];
+        const showShiftLoanDetails = isLoanedIn || isLoanedOut || hasShift;
         return (
-            <SheriffListCard sheriff={sheriff} disabled={isCardDisabled} >
-                {!isCardDisabled &&
-                    <div
-                        style={{
-                            fontSize: 14,
-                            fontWeight: 'bold'
-                        }}
-                    >
-                        {shiftTime}
-                        <WorkSectionIndicator workSectionId={workSectionId} orientation={'bottom-right'}/>
-                        
+            <SheriffListCard sheriff={sheriff} disabled={!hasShift} >
+                <div
+                    style={{
+                        fontSize: 14,
+                        fontWeight: 'bold'
+                    }}
+                >
+
+                    {showShiftLoanDetails && <div style={{ marginTop: 8 }}>
+                        {isLoanedIn && <SheriffLoanInIcon />}
+                        {isLoanedOut && <SheriffLoanOutIcon />}
+                        <span style={{ marginLeft: 8, position: 'relative', bottom: 8 }}>
+                            {!isLoanedOut && shiftTime}
+                            {isLoanedOut && <CourthouseDisplay id={currentCourthouseId} />}
+                        </span>
                     </div>}
+
+                    {hasShift &&
+                        <WorkSectionIndicator workSectionId={workSectionId} orientation={'bottom-right'} />}
+                </div>
             </SheriffListCard>
         );
     }
@@ -76,7 +100,9 @@ class ConnectedDutyRosterSheriffCard extends React.Component<ConnectedDutyRoster
 const mapStateToProps = (state: RootState, { sheriff }: ConnectedDutyRosterSheriffCardProps) => {
     return {
         shifts: getSheriffShifts(sheriff.id)(state),
-        visibleTimeStart: visibleTime(state).visibleTimeStart
+        visibleTimeStart: visibleTime(state).visibleTimeStart,
+        sheriffLoanMap: sheriffLoanMapSelecor(state),
+        userCourthouseId: userCourthouse(state)
     };
 };
 

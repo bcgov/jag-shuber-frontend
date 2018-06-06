@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as moment from 'moment';
+import React from 'react';
+import moment from 'moment';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
 import {
@@ -15,7 +15,7 @@ import {
     updateVisibleTime as setVisibleTime,
     clearSelectedShifts
 } from '../modules/schedule/actions';
-import { deleteShift } from '../modules/shifts/actions';
+import { deleteShift as deleteShiftAction } from '../modules/shifts/actions';
 import ScheduleShiftMultiEditForm from './ScheduleShiftMultiEditForm';
 import ScheduleShiftAddModal from './ScheduleShiftAddModal';
 import ScheduleShiftCopyModal from './ScheduleShiftCopyModal';
@@ -52,7 +52,6 @@ class ScheduleControls extends React.PureComponent<
             showShiftAddModal,
             submit,
             clear,
-            // tslint:disable:no-shadowed-variable
             deleteShift,
             selectedShifts = []
         } = this.props;
@@ -150,7 +149,7 @@ const mapDispatchToProps = {
     showShiftAddModal: () => ScheduleShiftAddModal.ShowAction(),
     submit: ScheduleShiftMultiEditForm.submitAction,
     clear: clearSelectedShifts,
-    deleteShift: deleteShift
+    deleteShift: deleteShiftAction
 };
 
 // tslint:disable-next-line:max-line-length

@@ -8,7 +8,7 @@ import {
 } from 'redux-form';
 import TextField from './FormElements/TextField';
 import * as Validators from '../infrastructure/Validators';
-import SheriffLocationSelector from '../containers/SheriffLocationSelector';
+import CourthouseSelector from '../containers/CourthouseSelector';
 import { Sheriff } from '../api/Api';
 import SheriffRankSelector from '../containers/CourthouseSheriffRankCodeSelector';
 
@@ -64,8 +64,14 @@ export default class SheriffForm extends
                     />
                     <Field
                         name="homeCourthouseId"
-                        component={SheriffLocationSelector as any}
+                        component={CourthouseSelector as any}
                         label="Home Location"
+                        validate={[Validators.required]}
+                    />
+                    <Field
+                        name="currentCourthouseId"
+                        component={CourthouseSelector as any}
+                        label="Current Location"
                         validate={[Validators.required]}
                     />
                 </Form>

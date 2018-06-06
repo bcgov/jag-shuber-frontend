@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {
     Modal
 } from 'react-bootstrap';
@@ -6,7 +6,7 @@ import AssignmentDutyEditForm from './AssignmentDutyEditForm';
 import { IdType } from '../api';
 import { ConfirmationModal } from '../components/ConfirmationModal';
 import { connect } from 'react-redux';
-import { deleteAssignmentDuty } from '../modules/assignments/actions';
+import { deleteAssignmentDuty as deleteAssignmentDutyAction } from '../modules/assignments/actions';
 import { IModalInjectedProps, connectModal } from 'redux-modal';
 import { ConnectedShowModalButton } from './ConnectedShowModalButton';
 import { show as showModal, hide as hideModal } from 'redux-modal';
@@ -25,7 +25,6 @@ class AssignmentDutyEditModal extends React.PureComponent<CompositeProps> {
     render() {
         const {
             dutyId,
-            // tslint:disable-next-line:no-shadowed-variable
             deleteAssignmentDuty,
             show,
             handleHide
@@ -78,7 +77,7 @@ export default class extends connectModal(modalConfig)(
     connect<{}, AssignmentDutyEditModalDispatchProps, AssignmentDutyEditModalProps>(
         null,
         {
-            deleteAssignmentDuty
+            deleteAssignmentDuty: deleteAssignmentDutyAction
         })
         (AssignmentDutyEditModal) as any
 ) {

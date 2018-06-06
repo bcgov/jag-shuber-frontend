@@ -6,11 +6,14 @@ import {
 import { RootState } from '../store';
 import { getSheriffList } from '../modules/sheriffs/actions';
 import {
-  sheriffs,
-  sheriffListLoading
+  sheriffs as sheriffsSelector,
+  sheriffListLoading,
+  sheriffLoanMap as sheriffLoanMapSelector
 } from '../modules/sheriffs/selectors';
 import SheriffCard from '../components/SheriffCard/SheriffCard';
 import SheriffProfileModal from './SheriffProfileModal';
+import { MapType } from '../api/Api';
+import Loading from '../components/Loading';
 
 export interface SheriffListProps {
   sheriffs?: Sheriff[];
@@ -19,43 +22,52 @@ export interface SheriffListProps {
   SheriffRenderer?: React.ReactType<Sheriff>;
 }
 
+export interface SheriffListStateProps {
+  sheriffLoanMap?: MapType<{isLoanedIn: boolean, isLoanedOut: boolean}>;
+}
+
 interface SheriffListDispatchProps {
   showSheriffProfileModal: (sheriffId: IdType) => void;
   fetchSheriffList: () => void;
 }
 
-type CompositeProps = SheriffListProps & SheriffListDispatchProps;
+type CompositeProps = SheriffListProps & SheriffListDispatchProps & SheriffListStateProps;
 class SheriffList extends React.Component<CompositeProps> {
   componentWillMount() {
-    // tslint:disable-next-line:no-shadowed-variable
     const { fetchSheriffList } = this.props;
     fetchSheriffList();
   }
 
   render() {
     const {
-      // tslint:disable-next-line:no-shadowed-variable
       sheriffs = [],
       loading = true,
       SheriffRenderer,
-      showSheriffProfileModal
+      showSheriffProfileModal,
+      sheriffLoanMap = {}
     } = this.props;
 
     if (loading) {
       return (
-        <div>Loading...</div>
+        <Loading />
       );
     }
 
     return (
-
-      <div style={{ display: 'flex', flexFlow: 'row wrap', justifyContent: 'space-around' }}>
+      <div style={{ display: 'flex', flexFlow: 'row wrap', justifyContent: 'center' }}>
         {sheriffs.map(sheriff => (
           <div
             key={sheriff.badgeNo}
           >
             {SheriffRenderer && <SheriffRenderer {...sheriff} />}
-            {!SheriffRenderer && <SheriffCard sheriff={sheriff} onClick={() => showSheriffProfileModal(sheriff.id)}/>}
+            {!SheriffRenderer && 
+              <SheriffCard 
+                sheriff={sheriff} 
+                onClick={() => showSheriffProfileModal(sheriff.id)}
+                isLoanedIn={sheriffLoanMap[sheriff.id].isLoanedIn}
+                isLoanedOut={sheriffLoanMap[sheriff.id].isLoanedOut}
+              />
+            }
           </div>
         ))}
       </div>
@@ -63,15 +75,12 @@ class SheriffList extends React.Component<CompositeProps> {
   }
 }
 
-const mapStateToProps = (state: RootState) => {
-  return {
-    sheriffs: sheriffs(state),
-    loading: sheriffListLoading(state)
-  };
-};
-
-export default connect<{}, SheriffListDispatchProps, SheriffListProps>(
-  mapStateToProps,
+export default connect<SheriffListStateProps, SheriffListDispatchProps, SheriffListProps, RootState>(
+  (state, props) => ({
+    sheriffs: sheriffsSelector(state),
+    loading: sheriffListLoading(state),
+    sheriffLoanMap: sheriffLoanMapSelector(state)
+  }),
   {
     fetchSheriffList: getSheriffList,
     showSheriffProfileModal: SheriffProfileModal.ShowAction

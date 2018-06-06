@@ -1,9 +1,9 @@
-import * as React from 'react';
-import * as moment from 'moment';
+import React from 'react';
+import moment from 'moment';
 import { connect } from 'react-redux';
 import { ConfirmationModal } from '../components/ConfirmationModal';
 import { DateType } from '../api/Api';
-import { createDefaultDuties } from '../modules/assignments/actions';
+import { createDefaultDuties as createDefaultDutiesAction } from '../modules/assignments/actions';
 
 export interface ImportDefaultDutiesModalProps {
     date: DateType;
@@ -20,7 +20,6 @@ class ImportDefaultDutiesModal extends React.PureComponent<
     render() {
         const {
             color = 'white',
-            // tslint:disable-next-line:no-shadowed-variable
             createDefaultDuties,
             date
         } = this.props;
@@ -49,4 +48,4 @@ class ImportDefaultDutiesModal extends React.PureComponent<
 }
 
 // tslint:disable-next-line:max-line-length
-export default connect<{}, ImportDefaultDutiesModalDispatchProps, ImportDefaultDutiesModalProps>(null, { createDefaultDuties })(ImportDefaultDutiesModal);
+export default connect<{}, ImportDefaultDutiesModalDispatchProps, ImportDefaultDutiesModalProps>(null, { createDefaultDuties: createDefaultDutiesAction })(ImportDefaultDutiesModal);

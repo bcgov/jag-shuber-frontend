@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {
     Button,
     Glyphicon
@@ -8,7 +8,7 @@ import ModalWrapper from './ModalWrapper/ModalWrapper';
 import { IdType } from '../api';
 import { ConfirmationModal } from '../components/ConfirmationModal';
 import { connect } from 'react-redux';
-import { deleteAssignment } from '../modules/assignments/actions';
+import { deleteAssignment as deleteAssignmentById } from '../modules/assignments/actions';
 export interface AssignmentEditModalProps {
     assignmentId: IdType;
     allowDelete?: boolean;
@@ -25,7 +25,6 @@ class AssignmentEditModal extends React.PureComponent<
     render() {
         const {
             assignmentId,
-            // tslint:disable-next-line:no-shadowed-variable
             deleteAssignment,
             allowDelete = true,
             allowSave = true
@@ -73,4 +72,4 @@ class AssignmentEditModal extends React.PureComponent<
     }
 }
 // tslint:disable-next-line:max-line-length
-export default connect<{}, AssignmentEditModalDispatchProps, AssignmentEditModalProps>(null, { deleteAssignment })(AssignmentEditModal);
+export default connect<{}, AssignmentEditModalDispatchProps, AssignmentEditModalProps>(null, { deleteAssignment: deleteAssignmentById })(AssignmentEditModal);

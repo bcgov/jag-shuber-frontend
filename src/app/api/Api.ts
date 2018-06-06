@@ -128,6 +128,7 @@ export interface Sheriff {
     alias?: string;
     rankCode?: string;
     homeCourthouseId?: IdType;
+    currentCourthouseId?: IdType;
 }
 
 export interface SheriffRank {

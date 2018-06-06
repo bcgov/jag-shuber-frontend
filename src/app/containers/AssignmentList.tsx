@@ -6,8 +6,9 @@ import {
   allAssignments,
   isLoadingAssignments
 } from '../modules/assignments/selectors';
-import { getAssignments } from '../modules/assignments/actions';
+import { getAssignments as getAssignmentsAction } from '../modules/assignments/actions';
 import AssignmentDefaultList from '../components/AssignmentDefaultList';
+import Loading from '../components/Loading';
 
 interface AssignmentTemplateListDispatchProps {
   getAssignments?: () => void;
@@ -26,7 +27,6 @@ class AssignmentTemplateList
   & AssignmentTemplateListStateProps> {
 
   componentWillMount() {
-    // tslint:disable-next-line:no-shadowed-variable
     const { getAssignments } = this.props;
     /* tslint:disable:no-unused-expression */
     getAssignments && getAssignments();
@@ -38,7 +38,7 @@ class AssignmentTemplateList
 
     if (loading) {
       return (
-        <div>Loading...</div>
+        <Loading />
       );
     }
 
@@ -56,7 +56,7 @@ const mapStateToProps = (state: RootState) => {
 };
 
 const mapDispatchToProps = {
-  getAssignments: getAssignments
+  getAssignments: getAssignmentsAction
 };
 
 // tslint:disable-next-line:max-line-length
