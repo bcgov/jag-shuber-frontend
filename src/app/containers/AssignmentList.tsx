@@ -8,6 +8,7 @@ import {
 } from '../modules/assignments/selectors';
 import { getAssignments as getAssignmentsAction } from '../modules/assignments/actions';
 import AssignmentDefaultList from '../components/AssignmentDefaultList';
+import Loading from '../components/Loading';
 
 interface AssignmentTemplateListDispatchProps {
   getAssignments?: () => void;
@@ -37,7 +38,7 @@ class AssignmentTemplateList
 
     if (loading) {
       return (
-        <div>Loading...</div>
+        <Loading />
       );
     }
 

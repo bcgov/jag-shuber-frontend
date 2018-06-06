@@ -13,6 +13,7 @@ import {
 import SheriffCard from '../components/SheriffCard/SheriffCard';
 import SheriffProfileModal from './SheriffProfileModal';
 import { MapType } from '../api/Api';
+import Loading from '../components/Loading';
 
 export interface SheriffListProps {
   sheriffs?: Sheriff[];
@@ -48,7 +49,7 @@ class SheriffList extends React.Component<CompositeProps> {
 
     if (loading) {
       return (
-        <div>Loading...</div>
+        <Loading />
       );
     }
 
