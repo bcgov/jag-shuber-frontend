@@ -8,7 +8,7 @@ import {
     MapType,
     TimeType
 } from '../api/Api';
-import CircleIcon from '../components/Icons/CircleIconWithChildren';
+import CircleIcon from '../components/Icons/CircleIcon';
 import { getWorkSectionColour } from '../api/utils';
 import { getForegroundColor } from '../infrastructure/colorUtils';
 import toTitleCase from '../infrastructure/toTitleCase';

@@ -3,7 +3,7 @@ import './ScheduleSummary.css';
 import AssignedIcon from '../Icons/Assigned';
 import UnavailableIcon from '../Icons/Unavailable';
 import AlertIcon from '../Icons/Alert';
-import CircleIcon from '../Icons/CircleIconWithChildren';
+import CircleIcon from '../Icons/CircleIcon';
 import { Glyphicon } from 'react-bootstrap';
 
 export enum StatusEnum {

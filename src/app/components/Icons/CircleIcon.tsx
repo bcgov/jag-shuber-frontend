@@ -1,12 +1,12 @@
 import React from 'react';
 import './Icons.css';
 
-export interface CircleIconWithChildrenProps {
+export interface CircleIconProps {
     backgroundColor?: string;
     borderColor?: string;
     color?: string;
 }
-export default class CircleIconWithChildren extends React.PureComponent<CircleIconWithChildrenProps> {
+export default class CircleIcon extends React.PureComponent<CircleIconProps> {
     render() {
         const {
             backgroundColor = 'white', 
