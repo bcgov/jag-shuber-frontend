@@ -14,7 +14,7 @@ import { ConnectedShowModalButton } from './ConnectedShowModalButton';
 import { show as showModal, hide as hideModal } from 'redux-modal';
 import { Button } from 'react-bootstrap';
 import { Glyphicon } from 'react-bootstrap';
-import SheriffProfileDetails from '../components/SheriffProfileDetails';
+import SheriffProfileDetails from '../components/SheriffProfile/SheriffProfileDetails';
 import { getSheriff } from '../modules/sheriffs/selectors';
 
 interface SheriffProfileModalProps {
