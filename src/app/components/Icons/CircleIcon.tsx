@@ -2,26 +2,23 @@ import React from 'react';
 import './Icons.css';
 
 export interface CircleIconProps {
-    backgroundColor?: string;
-    borderColor?: string;
-    color?: string;
+    style?: React.CSSProperties;
 }
 export default class CircleIcon extends React.PureComponent<CircleIconProps> {
     render() {
         const {
-            backgroundColor = 'white', 
-            borderColor = 'grey',
-            color = 'grey',
+            style = {}
         } = this.props;
         return (
             <div 
                 className="circle-icon" 
                 style={{
                     fontSize: 12, 
-                    borderColor, 
-                    color, 
-                    backgroundColor, 
-                    fontWeight: 'normal'
+                    borderColor: 'grey', 
+                    color: 'grey', 
+                    backgroundColor: 'white', 
+                    fontWeight: 'normal',
+                    ...style
                 }}
             >
                 {this.props.children}

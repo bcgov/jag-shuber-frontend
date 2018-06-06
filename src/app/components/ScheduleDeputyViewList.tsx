@@ -90,9 +90,11 @@ export default class ScheduleDeputyViewList extends React.PureComponent<Schedule
                                                     <div style={{ display: 'flex', alignItems: 'center' }}>
                                                         {includeWorkSection &&
                                                             <CircleIcon
-                                                                backgroundColor={backgroundColor}
-                                                                borderColor={backgroundColor}
-                                                                color={foregroundColor}
+                                                                style={{
+                                                                    backgroundColor, 
+                                                                    borderColor: backgroundColor, 
+                                                                    color: foregroundColor
+                                                                }}    
                                                             >
                                                                 {workSectionId ? workSectionId.charAt(0) : ''}
                                                             </CircleIcon>}
