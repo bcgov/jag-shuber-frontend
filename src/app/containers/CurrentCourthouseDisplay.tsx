@@ -7,8 +7,6 @@ import {
 } from '../api/Api';
 import { courthouseById } from '../modules/courthouse/selectors';
 import { currentCourthouse } from '../modules/user/selectors';
-import { Button } from 'react-bootstrap';
-import { Glyphicon } from 'react-bootstrap';
 
 interface CurrentCourthouseDisplayStateProps {
     courthouse?: Courthouse;
@@ -29,9 +27,6 @@ class CurrentCourthouseDisplay extends React.PureComponent<
         return (
             <span>
                 {courthouse ? courthouse.name : 'not selected'}
-                <Button bsStyle="link" onClick={() => window.location.reload()}>
-                    <Glyphicon glyph="refresh" />
-                </Button>
             </span>
         );
     }
