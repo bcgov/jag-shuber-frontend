@@ -102,6 +102,8 @@ declare module "react-calendar-timeline" {
         onTimeInit?(visibleTimeStart: any, visibleTimeEnd: any): any;
         onBoundsChange?(canvasTimeStart: any, canvasTimeEnd: any): any;
         children?: any;
+        stickyOffset?:number;
+        stickyHeader?:boolean;
         itemRenderer?: (props: { item: ReactCalendarTimelineItem }) => React.ReactNode;
         groupRenderer?: (props: { group: ReactCalendarTimelineGroup }) => React.ReactNode;
     }

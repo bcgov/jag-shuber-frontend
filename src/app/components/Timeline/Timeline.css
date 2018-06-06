@@ -50,5 +50,14 @@
 .react-calendar-timeline .rct-items .rct-item .rct-item-overflow .rct-item-content{
     padding:0;
     width:100%;
+}
 
+.react-calendar-timeline{
+    height: inherit;
+    overflow-y:auto;
+}
+
+.react-calendar-timeline .rct-header{
+    position:sticky;
+    top:0px;
 }

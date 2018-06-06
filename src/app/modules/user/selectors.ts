@@ -8,7 +8,7 @@ export const currentCourthouse = (state: RootState): string => {
 
 export const isCourthouseSet = createSelector(
     currentCourthouse,
-    (courthouse: string) => {
+    (courthouse) => {
         // tslint:disable-next-line:triple-equals
         return courthouse != undefined && courthouse !== '';
     }

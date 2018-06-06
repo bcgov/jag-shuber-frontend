@@ -27,7 +27,7 @@ export default class AssignmentDefaultList extends React.Component<AssignmentDef
                     <Table responsive={true} striped={true} >
                         <thead>
                             <tr>
-                                <th style={{width: 25}} />
+                                <th style={{width: 35}} />
                                 <th className="text-left">Work Section</th>
                                 <th className="text-left">Assignment</th>
                                 <th className="text-left">Default Duties <Badge># of Sheriffs</Badge></th>
@@ -38,10 +38,10 @@ export default class AssignmentDefaultList extends React.Component<AssignmentDef
                             {assignments.map((assignment) => {
                                 return (
                                     <tr key={assignment.id}>
-                                        <td>
+                                        <td style={{position:'relative'}}>
                                             <WorkSectionIndicator 
                                                 workSectionId={assignment.workSectionId} 
-                                                includeCode={false}
+                                                includeCode={false}                                                
                                             />
                                         </td>
                                         <td>{WORK_SECTIONS[assignment.workSectionId]}</td>

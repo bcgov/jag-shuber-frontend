@@ -23,8 +23,10 @@ import SheriffProfileModal from './containers/SheriffProfileModal';
 import ScheduleShiftCopyModal from './containers/ScheduleShiftCopyModal';
 import ScheduleShiftAddModal from './containers/ScheduleShiftAddModal';
 import PublishSchedule from './pages/PublishSchedule/PublishSchedule';
-import Footer from './components/Footer';
-import { isCourthouseSet } from '../app/modules/user/selectors';
+import Footer from './components/Footer/Footer';
+import {
+  isCourthouseSet as isCurrentCourthouseSet
+} from '../app/modules/user/selectors';
 
 export interface LayoutStateProps {
   isCourthouseSet?: boolean;
@@ -45,17 +47,15 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
           <div className="headerArea">
             <Navigation />
           </div>
-          {!isCourthouseSet &&
-            <div style={{ display: 'flex', justifyContent: 'center', }}>
+          {!isCourthouseSet && (
+            <div className="mainArea">
               <Well
                 style={{
-                  display: 'flex',
                   backgroundColor: 'white',
-                  flexDirection: 'column',
-                  flex: '1 1',
                   maxWidth: '80%',
                   minWidth: 800,
-                  height: '70%'
+                  height: '100%',
+                  margin:'auto'
                 }}
               >
                 <div style={{ paddingTop: 10 }}>
@@ -63,9 +63,10 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
                   <CurrentCourthouseSelector />
                 </div>
               </Well>
-            </div>}
+            </div>
+          )}
 
-          {isCourthouseSet &&
+          {isCourthouseSet && (
             <div className="mainArea">
               <Route exact={true} path="/" component={DutyRoster} />
               <Route path="/sheriffs/schedule" component={Scheduling} />
@@ -77,7 +78,8 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
               <SheriffProfileModal />
               <ScheduleShiftCopyModal />
               <ScheduleShiftAddModal />
-            </div>}
+            </div>
+          )}
           <div className="footerArea">
             <Footer />
           </div>
@@ -89,14 +91,14 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
 
 const mapStateToProps = (state: RootState) => {
   return {
-    isCourthouseSet: isCourthouseSet(state)
+    isCourthouseSet: isCurrentCourthouseSet(state)
   };
 };
 
 const mapDispatchToProps = {};
 
 const connectedLayout = connect<LayoutStateProps, LayoutDispatchProps, {}>(
-  mapStateToProps, 
+  mapStateToProps,
   mapDispatchToProps
 )(Layout);
 // Make our Layout the root of the Drag Drop Context

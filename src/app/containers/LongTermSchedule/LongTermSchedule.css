@@ -6,6 +6,10 @@
     opacity:1.0;
 }
 
+.scheduling-timeline{
+    height: inherit;
+}
+
 .scheduling-timeline .react-calendar-timeline .rct-items .rct-item.selected {
     background: transparent;
     border: 0px;
@@ -17,8 +21,4 @@
 
 .scheduling-timeline .shift-card:hover {
     margin: 1px;
-}
-
-.scheduling-timeline .react-calendar-timeline .rct-header .rct-label-group{
-    border: 0px;
 }

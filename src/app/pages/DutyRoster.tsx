@@ -7,11 +7,12 @@ import { ListGroup } from 'react-bootstrap';
 import SheriffDragSource from '../containers/SheriffDragSource';
 import DutyRosterSheriffCard from '../containers/DutyRosterSheriffCard';
 import DutyRosterControls from '../containers/DutyRosterControls';
+import Page from '../components/Page/Page';
 
 class DutyRoster extends React.PureComponent {
     render() {
         return (
-            <div >
+            <Page>
                 <div
                     className="toolbar"
                     style={{                   
@@ -38,7 +39,7 @@ class DutyRoster extends React.PureComponent {
                     </ListGroup>
                 </TimelineToolsPanel>
                 </div>
-            </div>
+            </Page>
         );
     }
 }
