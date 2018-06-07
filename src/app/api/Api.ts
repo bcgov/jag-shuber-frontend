@@ -310,6 +310,8 @@ export interface API {
 
     // Sheriff Leaves
     getLeaves(): Promise<Leave[]>;
+    createLeave(newLeave: Partial<Leave>): Promise<Leave>;
+    updateLeave(updatedLeave: Leave): Promise<Leave>;
 
     getCourtrooms(): Promise<Courtroom[]>;
     getRuns(): Promise<Run[]>;

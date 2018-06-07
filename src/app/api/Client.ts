@@ -130,13 +130,12 @@ export default class Client implements API {
     }
 
     async createSheriffProfile(newSheriffProfile: SheriffProfile): Promise<SheriffProfile> {
-        const { sheriff } = newSheriffProfile;
+        const { sheriff, leaves = [] } = newSheriffProfile;
         const newSheriff = await this.createSheriff(sheriff);
-        return { sheriff: newSheriff, leaves: [] };
-        // const newLeaves = Promise.all(
-        //         leaves.map(l => ({...l, sheriffId: newSheriff.id}))
-        //         .map(leave => this._client.createLeave(leave) as Promise<Leave>));
-
+        const newLeaves = await Promise.all(
+                leaves.map(l => ({...l, sheriffId: newSheriff.id}))
+                .map(leave => this.createLeave(leave)));
+        return { sheriff: newSheriff, leaves: newLeaves };
     }
 
     async updateSheriffProfile(sheriffProfileToUpdate: SheriffProfile): Promise<SheriffProfile> {
@@ -274,6 +273,14 @@ export default class Client implements API {
     getLeaves(): Promise<Leave[]> {
         console.warn('Using Mock API');
         return this._mockApi.getLeaves();
+    }
+
+    createLeave(newLeave: Partial<Leave>): Promise<Leave> {
+        throw new Error("Method not implemented.");
+    }
+
+    updateLeave(updatedLeave: Leave): Promise<Leave> {
+        throw new Error("Method not implemented.");
     }
 
     async getCourthouses(): Promise<Courthouse[]> {

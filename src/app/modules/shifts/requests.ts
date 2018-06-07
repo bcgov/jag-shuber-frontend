@@ -4,7 +4,7 @@ import arrayToMap from '../../../infrastructure/arrayToMap';
 import {
     STATE_KEY,
     ShiftModuleState
-} from '../common';
+} from './common';
 import {
     Shift,
     IdType,

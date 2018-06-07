@@ -2,14 +2,10 @@ import React from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
-import {
-    getSheriffLeaves,
-    getSheriffShifts
-} from '../modules/shifts/selectors';
-import {
-    getLeaves,
-    getShifts
-} from '../modules/shifts/actions';
+import { getSheriffShifts } from '../modules/shifts/selectors';
+import { getSheriffLeaves } from '../modules/leaves/selectors';
+import { getShifts } from '../modules/shifts/actions';
+import { getLeaves } from '../modules/leaves/actions';
 import {
     visibleTime
 } from '../modules/schedule/selectors';

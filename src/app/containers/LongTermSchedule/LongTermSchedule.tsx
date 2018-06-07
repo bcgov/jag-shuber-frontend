@@ -1,17 +1,15 @@
-import * as React from 'react';
-import * as moment from 'moment';
+import React from 'react';
+import moment from 'moment';
 import { connect } from 'react-redux';
 import { RootState } from '../../store';
-import {
-    allShifts,
-    allLeaves
-} from '../../modules/shifts/selectors';
+import { allShifts } from '../../modules/shifts/selectors';
+import { allLeaves } from '../../modules/leaves/selectors';
 import {
     getShifts,
     unlinkShift,
     linkShift,
-    getLeaves
 } from '../../modules/shifts/actions';
+import { getLeaves } from '../../modules/leaves/actions';
 import {
     default as ShiftSchedule,
     ShiftScheduleProps

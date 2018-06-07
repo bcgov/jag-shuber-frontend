@@ -1,5 +1,4 @@
-import * as shiftRequests from './requests/shifts';
-import * as leaveRequests from './requests/leaves';
+import * as shiftRequests from './requests';
 import { getShift } from './selectors';
 import { 
     IdType
@@ -13,8 +12,6 @@ export const editMultipleShifts = shiftRequests.updateMultipleShiftsRequest.acti
 export const deleteShift = shiftRequests.deleteShiftRequest.actionCreator;
 export const editShift = shiftRequests.updateShiftRequest.actionCreator;
 export const createShifts = shiftRequests.createShiftsRequest.actionCreator;
-
-export const getLeaves = leaveRequests.leaveMapRequest.actionCreator;
 
 type SheriffShiftLink = { sheriffId: IdType, shiftId: IdType };
 export const linkShift: ThunkAction<SheriffShiftLink> =
