@@ -23,7 +23,7 @@ class DutyRoster extends React.PureComponent {
             >
 
                 <div style={{ display: 'flex', flexDirection: 'row', height: 'inherit' }}>
-                    <div style={{ flex: '1 0px', minWidth: 500 }}>
+                    <div style={{ flex: '1 0px', minWidth: 500, height: 'inherit' }}>
                         <DutyRosterTimeline />
                     </div>
                     <TimelineToolsPanel titleText="My Team" titleBackgroundBorderLeft="1px solid #003366">

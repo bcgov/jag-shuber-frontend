@@ -30,3 +30,7 @@
 .duty-roster-timeline .react-calendar-timeline .rct-sidebar{
     border-right: 0px;
 }
+
+.duty-roster-timeline{
+    height:inherit;
+}
