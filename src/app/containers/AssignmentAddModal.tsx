@@ -20,7 +20,7 @@ export default class AssignmentAddModal extends React.Component<AssignmentAddMod
                 <ModalWrapper
                     title={title}
                     showButton={({ handleShow }) =>
-                        <DropdownButton bsStyle="primary" id="task-type-dropdown" title={title} >
+                        <DropdownButton className="action-button" id="task-type-dropdown" title={title} >
                             {
                                 Object.keys(WORK_SECTIONS).map((k, i) => {
                                     return (

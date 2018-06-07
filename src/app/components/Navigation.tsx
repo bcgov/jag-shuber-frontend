@@ -2,8 +2,8 @@ import * as React from 'react';
 import {
     Nav,
     Navbar,
-    NavbarBrand, 
-    NavDropdown, 
+    NavbarBrand,
+    NavDropdown,
     MenuItem
 } from 'react-bootstrap';
 import NavigationLink from './NavigationLink';
@@ -29,7 +29,15 @@ export default class Navigation extends React.Component<NavigationProps, any> {
                         </NavbarBrand>
                     </Navbar.Header>
                     <Nav bsStyle="tabs">
-                        <NavigationLink exactMatch={true} to="/" label="Duty Roster" />
+
+                        <NavDropdown title="Duty Roster" id="duty_roster_dropdown">
+                            <MenuItem>
+                                <NavigationLink exactMatch={true} to="/" label="Duty Roster" />
+                            </MenuItem>
+                            <MenuItem>
+                                <NavigationLink to="/assignments/manage/default" label="Set-Up" />
+                            </MenuItem>
+                        </NavDropdown>
                         <NavDropdown title="Schedule" id="schedule_dropdown">
                             <MenuItem>
                                 <NavigationLink to="/sheriffs/schedule" label="Manage Schedule" />
@@ -39,13 +47,12 @@ export default class Navigation extends React.Component<NavigationProps, any> {
                             </MenuItem>
                         </NavDropdown>
                         <NavigationLink to="/sheriffs/manage" label="My Team" />
-                        <NavigationLink to="/assignments/manage/default" label="Duty Roster Set-Up" />
                     </Nav>
                     <Nav pullRight={true} style={{ paddingTop: 13, paddingRight: 15 }}>
-                        <CurrentCourthouseSelector/>
+                        <CurrentCourthouseSelector />
                     </Nav>
                 </Navbar>
-            </div>
+            </div >
         );
     }
 }

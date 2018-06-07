@@ -96,7 +96,7 @@ export default class ScheduleControlPanelForm extends
                     <Button className="cancel-button" style={{marginRight: 6}} onClick={() => onClear && onClear()}>
                         Clear
                     </Button>
-                   <Button className="apply-button" onClick={() => onApply && onApply()}>
+                   <Button className="action-button" onClick={() => onApply && onApply()}>
                         Apply <span style={{ paddingTop: 2, fontSize: 10 }}>&#9658;</span>
                     </Button>
                 </Form>
