@@ -239,8 +239,12 @@ export interface ShiftCopyOptions {
 export interface Leave {
     id: IdType;
     sheriffId: IdType;
-    date: DateType;
-    leaveCode?: string;
+    leaveTypeCode?: string;
+    startDate: DateType;
+    endDate: DateType;
+    cancelDate?: DateType;
+    cancelReasonCode?: string;
+    
 }
 
 export interface Run {

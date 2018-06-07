@@ -33,7 +33,7 @@ export default class ProfileSection extends React.Component<ProfileSectionProps,
                     {sectionTitle}
                     <Glyphicon
                         className="collapsible-section-arrow"
-                        glyph={!isCollapsed ? 'chevron-down' : 'chevron-up'}
+                        glyph={!isCollapsed ? 'chevron-up' : 'chevron-down'}
                     />
                 </div>
                 <Collapse in={!isCollapsed}>

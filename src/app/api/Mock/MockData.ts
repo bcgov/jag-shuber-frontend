@@ -1055,11 +1055,13 @@ export const sheriffLeaves: Leave[] = [
     {
         id: '1',
         sheriffId: '1',
-        date: moment().startOf('week').add(1, 'day')
+        startDate: moment().startOf('week').add(1, 'day'),
+        endDate: moment().startOf('week').add(4, 'day')
     },
     {
         id: '2',
         sheriffId: '2',
-        date: moment()
+        startDate: moment().startOf('week').add(1, 'day'),
+        endDate: moment().startOf('week').add(4, 'day')
     }
 ];

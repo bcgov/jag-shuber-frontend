@@ -1,18 +1,36 @@
 import React from 'react';
 import {
-    Form
+    Form,
+    Table,
+    Button,
+    Glyphicon
 } from 'react-bootstrap';
 import {
     Field,
-    InjectedFormProps
+    InjectedFormProps,
+    FieldArray
 } from 'redux-form';
 import TextField from './../FormElements/TextField';
 import * as Validators from '../../infrastructure/Validators';
 import CourthouseSelector from '../../containers/CourthouseSelector';
-import { Sheriff } from '../../api/Api';
+import {
+    Sheriff,
+    IdType,
+    Leave,
+    DateType
+} from '../../api/Api';
 import SheriffRankSelector from '../../containers/CourthouseSheriffRankCodeSelector';
 import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
+import DateField from '../FormElements/DateField';
 
+interface RecurrenceProps {
+    id?: IdType;
+    startDate: DateType;
+    endDate: DateType;
+    leaveTypeCode: string;
+}
+class RecurrenceFieldArray extends FieldArray<RecurrenceProps | Partial<Leave>> {
+}
 export interface SheriffFormProps {
     handleSubmit?: () => void;
     onSubmitSuccess?: () => void;
@@ -35,7 +53,7 @@ export default class SheriffForm extends
         return (
             <div>
                 <Form onSubmit={handleSubmit} >
-                    <CollapsibleSection sectionTitle="Identification" isInitiallyCollapsed={false}>
+                    <CollapsibleSection sectionTitle="Identification">
                         <Field
                             name="firstName"
                             component={TextField as any}
@@ -82,8 +100,57 @@ export default class SheriffForm extends
                         />
                     </CollapsibleSection>
 
-                    <CollapsibleSection sectionTitle="Leave">
-                        HERE
+                    <CollapsibleSection sectionTitle="Leave" isInitiallyCollapsed={false}>
+                        <RecurrenceFieldArray
+                            name="leaves"
+                            component={(p) => {
+                                const { fields } = p;
+                                return (
+                                    <Table striped={true} responsive={true}>
+                                        <thead>
+                                            <tr>
+                                                <th className="text-left">Start Date</th>
+                                                <th className="text-left">End Date</th>
+                                                <th className="text-left">Type</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {fields.map((fieldInstanceName, index) => {
+                                                return (
+                                                    <tr key={index}>
+                                                        <td>
+                                                            <Field
+                                                                name={`${fieldInstanceName}.startDate`}
+                                                                component={DateField as any}
+                                                            />
+                                                        </td>
+                                                        <td>
+                                                            <Field
+                                                                name={`${fieldInstanceName}.endDate`}
+                                                                component={DateField as any}
+                                                            />
+                                                        </td>
+                                                        <td>
+                                                            <Field
+                                                                name={`${fieldInstanceName}.trainingTypeCode`}
+                                                                component={TextField as any}
+                                                                label="Type Code"
+                                                            />
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            })}
+                                            <br />
+                                            <Button
+                                                onClick={() => fields.push({})}
+                                            >
+                                                <Glyphicon glyph="plus" />
+                                            </Button>
+                                        </tbody>
+                                    </Table>
+                                );
+                            }}
+                        />
                     </CollapsibleSection>
                 </Form>
             </div>
