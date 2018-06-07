@@ -6,7 +6,7 @@ import {
 import {
     default as SheriffForm,
     SheriffFormProps
-} from '../components/SheriffForm';
+} from '../components/SheriffProfile/SheriffForm';
 import {
     default as FormSubmitButton,
     SubmitButtonProps
