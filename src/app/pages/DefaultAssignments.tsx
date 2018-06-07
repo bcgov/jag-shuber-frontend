@@ -33,8 +33,6 @@ class DefaultAssignments extends React.PureComponent {
                     }}
                 >
                     <AssignmentList />
-                    <AssignmentList />
-
                 </Well>
             </Page>
         );

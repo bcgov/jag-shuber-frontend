@@ -26,7 +26,7 @@ class DutyRosterControls extends React.PureComponent<
     render() {
         const { visibleTimeStart, visibleTimeEnd, updateVisibleTime } = this.props;
         return (
-            <div style={{ textAlign: 'center', display: 'flex'}}>
+            <div style={{ display: 'flex'}}>
                 <DateRangeControls
                     defaultDate={moment(visibleTimeStart)}
                     onNext={() => updateVisibleTime(

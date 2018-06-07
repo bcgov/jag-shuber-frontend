@@ -12,32 +12,33 @@ import Page from '../components/Page/Page';
 class DutyRoster extends React.PureComponent {
     render() {
         return (
-            <Page>
-                <div
-                    className="toolbar"
-                    style={{                   
-                        justifyContent: 'center'
-                    }}
-                >
-                    <DutyRosterControls />
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'row' }}>
-                <div style={{ flex: '1 0px', minWidth: 500 }}>
-                    <DutyRosterTimeline />
-                </div>
-                <TimelineToolsPanel titleText="My Team" titleBackgroundBorderLeft="1px solid #003366">
-                    <ListGroup>
-                        <SheriffList 
-                            SheriffRenderer={(s: Sheriff) => 
-                                (<SheriffDragSource sheriff={s}>
-                                        <DutyRosterSheriffCard  
-                                            sheriff={s} 
+            <Page
+                toolbarStyle={{ justifyContent: 'center' }}
+                contentStyle={{ height: 'inherit' }}
+                toolbar={(
+                    <div style={{ flex: 1, display: 'flex', position: 'relative', justifyContent: 'center' }}>
+                        <DutyRosterControls />
+                    </div>
+                )}
+            >
+
+                <div style={{ display: 'flex', flexDirection: 'row', height: 'inherit' }}>
+                    <div style={{ flex: '1 0px', minWidth: 500 }}>
+                        <DutyRosterTimeline />
+                    </div>
+                    <TimelineToolsPanel titleText="My Team" titleBackgroundBorderLeft="1px solid #003366">
+                        <ListGroup>
+                            <SheriffList
+                                SheriffRenderer={(s: Sheriff) =>
+                                    (<SheriffDragSource sheriff={s}>
+                                        <DutyRosterSheriffCard
+                                            sheriff={s}
                                         />
                                     </SheriffDragSource>
-                                )} 
-                        />
-                    </ListGroup>
-                </TimelineToolsPanel>
+                                    )}
+                            />
+                        </ListGroup>
+                    </TimelineToolsPanel>
                 </div>
             </Page>
         );
