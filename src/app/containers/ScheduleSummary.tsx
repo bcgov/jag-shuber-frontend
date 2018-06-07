@@ -94,8 +94,12 @@ class ConnectedScheduleSummary extends React.Component<ConnectedScheduleSummaryP
         }
 
         leavesForWeek.forEach(leave => {
-            let day = this.getDay(moment(leave.startDate));
-            weekStatus[day] = StatusEnum.BAD;
+            let currentDate = moment(leave.startDate);
+            while (currentDate.isSameOrBefore(moment(visibleTimeEnd), 'days')) {
+                let day = this.getDay(moment(currentDate));
+                weekStatus[day] = StatusEnum.BAD;
+                currentDate = moment(currentDate).add(1, 'days');
+            }
         });
 
         shiftsForWeek.forEach(shift => {

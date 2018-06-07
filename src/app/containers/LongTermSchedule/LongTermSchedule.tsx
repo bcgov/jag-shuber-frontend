@@ -76,7 +76,7 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
         const { leaves } = this.props;
         let leavesForSheriff = leaves.filter(l => l.sheriffId === sheriffId);
         let dateFilteredLeaves = leavesForSheriff.filter(l =>
-            moment(l.startDate).isBetween(shift.startDateTime, shift.endDateTime, 'days', '[]'));
+            moment(shift.startDateTime).isBetween(moment(l.startDate), moment(l.endDate), 'days', '[]'));
         return dateFilteredLeaves.length > 0;
     }
 
