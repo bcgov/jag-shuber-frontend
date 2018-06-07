@@ -67,7 +67,7 @@ class ScheduleControls extends React.PureComponent<
             >
                 <div
                     style={{
-                        margin: 10,
+                        margin: '5px 10px' ,
                         paddingRight: 15
                     }}
                 >

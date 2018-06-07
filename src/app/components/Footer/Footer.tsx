@@ -1,9 +1,10 @@
 import * as React from 'react';
-import Legend from './Legend/Legend';
+import Legend from '../Legend/Legend';
 import {
   Glyphicon,
   Collapse
 } from 'react-bootstrap';
+import './Footer.css';
 
 export interface FooterProps {
   isInitallyCollapsed?: boolean;
@@ -20,7 +21,7 @@ export default class Footer extends React.PureComponent<FooterProps, { isCollaps
   render() {
     const { isCollapsed } = this.state;
     return (
-      <div>
+      <div className="footerContainer">
         <div
           className="footerArrowBackground"
           onClick={() => this.setState({ isCollapsed: !this.state.isCollapsed })}

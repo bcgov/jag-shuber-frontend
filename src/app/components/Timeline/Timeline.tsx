@@ -97,6 +97,8 @@ export default class Timeline<TItem, TGroup> extends React.PureComponent<Timelin
                 sidebarContent={sideBarHeaderComponent(this.props)}
                 traditionalZoom={true}
                 itemHeightRatio={itemHeightRatio}
+                stickyHeader={true}
+                stickyOffset={200}
                 itemRenderer={({ item }: { item: TimelineItemProps & TItem }) => this.renderItem(item)}
                 groupRenderer={({ group }: { group: TimelineGroupProps & TGroup }) => this.renderGroup(group)}
                 ref={(t) => this._timelineRef = t}

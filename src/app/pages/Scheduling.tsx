@@ -8,34 +8,37 @@ import { ListGroup } from 'react-bootstrap';
 import SheriffDragSource from '../containers/SheriffDragSource';
 import ScheduleSummary from '../containers/ScheduleSummary';
 import ScheduleControls from '../containers/ScheduleControls';
+import Page from '../components/Page/Page';
 
 class SchedulingPage extends React.PureComponent {
     render() {
         return (
-            <div>
-                <div className="toolbar">
+            <Page
+                toolbar={
                     <ScheduleControls />
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                }
+                contentStyle={{ height: 'inherit' }}
+            >
+                <div style={{ display: 'flex', flexDirection: 'row', height: 'inherit' }}>
                     <TimelineToolsPanel titleText="My Team" titleBackgroundBorderRight="1px solid #003366">
                         <ListGroup>
                             <SheriffList
                                 SheriffRenderer={(s: Sheriff) => (
                                     <SheriffDragSource sheriff={s}>
                                         <SheriffListCard sheriff={s} >
-                                            <div style={{paddingLeft: 25}}><ScheduleSummary sheriffId={s.id}/></div>
+                                            <div style={{ paddingLeft: 25 }}><ScheduleSummary sheriffId={s.id} /></div>
                                         </SheriffListCard>
                                     </SheriffDragSource>
                                 )}
                             />
                         </ListGroup>
                     </TimelineToolsPanel>
-                    <div style={{ flex: '1 0px', minWidth: 500 }}>
+                    <div style={{ flex: '1 0 0px', minWidth: 500, height:'inherit' }}>
                         <SchedulingTimeline />
                     </div>
                 </div>
 
-            </div>
+            </Page>
         );
     }
 }
