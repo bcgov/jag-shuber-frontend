@@ -110,7 +110,7 @@ class ScheduleControls extends React.PureComponent<
                     />
                     <div
                         style={{
-                            paddingTop: 8,
+                            paddingTop: 2,
                             background: '#003366',
                             zIndex: 900,
                             textAlign: 'left'
@@ -119,7 +119,15 @@ class ScheduleControls extends React.PureComponent<
                         <Dropdown id="schedule-control-menu" pullRight={true}>
                             <Dropdown.Toggle
                                 noCaret={true}
-                                style={{ fontSize: 18, background: 'transparent', color: 'white', border: 0 }}>
+                                style={{ 
+                                    fontSize: 22, 
+                                    background: 'transparent', 
+                                    color: 'white', 
+                                    border: 0,
+                                    paddingLeft: 18, 
+                                    paddingRight: 15 
+                                }}
+                            >
                                 <Glyphicon glyph="menu-hamburger" />
                             </Dropdown.Toggle>
                             <Dropdown.Menu>

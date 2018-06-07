@@ -19,7 +19,6 @@ class ImportDefaultDutiesModal extends React.PureComponent<
 
     render() {
         const {
-            color = 'white',
             createDefaultDuties,
             date
         } = this.props;
@@ -33,8 +32,8 @@ class ImportDefaultDutiesModal extends React.PureComponent<
                 <ConfirmationModal
                     title="Import Default Duties"
                     message={importConfirmationMessage}
-                    actionBtnLabel={<span style={{color}} > Import Defaults</span>}
-                    actionBtnStyle="link"
+                    actionBtnClassName="action-button"
+                    actionBtnLabel={<span> Import Defaults</span>}
                     confirmBtnLabel="Yes"
                     confirmBtnStyle="success"
                     cancelBtnLabel="No"

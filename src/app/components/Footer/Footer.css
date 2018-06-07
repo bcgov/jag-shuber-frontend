@@ -4,16 +4,16 @@
 }
 
 .footerArrowBackground { 
-    height: 45px;
-    width: 90px;
+    height: 37px;
+    width: 73px;
     text-align: center;
     -moz-border-radius: 90px 90px 0 0;
     -webkit-border-radius: 90px 90px 0 0;   
     border-radius: 90px 90px 0 0;
     background-color: #003366;
     position: absolute;
-    top:-40px;
-    right:20px;  
+    top:-28px;
+    right:20px;  	
 }
 
 .footerArrow { 

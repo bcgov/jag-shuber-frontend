@@ -26,27 +26,29 @@ class DutyRosterControls extends React.PureComponent<
     render() {
         const { visibleTimeStart, visibleTimeEnd, updateVisibleTime } = this.props;
         return (
-            <div style={{ display: 'flex'}}>
-                <DateRangeControls
-                    defaultDate={moment(visibleTimeStart)}
-                    onNext={() => updateVisibleTime(
-                        moment(visibleTimeStart).add('day', 1),
-                        moment(visibleTimeEnd).add('day', 1)
-                    )}
-                    onPrevious={() => updateVisibleTime(
-                        moment(visibleTimeStart).subtract('day', 1),
-                        moment(visibleTimeEnd).subtract('day', 1)
-                    )}
-                    onSelect={(selectedDate) => updateVisibleTime(
-                        TimeUtils.getDefaultStartTime(moment(selectedDate)),
-                        TimeUtils.getDefaultEndTime(moment(selectedDate))
-                    )}
-                    onToday={() => updateVisibleTime(
-                        TimeUtils.getDefaultStartTime(),
-                        TimeUtils.getDefaultEndTime()
-                    )}
-                />              
-                <ImportDefaultDutiesModal date={visibleTimeStart} />              
+            <div style={{ display: 'flex' }}>
+                <div className="toolbar-calendar-control">
+                    <DateRangeControls
+                        defaultDate={moment(visibleTimeStart)}
+                        onNext={() => updateVisibleTime(
+                            moment(visibleTimeStart).add('day', 1),
+                            moment(visibleTimeEnd).add('day', 1)
+                        )}
+                        onPrevious={() => updateVisibleTime(
+                            moment(visibleTimeStart).subtract('day', 1),
+                            moment(visibleTimeEnd).subtract('day', 1)
+                        )}
+                        onSelect={(selectedDate) => updateVisibleTime(
+                            TimeUtils.getDefaultStartTime(moment(selectedDate)),
+                            TimeUtils.getDefaultEndTime(moment(selectedDate))
+                        )}
+                        onToday={() => updateVisibleTime(
+                            TimeUtils.getDefaultStartTime(),
+                            TimeUtils.getDefaultEndTime()
+                        )}
+                    />
+                </div>
+                <ImportDefaultDutiesModal date={visibleTimeStart} />
             </div >
         );
     }
