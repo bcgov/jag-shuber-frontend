@@ -40,11 +40,11 @@ export interface SheriffProfileFormProps {
 export default class SheriffProfileForm extends
     React.PureComponent<SheriffProfileFormProps & InjectedFormProps<{}, SheriffProfileFormProps>, {}> {
 
-    static parseSheriffFromValues(values: any): SheriffProfile {
+    static parseSheriffProfileFromValues(values: any): SheriffProfile {
         return { ...values } as SheriffProfile;
     }
 
-    static sheriffToFormValues(sheriffProfile: SheriffProfile): any {
+    static sheriffProfileToFormValues(sheriffProfile: SheriffProfile): any {
         return { ...sheriffProfile };
     }
 

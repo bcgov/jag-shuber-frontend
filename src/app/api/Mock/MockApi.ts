@@ -63,6 +63,9 @@ function getAssignmentTitle(assignment: Partial<Assignment>): string {
 }
 
 export default class MockClient implements API {
+    updateSheriffProfile(sheriffProfileToUpdate: SheriffProfile): Promise<SheriffProfile> {
+        throw new Error("Method not implemented.");
+    }
     createSheriffProfile(newSheriffProfile: SheriffProfile): Promise<SheriffProfile> {
         throw new Error("Method not implemented.");
     }

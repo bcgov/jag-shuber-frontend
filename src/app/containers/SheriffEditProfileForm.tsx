@@ -14,7 +14,6 @@ import {
 import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { getSheriff } from '../modules/sheriffs/selectors';
-// import { updateSheriff } from '../modules/sheriffs/actions';
 import {
     IdType,
 } from '../api';
@@ -23,7 +22,8 @@ import {
 const formConfig: ConfigProps<any, SheriffProfileFormProps> = {
     form: 'EditSherif',
     onSubmit: (values, dispatch, props) => {
-        //const updatedSheriff = SheriffProfileForm.parseSheriffFromValues(values);
+        const updatedSheriffProfile = SheriffProfileForm.parseSheriffProfileFromValues(values);
+        console.log(updatedSheriffProfile);
         //dispatch(updateSheriff(updatedSheriff));
         // dispatch update sheriff leaves
     }

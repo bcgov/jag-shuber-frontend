@@ -10,6 +10,7 @@ export interface SheriffModuleState {
     createSheriff?: RequestActionState<Sheriff>;
     updateSheriff?: RequestActionState<Sheriff>;
     createSheriffProfile?: RequestActionState<SheriffProfile>;
+    updateSheriffProfile?: RequestActionState<SheriffProfile>;
 }
 
 export const STATE_KEY: string = 'sheriffs';

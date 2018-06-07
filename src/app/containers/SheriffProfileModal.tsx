@@ -71,15 +71,17 @@ class SheriffProfileModal extends React.PureComponent<CompositeProps> {
                         />}
                     {!isEditing && <SheriffProfileDisplay sheriff={sheriff}/>}
                 </Modal.Body>
-                <Modal.Footer>
-                    {isEditing && 
-                        <div>
-                            <Button onClick={() => showSheriffProfileModal(sheriffId, false)}>
-                                Cancel
-                            </Button>
-                            <SheriffProfileEditForm.SubmitButton key="save">Save</SheriffProfileEditForm.SubmitButton>
-                        </div>}
-                </Modal.Footer>
+                {isEditing && 
+                    <Modal.Footer>                        
+                            <div>
+                                <Button onClick={() => showSheriffProfileModal(sheriffId, false)}>
+                                    Cancel
+                                </Button>
+                                <SheriffProfileEditForm.SubmitButton key="save">
+                                    Save
+                                </SheriffProfileEditForm.SubmitButton>
+                            </div>
+                    </Modal.Footer>}
             </Modal>
         );
     }
