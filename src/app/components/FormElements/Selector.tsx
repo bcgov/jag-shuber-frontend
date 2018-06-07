@@ -9,6 +9,7 @@ export interface SelectorProps {
     showVariedOption?: boolean;
     variedLabel?: string;
     isDisabled?: boolean;
+    showLabel?: boolean;
 }
 
 export default class Selector extends React.PureComponent<FormFieldWrapperProps & SelectorProps> {
@@ -27,10 +28,11 @@ export default class Selector extends React.PureComponent<FormFieldWrapperProps 
             noneLabel = 'None',
             showVariedOption = false,
             variedLabel = 'Varied',
-            isDisabled = false 
+            isDisabled = false,
+            showLabel = true 
         } = this.props;
         return (
-            <FormFieldWrapper {...this.props}>
+            <FormFieldWrapper {...this.props} showLabel={showLabel}>
                 <FormControl componentClass="select" value={value} onChange={onChange} disabled={isDisabled}>
                     {!allowNone &&
                          <option disabled={true} selected={value === ''} value="">{`Select ${label}`}</option>}

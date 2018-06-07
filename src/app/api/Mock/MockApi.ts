@@ -10,7 +10,7 @@ import {
     AssignmentDuty,
     IdType,
     Shift,
-    Leave,
+    // Leave,
     ShiftCopyOptions,
     Run,
     JailRole,
@@ -18,7 +18,9 @@ import {
     SheriffDuty,
     Courthouse,
     ShiftUpdates,
-    SheriffRank
+    SheriffRank,
+    Leave,
+    SheriffProfile
 } from '../Api';
 import {
     sheriffList,
@@ -61,6 +63,9 @@ function getAssignmentTitle(assignment: Partial<Assignment>): string {
 }
 
 export default class MockClient implements API {
+    createSheriffProfile(newSheriffProfile: SheriffProfile): Promise<SheriffProfile> {
+        throw new Error("Method not implemented.");
+    }
     getSheriffRankCodes(): Promise<SheriffRank[]> {
         throw new Error("Method not implemented.");
     }
@@ -331,7 +336,7 @@ export default class MockClient implements API {
     }
 
     async getLeaves(): Promise<Leave[]> {
-        return sheriffLeaves;
+        return [];
     }
 
     getCourtrooms(): Promise<Courtroom[]> {
