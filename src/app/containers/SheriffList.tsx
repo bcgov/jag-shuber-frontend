@@ -54,7 +54,7 @@ class SheriffList extends React.Component<CompositeProps> {
     }
 
     return (
-      <div style={{ display: 'flex', flexFlow: 'row wrap', justifyContent:'space-evenly' }}>
+      <div style={{ display: 'flex', flexFlow: 'row wrap', justifyContent:'center' }}>
         {sheriffs.map(sheriff => (
           <div
             key={sheriff.badgeNo}

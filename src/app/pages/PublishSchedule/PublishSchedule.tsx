@@ -18,8 +18,7 @@ class DeputySchedule extends React.PureComponent {
         const currentCourthouseId = (api as Client).currentCourthouse;
         return (
             <Page
-                // style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'baseline' }}
-                toolbar={<SchedulePublishViewControls/>}
+                toolbar={<SchedulePublishViewControls />}
             >
                 <div id="deputySchedule">
                     <div style={{ display: 'flex', justifyContent: 'center' }}>
