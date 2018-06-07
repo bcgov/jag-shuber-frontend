@@ -1,8 +1,9 @@
 import React from 'react';
 import moment from 'moment';
-import { default as FormFieldWrapper, FormFieldWrapperProps } from './FormFieldWrapper';
+import { default as FormFieldWrapper, FormFieldWrapperProps } from '../FormFieldWrapper';
 import * as DateTime from 'react-datetime';
 import 'react-datetime/css/react-datetime.css';
+import './DateField.css';
 
 export interface DateFieldProps {
     closeOnSelect?: boolean;
@@ -22,7 +23,7 @@ export default class DateField extends React.PureComponent<FormFieldWrapperProps
     render() {
         const { input: { value }, closeOnSelect = true } = this.props;
         return (
-            <FormFieldWrapper {...this.props} >
+            <FormFieldWrapper {...this.props} showLabel={false} >
                 <DateTime
                     dateFormat={'MMM DD YYYY'}
                     timeFormat={false}

@@ -1,5 +1,5 @@
-import React from 'react';
-import { default as SheriffCreateForm } from '../containers/SheriffCreateForm';
+import * as React from 'react';
+import { default as SheriffProfileCreateForm } from '../containers/SheriffCreateProfileForm';
 import {
     Button,
     Glyphicon
@@ -15,8 +15,8 @@ export default class SheriffAddModal extends React.Component {
                     <Button className="action-button" onClick={() => handleShow()}>
                         <Glyphicon glyph="plus"/> Add a Sheriff
                     </Button>}
-                body={({ handleClose }) => <SheriffCreateForm onSubmitSuccess={handleClose} />}
-                footerComponent={<SheriffCreateForm.SubmitButton>Save</SheriffCreateForm.SubmitButton>}
+                body={({ handleClose }) => <SheriffProfileCreateForm onSubmitSuccess={handleClose} />}
+                footerComponent={<SheriffProfileCreateForm.SubmitButton>Save</SheriffProfileCreateForm.SubmitButton>}
                 styleClassName="modal-wrapper-medium"
             />
         );

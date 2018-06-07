@@ -21,7 +21,8 @@ import {
 } from '../../api/Api';
 import SheriffRankSelector from '../../containers/CourthouseSheriffRankCodeSelector';
 import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
-import DateField from '../FormElements/DateField';
+import DateField from '../FormElements/DateField/DateField';
+import LeaveTypeSelector from '../../containers/LeaveTypeSelector';
 
 interface RecurrenceProps {
     id?: IdType;
@@ -31,13 +32,13 @@ interface RecurrenceProps {
 }
 class RecurrenceFieldArray extends FieldArray<RecurrenceProps | Partial<Leave>> {
 }
-export interface SheriffFormProps {
+export interface SheriffProfileFormProps {
     handleSubmit?: () => void;
     onSubmitSuccess?: () => void;
 }
 
-export default class SheriffForm extends
-    React.PureComponent<SheriffFormProps & InjectedFormProps<{}, SheriffFormProps>, {}> {
+export default class SheriffProfileForm extends
+    React.PureComponent<SheriffProfileFormProps & InjectedFormProps<{}, SheriffProfileFormProps>, {}> {
 
     static parseSheriffFromValues(values: any): Sheriff {
         return { ...values } as Sheriff;
@@ -106,7 +107,7 @@ export default class SheriffForm extends
                             component={(p) => {
                                 const { fields } = p;
                                 return (
-                                    <Table striped={true} responsive={true}>
+                                    <Table striped={true} >
                                         <thead>
                                             <tr>
                                                 <th className="text-left">Start Date</th>
@@ -133,7 +134,7 @@ export default class SheriffForm extends
                                                         <td>
                                                             <Field
                                                                 name={`${fieldInstanceName}.trainingTypeCode`}
-                                                                component={TextField as any}
+                                                                component={LeaveTypeSelector as any}
                                                                 label="Type Code"
                                                             />
                                                         </td>

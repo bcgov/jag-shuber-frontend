@@ -9,11 +9,12 @@ import SheriffRankDisplay from '../../containers/SheriffRankDisplay';
 import './SheriffProfile.css';
 import toTitleCase from '../../infrastructure/toTitleCase';
 import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
-export interface SheriffProfileDetailsProps {
+export interface SheriffProfileDisplayProps {
     sheriff: Sheriff;
+    // sheriff leaves array
 }
 
-export default class SheriffProfileDetails extends React.PureComponent<SheriffProfileDetailsProps, {}> {
+export default class SheriffProfileDisplay extends React.PureComponent<SheriffProfileDisplayProps, {}> {
 
     render() {
         const {

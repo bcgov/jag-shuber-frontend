@@ -3,7 +3,7 @@ import { RootState } from '../store';
 import {
     Modal
 } from 'react-bootstrap';
-import SheriffEditForm from './SheriffEditForm';
+import SheriffProfileEditForm from './SheriffEditProfileForm';
 import { 
     Sheriff, 
     IdType 
@@ -14,7 +14,7 @@ import { ConnectedShowModalButton } from './ConnectedShowModalButton';
 import { show as showModal, hide as hideModal } from 'redux-modal';
 import { Button } from 'react-bootstrap';
 import { Glyphicon } from 'react-bootstrap';
-import SheriffProfileDetails from '../components/SheriffProfile/SheriffProfileDetails';
+import SheriffProfileDisplay from '../components/SheriffProfile/SheriffProfileDisplay';
 import { getSheriff } from '../modules/sheriffs/selectors';
 
 interface SheriffProfileModalProps {
@@ -65,11 +65,11 @@ class SheriffProfileModal extends React.PureComponent<CompositeProps> {
                         <Glyphicon glyph="pencil"/>
                     </Button>}
                     {isEditing && 
-                        <SheriffEditForm 
+                        <SheriffProfileEditForm 
                             id={sheriff.id} 
                             onSubmitSuccess={() => showSheriffProfileModal(sheriffId, false)}
                         />}
-                    {!isEditing && <SheriffProfileDetails sheriff={sheriff}/>}
+                    {!isEditing && <SheriffProfileDisplay sheriff={sheriff}/>}
                 </Modal.Body>
                 <Modal.Footer>
                     {isEditing && 
@@ -77,7 +77,7 @@ class SheriffProfileModal extends React.PureComponent<CompositeProps> {
                             <Button onClick={() => showSheriffProfileModal(sheriffId, false)}>
                                 Cancel
                             </Button>
-                            <SheriffEditForm.SubmitButton key="save">Save</SheriffEditForm.SubmitButton>
+                            <SheriffProfileEditForm.SubmitButton key="save">Save</SheriffProfileEditForm.SubmitButton>
                         </div>}
                 </Modal.Footer>
             </Modal>
