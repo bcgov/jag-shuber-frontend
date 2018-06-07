@@ -18,14 +18,20 @@ class ManageSheriffs extends React.PureComponent {
                     />
                 }
             >
-                
-                <div style={{alignSelf: 'center', paddingBottom: 15}}>
-                    <h1>Manage Sheriffs</h1>
-                </div>
-                <div style={{textAlign: 'right'}}>
-                    <SheriffProfileAddModal />
-                </div><br/>
-                <SheriffList />
+                <Well
+                    style={{
+                        display: 'flex',
+                        backgroundColor: 'white',
+                        flexDirection: 'column',
+                        flex: '1 1',
+                        maxWidth: '80%',
+                        minWidth: 800,
+                        height: 'max-content',
+                        margin: '0 auto'
+                    }}
+                >
+                    <SheriffList />
+                </Well>
             </Page>
         );
     }
