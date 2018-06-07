@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { default as SheriffProfileAddModal } from '../containers/SheriffProfileAddModal';
 import SheriffList from '../containers/SheriffList';
 import { Well } from 'react-bootstrap';

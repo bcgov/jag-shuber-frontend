@@ -12,7 +12,8 @@ export {
 const nestedReducer = new NestedReducer([
   sheriffRequests.sheriffMapRequest.reducer,
   sheriffRequests.createSheriffRequest.reducer,
-  sheriffRequests.updateSheriffRequest.reducer  
+  sheriffRequests.updateSheriffRequest.reducer ,
+  sheriffRequests.createSheriffProfileRequest.reducer 
 ]);
 
 const reducer = nestedReducer.reducer;

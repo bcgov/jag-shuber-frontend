@@ -14,7 +14,7 @@ import TextField from './../FormElements/TextField';
 import * as Validators from '../../infrastructure/Validators';
 import CourthouseSelector from '../../containers/CourthouseSelector';
 import {
-    Sheriff,
+    SheriffProfile,
     IdType,
     Leave,
     DateType
@@ -40,12 +40,12 @@ export interface SheriffProfileFormProps {
 export default class SheriffProfileForm extends
     React.PureComponent<SheriffProfileFormProps & InjectedFormProps<{}, SheriffProfileFormProps>, {}> {
 
-    static parseSheriffFromValues(values: any): Sheriff {
-        return { ...values } as Sheriff;
+    static parseSheriffFromValues(values: any): SheriffProfile {
+        return { ...values } as SheriffProfile;
     }
 
-    static sheriffToFormValues(sheriff: Sheriff): any {
-        return { ...sheriff };
+    static sheriffToFormValues(sheriffProfile: SheriffProfile): any {
+        return { ...sheriffProfile };
     }
 
     render() {
@@ -56,31 +56,31 @@ export default class SheriffProfileForm extends
                 <Form onSubmit={handleSubmit} >
                     <CollapsibleSection sectionTitle="Identification">
                         <Field
-                            name="firstName"
+                            name="sheriff.firstName"
                             component={TextField as any}
                             label="First Name"
                             validate={[Validators.required]}
                         />
                         <Field
-                            name="lastName"
+                            name="sheriff.lastName"
                             component={TextField as any}
                             label="Last Name"
                             validate={[Validators.required]}
                         />
                         <Field
-                            name="rankCode"
+                            name="sheriff.rankCode"
                             component={SheriffRankSelector as any}
                             label="Rank"
                             validate={[Validators.required]}
                         />
                         <Field
-                            name="badgeNo"
+                            name="sheriff.badgeNo"
                             component={TextField as any}
                             label="Badge Number"
                             validate={[Validators.required]}
                         />
                         <Field
-                            name="alias"
+                            name="sheriff.alias"
                             component={TextField as any}
                             label="Alias"
                         />
@@ -88,13 +88,13 @@ export default class SheriffProfileForm extends
 
                     <CollapsibleSection sectionTitle="Location">
                         <Field
-                            name="homeCourthouseId"
+                            name="sheriff.homeCourthouseId"
                             component={CourthouseSelector as any}
                             label="Home Location"
                             validate={[Validators.required]}
                         />
                         <Field
-                            name="currentCourthouseId"
+                            name="sheriff.currentCourthouseId"
                             component={CourthouseSelector as any}
                             label="Current Location"
                             validate={[Validators.required]}

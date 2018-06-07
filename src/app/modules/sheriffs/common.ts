@@ -1,14 +1,15 @@
 import { RequestActionState } from '../../infrastructure/Requests/RequestActionBase';
 import {
     Sheriff,
-    SheriffMap
-} from '../../api/index';
+    SheriffMap,
+    SheriffProfile
+} from '../../api/Api';
 
 export interface SheriffModuleState {
-    // Assignments
     sheriffMap?: RequestActionState<SheriffMap>;
     createSheriff?: RequestActionState<Sheriff>;
     updateSheriff?: RequestActionState<Sheriff>;
+    createSheriffProfile?: RequestActionState<SheriffProfile>;
 }
 
 export const STATE_KEY: string = 'sheriffs';

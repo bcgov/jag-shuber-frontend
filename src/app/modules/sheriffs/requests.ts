@@ -11,6 +11,7 @@ import GetEntityMapRequest from '../../infrastructure/Requests/GetEntityMapReque
 import CreateEntityRequest from '../../infrastructure/Requests/CreateEntityRequest';
 import UpdateEntityRequest from '../../infrastructure/Requests/UpdateEntityRequest';
 import toTitleCase from '../../infrastructure/toTitleCase';
+import { SheriffProfile } from '../../api/Api';
 
 // Sheriff Map
 class SheriffMapRequest extends GetEntityMapRequest<void, Sheriff, SheriffModuleState> {
@@ -53,6 +54,46 @@ class CreateSheriffRequest extends CreateEntityRequest<Sheriff, SheriffModuleSta
 }
 
 export const createSheriffRequest = new CreateSheriffRequest();
+
+// class CreateSheriffProfileRequest extends RequestAction<Partial<SheriffProfile>, SheriffProfile, SheriffModuleState> {
+//     constructor(namespace: string = STATE_KEY, actionName: string = 'createSheriffProfile') {
+//         super(namespace, actionName);
+//     }
+//     public async doWork(sheriffProfile: Partial<SheriffProfile>, { api }: ThunkExtra): Promise<SheriffProfile> {
+//         let newSheriffProfile = await api.createSheriffProfile(sheriffProfile as SheriffProfile);
+//         return newSheriffProfile;
+//     }
+
+//     // tslint:disable-next-line:max-line-length
+//     reduceSuccess(moduleState: SheriffModuleState, action: { type: string, payload: SheriffProfile }): SheriffModuleState {
+//         // Call the super's reduce success and pull out our state and
+//         // the sheriffMap state
+//         const {
+//             sheriffMap: {
+//                 data: currentMap = {},
+//                 ...restMap
+//             } = {},
+//             ...restState
+//         } = super.reduceSuccess(moduleState, action);
+
+//         // Create a new map and add our sheriff to it
+//         const newMap = { ...currentMap };
+//         newMap[action.payload.sheriff.id] = action.payload.sheriff;
+
+//         // Merge the state back together with the original in a new object
+//         const newState: Partial<SheriffModuleState> = {
+//             ...restState,
+//             sheriffMap: {
+//                 ...restMap,
+//                 data: newMap
+//             }
+//         };
+//         //add leave map stuff!
+//         return newState;
+//     }
+// }
+
+// export const createSheriffProfileRequest = new CreateSheriffProfileRequest();
 
 // Sheriff Edit
 class UpdateSheriffRequest extends UpdateEntityRequest<Sheriff, SheriffModuleState> {
