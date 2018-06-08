@@ -6,6 +6,7 @@ import {
     Leave,
     IdType
 } from '../../api/Api';
+import mapToArray from '../../infrastructure/mapToArray';
 
 export const allLeaves = createSelector(
     leaveRequests.leaveMapRequest.getData,
@@ -29,3 +30,13 @@ export const getSheriffLeaves = (sheriffId?: IdType) => (state: RootState) => {
     }
     return [];
 };
+
+export const allLeaveTypes = createSelector(
+    leaveRequests.leaveTypeMapRequest.getData,
+    (leaveTypes) => mapToArray(leaveTypes).sort((a, b) => a.description.localeCompare(b.description))
+);
+
+export const allLeaveCancelCodes = createSelector(
+    leaveRequests.leaveCancelCodeMapRequest.getData,
+    (leaveCancelCodes) => mapToArray(leaveCancelCodes).sort((a, b) => a.description.localeCompare(b.description))
+);

@@ -21,6 +21,8 @@ export type AlternateAssignmentMap = MapType<AlternateAssignment>;
 export type DateRange = { startDate?: DateType, endDate?: DateType };
 export type CourthouseMap = MapType<Courthouse>;
 export type SheriffRankCodeMap = MapType<SheriffRank>;
+export type LeaveTypeMap = MapType<LeaveTypeCode>;
+export type LeaveCancelCodeMap = MapType<LeaveCancelCode>;
 
 /* tslint:disable:no-bitwise */
 export enum DaysOfWeek {
@@ -312,6 +314,8 @@ export interface API {
     getLeaves(): Promise<Leave[]>;
     createLeave(newLeave: Partial<Leave>): Promise<Leave>;
     updateLeave(updatedLeave: Leave): Promise<Leave>;
+    getLeaveTypes(): Promise<LeaveTypeCode[]>;
+    getLeaveCancelCodes(): Promise<LeaveCancelCode[]>;
 
     getCourtrooms(): Promise<Courtroom[]>;
     getRuns(): Promise<Run[]>;
