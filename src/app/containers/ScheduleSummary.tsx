@@ -77,7 +77,9 @@ class ConnectedScheduleSummary extends React.Component<ConnectedScheduleSummaryP
         const { isLoanedIn, isLoanedOut } = sheriffLoanMap[sheriffId];
         const today = moment().format('dddd').toLowerCase();
         const leavesForWeek = leaves
-            .filter(l => moment(l.startDate).isBetween(visibleTimeStart, visibleTimeEnd, 'days', '[]'));
+            .filter(l =>
+                (moment(l.startDate).isBetween(visibleTimeStart, visibleTimeEnd, 'days', '[]'))
+                && !l.cancelReasonCode);
         const shiftsForWeek = shifts
             .filter(s => moment(s.startDateTime).isBetween(visibleTimeStart, visibleTimeEnd, 'days', '[]'));
 
