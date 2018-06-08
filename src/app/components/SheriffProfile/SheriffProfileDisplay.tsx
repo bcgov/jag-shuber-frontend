@@ -1,17 +1,23 @@
-import * as React from 'react';
-import { Sheriff } from '../../api/index';
+import React from 'react';
+import moment from 'moment';
+import {
+    Sheriff,
+    Leave
+} from '../../api/index';
 import {
     Image,
-    Table
+    Table,
+    Glyphicon
 } from 'react-bootstrap';
 import CourthouseDisplay from '../../containers/CourthouseDisplay';
 import SheriffRankDisplay from '../../containers/SheriffRankDisplay';
 import './SheriffProfile.css';
 import toTitleCase from '../../infrastructure/toTitleCase';
 import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
+import Popover from '../Popover';
 export interface SheriffProfileDisplayProps {
     sheriff: Sheriff;
-    // sheriff leaves array
+    leaves?: Leave[];
 }
 
 export default class SheriffProfileDisplay extends React.PureComponent<SheriffProfileDisplayProps, {}> {
@@ -27,7 +33,8 @@ export default class SheriffProfileDisplay extends React.PureComponent<SheriffPr
                 homeCourthouseId = '',
                 rankCode = '',
                 currentCourthouseId = ''
-            }
+            },
+            leaves = []
         } = this.props;
 
         return (
@@ -83,19 +90,32 @@ export default class SheriffProfileDisplay extends React.PureComponent<SheriffPr
                                 <th className="text-left">Start Date</th>
                                 <th className="text-left">End Date</th>
                                 <th className="text-left">Type</th>
+                                <th />
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Nov 12, 2018</td>
-                                <td>Nov 16, 2018</td>
-                                <td>STIP</td>
-                            </tr>
-                            <tr>
-                                <td>Dec 10, 2018</td>
-                                <td>Dec 27, 2018</td>
-                                <td>Annual Leave</td>
-                            </tr>
+                            {leaves.map(l => {
+                                return (
+                                    <tr key={l.id}>
+                                        <td>{moment(l.startDate).format('MMM D, YYYY')}</td>
+                                        <td>{moment(l.endDate).format('MMM D, YYYY')}</td>
+                                        <td>{l.leaveTypeCode}</td>
+                                        <td>
+                                            {l.cancelDate && <Popover
+                                                trigger={<Glyphicon style={{ color: 'red' }} glyph="ban-circle" />}
+                                                title={'Leave Cancelled'}
+                                                displayValue={
+                                                    <span>
+                                                        <b>Date: </b>{moment(l.cancelDate).format('MMM D, YYYY')}<br /> 
+                                                        <b>Reason: </b>{l.cancelReasonCode}
+                                                    </span>
+                                                }
+                                            />}
+                                        </td>
+                                    </tr>
+                                );
+                            })}
+
                         </tbody>
                     </Table>
                 </CollapsibleSection>

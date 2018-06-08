@@ -33,7 +33,7 @@ export default class CalendarButton extends React.Component<CalendarButtonProps>
     render() {
         const { defaultValue } = this.props;
         return (
-            <div>
+            <div className="calendar-button">
                 <Dropdown id="schedule-calendar-button" pullRight={true}>
                     <Dropdown.Toggle
                         noCaret={true}

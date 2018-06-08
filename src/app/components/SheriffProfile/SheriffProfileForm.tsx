@@ -21,8 +21,9 @@ import {
 } from '../../api/Api';
 import SheriffRankSelector from '../../containers/CourthouseSheriffRankCodeSelector';
 import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
-import DateField from '../FormElements/DateField/DateField';
+import DateField from '../FormElements/DateField';
 import LeaveTypeSelector from '../../containers/LeaveTypeSelector';
+import LeaveCancelReasonSelector from '../../containers/LeaveCancelReasonSelector';
 
 interface RecurrenceProps {
     id?: IdType;
@@ -54,7 +55,7 @@ export default class SheriffProfileForm extends
         return (
             <div>
                 <Form onSubmit={handleSubmit} >
-                    <CollapsibleSection sectionTitle="Identification">
+                    <CollapsibleSection sectionTitle="Identification" isInitiallyCollapsed={false}>
                         <Field
                             name="sheriff.firstName"
                             component={TextField as any}
@@ -101,7 +102,7 @@ export default class SheriffProfileForm extends
                         />
                     </CollapsibleSection>
 
-                    <CollapsibleSection sectionTitle="Leave" isInitiallyCollapsed={false}>
+                    <CollapsibleSection sectionTitle="Leave">
                         <RecurrenceFieldArray
                             name="leaves"
                             component={(p) => {
@@ -113,6 +114,7 @@ export default class SheriffProfileForm extends
                                                 <th className="text-left">Start Date</th>
                                                 <th className="text-left">End Date</th>
                                                 <th className="text-left">Type</th>
+                                                <th className="text-left">Status</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -123,19 +125,28 @@ export default class SheriffProfileForm extends
                                                             <Field
                                                                 name={`${fieldInstanceName}.startDate`}
                                                                 component={DateField as any}
+                                                                label="Start"
                                                             />
                                                         </td>
                                                         <td>
                                                             <Field
                                                                 name={`${fieldInstanceName}.endDate`}
                                                                 component={DateField as any}
+                                                                label="End"
                                                             />
                                                         </td>
                                                         <td>
                                                             <Field
                                                                 name={`${fieldInstanceName}.trainingTypeCode`}
                                                                 component={LeaveTypeSelector as any}
-                                                                label="Type Code"
+                                                                label="Type"
+                                                            />
+                                                        </td>
+                                                         <td>
+                                                            <Field
+                                                                name={`${fieldInstanceName}.cancelReasonCode`}
+                                                                component={LeaveCancelReasonSelector as any}
+                                                                label="Cancel Reason"
                                                             />
                                                         </td>
                                                     </tr>
