@@ -22,3 +22,13 @@
     margin:0px;
     color: white
 }
+
+@media print {
+    .pageContainer .page-toolbar {
+      display: none
+    }
+
+    .pageContainer {
+        height: unset;
+    }
+}
