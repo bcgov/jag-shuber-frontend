@@ -1,11 +1,11 @@
 import * as ShuberApi from 'jag-shuber-api';
-import * as moment from 'moment';
+import moment from 'moment';
 import {
     API,
     AlternateAssignment,
     Assignment,
     AssignmentDuty,
-    AssignmentDutyDetails,
+    // AssignmentDutyDetails,
     CourtAssignment,
     Courthouse,
     Courtroom,
@@ -166,20 +166,20 @@ export default class Client implements API {
         return duties;
     }
 
-    getAssignmentDutyDetails(): Promise<AssignmentDutyDetails[]> {
-        console.warn('Using Mock API');
-        return this._mockApi.getAssignmentDutyDetails();
-    }
+    // getAssignmentDutyDetails(): Promise<AssignmentDutyDetails[]> {
+    //     console.warn('Using Mock API');
+    //     return this._mockApi.getAssignmentDutyDetails();
+    // }
 
-    updateAssignmentDutyDetails(dutyDetails: Partial<AssignmentDutyDetails>): Promise<AssignmentDutyDetails> {
-        console.warn('Using Mock API');
-        return this._mockApi.updateAssignmentDutyDetails(dutyDetails);
-    }
+    // updateAssignmentDutyDetails(dutyDetails: Partial<AssignmentDutyDetails>): Promise<AssignmentDutyDetails> {
+    //     console.warn('Using Mock API');
+    //     return this._mockApi.updateAssignmentDutyDetails(dutyDetails);
+    // }
 
-    createAssignmentDutyDetails(dutyDetails: Partial<AssignmentDutyDetails>): Promise<AssignmentDutyDetails> {
-        console.warn('Using Mock API');
-        return this._mockApi.createAssignmentDutyDetails(dutyDetails);
-    }
+    // createAssignmentDutyDetails(dutyDetails: Partial<AssignmentDutyDetails>): Promise<AssignmentDutyDetails> {
+    //     console.warn('Using Mock API');
+    //     return this._mockApi.createAssignmentDutyDetails(dutyDetails);
+    // }
 
     async createAssignmentDuty(duty: Partial<AssignmentDuty>): Promise<AssignmentDuty> {
         return (await this._client.CreateDuty(duty as any) as AssignmentDuty);

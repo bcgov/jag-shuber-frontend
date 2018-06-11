@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as moment from 'moment';
+import React from 'react';
+import moment from 'moment';
 import {
     reduxForm,
     ConfigProps
@@ -24,8 +24,8 @@ const formConfig: ConfigProps<any, AssignmentDutyFormProps> = {
     form: 'CreateAssignmentDuty',
     onSubmit: async (values, dispatch, props) => {
         const { assignmentId = '-1' } = props;
-        const { comments, ...rest } = values;
-        let newAssignmentDuty = AssignmentDutyForm.parseAssignmentDutyFromValues(rest);
+        // const { comments, ...rest } = values;
+        let newAssignmentDuty = AssignmentDutyForm.parseAssignmentDutyFromValues(values);
         newAssignmentDuty.assignmentId = assignmentId;
         await dispatch(createAssignmentDuty(newAssignmentDuty));
     }

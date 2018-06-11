@@ -1,15 +1,15 @@
-import * as React from 'react';
-import * as moment from 'moment';
+import React from 'react';
+import moment from 'moment';
 import {
     allAssignments,
     allAssignmentDuties,
-    allAssignmentDutyDetails
+    // allAssignmentDutyDetails
 } from '../../modules/assignments/selectors';
 import {
     getAssignments,
     getAssignmentDuties,
     linkAssignment,
-    getAssignmentDutyDetails
+    // getAssignmentDutyDetails
 } from '../../modules/assignments/actions';
 import { connect } from 'react-redux';
 import { RootState } from '../../store';
@@ -21,7 +21,7 @@ import {
     DateRange,
     Assignment,
     AssignmentDuty,
-    AssignmentDutyDetails
+    // AssignmentDutyDetails
 } from '../../api/Api';
 import SheriffDutyBarList from '../../components/SheriffDutyBarList/SheriffDutyBarList';
 import ConnectedSheriffDutyBar from '../SheriffDutyBar';
@@ -41,7 +41,7 @@ interface DutyRosterTimelineDispatchProps {
     fetchAssignmentDuties: (dateRange: DateRange) => void;
     fetchAssignments: (dateRange:DateRange) => void;
     linkSheriff: (link: { sheriffId: IdType, dutyId: IdType, sheriffDutyId: IdType }) => void;
-    fetchAssignmentDutyDetails: () => void;
+    // fetchAssignmentDutyDetails: () => void;
     showAssignmentDutyEditModal: (id: IdType) => void;
 }
 
@@ -50,7 +50,7 @@ interface DutyRosterTimelineStateProps {
     assignments: Assignment[];
     visibleTimeStart: any;
     visibleTimeEnd: any;
-    assignmentDutyDetails: AssignmentDutyDetails[];
+    // assignmentDutyDetails: AssignmentDutyDetails[];
 }
 
 type CompositeProps = DutyRosterTimelineProps & DutyRosterTimelineStateProps & DutyRosterTimelineDispatchProps;
@@ -62,14 +62,14 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
             fetchAssignments,
             visibleTimeStart: startDate,
             visibleTimeEnd: endDate,
-            fetchAssignmentDutyDetails
+            // fetchAssignmentDutyDetails
         } = this.props;
 
         const dateRange = {startDate,endDate};
         /* tslint:disable:no-unused-expression */
         fetchAssignments && fetchAssignments(dateRange);
         fetchAssignmentDuties && fetchAssignmentDuties(dateRange);
-        fetchAssignmentDutyDetails && fetchAssignmentDutyDetails();
+        // fetchAssignmentDutyDetails && fetchAssignmentDutyDetails();
         /* tslint:enable:no-unused-expression */
     }
 
@@ -95,7 +95,7 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
             linkSheriff,
             visibleTimeStart,
             visibleTimeEnd,
-            assignmentDutyDetails = [],
+            // assignmentDutyDetails = [],
             showAssignmentDutyEditModal,
             ...rest
         } = this.props;
@@ -123,8 +123,8 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
                     itemRenderer={(duty) => {
                         const workSectionColor = getWorkSectionColour(workSectionMap[duty.assignmentId]);
                         const color = getForegroundColor(workSectionColor);
-                        const details: AssignmentDutyDetails | undefined =
-                            assignmentDutyDetails.find(dd => dd.assignmentDutyId === duty.id);
+                        // const details: AssignmentDutyDetails | undefined =
+                        //     assignmentDutyDetails.find(dd => dd.assignmentDutyId === duty.id);
                         return (
                             <AssignmentDutyCard
                                 duty={duty}
@@ -132,7 +132,7 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
                                     borderColor: workSectionColor,
                                     color
                                 }}
-                                details={details}
+                                // details={details}
                                 onClick={() => showAssignmentDutyEditModal(duty.id)}
                                 SheriffAssignmentRenderer={(p) => (
                                     <SheriffDutyBarList
@@ -159,7 +159,7 @@ const mapStateToProps = (state: RootState, props: DutyRosterTimelineProps) => {
     return {
         assignmentDuties: allAssignmentDuties(state),
         assignments: allAssignments(state),
-        assignmentDutyDetails: allAssignmentDutyDetails(state),
+        // assignmentDutyDetails: allAssignmentDutyDetails(state),
         ...currentVisibleTime
     };
 };
@@ -170,7 +170,7 @@ export default connect<DutyRosterTimelineStateProps, DutyRosterTimelineDispatchP
         fetchAssignments: getAssignments,
         fetchAssignmentDuties: getAssignmentDuties,
         linkSheriff: linkAssignment,
-        fetchAssignmentDutyDetails: getAssignmentDutyDetails,
+        // fetchAssignmentDutyDetails: getAssignmentDutyDetails,
         showAssignmentDutyEditModal: (id: IdType) => AssignmentDutyEditModal.ShowAction(id)
     }
 )(DutyRosterTimeline);

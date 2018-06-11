@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+import moment from 'moment';
 import {
     API,
     Sheriff,
@@ -16,7 +16,7 @@ import {
     JailRole,
     AlternateAssignment,
     SheriffDuty,
-    AssignmentDutyDetails,
+    // AssignmentDutyDetails,
     Courthouse,
     ShiftUpdates,
     SheriffRank
@@ -35,7 +35,7 @@ import {
     ALTERNATE_ASSIGNMENTS,
     sheriffShifts,
     sheriffLeaves,
-    assignmentDutyDetails
+    // assignmentDutyDetails
 } from './MockData';
 import {
     isCourtAssignment,
@@ -69,35 +69,35 @@ export default class MockClient implements API {
     getCourthouses(): Promise<Courthouse[]> {
         throw new Error("Method not implemented.");
     }
-    async createAssignmentDutyDetails(dutyDetails: Partial<AssignmentDutyDetails>): Promise<AssignmentDutyDetails> {
-        const newDutyDetails: AssignmentDutyDetails = {
-            id: this.getId(),
-            assignmentDutyId: dutyDetails.assignmentDutyId ? dutyDetails.assignmentDutyId : this.getId(),
-            comments: dutyDetails.comments
-        };
-        assignmentDutyDetails.push(newDutyDetails);
-        return newDutyDetails; 
-    }
+    // async createAssignmentDutyDetails(dutyDetails: Partial<AssignmentDutyDetails>): Promise<AssignmentDutyDetails> {
+    //     const newDutyDetails: AssignmentDutyDetails = {
+    //         id: this.getId(),
+    //         assignmentDutyId: dutyDetails.assignmentDutyId ? dutyDetails.assignmentDutyId : this.getId(),
+    //         comments: dutyDetails.comments
+    //     };
+    //     assignmentDutyDetails.push(newDutyDetails);
+    //     return newDutyDetails; 
+    // }
     
-    async updateAssignmentDutyDetails(dutyDetails: Partial<AssignmentDutyDetails>): Promise<AssignmentDutyDetails> {
-        const index = assignmentDutyDetails.findIndex(dd => dd.assignmentDutyId === dutyDetails.assignmentDutyId);
-        await randomDelay();
-        if (index > -1) {
-            assignmentDutyDetails[index] = Object.assign({}, assignmentDutyDetails[index], dutyDetails);
-            return assignmentDutyDetails[index];
-        } else {
-            const newDutyDetails: AssignmentDutyDetails = {
-                id: this.getId(),
-                assignmentDutyId: dutyDetails.assignmentDutyId ? dutyDetails.assignmentDutyId : this.getId(),
-                comments: dutyDetails.comments
-            };
-            assignmentDutyDetails.push(newDutyDetails);
-            return newDutyDetails; 
-        }
-    }
-    async getAssignmentDutyDetails(): Promise<AssignmentDutyDetails[]> {
-        return assignmentDutyDetails;
-    }
+    // async updateAssignmentDutyDetails(dutyDetails: Partial<AssignmentDutyDetails>): Promise<AssignmentDutyDetails> {
+    //     const index = assignmentDutyDetails.findIndex(dd => dd.assignmentDutyId === dutyDetails.assignmentDutyId);
+    //     await randomDelay();
+    //     if (index > -1) {
+    //         assignmentDutyDetails[index] = Object.assign({}, assignmentDutyDetails[index], dutyDetails);
+    //         return assignmentDutyDetails[index];
+    //     } else {
+    //         const newDutyDetails: AssignmentDutyDetails = {
+    //             id: this.getId(),
+    //             assignmentDutyId: dutyDetails.assignmentDutyId ? dutyDetails.assignmentDutyId : this.getId(),
+    //             comments: dutyDetails.comments
+    //         };
+    //         assignmentDutyDetails.push(newDutyDetails);
+    //         return newDutyDetails; 
+    //     }
+    // }
+    // async getAssignmentDutyDetails(): Promise<AssignmentDutyDetails[]> {
+    //     return assignmentDutyDetails;
+    // }
     deleteDutyRecurrence(recurrenceId: string): Promise<void> {
         throw new Error("Method not implemented.");
     }

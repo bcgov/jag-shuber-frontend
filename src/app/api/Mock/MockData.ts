@@ -12,9 +12,9 @@ import {
     OtherAssignment,
     Shift,
     Leave,
-    AssignmentDutyDetails
+    // AssignmentDutyDetails
 } from '../Api';
-import * as moment from 'moment';
+import moment from 'moment';
 
 export const TRAINING_TYPES: StringMap = {
     FRO: 'FRO - Forced Response Option',
@@ -1064,4 +1064,4 @@ export const sheriffLeaves: Leave[] = [
     }
 ];
 
-export const assignmentDutyDetails: AssignmentDutyDetails[] = [];
+// export const assignmentDutyDetails: AssignmentDutyDetails[] = [];

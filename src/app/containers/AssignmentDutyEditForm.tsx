@@ -17,15 +17,15 @@ import { RootState } from '../store';
 import { 
     getAssignmentDuty, 
     getAssignment, 
-    getAssignmentDutyDetailsByDutyId
+    // getAssignmentDutyDetailsByDutyId
 } from '../modules/assignments/selectors';
 import { 
     editAssignmentDuty,
-    updateAssignmentDutyDetails 
+    // updateAssignmentDutyDetails 
 } from '../modules/assignments/actions';
 import { 
     IdType, 
-    AssignmentDutyDetails
+    // AssignmentDutyDetails
 } from '../api';
 import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 import { deleteSheriffDuty } from '../modules/assignments/actions';
@@ -34,15 +34,15 @@ import { deleteSheriffDuty } from '../modules/assignments/actions';
 const formConfig: ConfigProps<any, AssignmentDutyFormProps> = {
     form: 'EditAssignmentDuty',
     onSubmit: (values, dispatch, props) => {
-        const { comments, ...rest } = values;
-        const updatedAssignmentDuty = AssignmentDutyForm.parseAssignmentDutyFromValues(rest);
+        // const { comments, ...rest } = values;
+        const updatedAssignmentDuty = AssignmentDutyForm.parseAssignmentDutyFromValues(values);
         dispatch(editAssignmentDuty(updatedAssignmentDuty));
         
-        const updatedAssignmentDutyDetails: Partial<AssignmentDutyDetails> = { 
-            assignmentDutyId: updatedAssignmentDuty.id,
-            comments
-        };
-        dispatch(updateAssignmentDutyDetails(updatedAssignmentDutyDetails));
+        // const updatedAssignmentDutyDetails: Partial<AssignmentDutyDetails> = { 
+        //     assignmentDutyId: updatedAssignmentDuty.id,
+        //     comments
+        // };
+        // dispatch(updateAssignmentDutyDetails(updatedAssignmentDutyDetails));
     }
 };
 
@@ -52,16 +52,13 @@ export interface AssignmentDutyEditFormProps extends AssignmentDutyFormProps {
 
 const mapStateToProps = (state: RootState, props: AssignmentDutyEditFormProps) => {
     const initialAssignmentDuty = getAssignmentDuty(props.id)(state);
-    const initialAssignmentDutyDetails: AssignmentDutyDetails | undefined 
-        = getAssignmentDutyDetailsByDutyId(props.id)(state);
+    // const initialAssignmentDutyDetails: AssignmentDutyDetails | undefined 
+    //     = getAssignmentDutyDetailsByDutyId(props.id)(state);
     if (initialAssignmentDuty) {
         const initialAssignment = getAssignment(initialAssignmentDuty.assignmentId)(state);
 
         return {
-            initialValues: {
-                ...AssignmentDutyForm.assignmentDutyToFormValues(initialAssignmentDuty),
-                comments: initialAssignmentDutyDetails ? initialAssignmentDutyDetails.comments : ''
-            }, 
+            initialValues: AssignmentDutyForm.assignmentDutyToFormValues(initialAssignmentDuty), 
             assignmentTitle: initialAssignment ? initialAssignment.title : '',
             minTime: TimeUtils.getDefaultTimePickerMinTime(moment(initialAssignmentDuty.startDateTime)),
             maxTime: TimeUtils.getDefaultTimePickerMaxTime(moment(initialAssignmentDuty.endDateTime)),
