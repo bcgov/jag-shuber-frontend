@@ -12,7 +12,7 @@ import {
     OtherAssignment,
     Shift,
     Leave,
-    // AssignmentDutyDetails
+
 } from '../Api';
 import moment from 'moment';
 
@@ -1063,5 +1063,3 @@ export const sheriffLeaves: Leave[] = [
         date: moment()
     }
 ];
-
-// export const assignmentDutyDetails: AssignmentDutyDetails[] = [];

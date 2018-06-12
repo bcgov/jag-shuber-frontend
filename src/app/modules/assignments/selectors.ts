@@ -7,9 +7,6 @@ import {
     AssignmentDuty,
     IdType
 } from '../../api/Api';
-// import {
-//     AssignmentDutyDetails
-// } from '../../api';
 import {
     isCourtAssignment,
     isJailAssignment,
@@ -74,25 +71,3 @@ export const getAssignmentDuty = (id?: IdType) => (state: RootState) => {
     }
     return undefined;
 };
-
-// Assignment Duty Details
-// export const allAssignmentDutyDetails = createSelector(
-//     assignmentDutyRequests.assignmentDutyDetailsMapRequest.getData,
-//     (map = {}): AssignmentDutyDetails[] => {
-//         const list = Object.keys(map).map((k, i) => map[k]);
-//         return list;
-//     });
-
-// export const getAssignmentDutyDetailsByDutyId = (assignmentDutyId?: IdType) => (state: RootState) => {
-//     if (state && assignmentDutyId != null) {
-//         const map = assignmentDutyRequests.assignmentDutyDetailsMapRequest.getData(state);
-//         const dutyDetails: AssignmentDutyDetails | undefined
-//             = Object.keys(map).map(k => map[k]).find(dd => dd.assignmentDutyId === assignmentDutyId);
-//         if (dutyDetails) {
-//             return map[dutyDetails.id];
-//         } else {
-//             return undefined;
-//         }
-//     }
-//     return undefined;
-// };

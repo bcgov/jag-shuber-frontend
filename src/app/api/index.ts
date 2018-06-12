@@ -3,7 +3,6 @@ export {
     Assignment,
     AssignmentMap,
     AssignmentDuty,
-    // AssignmentDutyDetails,
     AssignmentDutyMap,
     SheriffMap,
     StringMap,

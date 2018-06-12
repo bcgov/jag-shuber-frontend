@@ -17,15 +17,12 @@ import { RootState } from '../store';
 import { 
     getAssignmentDuty, 
     getAssignment, 
-    // getAssignmentDutyDetailsByDutyId
 } from '../modules/assignments/selectors';
 import { 
     editAssignmentDuty,
-    // updateAssignmentDutyDetails 
 } from '../modules/assignments/actions';
 import { 
     IdType, 
-    // AssignmentDutyDetails
 } from '../api';
 import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 import { deleteSheriffDuty } from '../modules/assignments/actions';
@@ -37,12 +34,6 @@ const formConfig: ConfigProps<any, AssignmentDutyFormProps> = {
         // const { comments, ...rest } = values;
         const updatedAssignmentDuty = AssignmentDutyForm.parseAssignmentDutyFromValues(values);
         dispatch(editAssignmentDuty(updatedAssignmentDuty));
-        
-        // const updatedAssignmentDutyDetails: Partial<AssignmentDutyDetails> = { 
-        //     assignmentDutyId: updatedAssignmentDuty.id,
-        //     comments
-        // };
-        // dispatch(updateAssignmentDutyDetails(updatedAssignmentDutyDetails));
     }
 };
 
@@ -52,8 +43,6 @@ export interface AssignmentDutyEditFormProps extends AssignmentDutyFormProps {
 
 const mapStateToProps = (state: RootState, props: AssignmentDutyEditFormProps) => {
     const initialAssignmentDuty = getAssignmentDuty(props.id)(state);
-    // const initialAssignmentDutyDetails: AssignmentDutyDetails | undefined 
-    //     = getAssignmentDutyDetailsByDutyId(props.id)(state);
     if (initialAssignmentDuty) {
         const initialAssignment = getAssignment(initialAssignmentDuty.assignmentId)(state);
 

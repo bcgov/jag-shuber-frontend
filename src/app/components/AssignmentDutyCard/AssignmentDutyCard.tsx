@@ -2,7 +2,6 @@ import React from 'react';
 import {
     AssignmentDuty,
     SheriffDuty
-    // AssignmentDutyDetails
 } from '../../api/Api';
 import SheriffDutyBarList from '../SheriffDutyBarList/SheriffDutyBarList';
 import './AssignmentDutyCard.css';
@@ -12,7 +11,6 @@ import AssignmentDutyInformationPanel from '../AssignmentDutyInformationPanel/As
 export interface AssignmentDutyCardProps {
     duty: AssignmentDuty;
     SheriffAssignmentRenderer?: React.ComponentType<SheriffAssignmentRendererProps>;
-    // details?: AssignmentDutyDetails;
     style?: React.CSSProperties;
     onDoubleClick?: () => void;
     onClick?: () => void;
