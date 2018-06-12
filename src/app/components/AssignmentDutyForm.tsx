@@ -27,6 +27,7 @@ import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 import TextArea from './FormElements/TextArea';
 import { ConfirmationModal } from './ConfirmationModal';
 import FormWrapper from './FormElements/FormWrapper';
+import * as Validators from '../infrastructure/Validators';
 
 export interface AssignmentDutyFormProps {
     handleSubmit?: () => void;
@@ -205,6 +206,7 @@ export default class AssignmentDutyForm extends
                             name="comments"
                             component={TextArea as any}
                             label="Comments"
+                            validate={[Validators.maxLength200]}
                         />}
                         <div style={{ marginTop: 40 }}>
                             <h2>Sheriffs for Duty</h2>

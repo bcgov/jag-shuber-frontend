@@ -1,11 +1,10 @@
 import * as ShuberApi from 'jag-shuber-api';
-import * as moment from 'moment';
+import moment from 'moment';
 import {
     API,
     AlternateAssignment,
     Assignment,
     AssignmentDuty,
-    AssignmentDutyDetails,
     CourtAssignment,
     Courthouse,
     Courtroom,
@@ -28,7 +27,7 @@ import {
 } from './Api';
 import MockApi from './Mock/MockApi';
 import { SubmissionError } from 'redux-form';
-// import { isCourtAssignment, isEscortAssignment, isJailAssignment, isOtherAssignment } from './utils';
+
 
 export function extractWorksectionCode(workSectionCodePath: string): WorkSectionCode {
     const code = `${workSectionCodePath}`.split('/').slice(-1)[0] as any;
@@ -164,21 +163,6 @@ export default class Client implements API {
     async getAssignmentDuties(startDate: DateType = moment(), endDate?: DateType): Promise<AssignmentDuty[]> {
         let duties: AssignmentDuty[] = (await this._client.GetDuties() as any);
         return duties;
-    }
-
-    getAssignmentDutyDetails(): Promise<AssignmentDutyDetails[]> {
-        console.warn('Using Mock API');
-        return this._mockApi.getAssignmentDutyDetails();
-    }
-
-    updateAssignmentDutyDetails(dutyDetails: Partial<AssignmentDutyDetails>): Promise<AssignmentDutyDetails> {
-        console.warn('Using Mock API');
-        return this._mockApi.updateAssignmentDutyDetails(dutyDetails);
-    }
-
-    createAssignmentDutyDetails(dutyDetails: Partial<AssignmentDutyDetails>): Promise<AssignmentDutyDetails> {
-        console.warn('Using Mock API');
-        return this._mockApi.createAssignmentDutyDetails(dutyDetails);
     }
 
     async createAssignmentDuty(duty: Partial<AssignmentDuty>): Promise<AssignmentDuty> {

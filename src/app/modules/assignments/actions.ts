@@ -17,9 +17,6 @@ export const createAssignmentDuty = assignmentDutyRequests.createAssignmentDutyR
 export const editAssignmentDuty = assignmentDutyRequests.updateAssignmentDutyRequest.actionCreator;
 export const deleteAssignmentDuty = assignmentDutyRequests.deleteAssignmentDutyRequest.actionCreator;
 export const createDefaultDuties = assignmentDutyRequests.createDefaultDutiesRequest.actionCreator;
-export const getAssignmentDutyDetails = assignmentDutyRequests.assignmentDutyDetailsMapRequest.actionCreator;
-export const createAssignmentDutyDetails = assignmentDutyRequests.createAssignmentDutyDetailsRequest.actionCreator;
-export const updateAssignmentDutyDetails = assignmentDutyRequests.updateAssignmentDutyDetailsRequest.actionCreator;
 
 // Sheriff Duties
 export const deleteSheriffDuty = assignmentDutyRequests.deleteSheriffDutyRequest.actionCreator;

@@ -1,8 +1,7 @@
-import * as React from 'react';
+import React from 'react';
 import {
     AssignmentDuty,
-    SheriffDuty,
-    AssignmentDutyDetails
+    SheriffDuty
 } from '../../api/Api';
 import SheriffDutyBarList from '../SheriffDutyBarList/SheriffDutyBarList';
 import './AssignmentDutyCard.css';
@@ -12,7 +11,6 @@ import AssignmentDutyInformationPanel from '../AssignmentDutyInformationPanel/As
 export interface AssignmentDutyCardProps {
     duty: AssignmentDuty;
     SheriffAssignmentRenderer?: React.ComponentType<SheriffAssignmentRendererProps>;
-    details?: AssignmentDutyDetails;
     style?: React.CSSProperties;
     onDoubleClick?: () => void;
     onClick?: () => void;
@@ -32,9 +30,10 @@ export default class AssignmentDutyCard extends React.PureComponent<AssignmentDu
             duty,
             duty: {
                 sheriffDuties = [],
-                sheriffsRequired = 0
+                sheriffsRequired = 0,
+                comments = ''
             } = {},
-            details,
+            // details,
             onDoubleClick,
             onClick,
             style = {}
@@ -53,8 +52,8 @@ export default class AssignmentDutyCard extends React.PureComponent<AssignmentDu
                     sheriffsRequired={sheriffsRequired}
                 />
                 <AssignmentDutyInformationPanel>
-                    {details && details.comments &&
-                        <Glyphicon style={{ fontSize: 16, paddingTop: 10 }} title={details.comments} glyph="comment" />}
+                    {comments &&
+                        <Glyphicon style={{ fontSize: 16, paddingTop: 10 }} title={comments} glyph="comment" />}
                 </AssignmentDutyInformationPanel>
             </div>
         );
