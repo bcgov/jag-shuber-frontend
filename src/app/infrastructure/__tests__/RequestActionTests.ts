@@ -4,7 +4,7 @@ import {
     default as RequestAction,
     RequestActionState
 } from '../RequestAction';
-import * as fetchMock from 'fetch-mock';
+import fetchMock from 'fetch-mock';
 import { API } from '../../api';
 import { AnyAction } from 'redux';
 import { combineReducers } from 'redux';
@@ -120,11 +120,11 @@ describe('RequestAction.actionCreator', () => {
         const expectedActions = [
             { type: listRequest.actionNames.begin },
             { type: listRequest.actionNames.fail, payload: errorMessage }
-        ]
+        ];
 
         expect(listRequest.actionCreator()).toDispatchActions(expectedActions, done);
-    })
-})
+    });
+});
 
 describe('RequestAction Reducers', () => {
     it('Standard RequestAction.reducer Should return initial state', () => {
@@ -460,20 +460,20 @@ describe('RequestAction.selectors', () => {
         expect(listRequest.getIsBusy({
             widgets: {
                 list:
-                    {
-                        isBusy: false,
-                        data: []
-                    }
+                {
+                    isBusy: false,
+                    data: []
+                }
             }
         })).toEqual(false);
 
         expect(listRequest.getIsBusy({
             widgets: {
                 list:
-                    {
-                        isBusy: true,
-                        data: []
-                    }
+                {
+                    isBusy: true,
+                    data: []
+                }
             }
         })).toEqual(true);
     })
@@ -482,10 +482,10 @@ describe('RequestAction.selectors', () => {
         expect(listRequest.getData({
             widgets: {
                 list:
-                    {
-                        isBusy: false,
-                        data: widgets
-                    }
+                {
+                    isBusy: false,
+                    data: widgets
+                }
             }
         })).toEqual(widgets);
     });
@@ -499,11 +499,11 @@ describe('RequestAction.selectors', () => {
         expect(listRequest.getError({
             widgets: {
                 list:
-                    {
-                        error: errorMsg,
-                        isBusy: false,
-                        data: []
-                    }
+                {
+                    error: errorMsg,
+                    isBusy: false,
+                    data: []
+                }
             }
         })).toEqual(errorMsg);
     });
@@ -526,20 +526,20 @@ describe('RequestAction.selectors should work with function pointers', () => {
         expect(selectors.getIsBusy({
             widgets: {
                 list:
-                    {
-                        isBusy: false,
-                        data: []
-                    }
+                {
+                    isBusy: false,
+                    data: []
+                }
             }
         })).toEqual(false);
 
         expect(selectors.getIsBusy({
             widgets: {
                 list:
-                    {
-                        isBusy: true,
-                        data: []
-                    }
+                {
+                    isBusy: true,
+                    data: []
+                }
             }
         })).toEqual(true);
     })
@@ -548,10 +548,10 @@ describe('RequestAction.selectors should work with function pointers', () => {
         expect(selectors.getData({
             widgets: {
                 list:
-                    {
-                        isBusy: false,
-                        data: widgets
-                    }
+                {
+                    isBusy: false,
+                    data: widgets
+                }
             }
         })).toEqual(widgets);
     });
@@ -565,11 +565,11 @@ describe('RequestAction.selectors should work with function pointers', () => {
         expect(selectors.getError({
             widgets: {
                 list:
-                    {
-                        error: errorMsg,
-                        isBusy: false,
-                        data: []
-                    }
+                {
+                    error: errorMsg,
+                    isBusy: false,
+                    data: []
+                }
             }
         })).toEqual(errorMsg);
     });

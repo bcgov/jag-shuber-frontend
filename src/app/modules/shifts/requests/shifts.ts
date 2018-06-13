@@ -1,4 +1,4 @@
-import RequestAction from '../../../infrastructure/RequestAction';
+import RequestAction, { FormRequestAction } from '../../../infrastructure/RequestAction';
 import { ThunkExtra } from '../../../store';
 import arrayToMap from '../../../infrastructure/arrayToMap';
 import {
@@ -27,40 +27,18 @@ class ShiftMapRequest extends RequestAction<void, ShiftMap, ShiftModuleState> {
 export const shiftMapRequest = new ShiftMapRequest();
 
 // Assignment Template Create
-class CreateShiftRequest extends RequestAction<Partial<Shift>, Shift, ShiftModuleState> {
+class CreateShiftRequest extends FormRequestAction<Partial<Shift>, Shift, ShiftModuleState> {
     constructor(namespace: string = STATE_KEY, actionName: string = 'createShift') {
-        super(namespace, actionName, true);
+        super(namespace, actionName);
     }
     public async doWork(shift: Partial<Shift>, { api }: ThunkExtra): Promise<Shift> {
         let newShift = await api.createShift(shift);
         return newShift;
     }
-
-    reduceSuccess(moduleState: ShiftModuleState, action: { type: string, payload: Shift }): ShiftModuleState {
-        // Call the super's reduce success and pull out our state and
-        // the shiftMap state
-        const {
-            shiftMap: {
-                data: currentMap = {},
-                ...restMap
-            } = {},
-            ...restState
-        } = super.reduceSuccess(moduleState, action);
-
-        // Create a new map and add our shift to it
-        const newMap = { ...currentMap };
-        newMap[action.payload.id] = action.payload;
-
-        // Merge the state back together with the original in a new object
-        const newState: Partial<ShiftModuleState> = {
-            ...restState,
-            shiftMap: {
-                ...restMap,
-                data: newMap
-            }
-        };
-
-        return newState;
+    setRequestData(moduleState: ShiftModuleState, data: Shift) {
+        const newMap = { ...shiftMapRequest.getRequestData(moduleState) };
+        newMap[data.id] = data;
+        return shiftMapRequest.setRequestData(moduleState, newMap);
     }
 }
 
@@ -91,7 +69,7 @@ class CopyShiftsRequest extends RequestAction<ShiftCopyOptions, Shift[], ShiftMo
         action.payload.forEach(shift => {
             newMap[shift.id] = shift;
         });
-        
+
         // Merge the state back together with the original in a new object
         const newState: Partial<ShiftModuleState> = {
             ...restState,
@@ -124,13 +102,13 @@ export const updateShiftRequest = new UpdateShiftRequest();
 
 type ShiftUpdateOptions = { shiftIds: IdType[], updateDetails: ShiftUpdates };
 // Mulitple Shift Edit
-class UpdateMultipleShiftsRequest  extends RequestAction<ShiftUpdateOptions, Shift[], ShiftModuleState> {
+class UpdateMultipleShiftsRequest extends RequestAction<ShiftUpdateOptions, Shift[], ShiftModuleState> {
     constructor(namespace: string = STATE_KEY, actionName: string = 'updateSelectedShifts') {
-        super(namespace, actionName, true);
+        super(namespace, actionName);
     }
 
     public async doWork(shiftUpdateDetails: ShiftUpdateOptions, { api }: ThunkExtra): Promise<Shift[]> {
-        let updatedShifts = 
+        let updatedShifts =
             await api.updateMultipleShifts(shiftUpdateDetails.shiftIds, shiftUpdateDetails.updateDetails);
         return updatedShifts;
     }
@@ -145,13 +123,13 @@ class UpdateMultipleShiftsRequest  extends RequestAction<ShiftUpdateOptions, Shi
             } = {},
             ...restState
         } = super.reduceSuccess(moduleState, action);
- 
+
         // Create a new map and update the assignments in it
         const newMap = { ...currentMap };
         action.payload.forEach(shift => {
             newMap[shift.id] = shift;
         });
-        
+
         // Merge the state back together with the original in a new object
         const newState: Partial<ShiftModuleState> = {
             ...restState,
@@ -186,13 +164,13 @@ class DeleteShiftRequest extends RequestAction<IdType[], IdType[], ShiftModuleSt
             } = {},
             ...restState
         } = super.reduceSuccess(moduleState, action);
- 
+
         // Create a new map and remove the assignment from it
         const newMap = { ...currentMap };
         action.payload.forEach(shiftId => {
             delete newMap[shiftId];
         });
-        
+
         // Merge the state back together with the original in a new object
         const newState: Partial<ShiftModuleState> = {
             ...restState,

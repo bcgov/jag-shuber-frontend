@@ -24,7 +24,7 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
         return { type: this.actionNames.success, payload: response };
     }
 
-    constructor(private namespace: string, private actionName: string, private throwOnError: boolean = false) {
+    constructor(private namespace: string, private actionName: string) {
         const upperNamespace = namespace.toUpperCase();
         const upperAction = actionName.toUpperCase();
         // Create our actions
@@ -39,17 +39,17 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
     public abstract doWork(request: TRequest, extra: ThunkExtra, getState: (() => any)): Promise<TResponse>;
 
     public actionCreator: ThunkAction<TRequest> = (request: TRequest) => (async (dispatch, getState, extra) => {
-        this.dispatchBegin(dispatch);
-        try {
-            const response = await this.doWork(request, extra, getState);
-            this.dispatchSuccess(dispatch, response);
-        } catch (error) {
-            if (this.throwOnError) {
-                throw error;
-            } else {
+        return new Promise(async (resolve, reject) => {
+            this.dispatchBegin(dispatch);
+            try {
+                const response = await this.doWork(request, extra, getState);
+                this.dispatchSuccess(dispatch, response);
+                resolve(response);
+            } catch (error) {
                 this.dispatchFailure(dispatch, error);
+                resolve();
             }
-        }
+        });
     })
 
     protected dispatchBegin(dispatch: Dispatch<any>) {
@@ -60,7 +60,7 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
         const errorMessage = typeof error === 'string' ? error : error.message;
         dispatch(this.getFailAction(errorMessage));
         // tslint:disable-next-line:no-console
-        console.error(errorMessage);
+        //console.error(errorMessage);
     }
 
     protected dispatchSuccess(dispatch: Dispatch<any>, response: TResponse) {
@@ -99,7 +99,17 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
     }
 
     protected reduceSuccess(moduleState: TModuleState, action: AnyAction): TModuleState {
-        return this.mergeRequestActionState(moduleState, { data: action.payload, error: undefined, isBusy: false })
+        const newState = this.mergeRequestActionState(moduleState, { error: undefined, isBusy: false });
+        return this.setRequestData(newState, action.payload);
+    }
+
+    public getRequestData(moduleState: TModuleState): TResponse | undefined {
+        const requestState = this.selectRequestActionState(moduleState);
+        return requestState ? requestState.data : undefined;
+    }
+
+    public setRequestData(moduleState: TModuleState, data: TResponse): TModuleState {
+        return this.mergeRequestActionState(moduleState, { data });
     }
 
     protected mergeRequestActionState(moduleState: TModuleState, newState: Partial<RequestActionState<TResponse>>): TModuleState {
@@ -154,3 +164,23 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
     }
 }
 
+
+export abstract class FormRequestAction<TRequest, TResponse, TModuleState extends {}>
+    extends RequestAction<TRequest, TResponse, TModuleState> {
+
+    public actionCreator: ThunkAction<TRequest> = (request: TRequest) => (async (dispatch, getState, extra) => {
+        return new Promise(async (resolve, reject) => {
+            this.dispatchBegin(dispatch);
+            try {
+                const response = await this.doWork(request, extra, getState);
+                this.dispatchSuccess(dispatch, response);
+                resolve(response);
+            } catch (error) {
+                this.dispatchFailure(dispatch, error);
+                // Todo: Create SubmissionError from error
+                reject(error);
+            }
+        });
+    })
+
+}
