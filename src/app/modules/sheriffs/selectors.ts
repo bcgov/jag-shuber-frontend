@@ -15,7 +15,8 @@ export const sheriffs = createSelector(
 );
 
 export const getSheriff = (id?: IdType) => (state: RootState) => {
-    if (state && id != null) {
+    // tslint:disable-next-line:triple-equals
+    if (state && id != undefined) {
         const map = requests.sheriffMapRequest.getData(state) || {};
         return map[id];
     }
@@ -37,14 +38,14 @@ export const sheriffLoanMap = createSelector(
             let isLoanedIn = false;
             let isLoanedOut = false;
             
-            if (currentCourthouse != homeLocation) {
-                if (currentLocation && currentLocation == currentCourthouse) {
+            if (currentCourthouse !== homeLocation) {
+                if (currentLocation && currentLocation === currentCourthouse) {
                    isLoanedIn = true;
                 }
             }
 
-            if (currentCourthouse == homeLocation) {
-                if (currentLocation && currentLocation != homeLocation) {
+            if (currentCourthouse === homeLocation) {
+                if (currentLocation && currentLocation !== homeLocation) {
                    isLoanedOut = true;
                 }
             }
