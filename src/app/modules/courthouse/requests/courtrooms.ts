@@ -1,4 +1,3 @@
-import RequestAction from '../../../infrastructure/RequestAction';
 import { ThunkExtra } from '../../../store';
 import arrayToMap from '../../../infrastructure/arrayToMap';
 import {
@@ -6,14 +5,16 @@ import {
     CourthouseModuleState
 } from '../common';
 import {
-    CourtroomMap
+    Courtroom
 } from '../../../api/index';
+import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRequest';
 
-class CourtroomMapRequest extends RequestAction<void, CourtroomMap, CourthouseModuleState> {
-    constructor(namespace: string = STATE_KEY, actionName: string = 'courtroomMap') {
-        super(namespace, actionName);
+class CourtroomMapRequest extends GetEntityMapRequest<void, Courtroom, CourthouseModuleState> {
+    constructor() {
+        super(STATE_KEY, 'courtroomMap');
     }
-    public async doWork(request: void, { api }: ThunkExtra): Promise<CourtroomMap> {
+
+    public async doWork(request: void, { api }: ThunkExtra){
         let courtrooms = await api.getCourtrooms();
         return arrayToMap(courtrooms, c => c.id);
     }

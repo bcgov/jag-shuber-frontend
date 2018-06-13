@@ -1,4 +1,3 @@
-import RequestAction from '../../../infrastructure/RequestAction';
 import { ThunkExtra } from '../../../store';
 import arrayToMap from '../../../infrastructure/arrayToMap';
 import {
@@ -6,14 +5,16 @@ import {
     CourthouseModuleState
 } from '../common';
 import {
-    AlternateAssignmentMap
+ AlternateAssignment
 } from '../../../api/index';
+import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRequest';
 
-class AlternateAssignmentTypeMapRequest extends RequestAction<void, AlternateAssignmentMap, CourthouseModuleState> {
-    constructor(namespace: string = STATE_KEY, actionName: string = 'alternateAssignmentMap') {
-        super(namespace, actionName);
+class AlternateAssignmentTypeMapRequest
+    extends GetEntityMapRequest<void, AlternateAssignment, CourthouseModuleState> {
+    constructor() {
+        super(STATE_KEY, 'alternateAssignmentMap');
     }
-    public async doWork(request: void, { api }: ThunkExtra): Promise<AlternateAssignmentMap> {
+    public async doWork(request: void, { api }: ThunkExtra){
         let alternateAssignmentTypes = await api.getAlternateAssignmentTypes();
         return arrayToMap(alternateAssignmentTypes, a => a.code);
     }

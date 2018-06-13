@@ -13,7 +13,7 @@ import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRe
 import CreateEntityRequest from '../../../infrastructure/Requests/CreateEntityRequest';
 import UpdateEntityRequest from '../../../infrastructure/Requests/UpdateEntityRequest';
 import DeleteEntityRequest from '../../../infrastructure/Requests/DeleteEntityRequest';
-import { DutyRecurrence } from 'jag-shuber-api/dist/client';
+import RequestAction from '../../../infrastructure/RequestAction';
 
 // Assignment Map
 class AssignmentMapRequest extends GetEntityMapRequest<DateRange, Assignment, AssignmentModuleState> {
@@ -69,9 +69,9 @@ class DeleteAssignmentRequest extends DeleteEntityRequest<Assignment, Assignment
 
 export const deleteAssignmentRequest = new DeleteAssignmentRequest();
 
-class DeleteAssignmentDutyRecurrenceRequest extends DeleteEntityRequest<DutyRecurrence, AssignmentModuleState> {
+class DeleteAssignmentDutyRecurrenceRequest extends RequestAction<string, string, AssignmentModuleState> {
     constructor() {
-        super(STATE_KEY, 'deleteAssignmentDutyRecurrence', assignmentMapRequest);
+        super(STATE_KEY, 'deleteAssignmentDutyRecurrence');
     }
 
     public async doWork(id: IdType, { api }: ThunkExtra): Promise<IdType> {
@@ -80,7 +80,7 @@ class DeleteAssignmentDutyRecurrenceRequest extends DeleteEntityRequest<DutyRecu
     }
 
     setRequestData(moduleState: AssignmentModuleState, id: string) {
-        const newMap = { ...this.mapRequest.getRequestData(moduleState) };
+        const newMap = { ...assignmentMapRequest.getRequestData(moduleState) };
         let dutyRecurrenceParent: Assignment | undefined =
             Object.keys(newMap).map((key) => newMap[key] as Assignment)
                 .find(
@@ -97,7 +97,7 @@ class DeleteAssignmentDutyRecurrenceRequest extends DeleteEntityRequest<DutyRecu
             dutyRecurrenceParent.dutyRecurrences.splice(recurrenceIndex, 1);
             newMap[dutyRecurrenceParent.id] = dutyRecurrenceParent;
         }
-        return this.mapRequest.setRequestData(moduleState, newMap);
+        return assignmentMapRequest.setRequestData(moduleState, newMap);
     }
 }
 
