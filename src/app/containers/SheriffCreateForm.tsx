@@ -11,7 +11,7 @@ const formConfig: ConfigProps<any, SheriffFormProps> = {
     form: 'CreateSheriff',
     onSubmit: (values: Sheriff | any, dispatch, ownProps) => {
         let newSheriff = SheriffForm.parseSheriffFromValues(values);
-        dispatch(createSheriff(newSheriff));
+        return dispatch(createSheriff(newSheriff));
     }
 };
 

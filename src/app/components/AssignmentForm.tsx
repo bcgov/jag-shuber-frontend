@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as moment from 'moment';
 import {
-    Form,
     Button,
     ListGroup,
     ListGroupItem,
@@ -12,6 +11,7 @@ import {
     FieldArray,
     InjectedFormProps
 } from 'redux-form';
+import Form from './FormElements/Form';
 import * as Validators from '../infrastructure/Validators';
 import CourtroomSelector from '../containers/CourthouseCourtroomSelector';
 import DaysOfWeekChecklist from './FormElements/DaysOfWeekChecklist';
@@ -32,7 +32,6 @@ import TimeSliderField from './FormElements/TimeSliderField';
 import { getWorkSectionColour } from '../api/utils';
 import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 import { ConfirmationModal } from './ConfirmationModal';
-import FormWrapper from './FormElements/FormWrapper';
 class OtherFields extends React.PureComponent {
     render() {
         return (
@@ -253,23 +252,23 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
                                         return (
                                             <ListGroupItem key={index}>
                                                 {allowDelete && (
-                                                <div className="pull-right">
-                                                    <ConfirmationModal
-                                                        title="Delete Duty Recurrence"
-                                                        message={
-                                                            <p style={{ fontSize: 14 }}>
-                                                                Please confirm that you would like to delete this duty recurrence.
+                                                    <div className="pull-right">
+                                                        <ConfirmationModal
+                                                            title="Delete Duty Recurrence"
+                                                            message={
+                                                                <p style={{ fontSize: 14 }}>
+                                                                    Please confirm that you would like to delete this duty recurrence.
                                                         </p>}
-                                                        actionBtnLabel={<Glyphicon glyph="trash" />}
-                                                        actionBtnStyle="danger"
-                                                        confirmBtnLabel="Yes"
-                                                        confirmBtnStyle="success"
-                                                        cancelBtnLabel="No"
-                                                        onConfirm={() => {
-                                                            handleRemoveDutyRecurrence(index);
-                                                        }}
-                                                    />
-                                                </div>
+                                                            actionBtnLabel={<Glyphicon glyph="trash" />}
+                                                            actionBtnStyle="danger"
+                                                            confirmBtnLabel="Yes"
+                                                            confirmBtnStyle="success"
+                                                            cancelBtnLabel="No"
+                                                            onConfirm={() => {
+                                                                handleRemoveDutyRecurrence(index);
+                                                            }}
+                                                        />
+                                                    </div>
                                                 )}
                                                 <Field
                                                     name={`${recurrenceInfoFieldName}.daysBitmap`}
@@ -310,17 +309,17 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
                                     )}
                                     <br />
                                     {allowEdit && (
-                                    <Button
-                                        onClick={() => fields.push({
-                                            daysBitmap: DaysOfWeek.Weekdays,
-                                            timeRange: {
-                                                startTime: minTime,
-                                                endTime: maxTime
-                                            }
-                                        })}
-                                    >
-                                        <Glyphicon glyph="plus" />
-                                    </Button>
+                                        <Button
+                                            onClick={() => fields.push({
+                                                daysBitmap: DaysOfWeek.Weekdays,
+                                                timeRange: {
+                                                    startTime: minTime,
+                                                    endTime: maxTime
+                                                }
+                                            })}
+                                        >
+                                            <Glyphicon glyph="plus" />
+                                        </Button>
                                     )}
                                 </ListGroup>
                             );
@@ -333,15 +332,12 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
     }
 
     render() {
-        const { handleSubmit } = this.props;
         return (
-            <FormWrapper {...this.props}>
+            <Form {...this.props}>
                 {this.renderHeading()}
-                <Form onSubmit={handleSubmit}>
-                    {this.renderWorkSectionFields()}
-                    {this.renderAssignmentTemplateFields()}
-                </Form>
-            </FormWrapper>
+                {this.renderWorkSectionFields()}
+                {this.renderAssignmentTemplateFields()}
+            </Form>
         );
     }
 }

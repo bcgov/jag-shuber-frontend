@@ -15,7 +15,9 @@ import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRe
 import CreateEntityRequest from '../../../infrastructure/Requests/CreateEntityRequest';
 import UpdateEntityRequest from '../../../infrastructure/Requests/UpdateEntityRequest';
 
-// Get the Map
+// #################
+// SHIFT MAP REQUEST
+// #################
 class ShiftMapRequest extends GetEntityMapRequest<void, Shift, ShiftModuleState> {
     constructor() {
         super(STATE_KEY, 'shiftMap');
@@ -28,8 +30,9 @@ class ShiftMapRequest extends GetEntityMapRequest<void, Shift, ShiftModuleState>
 
 export const shiftMapRequest = new ShiftMapRequest();
 
-
-// Shift Create
+// #################
+// CREATE SHIFT
+// #################
 class CreateShiftRequest extends CreateEntityRequest<Shift, ShiftModuleState> {
     constructor() {
         super(STATE_KEY, 'createShift', shiftMapRequest);
@@ -42,7 +45,9 @@ class CreateShiftRequest extends CreateEntityRequest<Shift, ShiftModuleState> {
 
 export const createShiftRequest = new CreateShiftRequest();
 
-// Shift Edit
+// #################
+// EDIT SHIFT
+// #################
 class UpdateShiftRequest extends UpdateEntityRequest<Shift, ShiftModuleState> {
     constructor() {
         super(STATE_KEY, 'updateShift', shiftMapRequest);
@@ -56,8 +61,9 @@ class UpdateShiftRequest extends UpdateEntityRequest<Shift, ShiftModuleState> {
 
 export const updateShiftRequest = new UpdateShiftRequest();
 
-
-// Copy Shifts
+// #################
+// COPY SHIFT
+// #################
 class CopyShiftsRequest extends RequestAction<ShiftCopyOptions, Shift[], ShiftModuleState> {
     constructor() {
         super(STATE_KEY, 'copyShiftsFromPrevWeek');
@@ -76,9 +82,10 @@ class CopyShiftsRequest extends RequestAction<ShiftCopyOptions, Shift[], ShiftMo
 
 export const copyShiftsFromPrevWeek = new CopyShiftsRequest();
 
-
+// #################
+// EDIT MULTIPLE SHIFTS
+// #################
 type ShiftUpdateOptions = { shiftIds: IdType[], updateDetails: ShiftUpdates };
-// Mulitple Shift Edit
 class UpdateMultipleShiftsRequest extends RequestAction<ShiftUpdateOptions, Shift[], ShiftModuleState> {
     constructor() {
         super(STATE_KEY, 'updateSelectedShifts');
@@ -99,7 +106,9 @@ class UpdateMultipleShiftsRequest extends RequestAction<ShiftUpdateOptions, Shif
 
 export const updateMultipleShiftsRequest = new UpdateMultipleShiftsRequest();
 
-// Shift Delete
+// #################
+// DELETE SHIFTS
+// #################
 class DeleteShiftRequest extends RequestAction<IdType[], IdType[], ShiftModuleState> {
 
     constructor() {

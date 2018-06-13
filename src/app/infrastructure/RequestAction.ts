@@ -5,6 +5,7 @@ import {
 import { AnyAction } from 'redux';
 import { Dispatch } from 'react-redux';
 import { Reducer } from 'redux';
+import { SubmissionError } from 'redux-form';
 
 export interface RequestActionState<T> {
     isBusy?: boolean;
@@ -169,18 +170,15 @@ export abstract class FormRequestAction<TRequest, TResponse, TModuleState extend
     extends RequestAction<TRequest, TResponse, TModuleState> {
 
     public actionCreator: ThunkAction<TRequest> = (request: TRequest) => (async (dispatch, getState, extra) => {
-        return new Promise(async (resolve, reject) => {
-            this.dispatchBegin(dispatch);
-            try {
-                const response = await this.doWork(request, extra, getState);
-                this.dispatchSuccess(dispatch, response);
-                resolve(response);
-            } catch (error) {
-                this.dispatchFailure(dispatch, error);
-                // Todo: Create SubmissionError from error
-                reject(error);
-            }
-        });
+        this.dispatchBegin(dispatch);
+        try {
+            const response = await this.doWork(request, extra, getState);
+            this.dispatchSuccess(dispatch, response);
+            return response;
+        } catch (error) {
+            this.dispatchFailure(dispatch, error);
+            throw new SubmissionError({ _error: error.message });
+        }
     })
 
 }
