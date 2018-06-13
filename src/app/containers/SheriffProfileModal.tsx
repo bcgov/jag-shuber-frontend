@@ -14,8 +14,10 @@ import { ConnectedShowModalButton } from './ConnectedShowModalButton';
 import { show as showModal, hide as hideModal } from 'redux-modal';
 import { Button } from 'react-bootstrap';
 import { Glyphicon } from 'react-bootstrap';
-import SheriffProfileDisplay from '../components/SheriffProfile/SheriffProfileDisplay';
+// import SheriffProfileDisplay from '../components/SheriffProfile/SheriffProfileDisplay';
 import { getSheriff } from '../modules/sheriffs/selectors';
+import SheriffProfile from './SheriffProfile';
+import SheriffProfileInfoPlugin from './SheriffProfileInfoPlugin/SheriffProfileInfoPlugin';
 
 interface SheriffProfileModalProps {
     sheriffId: IdType;
@@ -36,7 +38,7 @@ class SheriffProfileModal extends React.PureComponent<CompositeProps> {
 
     render() {
         const {
-            sheriff, 
+            // sheriff, 
             show,
             handleHide,
             isEditing = false,
@@ -64,12 +66,19 @@ class SheriffProfileModal extends React.PureComponent<CompositeProps> {
                     >
                         <Glyphicon glyph="pencil"/>
                     </Button>}
-                    {isEditing && 
+                    <SheriffProfile 
+                        isEditing={isEditing} 
+                        sheriffId={sheriffId} 
+                        plugins={[
+                            new SheriffProfileInfoPlugin()
+                        ]}
+                        />
+                    {/* {isEditing && 
                         <SheriffProfileEditForm 
                             id={sheriff.id} 
                             onSubmitSuccess={() => showSheriffProfileModal(sheriffId, false)}
                         />}
-                    {!isEditing && <SheriffProfileDisplay sheriff={sheriff}/>}
+                    {!isEditing && <SheriffProfileDisplay sheriff={sheriff}/>} */}
                 </Modal.Body>
                 {isEditing && 
                     <Modal.Footer>                        
