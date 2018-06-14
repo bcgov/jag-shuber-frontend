@@ -1,4 +1,4 @@
-import RequestAction from '../../../infrastructure/RequestAction';
+import RequestAction from '../../../infrastructure/Requests/RequestActionBase';
 import { ThunkExtra } from '../../../store';
 import arrayToMap from '../../../infrastructure/arrayToMap';
 import {

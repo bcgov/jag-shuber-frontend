@@ -3,7 +3,7 @@ import thunk from 'redux-thunk';
 import {
     default as RequestAction,
     RequestActionState
-} from '../RequestAction';
+} from '../Requests/RequestActionBase';
 import fetchMock from 'fetch-mock';
 import { API } from '../../api';
 import { AnyAction } from 'redux';
@@ -578,5 +578,3 @@ describe('RequestAction.selectors should work with function pointers', () => {
         expect(selectors.getError({})).toEqual(undefined);
     });
 });
-
-

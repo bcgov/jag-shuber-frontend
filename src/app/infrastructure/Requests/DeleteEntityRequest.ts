@@ -1,4 +1,5 @@
-import RequestAction, { FormRequestAction } from '../RequestAction';
+import RequestAction from './RequestActionBase';
+import FormRequestAction from './FormRequestAction';
 
 export default abstract class DeleteEntityRequest<TEntity, TModuleState>
     extends FormRequestAction<string, string, TModuleState> {

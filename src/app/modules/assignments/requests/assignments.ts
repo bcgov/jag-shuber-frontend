@@ -13,7 +13,7 @@ import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRe
 import CreateEntityRequest from '../../../infrastructure/Requests/CreateEntityRequest';
 import UpdateEntityRequest from '../../../infrastructure/Requests/UpdateEntityRequest';
 import DeleteEntityRequest from '../../../infrastructure/Requests/DeleteEntityRequest';
-import RequestAction from '../../../infrastructure/RequestAction';
+import RequestAction from '../../../infrastructure/Requests/RequestActionBase';
 
 // Assignment Map
 class AssignmentMapRequest extends GetEntityMapRequest<DateRange, Assignment, AssignmentModuleState> {

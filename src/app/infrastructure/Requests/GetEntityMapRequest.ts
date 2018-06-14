@@ -1,4 +1,4 @@
-import RequestAction from '../RequestAction';
+import RequestAction from './RequestActionBase';
 
 export default abstract class GetEntityMapRequest<TRequest, TEntity, TModuleState>
     extends RequestAction<TRequest, { [key: string]: TEntity }, TModuleState> {

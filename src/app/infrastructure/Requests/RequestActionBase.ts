@@ -1,11 +1,10 @@
 import {
     ThunkAction,
     ThunkExtra
-} from '../store';
+} from '../../store';
 import { AnyAction } from 'redux';
 import { Dispatch } from 'react-redux';
 import { Reducer } from 'redux';
-import { SubmissionError } from 'redux-form';
 
 export function isSubmissionError(err: any): boolean {
     const { name = '' } = err;
@@ -119,10 +118,10 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
     }
 
     protected mergeRequestActionState(moduleState: TModuleState, newState: Partial<RequestActionState<TResponse>>): TModuleState {
-        let newModuleState = { ...(moduleState || {}) as any }
+        let newModuleState = { ...(moduleState || {}) as any };
         const currentActionState = newModuleState[this.actionName] || {};
         newModuleState[this.actionName] = { ...currentActionState, ...newState };
-        return newModuleState as TModuleState
+        return newModuleState as TModuleState;
     }
 
     protected selectRequestActionState(moduleState: TModuleState): RequestActionState<TResponse> | undefined {
@@ -168,26 +167,4 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
     get getData(): (state: any) => TResponse {
         return this._getData.bind(this);
     }
-}
-
-export abstract class FormRequestAction<TRequest, TResponse, TModuleState extends {}>
-    extends RequestAction<TRequest, TResponse, TModuleState> {
-
-    public actionCreator: ThunkAction<TRequest> = (request: TRequest) => (async (dispatch, getState, extra) => {
-        this.dispatchBegin(dispatch);
-        try {
-            const response = await this.doWork(request, extra, getState);
-            this.dispatchSuccess(dispatch, response);
-            return response;
-        } catch (error) {
-            this.dispatchFailure(dispatch, error);
-            if (!isSubmissionError(error)) {
-                throw new SubmissionError({ _error: error.message });
-            } else {
-                throw error;
-            }
-
-        }
-    })
-
 }

@@ -1,4 +1,5 @@
-import RequestAction, { FormRequestAction } from '../RequestAction';
+import RequestAction from './RequestActionBase';
+import FormRequestAction from './FormRequestAction';
 
 export default abstract class CreateEntityRequest<TEntity extends { id: string }, TModuleState>
     extends FormRequestAction<Partial<TEntity>, TEntity, TModuleState> {
