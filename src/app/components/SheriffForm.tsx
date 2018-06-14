@@ -67,7 +67,6 @@ export default class SheriffForm extends
                     name="currentCourthouseId"
                     component={CourthouseSelector as any}
                     label="Current Location"
-                    validate={[Validators.required]}
                 />
             </Form>
         );
