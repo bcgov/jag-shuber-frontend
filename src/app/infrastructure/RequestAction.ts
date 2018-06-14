@@ -7,6 +7,11 @@ import { Dispatch } from 'react-redux';
 import { Reducer } from 'redux';
 import { SubmissionError } from 'redux-form';
 
+export function isSubmissionError(err: any): boolean {
+    const { name = '' } = err;
+    return name === 'SubmissionError';
+}
+
 export interface RequestActionState<T> {
     isBusy?: boolean;
     error?: string;
@@ -61,7 +66,7 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
         const errorMessage = typeof error === 'string' ? error : error.message;
         dispatch(this.getFailAction(errorMessage));
         // tslint:disable-next-line:no-console
-        //console.error(errorMessage);
+        console.error(errorMessage);
     }
 
     protected dispatchSuccess(dispatch: Dispatch<any>, response: TResponse) {
@@ -165,7 +170,6 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
     }
 }
 
-
 export abstract class FormRequestAction<TRequest, TResponse, TModuleState extends {}>
     extends RequestAction<TRequest, TResponse, TModuleState> {
 
@@ -177,7 +181,12 @@ export abstract class FormRequestAction<TRequest, TResponse, TModuleState extend
             return response;
         } catch (error) {
             this.dispatchFailure(dispatch, error);
-            throw new SubmissionError({ _error: error.message });
+            if (!isSubmissionError(error)) {
+                throw new SubmissionError({ _error: error.message });
+            } else {
+                throw error;
+            }
+
         }
     })
 
