@@ -1,4 +1,4 @@
-import RequestAction from '../../../infrastructure/Requests/RequestActionBase';
+import RequestAction, { RequestActionConfig } from '../../../infrastructure/Requests/RequestActionBase';
 import { ThunkExtra } from '../../../store';
 import arrayToMap from '../../../infrastructure/arrayToMap';
 import {
@@ -24,7 +24,8 @@ class AssignmentDutyMapRequest extends GetEntityMapRequest<DateRange, Assignment
             namespace: STATE_KEY,
             actionName: 'assignmentDutyMap',
             toasts: {
-                error: (e) => `Couldn\'t retreive list of Assignments: ${e ? e.toString() : 'unknown error'}`
+                // tslint:disable-next-line:max-line-length
+                error: (err) => `Problem encountered while retrieving the duty list: ${err ? err.toString() : 'Unknown Error'}`
             }
         });
     }
@@ -45,7 +46,9 @@ class CreateAssignmentDutyRequest extends CreateEntityRequest<AssignmentDuty, As
                 namespace: STATE_KEY,
                 actionName: 'createAssignmentDuty',
                 toasts: {
-                    success: 'Created Duty'
+                    success: 'Duty Created',
+                    // tslint:disable-next-line:max-line-length
+                    error: (err) => `Problem encountered while creating the duty: ${err ? err.toString() : 'Unknown Error'}`
                 }
             }, assignmentDutyMapRequest);
     }
@@ -65,14 +68,17 @@ export const createAssignmentDutyRequest = new CreateAssignmentDutyRequest();
 
 // Assignment Duty Edit
 class UpdateAssignmentDutyRequest extends UpdateEntityRequest<AssignmentDuty, AssignmentModuleState> {
-    constructor() {
+    constructor(config?: RequestActionConfig<AssignmentDuty>) {
         super(
             {
                 namespace: STATE_KEY,
                 actionName: 'updateAssignmentDuty',
                 toasts: {
-                    success: 'Updated Duty'
-                }
+                    success: 'Duty Updated',
+                    // tslint:disable-next-line:max-line-length
+                    error: (err) => `Problem encountered while updating the duty: ${err ? err.toString() : 'Unknown Error'}`
+                },
+                ...config
             },
             assignmentDutyMapRequest);
     }
@@ -85,6 +91,16 @@ class UpdateAssignmentDutyRequest extends UpdateEntityRequest<AssignmentDuty, As
 
 export const updateAssignmentDutyRequest = new UpdateAssignmentDutyRequest();
 
+export const assignSheriffRequest = new UpdateAssignmentDutyRequest({
+    namespace: STATE_KEY,
+    actionName: 'updateAssignmentDuty',
+    toasts: {
+        success: undefined,
+        // tslint:disable-next-line:max-line-length
+        error: (err) => `Problem encountered when assigning sheriff to the duty: ${err ? err.toString() : 'Unknown Error'}`
+    }
+});
+
 // Assignment Duty Delete
 class DeleteAssignmentDutyRequest extends DeleteEntityRequest<AssignmentDuty, AssignmentModuleState> {
     constructor() {
@@ -93,8 +109,9 @@ class DeleteAssignmentDutyRequest extends DeleteEntityRequest<AssignmentDuty, As
                 namespace: STATE_KEY,
                 actionName: 'deleteAssignmentDuty',
                 toasts: {
-                    success: 'Deleted Duty',
-                    error: 'Couldn\'t delete Duty'
+                    success: 'Duty Deleted',
+                    // tslint:disable-next-line:max-line-length
+                    error: (err) => `Problem encountered while deleting the duty: ${err ? err.toString() : 'Unknown Error'}`
                 }
             },
             assignmentDutyMapRequest);
@@ -114,7 +131,8 @@ class CreateDefaultDutiesRequest extends RequestAction<DateType, AssignmentDuty[
             namespace: STATE_KEY,
             actionName: 'createDefaultDuties',
             toasts: {
-                success: (duties) => duties.length > 0 ? `Imported ${duties.length} new Duties` : 'No duties to import for this day',
+                // tslint:disable-next-line:max-line-length
+                success: (duties) => duties.length > 0 ? `${duties.length} ${duties.length === 1 ? 'duty' : 'duties'} imported` : 'Default duties for this day have already been imported',
                 error: (err) => `Problem encountered while importing duties: ${err ? err.toString() : 'Unknown Error'}`
             }
         });

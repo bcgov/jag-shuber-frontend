@@ -14,11 +14,19 @@ import CreateEntityRequest from '../../../infrastructure/Requests/CreateEntityRe
 import UpdateEntityRequest from '../../../infrastructure/Requests/UpdateEntityRequest';
 import DeleteEntityRequest from '../../../infrastructure/Requests/DeleteEntityRequest';
 import RequestAction from '../../../infrastructure/Requests/RequestActionBase';
+import toTitleCase from '../../../infrastructure/toTitleCase';
 
 // Assignment Map
 class AssignmentMapRequest extends GetEntityMapRequest<DateRange, Assignment, AssignmentModuleState> {
     constructor() {
-        super({ namespace: STATE_KEY, actionName: 'assignmentMap' });
+        super({ 
+            namespace: STATE_KEY, 
+            actionName: 'assignmentMap',
+            toasts: {
+                // tslint:disable-next-line:max-line-length
+                error: (err) => `Problem encountered while retrieving the assignment list: ${err ? err.toString() : 'Unknown Error'}`
+            } 
+        });
     }
     public async doWork(request: DateRange, { api }: ThunkExtra) {
         let assignments = await api.getAssignments(request);
@@ -31,7 +39,15 @@ export const assignmentMapRequest = new AssignmentMapRequest();
 // Assignment Create
 class CreateAssignmentRequest extends CreateEntityRequest<Assignment, AssignmentModuleState> {
     constructor() {
-        super({ namespace: STATE_KEY, actionName: 'createAssignment' }, assignmentMapRequest);
+        super({ 
+            namespace: STATE_KEY, 
+            actionName: 'createAssignment',
+            toasts: {
+                success: (a) => `Assignment created for ${toTitleCase(a.workSectionId)}`,
+                // tslint:disable-next-line:max-line-length
+                error: (err) => `Problem encountered while creating the assignment: ${err ? err.toString() : 'Unknown Error'}`
+            }
+        }, assignmentMapRequest);
     }
     public async doWork(assignment: Partial<Assignment>, { api }: ThunkExtra): Promise<Assignment> {
         let newAssignment = await api.createAssignment(assignment);
@@ -44,7 +60,16 @@ export const createAssignmentRequest = new CreateAssignmentRequest();
 // Assignment Edit
 class UpdateAssignmentRequest extends UpdateEntityRequest<Assignment, AssignmentModuleState> {
     constructor() {
-        super({ namespace: STATE_KEY, actionName: 'updateAssignment' }, assignmentMapRequest);
+        super({ 
+            namespace: STATE_KEY, 
+            actionName: 'updateAssignment',
+            toasts: {
+                success: (a) => `${toTitleCase(a.workSectionId)} assignment updated`,
+                // tslint:disable-next-line:max-line-length
+                error: (err) => `Problem encountered while updating the assignment: ${err ? err.toString() : 'Unknown Error'}`
+            } 
+        }, 
+        assignmentMapRequest);
     }
 
     public async doWork(assignment: Partial<Assignment>, { api }: ThunkExtra): Promise<Assignment> {
@@ -58,7 +83,16 @@ export const updateAssignmentRequest = new UpdateAssignmentRequest();
 // Assignment Delete
 class DeleteAssignmentRequest extends DeleteEntityRequest<Assignment, AssignmentModuleState> {
     constructor() {
-        super({ namespace: STATE_KEY, actionName: 'deleteAssignment' }, assignmentMapRequest);
+        super({ 
+            namespace: STATE_KEY, 
+            actionName: 'deleteAssignment',
+            toasts: {
+                success: 'Assignment deleted',
+                // tslint:disable-next-line:max-line-length
+                error: (err) => `Problem encountered while deleting the assignment: ${err ? err.toString() : 'Unknown Error'}`
+            } 
+        }, 
+        assignmentMapRequest);
     }
 
     public async doWork(assignmentIdToDelete: IdType, { api }: ThunkExtra): Promise<IdType> {

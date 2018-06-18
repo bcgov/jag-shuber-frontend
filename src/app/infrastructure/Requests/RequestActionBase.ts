@@ -48,7 +48,12 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
     }
 
     constructor(config: RequestActionConfig<TResponse>) {
-        this.config = config;
+        this.config = {
+            toasts: {
+                error: 'Error completing action'
+            },
+            ...config
+        };
         const { namespace, actionName } = config;
         const upperNamespace = namespace.toUpperCase();
         const upperAction = actionName.toUpperCase();

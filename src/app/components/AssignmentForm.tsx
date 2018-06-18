@@ -296,12 +296,10 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
                                                         />
                                                     }
                                                     label="Number of Sheriffs Required"
-                                                    validate={[
-                                                        Validators.required,
-                                                        Validators.integer,
-                                                        Validators.min1,
-                                                        Validators.max10
-                                                    ]}
+                                                    validate={
+                                                        (value, allValues, props) => {
+                                                            return 'This would be an error';
+                                                        }}
                                                 />
                                             </ListGroupItem>
                                         );

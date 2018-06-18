@@ -15,6 +15,7 @@ export const deleteDutyRecurrence = assignmentRequests.deleteAssignmentDutyRecur
 export const getAssignmentDuties = assignmentDutyRequests.assignmentDutyMapRequest.actionCreator;
 export const createAssignmentDuty = assignmentDutyRequests.createAssignmentDutyRequest.actionCreator;
 export const editAssignmentDuty = assignmentDutyRequests.updateAssignmentDutyRequest.actionCreator;
+export const assignSheriffToDuty = assignmentDutyRequests.assignSheriffRequest.actionCreator;
 export const deleteAssignmentDuty = assignmentDutyRequests.deleteAssignmentDutyRequest.actionCreator;
 export const createDefaultDuties = assignmentDutyRequests.createDefaultDutiesRequest.actionCreator;
 
@@ -33,5 +34,5 @@ export const linkAssignment: ThunkAction<SheriffDutyLink> =
         if (indexOfSheriffDuty !== -1) {
             sheriffDuties[indexOfSheriffDuty].sheriffId = sheriffId;
         }
-        dispatch(editAssignmentDuty({ ...duty}));
+        dispatch(assignSheriffToDuty({ ...duty}));
     };
