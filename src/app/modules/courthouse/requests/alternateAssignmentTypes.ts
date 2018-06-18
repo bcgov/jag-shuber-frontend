@@ -5,16 +5,16 @@ import {
     CourthouseModuleState
 } from '../common';
 import {
- AlternateAssignment
+    AlternateAssignment
 } from '../../../api/index';
 import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRequest';
 
 class AlternateAssignmentTypeMapRequest
     extends GetEntityMapRequest<void, AlternateAssignment, CourthouseModuleState> {
     constructor() {
-        super({namespace:STATE_KEY,actionName: 'alternateAssignmentMap'});
+        super({ namespace: STATE_KEY, actionName: 'alternateAssignmentMap' });
     }
-    public async doWork(request: void, { api }: ThunkExtra){
+    public async doWork(request: void, { api }: ThunkExtra) {
         let alternateAssignmentTypes = await api.getAlternateAssignmentTypes();
         return arrayToMap(alternateAssignmentTypes, a => a.code);
     }

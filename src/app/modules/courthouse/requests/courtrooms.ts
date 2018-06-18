@@ -11,10 +11,10 @@ import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRe
 
 class CourtroomMapRequest extends GetEntityMapRequest<void, Courtroom, CourthouseModuleState> {
     constructor() {
-        super({namespace:STATE_KEY,actionName: 'courtroomMap'});
+        super({ namespace: STATE_KEY, actionName: 'courtroomMap' });
     }
 
-    public async doWork(request: void, { api }: ThunkExtra){
+    public async doWork(request: void, { api }: ThunkExtra) {
         let courtrooms = await api.getCourtrooms();
         return arrayToMap(courtrooms, c => c.id);
     }
