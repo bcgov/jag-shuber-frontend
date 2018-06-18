@@ -11,7 +11,7 @@ import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRe
 
 class JailRoleMapRequest extends GetEntityMapRequest<void, JailRole, CourthouseModuleState> {
     constructor() {
-        super(STATE_KEY, 'jailRoleMap');
+        super({namespace:STATE_KEY,actionName: 'jailRoleMap'});
     }
     public async doWork(request: void, { api }: ThunkExtra){
         let jailRoles = await api.getJailRoles();

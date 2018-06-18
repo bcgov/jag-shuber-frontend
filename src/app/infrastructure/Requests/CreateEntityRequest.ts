@@ -1,14 +1,12 @@
-import RequestAction from './RequestActionBase';
+import RequestAction, { RequestActionConfig } from './RequestActionBase';
 import FormRequestAction from './FormRequestAction';
 
 export default abstract class CreateEntityRequest<TEntity extends { id: string }, TModuleState>
     extends FormRequestAction<Partial<TEntity>, TEntity, TModuleState> {
 
-    constructor(
-        namespace: string,
-        actionName: string,
-        protected mapRequest: RequestAction<any, { [key: string]: TEntity }, TModuleState>) {
-        super(namespace, actionName);
+    constructor(config: RequestActionConfig<TEntity>,
+                protected mapRequest: RequestAction<any, { [key: string]: TEntity }, TModuleState>) {
+        super(config);
     }
 
     setRequestData(moduleState: TModuleState, data: TEntity) {

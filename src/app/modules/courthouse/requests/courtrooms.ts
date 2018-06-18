@@ -11,7 +11,7 @@ import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRe
 
 class CourtroomMapRequest extends GetEntityMapRequest<void, Courtroom, CourthouseModuleState> {
     constructor() {
-        super(STATE_KEY, 'courtroomMap');
+        super({namespace:STATE_KEY,actionName: 'courtroomMap'});
     }
 
     public async doWork(request: void, { api }: ThunkExtra){

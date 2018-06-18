@@ -11,7 +11,7 @@ import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRe
 
 class SheriffRankCodeMapRequest extends GetEntityMapRequest<void, SheriffRank, CourthouseModuleState> {
     constructor() {
-        super(STATE_KEY, 'sheriffRankCodeMap');
+        super({namespace:STATE_KEY,actionName: 'sheriffRankCodeMap'});
     }
     public async doWork(request: void, { api }: ThunkExtra) {
         let rankCodes = await api.getSheriffRankCodes();

@@ -11,7 +11,7 @@ import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRe
 
 class RunMapRequest extends GetEntityMapRequest<void, Run, CourthouseModuleState> {
     constructor() {
-        super(STATE_KEY, 'runMap');
+        super({namespace:STATE_KEY,actionName: 'runMap'});
     }
     public async doWork(request: void, { api }: ThunkExtra) {
         let runs = await api.getRuns();

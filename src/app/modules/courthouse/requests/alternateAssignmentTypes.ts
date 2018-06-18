@@ -12,7 +12,7 @@ import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRe
 class AlternateAssignmentTypeMapRequest
     extends GetEntityMapRequest<void, AlternateAssignment, CourthouseModuleState> {
     constructor() {
-        super(STATE_KEY, 'alternateAssignmentMap');
+        super({namespace:STATE_KEY,actionName: 'alternateAssignmentMap'});
     }
     public async doWork(request: void, { api }: ThunkExtra){
         let alternateAssignmentTypes = await api.getAlternateAssignmentTypes();

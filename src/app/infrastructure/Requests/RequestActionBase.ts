@@ -5,6 +5,7 @@ import {
 import { AnyAction } from 'redux';
 import { Dispatch } from 'react-redux';
 import { Reducer } from 'redux';
+import { toast } from '../../components/ToastManager/ToastManager';
 
 export function isSubmissionError(err: any): boolean {
     const { name = '' } = err;
@@ -17,9 +18,26 @@ export interface RequestActionState<T> {
     data?: T;
 }
 
+export interface RequestActionConfig<TResponse> {
+    namespace: string;
+    actionName: string;
+    toasts?: {
+        success?: string | ((entity: TResponse) => string);
+        error?: string | ((error: Error | string) => string);
+    };
+}
+
 export default abstract class RequestAction<TRequest, TResponse, TModuleState extends {}>{
+    protected config: RequestActionConfig<TResponse>;
     public actionNames: { begin: string, success: string, fail: string }
     private beginAction: { type: string };
+    protected get namespace(): string {
+        return this.config.namespace;
+    }
+
+    protected get actionName(): string {
+        return this.config.actionName;
+    }
 
     private getFailAction(error: string) {
         return { type: this.actionNames.fail, payload: error }
@@ -29,9 +47,12 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
         return { type: this.actionNames.success, payload: response };
     }
 
-    constructor(private namespace: string, private actionName: string) {
+    constructor(config: RequestActionConfig<TResponse>) {
+        this.config = config;
+        const { namespace, actionName } = config;
         const upperNamespace = namespace.toUpperCase();
         const upperAction = actionName.toUpperCase();
+
         // Create our actions
         this.actionNames = {
             begin: `${upperNamespace}_${upperAction}_REQUEST`,
@@ -64,12 +85,29 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
     protected dispatchFailure(dispatch: Dispatch<any>, error: Error | string) {
         const errorMessage = typeof error === 'string' ? error : error.message;
         dispatch(this.getFailAction(errorMessage));
+        const { toasts = {} } = this.config;
+        if (toasts.error) {
+            if (typeof toasts.error === 'string') {
+                toast.error(toasts.error);
+            } else {
+                toast.error(toasts.error(error));
+            }
+
+        }
         // tslint:disable-next-line:no-console
         console.error(errorMessage);
     }
 
     protected dispatchSuccess(dispatch: Dispatch<any>, response: TResponse) {
         dispatch(this.getSuccessAction(response));
+        const { toasts = {} } = this.config;
+        if (toasts.success) {
+            if (typeof toasts.success === 'string') {
+                toast.success(toasts.success);
+            } else {
+                toast.success(toasts.success(response));
+            }
+        }
     }
 
     private _reducer(moduleState: TModuleState | undefined, action: AnyAction): TModuleState | undefined {

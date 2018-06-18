@@ -14,7 +14,7 @@ import UpdateEntityRequest from '../../infrastructure/Requests/UpdateEntityReque
 // Sheriff Map
 class SheriffMapRequest extends GetEntityMapRequest<void, Sheriff, SheriffModuleState> {
     constructor() {
-        super(STATE_KEY, 'sheriffMap');
+        super({namespace:STATE_KEY,actionName: 'sheriffMap'});
     }
     public async doWork(request: void, { api }: ThunkExtra) {
         let sheriffs = await api.getSheriffs();
@@ -27,7 +27,7 @@ export const sheriffMapRequest = new SheriffMapRequest();
 // Create Sheriff
 class CreateSheriffRequest extends CreateEntityRequest<Sheriff, SheriffModuleState> {
     constructor() {
-        super(STATE_KEY, 'createSheriff', sheriffMapRequest);
+        super({namespace:STATE_KEY,actionName: 'createSheriff'}, sheriffMapRequest);
     }
     public async doWork(sheriff: Partial<Sheriff>, { api }: ThunkExtra): Promise<Sheriff> {
         let newSheriff = await api.createSheriff(sheriff as Sheriff);
@@ -40,7 +40,7 @@ export const createSheriffRequest = new CreateSheriffRequest();
 // Sheriff Edit
 class UpdateSheriffRequest extends UpdateEntityRequest<Sheriff, SheriffModuleState> {
     constructor() {
-        super(STATE_KEY, 'updateSheriff', sheriffMapRequest);
+        super({namespace:STATE_KEY,actionName: 'updateSheriff'}, sheriffMapRequest);
     }
     public async doWork(sheriff: Partial<Sheriff>, { api }: ThunkExtra): Promise<Sheriff> {
         let newSheriff = await api.updateSheriff(sheriff);

@@ -33,7 +33,7 @@ class FetchWidgets extends RequestAction<{}, Widget[], WidgetRootState>{
         return body;
     }
     constructor() {
-        super("widgets", "list");
+        super({namespace:"widgets", actionName:"list"});
     }
 }
 
@@ -62,7 +62,7 @@ class CreateWidget extends RequestAction<Partial<Widget>, Widget, WidgetRootStat
     }
 
     constructor() {
-        super("widgets", "create");
+        super({namespace:"widgets", actionName:"create"});
     }
 }
 

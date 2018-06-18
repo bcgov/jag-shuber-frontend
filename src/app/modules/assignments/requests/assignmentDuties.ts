@@ -19,8 +19,14 @@ import DeleteEntityRequest from '../../../infrastructure/Requests/DeleteEntityRe
 
 // Get the Map
 class AssignmentDutyMapRequest extends GetEntityMapRequest<DateRange, AssignmentDuty, AssignmentModuleState> {
-    constructor(namespace: string = STATE_KEY, actionName: string = 'assignmentDutyMap') {
-        super(namespace, actionName);
+    constructor() {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'assignmentDutyMap',
+            toasts: {
+                error: (e) => `Couldn\'t retreive list of Assignments: ${e ? e.toString() : 'unknown error'}`
+            }
+        });
     }
     public async doWork(request: DateRange = {}, { api }: ThunkExtra): Promise<AssignmentDutyMap> {
         const { startDate, endDate } = request;
@@ -33,8 +39,15 @@ export const assignmentDutyMapRequest = new AssignmentDutyMapRequest();
 
 // Assignment Duty Create
 class CreateAssignmentDutyRequest extends CreateEntityRequest<AssignmentDuty, AssignmentModuleState> {
-    constructor(namespace: string = STATE_KEY, actionName: string = 'createAssignmentDuty') {
-        super(namespace, actionName, assignmentDutyMapRequest);
+    constructor() {
+        super(
+            {
+                namespace: STATE_KEY,
+                actionName: 'createAssignmentDuty',
+                toasts: {
+                    success: 'Created Duty'
+                }
+            }, assignmentDutyMapRequest);
     }
     public async doWork(assignment: Partial<AssignmentDuty>, { api }: ThunkExtra): Promise<AssignmentDuty> {
         let newAssignment = await api.createAssignmentDuty(assignment);
@@ -53,7 +66,15 @@ export const createAssignmentDutyRequest = new CreateAssignmentDutyRequest();
 // Assignment Duty Edit
 class UpdateAssignmentDutyRequest extends UpdateEntityRequest<AssignmentDuty, AssignmentModuleState> {
     constructor() {
-        super(STATE_KEY, 'updateAssignmentDuty', assignmentDutyMapRequest);
+        super(
+            {
+                namespace: STATE_KEY,
+                actionName: 'updateAssignmentDuty',
+                toasts: {
+                    success: 'Updated Duty'
+                }
+            },
+            assignmentDutyMapRequest);
     }
 
     public async doWork(assignment: Partial<AssignmentDuty>, { api }: ThunkExtra): Promise<AssignmentDuty> {
@@ -67,7 +88,16 @@ export const updateAssignmentDutyRequest = new UpdateAssignmentDutyRequest();
 // Assignment Duty Delete
 class DeleteAssignmentDutyRequest extends DeleteEntityRequest<AssignmentDuty, AssignmentModuleState> {
     constructor() {
-        super(STATE_KEY, 'deleteAssignmentDuty', assignmentDutyMapRequest);
+        super(
+            {
+                namespace: STATE_KEY,
+                actionName: 'deleteAssignmentDuty',
+                toasts: {
+                    success: 'Deleted Duty',
+                    error: 'Couldn\'t delete Duty'
+                }
+            },
+            assignmentDutyMapRequest);
     }
     public async  doWork(id: IdType, { api }: ThunkExtra): Promise<IdType> {
         await api.deleteAssignmentDuty(id);
@@ -80,7 +110,14 @@ export const deleteAssignmentDutyRequest = new DeleteAssignmentDutyRequest();
 // Create assingment duties
 class CreateDefaultDutiesRequest extends RequestAction<DateType, AssignmentDuty[], AssignmentModuleState> {
     constructor() {
-        super(STATE_KEY, 'createDefaultDuties');
+        super({
+            namespace: STATE_KEY,
+            actionName: 'createDefaultDuties',
+            toasts: {
+                success: (duties) => duties.length > 0 ? `Imported ${duties.length} new Duties` : 'No duties to import for this day',
+                error: (err) => `Problem encountered while importing duties: ${err ? err.toString() : 'Unknown Error'}`
+            }
+        });
     }
     public async doWork(request: DateType, { api }: ThunkExtra): Promise<AssignmentDuty[]> {
         return await api.createDefaultDuties(request);
@@ -98,7 +135,7 @@ export const createDefaultDutiesRequest = new CreateDefaultDutiesRequest();
 // Delete Sheriff Duty 
 class DeleteSheriffDutyRequest extends RequestAction<string, string, AssignmentModuleState> {
     constructor() {
-        super(STATE_KEY, 'deleteSheriffDuty');
+        super({ namespace: STATE_KEY, actionName: 'deleteSheriffDuty' });
     }
     public async doWork(id: IdType, { api }: ThunkExtra): Promise<IdType> {
         await api.deleteSheriffDuty(id);

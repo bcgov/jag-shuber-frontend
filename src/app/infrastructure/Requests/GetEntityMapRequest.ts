@@ -1,8 +1,8 @@
-import RequestAction from './RequestActionBase';
+import RequestAction, { RequestActionConfig } from './RequestActionBase';
 
 export default abstract class GetEntityMapRequest<TRequest, TEntity, TModuleState>
     extends RequestAction<TRequest, { [key: string]: TEntity }, TModuleState> {
-    constructor(namespace: string, actionName: string) {
-        super(namespace, actionName);
+    constructor(config: RequestActionConfig<{ [key: string]: TEntity }>) {
+        super(config);
     }
 }

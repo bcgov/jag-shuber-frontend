@@ -20,7 +20,7 @@ import UpdateEntityRequest from '../../../infrastructure/Requests/UpdateEntityRe
 // #################
 class ShiftMapRequest extends GetEntityMapRequest<void, Shift, ShiftModuleState> {
     constructor() {
-        super(STATE_KEY, 'shiftMap');
+        super({ namespace: STATE_KEY, actionName: 'shiftMap' });
     }
     public async doWork(request: void, { api }: ThunkExtra) {
         let shifts = await api.getShifts();
@@ -35,7 +35,7 @@ export const shiftMapRequest = new ShiftMapRequest();
 // #################
 class CreateShiftRequest extends CreateEntityRequest<Shift, ShiftModuleState> {
     constructor() {
-        super(STATE_KEY, 'createShift', shiftMapRequest);
+        super({ namespace: STATE_KEY, actionName: 'createShift' }, shiftMapRequest);
     }
     public async doWork(shift: Partial<Shift>, { api }: ThunkExtra) {
         let newShift = await api.createShift(shift);
@@ -50,7 +50,7 @@ export const createShiftRequest = new CreateShiftRequest();
 // #################
 class UpdateShiftRequest extends UpdateEntityRequest<Shift, ShiftModuleState> {
     constructor() {
-        super(STATE_KEY, 'updateShift', shiftMapRequest);
+        super({ namespace: STATE_KEY, actionName: 'updateShift' }, shiftMapRequest);
     }
 
     public async doWork(shift: Partial<Shift>, { api }: ThunkExtra): Promise<Shift> {
@@ -66,7 +66,7 @@ export const updateShiftRequest = new UpdateShiftRequest();
 // #################
 class CopyShiftsRequest extends RequestAction<ShiftCopyOptions, Shift[], ShiftModuleState> {
     constructor() {
-        super(STATE_KEY, 'copyShiftsFromPrevWeek');
+        super({ namespace: STATE_KEY, actionName: 'copyShiftsFromPrevWeek' });
     }
     public async doWork(copyInstructions: ShiftCopyOptions, { api }: ThunkExtra): Promise<Shift[]> {
         let copiedShifts = await api.copyShifts(copyInstructions);
@@ -88,7 +88,7 @@ export const copyShiftsFromPrevWeek = new CopyShiftsRequest();
 type ShiftUpdateOptions = { shiftIds: IdType[], updateDetails: ShiftUpdates };
 class UpdateMultipleShiftsRequest extends RequestAction<ShiftUpdateOptions, Shift[], ShiftModuleState> {
     constructor() {
-        super(STATE_KEY, 'updateSelectedShifts');
+        super({ namespace: STATE_KEY, actionName: 'updateSelectedShifts' });
     }
 
     public async doWork(shiftUpdateDetails: ShiftUpdateOptions, { api }: ThunkExtra): Promise<Shift[]> {
@@ -112,7 +112,7 @@ export const updateMultipleShiftsRequest = new UpdateMultipleShiftsRequest();
 class DeleteShiftRequest extends RequestAction<IdType[], IdType[], ShiftModuleState> {
 
     constructor() {
-        super(STATE_KEY, 'deleteShift');
+        super({ namespace: STATE_KEY, actionName: 'deleteShift' });
     }
     public async doWork(request: IdType[], { api }: ThunkExtra): Promise<IdType[]> {
         await api.deleteShift(request);

@@ -27,6 +27,7 @@ import Footer from './components/Footer/Footer';
 import {
   isCourthouseSet as isCurrentCourthouseSet
 } from '../app/modules/user/selectors';
+import ToastManager from './components/ToastManager/ToastManager';
 
 export interface LayoutStateProps {
   isCourthouseSet?: boolean;
@@ -40,10 +41,10 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
     const { 
       isCourthouseSet = false, 
     } = this.props;
-
     return (
       <Router>
         <div className="App">
+          <ToastManager/>
           <div className="headerArea">
             <Navigation />
           </div>

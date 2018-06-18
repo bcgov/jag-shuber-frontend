@@ -1,4 +1,3 @@
-import RequestAction from '../../../infrastructure/Requests/RequestActionBase';
 import { ThunkExtra } from '../../../store';
 import arrayToMap from '../../../infrastructure/arrayToMap';
 import {
@@ -6,15 +5,16 @@ import {
     ShiftModuleState
 } from '../common';
 import {
-    LeaveMap
+    Leave
 } from '../../../api/Api';
+import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRequest';
 
 // Get the Map
-class LeaveMapRequest extends RequestAction<void, LeaveMap, ShiftModuleState> {
-    constructor(namespace: string = STATE_KEY, actionName: string = 'leaveMap') {
-        super(namespace, actionName);
+class LeaveMapRequest extends GetEntityMapRequest<void, Leave, ShiftModuleState> {
+    constructor() {
+        super({ namespace: STATE_KEY, actionName: 'leaveMap' });
     }
-    public async doWork(request: void, { api }: ThunkExtra): Promise<LeaveMap> {
+    public async doWork(request: void, { api }: ThunkExtra) {
         let leaves = await api.getLeaves();
         return arrayToMap(leaves, t => t.id);
     }

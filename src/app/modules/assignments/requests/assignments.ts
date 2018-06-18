@@ -17,8 +17,8 @@ import RequestAction from '../../../infrastructure/Requests/RequestActionBase';
 
 // Assignment Map
 class AssignmentMapRequest extends GetEntityMapRequest<DateRange, Assignment, AssignmentModuleState> {
-    constructor(namespace: string = STATE_KEY, actionName: string = 'assignmentMap') {
-        super(namespace, actionName);
+    constructor() {
+        super({ namespace: STATE_KEY, actionName: 'assignmentMap' });
     }
     public async doWork(request: DateRange, { api }: ThunkExtra) {
         let assignments = await api.getAssignments(request);
@@ -31,7 +31,7 @@ export const assignmentMapRequest = new AssignmentMapRequest();
 // Assignment Create
 class CreateAssignmentRequest extends CreateEntityRequest<Assignment, AssignmentModuleState> {
     constructor() {
-        super(STATE_KEY, 'createAssignment', assignmentMapRequest);
+        super({ namespace: STATE_KEY, actionName: 'createAssignment' }, assignmentMapRequest);
     }
     public async doWork(assignment: Partial<Assignment>, { api }: ThunkExtra): Promise<Assignment> {
         let newAssignment = await api.createAssignment(assignment);
@@ -44,7 +44,7 @@ export const createAssignmentRequest = new CreateAssignmentRequest();
 // Assignment Edit
 class UpdateAssignmentRequest extends UpdateEntityRequest<Assignment, AssignmentModuleState> {
     constructor() {
-        super(STATE_KEY, 'updateAssignment', assignmentMapRequest);
+        super({ namespace: STATE_KEY, actionName: 'updateAssignment' }, assignmentMapRequest);
     }
 
     public async doWork(assignment: Partial<Assignment>, { api }: ThunkExtra): Promise<Assignment> {
@@ -58,7 +58,7 @@ export const updateAssignmentRequest = new UpdateAssignmentRequest();
 // Assignment Delete
 class DeleteAssignmentRequest extends DeleteEntityRequest<Assignment, AssignmentModuleState> {
     constructor() {
-        super(STATE_KEY, 'deleteAssignment', assignmentMapRequest);
+        super({ namespace: STATE_KEY, actionName: 'deleteAssignment' }, assignmentMapRequest);
     }
 
     public async doWork(assignmentIdToDelete: IdType, { api }: ThunkExtra): Promise<IdType> {
@@ -71,7 +71,7 @@ export const deleteAssignmentRequest = new DeleteAssignmentRequest();
 
 class DeleteAssignmentDutyRecurrenceRequest extends RequestAction<string, string, AssignmentModuleState> {
     constructor() {
-        super(STATE_KEY, 'deleteAssignmentDutyRecurrence');
+        super({ namespace: STATE_KEY, actionName: 'deleteAssignmentDutyRecurrence' });
     }
 
     public async doWork(id: IdType, { api }: ThunkExtra): Promise<IdType> {
