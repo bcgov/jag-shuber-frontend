@@ -29,7 +29,7 @@ class ToastMessage extends React.PureComponent<{ title: string, text: string }>{
 
 export namespace toast {
     export function success(text: string, options?: ToastOptions) {
-        _toast.success(<ToastMessage title="Success" text={text} />, { autoClose: 2000, ...options });
+        _toast.success(<ToastMessage title="Success" text={text} />, { autoClose: 2500, ...options });
     }
 
     export function warn(text: string, options?: ToastOptions) {
@@ -39,8 +39,8 @@ export namespace toast {
     export function error(text: string, options?: ToastOptions) {
         _toast.error(<ToastMessage title="Error" text={text} />, { 
             autoClose: false, 
-            closeOnClick: false, 
-            closeButton: true, 
+            closeOnClick: true, 
+            closeButton: true,
             ...options 
         });
     }
