@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {
     NavItem
 } from 'react-bootstrap';
@@ -11,11 +11,22 @@ interface NavigationLinkProps {
     to: string;
     label: string;
     exactMatch?: boolean;
+    onSelect?: (key: any, event: any) => void;
+    eventKey?: string;
 }
 
 class NavigationLink extends React.Component<NavigationLinkProps, {}> {
+    private handleClick(event: any) {
+        const { onSelect, eventKey } = this.props;
+
+        if (onSelect) {
+            onSelect(eventKey, event);
+        }
+    }
+
     render() {
         const { to, exactMatch = false, label } = this.props;
+
         return (
             <Route
                 path={to}
@@ -25,7 +36,7 @@ class NavigationLink extends React.Component<NavigationLinkProps, {}> {
                     return (
                         <NavItem
                             active={isActive}
-                            componentClass={() => <Link to={to}>{label}</Link>} 
+                            componentClass={() => <Link to={to} onClick={(e) => this.handleClick(e)}>{label}</Link>}
                         />
                     );
                 }}
