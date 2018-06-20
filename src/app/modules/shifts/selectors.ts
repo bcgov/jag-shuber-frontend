@@ -11,12 +11,9 @@ import mapToArray from '../../infrastructure/mapToArray';
 
 export const allShifts = createSelector(
     shiftRequests.shiftMapRequest.getData,
-    (map) => {
-        const returnVal = mapToArray(map)
+    (map) => mapToArray(map)
         .sort((a, b) => `${a.workSectionId ? a.workSectionId : ''}:${a.startDateTime}`
-            .localeCompare(`${b.workSectionId ? b.workSectionId : ''}:${b.startDateTime}`));
-        return returnVal;}
-);
+            .localeCompare(`${b.workSectionId ? b.workSectionId : ''}:${b.startDateTime}`)));
 
 export const shiftMap = shiftRequests.shiftMapRequest.getData;
 

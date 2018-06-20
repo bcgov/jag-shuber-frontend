@@ -165,6 +165,31 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
         };
     }
 
+    static validateForm(values: any) {
+        const errors: any = {};
+        let recurrenceArrayErrors: any[] = [];
+        if (values.dutyRecurrences && values.dutyRecurrences.length > 0) {
+            values.dutyRecurrences.forEach((recurrence: any, recurrenceIndex: any) => {
+                if (recurrence) {
+                    const validateSheriffsRequired = (value: any) => (
+                        [Validators.required, Validators.max10, Validators.min1]
+                            .map(v => v(value))
+                            .filter(m => m != undefined)
+                            .join(', ')
+                    );
+                    recurrenceArrayErrors[recurrenceIndex] = {
+                        sheriffsRequired: validateSheriffsRequired(recurrence.sheriffsRequired)
+                    };
+                }
+            });
+        }
+        if (recurrenceArrayErrors.length) {
+            errors.dutyRecurrences = recurrenceArrayErrors;
+        }
+
+        return errors;
+    }
+
     private renderHeading() {
         let heading = 'Other';
         if (this.props.initialValues && this.props.initialValues) {

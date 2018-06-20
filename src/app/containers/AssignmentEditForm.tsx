@@ -19,35 +19,11 @@ import {
     IdType,
 } from '../api';
 import { deleteDutyRecurrence } from '../modules/assignments/actions';
-import * as Validators from '../infrastructure/Validators';
 
 // wrapping generic assignment form in redux-form
 const formConfig: ConfigProps<any, AssignmentFormProps> = {
     form: 'EditAssignment',
-    validate: (values) => {
-        const errors: any = {};
-        let recurrenceArrayErrors: any[] = [];
-        if (values.dutyRecurrences && values.dutyRecurrences.length > 0){
-            values.dutyRecurrences.forEach((recurrence: any, recurrenceIndex: any) => {
-                if (recurrence) {
-                    const validateSheriffsRequired = (value: any) => (
-                        [Validators.required, Validators.max10, Validators.min1]
-                            .map(v => v(value))
-                            .filter(m => m != undefined)
-                            .join(', ')
-                    );
-                    recurrenceArrayErrors[recurrenceIndex] = {
-                        sheriffsRequired: validateSheriffsRequired(recurrence.sheriffsRequired)
-                    };
-                }
-            });
-        }
-        if (recurrenceArrayErrors.length) {
-            errors.dutyRecurrences = recurrenceArrayErrors;        
-        }
-
-        return errors;
-    },
+    validate: (values) => AssignmentForm.validateForm(values),
     onSubmit: (values, dispatch, props) => {
         const updatedAssignment = AssignmentForm.parseAssignmentFromValues(values);
         dispatch(editAssignment(updatedAssignment));

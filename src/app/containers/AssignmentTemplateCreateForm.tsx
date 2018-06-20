@@ -7,35 +7,11 @@ import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { DaysOfWeek } from '../api/Api';
 import * as TimeUtils from '../infrastructure/TimeRangeUtils';
-import * as Validators from '../infrastructure/Validators';
 
 // wrapping generic assignment form in redux-form
 const formConfig: ConfigProps<any, AssignmentFormProps> = {
     form: 'CreateAssignmentTemplate',
-    validate: (values) => {
-        const errors: any = {};
-        let recurrenceArrayErrors: any[] = [];
-        if (values.dutyRecurrences && values.dutyRecurrences.length > 0){
-            values.dutyRecurrences.forEach((recurrence: any, recurrenceIndex: any) => {
-                if (recurrence) {
-                    const validateSheriffsRequired = (value: any) => (
-                        [Validators.required, Validators.max10, Validators.min1]
-                            .map(v => v(value))
-                            .filter(m => m != undefined)
-                            .join(', ')
-                    );
-                    recurrenceArrayErrors[recurrenceIndex] = {
-                        sheriffsRequired: validateSheriffsRequired(recurrence.sheriffsRequired)
-                    };
-                }
-            });
-        }
-        if (recurrenceArrayErrors.length) {
-            errors.dutyRecurrences = recurrenceArrayErrors;        
-        }
-
-        return errors;
-    },
+    validate: (values) => AssignmentForm.validateForm(values),
     onSubmit: async (values, dispatch, props) => {
         try {
             const newAssignment = AssignmentForm.parseAssignmentFromValues(values);
