@@ -10,11 +10,8 @@ import arrayToMap from '../../infrastructure/arrayToMap';
 
 export const sheriffs = createSelector(
     requests.sheriffMapRequest.getData,
-    (map) => {
-        const val = mapToArray(map)
+    (map) => mapToArray(map)
         .sort((a, b) => `${a.lastName} ${a.firstName}`.localeCompare(`${b.lastName} ${b.firstName}`))
-        return val; 
-    }
 );
 
 export const sheriffsForCurrentCourthouse = createSelector(
