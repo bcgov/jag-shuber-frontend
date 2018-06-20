@@ -36,7 +36,6 @@ const mapStateToProps = (state: RootState, props: SheriffEditFormProps) => {
     const initialSheriff = getSheriff(props.id)(state);
     if (initialSheriff) {
         return {
-            // initialValues: AssignmentForm.assignmentToFormValues(initialAssignment),
             initialValues: initialSheriff,
             isNewSheriff: false
         };
