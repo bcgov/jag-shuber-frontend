@@ -14,6 +14,14 @@ export const sheriffs = createSelector(
         .sort((a, b) => `${a.lastName} ${a.firstName}`.localeCompare(`${b.lastName} ${b.firstName}`))
 );
 
+export const sheriffsForCurrentCourthouse = createSelector(
+    sheriffs,
+    currentCourthouseSelector, 
+    (sheriffList, courthouse) => {
+       return sheriffList.filter(s => s.homeCourthouseId === courthouse || s.currentCourthouseId === courthouse);
+    }
+);
+
 export const getSheriff = (id?: IdType) => (state: RootState) => {
     // tslint:disable-next-line:triple-equals
     if (state && id != undefined) {

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import {
   Sheriff, IdType
@@ -6,7 +6,7 @@ import {
 import { RootState } from '../store';
 import { getSheriffList } from '../modules/sheriffs/actions';
 import {
-  sheriffs as sheriffsSelector,
+  sheriffsForCurrentCourthouse as sheriffsSelector,
   sheriffListLoading,
   sheriffLoanMap as sheriffLoanMapSelector
 } from '../modules/sheriffs/selectors';
