@@ -18,6 +18,7 @@ const nestedReducer = new NestedReducer([
   shiftRequests.deleteShiftRequest.reducer,
   shiftRequests.copyShiftsFromPrevWeek.reducer,
   shiftRequests.updateShiftRequest.reducer,
+  shiftRequests.createShiftsRequest.reducer,
 
   // Leaves
   leaveRequests.leaveMapRequest.reducer
