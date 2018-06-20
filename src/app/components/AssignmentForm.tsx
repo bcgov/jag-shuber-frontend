@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as moment from 'moment';
+import React from 'react';
+import moment from 'moment';
 import {
     Button,
     ListGroup,
@@ -258,7 +258,7 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
                                                             message={
                                                                 <p style={{ fontSize: 14 }}>
                                                                     Please confirm that you would like to delete this duty recurrence.
-                                                        </p>}
+                                                                </p>}
                                                             actionBtnLabel={<Glyphicon glyph="trash" />}
                                                             actionBtnStyle="danger"
                                                             confirmBtnLabel="Yes"
@@ -296,10 +296,6 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
                                                         />
                                                     }
                                                     label="Number of Sheriffs Required"
-                                                    validate={
-                                                        (value, allValues, props) => {
-                                                            return 'This would be an error';
-                                                        }}
                                                 />
                                             </ListGroupItem>
                                         );
@@ -310,10 +306,8 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
                                         <Button
                                             onClick={() => fields.push({
                                                 daysBitmap: DaysOfWeek.Weekdays,
-                                                timeRange: {
-                                                    startTime: minTime,
-                                                    endTime: maxTime
-                                                }
+                                                sheriffsRequired: 1,
+                                                timeRange: TimeUtils.getDefaultTimeRange()
                                             })}
                                         >
                                             <Glyphicon glyph="plus" />

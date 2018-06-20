@@ -28,7 +28,7 @@ export const minValidator = (minValue: number) => (
 
 export const maxValidator = (maxValue: number) => (
     (value?: any) => (
-        value && value > maxValue ? `Must be at less than ${maxValue}` : undefined
+        value && value > maxValue ? `Must be ${maxValue} or less` : undefined
     )
 );
 
