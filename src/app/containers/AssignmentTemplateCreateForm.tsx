@@ -11,6 +11,7 @@ import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 // wrapping generic assignment form in redux-form
 const formConfig: ConfigProps<any, AssignmentFormProps> = {
     form: 'CreateAssignmentTemplate',
+    validate: (values) => AssignmentForm.validateForm(values),
     onSubmit: async (values, dispatch, props) => {
         try {
             const newAssignment = AssignmentForm.parseAssignmentFromValues(values);
@@ -28,7 +29,8 @@ const mapStateToProps = (state: RootState, props: AssignmentFormProps) => {
             dutyRecurrences: [
                 {
                     daysBitmap: DaysOfWeek.Weekdays,
-                    timeRange: TimeUtils.getDefaultTimeRange()
+                    timeRange: TimeUtils.getDefaultTimeRange(),
+                    sheriffsRequired: 1
                     
                 }
             ] 

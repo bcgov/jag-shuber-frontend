@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {
     reduxForm,
     ConfigProps
@@ -23,6 +23,7 @@ import { deleteDutyRecurrence } from '../modules/assignments/actions';
 // wrapping generic assignment form in redux-form
 const formConfig: ConfigProps<any, AssignmentFormProps> = {
     form: 'EditAssignment',
+    validate: (values) => AssignmentForm.validateForm(values),
     onSubmit: (values, dispatch, props) => {
         const updatedAssignment = AssignmentForm.parseAssignmentFromValues(values);
         dispatch(editAssignment(updatedAssignment));

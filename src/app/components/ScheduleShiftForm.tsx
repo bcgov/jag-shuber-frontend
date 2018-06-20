@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as moment from 'moment';
-import { Form } from 'react-bootstrap';
+import Form from './FormElements/Form';
 import {
     Field,
     InjectedFormProps
@@ -118,11 +118,11 @@ export default class ScheduleShiftForm extends
     }
 
     render() {
-        const { handleSubmit, shiftTitle, isSingleShift } = this.props;
+        const { shiftTitle, isSingleShift } = this.props;
         return (
             <div>
                 <h1>{shiftTitle}</h1>
-                <Form onSubmit={handleSubmit}>
+                <Form {...this.props}>
                     {this.renderShiftFields()}
                     {!isSingleShift && this.renderMultiShiftCreationFields()}
                     {isSingleShift && this.renderSheriffField()}

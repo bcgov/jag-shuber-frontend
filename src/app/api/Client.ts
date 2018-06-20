@@ -45,10 +45,11 @@ class ShuberApiClient extends ShuberApi.Client {
     }
 
     protected processError(err: any) {
+        const apiError = super.processError(err);
         // If we've got a validation error, we likely submitted a form
         // so return a SubmissionError for the sake of redux forms
-        if (ShuberApi.Client.isValidationError(err)) {
-            const fields = err.response.body.fields || {};
+        if (ShuberApi.Errors.isValidationError(apiError)) {
+            const fields = apiError.fields || {};
             const fieldKeys = Object.keys(fields);
             if (fieldKeys.length > 0) {
                 const fieldErrors = {
@@ -64,10 +65,12 @@ class ShuberApiClient extends ShuberApi.Client {
                     _error: 'General Validation Error: todo, extract better error message from response'
                 });
             }
+        } else if (ShuberApi.Errors.isDatabaseError(apiError)) {
+            apiError.message = apiError.detail;
         }
 
         // Otherwise just return the error
-        return super.processError(err);
+        return apiError;
     }
 
 }
@@ -239,7 +242,7 @@ export default class Client implements API {
     }
 
     async copyShifts(shiftCopyDetails: ShiftCopyOptions): Promise<Shift[]> {
-        const {startOfWeekDestination, startOfWeekSource, shouldIncludeSheriffs} = shiftCopyDetails;
+        const { startOfWeekDestination, startOfWeekSource, shouldIncludeSheriffs } = shiftCopyDetails;
         return await this._client.CopyShifts({
             startOfWeekDestination: moment(startOfWeekDestination).toISOString(),
             startOfWeekSource: moment(startOfWeekSource).toISOString(),

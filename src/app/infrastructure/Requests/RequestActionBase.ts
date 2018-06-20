@@ -1,10 +1,16 @@
 import {
     ThunkAction,
     ThunkExtra
-} from '../store';
+} from '../../store';
 import { AnyAction } from 'redux';
 import { Dispatch } from 'react-redux';
 import { Reducer } from 'redux';
+import { toast } from '../../components/ToastManager/ToastManager';
+
+export function isSubmissionError(err: any): boolean {
+    const { name = '' } = err;
+    return name === 'SubmissionError';
+}
 
 export interface RequestActionState<T> {
     isBusy?: boolean;
@@ -12,9 +18,26 @@ export interface RequestActionState<T> {
     data?: T;
 }
 
+export interface RequestActionConfig<TResponse> {
+    namespace: string;
+    actionName: string;
+    toasts?: {
+        success?: string | ((entity: TResponse) => string);
+        error?: string | ((error: Error | string) => string);
+    };
+}
+
 export default abstract class RequestAction<TRequest, TResponse, TModuleState extends {}>{
+    protected config: RequestActionConfig<TResponse>;
     public actionNames: { begin: string, success: string, fail: string }
     private beginAction: { type: string };
+    protected get namespace(): string {
+        return this.config.namespace;
+    }
+
+    protected get actionName(): string {
+        return this.config.actionName;
+    }
 
     private getFailAction(error: string) {
         return { type: this.actionNames.fail, payload: error }
@@ -24,9 +47,17 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
         return { type: this.actionNames.success, payload: response };
     }
 
-    constructor(private namespace: string, private actionName: string, private throwOnError: boolean = false) {
+    constructor(config: RequestActionConfig<TResponse>) {
+        this.config = {
+            toasts: {
+                error: 'Error completing action'
+            },
+            ...config
+        };
+        const { namespace, actionName } = config;
         const upperNamespace = namespace.toUpperCase();
         const upperAction = actionName.toUpperCase();
+
         // Create our actions
         this.actionNames = {
             begin: `${upperNamespace}_${upperAction}_REQUEST`,
@@ -39,17 +70,17 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
     public abstract doWork(request: TRequest, extra: ThunkExtra, getState: (() => any)): Promise<TResponse>;
 
     public actionCreator: ThunkAction<TRequest> = (request: TRequest) => (async (dispatch, getState, extra) => {
-        this.dispatchBegin(dispatch);
-        try {
-            const response = await this.doWork(request, extra, getState);
-            this.dispatchSuccess(dispatch, response);
-        } catch (error) {
-            if (this.throwOnError) {
-                throw error;
-            } else {
+        return new Promise(async (resolve, reject) => {
+            this.dispatchBegin(dispatch);
+            try {
+                const response = await this.doWork(request, extra, getState);
+                this.dispatchSuccess(dispatch, response);
+                resolve(response);
+            } catch (error) {
                 this.dispatchFailure(dispatch, error);
+                resolve();
             }
-        }
+        });
     })
 
     protected dispatchBegin(dispatch: Dispatch<any>) {
@@ -59,12 +90,29 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
     protected dispatchFailure(dispatch: Dispatch<any>, error: Error | string) {
         const errorMessage = typeof error === 'string' ? error : error.message;
         dispatch(this.getFailAction(errorMessage));
+        const { toasts = {} } = this.config;
+        if (toasts.error) {
+            if (typeof toasts.error === 'string') {
+                toast.error(toasts.error);
+            } else {
+                toast.error(toasts.error(error));
+            }
+
+        }
         // tslint:disable-next-line:no-console
         console.error(errorMessage);
     }
 
     protected dispatchSuccess(dispatch: Dispatch<any>, response: TResponse) {
         dispatch(this.getSuccessAction(response));
+        const { toasts = {} } = this.config;
+        if (toasts.success) {
+            if (typeof toasts.success === 'string') {
+                toast.success(toasts.success);
+            } else {
+                toast.success(toasts.success(response));
+            }
+        }
     }
 
     private _reducer(moduleState: TModuleState | undefined, action: AnyAction): TModuleState | undefined {
@@ -99,14 +147,24 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
     }
 
     protected reduceSuccess(moduleState: TModuleState, action: AnyAction): TModuleState {
-        return this.mergeRequestActionState(moduleState, { data: action.payload, error: undefined, isBusy: false })
+        const newState = this.mergeRequestActionState(moduleState, { error: undefined, isBusy: false });
+        return this.setRequestData(newState, action.payload);
+    }
+
+    public getRequestData(moduleState: TModuleState): TResponse | undefined {
+        const requestState = this.selectRequestActionState(moduleState);
+        return requestState ? requestState.data : undefined;
+    }
+
+    public setRequestData(moduleState: TModuleState, data: TResponse): TModuleState {
+        return this.mergeRequestActionState(moduleState, { data });
     }
 
     protected mergeRequestActionState(moduleState: TModuleState, newState: Partial<RequestActionState<TResponse>>): TModuleState {
-        let newModuleState = { ...(moduleState || {}) as any }
+        let newModuleState = { ...(moduleState || {}) as any };
         const currentActionState = newModuleState[this.actionName] || {};
         newModuleState[this.actionName] = { ...currentActionState, ...newState };
-        return newModuleState as TModuleState
+        return newModuleState as TModuleState;
     }
 
     protected selectRequestActionState(moduleState: TModuleState): RequestActionState<TResponse> | undefined {
@@ -153,4 +211,3 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
         return this._getData.bind(this);
     }
 }
-

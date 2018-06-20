@@ -1,4 +1,3 @@
-import RequestAction from '../../../infrastructure/RequestAction';
 import { ThunkExtra } from '../../../store';
 import arrayToMap from '../../../infrastructure/arrayToMap';
 import {
@@ -6,14 +5,15 @@ import {
     CourthouseModuleState
 } from '../common';
 import {
-    JailRoleMap
+    JailRole
 } from '../../../api/index';
+import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRequest';
 
-class JailRoleMapRequest extends RequestAction<void, JailRoleMap, CourthouseModuleState> {
-    constructor(namespace: string = STATE_KEY, actionName: string = 'jailRoleMap') {
-        super(namespace, actionName);
+class JailRoleMapRequest extends GetEntityMapRequest<void, JailRole, CourthouseModuleState> {
+    constructor() {
+        super({ namespace: STATE_KEY, actionName: 'jailRoleMap' });
     }
-    public async doWork(request: void, { api }: ThunkExtra): Promise<JailRoleMap> {
+    public async doWork(request: void, { api }: ThunkExtra) {
         let jailRoles = await api.getJailRoles();
         return arrayToMap(jailRoles, j => j.code);
     }

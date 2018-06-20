@@ -6,18 +6,23 @@ import { Sheriff } from '../api/index';
 import { default as FormSubmitButton, SubmitButtonProps } from '../components/FormElements/SubmitButton';
 import { RootState } from '../store';
 import { connect } from 'react-redux';
+import { currentCourthouse } from '../modules/user/selectors';
 
 const formConfig: ConfigProps<any, SheriffFormProps> = {
     form: 'CreateSheriff',
-    onSubmit: (values: Sheriff | any, dispatch, ownProps) => {
+    onSubmit: async (values: Sheriff | any, dispatch, ownProps) => {
         let newSheriff = SheriffForm.parseSheriffFromValues(values);
-        dispatch(createSheriff(newSheriff));
+        await dispatch(createSheriff(newSheriff));
     }
 };
 
 const mapStateToProps = (state: RootState, props: SheriffFormProps) => {
+    const currentSelectedCourthouse = currentCourthouse(state);
     return {
-       isNewSheriff: true
+        initialValues: {
+            homeCourthouseId: currentSelectedCourthouse,
+            currentCourthouseId: currentSelectedCourthouse
+        }
     };
 };
 

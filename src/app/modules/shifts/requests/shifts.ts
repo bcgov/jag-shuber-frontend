@@ -1,4 +1,4 @@
-import RequestAction from '../../../infrastructure/RequestAction';
+import RequestAction from '../../../infrastructure/Requests/RequestActionBase';
 import { ThunkExtra } from '../../../store';
 import arrayToMap from '../../../infrastructure/arrayToMap';
 import {
@@ -8,17 +8,30 @@ import {
 import {
     Shift,
     IdType,
-    ShiftMap,
     ShiftCopyOptions,
     ShiftUpdates
 } from '../../../api/Api';
+import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRequest';
+import CreateEntityRequest from '../../../infrastructure/Requests/CreateEntityRequest';
+import UpdateEntityRequest from '../../../infrastructure/Requests/UpdateEntityRequest';
+import toTitleCase from '../../../infrastructure/toTitleCase';
+import { ShiftCreationPayload, ShiftFactory } from '../../../api/utils';
 
-// Get the Map
-class ShiftMapRequest extends RequestAction<void, ShiftMap, ShiftModuleState> {
-    constructor(namespace: string = STATE_KEY, actionName: string = 'shiftMap') {
-        super(namespace, actionName);
+// #################
+// SHIFT MAP REQUEST
+// #################
+class ShiftMapRequest extends GetEntityMapRequest<void, Shift, ShiftModuleState> {
+    constructor() {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'shiftMap',
+            toasts: {
+                // tslint:disable-next-line:max-line-length
+                error: (err) => `Problem encountered while retrieving list of shifts: ${err ? err.toString() : 'Unknown Error'}`
+            }
+        });
     }
-    public async doWork(request: void, { api }: ThunkExtra): Promise<ShiftMap> {
+    public async doWork(request: void, { api }: ThunkExtra) {
         let shifts = await api.getShifts();
         return arrayToMap(shifts, t => t.id);
     }
@@ -26,91 +39,68 @@ class ShiftMapRequest extends RequestAction<void, ShiftMap, ShiftModuleState> {
 
 export const shiftMapRequest = new ShiftMapRequest();
 
-// Assignment Template Create
-class CreateShiftRequest extends RequestAction<Partial<Shift>, Shift, ShiftModuleState> {
-    constructor(namespace: string = STATE_KEY, actionName: string = 'createShift') {
-        super(namespace, actionName, true);
+// #################
+// CREATE SHIFT
+// #################
+class CreateShiftRequest extends CreateEntityRequest<Shift, ShiftModuleState> {
+    constructor() {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'createShift',
+            toasts: {
+                success: (s) => `${toTitleCase(s.workSectionId)} shift(s) created`,
+                error: (err) => `Problem encountered while editing shifts: ${err ? err.toString() : 'Unknown Error'}`
+            }
+        }, shiftMapRequest);
     }
-    public async doWork(shift: Partial<Shift>, { api }: ThunkExtra): Promise<Shift> {
+    public async doWork(shift: Partial<Shift>, { api }: ThunkExtra) {
         let newShift = await api.createShift(shift);
         return newShift;
-    }
-
-    reduceSuccess(moduleState: ShiftModuleState, action: { type: string, payload: Shift }): ShiftModuleState {
-        // Call the super's reduce success and pull out our state and
-        // the shiftMap state
-        const {
-            shiftMap: {
-                data: currentMap = {},
-                ...restMap
-            } = {},
-            ...restState
-        } = super.reduceSuccess(moduleState, action);
-
-        // Create a new map and add our shift to it
-        const newMap = { ...currentMap };
-        newMap[action.payload.id] = action.payload;
-
-        // Merge the state back together with the original in a new object
-        const newState: Partial<ShiftModuleState> = {
-            ...restState,
-            shiftMap: {
-                ...restMap,
-                data: newMap
-            }
-        };
-
-        return newState;
     }
 }
 
 export const createShiftRequest = new CreateShiftRequest();
 
-class CopyShiftsRequest extends RequestAction<ShiftCopyOptions, Shift[], ShiftModuleState> {
-    constructor(namespace: string = STATE_KEY, actionName: string = 'copyShiftsFromPrevWeek') {
-        super(namespace, actionName);
-    }
-    public async doWork(copyInstructions: ShiftCopyOptions, { api }: ThunkExtra): Promise<Shift[]> {
-        let copiedShifts = await api.copyShifts(copyInstructions);
-        return copiedShifts;
-    }
-
-    reduceSuccess(moduleState: ShiftModuleState, action: { type: string, payload: Shift[] }): ShiftModuleState {
-        // Call the super's reduce success and pull out our state and
-        // the shiftMap state
-        const {
-            shiftMap: {
-                data: currentMap = {},
-                ...restMap
-            } = {},
-            ...restState
-        } = super.reduceSuccess(moduleState, action);
-
-        // Create a new map and add our new shifts to it
-        const newMap = { ...currentMap };
-        action.payload.forEach(shift => {
-            newMap[shift.id] = shift;
-        });
-        
-        // Merge the state back together with the original in a new object
-        const newState: Partial<ShiftModuleState> = {
-            ...restState,
-            shiftMap: {
-                ...restMap,
-                data: newMap
+class CreateShiftsRequest extends RequestAction<ShiftCreationPayload, Shift[], ShiftModuleState> {
+    constructor() {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'createShifts',
+            toasts: {
+                // tslint:disable-next-line:max-line-length
+                success: (shifts) => `${shifts.length} ${shifts.length === 1 ? 'shift' : 'shifts'} created`,
+                error: (err) => `Problem encountered while creating shifts: ${err ? err.toString() : 'Unknown Error'}`
             }
-        };
+        });
+    }
+    public async doWork(request: ShiftCreationPayload, { api }: ThunkExtra): Promise<Shift[]> {
+        const shiftsToCreate = ShiftFactory.createShifts(request);
+        return await Promise.all(shiftsToCreate.map(s => api.createShift(s)));
+    }
 
-        return newState;
+    setRequestData(moduleState: ShiftModuleState, newShifts: Shift[] = []) {
+        const newMap = { ...shiftMapRequest.getRequestData(moduleState) };
+        newShifts.forEach(ns => newMap[ns.id] = ns);
+        return shiftMapRequest.setRequestData(moduleState, newMap);
     }
 }
 
-export const copyShiftsFromPrevWeek = new CopyShiftsRequest();
+export const createShiftsRequest = new CreateShiftsRequest();
 
-// Shift Edit
-class UpdateShiftRequest extends CreateShiftRequest {
-    constructor(namespace: string = STATE_KEY, actionName: string = 'updateShift') {
-        super(namespace, actionName);
+// #################
+// EDIT SHIFT
+// #################
+class UpdateShiftRequest extends UpdateEntityRequest<Shift, ShiftModuleState> {
+    constructor() {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'updateShift',
+            toasts: {
+                success: undefined,
+                // tslint:disable-next-line:max-line-length
+                error: (err) => `Problem encountered when assigning sheriff to the shift: ${err ? err.toString() : 'Unknown Error'}`
+            }
+        }, shiftMapRequest);
     }
 
     public async doWork(shift: Partial<Shift>, { api }: ThunkExtra): Promise<Shift> {
@@ -121,87 +111,89 @@ class UpdateShiftRequest extends CreateShiftRequest {
 
 export const updateShiftRequest = new UpdateShiftRequest();
 
+// #################
+// COPY SHIFT
+// #################
+class CopyShiftsRequest extends RequestAction<ShiftCopyOptions, Shift[], ShiftModuleState> {
+    constructor() {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'copyShiftsFromPrevWeek',
+            toasts: {
+                success: 'Shifts Copied',
+                error: (err) => `Problem encountered while copying shifts: ${err ? err.toString() : 'Unknown Error'}`
+            }
+        });
+    }
+    public async doWork(copyInstructions: ShiftCopyOptions, { api }: ThunkExtra): Promise<Shift[]> {
+        let copiedShifts = await api.copyShifts(copyInstructions);
+        return copiedShifts;
+    }
 
+    setRequestData(moduleState: ShiftModuleState, shifts: Shift[]) {
+        const newMap = { ...shiftMapRequest.getRequestData(moduleState) };
+        shifts.forEach(s => newMap[s.id] = s);
+        return shiftMapRequest.setRequestData(moduleState, newMap);
+    }
+}
+
+export const copyShiftsFromPrevWeek = new CopyShiftsRequest();
+
+// #################
+// EDIT MULTIPLE SHIFTS
+// #################
 type ShiftUpdateOptions = { shiftIds: IdType[], updateDetails: ShiftUpdates };
-// Mulitple Shift Edit
-class UpdateMultipleShiftsRequest  extends RequestAction<ShiftUpdateOptions, Shift[], ShiftModuleState> {
-    constructor(namespace: string = STATE_KEY, actionName: string = 'updateSelectedShifts') {
-        super(namespace, actionName, true);
+class UpdateMultipleShiftsRequest extends RequestAction<ShiftUpdateOptions, Shift[], ShiftModuleState> {
+    constructor() {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'updateSelectedShifts',
+            toasts: {
+                success: (s) => `${s.length} shift(s) updated`,
+                error: (err) => `Problem encountered while editing shifts: ${err ? err.toString() : 'Unknown Error'}`
+            }
+        });
     }
 
     public async doWork(shiftUpdateDetails: ShiftUpdateOptions, { api }: ThunkExtra): Promise<Shift[]> {
-        let updatedShifts = 
+        let updatedShifts =
             await api.updateMultipleShifts(shiftUpdateDetails.shiftIds, shiftUpdateDetails.updateDetails);
         return updatedShifts;
     }
 
-    reduceSuccess(moduleState: ShiftModuleState, action: { type: string, payload: Shift[] }): ShiftModuleState {
-        // Call the super's reduce success and pull out our state and
-        // the shiftMap state
-        const {
-            shiftMap: {
-                data: currentMap = {},
-                ...restMap
-            } = {},
-            ...restState
-        } = super.reduceSuccess(moduleState, action);
- 
-        // Create a new map and update the assignments in it
-        const newMap = { ...currentMap };
-        action.payload.forEach(shift => {
-            newMap[shift.id] = shift;
-        });
-        
-        // Merge the state back together with the original in a new object
-        const newState: Partial<ShiftModuleState> = {
-            ...restState,
-            shiftMap: {
-                ...restMap,
-                data: newMap
-            }
-        };
-        return newState;
+    setRequestData(moduleState: ShiftModuleState, shifts: Shift[]) {
+        const newMap = { ...shiftMapRequest.getRequestData(moduleState) };
+        shifts.forEach(s => newMap[s.id] = s);
+        return shiftMapRequest.setRequestData(moduleState, newMap);
     }
 }
 
 export const updateMultipleShiftsRequest = new UpdateMultipleShiftsRequest();
 
-// Shift Delete
+// #################
+// DELETE SHIFTS
+// #################
 class DeleteShiftRequest extends RequestAction<IdType[], IdType[], ShiftModuleState> {
-    constructor(namespace: string = STATE_KEY, actionName: string = 'deleteShift') {
-        super(namespace, actionName);
+
+    constructor() {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'deleteShift',
+            toasts: {
+                success: (ids) => `${ids.length} shift(s) deleted`,
+                error: (err) => `Problem encountered while deleting shifts: ${err ? err.toString() : 'Unknown Error'}`
+            }
+        });
     }
     public async doWork(request: IdType[], { api }: ThunkExtra): Promise<IdType[]> {
         await api.deleteShift(request);
         return request;
     }
 
-    reduceSuccess(moduleState: ShiftModuleState, action: { type: string, payload: IdType[] }): ShiftModuleState {
-        // Call the super's reduce success and pull out our state and
-        // the shiftMap state
-        const {
-            shiftMap: {
-                data: currentMap = {},
-                ...restMap
-            } = {},
-            ...restState
-        } = super.reduceSuccess(moduleState, action);
- 
-        // Create a new map and remove the assignment from it
-        const newMap = { ...currentMap };
-        action.payload.forEach(shiftId => {
-            delete newMap[shiftId];
-        });
-        
-        // Merge the state back together with the original in a new object
-        const newState: Partial<ShiftModuleState> = {
-            ...restState,
-            shiftMap: {
-                ...restMap,
-                data: newMap
-            }
-        };
-        return newState;
+    setRequestData(moduleState: ShiftModuleState, shiftIds: IdType[]) {
+        const newMap = { ...shiftMapRequest.getRequestData(moduleState) };
+        shiftIds.forEach(id => delete newMap[id]);
+        return shiftMapRequest.setRequestData(moduleState, newMap);
     }
 }
 

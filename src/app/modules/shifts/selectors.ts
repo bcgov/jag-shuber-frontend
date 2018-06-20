@@ -13,8 +13,7 @@ export const allShifts = createSelector(
     shiftRequests.shiftMapRequest.getData,
     (map) => mapToArray(map)
         .sort((a, b) => `${a.workSectionId ? a.workSectionId : ''}:${a.startDateTime}`
-            .localeCompare(`${b.workSectionId ? b.workSectionId : ''}:${b.startDateTime}`))
-);
+            .localeCompare(`${b.workSectionId ? b.workSectionId : ''}:${b.startDateTime}`)));
 
 export const shiftMap = shiftRequests.shiftMapRequest.getData;
 

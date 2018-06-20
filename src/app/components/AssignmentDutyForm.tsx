@@ -20,13 +20,12 @@ import {
     ListGroupItem,
     Button,
     Glyphicon,
-    Form
 } from 'react-bootstrap';
+import Form from './FormElements/Form';
 import SheriffSelector from '../containers/SheriffSelector';
 import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 import TextArea from './FormElements/TextArea';
 import { ConfirmationModal } from './ConfirmationModal';
-import FormWrapper from './FormElements/FormWrapper';
 import * as Validators from '../infrastructure/Validators';
 
 export interface AssignmentDutyFormProps {
@@ -177,7 +176,6 @@ export default class AssignmentDutyForm extends
 
     render() {
         const {
-            handleSubmit,
             assignmentTitle = 'Duty',
             minTime = TimeUtils.getDefaultTimePickerMinTime().toISOString(),
             maxTime = TimeUtils.getDefaultTimePickerMaxTime().toISOString(),
@@ -188,32 +186,30 @@ export default class AssignmentDutyForm extends
         return (
             <div>
                 <h1 style={{ marginBottom: 20 }}>{assignmentTitle}</h1>
-                <FormWrapper {...this.props}>
-                    <Form onSubmit={handleSubmit}>
-                        <Field
-                            name="timeRange"
-                            component={(p) => <TimeSliderField
-                                {...p}
-                                minTime={minTime}
-                                maxTime={maxTime}
-                                timeIncrement={15}
-                                color={getWorkSectionColour(workSectionId)}
-                                label={<h2 style={{ marginBottom: 5 }}>Duty Time Range</h2>}
-                            />}
-                        />
-                        <br />
-                        {!isNewDuty && <Field
-                            name="comments"
-                            component={TextArea as any}
-                            label="Comments"
-                            validate={[Validators.maxLength200]}
+                <Form {...this.props}>
+                    <Field
+                        name="timeRange"
+                        component={(p) => <TimeSliderField
+                            {...p}
+                            minTime={minTime}
+                            maxTime={maxTime}
+                            timeIncrement={15}
+                            color={getWorkSectionColour(workSectionId)}
+                            label={<h2 style={{ marginBottom: 5 }}>Duty Time Range</h2>}
                         />}
-                        <div style={{ marginTop: 40 }}>
-                            <h2>Sheriffs for Duty</h2>
-                            <SheriffDutyFields />
-                        </div>
-                    </Form>
-                </FormWrapper>
+                    />
+                    <br />
+                    {!isNewDuty && <Field
+                        name="comments"
+                        component={TextArea as any}
+                        label="Comments"
+                        validate={[Validators.maxLength200]}
+                    />}
+                    <div style={{ marginTop: 40 }}>
+                        <h2>Sheriffs for Duty</h2>
+                        <SheriffDutyFields />
+                    </div>
+                </Form>
             </div>
         );
     }
