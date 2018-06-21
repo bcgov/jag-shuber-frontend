@@ -327,437 +327,437 @@ export const courthouses: Courthouse[] = [];
 //     {
 //         id: '0',
 //         name: 'Abbotsford',
-        
+
 //     },
 //     {
 //         id: '1',
 //         name: 'Alexis Creek',
-        
+
 //     },
 //     {
 //         id: '2',
 //         name: 'Anahim Lake',
-        
+
 //     },
 //     {
 //         id: '3',
 //         name: 'Ashcroft',
-        
+
 //     },
 //     {
 //         id: '4',
 //         name: 'Atlin',
-        
+
 //     },
 //     {
 //         id: '5',
 //         name: 'Bella Bella',
-        
+
 //     },
 //     {
 //         id: '6',
 //         name: 'Bella Coola',
-        
+
 //     },
 //     {
 //         id: '7',
 //         name: 'Burns Lake',
-        
+
 //     },
 //     {
 //         id: '8',
 //         name: 'Campbell River',
-        
+
 //     },
 //     {
 //         id: '9',
 //         name: 'Castlegar',
-        
+
 //     },
 //     {
 //         id: '10',
 //         name: 'Chase',
-        
+
 //     },
 //     {
 //         id: '11',
 //         name: 'Chetwynd',
-        
+
 //     },
 //     {
 //         id: '12',
 //         name: 'Chilliwack',
-        
+
 //     },
 //     {
 //         id: '13',
 //         name: 'Clearwater',
-        
+
 //     },
 //     {
 //         id: '14',
 //         name: 'Courtenay',
-        
+
 //     },
 //     {
 //         id: '15',
 //         name: 'Cranbrook',
-        
+
 //     },
 //     {
 //         id: '16',
 //         name: 'Creston',
-        
+
 //     },
 //     {
 //         id: '17',
 //         name: 'Dease Lake',
-        
+
 //     },
 //     {
 //         id: '18',
 //         name: 'Downtown Community Court',
-        
+
 //     },
 //     {
 //         id: '19',
 //         name: 'Duncan',
-        
+
 //     },
 //     {
 //         id: '20',
 //         name: 'Fernie',
-        
+
 //     },
 //     {
 //         id: '21',
 //         name: 'Fort St. James',
-        
+
 //     },
 //     {
 //         id: '22',
 //         name: 'Fort St. John',
-        
+
 //     },
 //     {
 //         id: '23',
 //         name: 'Fort Ware (Kwadacha)',
-        
+
 //     },
 //     {
 //         id: '24',
 //         name: 'Fraser Lake',
-        
+
 //     },
 //     {
 //         id: '25',
 //         name: 'Ganges',
-        
+
 //     },
 //     {
 //         id: '26',
 //         name: 'Golden',
-        
+
 //     },
 //     {
 //         id: '27',
 //         name: 'Gold River',
-        
+
 //     },
 //     {
 //         id: '28',
 //         name: 'Good Hope Lake',
-        
+
 //     },
 //     {
 //         id: '29',
 //         name: 'Grand Forks',
-        
+
 //     },
 //     {
 //         id: '30',
 //         name: 'Hazelton',
-        
+
 //     },
 //     {
 //         id: '31',
 //         name: 'Houston',
-        
+
 //     },
 //     {
 //         id: '32',
 //         name: 'Hudson\'s Hope',
-        
+
 //     },
 //     {
 //         id: '33',
 //         name: 'Invermere',
-        
+
 //     },
 //     {
 //         id: '34',
 //         name: 'Kamloops',
-        
+
 //     },
 //     {
 //         id: '35',
 //         name: 'Kelowna',
-        
+
 //     },
 //     {
 //         id: '36',
 //         name: 'Kitimat',
-        
+
 //     },
 //     {
 //         id: '37',
 //         name: 'Klemtu',
-        
+
 //     },
 //     {
 //         id: '38',
 //         name: 'Lilloet',
-        
+
 //     },
 //     {
 //         id: '39',
 //         name: 'Lower Post',
-        
+
 //     },
 //     {
 //         id: '40',
 //         name: 'Mackenzie',
-        
+
 //     },
 //     {
 //         id: '41',
 //         name: 'Masset',
-        
+
 //     },
 //     {
 //         id: '42',
 //         name: 'McBride',
-        
+
 //     },
 //     {
 //         id: '43',
 //         name: 'Merritt',
-        
+
 //     },
 //     {
 //         id: '44',
 //         name: 'Nakusp',
-        
+
 //     },
 //     {
 //         id: '45',
 //         name: 'Nanaimo',
-        
+
 //     },
 //     {
 //         id: '46',
 //         name: 'Nelson',
-        
+
 //     },
 //     {
 //         id: '47',
 //         name: 'New Aiyansh',
-        
+
 //     },
 //     {
 //         id: '48',
 //         name: 'New Westminster',
-        
+
 //     },
 //     {
 //         id: '49',
 //         name: 'North Vancouver',
-        
+
 //     },
 //     {
 //         id: '50',
 //         name: '100 Mile House',
-        
+
 //     },
 //     {
 //         id: '51',
 //         name: 'Pemberton',
-        
+
 //     },
 //     {
 //         id: '52',
 //         name: 'Penticton',
-        
+
 //     },
 //     {
 //         id: '53',
 //         name: 'Port Alberni',
-        
+
 //     },
 //     {
 //         id: '54',
 //         name: 'Port Coquitlam',
-        
+
 //     },
 //     {
 //         id: '54',
 //         name: 'Port Hardy',
-        
+
 //     },
 //     {
 //         id: '55',
 //         name: 'Powell River',
-        
+
 //     },
 //     {
 //         id: '56',
 //         name: 'Prince George',
-        
+
 //     },
 //     {
 //         id: '57',
 //         name: 'Prince Rupert',
-        
+
 //     },
 //     {
 //         id: '58',
 //         name: 'Princeton',
-        
+
 //     },
 //     {
 //         id: '59',
 //         name: 'Queen Charlotte',
-        
+
 //     },
 //     {
 //         id: '60',
 //         name: 'Quesnel',
-        
+
 //     },
 //     {
 //         id: '61',
 //         name: 'Revelstoke',
-        
+
 //     },
 //     {
 //         id: '62',
 //         name: 'Richmond',
-        
+
 //     },
 //     {
 //         id: '63',
 //         name: 'Rossland',
-        
+
 //     },
 //     {
 //         id: '64',
 //         name: 'Salmon Arm',
-        
+
 //     },
 //     {
 //         id: '65',
 //         name: 'Sechelt',
-        
+
 //     },
 //     {
 //         id: '66',
 //         name: 'Sidney',
-        
+
 //     },
 //     {
 //         id: '67',
 //         name: 'Smithers',
-        
+
 //     },
 //     {
 //         id: '68',
 //         name: 'Sparwood',
-        
+
 //     },
 //     {
 //         id: '69',
 //         name: 'Stewart',
-        
+
 //     },
 //     {
 //         id: '70',
 //         name: 'Surrey',
-        
+
 //     },
 //     {
 //         id: '71',
 //         name: 'Tahsis',
-        
+
 //     },
 //     {
 //         id: '72',
 //         name: 'Terrace',
-        
+
 //     },
 //     {
 //         id: '73',
 //         name: 'Tofino',
-        
+
 //     },
 //     {
 //         id: '74',
 //         name: 'Tsay Keh Dene (Ingenika)',
-        
+
 //     },
 //     {
 //         id: '75',
 //         name: 'Tumbler Ridge',
-        
+
 //     },
 //     {
 //         id: '76',
 //         name: 'Ucluelet',
-        
+
 //     },
 //     {
 //         id: '77',
 //         name: 'Valemont',
-        
+
 //     },
 //     {
 //         id: '78',
 //         name: 'Vancouver - VLC',
-        
+
 //     },
 //     {
 //         id: '79',
 //         name: 'Vancouver - 222 Main',
-        
+
 //     },
 //     {
 //         id: '80',
 //         name: 'Vancouver - Robson Square',
-        
+
 //     },
 //     {
 //         id: '81',
 //         name: 'Vanderhoof',
-        
+
 //     },
 //     {
 //         id: '82',
 //         name: 'Vernon',
-        
+
 //     },
 //     {
 //         id: '83',
 //         name: 'Victoria',
-        
+
 //     },
 //     {
 //         id: '84',
 //         name: 'Western Communities',
-        
+
 //     },
 //     {
 //         id: '85',
 //         name: 'Williams Lake',
-        
+
 //     }
 // ];
 
@@ -1056,12 +1056,14 @@ export const sheriffLeaves: Leave[] = [
         id: '1',
         sheriffId: '1',
         startDate: moment().startOf('week').add(1, 'day'),
-        endDate: moment().startOf('week').add(4, 'day')
+        endDate: moment().startOf('week').add(4, 'day'),
+        leaveTypeCode: 'Sick'
     },
     {
         id: '2',
         sheriffId: '2',
         startDate: moment().startOf('week').add(1, 'day'),
-        endDate: moment().startOf('week').add(4, 'day')
+        endDate: moment().startOf('week').add(4, 'day'),
+        leaveTypeCode: 'Sick'
     }
 ];

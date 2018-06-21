@@ -23,9 +23,8 @@ const formConfig: ConfigProps<any, SheriffProfileFormProps> = {
     form: 'EditSherif',
     onSubmit: (values, dispatch, props) => {
         const updatedSheriffProfile = SheriffProfileForm.parseSheriffProfileFromValues(values);
+        // dispatch(updateSheriffProfile(updatedSheriffProfile));
         console.log(updatedSheriffProfile);
-        //dispatch(updateSheriff(updatedSheriff));
-        // dispatch update sheriff leaves
     }
 };
 

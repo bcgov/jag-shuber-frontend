@@ -117,7 +117,6 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
 
     private _reducer(moduleState: TModuleState | undefined, action: AnyAction): TModuleState | undefined {
         let newState = (moduleState || undefined) as TModuleState;
-
         switch (action.type) {
             case this.actionNames.begin:
                 newState = this.reduceBegin(newState, action);

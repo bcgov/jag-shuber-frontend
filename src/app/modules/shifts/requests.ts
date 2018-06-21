@@ -1,6 +1,6 @@
-import RequestAction from '../../../infrastructure/Requests/RequestActionBase';
-import { ThunkExtra } from '../../../store';
-import arrayToMap from '../../../infrastructure/arrayToMap';
+import RequestAction from '../../infrastructure/Requests/RequestActionBase';
+import { ThunkExtra } from '../../store';
+import arrayToMap from '../../infrastructure/arrayToMap';
 import {
     STATE_KEY,
     ShiftModuleState
@@ -10,12 +10,12 @@ import {
     IdType,
     ShiftCopyOptions,
     ShiftUpdates
-} from '../../../api/Api';
-import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRequest';
-import CreateEntityRequest from '../../../infrastructure/Requests/CreateEntityRequest';
-import UpdateEntityRequest from '../../../infrastructure/Requests/UpdateEntityRequest';
-import toTitleCase from '../../../infrastructure/toTitleCase';
-import { ShiftCreationPayload, ShiftFactory } from '../../../api/utils';
+} from '../../api/Api';
+import GetEntityMapRequest from '../../infrastructure/Requests/GetEntityMapRequest';
+import CreateEntityRequest from '../../infrastructure/Requests/CreateEntityRequest';
+import UpdateEntityRequest from '../../infrastructure/Requests/UpdateEntityRequest';
+import toTitleCase from '../../infrastructure/toTitleCase';
+import { ShiftCreationPayload, ShiftFactory } from '../../api/utils';
 
 // #################
 // SHIFT MAP REQUEST

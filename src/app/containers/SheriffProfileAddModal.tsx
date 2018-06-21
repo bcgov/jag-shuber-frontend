@@ -1,5 +1,5 @@
 import React from 'react';
-import { default as SheriffProfileCreateForm } from '../containers/SheriffCreateProfileForm';
+import { default as SheriffProfileCreateForm } from '../containers/SheriffProfileCreateForm';
 import {
     Button,
     Glyphicon

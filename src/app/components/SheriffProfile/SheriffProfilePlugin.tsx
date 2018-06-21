@@ -1,27 +1,27 @@
 import * as React from 'react';
 import { IdType } from '../../api/Api';
-import CollapsibleSection from '../CollapsibleSection/CollapsibleSection';
-
+import { RootState } from '../../store';
 
 export interface SheriffProfilePluginProps {
     sheriffId: IdType;
 }
 
-export interface SheriffProfilePlugin {
-    renderDisplay(props: SheriffProfilePluginProps): React.ReactElement<SheriffProfilePluginProps>;
-    renderFormFields(props: SheriffProfilePluginProps): React.ReactElement<SheriffProfilePluginProps>;
-    onUpdate(formValues: any): void;
-    onCreate(formValues: any): void;
+export interface SheriffProfilePlugin<T> {
+    renderDisplay(props: SheriffProfilePluginProps & T): React.ReactNode;
+    renderFormFields(props: SheriffProfilePluginProps & T): React.ReactNode;
+    update(sheriffId: IdType, formValues: any): Promise<T | void>;
+    create(sheriffId: IdType, formValues: any): Promise<T | void>;
+    getData(sheriffId: IdType, state: RootState): T | undefined;
 }
 
-export abstract class SheriffProfilePluginBase implements SheriffProfilePlugin {
-    DisplayComponent?: React.ReactType<SheriffProfilePluginProps>;
-    FormFieldComponent?: React.ReactType<SheriffProfilePluginProps>;
-    renderDisplay({ sheriffId }: SheriffProfilePluginProps): React.ReactElement<SheriffProfilePluginProps> {
+export abstract class SheriffProfilePluginBase<T> implements SheriffProfilePlugin<T> {
+    DisplayComponent?: React.ReactType<SheriffProfilePluginProps & T>;
+    FormComponent?: React.ReactType<SheriffProfilePluginProps & T>;
+    renderDisplay(props: SheriffProfilePluginProps & T): React.ReactNode {
         const { DisplayComponent } = this;
         return (
             DisplayComponent
-                ? <DisplayComponent sheriffId={sheriffId} />
+                ? <DisplayComponent {...props} />
                 : (
                     <div>
                         Sheriff Profile Plugin: DisplayComponent not set
@@ -29,40 +29,24 @@ export abstract class SheriffProfilePluginBase implements SheriffProfilePlugin {
                 )
         );
     }
-    renderFormFields({ sheriffId }: SheriffProfilePluginProps): React.ReactElement<SheriffProfilePluginProps> {
-        const { FormFieldComponent } = this;
+    renderFormFields(props: SheriffProfilePluginProps & T): React.ReactNode {
+        const { FormComponent } = this;
         return (
-            FormFieldComponent
-                ? <FormFieldComponent sheriffId={sheriffId} />
-                : (
-                    <div>
-                        Sheriff Profile Plugin: FormFieldComponent not set.
-                    </div>
-                )
+            FormComponent && <FormComponent {...props} />
         );
     }
-    abstract onUpdate(formValues: any): void;
-    abstract onCreate(formValues: any): void;
+    async update(sheriffId: IdType, formValues: any): Promise<T | void> {
+        // Does nothing
+    }
+    async create(sheriffId: IdType, formValues: any): Promise<T | void> {
+        // Does nothing
+    }
+    getData(sheriffId: IdType, state: RootState): T | undefined {
+        // Does nothing
+        return undefined;
+    }
 }
 
-export abstract class SheriffProfileSectionPlugin extends SheriffProfilePluginBase {
-    title: string = 'Untitled Profile Section';
-    isInitiallyCollapsed: boolean = false;
-
-    renderDisplay(props: SheriffProfilePluginProps): React.ReactElement<SheriffProfilePluginProps> {
-        return (
-            <CollapsibleSection sectionTitle={this.title} isInitiallyCollapsed={this.isInitiallyCollapsed}>
-                {super.renderDisplay(props)}
-            </CollapsibleSection>
-        );
-    }
-    renderFormFields(props: SheriffProfilePluginProps): React.ReactElement<SheriffProfilePluginProps> {
-        return (
-            <CollapsibleSection sectionTitle={this.title} isInitiallyCollapsed={this.isInitiallyCollapsed}>
-                {super.renderFormFields(props)}
-            </CollapsibleSection>
-        );
-    }
-    abstract onUpdate(formValues: any): void;
-    abstract onCreate(formValues: any): void;
+export abstract class SheriffProfileSectionPlugin<T> extends SheriffProfilePluginBase<T>{
+    abstract get title(): string;
 }

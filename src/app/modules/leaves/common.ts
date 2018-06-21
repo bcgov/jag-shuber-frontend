@@ -1,4 +1,4 @@
-import { RequestActionState } from '../../infrastructure/RequestAction';
+import { RequestActionState } from '../../infrastructure/Requests/RequestActionBase';
 import {
     Leave,
     LeaveMap

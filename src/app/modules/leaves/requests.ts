@@ -1,4 +1,3 @@
-import RequestAction from '../../infrastructure/RequestAction';
 import { ThunkExtra } from '../../store';
 import arrayToMap from '../../infrastructure/arrayToMap';
 import {
@@ -8,13 +7,23 @@ import {
 import {
     LeaveMap,
     LeaveTypeMap,
-    LeaveCancelCodeMap
+    LeaveCancelCodeMap,
+    Leave,
+    MapType,
+    LeaveTypeCode,
+    LeaveCancelCode
 } from '../../api/Api';
+import GetEntityMapRequest from '../../infrastructure/Requests/GetEntityMapRequest';
+import { RequestActionConfig } from '../../infrastructure/Requests/RequestActionBase';
 
 // Get the Map
-class LeaveMapRequest extends RequestAction<void, LeaveMap, LeaveModuleState> {
-    constructor(namespace: string = STATE_KEY, actionName: string = 'leaveMap') {
-        super(namespace, actionName);
+class LeaveMapRequest extends GetEntityMapRequest<void, Leave, LeaveModuleState> {
+    constructor(config?: RequestActionConfig<MapType<Leave>>) {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'leaveMap',
+            ...config
+        });
     }
     public async doWork(request: void, { api }: ThunkExtra): Promise<LeaveMap> {
         let leaves = await api.getLeaves();
@@ -24,9 +33,14 @@ class LeaveMapRequest extends RequestAction<void, LeaveMap, LeaveModuleState> {
 
 export const leaveMapRequest = new LeaveMapRequest();
 
-class LeaveTypeMapRequest extends RequestAction<void, LeaveTypeMap, LeaveModuleState> {
-    constructor(namespace: string = STATE_KEY, actionName: string = 'leaveTypeMap') {
-        super(namespace, actionName);
+class LeaveTypeMapRequest extends GetEntityMapRequest<void, LeaveTypeCode, LeaveModuleState> {
+
+    constructor(config?: RequestActionConfig<MapType<LeaveTypeCode>>) {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'leaveTypeMap',
+            ...config
+        });
     }
     public async doWork(request: void, { api }: ThunkExtra): Promise<LeaveTypeMap> {
         let leaveTypes = await api.getLeaveTypes();
@@ -36,10 +50,16 @@ class LeaveTypeMapRequest extends RequestAction<void, LeaveTypeMap, LeaveModuleS
 
 export const leaveTypeMapRequest = new LeaveTypeMapRequest();
 
-class LeaveCancelCodeMapRequest extends RequestAction<void, LeaveCancelCodeMap, LeaveModuleState> {
-    constructor(namespace: string = STATE_KEY, actionName: string = 'leaveCancelCodeMap') {
-        super(namespace, actionName);
+class LeaveCancelCodeMapRequest extends GetEntityMapRequest<void, LeaveCancelCode, LeaveModuleState> {
+    
+    constructor(config?: RequestActionConfig<MapType<LeaveCancelCode>>) {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'leaveCancelCodeMap',
+            ...config
+        });
     }
+    
     public async doWork(request: void, { api }: ThunkExtra): Promise<LeaveCancelCodeMap> {
         let leaveCancelCodes = await api.getLeaveCancelCodes();
         return arrayToMap(leaveCancelCodes, l => l.code);

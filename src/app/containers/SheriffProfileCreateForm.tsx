@@ -4,7 +4,6 @@ import {
     default as SheriffProfileForm, 
     SheriffProfileFormProps 
 } from '../components/SheriffProfile/SheriffProfileForm';
-import { createSheriffProfile } from '../modules/sheriffs/actions';
 import { SheriffProfile } from '../api/Api';
 import { default as FormSubmitButton, SubmitButtonProps } from '../components/FormElements/SubmitButton';
 import { RootState } from '../store';
@@ -15,7 +14,8 @@ const formConfig: ConfigProps<any, SheriffProfileFormProps> = {
     form: 'CreateSheriff',
     onSubmit: (values: SheriffProfile | any, dispatch, ownProps) => {
         let newSheriffProfile = SheriffProfileForm.parseSheriffProfileFromValues(values);
-        dispatch(createSheriffProfile(newSheriffProfile));
+        //dispatch(createSheriffProfile(newSheriffProfile));
+        console.log(newSheriffProfile);
     }
 };
 
