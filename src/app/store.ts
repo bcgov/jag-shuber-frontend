@@ -26,7 +26,8 @@ export interface ThunkExtra {
     api: API;
 }
 
-export type ThunkAction<TRequest, TResponse> = (args?: TRequest) => _ThunkAction<Promise<TResponse>, RootState, ThunkExtra>;
+export type ThunkAction<TRequest, TResponse=void> = (args?: TRequest) => _ThunkAction<Promise<TResponse>, RootState, ThunkExtra>;
+
 
 export interface RootState {
     sheriffs: SheriffModuleState;

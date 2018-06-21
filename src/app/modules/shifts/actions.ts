@@ -37,24 +37,3 @@ export const unlinkShift: ThunkAction<SheriffShiftLink, Shift|undefined> =
 
         return await dispatch(editShift({ ...shift, sheriffId: undefined }));
     };
-
-export const createShifts: ThunkAction<ShiftCreationPayload> =
-    ({ weekStart, workSectionId, startTime, endTime, days, repeatNumber }: ShiftCreationPayload) =>
-        (dispatch, getState, extra) => {
-
-            let partialShifts: Partial<Shift>[] =
-                ShiftFactory.createShifts(
-                    {
-                        weekStart,
-                        workSectionId,
-                        startTime,
-                        endTime,
-                        days,
-                        repeatNumber
-                    }
-                );
-
-            partialShifts.forEach(shift => {
-                dispatch(createShift(shift));
-            });
-        };

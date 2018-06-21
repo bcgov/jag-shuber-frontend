@@ -5,9 +5,9 @@ import {
   getCourtrooms
 } from '../courthouse/action';
 import { getSheriffList } from '../sheriffs/actions';
-import { 
-  getAssignments, 
-  getAssignmentDuties, 
+import {
+  getAssignments,
+  getAssignmentDuties,
 } from '../assignments/actions';
 import { getShifts } from '../shifts/actions';
 
@@ -42,12 +42,15 @@ const _updateCurrentCourthouse = (currentCourthouse: string) => (
 );
 
 export const updateCurrentCourthouse: ThunkAction<string> =
-  (courthouseId = '') => (dispatch, getState, extra) => {
+  (courthouseId = '') => async (dispatch, getState, extra) => {
     dispatch(_updateCurrentCourthouse(courthouseId));
-    dispatch(getRuns());
-    dispatch(getCourtrooms());
-    dispatch(getSheriffList());
-    dispatch(getAssignments());
-    dispatch(getAssignmentDuties());
-    dispatch(getShifts());
+
+    await Promise.all([
+      dispatch(getRuns()),
+      dispatch(getCourtrooms()),
+      dispatch(getSheriffList()),
+      dispatch(getAssignments()),
+      dispatch(getAssignmentDuties()),
+      dispatch(getShifts())
+    ]);
   };
