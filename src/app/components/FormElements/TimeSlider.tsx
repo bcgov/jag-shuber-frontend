@@ -1,8 +1,9 @@
-import * as React from 'react';
-import * as moment from 'moment';
+import React from 'react';
+import moment from 'moment';
 import { Range } from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import { TimeType } from '../../api/Api';
+import { HandleWithTooltip, createMarks } from './TimeSliderCommon';
 
 export interface TimeSliderProps {
   minTime: TimeType;
@@ -13,7 +14,6 @@ export interface TimeSliderProps {
   onTimeChanged?: (newTimes: { startTime: TimeType, endTime: TimeType }) => void;
   color?: string;
 }
-
 export default class TimeSlider extends React.Component<TimeSliderProps> {
 
   private handleAfterChange(arg: number[]) {
@@ -72,25 +72,20 @@ export default class TimeSlider extends React.Component<TimeSliderProps> {
     const endTime = _endTime ? moment(_endTime) : maxTime;
 
     const durationMinutes: number = moment.duration(maxTime.diff(minTime)).asMinutes();
-    const numberOfMarks: number = durationMinutes / timeIncrement;
     const defaultStartMin = startTime ? moment.duration(startTime.diff(minTime)).asMinutes() : 0;
     const defaultEndMin =
       endTime ? moment.duration(endTime.diff(minTime)).asMinutes() : durationMinutes;
 
-    let markLabels = {};
-    for (let i = 0; i <= numberOfMarks; i++) {
-      const index = i * timeIncrement;
-      const minuteValue = i * timeIncrement;
-      let timeLabel = moment(minTime).add('minutes', minuteValue);
-      if (timeLabel.get('minutes') === 0) {
-        markLabels[index] = timeLabel.format('HH:mm');
-      } else {
-        markLabels[index] = '';
-      }
-    }
+    const markLabels = createMarks(moment(minTime), moment(maxTime), timeIncrement);
 
     return (
-      <div style={{ margin: 5 }}>
+      <div 
+        style={{ 
+          marginLeft: 5,
+          marginRight: 15,
+          marginBottom: 25
+        }}
+      >
         <Range
           step={timeIncrement}
           dots={true}
@@ -107,6 +102,13 @@ export default class TimeSlider extends React.Component<TimeSliderProps> {
               { borderColor: color, backgroundColor: color }
             ]}
           onAfterChange={(e) => this.handleAfterChange(e)}
+          handle={(p: any) =>
+            <HandleWithTooltip
+              overlayFormatter={(v) => moment(minTime).add('minutes', v).format('HH:mm')}
+              overlayStyle={{ zIndex: 1050 }}
+              {...p}
+            />
+          }
         />
       </div>
     );
