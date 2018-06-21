@@ -94,7 +94,7 @@ export default class ScheduleControlPanelForm extends
                         title="Delete Shift(s)"
                     />
                     <Button className="cancel-button" style={{marginRight: 6}} onClick={() => onClear && onClear()}>
-                        Clear
+                        Deselect
                     </Button>
                    <Button className="action-button" onClick={() => onApply && onApply()}>
                         Apply <span style={{ paddingTop: 2, fontSize: 10 }}>&#9658;</span>
