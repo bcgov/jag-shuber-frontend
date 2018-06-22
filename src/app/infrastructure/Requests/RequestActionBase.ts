@@ -69,17 +69,18 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
 
     public abstract doWork(request: TRequest, extra: ThunkExtra, getState: (() => any)): Promise<TResponse>;
 
-    public actionCreator: ThunkAction<TRequest, TResponse> = (request: TRequest) => (async (dispatch, getState, extra) => {
-        this.dispatchBegin(dispatch);
-        try {
-            const response = await this.doWork(request, extra, getState);
-            this.dispatchSuccess(dispatch, response);
-            return response;
-        } catch (error) {
-            this.dispatchFailure(dispatch, error);
-            throw error;
-        }
-    })
+    public actionCreator: ThunkAction<TRequest, TResponse> = (request: TRequest) =>
+        (async (dispatch, getState, extra) => {
+            this.dispatchBegin(dispatch);
+            try {
+                const response = await this.doWork(request, extra, getState);
+                this.dispatchSuccess(dispatch, response);
+                return response;
+            } catch (error) {
+                this.dispatchFailure(dispatch, error);
+                throw error;
+            }
+        })
 
     protected dispatchBegin(dispatch: Dispatch<any>) {
         dispatch(this.beginAction);

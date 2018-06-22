@@ -13,8 +13,6 @@ const nestedReducer = new NestedReducer([
   sheriffRequests.sheriffMapRequest.reducer,
   sheriffRequests.createSheriffRequest.reducer,
   sheriffRequests.updateSheriffRequest.reducer ,
-  // sheriffRequests.createSheriffProfileRequest.reducer,
-  // sheriffRequests.updateSheriffProfileRequest.reducer 
 ]);
 
 const reducer = nestedReducer.reducer;
