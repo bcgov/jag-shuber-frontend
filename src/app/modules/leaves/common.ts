@@ -1,13 +1,16 @@
 import { RequestActionState } from '../../infrastructure/Requests/RequestActionBase';
 import {
     Leave,
-    LeaveMap
+    LeaveCancelCode,
+    LeaveTypeCode,
+    MapType
+
 } from '../../api/Api';
 
 export interface LeaveModuleState {
-    leaveMap?: RequestActionState<LeaveMap>;
-    createLeave?: RequestActionState<Leave>;
-    updateLeave?: RequestActionState<Leave>;
+    leaveMap?: RequestActionState<MapType<Leave>>;
+    leaveTypeMap?: RequestActionState<MapType<LeaveTypeCode>>;
+    leaveCancelCodeMap?: RequestActionState<MapType<LeaveCancelCode>>;
 }
 
 export const STATE_KEY: string = 'leaves';
