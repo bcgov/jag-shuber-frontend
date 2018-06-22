@@ -26,8 +26,8 @@ export interface ThunkExtra {
     api: API;
 }
 
-export type ThunkAction<TRequest, TResponse=void> = (args?: TRequest) => _ThunkAction<Promise<TResponse>, RootState, ThunkExtra>;
-
+export type ThunkAction<TRequest, TResponse= void> = (args?: TRequest) =>
+    _ThunkAction<Promise<TResponse>, RootState, ThunkExtra>;
 
 export interface RootState {
     sheriffs: SheriffModuleState;
@@ -43,8 +43,7 @@ const initialActions: any[] = [
     getAlternateAssignmentTypes,
     getJailRoles,
     getCourthouses,
-    () => updateTimelineVisibleTime(
-        TimeUtils.getDefaultStartTime(), TimeUtils.getDefaultEndTime()),
+    () => updateTimelineVisibleTime(TimeUtils.getDefaultStartTime(), TimeUtils.getDefaultEndTime()),
     () => updateScheduleVisibleTime(moment().startOf('week').add(1, 'day'), moment().endOf('week').subtract(1, 'day')),
     getSheriffRankCodes,
     getShifts
