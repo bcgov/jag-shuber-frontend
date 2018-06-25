@@ -5260,8 +5260,8 @@ istanbul-reports@^1.1.3:
     handlebars "^4.0.3"
 
 "jag-shuber-api@github:bcgov/jag-shuber-api":
-  version "1.2.2"
-  resolved "https://codeload.github.com/bcgov/jag-shuber-api/tar.gz/2df407542d1b345ff99d44be2e55fe917b17b092"
+  version "1.2.3"
+  resolved "https://codeload.github.com/bcgov/jag-shuber-api/tar.gz/ab18d236a6700cf4c8cbe927027959d848a87e42"
   dependencies:
     koa "^2.5.0"
     koa-bodyparser "^4.2.0"
