@@ -63,7 +63,6 @@
     "prepare": "patch-package",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "test-api": "yarn test --runIntegrationTests",
     "update-api": "yarn add github:bcgov/jag-shuber-api"
   },
   "devDependencies": {

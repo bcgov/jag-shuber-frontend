@@ -118,10 +118,15 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.<br>
 You will also see any lint errors in the console.
 
+### `yarn start:dev`
+
+Runs the app in the development mode, pointing the app at a local instance of the API on [http://localhost:3001](http://localhost:3001).
+
 ### `yarn test`
 
 Launches the test runner in the interactive watch mode.<br>
 See the section about [running tests](#running-tests) for more information.
+
 
 ### `yarn build`
 
@@ -136,6 +141,10 @@ See the section about [deployment](#deployment) for more information.
 ### `yarn storybook`
 
 Starts the Storybook dev server which operates on [http://localhost:6006](http://localhost:6006)
+
+### `yarn update-api`
+Upates [jag-shuber-api](https://github.com/bcgov/jag-shuber-api) to the most recent version.
+
 
 ## Debugging in the Editor
 
