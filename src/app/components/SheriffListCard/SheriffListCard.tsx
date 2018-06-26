@@ -21,7 +21,9 @@ export default class SheriffListCard extends React.PureComponent<SheriffListCard
                 <span className="sheriff-card-badge-number">#{badgeNo}</span>
                 <span className="sheriff-card-alias">{alias}</span><br />
                 <SheriffRankDisplay code={rankCode} /><br/>
-                <span className="sheriff-card-name">{lastName}, {firstName.charAt(0)}</span><br />
+                <span className="sheriff-card-name">
+                    {lastName.toUpperCase()}, {firstName.charAt(0).toUpperCase()}
+                </span><br />
                 {this.props.children}
             </ListGroupItem>
         );
