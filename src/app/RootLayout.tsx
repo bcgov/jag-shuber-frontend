@@ -28,6 +28,7 @@ import {
   isCourthouseSet as isCurrentCourthouseSet
 } from '../app/modules/user/selectors';
 import ToastManager from './components/ToastManager/ToastManager';
+import ConnectedConfirmationModal from './containers/ConfirmationModal';
 
 export interface LayoutStateProps {
   isCourthouseSet?: boolean;
@@ -79,6 +80,7 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
               <SheriffProfileModal />
               <ScheduleShiftCopyModal />
               <ScheduleShiftAddModal />
+              <ConnectedConfirmationModal /> 
             </div>
           )}
           <div className="footerArea">

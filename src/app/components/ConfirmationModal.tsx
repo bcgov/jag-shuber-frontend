@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import ModalWrapper from '../containers/ModalWrapper/ModalWrapper';
 import { Button } from 'react-bootstrap';
 
