@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react';
 import { DragSource, DragSourceSpec } from 'react-dnd';
 import { CSSProperties } from 'react';
 
@@ -6,8 +6,11 @@ export default function dragSourceFactory<T, TDrag, TDropResult>(itemType: strin
 
     const sourceCallbacks: DragSourceSpec<GenericDragSourceProps> = {
         beginDrag: (props, monitor): TDrag => {
-            const { getDragData = () => ({} as TDrag) } = props;
+            const { getDragData = () => ({} as TDrag), beginDrag } = props;
             const data = getDragData();
+            if (beginDrag) {
+                beginDrag(data);
+            }
             return data;
         },
         endDrag: (props: GenericDragSourceProps, monitor) => {
@@ -31,6 +34,7 @@ export default function dragSourceFactory<T, TDrag, TDropResult>(itemType: strin
     interface GenericDragSourceProps {
         getDragData?: () => TDrag;
         endDrag?: (result?: TDropResult) => void;
+        beginDrag?: (item: TDrag) => void;
         connectDragSource?: any;
         connectDragPreview?: any;
         isDragging?: boolean;
@@ -38,7 +42,7 @@ export default function dragSourceFactory<T, TDrag, TDropResult>(itemType: strin
     }
 
     @DragSource<GenericDragSourceProps & T>(itemType, sourceCallbacks, collect)
-    class GenericDragSource extends React.PureComponent<GenericDragSourceProps & T, {}>{
+    class GenericDragSource extends React.PureComponent<GenericDragSourceProps & T, {}> {
         render() {
             const {
                 connectDragSource,
@@ -49,7 +53,7 @@ export default function dragSourceFactory<T, TDrag, TDropResult>(itemType: strin
                 <div>
                     {children}
                 </div>
-            )
+            );
         }
     }
 
