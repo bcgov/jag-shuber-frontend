@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as moment from 'moment';
+import React from 'react';
+import moment from 'moment';
 import './SheriffDutyBar.css';
 import {
     IdType,
@@ -23,6 +23,8 @@ export interface SheriffDutyBarProps {
     onRemove?: () => void;
     canDropSheriff?: (sheriff: Sheriff) => boolean;
     onDropSheriff?: (sheriff: Sheriff, sheriffDuty: SheriffDuty) => void;
+    style?: React.CSSProperties;
+    computeStyle?: (status: { isActive: boolean, isOver: boolean, canDrop: boolean }) => React.CSSProperties;
 }
 
 export default class SheriffDutyBar extends React.PureComponent<SheriffDutyBarProps>{
@@ -97,6 +99,8 @@ export default class SheriffDutyBar extends React.PureComponent<SheriffDutyBarPr
             dutyWorkSection = 'OTHER',
             canDropSheriff = (s: Sheriff) => this.canAssignSheriff(s),
             onDropSheriff,
+            computeStyle,
+            style = {}
         } = this.props;
         const isAssigned = sheriffId != undefined && sheriffId !== '';
         const title = !this.props.title ? (isAssigned ? `Sheriff #${sheriffId}` : '') : this.props.title.toUpperCase();
@@ -104,14 +108,16 @@ export default class SheriffDutyBar extends React.PureComponent<SheriffDutyBarPr
         return (
             <SheriffDropTarget
                 onDropItem={(s) => onDropSheriff && onDropSheriff(s, sheriffDuty)}
-                canDropItem={canDropSheriff}
+                canDropItem={(s) => canDropSheriff && canDropSheriff(s)}
+                computeStyle={computeStyle}
                 className="sheriff-duty-bar"
                 style={{
+                    backgroundColor: getWorkSectionColour(dutyWorkSection),
                     borderBottomWidth: showBorder ? 1 : 0,
+                    ...style, 
                     width: this.getDutyBarWidth(),
                     position: 'absolute',
                     left: this.getDutyBarLeftPosition(),
-                    backgroundColor: getWorkSectionColour(dutyWorkSection),
                     height: this.getDutyBarHeight(),
                     top: this.getDutyBarTopPosition()
                 }}

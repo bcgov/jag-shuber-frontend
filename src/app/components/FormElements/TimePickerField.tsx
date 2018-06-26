@@ -52,7 +52,7 @@ export default class TimePickerField extends
                             marginTop: 4
                         }}
                     >
-                        <span style={{fontWeight: 'bold', color: '#888'}}>{label}</span>
+                        <span style={{fontWeight: 'bold'}}>{label}</span>
                         <TimePicker
                             minTime={minTime}
                             maxTime={maxTime}

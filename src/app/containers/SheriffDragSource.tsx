@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import dragSourceFactory from '../infrastructure/DragDrop/dragSourceFactory';
 import ItemTypes from '../infrastructure/DragDrop/ItemTypes';
 import { Sheriff } from '../api';
@@ -11,22 +11,30 @@ export interface SheriffDropResult extends Sheriff {
     dropEffect?: 'copy' | 'move';
 }
 
-interface AssignmentSourceFactoryProps {
+interface SheriffSourceFactoryProps {
     getDragData: () => DraggedSheriff;
+    beginDrag?: (sheriff: Sheriff) => void;
+    endDrag?: (args: any) => void;
 }
 
-const GenericSheriffDragSource = dragSourceFactory<AssignmentSourceFactoryProps, DraggedSheriff, void>
+const GenericSheriffDragSource = dragSourceFactory<SheriffSourceFactoryProps, DraggedSheriff, void>
     (ItemTypes.SHERIFF);
 
 interface SheriffDragSourceProps {
     sheriff: Sheriff;
+    beginDrag?: (sheriff: Sheriff) => void;
+    endDrag?: (args: any) => void;
 }
 
 export default class SheriffDragSource extends React.PureComponent<SheriffDragSourceProps> {
     render() {
-        const { children, sheriff } = this.props;
+        const { children, sheriff, beginDrag, endDrag } = this.props;
         return (
-            <GenericSheriffDragSource getDragData={() => sheriff}>
+            <GenericSheriffDragSource 
+                getDragData={() => sheriff} 
+                beginDrag={beginDrag} 
+                endDrag={endDrag}
+            >
                 {children}
             </GenericSheriffDragSource>
         );
