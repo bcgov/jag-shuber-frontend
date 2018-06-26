@@ -65,7 +65,8 @@ class SheriffProfileModal extends React.PureComponent<CompositeProps> {
                     </Button>}
                     <SheriffProfile
                         isEditing={isEditing}
-                        sheriffId={sheriffId}                        
+                        sheriffId={sheriffId}
+                        onSubmitSuccess={() => showSheriffProfileModal(sheriffId, false)}
                     />
                     {/* {isEditing && 
                         <SheriffProfileEditForm 
@@ -94,8 +95,8 @@ const modalConfig = {
     name: 'SheriffProfileModal'
 };
 
-const showAction = (sheriffId: IdType, isEditing: boolean = false) => (
-    showModal(modalConfig.name, { sheriffId, isEditing })
+const showAction = (sheriffId: IdType, isEditing: boolean = false, sectionName?: string) => (
+    showModal(modalConfig.name, { sheriffId, isEditing, sectionName })
 );
 // Here we extend the Higher Order Component so that we can add on some static
 // members that can be used to hide the modal configuration from consumers

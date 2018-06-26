@@ -1,22 +1,48 @@
 import * as React from 'react';
 import { IdType } from '../../api/Api';
 import { RootState } from '../../store';
+import { Dispatch } from 'redux';
 
 export interface SheriffProfilePluginProps {
     sheriffId: IdType;
 }
 
 export interface SheriffProfilePlugin<T> {
+    name: string;
     renderDisplay(props: SheriffProfilePluginProps & T): React.ReactNode;
     renderFormFields(props: SheriffProfilePluginProps & T): React.ReactNode;
-    update(sheriffId: IdType, formValues: any): Promise<T | void>;
-    create(sheriffId: IdType, formValues: any): Promise<T | void>;
+    hasErrors(errors: any): boolean;
+    onSubmit(sheriffid: IdType, formValues: any, dispatch: Dispatch<any>): Promise<T | void>;
+    fetchData(sheriffId: IdType, dispatch: Dispatch<any>): void;
     getData(sheriffId: IdType, state: RootState): T | undefined;
 }
 
 export abstract class SheriffProfilePluginBase<T> implements SheriffProfilePlugin<T> {
+    abstract name: string;
+
+    abstract formFieldNames: { [key: string]: string };
     DisplayComponent?: React.ReactType<SheriffProfilePluginProps & T>;
     FormComponent?: React.ReactType<SheriffProfilePluginProps & T>;
+
+    containsPropertyPath(errors: Object = {}, propertyPath: string = '') {
+        const propertyNames = propertyPath.split('.');
+        let propertyError = errors;
+        if (propertyNames.length === 0) {
+            return false;
+        }
+        // Assume there is an error until proven innocent
+        let containsPath = true;
+        for (let i = 0; i < propertyNames.length; i++) {
+            const propertyName = propertyNames[i];
+            if (!propertyError.hasOwnProperty(propertyName)) {
+                containsPath = false;
+                break;
+            }
+            propertyError = propertyError[propertyName];
+        }
+        // we've traversed the whole property string finding each piece, there is an error
+        return containsPath;
+    }
     renderDisplay(props: SheriffProfilePluginProps & T): React.ReactNode {
         const { DisplayComponent } = this;
         return (
@@ -35,12 +61,24 @@ export abstract class SheriffProfilePluginBase<T> implements SheriffProfilePlugi
             FormComponent && <FormComponent {...props} />
         );
     }
-    async update(sheriffId: IdType, formValues: any): Promise<T | void> {
-        // Does nothing
+
+    async onSubmit(sheriffid: IdType, formValues: any, dispatch: Dispatch<any>): Promise<T | void> {
+        // does nothing
     }
-    async create(sheriffId: IdType, formValues: any): Promise<T | void> {
-        // Does nothing
+
+    hasErrors(errors: any) {
+        // Traverse first nodes of error object checking for errors on each
+        return Object.keys(errors).some(eKey => (
+            Object.keys(this.formFieldNames).some(key => (
+                this.containsPropertyPath(errors[eKey], this.formFieldNames[key])
+            ))
+        ));
     }
+
+    fetchData(sheriffId: IdType, dispatch: Dispatch<any>) {
+        // does nothing
+    }
+
     getData(sheriffId: IdType, state: RootState): T | undefined {
         // Does nothing
         return undefined;

@@ -124,13 +124,13 @@ export default class MockClient implements API {
             if (newStartTime) {
                 const newHours = moment(newStartTime).hour();
                 const newMinutes = moment(newStartTime).minute();
-                
+
                 updatedShift.startDateTime = moment(updatedShift.startDateTime).hour(newHours).minute(newMinutes);
             }
             if (newEndTime) {
                 const newHours = moment(newEndTime).hour();
                 const newMinutes = moment(newEndTime).minute();
-                
+
                 updatedShift.endDateTime = moment(updatedShift.endDateTime).hour(newHours).minute(newMinutes);
             }
         }
@@ -268,7 +268,7 @@ export default class MockClient implements API {
 
     async updateMultipleShifts(shiftIds: IdType[], shiftUpdates: ShiftUpdates): Promise<Shift[]> {
         await randomDelay();
-        
+
         if (!shiftIds) {
             throw new Error('No ID specified');
         }
@@ -353,7 +353,13 @@ export default class MockClient implements API {
     }
 
     async getLeaves(): Promise<Leave[]> {
-        return [];
+        return [{
+            id: 'some id',
+            startDate: moment().format(),
+            sheriffId: '651ddb1b-c633-467c-b8e4-0858a42110c3',
+            leaveTypeCode: '',
+            endDate: moment().add(1, 'hour').format()
+        }];
     }
 
     getCourtrooms(): Promise<Courtroom[]> {

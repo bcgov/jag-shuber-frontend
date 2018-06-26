@@ -12,8 +12,14 @@ import CourthouseSelector from './CourthouseSelector';
 import CourthouseDisplay from './CourthouseDisplay';
 
 export default class SheriffProfilePluginLocation extends SheriffProfileSectionPlugin<Sheriff> {
+    name = 'location';
+    formFieldNames = {
+        currentCourthouse: 'sheriff.currentCourthouseId',
+        homeCourthouse: 'sheriff.homeCourthouseId'
+    };
 
     title: string = 'Location';
+
     DisplayComponent = ({ sheriffId }: SheriffProfilePluginProps) => (
         <SheriffDisplay
             sheriffId={sheriffId}
@@ -42,16 +48,16 @@ export default class SheriffProfilePluginLocation extends SheriffProfileSectionP
     FormComponent = ({ sheriffId }: SheriffProfilePluginProps) => (
         <div>
             <Field
-                name="sheriff.homeCourthouseId"
+                name={this.formFieldNames.homeCourthouse}
                 component={CourthouseSelector as any}
                 label="Home Location"
                 validate={[Validators.required]}
             />
             <Field
-                name="sheriff.currentCourthouseId"
+                name={this.formFieldNames.currentCourthouse}
                 component={CourthouseSelector as any}
                 label="Current Location"
-                // validate={[Validators.required]}
+                validate={[Validators.required]}
             />
         </div>
     )

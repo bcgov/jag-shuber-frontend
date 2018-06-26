@@ -11,8 +11,6 @@ import GetEntityMapRequest from '../../infrastructure/Requests/GetEntityMapReque
 import CreateEntityRequest from '../../infrastructure/Requests/CreateEntityRequest';
 import UpdateEntityRequest from '../../infrastructure/Requests/UpdateEntityRequest';
 import toTitleCase from '../../infrastructure/toTitleCase';
-// import { SheriffProfile } from '../../api/Api';
-// import { LeaveModuleState } from '../leaves/common';
 
 // Sheriff Map
 class SheriffMapRequest extends GetEntityMapRequest<void, Sheriff, SheriffModuleState> {

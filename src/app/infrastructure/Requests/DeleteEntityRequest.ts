@@ -1,10 +1,10 @@
-import RequestAction, { RequestActionConfig } from './RequestActionBase';
+import RequestAction, { RequestConfig } from './RequestActionBase';
 import FormRequestAction from './FormRequestAction';
 
 export default abstract class DeleteEntityRequest<TEntity, TModuleState>
     extends FormRequestAction<string, string, TModuleState> {
 
-    constructor(config: RequestActionConfig<string>,
+    constructor(config: RequestConfig<string>,
         protected mapRequest: RequestAction<any, { [key: string]: TEntity }, TModuleState>) {
         super(config);
     }

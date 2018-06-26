@@ -1,9 +1,9 @@
 import CreateEntityRequest from './CreateEntityRequest';
-import RequestActionBase, { RequestActionConfig } from './RequestActionBase';
+import RequestActionBase, { RequestConfig } from './RequestActionBase';
 
 export default abstract class UpdateEntityRequest<TEntity extends { id: string }, TModuleState>
     extends CreateEntityRequest<TEntity, TModuleState> {
-    constructor(config: RequestActionConfig<TEntity>,
+    constructor(config: RequestConfig<TEntity>,
                 mapRequest: RequestActionBase<any, { [key: string]: TEntity }, TModuleState>) {
         super(config, mapRequest);
     }

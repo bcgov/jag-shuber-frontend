@@ -12,7 +12,9 @@ import { Sheriff } from '../api';
 
 
 export default class SheriffProfilePluginHeader extends SheriffProfilePluginBase<Sheriff> {
-
+    name = 'header';
+    formFieldNames = {
+    };
     DisplayComponent = ({ sheriffId }: SheriffProfilePluginProps) => (
         <SheriffDisplay
             sheriffId={sheriffId}

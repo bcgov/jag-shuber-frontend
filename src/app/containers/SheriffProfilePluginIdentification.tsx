@@ -13,7 +13,14 @@ import * as Validators from '../infrastructure/Validators';
 import CourthouseSheriffRankCodeSelector from './CourthouseSheriffRankCodeSelector';
 
 export default class SheriffProfilePluginId extends SheriffProfileSectionPlugin<Sheriff> {
-
+    name = 'identification';
+    formFieldNames = {
+        firstName: 'sheriff.firstName',
+        lastName: 'sheriff.lastName',
+        rankCode: 'sheriff.rankCode',
+        badgeNo: 'sheriff.badgeNo',
+        alias: 'sheriff.alias'
+    };
     title: string = 'Identification';
     DisplayComponent = ({ sheriffId }: SheriffProfilePluginProps) => (
         <SheriffDisplay
@@ -48,31 +55,31 @@ export default class SheriffProfilePluginId extends SheriffProfileSectionPlugin<
     FormComponent = (props: SheriffProfilePluginProps) => (
         <div>
             <Field
-                name="sheriff.firstName"
+                name={this.formFieldNames.firstName}
                 component={TextField as any}
                 label="First Name"
                 validate={[Validators.required]}
             />
             <Field
-                name="sheriff.lastName"
+                name={this.formFieldNames.lastName}
                 component={TextField as any}
                 label="Last Name"
                 validate={[Validators.required]}
             />
             <Field
-                name="sheriff.rankCode"
+                name={this.formFieldNames.rankCode}
                 component={CourthouseSheriffRankCodeSelector as any}
                 label="Rank"
                 validate={[Validators.required]}
             />
             <Field
-                name="sheriff.badgeNo"
+                name={this.formFieldNames.badgeNo}
                 component={TextField as any}
                 label="Badge Number"
                 validate={[Validators.required]}
             />
             <Field
-                name="sheriff.alias"
+                name={this.formFieldNames.alias}
                 component={TextField as any}
                 label="Alias"
             />

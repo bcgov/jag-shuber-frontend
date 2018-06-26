@@ -7,6 +7,7 @@ import {
 import mapToArray from '../../infrastructure/mapToArray';
 import { currentCourthouse as currentCourthouseSelector } from '../user/selectors';
 import arrayToMap from '../../infrastructure/arrayToMap';
+import { ErrorMap } from './common';
 
 export const sheriffs = createSelector(
     requests.sheriffMapRequest.getData,
@@ -16,9 +17,9 @@ export const sheriffs = createSelector(
 
 export const sheriffsForCurrentCourthouse = createSelector(
     sheriffs,
-    currentCourthouseSelector, 
+    currentCourthouseSelector,
     (sheriffList, courthouse) => {
-       return sheriffList.filter(s => s.homeCourthouseId === courthouse || s.currentCourthouseId === courthouse);
+        return sheriffList.filter(s => s.homeCourthouseId === courthouse || s.currentCourthouseId === courthouse);
     }
 );
 
@@ -40,21 +41,21 @@ export const sheriffLoanMap = createSelector(
     (map = {}, currentCourthouse) => {
         const loanInOutArray = Object.keys(map).map(id => {
             const {
-                homeCourthouseId: homeLocation, 
+                homeCourthouseId: homeLocation,
                 currentCourthouseId: currentLocation
             } = map[id];
             let isLoanedIn = false;
             let isLoanedOut = false;
-            
+
             if (currentCourthouse !== homeLocation) {
                 if (currentLocation && currentLocation === currentCourthouse) {
-                   isLoanedIn = true;
+                    isLoanedIn = true;
                 }
             }
 
             if (currentCourthouse === homeLocation) {
                 if (currentLocation && currentLocation !== homeLocation) {
-                   isLoanedOut = true;
+                    isLoanedOut = true;
                 }
             }
 
@@ -63,7 +64,18 @@ export const sheriffLoanMap = createSelector(
                 isLoanedIn: isLoanedIn,
                 isLoanedOut: isLoanedOut
             };
-    });
+        });
         return arrayToMap(loanInOutArray, (lio) => lio.sheriffId);
     }
 );
+
+
+export const selectedSheriffProfileSection = (state: RootState) => {
+    const { sheriffs: { selectedProfileSection = undefined } = {} } = state;
+    return selectedProfileSection;
+};
+
+export const getSheriffProfilePluginErrors = (state: RootState) => {
+    const { sheriffs: { pluginSubmitErrors = {} } = {} } = state;
+    return pluginSubmitErrors as ErrorMap;
+};

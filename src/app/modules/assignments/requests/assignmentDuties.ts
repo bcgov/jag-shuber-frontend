@@ -1,4 +1,4 @@
-import RequestAction, { RequestActionConfig } from '../../../infrastructure/Requests/RequestActionBase';
+import RequestAction, { RequestConfig } from '../../../infrastructure/Requests/RequestActionBase';
 import { ThunkExtra } from '../../../store';
 import arrayToMap from '../../../infrastructure/arrayToMap';
 import {
@@ -68,7 +68,7 @@ export const createAssignmentDutyRequest = new CreateAssignmentDutyRequest();
 
 // Assignment Duty Edit
 class UpdateAssignmentDutyRequest extends UpdateEntityRequest<AssignmentDuty, AssignmentModuleState> {
-    constructor(config?: RequestActionConfig<AssignmentDuty>) {
+    constructor(config?: RequestConfig<AssignmentDuty>) {
         super(
             {
                 namespace: STATE_KEY,
