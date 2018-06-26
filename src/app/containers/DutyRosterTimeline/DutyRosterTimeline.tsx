@@ -33,6 +33,7 @@ import AssignmentDutyEditModal from '../AssignmentDutyEditModal';
 import * as TimeRangeUtils from '../../infrastructure/TimeRangeUtils';
 import ConfirmationModal from '../ConfirmationModal';
 import { DragDropStatus } from '../../infrastructure/DragDrop/dropTargetFactory';
+import SheriffNameDisplay from '../SheriffNameDisplay';
 
 interface DutyRosterTimelineProps extends TimelineProps {
     allowTimeDrag?: boolean;
@@ -44,11 +45,9 @@ interface DutyRosterTimelineDispatchProps {
     linkSheriff: (link: { sheriffId: IdType, dutyId: IdType, sheriffDutyId: IdType }) => void;
     showAssignmentDutyEditModal: (id: IdType) => void;
     showConfirmationModal: (
-        confirmationMessage?: string,
+        confirmationMessage?: React.ReactNode,
         confirmBtnLabel?: string,
-        cancelBtnLabel?: string,
         onConfirm?: () => void,
-        onCancel?: () => void
     ) => void;
 }
 
@@ -143,14 +142,12 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
         } = this.props;
 
         if (this.isOverlappingSheriffDuties(dutyId, sheriffDutyId)) {
+            const confirmMessage = <h3>Assign {<SheriffNameDisplay id={sheriffId}/>} to overlapping duties?</h3>;
             showConfirmationModal(
-                // tslint:disable-next-line:max-line-length
-                'This sheriff is assigned to more than one duty at this time. Please confirm you would like to double book this sheriff.',
-                undefined,
-                undefined,
+                confirmMessage,
+                'OK',
                 // tslint:disable-next-line:no-unused-expression
-                () => { linkSheriff && linkSheriff({ sheriffId, dutyId, sheriffDutyId }); },
-                undefined
+                () => { linkSheriff && linkSheriff({ sheriffId, dutyId, sheriffDutyId }); }
             );
         } else {
             // tslint:disable-next-line:no-unused-expression
@@ -158,8 +155,7 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
         }
     }
 
-    protected computeStyle(
-        { isActive, isOver, canDrop }: DragDropStatus, dutyId: IdType, sheriffDutyId: IdType): React.CSSProperties {
+    protected computeStyle({ isOver }: DragDropStatus, dutyId: IdType, sheriffDutyId: IdType): React.CSSProperties {
         const isOverlap = this.isOverlappingSheriffDuties(dutyId, sheriffDutyId);
 
         let css: React.CSSProperties = {
@@ -168,12 +164,11 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
 
         if (isOver && isOverlap) {
             css.zIndex = 90;
-            css.backgroundImage = 'repeating-linear-gradient(-45deg, #F00B,#F00B 20px, #F99B 20px, #F99B 40px)';
-        } else if (isActive) {
+            // css.backgroundImage = 'repeating-linear-gradient(-45deg, #F00B,#F00B 20px, #F99B 20px, #F99B 40px)';
+            css.backgroundImage = 'repeating-linear-gradient(-45deg, #ff6600,#ff6600 20px, #F99B 20px, #F99B 40px)';
+        } else if (isOver && !isOverlap) {
             css.zIndex = 90;
-            css.border = 'solid',
-            css.borderWidth = 4,
-            css.borderColor = 'darkgreen';
+            css.backgroundColor = 'green';
         }
 
         return css;
@@ -232,14 +227,14 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
                                             const { sheriffDuty } = barP;
                                             const isAssignedToDraggingSheriff =
                                                 draggingSheriffId && sheriffDuty.sheriffId === draggingSheriffId;
+                                            const isOpen = !this.isOverlappingSheriffDuties(duty.id, sheriffDuty.id);
+                                            const style: React.CSSProperties = {
+                                                opacity: isAssignedToDraggingSheriff || isOpen ? 1 : .6
+                                            };
                                             return (
                                                 <ConnectedSheriffDutyBar
                                                     {...barP}
-                                                    style={{
-                                                        opacity:
-                                                            !isAssignedToDraggingSheriff && draggingSheriffId ? .6 : 1,
-                                                        filter: 'alpha(opacity=60)'
-                                                    }}
+                                                    style={style}
                                                     canDropSheriff={() => true}
                                                     computeStyle={
                                                         (cp) => this.computeStyle(cp, duty.id, sheriffDuty.id)}
@@ -281,11 +276,9 @@ export default connect<DutyRosterTimelineStateProps, DutyRosterTimelineDispatchP
         linkSheriff: linkAssignment,
         showAssignmentDutyEditModal: (id: IdType) => AssignmentDutyEditModal.ShowAction(id),
         showConfirmationModal: (
-            confirmationMessage?: string,
+            confirmationMessage?: React.ReactNode,
             confirmBtnLabel?: string,
-            cancelBtnLabel?: string,
             onConfirm?: () => void,
-            onCancel?: () => void
-        ) => ConfirmationModal.ShowAction(confirmationMessage, confirmBtnLabel, cancelBtnLabel, onConfirm, onCancel)
+        ) => ConfirmationModal.ShowAction(confirmationMessage, confirmBtnLabel, onConfirm)
     }
 )(DutyRosterTimeline);

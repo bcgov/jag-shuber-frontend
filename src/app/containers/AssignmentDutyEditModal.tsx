@@ -59,7 +59,7 @@ class AssignmentDutyEditModal extends React.PureComponent<CompositeProps> {
                         confirmBtnStyle="danger"
                         message={deleteConfirmationMessage}
                         title="Delete Duty"
-                    />,
+                    />
                     <AssignmentDutyEditForm.SubmitButton key="save">Save</AssignmentDutyEditForm.SubmitButton>
                 </Modal.Footer>
             </Modal>

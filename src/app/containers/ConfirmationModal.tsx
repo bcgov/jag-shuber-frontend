@@ -15,11 +15,9 @@ import {
 } from 'redux-modal';
 
 export interface ConnectedConfirmationModalProps {
-    confirmationMessage?: string;
+    confirmationMessage?: React.ReactNode;
     confirmBtnLabel?: string;
-    cancelBtnLabel?: string;
     onConfirm?: () => void;
-    onCancel?: () => void;
 }
 
 export interface ConnectedConfirmationModalDispatchProps {
@@ -32,12 +30,12 @@ type CompositeProps =
 
 class ConnectedConfirmationModal extends React.PureComponent<CompositeProps> {
 
-    private handleCancel() {
-        const { onCancel } = this.props;
-        if (onCancel) {
-            onCancel();
-        }
-    }
+    // private handleCancel() {
+    //     const { onCancel } = this.props;
+    //     if (onCancel) {
+    //         onCancel();
+    //     }
+    // }
 
     private handleConfirm() {
         const { onConfirm } = this.props;
@@ -51,7 +49,6 @@ class ConnectedConfirmationModal extends React.PureComponent<CompositeProps> {
             show,
             handleHide,
             confirmationMessage = 'Please confirm that you would like to continue with this action.',
-            cancelBtnLabel = 'Cancel',
             confirmBtnLabel = 'Confirm'
         } = this.props;
 
@@ -69,16 +66,6 @@ class ConnectedConfirmationModal extends React.PureComponent<CompositeProps> {
                     {confirmationMessage}
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button
-                        key="cancel"
-                        // bsStyle={cancelBtnStyle}
-                        onClick={() => {
-                            this.handleCancel();
-                            handleHide();
-                        }}
-                    >
-                        {cancelBtnLabel}
-                    </Button>,
                     <Button
                         key="confirm"
                         bsStyle="success"
@@ -104,9 +91,7 @@ const modalConfig = {
 export default class extends connectModal(modalConfig)(
     connect<{}, ConnectedConfirmationModalDispatchProps, ConnectedConfirmationModalProps>(
         null,
-        {
-            // deleteAssignmentDuty: deleteAssignmentDutyAction
-        })
+        {})
         (ConnectedConfirmationModal) as any
 ) {
     static modalName = modalConfig.name;
@@ -116,11 +101,9 @@ export default class extends connectModal(modalConfig)(
     )
 
     static ShowAction = (
-        confirmationMessage?: string, 
+        confirmationMessage?: React.ReactNode, 
         confirmBtnLabel?: string, 
-        cancelBtnLabel?: string,  
         onConfirm?: () => void, 
-        onCancel?: () => void
-        ) => showModal(modalConfig.name, { confirmationMessage, confirmBtnLabel, cancelBtnLabel, onConfirm, onCancel })
+        ) => showModal(modalConfig.name, { confirmationMessage, confirmBtnLabel, onConfirm })
     static HideAction = () => hideModal(modalConfig.name);
 }
