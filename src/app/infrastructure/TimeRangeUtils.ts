@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+import moment from 'moment';
 import { TimeType } from '../api/Api';
 
 export function doTimeRangesOverlap (
@@ -14,6 +14,9 @@ export function doTimeRangesOverlap (
     return (
         (startTimeOneMoment.isBetween(startTimeTwoMoment, endTimeTwoMoment) 
             || endTimeOneMoment.isBetween(startTimeTwoMoment, endTimeTwoMoment))
+        ||
+        (startTimeTwoMoment.isBetween(startTimeOneMoment, endTimeOneMoment) 
+            || endTimeTwoMoment.isBetween(startTimeOneMoment, endTimeOneMoment))
         ||
         (startTimeOneMoment.isSame(startTimeTwoMoment) 
             && endTimeOneMoment.isSame(endTimeTwoMoment))
