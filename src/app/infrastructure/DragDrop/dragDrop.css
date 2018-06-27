@@ -1,0 +1,28 @@
+.drop-target {
+}
+
+.drop-target .drop-target-overlay {
+    z-index: 70;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0.8;
+    top: 0px;
+    left: 0px;
+}
+
+.drop-target.is-over .drop-target-overlay {
+    z-index: 90;
+}
+
+.drop-target.is-over.can-drop .drop-target-overlay {
+    background-image: repeating-linear-gradient(-45deg, #9F9A,#9F9A 20px, #0B0A 20px, #0B0A 40px);
+}
+
+.drop-target.is-over.cant-drop .drop-target-overlay {
+    background-image: repeating-linear-gradient(-45deg, #F00B,#F00B 20px, #F99B 20px, #F99B 40px);
+}
+
+
+
+
