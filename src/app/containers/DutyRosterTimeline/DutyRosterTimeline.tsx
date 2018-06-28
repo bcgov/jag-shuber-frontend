@@ -32,7 +32,6 @@ import { visibleTime, dutiesForDraggingSheriff, draggingSheriff } from '../../mo
 import AssignmentDutyEditModal from '../AssignmentDutyEditModal';
 import * as TimeRangeUtils from '../../infrastructure/TimeRangeUtils';
 import ConfirmationModal from '../ConfirmationModal';
-// import { DragDropStatus } from '../../infrastructure/DragDrop/dropTargetFactory';
 import SheriffNameDisplay from '../SheriffNameDisplay';
 
 interface DutyRosterTimelineProps extends TimelineProps {
@@ -154,29 +153,6 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
             linkSheriff && linkSheriff({ sheriffId, dutyId, sheriffDutyId });
         }
     }
-
-    // protected computeStyle({ isOver }: DragDropStatus, dutyId: IdType, sheriffDutyId: IdType, foregroundColor: string): React.CSSProperties {
-    //     const isOverlap = this.isOverlappingSheriffDuties(dutyId, sheriffDutyId);
-    //     const iconColor = foregroundColor === '#000000' ? 'black' : 'white'; 
-        
-    //     let css: React.CSSProperties = {
-    //         zIndex: 70
-    //     };
-
-    //     if (isOver && isOverlap) {
-    //         css.zIndex = 90;
-    //         // RED css.backgroundImage = 'repeating-linear-gradient(-45deg, #F00B,#F00B 20px, #F99B 20px, #F99B 40px)';
-    //         // css.backgroundImage = 'repeating-linear-gradient(-45deg, #ff6600,#ff6600 20px, #F99B 20px, #F99B 40px)';
-    //         css.backgroundImage = `url("/img/dutyRoster_warning_${iconColor}.svg")`;
-    //         css.backgroundRepeat = 'no-repeat';
-    //     } else if (isOver && !isOverlap) {
-    //         css.zIndex = 90;
-    //         css.backgroundImage = `url("/img/dutyRoster_check_${iconColor}.svg")`;
-    //         css.backgroundRepeat = 'no-repeat';
-    //     }
-
-    //     return css;
-    // }
 
     render() {
         const {
