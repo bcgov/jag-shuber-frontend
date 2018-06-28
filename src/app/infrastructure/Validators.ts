@@ -5,16 +5,18 @@ export const VALIDATOR_MESSAGES = {
     INVALID_INTEGER_RANGE: 'Must be an integer between 1 and 50'
 };
 
-export const required = (value?: any) => value || value === false ? undefined :  VALIDATOR_MESSAGES.REQUIRED_VALUE;
+type Validator = (value: any) => string | undefined;
 
-export const integer = (value: any) => {  
+export const required = (value?: any) => value || value === false ? undefined : VALIDATOR_MESSAGES.REQUIRED_VALUE;
+
+export const integer = (value: any) => {
     let invalidMessage = number(value);
     if (!invalidMessage) {
         const numericValue = Number(value);
         if (Math.floor(numericValue) === numericValue) {
             invalidMessage = undefined;
         } else {
-             invalidMessage = VALIDATOR_MESSAGES.INVALID_INTEGER;
+            invalidMessage = VALIDATOR_MESSAGES.INVALID_INTEGER;
         }
     }
     return invalidMessage;
@@ -38,7 +40,7 @@ export const min1 = minValidator(1);
 
 export const max10 = maxValidator(10);
 
-export const number = (value: any) => { 
+export const number = (value: any) => {
     return value && isNaN(value) ? VALIDATOR_MESSAGES.INVALID_NUMBER : undefined;
 };
 
@@ -48,3 +50,11 @@ export const maxLengthValidator = (maxLengthValue: number) => (
     )
 );
 export const maxLength200 = maxLengthValidator(200);
+
+export function validateWith(...validators: Validator[]): Validator {
+    return (value: any) => (
+        validators.map(v => v(value))
+            .filter(m => m != undefined)
+            .join(', ')
+    );
+}

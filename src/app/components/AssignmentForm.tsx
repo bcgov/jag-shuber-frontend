@@ -26,7 +26,8 @@ import {
     DaysOfWeek,
     Assignment,
     IdType,
-    AssignmentDuty
+    AssignmentDuty,
+    DutyRecurrence
 } from '../api';
 import TimeSliderField from './FormElements/TimeSliderField';
 import { getWorkSectionColour } from '../api/utils';
@@ -167,26 +168,22 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
 
     static validateForm(values: any) {
         const errors: any = {};
-        let recurrenceArrayErrors: any[] = [];
-        if (values.dutyRecurrences && values.dutyRecurrences.length > 0) {
-            values.dutyRecurrences.forEach((recurrence: any, recurrenceIndex: any) => {
-                if (recurrence) {
-                    const validateSheriffsRequired = (value: any) => (
-                        [Validators.required, Validators.max10, Validators.min1]
-                            .map(v => v(value))
-                            .filter(m => m != undefined)
-                            .join(', ')
-                    );
-                    recurrenceArrayErrors[recurrenceIndex] = {
-                        sheriffsRequired: validateSheriffsRequired(recurrence.sheriffsRequired)
-                    };
+        const { dutyRecurrences = [] }: { dutyRecurrences: DutyRecurrence[] } = values;
+        if (dutyRecurrences.length > 0) {
+            const validateSheriffsRequired = Validators.validateWith(
+                Validators.required,
+                Validators.max10,
+                Validators.min1);
+            const recurrenceArrayErrors = dutyRecurrences.map(dr => (
+                {
+                    sheriffsRequired: validateSheriffsRequired(dr.sheriffsRequired)
                 }
-            });
+            ));
+            if (recurrenceArrayErrors.length) {
+                errors.dutyRecurrences = recurrenceArrayErrors;
+            }
         }
-        if (recurrenceArrayErrors.length) {
-            errors.dutyRecurrences = recurrenceArrayErrors;
-        }
-
+        
         return errors;
     }
 
