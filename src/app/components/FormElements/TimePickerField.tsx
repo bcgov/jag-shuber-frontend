@@ -1,21 +1,20 @@
-import * as React from 'react';
-import * as moment from 'moment';
+import React from 'react';
+import moment from 'moment';
 import { default as FormFieldWrapper, FormFieldWrapperProps } from './FormFieldWrapper';
-import { FormControl } from 'react-bootstrap';
-import TimePicker from './TimePicker';
+import { FormControl, DropdownButton } from 'react-bootstrap';
 import * as TimeUtils from '../../infrastructure/TimeRangeUtils';
+import TimePicker from './TimePicker';
 
 interface TimePickerFieldProps {
     nullTimeLabel?: string;
 }
 
-export default class TimePickerField extends 
+export default class TimePickerField extends
     React.PureComponent<FormFieldWrapperProps & TimePickerFieldProps> {
-    
+
     render() {
         const {
-            input: { value, onFocus, onChange, onBlur },
-            meta: { active },
+            input: { value, onChange },
             label,
             nullTimeLabel = 'missing time'
         } = this.props;
@@ -26,32 +25,17 @@ export default class TimePickerField extends
         return (
             <FormFieldWrapper {...this.props} showLabel={false}>
                 <FormControl
-                    readOnly={true}
-                    type="text"
                     placeholder={`Enter ${label}`}
                     value={selectedTimeDisplay}
-                    onFocus={onFocus}
-                    onBlur={e => onBlur(undefined)}
-                    style={{maxWidth: 60}}
+                    style={{ display: 'none'  }}
+                    type="input"
                 />
-                {active && (
-                    <div
-                        className="drop-shadow"
-                        style={{
-                            background: 'white',
-                            position: 'absolute',
-                            width: '80%',
-                            zIndex: 100,
-                            height: 110,
-                            paddingTop: 15,
-                            paddingBottom: 15,
-                            paddingLeft: 15,
-                            paddingRight: 20,
-                            left: '10%',
-                            borderRadius: 8,
-                            marginTop: 4
-                        }}
-                    >
+                <DropdownButton
+                    title={selectedTimeDisplay}
+                    noCaret={true}
+                    id="time-picker-drop-down"
+                >
+                    <div style={{ width: 1100, padding: 15 }}>
                         <span style={{fontWeight: 'bold'}}>{label}</span>
                         <TimePicker
                             minTime={minTime}
@@ -61,7 +45,7 @@ export default class TimePickerField extends
                             onTimeChanged={onChange}
                         />
                     </div>
-                )}
+                </DropdownButton>
             </FormFieldWrapper>
         );
     }
