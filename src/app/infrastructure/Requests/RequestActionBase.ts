@@ -116,7 +116,6 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
         }
         // tslint:disable-next-line:no-console
         console.error(errorMessage);
-        throw error;
     }
 
     protected dispatchSuccess(dispatch: Dispatch<any>, response: TResponse, actionConfig: RequestActionConfig<TResponse> = {}) {
