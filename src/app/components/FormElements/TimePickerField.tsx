@@ -2,8 +2,8 @@ import React from 'react';
 import moment from 'moment';
 import { default as FormFieldWrapper, FormFieldWrapperProps } from './FormFieldWrapper';
 import { FormControl, DropdownButton } from 'react-bootstrap';
-import TimePicker from './TimePicker';
 import * as TimeUtils from '../../infrastructure/TimeRangeUtils';
+import TimePicker from './TimePicker';
 
 interface TimePickerFieldProps {
     nullTimeLabel?: string;
@@ -14,9 +14,7 @@ export default class TimePickerField extends
 
     render() {
         const {
-            // input: { value, onFocus, onChange, onBlur },
             input: { value, onChange },
-            // meta: { active },
             label,
             nullTimeLabel = 'missing time'
         } = this.props;
@@ -29,15 +27,15 @@ export default class TimePickerField extends
                 <FormControl
                     placeholder={`Enter ${label}`}
                     value={selectedTimeDisplay}
-                    style={{ maxWidth: 60 }}
-                    type="hidden"
+                    style={{ display: 'none'  }}
+                    type="input"
                 />
                 <DropdownButton
                     title={selectedTimeDisplay}
                     noCaret={true}
                     id="time-picker-drop-down"
                 >
-                    <div style={{ width: 800, padding: 15 }}>
+                    <div style={{ width: 1100, padding: 15 }}>
                         <span style={{fontWeight: 'bold'}}>{label}</span>
                         <TimePicker
                             minTime={minTime}
