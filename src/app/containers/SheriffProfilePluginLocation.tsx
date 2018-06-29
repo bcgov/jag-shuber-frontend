@@ -68,7 +68,6 @@ export default class SheriffProfilePluginLocation extends SheriffProfileSectionP
                             (sp) => <CourthouseSelector label="Current Location" {...sp} />}  
                     /> }
                 label="Current Location"
-                validate={[Validators.required]}
             />
         </div>
     )

@@ -55,10 +55,10 @@ class ConnectedConfirmationModal extends React.PureComponent<CompositeProps> {
             show,
             handleHide,
             confirmationMessage = 'Please confirm that you would like to continue with this action.',
-            confirmBtnLabel = 'Confirm'
+            confirmBtnLabel = 'Confirm',
+            RenderComponent = DefaultConfirmationRenderer
         } = this.props;
 
-        const { RenderComponent = DefaultConfirmationRenderer } = this.props;
 
         return (
             <Modal
