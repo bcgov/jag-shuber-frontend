@@ -132,7 +132,7 @@ class ScheduleControls extends React.PureComponent<
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
                                 <MenuItem onClick={() => showShiftAddModal()}>Add Shift</MenuItem>
-                                <MenuItem onClick={() => showShiftCopyModal()}>Copy Shifts</MenuItem>
+                                <MenuItem onClick={() => showShiftCopyModal()}>Import Shifts</MenuItem>
                             </Dropdown.Menu>
                         </Dropdown>
                     </div>

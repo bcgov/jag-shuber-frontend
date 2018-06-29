@@ -21,7 +21,7 @@ export default class ScheduleShiftForm extends
     render() {
         return (
             <Form {...this.props}>
-                <h3>Duplicate Shifts from Previous Week</h3>
+                <h3>Import shifts from previous week?</h3>
                 <Field
                     name="shouldIncludeSheriffs"
                     component={CheckboxField as any}

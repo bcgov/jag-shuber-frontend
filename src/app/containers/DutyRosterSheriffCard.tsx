@@ -11,7 +11,7 @@ import {
     WorkSectionCode
 } from '../api';
 import SheriffListCard from '../components/SheriffListCard/SheriffListCard';
-import { visibleTime } from '../modules/timeline/selectors';
+import { visibleTime } from '../modules/dutyRoster/selectors';
 import WorkSectionIndicator from '../components/WorkSectionIndicator/WorkSectionIndicator';
 import { sheriffLoanMap as sheriffLoanMapSelecor } from '../modules/sheriffs/selectors';
 import { currentCourthouse as userCourthouse } from '../modules/user/selectors';

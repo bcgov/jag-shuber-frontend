@@ -8,7 +8,7 @@ import { registerReducer as registerSheriffReducer, SheriffModuleState } from '.
 import { registerReducer as registerAssignmentReducer, AssignmentModuleState } from './modules/assignments/reducer';
 import { registerReducer as registerShiftReducer, ShiftModuleState } from './modules/shifts/reducer';
 import { registerReducer as registerCourthouseReducer, CourthouseModuleState } from './modules/courthouse/reducer';
-import { default as timelineReducer, TimelineState } from './modules/timeline/reducer';
+import { default as dutyRosterReducer, DutyRosterState } from './modules/dutyRoster/reducer';
 import { reducer as formReducer } from 'redux-form';
 import {
     getAlternateAssignmentTypes,
@@ -17,7 +17,7 @@ import {
     getSheriffRankCodes
 } from './modules/courthouse/action';
 import { getShifts } from './modules/shifts/actions';
-import { updateVisibleTime as updateTimelineVisibleTime } from './modules/timeline/actions';
+import { updateVisibleTime as updateTimelineVisibleTime } from './modules/dutyRoster/actions';
 import { default as scheduleReducer, ScheduleState } from './modules/schedule/reducer';
 import { updateVisibleTime as updateScheduleVisibleTime } from './modules/schedule/actions';
 import { UserState, registerReducer as registerUserReducer } from './modules/user/reducer';
@@ -31,7 +31,7 @@ export type ThunkAction<T> = (args?: T) => _ThunkAction<any, RootState, ThunkExt
 export interface RootState {
     sheriffs: SheriffModuleState;
     assignments: AssignmentModuleState;
-    timeline: TimelineState;
+    dutyRoster: DutyRosterState;
     shifts: ShiftModuleState;
     courthouse: CourthouseModuleState;
     schedule: ScheduleState;
@@ -50,7 +50,7 @@ const initialActions: any[] = [
 ];
 
 const reducers = {
-    timeline: timelineReducer,
+    dutyRoster: dutyRosterReducer,
     schedule: scheduleReducer,
     modal: modalReducer,
     form: formReducer

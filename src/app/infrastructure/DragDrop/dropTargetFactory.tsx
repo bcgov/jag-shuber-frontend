@@ -1,8 +1,9 @@
-import * as React from 'react'
+import React from 'react';
 import {
     DropTarget,
     DropTargetSpec
 } from 'react-dnd';
+import './dragDrop.css';
 
 export interface DragDropStatus {
     isActive?: boolean;
@@ -51,23 +52,6 @@ export default function dropTargetFactory<TDrag, TDrop>(itemTypes: string | stri
         onClick?: () => void;
     }
 
-    function computeStyleDefault({ isActive, canDrop, isOver }: DragDropStatus): React.CSSProperties {
-        let css: React.CSSProperties = {
-            borderColor: 'transparent',
-            border: 'dashed',
-            borderWidth: 2,
-        }
-
-        if (isActive) {
-            css.borderColor = 'lightgreen'
-        } else if (canDrop) {
-            css.borderColor = 'black'
-        } else if (isOver && !canDrop) {
-            css.borderColor = '#FF000088'
-        }
-        return css;
-    }
-
     @DropTarget<GenericDropTargetProps>(itemTypes, targetCallbacks, collect)
     class GenericDropTarget extends React.PureComponent<GenericDropTargetProps, {}>{
 
@@ -78,7 +62,7 @@ export default function dropTargetFactory<TDrag, TDrop>(itemTypes: string | stri
                 canDrop,
                 children,
                 style,
-                computeStyle = (s: DragDropStatus) => computeStyleDefault(s),
+                computeStyle,
                 className,
                 onClick
             } = this.props;
@@ -86,12 +70,22 @@ export default function dropTargetFactory<TDrag, TDrop>(itemTypes: string | stri
             const isActive = isOver && canDrop;
 
             const computedStyle = computeStyle ? computeStyle({ isActive, isOver, canDrop }) : {};
+            
+            const classNames = ['drop-target'];
+            if (className) {
+                classNames.push(className);
+            }
+            if (isOver) {
+                classNames.push('is-over');
+            }
+            classNames.push(canDrop === true ? 'can-drop' : canDrop === false ? 'cant-drop' : '');
+            
             return connectDropTarget(
-                <div style={style} className={className} onClick={() => onClick && onClick()}>
+                <div style={style} className={classNames.join(' ')} onClick={() => onClick && onClick()}>
                     {children}
-                    <div style={{ ...computedStyle, position: 'absolute', width: '100%', height: '100%', opacity: 0.8, top: 0, left: 0 }}></div>
+                    <div className="drop-target-overlay" style={{ ...computedStyle }} />
                 </div>
-            )
+            );
         }
     }
 

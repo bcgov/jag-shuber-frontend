@@ -3,6 +3,7 @@ import {
   IActionPayload,
   IAction
 } from './actions';
+import { IdType } from '../../api';
 
 export type ReducerResponse<State> = State;
 export type ReducerCases<State> = {
@@ -25,14 +26,18 @@ export function createReducer<State>(
   };
 }
 
-export interface TimelineState {
+export interface DutyRosterState {
   visibleTimeStart: any;
   visibleTimeEnd: any;
+  currentDraggingSheriff?: IdType;
 }
 
-const reducer = createReducer<TimelineState>({
-  TIMELINE_UPDATE_VISIBLETIME: (state, { visibleTimeStart, visibleTimeEnd }) => {
+const reducer = createReducer<DutyRosterState>({
+  DUTYROSTER_UPDATE_VISIBLETIME: (state, { visibleTimeStart, visibleTimeEnd }) => {
     return { ...state, visibleTimeStart, visibleTimeEnd };
+  },
+  DUTYROSTER_UPDATE_DRAGGING_SHERIFF: (state, sheriffId) => {
+    return {...state, currentDraggingSheriff: sheriffId};
   }
 });
 

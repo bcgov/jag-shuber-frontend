@@ -34,3 +34,28 @@
 .duty-roster-timeline{
     height:inherit;
 }
+
+.sheriff-duty.drop-target.is-over .drop-target-overlay {
+    z-index: 90;
+    background-repeat: no-repeat;
+}
+
+.sheriff-duty-bar.drop-target.is-over.can-drop.is-overlap.dark .drop-target-overlay {
+    background-image: url("/img/dutyRoster_warning_black.svg");
+}
+
+.sheriff-duty-bar.drop-target.is-over.can-drop.is-overlap.light .drop-target-overlay {
+    background-image: url("/img/dutyRoster_warning_white.svg");
+}
+
+.sheriff-duty-bar.drop-target.is-over.can-drop.dark .drop-target-overlay {
+    background-image: url("/img/dutyRoster_check_black.svg");
+}
+
+.sheriff-duty-bar.drop-target.is-over.can-drop.light .drop-target-overlay {
+    background-image: url("/img/dutyRoster_check_white.svg");
+}
+
+.sheriff-duty-bar.drop-target.is-over.cant-drop .drop-target-overlay {
+    background-image: unset;
+}

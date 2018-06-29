@@ -1,5 +1,5 @@
 import * as TimeRangeUtils from '../TimeRangeUtils';
-import * as moment from 'moment';
+import moment from 'moment';
 
 describe('doTimeRangesOverlap() ', () => {
     const util = TimeRangeUtils.doTimeRangesOverlap;
@@ -60,16 +60,30 @@ describe('doTimeRangesOverlap() ', () => {
     );
 
     it(
-        'Should return false if the time range one is before time range two', 
+        'Should return false if time range one is before time range two', 
         () => {
             expect(util({startTime: onePM, endTime: twoPM}, {startTime: threePM, endTime: fourPM})).toBeFalsy();
         }
     );
 
     it(
-        'Should return false if the time range one after is after time range two', 
+        'Should return false if time range one after is after time range two', 
         () => {
             expect(util({startTime: threePM, endTime: fourPM}, {startTime: onePM, endTime: twoPM})).toBeFalsy();
+        }
+    );
+
+    it(
+        'Should return true if the start of time range one is after the start of time range two and the end of time range one is before the end of time range two', 
+        () => {
+            expect(util({startTime: twoPM, endTime: threePM}, {startTime: onePM, endTime: fourPM})).toBeTruthy();
+        }
+    );
+
+    it(
+        'Should return true if the start of time range two is after the start of time range one and the end of time range two is before the end of time range one', 
+        () => {
+            expect(util({startTime: onePM, endTime: fourPM}, {startTime: twoPM, endTime: threePM})).toBeTruthy();
         }
     );
 

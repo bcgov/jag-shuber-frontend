@@ -12,7 +12,7 @@ import {
     createAssignmentDuty
 } from '../modules/assignments/actions';
 import { getAssignment } from '../modules/assignments/selectors';
-import { visibleTime } from '../modules/timeline/selectors';
+import { visibleTime } from '../modules/dutyRoster/selectors';
 import {
     IdType,
     DateType
