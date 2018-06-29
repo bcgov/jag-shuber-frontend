@@ -1,17 +1,15 @@
-import * as React from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { Sheriff } from '../api/index';
 import { sheriffs } from '../modules/sheriffs/selectors';
-import { FormFieldWrapperProps } from '../components/FormElements/FormFieldWrapper';
-import Selector from '../components/FormElements/Selector';
+import Selector, { SelectorProps } from '../components/FormElements/Selector';
 
 interface SheriffListStateProps {
     sheriffList: Sheriff[];
 }
 
-interface SheriffListProps extends FormFieldWrapperProps {
-    sheriffList?: Sheriff[];
+interface SheriffListProps extends SelectorProps {
     showVariedOption?: boolean;
     isDisabled?: boolean;
 }

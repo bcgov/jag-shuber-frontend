@@ -33,6 +33,7 @@ import TimeSliderField from './FormElements/TimeSliderField';
 import { getWorkSectionColour } from '../api/utils';
 import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 import { ConfirmationModal } from './ConfirmationModal';
+import SelectorField from './FormElements/SelectorField';
 class OtherFields extends React.PureComponent {
     render() {
         return (
@@ -40,7 +41,12 @@ class OtherFields extends React.PureComponent {
                 <Field
                     name="otherAssignCode"
                     label="Assignment"
-                    component={AlternateAssignmentSelector as any}
+                    component={
+                        (p) => <SelectorField 
+                            {...p} 
+                            SelectorComponent={
+                                (sp) => <AlternateAssignmentSelector {...sp} />}  
+                        /> }
                     validate={[Validators.required]}
                 />
             </div>
@@ -54,7 +60,11 @@ class EscortsFields extends React.PureComponent {
             <div>
                 <Field
                     name="runId"
-                    component={RunSelector as any}
+                    component={(p) => <SelectorField 
+                        {...p} 
+                        SelectorComponent={
+                            (sp) => <RunSelector {...sp} />}  
+                    />}
                     label="Assignment"
                     validate={[Validators.required]}
                 />
@@ -69,7 +79,11 @@ class JailFeilds extends React.PureComponent {
             <div>
                 <Field
                     name="jailRoleCode"
-                    component={JailRolesSelector as any}
+                    component={(p) => <SelectorField 
+                        {...p} 
+                        SelectorComponent={
+                            (sp) => <JailRolesSelector {...sp} />}  
+                    />}
                     label="Assignment"
                     validate={[Validators.required]}
                 />
@@ -84,7 +98,11 @@ class CourtSecurityFields extends React.PureComponent {
             <div>
                 <Field
                     name="courtroomId"
-                    component={CourtroomSelector as any}
+                    component={(p) => <SelectorField 
+                        {...p} 
+                        SelectorComponent={
+                            (sp) => <CourtroomSelector label="Home Location" {...sp} />}  
+                    />}
                     label="Courtroom"
                     validate={[Validators.required]}
                 />

@@ -3,20 +3,15 @@ import { connect } from 'react-redux';
 import { RootState } from '../store';
 // import { StringMap } from '../api/index';
 // import { allCourthouses } from '../modules/courthouse/selectors';
-import { FormFieldWrapperProps } from '../components/FormElements/FormFieldWrapper';
-import Selector from '../components/FormElements/Selector';
+import Selector, { SelectorProps } from '../components/FormElements/Selector';
 import { LeaveTypeCode } from '../api/Api';
 
 interface LeaveTypeSelectorStateProps {
-    // leaveTypes?: LeaveType[];
-}
-
-export interface LeaveTypeSelectorProps extends FormFieldWrapperProps {
     leaveTypes?: LeaveTypeCode[];
 }
 
 class LeaveTypeSelector extends React.PureComponent<
-    LeaveTypeSelectorStateProps & LeaveTypeSelectorProps> {
+    LeaveTypeSelectorStateProps & SelectorProps> {
 
     render() {
         const { 
@@ -29,7 +24,7 @@ class LeaveTypeSelector extends React.PureComponent<
         } = this.props;
         const selectorValues = leaveTypes.map(leave => ({ key: leave.code, value: leave.description }));
         return (
-            <Selector {...restProps} data={selectorValues} showLabel={false} />
+            <Selector {...restProps} data={selectorValues} />
         );
     }
 
@@ -42,6 +37,6 @@ const mapStateToProps = (state: RootState) => {
 };
 
 // tslint:disable-next-line:max-line-length
-export default connect<LeaveTypeSelectorStateProps, {}, LeaveTypeSelectorProps>(
+export default connect<LeaveTypeSelectorStateProps, {}, SelectorProps>(
     mapStateToProps
 )(LeaveTypeSelector);

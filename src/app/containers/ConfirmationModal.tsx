@@ -16,6 +16,7 @@ import {
 
 export interface ConnectedConfirmationModalProps {
     confirmationMessage?: React.ReactNode;
+    RenderComponent?: React.ComponentType<ConfirmationRendererProps>;
     confirmBtnLabel?: string;
     onConfirm?: () => void;
 }
@@ -28,14 +29,19 @@ type CompositeProps =
     & ConnectedConfirmationModalDispatchProps
     & IModalInjectedProps;
 
-class ConnectedConfirmationModal extends React.PureComponent<CompositeProps> {
+interface ConfirmationRendererProps {
+    message?: React.ReactNode;
+}
 
-    // private handleCancel() {
-    //     const { onCancel } = this.props;
-    //     if (onCancel) {
-    //         onCancel();
-    //     }
-    // }
+class DefaultConfirmationRenderer  extends React.PureComponent<ConfirmationRendererProps> {
+    render () {
+        return (
+            this.props.message
+        );
+    }
+}
+
+class ConnectedConfirmationModal extends React.PureComponent<CompositeProps> {
 
     private handleConfirm() {
         const { onConfirm } = this.props;
@@ -52,6 +58,8 @@ class ConnectedConfirmationModal extends React.PureComponent<CompositeProps> {
             confirmBtnLabel = 'Confirm'
         } = this.props;
 
+        const { RenderComponent = DefaultConfirmationRenderer } = this.props;
+
         return (
             <Modal
                 show={show}
@@ -63,7 +71,7 @@ class ConnectedConfirmationModal extends React.PureComponent<CompositeProps> {
             >
                 <Modal.Header closeButton={true} />
                 <Modal.Body>
-                    {confirmationMessage}
+                    <RenderComponent message={confirmationMessage}/>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button
@@ -100,10 +108,6 @@ export default class extends connectModal(modalConfig)(
         <ConnectedShowModalButton modalName={modalConfig.name} modalProps={props} />
     )
 
-    static ShowAction = (
-        confirmationMessage?: React.ReactNode, 
-        confirmBtnLabel?: string, 
-        onConfirm?: () => void, 
-        ) => showModal(modalConfig.name, { confirmationMessage, confirmBtnLabel, onConfirm })
+    static ShowAction = (props: ConnectedConfirmationModalProps) => showModal(modalConfig.name, props);
     static HideAction = () => hideModal(modalConfig.name);
 }

@@ -10,6 +10,7 @@ import { Field } from 'redux-form';
 import * as Validators from '../infrastructure/Validators';
 import CourthouseSelector from './CourthouseSelector';
 import CourthouseDisplay from './CourthouseDisplay';
+import SelectorField from '../components/FormElements/SelectorField';
 
 export default class SheriffProfilePluginLocation extends SheriffProfileSectionPlugin<Sheriff> {
     name = 'location';
@@ -49,13 +50,23 @@ export default class SheriffProfilePluginLocation extends SheriffProfileSectionP
         <div>
             <Field
                 name={this.formFieldNames.homeCourthouse}
-                component={CourthouseSelector as any}
+                component={
+                    (p) => <SelectorField 
+                        {...p} 
+                        SelectorComponent={
+                            (sp) => <CourthouseSelector label="Home Location" {...sp} />}  
+                    /> }
                 label="Home Location"
                 validate={[Validators.required]}
             />
             <Field
                 name={this.formFieldNames.currentCourthouse}
-                component={CourthouseSelector as any}
+                component={
+                    (p) => <SelectorField 
+                        {...p} 
+                        SelectorComponent={
+                            (sp) => <CourthouseSelector label="Current Location" {...sp} />}  
+                    /> }
                 label="Current Location"
                 validate={[Validators.required]}
             />

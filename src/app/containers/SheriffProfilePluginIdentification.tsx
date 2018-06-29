@@ -11,6 +11,7 @@ import { Field } from 'redux-form';
 import TextField from '../components/FormElements/TextField';
 import * as Validators from '../infrastructure/Validators';
 import CourthouseSheriffRankCodeSelector from './CourthouseSheriffRankCodeSelector';
+import SelectorField from '../components/FormElements/SelectorField';
 
 export default class SheriffProfilePluginId extends SheriffProfileSectionPlugin<Sheriff> {
     name = 'identification';
@@ -68,7 +69,12 @@ export default class SheriffProfilePluginId extends SheriffProfileSectionPlugin<
             />
             <Field
                 name={this.formFieldNames.rankCode}
-                component={CourthouseSheriffRankCodeSelector as any}
+                component={
+                    (p) => <SelectorField 
+                        {...p} 
+                        SelectorComponent={
+                            (sp) => <CourthouseSheriffRankCodeSelector {...sp} />}  
+                    /> }
                 label="Rank"
                 validate={[Validators.required]}
             />

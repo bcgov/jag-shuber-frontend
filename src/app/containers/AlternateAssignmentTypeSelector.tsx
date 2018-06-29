@@ -1,31 +1,28 @@
-import * as React from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { AlternateAssignment } from '../api/index';
 import { allAlternateAssignmentTypes } from '../modules/courthouse/selectors';
-import { FormFieldWrapperProps } from '../components/FormElements/FormFieldWrapper';
-import Selector from '../components/FormElements/Selector';
-
+import Selector, { SelectorProps } from '../components/FormElements/Selector';
 
 interface AlternateAssignmentTypeListStateProps {
     alternateAssignmentTypes: AlternateAssignment[];
 }
 
-interface AlternateAssignmentTypeListProps extends FormFieldWrapperProps {
-    alternateAssignmentTypes?: AlternateAssignment[];
-}
-
 class AlternateAssignmentTypeList extends React.PureComponent<
-    AlternateAssignmentTypeListProps &
+    SelectorProps &
     AlternateAssignmentTypeListStateProps> {
 
     render() {
-        const { alternateAssignmentTypes = [], ...restProps } = this.props;
+        const { alternateAssignmentTypes = [], ...rest } = this.props;
         const selectorValues = alternateAssignmentTypes.map(
             (type) => ({ key: type.code, value: type.description })
         );
         return (
-            <Selector {...restProps} data={selectorValues} />
+            <Selector
+                data={selectorValues}
+                {...rest}
+            />
         );
     }
 
@@ -38,6 +35,6 @@ const mapStateToProps = (state: RootState) => {
 };
 
 // tslint:disable-next-line:max-line-length
-export default connect<AlternateAssignmentTypeListStateProps, {}, AlternateAssignmentTypeListProps>(
+export default connect<AlternateAssignmentTypeListStateProps, {}, SelectorProps>(
     mapStateToProps
 )(AlternateAssignmentTypeList);

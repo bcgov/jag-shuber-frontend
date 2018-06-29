@@ -16,6 +16,7 @@ import Selector from '../components/FormElements/Selector';
 import { ConfirmationModal } from './ConfirmationModal';
 import { IdType, ShiftUpdates } from '../api/Api';
 import TimePickerField from './FormElements/TimePickerField';
+import SelectorField from './FormElements/SelectorField';
 
 export interface ScheduleControlPanelFormProps {
     handleSubmit?: () => void;
@@ -48,8 +49,12 @@ export default class ScheduleControlPanelForm extends
                 <Form onSubmit={handleSubmit} inline={true}>
                     <Field
                         name="sheriffId"
-                        component={(p) => 
-                            <SheriffSelector {...p} showVariedOption={true} isDisabled={canAssignSheriff} />}
+                        component={(p) => <SelectorField 
+                            {...p} 
+                            SelectorComponent={
+                                (sp) => 
+                                    <SheriffSelector {...sp} showVariedOption={true} isDisabled={canAssignSheriff}/>}  
+                        />}
                     />
                     <Field
                         name="startTime"
@@ -80,7 +85,12 @@ export default class ScheduleControlPanelForm extends
                     />
                     <Field
                         name="workSectionId"
-                        component={(p) => <WorkSectionSelector {...p} showVariedOption={true} />}
+                        component={(p) => <SelectorField 
+                            {...p} 
+                            SelectorComponent={
+                                (sp) => 
+                                    <WorkSectionSelector {...sp} showVariedOption={true}/>}  
+                        />}
                     />
                     <ConfirmationModal
                         key="confirmationModal"

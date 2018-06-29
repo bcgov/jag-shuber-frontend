@@ -3,20 +3,15 @@ import { connect } from 'react-redux';
 import { RootState } from '../store';
 // import { StringMap } from '../api/index';
 // import { allCourthouses } from '../modules/courthouse/selectors';
-import { FormFieldWrapperProps } from '../components/FormElements/FormFieldWrapper';
-import Selector from '../components/FormElements/Selector';
+import Selector, { SelectorProps } from '../components/FormElements/Selector';
 import { LeaveCancelCode } from '../api/Api';
 
-interface LeaveTypeSelectorStateProps {
-    // leaveTypes?: LeaveType[];
-}
-
-export interface LeaveTypeSelectorProps extends FormFieldWrapperProps {
+interface LeaveCancelReasonSelectorStateProps {
     cancelTypes?: LeaveCancelCode[];
 }
 
-class LeaveTypeSelector extends React.PureComponent<
-    LeaveTypeSelectorStateProps & LeaveTypeSelectorProps> {
+class LeaveCancelReasonSelector extends React.PureComponent<
+    LeaveCancelReasonSelectorStateProps & SelectorProps> {
 
     render() {
         const { 
@@ -24,12 +19,15 @@ class LeaveTypeSelector extends React.PureComponent<
                 {code: 'OPD', description: 'Cover Opperational Demands'},
                 {code: 'PD', description: 'Personal Decision'},
                 {code: 'ER', description: 'Entry Error'},
-            ], 
-            ...restProps 
+            ],
+            ...rest
         } = this.props;
-        const selectorValues = cancelTypes.map(leave => ({ key: leave.code, value: `Cancel - ${leave.description}` }));
+        const selectorValues = cancelTypes.map(cancel => ({ key: cancel.code, value: cancel.description }));
         return (
-            <Selector {...restProps} data={selectorValues} showLabel={false} allowNone={true} noneLabel="Confirmed" />
+            <Selector 
+                data={selectorValues} 
+                {...rest}
+            />
         );
     }
 
@@ -42,6 +40,6 @@ const mapStateToProps = (state: RootState) => {
 };
 
 // tslint:disable-next-line:max-line-length
-export default connect<LeaveTypeSelectorStateProps, {}, LeaveTypeSelectorProps>(
+export default connect<LeaveCancelReasonSelectorStateProps, {}, SelectorProps>(
     mapStateToProps
-)(LeaveTypeSelector);
+)(LeaveCancelReasonSelector);

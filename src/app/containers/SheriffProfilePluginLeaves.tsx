@@ -15,24 +15,49 @@ import { RootState } from '../store';
 import { getSheriffLeaves } from '../modules/leaves/selectors';
 import LeavesDisplay from '../components/LeavesDisplay';
 import * as Validators from '../infrastructure/Validators';
+import ConfirmationModal, { ConnectedConfirmationModalProps } from './ConfirmationModal';
+import { connect } from 'react-redux';
+import SelectorField from '../components/FormElements/SelectorField';
 
-interface RemoveLeaveButtonProps {
-    cancelIcon?: boolean;
-    onClick?: () => void;
+interface CancelLeaveButtonProps {
 }
 
-class RemoveLeaveButton extends React.PureComponent<RemoveLeaveButtonProps>{
+interface CancelLeaveButtonDispatchProps {
+    showConfirmationModal: (props: ConnectedConfirmationModalProps) => void;
+}
 
+class CancelLeaveButton extends React.PureComponent<CancelLeaveButtonProps & CancelLeaveButtonDispatchProps> {
     render() {
-        const { onClick, cancelIcon = false } = this.props;
+        const { showConfirmationModal } = this.props;
         return (
-            <Button bsStyle="danger" onClick={() => onClick && onClick()}>
-                <Glyphicon glyph={cancelIcon ? 'ban-circle' : 'trash'} />
+            <Button
+                bsStyle="link"
+                onClick={() => showConfirmationModal({
+                    confirmBtnLabel: 'OK',
+                    RenderComponent: ({message}) => (
+                        <div>
+                            <h3>Select a Reason for Cancelling Leave</h3>
+                            <LeaveCancelReasonSelector label="Cancel Reason"/>
+                        </div>
+                    )
+                })}
+                style={{
+                    color: 'red',
+                    fontSize: 16
+                }}
+            >
+                <Glyphicon glyph="ban-circle" />
             </Button>
         );
     }
-
 }
+
+const ConnectedCancelLeaveButton = connect<{}, CancelLeaveButtonDispatchProps, CancelLeaveButtonProps>(
+    undefined,
+    {
+        showConfirmationModal: (props: ConnectedConfirmationModalProps) => ConfirmationModal.ShowAction(props)
+    }
+)(CancelLeaveButton);
 
 export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlugin<Leave[]> {
     name = 'leaves';
@@ -58,7 +83,7 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
                                 <th className="text-left">Start Date</th>
                                 <th className="text-left">End Date</th>
                                 <th className="text-left">Type</th>
-                                <th className="text-left">Status</th>
+                                <th className="text-left"/>
                             </tr>
                         </thead>
                         <tbody>
@@ -83,29 +108,32 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
                                         <td>
                                             <Field
                                                 name={`${fieldInstanceName}.leaveTypeCode`}
-                                                component={LeaveTypeSelector as any}
+                                                component={(p) => <SelectorField 
+                                                    {...p} 
+                                                    showLabel={false}
+                                                    SelectorComponent={
+                                                        (sp) => 
+                                                            <LeaveTypeSelector {...sp}/>}  
+                                                />}
                                                 label="Type"
                                             />
                                         </td>
                                         <td>
-                                            <Field
-                                                name={`${fieldInstanceName}.cancelReasonCode`}
-                                                component={LeaveCancelReasonSelector as any}
-                                                label="Cancel Reason"
-                                            />
-                                        </td>
-                                        <td>
-                                            <RemoveLeaveButton
-                                                cancelIcon={leaveId != undefined}
-                                                onClick={() => {
-                                                    if (leaveId) {
-                                                        alert('Will confirm the cancel');
-                                                    } else {
-                                                        // no confirm necessary
-                                                        fields.remove(index);
-                                                    }
-                                                }}
-                                            />
+                                            {!leaveId &&
+                                                <Button
+                                                    bsStyle="link"
+                                                    onClick={() => fields.remove(index)}
+                                                    style={{
+                                                        color: '#666666',
+                                                        fontSize: 14
+                                                    }}
+                                                >
+                                                    <Glyphicon glyph="remove" />
+                                                </Button>}
+                                            {leaveId &&
+                                                <ConnectedCancelLeaveButton />
+                                            }
+
                                         </td>
                                     </tr>
                                 );
