@@ -21,6 +21,7 @@ import { updateVisibleTime as updateTimelineVisibleTime } from './modules/dutyRo
 import { default as scheduleReducer, ScheduleState } from './modules/schedule/reducer';
 import { updateVisibleTime as updateScheduleVisibleTime } from './modules/schedule/actions';
 import { UserState, registerReducer as registerUserReducer } from './modules/user/reducer';
+import { LeaveModuleState, registerReducer as registerLeavesReducer } from './modules/leaves/reducer';
 
 export interface ThunkExtra {
     api: API;
@@ -37,6 +38,7 @@ export interface RootState {
     courthouse: CourthouseModuleState;
     schedule: ScheduleState;
     user: UserState;
+    leaves: LeaveModuleState;
 }
 
 const initialActions: any[] = [
@@ -61,6 +63,7 @@ registerShiftReducer(reducers);
 registerAssignmentReducer(reducers);
 registerCourthouseReducer(reducers);
 registerUserReducer(reducers);
+registerLeavesReducer(reducers);
 
 const rootReducer = combineReducers(reducers);
 

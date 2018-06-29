@@ -3,14 +3,10 @@ import {
     API,
     Sheriff,
     Assignment,
-    // TrainingType,
-    // Courthouse,
     Courtroom,
-    // Region,
     AssignmentDuty,
     IdType,
     Shift,
-    // Leave,
     ShiftCopyOptions,
     Run,
     JailRole,
@@ -20,7 +16,6 @@ import {
     ShiftUpdates,
     SheriffRank,
     Leave,
-    SheriffProfile,
     LeaveTypeCode,
     LeaveCancelCode
 } from '../Api';
@@ -37,6 +32,7 @@ import {
     JAIL_ROLES,
     ALTERNATE_ASSIGNMENTS,
     sheriffShifts,
+    sheriffLeaves,
     // sheriffLeaves,
 } from './MockData';
 import {
@@ -69,18 +65,6 @@ export default class MockClient implements API {
         throw new Error("Method not implemented.");
     }
     getLeaveCancelCodes(): Promise<LeaveCancelCode[]> {
-        throw new Error("Method not implemented.");
-    }
-    createLeave(newLeave: Partial<Leave>): Promise<Leave> {
-        throw new Error("Method not implemented.");
-    }
-    updateLeave(updatedLeave: Leave): Promise<Leave> {
-        throw new Error("Method not implemented.");
-    }
-    updateSheriffProfile(sheriffProfileToUpdate: SheriffProfile): Promise<SheriffProfile> {
-        throw new Error("Method not implemented.");
-    }
-    createSheriffProfile(newSheriffProfile: SheriffProfile): Promise<SheriffProfile> {
         throw new Error("Method not implemented.");
     }
     getSheriffRankCodes(): Promise<SheriffRank[]> {
@@ -353,15 +337,23 @@ export default class MockClient implements API {
     }
 
     async getLeaves(): Promise<Leave[]> {
-        return [{
-            id: 'some id',
-            startDate: moment().format(),
-            sheriffId: '651ddb1b-c633-467c-b8e4-0858a42110c3',
-            leaveTypeCode: '',
-            endDate: moment().add(1, 'hour').format()
-        }];
+        return Object.keys(sheriffLeaves).map(k => sheriffLeaves[k]);
     }
 
+    createLeave(newLeave: Partial<Leave>): Promise<Leave> {
+        const id = this.getId();
+        const leave = { ...newLeave, id } as Leave;
+        sheriffLeaves[id] = leave;
+        return Promise.resolve({ ...leave });
+    }
+    updateLeave(updatedLeave: Leave): Promise<Leave> {
+        if (updatedLeave.id) {
+            sheriffLeaves[updatedLeave.id] = { ...updatedLeave };
+            return Promise.resolve({ ...updatedLeave });
+        } else {
+            return Promise.reject("No leave id provided");
+        }
+    }
     getCourtrooms(): Promise<Courtroom[]> {
         throw new Error("Method not implemented.");
     }

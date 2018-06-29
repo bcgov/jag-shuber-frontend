@@ -53,12 +53,12 @@ class SheriffProfileModal extends React.PureComponent<CompositeProps> {
                 }}
             >
                 <Modal.Header closeButton={true}>
-                    Sheriff Profile
+                    {isEditing && 'Updating'} Sheriff Profile
                 </Modal.Header>
                 <Modal.Body>
                     {!isEditing && <Button
                         bsStyle="primary"
-                        style={{ float: 'right' }}
+                        style={{ position: 'absolute', right: 15 }}
                         onClick={() => showSheriffProfileModal(sheriffId, true)}
                     >
                         <Glyphicon glyph="pencil" />
@@ -68,20 +68,14 @@ class SheriffProfileModal extends React.PureComponent<CompositeProps> {
                         sheriffId={sheriffId}
                         onSubmitSuccess={() => showSheriffProfileModal(sheriffId, false)}
                     />
-                    {/* {isEditing && 
-                        <SheriffProfileEditForm 
-                            id={sheriff.id} 
-                            onSubmitSuccess={() => showSheriffProfileModal(sheriffId, false)}
-                        />}
-                    {!isEditing && <SheriffProfileDisplay sheriff={sheriff}/>} */}
                 </Modal.Body>
                 {isEditing &&
                     <Modal.Footer>
                         <div>
                             <Button onClick={() => showSheriffProfileModal(sheriffId, false)}>
                                 Cancel
-                                </Button>
-                            <SheriffProfile.SubmitButton key="save">
+                            </Button>
+                            <SheriffProfile.SubmitButton>
                                 Save
                             </SheriffProfile.SubmitButton>
                         </div>

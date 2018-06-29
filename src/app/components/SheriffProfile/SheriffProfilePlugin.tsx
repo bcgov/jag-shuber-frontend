@@ -2,27 +2,55 @@ import * as React from 'react';
 import { IdType } from '../../api/Api';
 import { RootState } from '../../store';
 import { Dispatch } from 'redux';
+import { FormErrors } from 'redux-form';
 
-export interface SheriffProfilePluginProps {
-    sheriffId: IdType;
+export interface SheriffProfilePluginProps<T = any> {
+    sheriffId?: IdType;
+    data?: T;
 }
-
-export interface SheriffProfilePlugin<T> {
+export interface SheriffProfilePlugin<T = any> {
+    /**
+     * This property is used for namespacing the form data,
+     * validation and maintaining state of sheriff profile
+     * with respects to plugins
+     * @type {string}
+     * @memberof SheriffProfilePlugin
+     */
     name: string;
-    renderDisplay(props: SheriffProfilePluginProps & T): React.ReactNode;
-    renderFormFields(props: SheriffProfilePluginProps & T): React.ReactNode;
+    renderDisplay(props: SheriffProfilePluginProps<T>): React.ReactNode;
+    renderFormFields(props: SheriffProfilePluginProps<T>): React.ReactNode;
     hasErrors(errors: any): boolean;
-    onSubmit(sheriffid: IdType, formValues: any, dispatch: Dispatch<any>): Promise<T | void>;
-    fetchData(sheriffId: IdType, dispatch: Dispatch<any>): void;
-    getData(sheriffId: IdType, state: RootState): T | undefined;
+    onSubmit(sheriffid: IdType | undefined, formValues: any, dispatch: Dispatch<any>): Promise<T | void>;
+    fetchData(sheriffId: IdType | undefined, dispatch: Dispatch<any>): void;
+    getData(sheriffId: IdType | undefined, state: RootState): T | undefined;
+    validate(values: T): FormErrors<T> | undefined;
 }
 
-export abstract class SheriffProfilePluginBase<T> implements SheriffProfilePlugin<T> {
+export abstract class SheriffProfilePluginBase<T = any> implements SheriffProfilePlugin<T> {
+    /**
+     * This property is used for namespacing the form data,
+     * validation and maintaining state of sheriff profile 
+     * with respects to plugins
+     * @type {string}
+     * @memberof SheriffProfilePlugin
+     */
     abstract name: string;
 
+    /**
+     * The formFieldNames are used to enhance to experience
+     * when submitting / saving the profile.  These fields 
+     * should be the names of fields used by this plugin
+     * to allow automatic determination of errors that 
+     * exist within specific plugins (i.e. to highlight tabs 
+     * with errors etc.)
+     *
+     * @abstract
+     * @type {{ [key: string]: string }}
+     * @memberof SheriffProfilePluginBase
+     */
     abstract formFieldNames: { [key: string]: string };
-    DisplayComponent?: React.ReactType<SheriffProfilePluginProps & T>;
-    FormComponent?: React.ReactType<SheriffProfilePluginProps & T>;
+    DisplayComponent?: React.ReactType<SheriffProfilePluginProps<T>>;
+    FormComponent?: React.ReactType<SheriffProfilePluginProps<T>>;
 
     containsPropertyPath(errors: Object = {}, propertyPath: string = '') {
         const propertyNames = propertyPath.split('.');
@@ -38,16 +66,18 @@ export abstract class SheriffProfilePluginBase<T> implements SheriffProfilePlugi
                 containsPath = false;
                 break;
             }
+
             propertyError = propertyError[propertyName];
         }
         // we've traversed the whole property string finding each piece, there is an error
         return containsPath;
     }
-    renderDisplay(props: SheriffProfilePluginProps & T): React.ReactNode {
+
+    renderDisplay(props: SheriffProfilePluginProps<T>): React.ReactNode {
         const { DisplayComponent } = this;
         return (
             DisplayComponent
-                ? <DisplayComponent {...props} />
+                ? <DisplayComponent key={this.name} {...props} />
                 : (
                     <div>
                         Sheriff Profile Plugin: DisplayComponent not set
@@ -55,14 +85,15 @@ export abstract class SheriffProfilePluginBase<T> implements SheriffProfilePlugi
                 )
         );
     }
-    renderFormFields(props: SheriffProfilePluginProps & T): React.ReactNode {
+
+    renderFormFields(props: SheriffProfilePluginProps<T>): React.ReactNode {
         const { FormComponent } = this;
         return (
-            FormComponent && <FormComponent {...props} />
+            FormComponent && <FormComponent key={this.name} {...props} />
         );
     }
 
-    async onSubmit(sheriffid: IdType, formValues: any, dispatch: Dispatch<any>): Promise<T | void> {
+    async onSubmit(sheriffid: IdType | undefined, formValues: any, dispatch: Dispatch<any>): Promise<T | void> {
         // does nothing
     }
 
@@ -75,16 +106,21 @@ export abstract class SheriffProfilePluginBase<T> implements SheriffProfilePlugi
         ));
     }
 
-    fetchData(sheriffId: IdType, dispatch: Dispatch<any>) {
+    fetchData(sheriffId: IdType | undefined, dispatch: Dispatch<any>) {
         // does nothing
     }
 
-    getData(sheriffId: IdType, state: RootState): T | undefined {
+    getData(sheriffId: IdType | undefined, state: RootState): T | undefined {
         // Does nothing
+        return undefined;
+    }
+
+    validate(values: T): FormErrors<T> | undefined {
         return undefined;
     }
 }
 
-export abstract class SheriffProfileSectionPlugin<T> extends SheriffProfilePluginBase<T>{
+
+export abstract class SheriffProfileSectionPlugin<T = any> extends SheriffProfilePluginBase<T> {
     abstract get title(): string;
 }

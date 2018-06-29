@@ -1,18 +1,20 @@
 import React from 'react';
 import { IdType } from '../../api';
-import { SheriffProfilePlugin, SheriffProfileSectionPlugin } from './SheriffProfilePlugin';
+import { SheriffProfilePlugin, SheriffProfilePluginProps, SheriffProfileSectionPlugin } from './SheriffProfilePlugin';
 import { InjectedFormProps } from 'redux-form';
 import { Tab, Row, Col, Nav, NavItem, Glyphicon } from 'react-bootstrap';
 import Form from '../FormElements/Form';
+import './SheriffProfile.css';
 
 export interface SheriffProfileProps {
-    sheriffId: IdType;
-    isEditing: boolean;
+    sheriffId?: IdType;
+    isEditing?: boolean;
     plugins?: SheriffProfilePlugin<any>[];
     pluginsWithErrors?: { [key: string]: boolean };
     selectedSection?: string;
     onSelectSection?: (sectionName: string) => void;
     onSubmitSuccess?: () => void;
+    initialValues?: any;
 }
 
 class SheriffProfileSectionNav extends React.PureComponent<{ title: string, hasErrors?: boolean }>{
@@ -43,11 +45,20 @@ export default class SheriffProfile extends React.PureComponent<InjectedFormProp
         }
     }
 
+    renderPlugin(plugin: SheriffProfilePlugin) {
+        const { sheriffId, initialValues = {}, isEditing = false } = this.props;
+        const pluginProps: SheriffProfilePluginProps = {
+            sheriffId,
+            data: initialValues[plugin.name]
+        };
+        return isEditing
+            ? plugin.renderFormFields(pluginProps)
+            : plugin.renderDisplay(pluginProps);
+    }
+
     renderPlugins() {
         const {
-            sheriffId,
             plugins = [],
-            isEditing = false,
             pluginsWithErrors = {},
         } = this.props;
         let { selectedSection } = this.props;
@@ -57,10 +68,12 @@ export default class SheriffProfile extends React.PureComponent<InjectedFormProp
         selectedSection = selectedSection ? selectedSection : sectionPlugins[0].name;
         return (
             <div>
-                {nonSectionPlugins.map(p => (
-                    isEditing ? p.renderFormFields({ sheriffId }) : p.renderDisplay({ sheriffId })
-                ))}
-                <Tab.Container onSelect={(key: any) => this.handleSelectSection(key)} activeKey={selectedSection}>
+                {nonSectionPlugins.map((p) => this.renderPlugin(p))}
+                <Tab.Container
+                    id="profile-sections"
+                    onSelect={(key: any) => this.handleSelectSection(key)}
+                    activeKey={selectedSection}
+                >
                     <Row className="clearfix">
                         <Col sm={12}>
                             <Nav bsStyle="tabs">
@@ -68,14 +81,13 @@ export default class SheriffProfile extends React.PureComponent<InjectedFormProp
                                     sectionPlugins.map((p) => {
                                         return (
                                             <NavItem key={p.name} eventKey={p.name}>
-                                                <SheriffProfileSectionNav title={p.title} hasErrors={pluginsWithErrors[p.name]} />
-                                                {/* <span className={hasErrors ? 'text-danger' : 'text-success'}>
-                                                    {p.title} {hasErrors ? <Glyphicon glyph="exclamation-sign" /> : <Glyphicon glyph="ok" />}
-                                                </span> */}
+                                                <SheriffProfileSectionNav
+                                                    title={p.title}
+                                                    hasErrors={pluginsWithErrors[p.name]}
+                                                />
                                             </NavItem>
                                         );
                                     })
-
                                 }
                             </Nav>
                         </Col>
@@ -84,12 +96,8 @@ export default class SheriffProfile extends React.PureComponent<InjectedFormProp
                                 {
                                     sectionPlugins
                                         .map((p) => (
-                                            <Tab.Pane eventKey={p.name}>
-                                                {
-                                                    isEditing
-                                                        ? p.renderFormFields({ sheriffId })
-                                                        : p.renderDisplay({ sheriffId })
-                                                }
+                                            <Tab.Pane key={p.name} eventKey={p.name}>
+                                                {this.renderPlugin(p)}
                                             </Tab.Pane>
                                         ))
                                 }

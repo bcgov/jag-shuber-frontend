@@ -1,8 +1,12 @@
+import moment from 'moment';
+
 export const VALIDATOR_MESSAGES = {
     INVALID_INTEGER: 'Must be an integer.',
     INVALID_NUMBER: 'Must be a number.',
     REQUIRED_VALUE: 'This is a required field.',
-    INVALID_INTEGER_RANGE: 'Must be an integer between 1 and 50'
+    INVALID_INTEGER_RANGE: 'Must be an integer between 1 and 50',
+    DATE_MUST_BE_BEFORE: 'Must be before',
+    DATE_MUST_BE_AFTER: 'Must be after'
 };
 
 type Validator = (value: any) => string | undefined;
@@ -49,7 +53,44 @@ export const maxLengthValidator = (maxLengthValue: number) => (
         value && value.length > maxLengthValue ? `Must be fewer than ${maxLengthValue} characters` : undefined
     )
 );
+
 export const maxLength200 = maxLengthValidator(200);
+
+export const isBefore = (otherDateValue: any, otherDateName: string) => {
+    return (dateValue: any) => {
+        if (!moment(dateValue).isBefore(moment(otherDateValue))) {
+            return `${VALIDATOR_MESSAGES.DATE_MUST_BE_BEFORE} ${otherDateName}`;
+        }
+        return;
+    };
+};
+
+export const isSameOrBefore = (otherDateValue: any, otherDateName: string) => {
+    return (dateValue: any) => {
+        if (!moment(dateValue).isSameOrBefore(moment(otherDateValue))) {
+            return `${VALIDATOR_MESSAGES.DATE_MUST_BE_BEFORE} ${otherDateName}`;
+        }
+        return;
+    };
+};
+
+export const isAfter = (otherDateValue: any, otherDateName: string) => {
+    return (dateValue: any) => {
+        if (!moment(dateValue).isAfter(moment(otherDateValue))) {
+            return `${VALIDATOR_MESSAGES.DATE_MUST_BE_BEFORE} ${otherDateName}`;
+        }
+        return;
+    };
+};
+
+export const isSameOrAfter = (otherDateValue: any, otherDateName: string) => {
+    return (dateValue: any) => {
+        if (!moment(dateValue).isSameOrAfter(moment(otherDateValue))) {
+            return `${VALIDATOR_MESSAGES.DATE_MUST_BE_AFTER} ${otherDateName}`;
+        }
+        return;
+    };
+};
 
 export function validateWith(...validators: Validator[]): Validator {
     return (value: any) => (

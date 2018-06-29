@@ -29,6 +29,7 @@ import {
 } from '../app/modules/user/selectors';
 import ToastManager from './components/ToastManager/ToastManager';
 import ConnectedConfirmationModal from './containers/ConfirmationModal';
+import SheriffProfileCreateModal from './containers/SheriffProfileCreateModal';
 
 export interface LayoutStateProps {
   isCourthouseSet?: boolean;
@@ -78,6 +79,7 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
 
               <AssignmentDutyEditModal />
               <SheriffProfileModal />
+              <SheriffProfileCreateModal />
               <ScheduleShiftCopyModal />
               <ScheduleShiftAddModal />
               <ConnectedConfirmationModal /> 

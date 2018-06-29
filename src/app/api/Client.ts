@@ -24,7 +24,6 @@ import {
     ShiftUpdates,
     SheriffRank,
     DateRange,
-    SheriffProfile,
     LeaveTypeCode,
     LeaveCancelCode
 } from './Api';
@@ -129,21 +128,6 @@ export default class Client implements API {
             throw 'Sheriff to Update has no id';
         }
         return await this._client.UpdateSheriff(id, sheriffToUpdate) as Sheriff;
-    }
-
-    async createSheriffProfile(newSheriffProfile: SheriffProfile): Promise<SheriffProfile> {
-        const { sheriff, leaves = [] } = newSheriffProfile;
-        const newSheriff = await this.createSheriff(sheriff);
-        const newLeaves = await Promise.all(
-                leaves.map(l => ({...l, sheriffId: newSheriff.id}))
-                .map(leave => this.createLeave(leave)));
-        return { sheriff: newSheriff, leaves: newLeaves };
-    }
-
-    async updateSheriffProfile(sheriffProfileToUpdate: SheriffProfile): Promise<SheriffProfile> {
-        const { sheriff } = sheriffProfileToUpdate;
-        const updatedSheriff = await this.updateSheriff(sheriff);
-        return { sheriff: updatedSheriff, leaves: [] };
     }
 
     async getAssignments(dateRange: DateRange = {}): Promise<(CourtAssignment | JailAssignment | EscortAssignment | OtherAssignment)[]> {
@@ -278,11 +262,13 @@ export default class Client implements API {
     }
 
     createLeave(newLeave: Partial<Leave>): Promise<Leave> {
-        throw new Error("Method not implemented.");
+        console.warn('Using Mock API');
+        return this._mockApi.createLeave(newLeave);
     }
 
     updateLeave(updatedLeave: Leave): Promise<Leave> {
-        throw new Error("Method not implemented.");
+        console.warn('Using Mock API');
+        return this._mockApi.updateLeave(updatedLeave);
     }
 
     getLeaveTypes(): Promise<LeaveTypeCode[]> {

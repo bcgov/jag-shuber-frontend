@@ -14,7 +14,7 @@ import { connect, Dispatch } from 'react-redux';
 import SheriffProfileComponent, { SheriffProfileProps } from '../components/SheriffProfile/SheriffProfile';
 import { RootState } from '../store';
 import SheriffProfilePluginIdentification from './SheriffProfilePluginIdentification';
-import SheriffProfilePluginHeader from './SheriffProfilePluginHeader';
+import SheriffProfilePluginHeader from './SheriffProfilePluginHeader/SheriffProfilePluginHeader';
 import SheriffProfilePluginLocation from './SheriffProfilePluginLocation';
 import { default as FormSubmitButton, SubmitButtonProps } from '../components/FormElements/SubmitButton';
 import { Sheriff } from '../api';
@@ -30,11 +30,12 @@ import {
     setSheriffProfilePluginSubmitErrors,
 } from '../modules/sheriffs/actions';
 import SheriffProfilePluginLeaves from './SheriffProfilePluginLeaves';
-import { SheriffProfilePlugin } from '../components/SheriffProfile/SheriffProfilePlugin';
+import { SheriffProfilePlugin } from "../components/SheriffProfile/SheriffProfilePlugin";
 import { toast } from '../components/ToastManager/ToastManager';
 import { RequestActionConfig } from '../infrastructure/Requests/RequestActionBase';
 import { Alert } from 'react-bootstrap';
-
+import { currentCourthouse } from '../modules/user/selectors';
+import toTitleCase from '../infrastructure/toTitleCase';
 
 async function submitPlugins(sheriffId: string, values: any, dispatch: Dispatch<any>, plugins: SheriffProfilePlugin<any>[] = []) {
     if (sheriffId) {
@@ -103,6 +104,16 @@ function collectPluginErrors(state: any, formName: string, plugins: SheriffProfi
 const formConfig: ConfigProps<any, SheriffProfileProps> = {
     form: 'SheriffProfile',
     enableReinitialize: true,
+    validate: (values: any, { plugins = [] }) => {
+        return plugins.reduce((errors, plugin) => {
+            const pluginValues = values[plugin.name];
+            const pluginErrors = plugin.validate(pluginValues);
+            if (pluginErrors) {
+                errors[plugin.name] = pluginErrors;
+            }
+            return errors;
+        }, {} as FormErrors);
+    },
     onSubmit: async (values: any, dispatch, { sheriffId, plugins = [] }: SheriffProfileProps) => {
         const { sheriff }: { sheriff: Partial<Sheriff> } = values;
         let sheriffEntityId: string;
@@ -111,29 +122,31 @@ const formConfig: ConfigProps<any, SheriffProfileProps> = {
                 error: (e) => `Error occured while creating/updating Sheriff: ${e}`
             }
         };
+        let actionMessage = '';
         if (sheriff.id) {
             const updatedSheriff = await dispatch(updateSheriff(sheriff, profileUpdateConfig));
             sheriffEntityId = updatedSheriff.id;
+            actionMessage = 'updated';
         } else {
             const createdSheriff = await dispatch(createSheriff(sheriff, profileUpdateConfig));
             sheriffEntityId = createdSheriff.id;
+            actionMessage = 'created';
         }
 
         try {
             await submitPlugins(sheriffEntityId, values, dispatch, plugins);
         } catch (e) {
-            toast.warn("An issue occured with one of the sections")
+            toast.warn('An issue occured with one of the sections');
             throw e;
         }
-        toast.success("Sheriff Profile Updated");
+
+        const sheriffName = toTitleCase(`${sheriff.firstName} ${sheriff.lastName}`)
+        toast.success(`${sheriffName}'s profile ${actionMessage}`);
     }
 };
 
-
-
 // Wire up the Form to redux Form
 const SheriffProfileForm = reduxForm<any, SheriffProfileProps>(formConfig)(SheriffProfileComponent);
-
 
 interface SheriffProfileContainerStateProps {
     pluginsWithErrors: { [key: string]: boolean };
@@ -142,7 +155,7 @@ interface SheriffProfileContainerStateProps {
 }
 
 interface SheriffProfileContainerDispatchProps {
-    fetchData: () => void;
+    initialize: () => void;
     onSelectSection: (sectionName: string) => void;
 }
 
@@ -172,13 +185,12 @@ class SheriffProfileErrorDisplay extends React.PureComponent<{ pluginErrors: { [
     }
 }
 
-
 class SheriffProfileContainer extends React.PureComponent<SheriffProfileContainerProps> {
 
     componentWillMount() {
-        const { fetchData } = this.props;
-        if (fetchData) {
-            fetchData();
+        const { initialize } = this.props;
+        if (initialize) {
+            initialize();
         }
     }
 
@@ -199,17 +211,35 @@ class SheriffProfileContainer extends React.PureComponent<SheriffProfileContaine
 
 export default class extends connect<SheriffProfileContainerStateProps, SheriffProfileContainerDispatchProps, SheriffProfileProps, RootState>(
     (state, { sheriffId, plugins = [] }) => {
-        const initialValues = plugins
-            .map(p => p.getData(sheriffId, state))
-            .filter(s => s != undefined)
-            .reduce(
-                (initValues, val) => {
-                    return { ...initValues, ...val };
-                },
-                {
-                    sheriff: getSheriff(sheriffId)(state)
-                }
-            );
+        let initialValues: any = {};
+        if (sheriffId) {
+            initialValues = plugins
+                .map(p => {
+                    const data = p.getData(sheriffId, state);
+                    if (data != undefined) {
+                        const pluginState = {};
+                        pluginState[p.name] = data;
+                        return pluginState;
+                    }
+                    return undefined;
+                })
+                .filter(s => s != undefined)
+                .reduce(
+                    (initValues, val) => {
+                        return { ...initValues, ...val };
+                    },
+                    {
+                        sheriff: getSheriff(sheriffId)(state)
+                    }
+                );
+        } else {
+            const contextCourthouse = currentCourthouse(state);
+            const initialSheriff: Partial<Sheriff> = {
+                homeCourthouseId: contextCourthouse,
+                currentCourthouseId: contextCourthouse
+            };
+            initialValues.sheriff = { ...initialSheriff };
+        }
 
         return {
             initialValues,
@@ -219,7 +249,9 @@ export default class extends connect<SheriffProfileContainerStateProps, SheriffP
     },
     (dispatch, { sheriffId, plugins = [] }) => {
         return {
-            fetchData: () => {
+            initialize: () => {
+                dispatch(selectSheriffProfileSection());
+                dispatch(setSheriffProfilePluginSubmitErrors());
                 plugins.forEach(p => {
                     p.fetchData(sheriffId, dispatch);
                 });

@@ -4,15 +4,35 @@ import {
     SheriffProfilePluginProps,
     SheriffProfileSectionPlugin
 } from '../components/SheriffProfile/SheriffProfilePlugin';
-import moment from 'moment';
-import { Table, Button, Glyphicon } from 'react-bootstrap';
-import { FieldArray, Field } from 'redux-form';
+import { Table, Button, Glyphicon, Alert } from 'react-bootstrap';
+import { FieldArray, Field, FormErrors } from 'redux-form';
 import LeaveCancelReasonSelector from './LeaveCancelReasonSelector';
 import LeaveTypeSelector from './LeaveTypeSelector';
 import DateField from '../components/FormElements/DateField';
-import Popover from '../components/Popover';
 import { Dispatch } from 'redux';
 import { getLeaves, createOrUpdateLeaves } from '../modules/leaves/actions';
+import { RootState } from '../store';
+import { getSheriffLeaves } from '../modules/leaves/selectors';
+import LeavesDisplay from '../components/LeavesDisplay';
+import * as Validators from '../infrastructure/Validators';
+
+interface RemoveLeaveButtonProps {
+    cancelIcon?: boolean;
+    onClick?: () => void;
+}
+
+class RemoveLeaveButton extends React.PureComponent<RemoveLeaveButtonProps>{
+
+    render() {
+        const { onClick, cancelIcon = false } = this.props;
+        return (
+            <Button bsStyle="danger" onClick={() => onClick && onClick()}>
+                <Glyphicon glyph={cancelIcon ? 'ban-circle' : 'trash'} />
+            </Button>
+        );
+    }
+
+}
 
 export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlugin<Leave[]> {
     name = 'leaves';
@@ -20,48 +40,12 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
         leaves: 'leaves'
     };
     title: string = 'Leaves';
-    DisplayComponent = ({ sheriffId }: SheriffProfilePluginProps) => {
-        const leaves: Leave[] = [];
-        return (
-
-            <Table responsive={true} striped={true} >
-                <thead>
-                    <tr>
-                        <th className="text-left">Start Date</th>
-                        <th className="text-left">End Date</th>
-                        <th className="text-left">Type</th>
-                        <th />
-                    </tr>
-                </thead>
-                <tbody>
-                    {leaves.map(l => {
-                        return (
-                            <tr key={l.id}>
-                                <td>{moment(l.startDate).format('MMM D, YYYY')}</td>
-                                <td>{moment(l.endDate).format('MMM D, YYYY')}</td>
-                                <td>{l.leaveTypeCode}</td>
-                                <td>
-                                    {l.cancelDate && <Popover
-                                        trigger={<Glyphicon style={{ color: 'red' }} glyph="ban-circle" />}
-                                        title={'Leave Cancelled'}
-                                        displayValue={
-                                            <span>
-                                                <b>Date: </b>{moment(l.cancelDate).format('MMM D, YYYY')}<br />
-                                                <b>Reason: </b>{l.cancelReasonCode}
-                                            </span>
-                                        }
-                                    />}
-                                </td>
-                            </tr>
-                        );
-                    })}
-
-                </tbody>
-            </Table>
-        );
-    }
-
-    FormComponent = ({ sheriffId }: SheriffProfilePluginProps) => (
+    DisplayComponent = ({ data = [] }: SheriffProfilePluginProps<Leave[]>) => (
+        data.length > 0
+            ? <LeavesDisplay leaves={data} />
+            : <Alert> No Leaves </Alert>
+    )
+    FormComponent = ({ sheriffId }: SheriffProfilePluginProps<Leave[]>) => (
         // tslint:disable-next-line:jsx-wrap-multiline
         <FieldArray<Partial<Leave>>
             name={this.formFieldNames.leaves}
@@ -79,6 +63,7 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
                         </thead>
                         <tbody>
                             {fields.map((fieldInstanceName, index) => {
+                                const { id: leaveId } = fields.get(index);
                                 return (
                                     <tr key={index}>
                                         <td>
@@ -109,26 +94,65 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
                                                 label="Cancel Reason"
                                             />
                                         </td>
+                                        <td>
+                                            <RemoveLeaveButton
+                                                cancelIcon={leaveId != undefined}
+                                                onClick={() => {
+                                                    if (leaveId) {
+                                                        alert('Will confirm the cancel');
+                                                    } else {
+                                                        // no confirm necessary
+                                                        fields.remove(index);
+                                                    }
+                                                }}
+                                            />
+                                        </td>
                                     </tr>
                                 );
                             })}
-                            <br />
-                            <Button
-                                onClick={() => fields.push({} as any)}
-                            >
-                                <Glyphicon glyph="plus" />
-                            </Button>
+
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colSpan={5}>
+                                    <Button
+                                        onClick={() => fields.push({} as any)}
+                                    >
+                                        <Glyphicon glyph="plus" />
+                                    </Button>
+                                </td>
+                            </tr>
+                        </tfoot>
                     </Table>
                 );
             }}
         />
     )
 
+    validate(values: Leave[] = []): FormErrors | undefined {
+        const errors = values.map(l => (
+            {
+                startDate: Validators.validateWith(
+                    Validators.required,
+                    Validators.isSameOrBefore(l.endDate, 'End Date')
+                )(l.startDate),
+                endDate: Validators.validateWith(
+                    Validators.required,
+                    Validators.isSameOrAfter(l.startDate, 'Start Date')
+                )(l.endDate),
+                leaveTypeCode: Validators.required(l.leaveTypeCode)
+            }
+        ));
+
+        return errors.length > 0 ? errors : undefined;
+    }
+
     fetchData(sheriffId: IdType, dispatch: Dispatch<any>) {
         dispatch(getLeaves());
-        // dispatch(getLeaveTypes());
-        // dispatch(getLeaveCancelCodes());
+    }
+
+    getData(sheriffId: IdType, state: RootState) {
+        return getSheriffLeaves(sheriffId)(state);
     }
 
     async onSubmit(sheriffId: IdType, formValues: any, dispatch: Dispatch<any>): Promise<Leave[]> {

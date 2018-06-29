@@ -1,0 +1,10 @@
+.sheriff-profile-header {
+    padding: 10px;
+    text-align: center;
+}
+
+.sheriff-profile-header .sheriff-name {
+    font-size: 20px;
+    font-weight: bold;
+    margin:8px 0px;
+}

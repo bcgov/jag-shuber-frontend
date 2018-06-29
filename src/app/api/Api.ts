@@ -279,8 +279,6 @@ export interface API {
     getSheriffs(): Promise<Sheriff[]>;
     createSheriff(newSheriff: Sheriff): Promise<Sheriff>;
     updateSheriff(sheriffToUpdate: Partial<Sheriff>): Promise<Sheriff>;
-    createSheriffProfile(newSheriffProfile: Partial<SheriffProfile>): Promise<SheriffProfile>;
-    updateSheriffProfile(sheriffProfileToUpdate: SheriffProfile): Promise<SheriffProfile>;
 
     // Assignments
     getAssignments(dateRange: DateRange): Promise<Assignment[]>;

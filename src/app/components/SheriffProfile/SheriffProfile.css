@@ -1,7 +1,47 @@
-.sheriff-profile-name-heading {
-    font-size: 20px;
-    font-weight: bold;
-    position: relative;
-    left: -4%;
-    padding-top: 8px;
+/* Active Tab Content Pane */
+.sheriff-profile .tab-content>.active{
+    padding-top:10px;
+}
+
+/* Active Tab Content Pane, table */
+.sheriff-profile .tab-content>.active table {
+    margin-top:0px;
+}
+
+/* Active Tab Content Pane, table */
+.sheriff-profile .tab-content>.active table tr:first-of-type>td,
+.sheriff-profile .tab-content>.active table tr:first-of-type>td
+{
+    border-top-width: 0px;
+}
+
+/* General Tab */
+.sheriff-profile .nav-tabs>li>a{
+    color: #999;
+    background-color: #F8F8F8;
+    border-width: 1px;
+    border-color: #CCC;
+    border-style: solid;
+}
+
+.sheriff-profile .nav-tabs>li>a:hover{
+    color:#555;
+    background-color: #FAFAFA;
+}
+
+/* First Tab */
+.sheriff-profile .nav-tabs>li:first-of-type>a{
+    border-left-width:1px;
+}
+
+/* Active Tab */ 
+.sheriff-profile .nav-tabs>li.active>a,
+.sheriff-profile .nav-tabs>li.active>a:focus, 
+.sheriff-profile .nav-tabs>li.active>a:hover{
+    color:#222;
+    /*border-color:#999;
+    border-left-width: 1px;
+    border-bottom-color:#DDD; */
+    background-color:#FFF;
+    border-bottom-color:transparent;
 }
