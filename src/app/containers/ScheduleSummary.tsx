@@ -21,6 +21,7 @@ import {
     TimeType
 } from '../api';
 import { MapType } from '../api/Api';
+import { doTimeRangesOverlap } from '../infrastructure/TimeRangeUtils';
 
 interface ConnectedScheduleSummaryProps {
     sheriffId: IdType;
@@ -64,6 +65,10 @@ class ConnectedScheduleSummary extends React.Component<ConnectedScheduleSummaryP
         }
     }
 
+    isDayDuringLeave(day: moment.Moment, leave: Leave): boolean {
+        return moment(day).isBetween(leave.startDate, leave.endDate, 'days', '[]');
+    }
+
     createWeekStatus() {
         const {
             leaves,
@@ -77,9 +82,10 @@ class ConnectedScheduleSummary extends React.Component<ConnectedScheduleSummaryP
         const { isLoanedIn, isLoanedOut } = sheriffLoanMap[sheriffId];
         const today = moment().format('dddd').toLowerCase();
         const leavesForWeek = leaves
-            .filter(l =>
-                (moment(l.startDate).isBetween(visibleTimeStart, visibleTimeEnd, 'days', '[]'))
-                && !l.cancelReasonCode);
+            .filter(l => doTimeRangesOverlap(
+                { startTime: moment(l.startDate).toISOString(), endTime: moment(l.endDate).toISOString() },
+                { startTime: moment(visibleTimeStart).toISOString(), endTime: moment(visibleTimeEnd).toISOString() })
+            );
         const shiftsForWeek = shifts
             .filter(s => moment(s.startDateTime).isBetween(visibleTimeStart, visibleTimeEnd, 'days', '[]'));
 
@@ -96,12 +102,21 @@ class ConnectedScheduleSummary extends React.Component<ConnectedScheduleSummaryP
         }
 
         leavesForWeek.forEach(leave => {
-            let currentDate = moment(leave.startDate);
-            while (currentDate.isSameOrBefore(moment(visibleTimeEnd), 'days')) {
-                let day = this.getDay(moment(currentDate));
-                weekStatus[day] = StatusEnum.BAD;
-                currentDate = moment(currentDate).add(1, 'days');
-            }
+            weekStatus.monday =
+                this.isDayDuringLeave(moment(visibleTimeStart), leave) 
+                    ? StatusEnum.BAD : StatusEnum.EMPTY;
+            weekStatus.tuesday =
+                this.isDayDuringLeave(moment(visibleTimeStart).add(1, 'day'), leave) 
+                    ? StatusEnum.BAD : StatusEnum.EMPTY;
+            weekStatus.wednesday =
+                this.isDayDuringLeave(moment(visibleTimeStart).add(2, 'day'), leave)
+                    ? StatusEnum.BAD : StatusEnum.EMPTY;
+            weekStatus.thursday =
+                this.isDayDuringLeave(moment(visibleTimeStart).add(3, 'day'), leave)
+                    ? StatusEnum.BAD : StatusEnum.EMPTY;
+            weekStatus.friday =
+                this.isDayDuringLeave(moment(visibleTimeStart).add(4, 'day'), leave)
+                    ? StatusEnum.BAD : StatusEnum.EMPTY;
         });
 
         shiftsForWeek.forEach(shift => {
