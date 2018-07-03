@@ -37,12 +37,16 @@ class SheriffProfileSectionNav extends React.PureComponent<{ title: string, hasE
     }
 }
 
-export default class SheriffProfile extends React.PureComponent<InjectedFormProps<any, SheriffProfileProps> & SheriffProfileProps>{
+export default class SheriffProfile extends React.Component<InjectedFormProps<any, SheriffProfileProps> & SheriffProfileProps>{
     private handleSelectSection(sectionName: string) {
         const { onSelectSection } = this.props;
         if (onSelectSection) {
             onSelectSection(sectionName);
         }
+    }
+
+    shouldComponentUpdate(nextProps: any, nextState: any){
+        return true;
     }
 
     renderPlugin(plugin: SheriffProfilePlugin) {

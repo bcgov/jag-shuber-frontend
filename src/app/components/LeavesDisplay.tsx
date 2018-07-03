@@ -1,8 +1,8 @@
-import * as React from 'react';
+import React from 'react';
 import { Leave } from '../api';
-import { Table, Glyphicon } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
 import moment from 'moment';
-import Popover from './Popover';
+import LeaveCancelledPopover from './LeaveCancelledPopover';
 
 export interface LeavesDisplayProps {
     leaves: Leave[];
@@ -29,16 +29,7 @@ export default class LeavesDisplay extends React.PureComponent<LeavesDisplayProp
                                 <td>{moment(l.endDate).format('MMM D, YYYY')}</td>
                                 <td>{l.leaveTypeCode}</td>
                                 <td>
-                                    {l.cancelDate && <Popover
-                                        trigger={<Glyphicon style={{ color: 'red' }} glyph="ban-circle" />}
-                                        title={'Leave Cancelled'}
-                                        displayValue={
-                                            <span>
-                                                <b>Date: </b>{moment(l.cancelDate).format('MMM D, YYYY')}<br />
-                                                <b>Reason: </b>{l.cancelReasonCode}
-                                            </span>
-                                        }
-                                    />}
+                                    {l.cancelDate && <LeaveCancelledPopover leave={l}/>}
                                 </td>
                             </tr>
                         );

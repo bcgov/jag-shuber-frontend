@@ -1,64 +1,73 @@
 import React from 'react';
 import {
-    Modal, 
+    Modal,
     Button
 } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { 
-    IModalInjectedProps, 
-    connectModal 
+import {
+    IModalInjectedProps,
+    connectModal
 } from 'redux-modal';
 import { ConnectedShowModalButton } from './ConnectedShowModalButton';
-import { 
-    show as showModal, 
-    hide as hideModal 
+import {
+    show as showModal,
+    hide as hideModal
 } from 'redux-modal';
 
-export interface ConnectedConfirmationModalProps {
+export interface ConnectedConfirmationModalProps<T = {}> {
     confirmationMessage?: React.ReactNode;
-    RenderComponent?: React.ComponentType<ConfirmationRendererProps>;
+    RenderComponent?: React.ComponentType<ConfirmationRendererProps<T>>;
     confirmBtnLabel?: string;
-    onConfirm?: () => void;
+    onConfirm?: (confirmationValue?: T) => void;
+    value?: T;
 }
 
-export interface ConnectedConfirmationModalDispatchProps {
+export interface ConnectedConfirmationModalDispatchProps<T = {}> {
+    showThis: (props: ConnectedConfirmationModalProps<T>) => void;
 }
 
-type CompositeProps =
-    ConnectedConfirmationModalProps
-    & ConnectedConfirmationModalDispatchProps
+type CompositeProps<T = {}> =
+    ConnectedConfirmationModalProps<T>
+    & ConnectedConfirmationModalDispatchProps<T>
     & IModalInjectedProps;
 
-interface ConfirmationRendererProps {
+interface ConfirmationRendererProps<T = {}> {
     message?: React.ReactNode;
+    value?: T;
+    onValueChanged?: (newValue?: T) => void;
 }
 
-class DefaultConfirmationRenderer  extends React.PureComponent<ConfirmationRendererProps> {
-    render () {
+class DefaultConfirmationRenderer extends React.PureComponent<ConfirmationRendererProps> {
+    render() {
         return (
             this.props.message
         );
     }
 }
 
-class ConnectedConfirmationModal extends React.PureComponent<CompositeProps> {
+class ConnectedConfirmationModal<T = {}> extends React.PureComponent<CompositeProps<T>> {
 
     private handleConfirm() {
-        const { onConfirm } = this.props;
+        const { onConfirm, value } = this.props;
         if (onConfirm) {
-            onConfirm();
+            onConfirm(value);
         }
     }
-    
+
+    private handleValueChanged(value: T) {
+        const { showThis } = this.props;
+        showThis({...this.props as any, value});
+    }
+
     render() {
         const {
             show,
             handleHide,
             confirmationMessage = 'Please confirm that you would like to continue with this action.',
             confirmBtnLabel = 'Confirm',
-            RenderComponent = DefaultConfirmationRenderer
+            RenderComponent = DefaultConfirmationRenderer,
+            value
         } = this.props;
-
 
         return (
             <Modal
@@ -71,7 +80,11 @@ class ConnectedConfirmationModal extends React.PureComponent<CompositeProps> {
             >
                 <Modal.Header closeButton={true} />
                 <Modal.Body>
-                    <RenderComponent message={confirmationMessage}/>
+                    <RenderComponent
+                        message={confirmationMessage}
+                        onValueChanged={(newValue: T) => this.handleValueChanged(newValue)}
+                        value={value}
+                    />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button
@@ -82,7 +95,7 @@ class ConnectedConfirmationModal extends React.PureComponent<CompositeProps> {
                             handleHide();
                         }}
                     >
-                    {confirmBtnLabel}
+                        {confirmBtnLabel}
                     </Button>
                 </Modal.Footer>
             </Modal>
@@ -96,18 +109,27 @@ const modalConfig = {
 
 // Here we extend the Higher Order Component so that we can add on some static
 // members that can be used to hide the modal configuration from consumers
-export default class extends connectModal(modalConfig)(
-    connect<{}, ConnectedConfirmationModalDispatchProps, ConnectedConfirmationModalProps>(
+export default class <T = {}> extends connectModal(modalConfig)(
+    connect<{}, ConnectedConfirmationModalDispatchProps<any>, ConnectedConfirmationModalProps<any>>(
         null,
-        {})
+        (dispatch, ownProps) => ({
+            showThis: (p) => dispatch(showModal(modalConfig.name, p))
+        }))
         (ConnectedConfirmationModal) as any
 ) {
     static modalName = modalConfig.name;
 
-    static ShowButton = (props: ConnectedConfirmationModalProps) => (
-        <ConnectedShowModalButton modalName={modalConfig.name} modalProps={props} />
-    )
+    static ShowButton<T>(props: ConnectedConfirmationModalProps<T>) {
+        return (
+            <ConnectedShowModalButton modalName={modalConfig.name} modalProps={props} />
+        );
+    }
 
-    static ShowAction = (props: ConnectedConfirmationModalProps) => showModal(modalConfig.name, props);
+    static ShowAction<T>(props: ConnectedConfirmationModalProps<T>) {
+        return (
+            showModal(modalConfig.name, props)
+        );
+    }
+
     static HideAction = () => hideModal(modalConfig.name);
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import { IdType, Leave } from '../api/Api';
 import {
     SheriffProfilePluginProps,
@@ -12,52 +13,86 @@ import DateField from '../components/FormElements/DateField';
 import { Dispatch } from 'redux';
 import { getLeaves, createOrUpdateLeaves } from '../modules/leaves/actions';
 import { RootState } from '../store';
-import { getSheriffLeaves } from '../modules/leaves/selectors';
+import {
+    getSheriffLeaves,
+    getLeave
+} from '../modules/leaves/selectors';
 import LeavesDisplay from '../components/LeavesDisplay';
 import * as Validators from '../infrastructure/Validators';
 import ConfirmationModal, { ConnectedConfirmationModalProps } from './ConfirmationModal';
 import { connect } from 'react-redux';
 import SelectorField from '../components/FormElements/SelectorField';
+import LeaveCancelledPopover from '../components/LeaveCancelledPopover';
 
 interface CancelLeaveButtonProps {
+    leaveId: string;
 }
 
+interface CancelLeaveButtonStateProps {
+    leave?: Leave;
+}
 interface CancelLeaveButtonDispatchProps {
-    showConfirmationModal: (props: ConnectedConfirmationModalProps) => void;
+    showConfirmationModal: (props: ConnectedConfirmationModalProps<string>) => void;
+    cancelLeave: (leave: Leave) => void;
 }
 
-class CancelLeaveButton extends React.PureComponent<CancelLeaveButtonProps & CancelLeaveButtonDispatchProps> {
+type CancelButtonCompositProps = CancelLeaveButtonProps & CancelLeaveButtonDispatchProps & CancelLeaveButtonStateProps;
+class CancelLeaveButton extends React.PureComponent<CancelButtonCompositProps> {
+
+    handleCancelLeave(cancelReason?: string) {
+        const { leave, cancelLeave } = this.props;
+        if (cancelReason && leave) {
+            const leaveToCancel: Leave = {
+                ...leave,
+                cancelReasonCode: cancelReason,
+                cancelDate: moment().toISOString()
+            };
+
+            cancelLeave(leaveToCancel);
+        }
+
+    }
+
     render() {
         const { showConfirmationModal } = this.props;
         return (
             <Button
-                bsStyle="link"
+                bsStyle="danger"
                 onClick={() => showConfirmationModal({
                     confirmBtnLabel: 'OK',
-                    RenderComponent: ({message}) => (
+                    RenderComponent: ({ onValueChanged, value }) => (
                         <div>
                             <h3>Select a Reason for Cancelling Leave</h3>
-                            <LeaveCancelReasonSelector label="Cancel Reason"/>
+                            <LeaveCancelReasonSelector
+                                label="Cancel Reason"
+                                value={value}
+                                onChange={onValueChanged}
+                            />
                         </div>
-                    )
+                    ),
+                    onConfirm: (value) => this.handleCancelLeave(value)
                 })}
-                style={{
-                    color: 'red',
-                    fontSize: 16
-                }}
             >
                 <Glyphicon glyph="ban-circle" />
             </Button>
+
         );
     }
 }
 
-const ConnectedCancelLeaveButton = connect<{}, CancelLeaveButtonDispatchProps, CancelLeaveButtonProps>(
-    undefined,
-    {
-        showConfirmationModal: (props: ConnectedConfirmationModalProps) => ConfirmationModal.ShowAction(props)
-    }
-)(CancelLeaveButton);
+const ConnectedCancelLeaveButton =
+    connect<CancelLeaveButtonStateProps, CancelLeaveButtonDispatchProps, CancelLeaveButtonProps, RootState>(
+        (state, { leaveId }) => {
+            return {
+                leave: getLeave(leaveId)(state)
+            };
+        },
+        {
+            showConfirmationModal: (props: ConnectedConfirmationModalProps<string>) =>
+                ConfirmationModal.ShowAction<string>(props),
+            cancelLeave: (leaveToCancel) => createOrUpdateLeaves([leaveToCancel])
+        }
+    )(CancelLeaveButton);
 
 export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlugin<Leave[]> {
     name = 'leaves';
@@ -83,55 +118,59 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
                                 <th className="text-left">Start Date</th>
                                 <th className="text-left">End Date</th>
                                 <th className="text-left">Type</th>
-                                <th className="text-left"/>
+                                <th className="text-left" />
                             </tr>
                         </thead>
                         <tbody>
                             {fields.map((fieldInstanceName, index) => {
-                                const { id: leaveId } = fields.get(index);
+                                const currentLeave: Partial<Leave> = fields.get(index);
+                                const { id: leaveId, cancelDate, startDate, endDate, leaveTypeCode } = currentLeave;
                                 return (
                                     <tr key={index}>
                                         <td>
-                                            <Field
+                                            {!cancelDate && <Field
                                                 name={`${fieldInstanceName}.startDate`}
                                                 component={DateField as any}
                                                 label="Start"
-                                            />
+                                            />}
+                                           {cancelDate && moment(startDate).format('MMM D, YYYY')}
                                         </td>
                                         <td>
-                                            <Field
+                                            {!cancelDate && <Field
                                                 name={`${fieldInstanceName}.endDate`}
                                                 component={DateField as any}
                                                 label="End"
-                                            />
+                                            />}
+                                            {cancelDate && moment(endDate).format('MMM D, YYYY')}
                                         </td>
                                         <td>
-                                            <Field
+                                            {!cancelDate && <Field
                                                 name={`${fieldInstanceName}.leaveTypeCode`}
-                                                component={(p) => <SelectorField 
-                                                    {...p} 
+                                                component={(p) => <SelectorField
+                                                    {...p}
                                                     showLabel={false}
                                                     SelectorComponent={
-                                                        (sp) => 
-                                                            <LeaveTypeSelector {...sp}/>}  
+                                                        (sp) =>
+                                                            <LeaveTypeSelector {...sp} />}
                                                 />}
                                                 label="Type"
-                                            />
+                                            />}
+                                            {cancelDate && leaveTypeCode}
                                         </td>
                                         <td>
                                             {!leaveId &&
                                                 <Button
                                                     bsStyle="link"
                                                     onClick={() => fields.remove(index)}
-                                                    style={{
-                                                        color: '#666666',
-                                                        fontSize: 14
-                                                    }}
+                                                    style={{ color: '#666666' }}
                                                 >
                                                     <Glyphicon glyph="remove" />
                                                 </Button>}
-                                            {leaveId &&
-                                                <ConnectedCancelLeaveButton />
+                                            {leaveId && !cancelDate &&
+                                                <ConnectedCancelLeaveButton leaveId={leaveId} />
+                                            }
+                                            {leaveId && cancelDate &&
+                                                <LeaveCancelledPopover leave={currentLeave} />
                                             }
 
                                         </td>
@@ -143,9 +182,7 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
                         <tfoot>
                             <tr>
                                 <td colSpan={5}>
-                                    <Button
-                                        onClick={() => fields.push({} as any)}
-                                    >
+                                    <Button onClick={() => fields.push({} as any)}>
                                         <Glyphicon glyph="plus" />
                                     </Button>
                                 </td>

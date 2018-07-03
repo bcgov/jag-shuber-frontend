@@ -21,7 +21,7 @@ export const getLeave = (id?: IdType) => (state: RootState) => {
         const map: LeaveMap = leaveRequests.leaveMapRequest.getData(state);
         return map[id];
     }
-    return null;
+    return undefined;
 };
 
 export const getSheriffLeaves = (sheriffId?: IdType) => (state: RootState) => {
