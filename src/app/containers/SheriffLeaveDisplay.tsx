@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import LeaveDisplay, { LeavesDisplayProps } from '../components/LeavesDisplay';
 import { IdType } from '../api';
-import { getSheriffLeaves } from '../modules/leaves/selectors';
+import { getSheriffFullDayLeaves, getSheriffPartialLeaves } from '../modules/leaves/selectors';
 import { RootState } from '../store';
 
 export interface SheriffLeaveDisplayProps {
@@ -12,11 +12,13 @@ export interface SheriffLeaveDisplayStateProps extends LeavesDisplayProps {
 export interface SheriffLeaveDisplayDispatchProps {
 }
 
+// tslint:disable-next-line:max-line-length
 export default connect<SheriffLeaveDisplayStateProps, SheriffLeaveDisplayDispatchProps, SheriffLeaveDisplayProps, RootState>
     (
     (state, { sheriffId }) => {
         return {
-            leaves: getSheriffLeaves(sheriffId)(state)
+            fullDays: getSheriffFullDayLeaves(sheriffId)(state),
+            partialDays: getSheriffPartialLeaves(sheriffId)(state) 
         };
     },
     {

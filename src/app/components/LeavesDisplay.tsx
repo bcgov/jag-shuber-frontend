@@ -5,38 +5,69 @@ import moment from 'moment';
 import LeaveCancelledPopover from './LeaveCancelledPopover';
 
 export interface LeavesDisplayProps {
-    leaves: Leave[];
+    partialDays: Leave[];
+    fullDays: Leave[]
 }
 
 export default class LeavesDisplay extends React.PureComponent<LeavesDisplayProps, any> {
     render() {
-        const { leaves = [] } = this.props;
+        const { fullDays = [], partialDays = [] } = this.props;
         return (
-            <Table responsive={true} striped={true} >
-                <thead>
-                    <tr>
-                        <th className="text-left">Start Date</th>
-                        <th className="text-left">End Date</th>
-                        <th className="text-left">Type</th>
-                        <th />
-                    </tr>
-                </thead>
-                <tbody>
-                    {leaves.map(l => {
-                        return (
-                            <tr key={l.id}>
-                                <td>{moment(l.startDate).format('MMM D, YYYY')}</td>
-                                <td>{moment(l.endDate).format('MMM D, YYYY')}</td>
-                                <td>{l.leaveTypeCode}</td>
-                                <td>
-                                    {l.cancelDate && <LeaveCancelledPopover leave={l}/>}
-                                </td>
-                            </tr>
-                        );
-                    })}
+            <div>
+                <Table responsive={true} striped={true} >
+                    <thead>
+                        <tr>
+                            <th className="text-left">Start Date</th>
+                            <th className="text-left">End Date</th>
+                            <th className="text-left">Type</th>
+                            <th />
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {fullDays.map(l => {
+                            return (
+                                <tr key={l.id}>
+                                    <td>{moment(l.startDate).format('MMM D, YYYY')}</td>
+                                    <td>{moment(l.endDate).format('MMM D, YYYY')}</td>
+                                    <td>{l.leaveTypeCode}</td>
+                                    <td>
+                                        {l.cancelDate && <LeaveCancelledPopover leave={l} />}
+                                    </td>
+                                </tr>
+                            );
+                        })}
 
-                </tbody>
-            </Table>
+                    </tbody>
+                </Table>
+
+                <Table responsive={true} striped={true} >
+                    <thead>
+                        <tr>
+                            <th className="text-left">Date</th>
+                            <th className="text-left">Start Time</th>
+                            <th className="text-left">End Time</th>
+                            <th className="text-left">Type</th>
+                            <th />
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {partialDays.map(l => {
+                            return (
+                                <tr key={l.id}>
+                                    <td>{moment(l.startDate).format('MMM D, YYYY')}</td>
+                                    <td>{moment(l.startTime).format('HH:mm')}</td>
+                                    <td>{moment(l.endTime).format('HH:mm')}</td>
+                                    <td>{l.leaveTypeCode}</td>
+                                    <td>
+                                        {l.cancelDate && <LeaveCancelledPopover leave={l} />}
+                                    </td>
+                                </tr>
+                            );
+                        })}
+
+                    </tbody>
+                </Table>
+            </div>
         );
     }
 }

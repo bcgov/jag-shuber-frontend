@@ -3,7 +3,6 @@ import { createSelector } from 'reselect';
 import * as leaveRequests from './requests';
 import {
     LeaveMap,
-    // Leave,
     IdType
 } from '../../api/Api';
 import mapToArray from '../../infrastructure/mapToArray';
@@ -26,6 +25,34 @@ export const getLeave = (id?: IdType) => (state: RootState) => {
 export const getSheriffLeaves = (sheriffId?: IdType) => (state: RootState) => {
     if (state && sheriffId != null) {
         return allLeaves(state).filter(l => l.sheriffId === sheriffId);
+    }
+    return [];
+};
+
+export const getPartialDayLeaves = (state: RootState) => {
+    if (state != null) {
+        return allLeaves(state).filter(l => l.isPartial);
+    }
+    return [];
+};
+
+export const getFullDayLeaves = (state: RootState) => {
+    if (state != null) {
+        return allLeaves(state).filter(l => !l.isPartial);
+    }
+    return [];
+};
+
+export const getSheriffPartialLeaves = (sheriffId?: IdType) => (state: RootState) => {
+    if (state && sheriffId != null) {
+        return getPartialDayLeaves(state).filter(l => l.sheriffId === sheriffId);
+    }
+    return [];
+};
+
+export const getSheriffFullDayLeaves = (sheriffId?: IdType) => (state: RootState) => {
+    if (state && sheriffId != null) {
+        return getFullDayLeaves(state).filter(l => l.sheriffId === sheriffId);
     }
     return [];
 };

@@ -14,7 +14,8 @@ import { Dispatch } from 'redux';
 import { getLeaves, createOrUpdateLeaves } from '../modules/leaves/actions';
 import { RootState } from '../store';
 import {
-    getSheriffLeaves,
+    getSheriffFullDayLeaves,
+    getSheriffPartialLeaves,
     getLeave
 } from '../modules/leaves/selectors';
 import LeavesDisplay from '../components/LeavesDisplay';
@@ -23,6 +24,7 @@ import ConfirmationModal, { ConnectedConfirmationModalProps } from './Confirmati
 import { connect } from 'react-redux';
 import SelectorField from '../components/FormElements/SelectorField';
 import LeaveCancelledPopover from '../components/LeaveCancelledPopover';
+import TimePickerField from '../components/FormElements/TimePickerField';
 
 interface CancelLeaveButtonProps {
     leaveId: string;
@@ -94,112 +96,224 @@ const ConnectedCancelLeaveButton =
         }
     )(CancelLeaveButton);
 
-export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlugin<Leave[]> {
+interface SheriffProfilePluginLeavesProps {
+    partialDay: Leave[];
+    fullDay: Leave[];
+}
+export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlugin<SheriffProfilePluginLeavesProps> {
     name = 'leaves';
     formFieldNames = {
-        leaves: 'leaves'
+        fullDay: 'leaves.fullDay',
+        partialDay: 'leaves.partialDay'
     };
     title: string = 'Leaves';
-    DisplayComponent = ({ data = [] }: SheriffProfilePluginProps<Leave[]>) => (
-        data.length > 0
-            ? <LeavesDisplay leaves={data} />
-            : <Alert> No Leaves </Alert>
-    )
-    FormComponent = ({ sheriffId }: SheriffProfilePluginProps<Leave[]>) => (
+    DisplayComponent = (
+        { data = { fullDay: [], partialDay: [] } }: SheriffProfilePluginProps<SheriffProfilePluginLeavesProps>) => (
+
+            data && (data.fullDay.length > 0 || data.partialDay.length > 0)
+                ? <LeavesDisplay partialDays={data.partialDay} fullDays={data.fullDay} />
+                : <Alert> No Leaves </Alert>
+        )
+    FormComponent = ({ sheriffId }: SheriffProfilePluginProps<SheriffProfilePluginLeavesProps>) => (
         // tslint:disable-next-line:jsx-wrap-multiline
-        <FieldArray<Partial<Leave>>
-            name={this.formFieldNames.leaves}
-            component={(p) => {
-                const { fields } = p;
-                return (
-                    <Table striped={true} >
-                        <thead>
-                            <tr>
-                                <th className="text-left">Start Date</th>
-                                <th className="text-left">End Date</th>
-                                <th className="text-left">Type</th>
-                                <th className="text-left" />
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {fields.map((fieldInstanceName, index) => {
-                                const currentLeave: Partial<Leave> = fields.get(index);
-                                const { id: leaveId, cancelDate, startDate, endDate, leaveTypeCode } = currentLeave;
-                                // if (!currentLeave.isPartial) {
-                                return (
-                                    <tr key={index}>
-                                        <td>
-                                            {!cancelDate && <Field
-                                                name={`${fieldInstanceName}.startDate`}
-                                                component={DateField as any}
-                                                label="Start Date"
-                                            />}
-                                            {cancelDate && moment(startDate).format('MMM D, YYYY')}
-                                        </td>
-                                        <td>
-                                            {!cancelDate && <Field
-                                                name={`${fieldInstanceName}.endDate`}
-                                                component={DateField as any}
-                                                label="End Date"
-                                            />}
-                                            {cancelDate && moment(endDate).format('MMM D, YYYY')}
-                                        </td>
-                                        <td>
-                                            {!cancelDate && <Field
-                                                name={`${fieldInstanceName}.leaveTypeCode`}
-                                                component={(p) => <SelectorField
-                                                    {...p}
-                                                    showLabel={false}
-                                                    SelectorComponent={
-                                                        (sp) =>
-                                                            <LeaveTypeSelector {...sp} />}
+
+        //return a div that has two field arrays on for partial on for full - could put in component
+        <div>
+            <FieldArray<Partial<Leave>>
+                name={this.formFieldNames.fullDay}
+                component={(p) => {
+                    const { fields } = p;
+                    return (
+                        <Table striped={true} >
+                            <thead>
+                                <tr>
+                                    <th className="text-left">Start Date</th>
+                                    <th className="text-left">End Date</th>
+                                    <th className="text-left">Type</th>
+                                    <th className="text-left" />
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {fields.map((fieldInstanceName, index) => {
+                                    const currentLeave: Partial<Leave> = fields.get(index);
+                                    const { id: leaveId, cancelDate, startDate, endDate, leaveTypeCode } = currentLeave;
+                                    return (
+                                        <tr key={index}>
+                                            <td>
+                                                {!cancelDate && <Field
+                                                    name={`${fieldInstanceName}.startDate`}
+                                                    component={DateField as any}
+                                                    label="Start Date"
                                                 />}
-                                                label="Type"
-                                            />}
-                                            {cancelDate && leaveTypeCode}
-                                        </td>
-                                        <td>
-                                            {!leaveId &&
-                                                <Button
-                                                    bsStyle="link"
-                                                    onClick={() => fields.remove(index)}
-                                                    style={{ color: '#666666' }}
-                                                >
-                                                    <Glyphicon glyph="remove" />
-                                                </Button>}
-                                            {leaveId && !cancelDate &&
-                                                <ConnectedCancelLeaveButton leaveId={leaveId} />
-                                            }
-                                            {leaveId && cancelDate &&
-                                                <LeaveCancelledPopover leave={currentLeave} />
-                                            }
-                                        </td>
-                                    </tr>
-                                );
-                                // } else {
-                                //     return ({});
-                                // }
-                            })}
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colSpan={5}>
-                                    <Button onClick={() => fields.push({} as any)}>
-                                        <Glyphicon glyph="plus" />
-                                    </Button>
-                                </td>
-                            </tr>
-                        </tfoot>
-                    </Table>
+                                                {cancelDate && moment(startDate).format('MMM D, YYYY')}
+                                            </td>
+                                            <td>
+                                                {!cancelDate && <Field
+                                                    name={`${fieldInstanceName}.endDate`}
+                                                    component={DateField as any}
+                                                    label="End Date"
+                                                />}
+                                                {cancelDate && moment(endDate).format('MMM D, YYYY')}
+                                            </td>
+                                            <td>
+                                                {!cancelDate && <Field
+                                                    name={`${fieldInstanceName}.leaveTypeCode`}
+                                                    component={(p) => <SelectorField
+                                                        {...p}
+                                                        showLabel={false}
+                                                        SelectorComponent={
+                                                            (sp) =>
+                                                                <LeaveTypeSelector {...sp} />}
+                                                    />}
+                                                    label="Type"
+                                                />}
+                                                {cancelDate && leaveTypeCode}
+                                            </td>
+                                            <td>
+                                                {!leaveId &&
+                                                    <Button
+                                                        bsStyle="link"
+                                                        onClick={() => fields.remove(index)}
+                                                        style={{ color: '#666666' }}
+                                                    >
+                                                        <Glyphicon glyph="remove" />
+                                                    </Button>}
+                                                {leaveId && !cancelDate &&
+                                                    <ConnectedCancelLeaveButton leaveId={leaveId} />
+                                                }
+                                                {leaveId && cancelDate &&
+                                                    <LeaveCancelledPopover leave={currentLeave} />
+                                                }
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colSpan={5}>
+                                        <Button onClick={() => fields.push({} as any)}>
+                                            <Glyphicon glyph="plus" />
+                                        </Button>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </Table>
+                    );
+                }}
+            />
 
-
-                );
-            }}
-        />
+            <FieldArray<Partial<Leave>>
+                name={this.formFieldNames.partialDay}
+                component={(p) => {
+                    const { fields } = p;
+                    return (
+                        <Table striped={true} >
+                            <thead>
+                                <tr>
+                                    <th className="text-left">Date</th>
+                                    <th className="text-left">Start Time</th>
+                                    <th className="text-left">End Time</th>
+                                    <th className="text-left">Type</th>
+                                    <th className="text-left" />
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {fields.map((fieldInstanceName, index) => {
+                                    const currentLeave: Partial<Leave> = fields.get(index);
+                                    const { id: leaveId, cancelDate, startDate, startTime, endTime, leaveTypeCode } = currentLeave;
+                                    return (
+                                        <tr key={index}>
+                                            <td>
+                                                {!cancelDate && <Field
+                                                    name={`${fieldInstanceName}.startDate`}
+                                                    component={DateField as any}
+                                                    label="Date"
+                                                />}
+                                                {cancelDate && moment(startDate).format('MMM D, YYYY')}
+                                            </td>
+                                            <td>
+                                                {!cancelDate && <Field
+                                                    name={`${fieldInstanceName}.startTime`}
+                                                    component={
+                                                        (p) => 
+                                                            <TimePickerField 
+                                                                {...p} 
+                                                                nullTimeLabel={'Start'}
+                                                            />
+                                                    }
+                                                    label="Start Time"
+                                                />}
+                                                {cancelDate && moment(startTime).format('HH:mm')}
+                                            </td>
+                                            <td>
+                                                {!cancelDate && <Field
+                                                    name={`${fieldInstanceName}.endTime`}
+                                                    component={
+                                                        (p) => 
+                                                            <TimePickerField 
+                                                                {...p} 
+                                                                nullTimeLabel={'End'}
+                                                                timeIncrement={60}
+                                                            />
+                                                    }
+                                                    label="End Time"
+                                                />}
+                                                {cancelDate && moment(endTime).format('HH:mm')}
+                                            </td>
+                                            <td>
+                                                {!cancelDate && <Field
+                                                    name={`${fieldInstanceName}.leaveTypeCode`}
+                                                    component={(p) => <SelectorField
+                                                        {...p}
+                                                        showLabel={false}
+                                                        SelectorComponent={
+                                                            (sp) =>
+                                                                <LeaveTypeSelector {...sp} />}
+                                                    />}
+                                                    label="Type"
+                                                />}
+                                                {cancelDate && leaveTypeCode}
+                                            </td>
+                                            <td>
+                                                {!leaveId &&
+                                                    <Button
+                                                        bsStyle="link"
+                                                        onClick={() => fields.remove(index)}
+                                                        style={{ color: '#666666' }}
+                                                    >
+                                                        <Glyphicon glyph="remove" />
+                                                    </Button>}
+                                                {leaveId && !cancelDate &&
+                                                    <ConnectedCancelLeaveButton leaveId={leaveId} />
+                                                }
+                                                {leaveId && cancelDate &&
+                                                    <LeaveCancelledPopover leave={currentLeave} />
+                                                }
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colSpan={5}>
+                                        <Button onClick={() => fields.push({} as any)}>
+                                            <Glyphicon glyph="plus" />
+                                        </Button>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </Table>
+                    );
+                }}
+            />
+        </div>
     )
 
-    validate(values: Leave[] = []): FormErrors | undefined {
-        const errors = values.map(l => (
+    // values will be shape of object in props values.partialDays.map values.fullDays.map
+    validate(values: SheriffProfilePluginLeavesProps = {fullDay: [], partialDay: []}): FormErrors | undefined {
+        const fullDayErrors = values.fullDay.map(l => (
             {
                 startDate: Validators.validateWith(
                     Validators.required,
@@ -209,11 +323,34 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
                     Validators.required,
                     Validators.isSameOrAfter(l.startDate, 'Start Date')
                 )(l.endDate),
+                startTime: undefined, 
+                endTime: undefined, 
                 leaveTypeCode: Validators.required(l.leaveTypeCode)
             }
         ));
 
-        return errors.length > 0 ? errors : undefined;
+        // const partialDayErrors = values.partialDay.map(l => (
+        //     {
+        //         startDate: Validators.validateWith(
+        //             Validators.required
+        //         )(l.startDate),
+        //         endDate: undefined, 
+        //         startTime: Validators.validateWith(
+        //             Validators.required,
+        //             Validators.isSameOrBefore(l.endDate, 'End Time')
+        //         )(l.startTime),
+        //         endTime: Validators.validateWith(
+        //             Validators.required,
+        //             Validators.isSameOrAfter(l.startTime, 'Start Time')
+        //         )(l.endTime),
+        //         leaveTypeCode: Validators.required(l.leaveTypeCode)
+        //     }
+        // ));
+
+        // const errors = fullDayErrors.concat(partialDayErrors);
+
+        // return errors.length > 0 ? errors : undefined;
+        return fullDayErrors.length > 0 ? fullDayErrors : undefined;
     }
 
     fetchData(sheriffId: IdType, dispatch: Dispatch<any>) {
@@ -221,12 +358,16 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
     }
 
     getData(sheriffId: IdType, state: RootState) {
-        return getSheriffLeaves(sheriffId)(state);
+        return {
+            partialDay: getSheriffPartialLeaves(sheriffId)(state),
+            fullDay: getSheriffFullDayLeaves(sheriffId)(state)
+        };
     }
 
     async onSubmit(sheriffId: IdType, formValues: any, dispatch: Dispatch<any>): Promise<Leave[]> {
-        const { leaves = [] }: { leaves: Partial<Leave>[] } = formValues;
-        const leavesWithSheriff = leaves.map(l => ({ ...l, sheriffId }));
-        return await dispatch(createOrUpdateLeaves(leavesWithSheriff, { toasts: {} }));
+        const data = this.getDataFromFormValues(formValues);
+        const partialLeaves = data.partialDay.map(pl => ({...pl, sheriffId, isPartial: true}));
+        const fullLeaves = data.fullDay.map(fl => ({...fl, sheriffId, isPartial: false}));
+        return await dispatch(createOrUpdateLeaves(partialLeaves.concat(fullLeaves), { toasts: {} }));
     }
 }

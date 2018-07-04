@@ -7,6 +7,7 @@ import TimePicker from './TimePicker';
 
 interface TimePickerFieldProps {
     nullTimeLabel?: string;
+    timeIncrement?: number;
 }
 
 export default class TimePickerField extends
@@ -16,7 +17,8 @@ export default class TimePickerField extends
         const {
             input: { value, onChange },
             label,
-            nullTimeLabel = 'missing time'
+            nullTimeLabel = 'missing time',
+            timeIncrement = 15
         } = this.props;
         const selectedTimeDisplay = value ? moment(value).format('HH:mm') : nullTimeLabel;
         const minTime = TimeUtils.getDefaultTimePickerMinTime(moment(value)).toISOString();
@@ -41,7 +43,7 @@ export default class TimePickerField extends
                             minTime={minTime}
                             maxTime={maxTime}
                             selectedTime={value}
-                            timeIncrement={15}
+                            timeIncrement={timeIncrement}
                             onTimeChanged={onChange}
                         />
                     </div>
