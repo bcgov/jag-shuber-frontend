@@ -247,9 +247,12 @@ export interface Leave {
     sheriffId: IdType;
     leaveTypeCode: string;
     startDate: DateType;
-    endDate: DateType;
+    endDate?: DateType;
     cancelDate?: DateType;
     cancelReasonCode?: string;
+    isPartial?: boolean;
+    startTime?: TimeType;
+    endTime?: TimeType;
 }
 
 export interface LeaveTypeCode {

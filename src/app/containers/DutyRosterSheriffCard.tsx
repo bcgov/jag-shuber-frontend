@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as moment from 'moment';
+import React from 'react';
+import moment from 'moment';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { getSheriffShifts } from '../modules/shifts/selectors';
@@ -15,10 +15,12 @@ import { visibleTime } from '../modules/dutyRoster/selectors';
 import WorkSectionIndicator from '../components/WorkSectionIndicator/WorkSectionIndicator';
 import { sheriffLoanMap as sheriffLoanMapSelecor } from '../modules/sheriffs/selectors';
 import { currentCourthouse as userCourthouse } from '../modules/user/selectors';
-import { MapType, IdType } from '../api/Api';
+import { MapType, IdType, Leave } from '../api/Api';
 import CourthouseDisplay from './CourthouseDisplay';
 import SheriffLoanOutIcon from '../components/Icons/SheriffLoanOutIcon';
 import SheriffLoanInIcon from '../components/Icons/SheriffLoanInIcon';
+import { getLeaves } from '../modules/leaves/actions';
+import { getSheriffLeaves } from '../modules/leaves/selectors';
 
 interface ConnectedDutyRosterSheriffCardProps {
     sheriff: Sheriff;
@@ -26,6 +28,7 @@ interface ConnectedDutyRosterSheriffCardProps {
 
 interface ConnectedDutyRosterSheriffCardDispatchProps {
     fetchShifts: () => void;
+    fetchLeaves: () => void;
 }
 
 interface ConnectedDutyRosterSheriffCardStateProps {
@@ -33,6 +36,7 @@ interface ConnectedDutyRosterSheriffCardStateProps {
     visibleTimeStart: any;
     sheriffLoanMap?: MapType<{ isLoanedIn: boolean, isLoanedOut: boolean }>;
     userCourthouseId?: IdType;
+    leaves: Leave[];
 }
 
 class ConnectedDutyRosterSheriffCard extends React.Component<ConnectedDutyRosterSheriffCardProps
@@ -59,6 +63,13 @@ class ConnectedDutyRosterSheriffCard extends React.Component<ConnectedDutyRoster
         return { shiftTime: '', workSectionId: undefined };
     }
 
+    isOnLeaveForVisibleDay(): boolean {
+        const { leaves = [], visibleTimeStart } = this.props;
+        const leavesForVisibleDay = 
+            leaves.filter(l => moment(visibleTimeStart).isBetween(l.startDate, l.endDate, 'days', '[]'));
+        return leavesForVisibleDay.length > 0;
+      }
+
     render() {
         const {
             visibleTimeStart,
@@ -69,7 +80,8 @@ class ConnectedDutyRosterSheriffCard extends React.Component<ConnectedDutyRoster
         const { shiftTime, workSectionId } = this.getShiftDisplayForDate(moment(visibleTimeStart).toISOString());
         const hasShift = shiftTime != '';
         const { isLoanedIn, isLoanedOut } = sheriffLoanMap[id];
-        const showShiftLoanDetails = isLoanedIn || isLoanedOut || hasShift;
+        const isOnLeaveForDay = this.isOnLeaveForVisibleDay();
+        const showScheduleDeatils = isLoanedIn || isLoanedOut || hasShift || isOnLeaveForDay;
         return (
             <SheriffListCard sheriff={sheriff} disabled={!hasShift} >
                 <div
@@ -79,12 +91,13 @@ class ConnectedDutyRosterSheriffCard extends React.Component<ConnectedDutyRoster
                     }}
                 >
 
-                    {showShiftLoanDetails && <div style={{ marginTop: 8 }}>
+                    {showScheduleDeatils && <div style={{ marginTop: 8 }}>
                         {isLoanedIn && <SheriffLoanInIcon />}
                         {isLoanedOut && <SheriffLoanOutIcon />}
                         <span style={{ marginLeft: 8, position: 'relative', bottom: 8 }}>
                             {!isLoanedOut && shiftTime}
                             {isLoanedOut && <CourthouseDisplay id={currentCourthouseId} />}
+                            {isOnLeaveForDay && 'On Leave'}
                         </span>
                     </div>}
 
@@ -102,12 +115,14 @@ const mapStateToProps = (state: RootState, { sheriff }: ConnectedDutyRosterSheri
         shifts: getSheriffShifts(sheriff.id)(state),
         visibleTimeStart: visibleTime(state).visibleTimeStart,
         sheriffLoanMap: sheriffLoanMapSelecor(state),
-        userCourthouseId: userCourthouse(state)
+        userCourthouseId: userCourthouse(state),
+        leaves: getSheriffLeaves(sheriff.id)(state)
     };
 };
 
 const mapDispatchToProps = {
     fetchShifts: getShifts,
+    fetchLeaves: getLeaves
 };
 
 // tslint:disable-next-line:max-line-length

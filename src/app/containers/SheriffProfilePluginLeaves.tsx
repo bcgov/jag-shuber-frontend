@@ -125,21 +125,22 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
                             {fields.map((fieldInstanceName, index) => {
                                 const currentLeave: Partial<Leave> = fields.get(index);
                                 const { id: leaveId, cancelDate, startDate, endDate, leaveTypeCode } = currentLeave;
+                                // if (!currentLeave.isPartial) {
                                 return (
                                     <tr key={index}>
                                         <td>
                                             {!cancelDate && <Field
                                                 name={`${fieldInstanceName}.startDate`}
                                                 component={DateField as any}
-                                                label="Start"
+                                                label="Start Date"
                                             />}
-                                           {cancelDate && moment(startDate).format('MMM D, YYYY')}
+                                            {cancelDate && moment(startDate).format('MMM D, YYYY')}
                                         </td>
                                         <td>
                                             {!cancelDate && <Field
                                                 name={`${fieldInstanceName}.endDate`}
                                                 component={DateField as any}
-                                                label="End"
+                                                label="End Date"
                                             />}
                                             {cancelDate && moment(endDate).format('MMM D, YYYY')}
                                         </td>
@@ -172,12 +173,13 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
                                             {leaveId && cancelDate &&
                                                 <LeaveCancelledPopover leave={currentLeave} />
                                             }
-
                                         </td>
                                     </tr>
                                 );
+                                // } else {
+                                //     return ({});
+                                // }
                             })}
-
                         </tbody>
                         <tfoot>
                             <tr>
@@ -189,6 +191,8 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
                             </tr>
                         </tfoot>
                     </Table>
+
+
                 );
             }}
         />
