@@ -5,6 +5,7 @@ import {
   Collapse
 } from 'react-bootstrap';
 import './Footer.css';
+import AppVersionDisplay from '../AppVersionDisplay';
 
 export interface FooterProps {
   isInitallyCollapsed?: boolean;
@@ -36,6 +37,7 @@ export default class Footer extends React.PureComponent<FooterProps, { isCollaps
               <div style={{backgroundColor: '#003366', height: 5}}/>
             </div>
           </Collapse>
+          <AppVersionDisplay/>
         </div>
       </div>
     );
