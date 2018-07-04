@@ -1,0 +1,16 @@
+.app-version-display{
+    color: #AAAAAA;
+    text-align: center;
+    margin-left: 'auto'; 
+    margin-right: 'auto';
+}
+
+.app-version-display > span{
+    padding-left: 10px;
+    padding-right: 10px;
+    border-right: 1px solid #AAAAAA;
+}
+
+.app-version-display > span:last-of-type{    
+    border-right: none;
+}
