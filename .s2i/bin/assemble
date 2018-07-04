@@ -4,7 +4,7 @@
 # The official nodejs:8-onbuild already run npm install and use different
 # application folder.
 [ -d "/usr/src/app" ] && exit 0
-printenv
+
 set -e
 
 # FIXME: Linking of global modules is disabled for now as it causes npm failures

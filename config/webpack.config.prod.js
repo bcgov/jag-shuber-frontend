@@ -9,8 +9,35 @@ const ManifestPlugin = require('webpack-manifest-plugin');
 const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
+const VersionFile = require('webpack-version-file');
 const paths = require('./paths');
 const getClientEnvironment = require('./env');
+const fs = require('fs');
+const lockfile = require('@yarnpkg/lockfile');
+
+function getVersionFileConfig() {
+  let lockFile = fs.readFileSync('yarn.lock', 'utf8');
+  let lockJson = lockfile.parse(lockFile);
+
+  // Here we go and get the version of the api from the yarn.lock file
+  const apiLockVersionId = Object.keys(lockJson.object).find(k => k.startsWith('jag-shuber-api'))
+  const apiLockVersionObject = lockJson.object[apiLockVersionId];
+  const { resolved: resolvedUrl = '', version: apiVersion = '' } = apiLockVersionObject;
+  const matches = resolvedUrl.match(/(.*\/)(.*)/)
+  const apiHash = matches ? matches[2] : undefined;
+  return {
+    output: './src/app/version.ts',
+    template: './config/version-template.ejs',
+    data: {
+      BUILD_DATE: new Date(),
+      COMMIT_HASH: process.env.OPENSHIFT_BUILD_COMMIT || 'local-build',
+      API_VERSION: apiVersion || 'unknown api version',
+      API_COMMIT_HASH: apiHash || 'unknown api commit'
+    }
+  }
+}
+
+
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -42,7 +69,7 @@ const cssFilename = 'static/css/[name].[contenthash:8].css';
 // To have this structure working with relative paths, we have to use custom options.
 const extractTextPluginOptions = shouldUseRelativeAssetPaths
   ? // Making sure that the publicPath goes back to to build folder.
-    { publicPath: Array(cssFilename.split('/').length).join('../') }
+  { publicPath: Array(cssFilename.split('/').length).join('../') }
   : {};
 
 // This is the production configuration.
@@ -99,7 +126,7 @@ module.exports = {
       '.jsx',
     ],
     alias: {
-      
+
       // Support React Native Web
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
       'react-native': 'react-native-web',
@@ -170,7 +197,7 @@ module.exports = {
             test: /\.(ts|tsx)$/,
             include: paths.appSrc,
             loader: require.resolve('ts-loader')
-          },          
+          },
           // The notation here is somewhat confusing.
           // "postcss" loader applies autoprefixer to our CSS.
           // "css" loader resolves paths in CSS and adds assets as dependencies.
@@ -247,6 +274,7 @@ module.exports = {
     ],
   },
   plugins: [
+    new VersionFile(getVersionFileConfig()),
     // Makes some environment variables available in index.html.
     // The public URL is available as %PUBLIC_URL% in index.html, e.g.:
     // <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
