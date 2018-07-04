@@ -3,17 +3,16 @@ import { createSelector } from 'reselect';
 import * as leaveRequests from './requests';
 import {
     LeaveMap,
-    Leave,
+    // Leave,
     IdType
 } from '../../api/Api';
 import mapToArray from '../../infrastructure/mapToArray';
 
 export const allLeaves = createSelector(
     leaveRequests.leaveMapRequest.getData,
-    (map: LeaveMap = {}): Leave[] => {
-        const list: Leave[] = Object.keys(map).map((k, i) => map[k]);
-        return list;
-    }
+    (map) => mapToArray(map)
+        .sort((a, b) => `${a.startDate}`
+            .localeCompare(`${b.startDate}`))
 );
 
 export const getLeave = (id?: IdType) => (state: RootState) => {
