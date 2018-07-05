@@ -324,34 +324,30 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
                     Validators.required,
                     Validators.isSameOrAfter(l.startDate, 'Start Date')
                 )(l.endDate),
-                startTime: undefined,
-                endTime: undefined,
                 leaveTypeCode: Validators.required(l.leaveTypeCode)
             }
         ));
 
-        // const partialDayErrors = values.partialDay.map(l => (
-        //     {
-        //         startDate: Validators.validateWith(
-        //             Validators.required
-        //         )(l.startDate),
-        //         endDate: undefined, 
-        //         startTime: Validators.validateWith(
-        //             Validators.required,
-        //             Validators.isSameOrBefore(l.endDate, 'End Time')
-        //         )(l.startTime),
-        //         endTime: Validators.validateWith(
-        //             Validators.required,
-        //             Validators.isSameOrAfter(l.startTime, 'Start Time')
-        //         )(l.endTime),
-        //         leaveTypeCode: Validators.required(l.leaveTypeCode)
-        //     }
-        // ));
+        const partialDayErrors = values.partialDay.map(l => (
+            {
+                startDate: Validators.validateWith(
+                    Validators.required
+                )(l.startDate),
+                startTime: Validators.validateWith(
+                    Validators.required,
+                    Validators.isSameOrBefore(l.endDate, 'End Time')
+                )(l.startTime),
+                endTime: Validators.validateWith(
+                    Validators.required,
+                    Validators.isSameOrAfter(l.startTime, 'Start Time')
+                )(l.endTime),
+                leaveTypeCode: Validators.required(l.leaveTypeCode)
+            }
+        ));
 
-        // const errors = fullDayErrors.concat(partialDayErrors);
+        const errors = {fullDay: fullDayErrors, partialDay: partialDayErrors};
 
-        // return errors.length > 0 ? errors : undefined;
-        return fullDayErrors.length > 0 ? fullDayErrors : undefined;
+        return (errors.fullDay.length > 0 || errors.partialDay.length > 0) ? errors : undefined;
     }
 
     fetchData(sheriffId: IdType, dispatch: Dispatch<any>) {
