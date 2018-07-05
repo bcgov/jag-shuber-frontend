@@ -156,6 +156,36 @@
                     "type": "JenkinsPipeline"
                 }
             }
+        },
+        {
+            "kind": "BuildConfig",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "prod-deploy-pipeline",
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "${NAME}"
+                }
+            },
+            "spec": {
+                "runPolicy": "Parallel",
+                "completionDeadlineSeconds": 1800,
+                "triggers": [],
+                "source": {
+                    "type": "Git",
+                    "git": {
+                        "ref": "${GIT_REF}",
+                        "uri": "${GIT_REPO_URL}"
+                    },
+                    "contextDir": "${SOURCE_CONTEXT_DIR}"
+                },
+                "strategy": {
+                    "jenkinsPipelineStrategy": {
+                        "jenkinsfilePath": "Jenkinsfile_Path/Jenkinsfile"
+                    },
+                    "type": "JenkinsPipeline"
+                }
+            }
         }
     ],
     "parameters": [
