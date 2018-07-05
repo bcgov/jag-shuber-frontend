@@ -23,8 +23,7 @@ import {
 import { MapType } from '../api/Api';
 import { doTimeRangesOverlap } from '../infrastructure/TimeRangeUtils';
 import PartialLeavePopover from '../components/PartialLeavePopover';
-// import AlertIcon from '../components/Icons/Alert';
-import { Glyphicon } from 'react-bootstrap';
+import AlertIcon from '../components/Icons/Alert';
 
 interface ConnectedScheduleSummaryProps {
     sheriffId: IdType;
@@ -158,17 +157,7 @@ class ConnectedScheduleSummary extends React.Component<ConnectedScheduleSummaryP
                             <PartialLeavePopover
                                 leave={partialDayLeavesForWeek.find(l => this.getDay(moment(l.startDate)) === day)}
                                 placement={'right'}
-                                icon={<Glyphicon
-                                    className="circle-icon"
-                                    glyph="alert"
-                                    style={{
-                                        borderColor: 'darkorange',
-                                        color: 'darkorange',
-                                        backgroundColor: 'white',
-                                        paddingTop: 2,
-                                        top: 0
-                                    }}
-                                />}
+                                icon={<AlertIcon/>}
                             />
                         );
                     }
