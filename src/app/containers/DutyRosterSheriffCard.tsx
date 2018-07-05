@@ -20,7 +20,8 @@ import CourthouseDisplay from './CourthouseDisplay';
 import SheriffLoanOutIcon from '../components/Icons/SheriffLoanOutIcon';
 import SheriffLoanInIcon from '../components/Icons/SheriffLoanInIcon';
 import { getLeaves } from '../modules/leaves/actions';
-import { getSheriffLeaves } from '../modules/leaves/selectors';
+import { getSheriffFullDayLeaves, getSheriffPartialLeaves } from '../modules/leaves/selectors';
+import PartialLeavePopover from '../components/PartialLeavePopover';
 
 interface ConnectedDutyRosterSheriffCardProps {
     sheriff: Sheriff;
@@ -36,7 +37,8 @@ interface ConnectedDutyRosterSheriffCardStateProps {
     visibleTimeStart: any;
     sheriffLoanMap?: MapType<{ isLoanedIn: boolean, isLoanedOut: boolean }>;
     userCourthouseId?: IdType;
-    leaves: Leave[];
+    fullDayLeaves?: Leave[];
+    partialDayLeaves?: Leave[];
 }
 
 class ConnectedDutyRosterSheriffCard extends React.Component<ConnectedDutyRosterSheriffCardProps
@@ -64,11 +66,18 @@ class ConnectedDutyRosterSheriffCard extends React.Component<ConnectedDutyRoster
     }
 
     isOnLeaveForVisibleDay(): boolean {
-        const { leaves = [], visibleTimeStart } = this.props;
-        const leavesForVisibleDay = 
-            leaves.filter(l => moment(visibleTimeStart).isBetween(l.startDate, l.endDate, 'days', '[]'));
+        const { fullDayLeaves = [], visibleTimeStart } = this.props;
+        const leavesForVisibleDay =
+            fullDayLeaves.filter(l => moment(visibleTimeStart).isBetween(l.startDate, l.endDate, 'days', '[]'));
         return leavesForVisibleDay.length > 0;
-      }
+    }
+
+    partialLeaveForVisibleDay(): Leave | undefined {
+        const { partialDayLeaves = [], visibleTimeStart } = this.props;
+        const leavesForVisibleDay =
+            partialDayLeaves.filter(l => moment(l.startDate).isSame(visibleTimeStart, 'days'));
+        return leavesForVisibleDay.length > 0 ? leavesForVisibleDay[0] : undefined;
+    }
 
     render() {
         const {
@@ -81,7 +90,9 @@ class ConnectedDutyRosterSheriffCard extends React.Component<ConnectedDutyRoster
         const hasShift = shiftTime != '';
         const { isLoanedIn, isLoanedOut } = sheriffLoanMap[id];
         const isOnLeaveForDay = this.isOnLeaveForVisibleDay();
-        const showScheduleDeatils = isLoanedIn || isLoanedOut || hasShift || isOnLeaveForDay;
+        const partialDayLeave = this.partialLeaveForVisibleDay();
+        const isOnLeaveForPartialDay = partialDayLeave !== undefined;
+        const showScheduleDeatils = isLoanedIn || isLoanedOut || hasShift || isOnLeaveForDay || isOnLeaveForPartialDay;
         return (
             <SheriffListCard sheriff={sheriff} disabled={!hasShift} >
                 <div
@@ -95,6 +106,7 @@ class ConnectedDutyRosterSheriffCard extends React.Component<ConnectedDutyRoster
                         {isLoanedIn && <SheriffLoanInIcon />}
                         {isLoanedOut && <SheriffLoanOutIcon />}
                         <span style={{ marginLeft: 8, position: 'relative', bottom: 8 }}>
+                            {isOnLeaveForPartialDay && <PartialLeavePopover leave={partialDayLeave}/>}
                             {!isLoanedOut && shiftTime}
                             {isLoanedOut && <CourthouseDisplay id={currentCourthouseId} />}
                             {isOnLeaveForDay && 'On Leave'}
@@ -116,7 +128,8 @@ const mapStateToProps = (state: RootState, { sheriff }: ConnectedDutyRosterSheri
         visibleTimeStart: visibleTime(state).visibleTimeStart,
         sheriffLoanMap: sheriffLoanMapSelecor(state),
         userCourthouseId: userCourthouse(state),
-        leaves: getSheriffLeaves(sheriff.id)(state)
+        fullDayLeaves: getSheriffFullDayLeaves(sheriff.id)(state),
+        partialDayLeaves: getSheriffPartialLeaves(sheriff.id)(state)
     };
 };
 

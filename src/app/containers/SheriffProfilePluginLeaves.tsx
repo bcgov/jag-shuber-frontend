@@ -116,8 +116,6 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
         )
     FormComponent = ({ sheriffId }: SheriffProfilePluginProps<SheriffProfilePluginLeavesProps>) => (
         // tslint:disable-next-line:jsx-wrap-multiline
-
-        //return a div that has two field arrays on for partial on for full - could put in component
         <div>
             <FieldArray<Partial<Leave>>
                 name={this.formFieldNames.fullDay}
@@ -221,6 +219,7 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
                             <tbody>
                                 {fields.map((fieldInstanceName, index) => {
                                     const currentLeave: Partial<Leave> = fields.get(index);
+                                    // tslint:disable-next-line:max-line-length
                                     const { id: leaveId, cancelDate, startDate, startTime, endTime, leaveTypeCode } = currentLeave;
                                     return (
                                         <tr key={index}>
@@ -236,10 +235,12 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
                                                 {!cancelDate && <Field
                                                     name={`${fieldInstanceName}.startTime`}
                                                     component={
-                                                        (p) => 
-                                                            <TimePickerField 
-                                                                {...p} 
+                                                        (p) =>
+                                                            <TimePickerField
+                                                                {...p}
                                                                 nullTimeLabel={'Start'}
+                                                                timeIncrement={30}
+                                                                style={{ width: 780 }}
                                                             />
                                                     }
                                                     label="Start Time"
@@ -250,11 +251,12 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
                                                 {!cancelDate && <Field
                                                     name={`${fieldInstanceName}.endTime`}
                                                     component={
-                                                        (p) => 
-                                                            <TimePickerField 
-                                                                {...p} 
+                                                        (p) =>
+                                                            <TimePickerField
+                                                                {...p}
                                                                 nullTimeLabel={'End'}
-                                                                timeIncrement={60}
+                                                                timeIncrement={30}
+                                                                style={{ width: 780 }}
                                                             />
                                                     }
                                                     label="End Time"
@@ -311,8 +313,7 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
         </div>
     )
 
-    // values will be shape of object in props values.partialDays.map values.fullDays.map
-    validate(values: SheriffProfilePluginLeavesProps = {fullDay: [], partialDay: []}): FormErrors | undefined {
+    validate(values: SheriffProfilePluginLeavesProps = { fullDay: [], partialDay: [] }): FormErrors | undefined {
         const fullDayErrors = values.fullDay.map(l => (
             {
                 startDate: Validators.validateWith(
@@ -323,8 +324,8 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
                     Validators.required,
                     Validators.isSameOrAfter(l.startDate, 'Start Date')
                 )(l.endDate),
-                startTime: undefined, 
-                endTime: undefined, 
+                startTime: undefined,
+                endTime: undefined,
                 leaveTypeCode: Validators.required(l.leaveTypeCode)
             }
         ));
@@ -366,8 +367,8 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
 
     async onSubmit(sheriffId: IdType, formValues: any, dispatch: Dispatch<any>): Promise<Leave[]> {
         const data = this.getDataFromFormValues(formValues);
-        const partialLeaves = data.partialDay.map(pl => ({...pl, sheriffId, isPartial: true}));
-        const fullLeaves = data.fullDay.map(fl => ({...fl, sheriffId, isPartial: false}));
+        const partialLeaves = data.partialDay.map(pl => ({ ...pl, sheriffId, isPartial: true }));
+        const fullLeaves = data.fullDay.map(fl => ({ ...fl, sheriffId, isPartial: false }));
         return await dispatch(createOrUpdateLeaves(partialLeaves.concat(fullLeaves), { toasts: {} }));
     }
 }

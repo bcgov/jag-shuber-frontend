@@ -3,7 +3,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { getSheriffShifts } from '../modules/shifts/selectors';
-import { getSheriffLeaves } from '../modules/leaves/selectors';
+import { getSheriffFullDayLeaves, getSheriffPartialLeaves } from '../modules/leaves/selectors';
 import { getShifts } from '../modules/shifts/actions';
 import { getLeaves } from '../modules/leaves/actions';
 import {
@@ -22,6 +22,9 @@ import {
 } from '../api';
 import { MapType } from '../api/Api';
 import { doTimeRangesOverlap } from '../infrastructure/TimeRangeUtils';
+import PartialLeavePopover from '../components/PartialLeavePopover';
+// import AlertIcon from '../components/Icons/Alert';
+import { Glyphicon } from 'react-bootstrap';
 
 interface ConnectedScheduleSummaryProps {
     sheriffId: IdType;
@@ -35,7 +38,8 @@ interface ConnectedScheduleSummaryDispatchProps {
 }
 
 interface ConnectedScheduleSummaryStateProps {
-    leaves: Leave[];
+    fullDayLeaves: Leave[];
+    partialDayLeaves: Leave[];
     shifts: Shift[];
     sheriffLoanMap?: MapType<{ isLoanedIn: boolean, isLoanedOut: boolean }>;
 }
@@ -71,21 +75,24 @@ class ConnectedScheduleSummary extends React.Component<ConnectedScheduleSummaryP
 
     createWeekStatus() {
         const {
-            leaves,
+            fullDayLeaves = [],
             shifts,
             visibleTimeStart,
             visibleTimeEnd,
             sheriffLoanMap = {},
-            sheriffId
+            sheriffId,
+            partialDayLeaves = []
         } = this.props;
 
         const { isLoanedIn, isLoanedOut } = sheriffLoanMap[sheriffId];
         const today = moment().format('dddd').toLowerCase();
-        const leavesForWeek = leaves
+        const fullDayLeavesForWeek = fullDayLeaves
             .filter(l => doTimeRangesOverlap(
                 { startTime: moment(l.startDate).toISOString(), endTime: moment(l.endDate).toISOString() },
                 { startTime: moment(visibleTimeStart).toISOString(), endTime: moment(visibleTimeEnd).toISOString() })
             );
+        const partialDayLeavesForWeek = partialDayLeaves
+            .filter(l => moment(l.startDate).isBetween(visibleTimeStart, visibleTimeEnd, 'days', '[]'));
         const shiftsForWeek = shifts
             .filter(s => moment(s.startDateTime).isBetween(visibleTimeStart, visibleTimeEnd, 'days', '[]'));
 
@@ -101,12 +108,12 @@ class ConnectedScheduleSummary extends React.Component<ConnectedScheduleSummaryP
             weekStatus[today] = StatusEnum.LOANED_IN;
         }
 
-        leavesForWeek.forEach(leave => {
+        fullDayLeavesForWeek.forEach(leave => {
             weekStatus.monday =
-                this.isDayDuringLeave(moment(visibleTimeStart), leave) 
+                this.isDayDuringLeave(moment(visibleTimeStart), leave)
                     ? StatusEnum.BAD : StatusEnum.EMPTY;
             weekStatus.tuesday =
-                this.isDayDuringLeave(moment(visibleTimeStart).add(1, 'day'), leave) 
+                this.isDayDuringLeave(moment(visibleTimeStart).add(1, 'day'), leave)
                     ? StatusEnum.BAD : StatusEnum.EMPTY;
             weekStatus.wednesday =
                 this.isDayDuringLeave(moment(visibleTimeStart).add(2, 'day'), leave)
@@ -117,6 +124,11 @@ class ConnectedScheduleSummary extends React.Component<ConnectedScheduleSummaryP
             weekStatus.friday =
                 this.isDayDuringLeave(moment(visibleTimeStart).add(4, 'day'), leave)
                     ? StatusEnum.BAD : StatusEnum.EMPTY;
+        });
+
+        partialDayLeavesForWeek.forEach(leave => {
+            let day = this.getDay(moment(leave.startDate));
+            weekStatus[day] = StatusEnum.WARNING;
         });
 
         shiftsForWeek.forEach(shift => {
@@ -132,9 +144,37 @@ class ConnectedScheduleSummary extends React.Component<ConnectedScheduleSummaryP
     }
 
     render() {
+        const { partialDayLeaves, visibleTimeEnd, visibleTimeStart } = this.props;
+        const partialDayLeavesForWeek = partialDayLeaves
+            .filter(l => moment(l.startDate).isBetween(visibleTimeStart, visibleTimeEnd, 'days', '[]'));
 
         return (
-            <ScheduleSummary weekStatus={this.createWeekStatus()} />
+            <ScheduleSummary
+                weekStatus={this.createWeekStatus()}
+                StatusRenderComponent={(props) => {
+                    const { day, status } = props;
+                    if (status === StatusEnum.WARNING) {
+                        return (
+                            <PartialLeavePopover
+                                leave={partialDayLeavesForWeek.find(l => this.getDay(moment(l.startDate)) === day)}
+                                placement={'right'}
+                                icon={<Glyphicon
+                                    className="circle-icon"
+                                    glyph="alert"
+                                    style={{
+                                        borderColor: 'darkorange',
+                                        color: 'darkorange',
+                                        backgroundColor: 'white',
+                                        paddingTop: 2,
+                                        top: 0
+                                    }}
+                                />}
+                            />
+                        );
+                    }
+                    return (<ScheduleSummary.DefaultRenderer {...props} />);
+                }}
+            />
         );
     }
 
@@ -145,7 +185,8 @@ const mapStateToProps = (state: RootState, { sheriffId }: ConnectedScheduleSumma
     return {
         ...currentVisibleTime,
         shifts: getSheriffShifts(sheriffId)(state),
-        leaves: getSheriffLeaves(sheriffId)(state),
+        fullDayLeaves: getSheriffFullDayLeaves(sheriffId)(state),
+        partialDayLeaves: getSheriffPartialLeaves(sheriffId)(state),
         sheriffLoanMap: sheriffLoanMapSelector(state)
     };
 };

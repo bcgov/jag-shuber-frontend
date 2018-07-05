@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import './ScheduleSummary.css';
 import AssignedIcon from '../Icons/Assigned';
 import UnavailableIcon from '../Icons/Unavailable';
@@ -25,9 +25,16 @@ export interface ScheduleSummaryProps {
         friday?: StatusEnum;
         saturday?: StatusEnum;
     };
+    StatusRenderComponent?: React.ComponentType<StatusRendererProps>;
 }
-export default class ScheduleSummary extends React.PureComponent<ScheduleSummaryProps, {}> {
-    getDayInfo(status: StatusEnum, day: string) {
+
+interface StatusRendererProps {
+    status: StatusEnum;
+    day: string;
+}
+class DefaultStatusRenderer extends React.Component<StatusRendererProps>{
+    render() {
+        const { status, day } = this.props;
         switch (status) {
             case StatusEnum.GOOD:
                 return (
@@ -55,16 +62,23 @@ export default class ScheduleSummary extends React.PureComponent<ScheduleSummary
                 );
         }
     }
+}
+
+export default class ScheduleSummary extends React.PureComponent<ScheduleSummaryProps, {}> {
+    static DefaultRenderer = DefaultStatusRenderer;
 
     render() {
 
-        const { weekStatus } = this.props;
+        const { 
+            weekStatus,
+            StatusRenderComponent = ScheduleSummary.DefaultRenderer 
+        } = this.props;
         const dayStatus = Object.keys(weekStatus).map(key => ({ key, status: weekStatus[key] }));
 
         return (
             <div className="schedule-summary-week" >
                 {dayStatus.map(({ status, key }) => (
-                    this.getDayInfo(status, key)
+                    <StatusRenderComponent status={status} day={key} />
                 ))}
             </div>
         );

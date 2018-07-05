@@ -8,6 +8,7 @@ import TimePicker from './TimePicker';
 interface TimePickerFieldProps {
     nullTimeLabel?: string;
     timeIncrement?: number;
+    style?: React.CSSProperties;
 }
 
 export default class TimePickerField extends
@@ -18,7 +19,8 @@ export default class TimePickerField extends
             input: { value, onChange },
             label,
             nullTimeLabel = 'missing time',
-            timeIncrement = 15
+            timeIncrement = 15,
+            style = {}
         } = this.props;
         const selectedTimeDisplay = value ? moment(value).format('HH:mm') : nullTimeLabel;
         const minTime = TimeUtils.getDefaultTimePickerMinTime(moment(value)).toISOString();
@@ -37,7 +39,7 @@ export default class TimePickerField extends
                     noCaret={true}
                     id="time-picker-drop-down"
                 >
-                    <div style={{ width: 1100, padding: 15 }}>
+                    <div style={{ width: 1100, padding: 15, ...style }}>
                         <span style={{fontWeight: 'bold'}}>{label}</span>
                         <TimePicker
                             minTime={minTime}
