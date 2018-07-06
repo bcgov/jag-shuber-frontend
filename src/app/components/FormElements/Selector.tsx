@@ -36,14 +36,14 @@ export default class Selector extends React.PureComponent<SelectorProps> {
             variedLabel = 'Varied',
             isDisabled = false,
             label = '',
-            value
+            value = ''
         } = this.props;
         return (
             <FormControl
                 componentClass="select"
                 value={value}
                 onChange={(v) => this.handleOnChange(v)}
-                disabled={isDisabled}
+                disabled={isDisabled}                
             >
                 {!allowNone &&
                     <option disabled={true} selected={value === ''} value="">{`Select ${label}`}</option>}
