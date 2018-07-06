@@ -12,6 +12,7 @@ export {
 const nestedReducer = new NestedReducer([
   shiftRequests.shiftMapRequest.reducer,
   shiftRequests.createShiftRequest.reducer,
+  shiftRequests.createShiftsRequest.reducer,
   shiftRequests.updateMultipleShiftsRequest.reducer,
   shiftRequests.deleteShiftRequest.reducer,
   shiftRequests.copyShiftsFromPrevWeek.reducer,
