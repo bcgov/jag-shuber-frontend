@@ -16,13 +16,13 @@ export default class PartialLeavePopover extends React.Component<PartialLeavePop
         const { 
             leave = {}, 
             placement = 'left',
-            icon = <Glyphicon style={{ color: 'darkorange', zIndex: 2000 }} glyph="alert" />
+            icon = <Glyphicon style={{ color: 'darkorange', zIndex: 2000}} glyph="alert" />
         } = this.props;
 
         return (
             <Popover
                 trigger={icon}
-                title={'On Leave for Part of Day'}
+                title={'Leave - Partial Day'}
                 placement={placement}
                 displayValue={
                     <span>

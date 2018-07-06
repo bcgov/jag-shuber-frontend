@@ -106,7 +106,8 @@ class ConnectedDutyRosterSheriffCard extends React.Component<ConnectedDutyRoster
                         {isLoanedIn && <SheriffLoanInIcon />}
                         {isLoanedOut && <SheriffLoanOutIcon />}
                         <span style={{ marginLeft: 8, position: 'relative', bottom: 8 }}>
-                            {isOnLeaveForPartialDay && <PartialLeavePopover leave={partialDayLeave}/>}
+                            {isOnLeaveForPartialDay && 
+                                <span style={{marginRight: 5}}><PartialLeavePopover leave={partialDayLeave}/></span>}
                             {!isLoanedOut && shiftTime}
                             {isLoanedOut && <CourthouseDisplay id={currentCourthouseId} />}
                             {isOnLeaveForDay && 'On Leave'}
