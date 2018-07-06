@@ -30,7 +30,6 @@ import {
 import MockApi from './Mock/MockApi';
 import { SubmissionError } from 'redux-form';
 
-
 export function extractWorksectionCode(workSectionCodePath: string): WorkSectionCode {
     const code = `${workSectionCodePath}`.split('/').slice(-1)[0] as any;
     return code !== '' ? code : 'OTHER';
@@ -81,7 +80,7 @@ export default class Client implements API {
 
     private _client: ShuberApi.Client;
     private _courthouseId: string;
-    private _mockApi: MockApi;
+    private _mockApi: MockApi = new MockApi();
 
     constructor(baseUrl: string = '/') {
         this._client = new ShuberApiClient(baseUrl);
@@ -89,7 +88,7 @@ export default class Client implements API {
             req.set('TOKEN', 'TESTING');
             return req;
         };
-        this._mockApi = new MockApi();
+        this._mockApi.init();
     }
 
     get isCourthouseSet() {
@@ -257,24 +256,21 @@ export default class Client implements API {
     }
 
     getLeaves(): Promise<Leave[]> {
-        console.warn('Using Mock API');
-        return this._mockApi.getLeaves();
+        return this._client.GetLeaves() as Promise<Leave[]>;
     }
 
     createLeave(newLeave: Partial<Leave>): Promise<Leave> {
-        console.warn('Using Mock API');
-        return this._mockApi.createLeave(newLeave);
+        return this._client.CreateLeave(newLeave as any) as Promise<Leave>;
     }
 
     updateLeave(updatedLeave: Leave): Promise<Leave> {
-        console.warn('Using Mock API');
-        return this._mockApi.updateLeave(updatedLeave);
+        return this._client.UpdateLeave(updatedLeave.id, updatedLeave as any) as Promise<Leave>;
     }
 
     getLeaveTypes(): Promise<LeaveTypeCode[]> {
         throw new Error("Method not implemented.");
     }
-    
+
     getLeaveCancelCodes(): Promise<LeaveCancelCode[]> {
         throw new Error("Method not implemented.");
     }
