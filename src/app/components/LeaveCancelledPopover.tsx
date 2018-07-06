@@ -3,6 +3,7 @@ import moment from 'moment';
 import Popover from './Popover';
 import { Glyphicon } from 'react-bootstrap';
 import { Leave } from '../api/Api';
+import LeaveCancelReasonCodeDisplay from '../containers/LeaveCancelReasonCodeDisplay';
 
 export interface LeaveCancelledPopoverProps {
     leave: Partial<Leave>;
@@ -19,7 +20,7 @@ export default class LeaveCancelledPopover extends React.Component<LeaveCancelle
                 displayValue={
                     <span>
                         <b>Date: </b>{moment(leave.cancelDate).format('MMM D, YYYY')}<br />
-                        <b>Reason: </b>{leave.cancelReasonCode}
+                        <b>Reason: </b><LeaveCancelReasonCodeDisplay code={leave.cancelReasonCode}/>
                     </span>
                 }
             />

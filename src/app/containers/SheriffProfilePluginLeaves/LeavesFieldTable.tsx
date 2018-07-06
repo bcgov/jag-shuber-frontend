@@ -7,7 +7,7 @@ import { Leave } from '../../api/Api';
 import { Table, Button, Glyphicon } from 'react-bootstrap';
 import DateField from '../../components/FormElements/DateField';
 import SelectorField from '../../components/FormElements/SelectorField';
-import LeaveTypeSelector from '../LeaveTypeSelector';
+import PersonalLeaveSubCodeSelector from '../PersonalLeaveSubCodeSelector';
 import CancelLeaveButton from '../CancelLeaveButton';
 import LeaveCancelledPopover from '../../components/LeaveCancelledPopover';
 import TimePickerField from '../../components/FormElements/TimePickerField';
@@ -66,7 +66,7 @@ export default class LeavesFieldTable extends React.Component<LeavesFieldTablePr
                     showLabel={false}
                     SelectorComponent={
                         (sp) =>
-                            <LeaveTypeSelector {...sp} />}
+                            <PersonalLeaveSubCodeSelector {...sp} />}
                 />}
                 label="Type"
             />

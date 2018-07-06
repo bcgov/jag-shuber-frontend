@@ -3,10 +3,11 @@ import { Leave } from '../api';
 import { Table } from 'react-bootstrap';
 import moment from 'moment';
 import LeaveCancelledPopover from './LeaveCancelledPopover';
+import LeaveSubCodeDisplay from '../containers/LeaveSubCodeDisplay';
 
 export interface LeavesDisplayProps {
     partialDays: Leave[];
-    fullDays: Leave[]
+    fullDays: Leave[];
 }
 
 export default class LeavesDisplay extends React.PureComponent<LeavesDisplayProps, any> {
@@ -29,7 +30,7 @@ export default class LeavesDisplay extends React.PureComponent<LeavesDisplayProp
                                 <tr key={l.id}>
                                     <td>{moment(l.startDate).format('MMM D, YYYY')}</td>
                                     <td>{moment(l.endDate).format('MMM D, YYYY')}</td>
-                                    <td>{l.leaveTypeCode}</td>
+                                    <td><LeaveSubCodeDisplay subCode={l.leaveSubCode}/></td>
                                     <td>
                                         {l.cancelDate && <LeaveCancelledPopover leave={l} />}
                                     </td>
@@ -57,7 +58,7 @@ export default class LeavesDisplay extends React.PureComponent<LeavesDisplayProp
                                     <td>{moment(l.startDate).format('MMM D, YYYY')}</td>
                                     <td>{moment(l.startTime).format('HH:mm')}</td>
                                     <td>{moment(l.endTime).format('HH:mm')}</td>
-                                    <td>{l.leaveTypeCode}</td>
+                                    <td><LeaveSubCodeDisplay subCode={l.leaveSubCode}/></td>
                                     <td>
                                         {l.cancelDate && <LeaveCancelledPopover leave={l} />}
                                     </td>
