@@ -6,7 +6,7 @@ import {
 } from './common';
 import {
     Sheriff
-} from '../../api/index';
+} from '../../api';
 import GetEntityMapRequest from '../../infrastructure/Requests/GetEntityMapRequest';
 import CreateEntityRequest from '../../infrastructure/Requests/CreateEntityRequest';
 import UpdateEntityRequest from '../../infrastructure/Requests/UpdateEntityRequest';

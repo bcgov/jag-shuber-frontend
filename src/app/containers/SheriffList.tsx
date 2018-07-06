@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
   Sheriff, IdType
-} from '../api/index';
+} from '../api';
 import { RootState } from '../store';
 import { getSheriffList } from '../modules/sheriffs/actions';
 import {

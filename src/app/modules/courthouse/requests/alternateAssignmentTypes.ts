@@ -6,7 +6,7 @@ import {
 } from '../common';
 import {
     AlternateAssignment
-} from '../../../api/index';
+} from '../../../api';
 import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRequest';
 
 class AlternateAssignmentTypeMapRequest

@@ -3,7 +3,7 @@ import {
   IActionPayload,
   IAction
 } from './actions';
-import api from '../../api/index';
+import api from '../../api';
 import Client from '../../api/Client';
 import { ReducersMapObject } from 'redux';
 import { addReducerToMap } from '../../infrastructure/reduxUtils';

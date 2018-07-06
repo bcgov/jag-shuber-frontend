@@ -6,7 +6,7 @@ import {
 } from '../common';
 import {
     Run
-} from '../../../api/index';
+} from '../../../api';
 import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRequest';
 
 class RunMapRequest extends GetEntityMapRequest<void, Run, CourthouseModuleState> {

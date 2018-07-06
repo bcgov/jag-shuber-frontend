@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
-import { Assignment } from '../api/index';
+import { Assignment } from '../api';
 import {
   allAssignments,
   isLoadingAssignments

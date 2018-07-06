@@ -1,4 +1,4 @@
-import * as ShuberApi from 'jag-shuber-api';
+import * as ShuberApi from 'jag-shuber-api/dist/client';
 import moment from 'moment';
 import {
     API,

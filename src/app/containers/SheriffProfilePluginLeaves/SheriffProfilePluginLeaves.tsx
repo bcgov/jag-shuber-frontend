@@ -20,7 +20,7 @@ import {
 import LeavesDisplay from '../../components/LeavesDisplay';
 import * as Validators from '../../infrastructure/Validators';
 import LeavesFieldTable from './LeavesFieldTable';
-import { toTimeString } from '../../../../node_modules/jag-shuber-api/dist/client';
+import { toTimeString } from 'jag-shuber-api/dist/client';
 
 export interface SheriffProfilePluginLeavesProps {
     partialDay: Leave[];

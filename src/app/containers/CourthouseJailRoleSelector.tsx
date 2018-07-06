@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
-import { JailRole } from '../api/index';
+import { JailRole } from '../api';
 import { allJailRoles } from '../modules/courthouse/selectors';
 import Selector, { SelectorProps } from '../components/FormElements/Selector';
 

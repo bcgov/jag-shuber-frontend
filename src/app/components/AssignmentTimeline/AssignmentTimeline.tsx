@@ -6,7 +6,7 @@ import {
 import {
     Assignment,
     AssignmentDuty
-} from '../../api/index';
+} from '../../api';
 import toTitleCase from '../../infrastructure/toTitleCase';
 import AssignmentDutyCard from '../AssignmentDutyCard/AssignmentDutyCard';
 import { ensureMoment } from '../../infrastructure/momentUtils';

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { default as AssignmentDutyCreateForm } from '../containers/AssignmentDutyCreateForm';
+import { default as AssignmentDutyCreateForm } from './AssignmentDutyCreateForm';
 import {
     Button,
     Glyphicon

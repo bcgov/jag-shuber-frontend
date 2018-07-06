@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
-import { Courtroom } from '../api/index';
+import { Courtroom } from '../api';
 import { allCourtrooms } from '../modules/courthouse/selectors';
 import Selector, { SelectorProps } from '../components/FormElements/Selector';
 
