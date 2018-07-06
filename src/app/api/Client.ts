@@ -24,7 +24,7 @@ import {
     ShiftUpdates,
     SheriffRank,
     DateRange,
-    LeaveTypeCode,
+    LeaveSubCode,
     LeaveCancelCode
 } from './Api';
 import MockApi from './Mock/MockApi';
@@ -271,7 +271,7 @@ export default class Client implements API {
         return this._mockApi.updateLeave(updatedLeave);
     }
 
-    getLeaveTypes(): Promise<LeaveTypeCode[]> {
+    getLeaveSubCodes(): Promise<LeaveSubCode[]> {
         throw new Error("Method not implemented.");
     }
     

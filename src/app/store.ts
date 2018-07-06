@@ -22,6 +22,10 @@ import { default as scheduleReducer, ScheduleState } from './modules/schedule/re
 import { updateVisibleTime as updateScheduleVisibleTime } from './modules/schedule/actions';
 import { UserState, registerReducer as registerUserReducer } from './modules/user/reducer';
 import { LeaveModuleState, registerReducer as registerLeavesReducer } from './modules/leaves/reducer';
+import {
+    getLeaveCancelCodes,
+    getLeaveSubCodes
+} from './modules/leaves/actions';
 
 export interface ThunkExtra {
     api: API;
@@ -48,7 +52,9 @@ const initialActions: any[] = [
     () => updateTimelineVisibleTime(TimeUtils.getDefaultStartTime(), TimeUtils.getDefaultEndTime()),
     () => updateScheduleVisibleTime(moment().startOf('week').add(1, 'day'), moment().endOf('week').subtract(1, 'day')),
     getSheriffRankCodes,
-    getShifts
+    getShifts,
+    getLeaveCancelCodes,
+    getLeaveSubCodes
 ];
 
 const reducers = {

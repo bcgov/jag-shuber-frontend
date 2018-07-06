@@ -2,14 +2,14 @@ import { RequestActionState } from '../../infrastructure/Requests/RequestActionB
 import {
     Leave,
     LeaveCancelCode,
-    LeaveTypeCode,
+    LeaveSubCode,
     MapType
 
 } from '../../api/Api';
 
 export interface LeaveModuleState {
     leaveMap?: RequestActionState<MapType<Leave>>;
-    leaveTypeMap?: RequestActionState<MapType<LeaveTypeCode>>;
+    leaveSubCodeMap?: RequestActionState<MapType<LeaveSubCode>>;
     leaveCancelCodeMap?: RequestActionState<MapType<LeaveCancelCode>>;
 }
 

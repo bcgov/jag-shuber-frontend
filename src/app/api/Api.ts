@@ -21,7 +21,7 @@ export type AlternateAssignmentMap = MapType<AlternateAssignment>;
 export type DateRange = { startDate?: DateType, endDate?: DateType };
 export type CourthouseMap = MapType<Courthouse>;
 export type SheriffRankCodeMap = MapType<SheriffRank>;
-export type LeaveTypeMap = MapType<LeaveTypeCode>;
+export type LeaveSubCodeMap = MapType<LeaveSubCode>;
 export type LeaveCancelCodeMap = MapType<LeaveCancelCode>;
 
 /* tslint:disable:no-bitwise */
@@ -38,7 +38,6 @@ export enum DaysOfWeek {
 }
 
 /* tslint:enable:no-bitwise */
-
 export namespace DaysOfWeek {
     export function getDisplayValues(value: DaysOfWeek, getIndividualDays: boolean = false): string[] {
         let dayDisplay = displayEnum(DaysOfWeek, value);
@@ -120,6 +119,8 @@ export const DEFAULT_RECURRENCE: DutyRecurrence[] = [
     }
 ];
 
+export const LEAVE_CODE_PERSONAL = 'PERSONAL';
+export const LEAVE_CODE_TRAINING = 'TRAINING';
 export interface SheriffProfile {
     sheriff: Sheriff;
     leaves?: Leave[];
@@ -255,8 +256,9 @@ export interface Leave {
     endTime?: TimeType;
 }
 
-export interface LeaveTypeCode {
+export interface LeaveSubCode {
     code: string;
+    subCode: string;
     description: string;
 }
 
@@ -315,7 +317,7 @@ export interface API {
     getLeaves(): Promise<Leave[]>;
     createLeave(newLeave: Partial<Leave>): Promise<Leave>;
     updateLeave(updatedLeave: Leave): Promise<Leave>;
-    getLeaveTypes(): Promise<LeaveTypeCode[]>;
+    getLeaveSubCodes(): Promise<LeaveSubCode[]>;
     getLeaveCancelCodes(): Promise<LeaveCancelCode[]>;
 
     getCourtrooms(): Promise<Courtroom[]>;

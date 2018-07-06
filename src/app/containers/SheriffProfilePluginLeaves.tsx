@@ -8,7 +8,7 @@ import {
 import { Table, Button, Glyphicon, Alert } from 'react-bootstrap';
 import { FieldArray, Field, FormErrors } from 'redux-form';
 import LeaveCancelReasonSelector from './LeaveCancelReasonSelector';
-import LeaveTypeSelector from './LeaveTypeSelector';
+import LeaveSubCodeSelector from './PersonalLeaveSubCodeSelector';
 import DateField from '../components/FormElements/DateField';
 import { Dispatch } from 'redux';
 import { getLeaves, createOrUpdateLeaves } from '../modules/leaves/actions';
@@ -161,7 +161,7 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
                                                         showLabel={false}
                                                         SelectorComponent={
                                                             (sp) =>
-                                                                <LeaveTypeSelector {...sp} />}
+                                                                <LeaveSubCodeSelector {...sp} />}
                                                     />}
                                                     label="Type"
                                                 />}
@@ -271,7 +271,7 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
                                                         showLabel={false}
                                                         SelectorComponent={
                                                             (sp) =>
-                                                                <LeaveTypeSelector {...sp} />}
+                                                                <LeaveSubCodeSelector {...sp} />}
                                                     />}
                                                     label="Type"
                                                 />}

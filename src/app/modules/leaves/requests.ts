@@ -6,11 +6,11 @@ import {
 } from './common';
 import {
     LeaveMap,
-    LeaveTypeMap,
+    LeaveSubCodeMap,
     LeaveCancelCodeMap,
     Leave,
     MapType,
-    LeaveTypeCode,
+    LeaveSubCode,
     LeaveCancelCode
 } from '../../api/Api';
 import GetEntityMapRequest from '../../infrastructure/Requests/GetEntityMapRequest';
@@ -58,22 +58,22 @@ class CreateOrUpdateLeavesRequest extends CreateOrUpdateEntitiesRequest<Leave, L
 
 export const createOrUpdateLeavesRequest = new CreateOrUpdateLeavesRequest();
 
-class LeaveTypeMapRequest extends GetEntityMapRequest<void, LeaveTypeCode, LeaveModuleState> {
+class LeaveSubCodeMapRequest extends GetEntityMapRequest<void, LeaveSubCode, LeaveModuleState> {
 
-    constructor(config?: RequestConfig<MapType<LeaveTypeCode>>) {
+    constructor(config?: RequestConfig<MapType<LeaveSubCode>>) {
         super({
             namespace: STATE_KEY,
             actionName: 'leaveTypeMap',
             ...config
         });
     }
-    public async doWork(request: void, { api }: ThunkExtra): Promise<LeaveTypeMap> {
-        let leaveTypes = await api.getLeaveTypes();
+    public async doWork(request: void, { api }: ThunkExtra): Promise<LeaveSubCodeMap> {
+        let leaveTypes = await api.getLeaveSubCodes();
         return arrayToMap(leaveTypes, l => l.code);
     }
 }
 
-export const leaveTypeMapRequest = new LeaveTypeMapRequest();
+export const leaveTypeMapRequest = new LeaveSubCodeMapRequest();
 
 class LeaveCancelCodeMapRequest extends GetEntityMapRequest<void, LeaveCancelCode, LeaveModuleState> {
 
