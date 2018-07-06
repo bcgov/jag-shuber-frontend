@@ -8,7 +8,8 @@ import {
     hasSubmitFailed,
     InjectedFormProps,
     SubmissionError,
-    FormErrors
+    FormErrors,
+    reset
 } from 'redux-form';
 import { connect, Dispatch } from 'react-redux';
 import SheriffProfileComponent, { SheriffProfileProps } from '../components/SheriffProfile/SheriffProfile';
@@ -29,15 +30,20 @@ import {
     selectSheriffProfileSection,
     setSheriffProfilePluginSubmitErrors,
 } from '../modules/sheriffs/actions';
-import SheriffProfilePluginLeaves from './SheriffProfilePluginLeaves';
-import { SheriffProfilePlugin } from "../components/SheriffProfile/SheriffProfilePlugin";
+import SheriffProfilePluginLeaves from './SheriffProfilePluginLeaves/SheriffProfilePluginLeaves';
+import { SheriffProfilePlugin } from '../components/SheriffProfile/SheriffProfilePlugin';
 import { toast } from '../components/ToastManager/ToastManager';
 import { RequestActionConfig } from '../infrastructure/Requests/RequestActionBase';
 import { Alert } from 'react-bootstrap';
 import { currentCourthouse } from '../modules/user/selectors';
 import toTitleCase from '../infrastructure/toTitleCase';
 
-async function submitPlugins(sheriffId: string, values: any, dispatch: Dispatch<any>, plugins: SheriffProfilePlugin<any>[] = []) {
+async function submitPlugins(
+    sheriffId: string,
+    values: any,
+    dispatch: Dispatch<any>,
+    plugins: SheriffProfilePlugin<any>[] = []
+) {
     if (sheriffId) {
         // try creating resources catching errors so that we can throw a submission error at the end
         const pluginErrors: FormErrors = {};
@@ -105,14 +111,15 @@ const formConfig: ConfigProps<any, SheriffProfileProps> = {
     form: 'SheriffProfile',
     enableReinitialize: true,
     validate: (values: any, { plugins = [] }) => {
-        return plugins.reduce((errors, plugin) => {
+        const validationErrors = plugins.reduce((errors, plugin) => {
             const pluginValues = values[plugin.name];
             const pluginErrors = plugin.validate(pluginValues);
             if (pluginErrors) {
-                errors[plugin.name] = pluginErrors;
+                errors[plugin.name] = {...pluginErrors};
             }
             return errors;
         }, {} as FormErrors);
+        return {...validationErrors};
     },
     onSubmit: async (values: any, dispatch, { sheriffId, plugins = [] }: SheriffProfileProps) => {
         const { sheriff }: { sheriff: Partial<Sheriff> } = values;
@@ -208,58 +215,59 @@ class SheriffProfileContainer extends React.PureComponent<SheriffProfileContaine
     }
 }
 
+export default class extends
+    connect<SheriffProfileContainerStateProps, SheriffProfileContainerDispatchProps, SheriffProfileProps, RootState>(
+        (state, { sheriffId, plugins = [] }) => {
+            let initialValues: any = {};
+            if (sheriffId) {
+                initialValues = plugins
+                    .map(p => {
+                        const data = p.getData(sheriffId, state);
+                        if (data != undefined) {
+                            const pluginState = {};
+                            pluginState[p.name] = data;
+                            return pluginState;
+                        }
+                        return undefined;
+                    })
+                    .filter(s => s != undefined)
+                    .reduce(
+                        (initValues, val) => {
+                            return { ...initValues, ...val };
+                        },
+                        {
+                            sheriff: getSheriff(sheriffId)(state)
+                        }
+                    );
+            } else {
+                const contextCourthouse = currentCourthouse(state);
+                const initialSheriff: Partial<Sheriff> = {
+                    homeCourthouseId: contextCourthouse,
+                    currentCourthouseId: contextCourthouse
+                };
+                initialValues.sheriff = { ...initialSheriff };
+            }
 
-export default class extends connect<SheriffProfileContainerStateProps, SheriffProfileContainerDispatchProps, SheriffProfileProps, RootState>(
-    (state, { sheriffId, plugins = [] }) => {
-        let initialValues: any = {};
-        if (sheriffId) {
-            initialValues = plugins
-                .map(p => {
-                    const data = p.getData(sheriffId, state);
-                    if (data != undefined) {
-                        const pluginState = {};
-                        pluginState[p.name] = data;
-                        return pluginState;
-                    }
-                    return undefined;
-                })
-                .filter(s => s != undefined)
-                .reduce(
-                    (initValues, val) => {
-                        return { ...initValues, ...val };
-                    },
-                    {
-                        sheriff: getSheriff(sheriffId)(state)
-                    }
-                );
-        } else {
-            const contextCourthouse = currentCourthouse(state);
-            const initialSheriff: Partial<Sheriff> = {
-                homeCourthouseId: contextCourthouse,
-                currentCourthouseId: contextCourthouse
+            return {
+                initialValues,
+                pluginState: { ...initialValues },
+                selectedSection: selectedSheriffProfileSection(state),
+                ...collectPluginErrors(state, formConfig.form, plugins)
             };
-            initialValues.sheriff = { ...initialSheriff };
+        },
+        (dispatch, { sheriffId, plugins = [] }) => {
+            return {
+                initialize: () => {
+                    dispatch(selectSheriffProfileSection());
+                    dispatch(setSheriffProfilePluginSubmitErrors());
+                    plugins.forEach(p => {
+                        p.fetchData(sheriffId, dispatch);
+                    });
+                },
+                onSelectSection: (sectionName) => dispatch(selectSheriffProfileSection(sectionName))
+            };
         }
-
-        return {
-            initialValues,
-            selectedSection: selectedSheriffProfileSection(state),
-            ...collectPluginErrors(state, formConfig.form, plugins)
-        };
-    },
-    (dispatch, { sheriffId, plugins = [] }) => {
-        return {
-            initialize: () => {
-                dispatch(selectSheriffProfileSection());
-                dispatch(setSheriffProfilePluginSubmitErrors());
-                plugins.forEach(p => {
-                    p.fetchData(sheriffId, dispatch);
-                });
-            },
-            onSelectSection: (sectionName) => dispatch(selectSheriffProfileSection(sectionName))
-        };
-    }
-)(SheriffProfileContainer as any) {
+    )(SheriffProfileContainer as any) {
     static defaultProps: Partial<SheriffProfileProps & { children?: React.ReactNode }> = {
         plugins: [
             new SheriffProfilePluginHeader(),
@@ -271,4 +279,6 @@ export default class extends connect<SheriffProfileContainerStateProps, SheriffP
     static SubmitButton = (props: Partial<SubmitButtonProps>) => (
         <FormSubmitButton {...props} formName={formConfig.form} />
     )
+
+    static resetAction = () => reset(formConfig.form);
 }
