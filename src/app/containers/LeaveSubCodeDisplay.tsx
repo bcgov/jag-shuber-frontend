@@ -11,7 +11,7 @@ interface LeaveSubCodeDisplayStateProps {
 }
 
 interface LeaveSubCodeDisplayProps {
-    subCode: string;
+    subCode?: string;
 }
 
 class LeaveSubCodeDisplay extends React.PureComponent<
@@ -28,9 +28,9 @@ class LeaveSubCodeDisplay extends React.PureComponent<
 
 // tslint:disable-next-line:max-line-length
 export default connect<LeaveSubCodeDisplayStateProps, {}, LeaveSubCodeDisplayProps, RootState>(
-    (state: RootState, props) => {
+    (state: RootState, {subCode}) => {
         return {
-            leaveSubCode: allLeavesSubCodeMap(state)[props.subCode]
+            leaveSubCode: subCode ? allLeavesSubCodeMap(state)[subCode] : undefined
         };
     },
     {}

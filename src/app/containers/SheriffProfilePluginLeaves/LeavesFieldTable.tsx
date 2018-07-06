@@ -11,7 +11,8 @@ import PersonalLeaveSubCodeSelector from '../PersonalLeaveSubCodeSelector';
 import CancelLeaveButton from '../CancelLeaveButton';
 import LeaveCancelledPopover from '../../components/LeaveCancelledPopover';
 import TimePickerField from '../../components/FormElements/TimePickerField';
-import { fromTimeString, toTimeString } from 'jag-shuber-api/dist/client';
+import { fromTimeString, toTimeString } from '../../../../node_modules/jag-shuber-api/dist/client';
+import LeaveSubCodeDisplay from '../LeaveSubCodeDisplay';
 
 export interface ColumnRendererProps {
     index: number;
@@ -73,9 +74,7 @@ export default class LeavesFieldTable extends React.Component<LeavesFieldTablePr
             />
         ),
         CanceledRender: ({ leave }) => (
-            <span>
-                {leave.leaveSubCode}
-            </span>
+            <LeaveSubCodeDisplay subCode={leave.leaveSubCode}/>
         )
     };
 
