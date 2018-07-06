@@ -5,7 +5,6 @@ import {
 } from 'react-bootstrap';
 import ConfirmationModal, { ConnectedConfirmationModalProps } from './ConfirmationModal';
 import { connect } from 'react-redux';
-import SheriffProfile from './SheriffProfile';
 import { Leave } from '../api';
 import LeaveCancelReasonSelector from './LeaveCancelReasonSelector';
 import { getLeave } from '../modules/leaves/selectors';
@@ -22,14 +21,16 @@ interface CancelLeaveButtonStateProps {
 interface CancelLeaveButtonDispatchProps {
     showConfirmationModal: (props: ConnectedConfirmationModalProps<string>) => void;
     cancelLeave: (leave: Leave) => void;
-    resetProfile: () => void;
 }
 
 type CancelButtonCompositProps = CancelLeaveButtonProps & CancelLeaveButtonDispatchProps & CancelLeaveButtonStateProps;
 class CancelLeaveButton extends React.PureComponent<CancelButtonCompositProps> {
 
     async handleCancelLeave(cancelReason?: string) {
-        const { leave, cancelLeave, resetProfile } = this.props;
+        const { 
+            leave, 
+            cancelLeave
+        } = this.props;
         if (cancelReason && leave) {
             const leaveToCancel: Leave = {
                 ...leave,
@@ -38,7 +39,6 @@ class CancelLeaveButton extends React.PureComponent<CancelButtonCompositProps> {
             };
 
             await cancelLeave(leaveToCancel);
-            resetProfile();
         }
 
     }
@@ -79,7 +79,6 @@ export default connect<CancelLeaveButtonStateProps, CancelLeaveButtonDispatchPro
     {
         showConfirmationModal: (props: ConnectedConfirmationModalProps<string>) =>
             ConfirmationModal.ShowAction<string>(props),
-        cancelLeave: (leaveToCancel) => createOrUpdateLeaves([leaveToCancel]),
-        resetProfile: () => SheriffProfile.resetAction()
+        cancelLeave: (leaveToCancel) => createOrUpdateLeaves([leaveToCancel])
     }
 )(CancelLeaveButton);
