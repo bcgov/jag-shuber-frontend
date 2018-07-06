@@ -1,12 +1,11 @@
-import * as React from 'react';
-import { FormFieldWrapperProps } from './FormFieldWrapper';
+import React from 'react';
 import { WORK_SECTIONS } from '../../api';
-import Selector from './Selector';
+import Selector, { SelectorProps } from './Selector';
 
 export interface WorkSectionSelectorProps {
     showVariedOption?: boolean;
 }
-export default class WorkSectionSelector extends React.PureComponent<FormFieldWrapperProps & WorkSectionSelectorProps> {
+export default class WorkSectionSelector extends React.PureComponent<SelectorProps & WorkSectionSelectorProps> {
     render() {
         const { showVariedOption = false } = this.props;
         let data = Object.keys(WORK_SECTIONS)

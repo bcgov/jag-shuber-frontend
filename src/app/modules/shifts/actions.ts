@@ -1,8 +1,7 @@
-import * as shiftRequests from './requests/shifts';
-import * as leaveRequests from './requests/leaves';
+import * as shiftRequests from './requests';
 import { getShift } from './selectors';
 import { 
-    IdType
+    IdType, Shift
 } from '../../api';
 import { ThunkAction } from '../../store';
 
@@ -14,27 +13,27 @@ export const deleteShift = shiftRequests.deleteShiftRequest.actionCreator;
 export const editShift = shiftRequests.updateShiftRequest.actionCreator;
 export const createShifts = shiftRequests.createShiftsRequest.actionCreator;
 
-export const getLeaves = leaveRequests.leaveMapRequest.actionCreator;
-
 type SheriffShiftLink = { sheriffId: IdType, shiftId: IdType };
-export const linkShift: ThunkAction<SheriffShiftLink> =
-    ({ sheriffId, shiftId }: SheriffShiftLink) => (dispatch, getState, extra) => {
+export const linkShift: ThunkAction<SheriffShiftLink, Shift|undefined> =
+    ({ sheriffId, shiftId }: SheriffShiftLink) => async (dispatch, getState, extra) => {
         const shift = getShift(shiftId)(getState());
         if (shift == null) {
-            return;
+            return undefined;
         }
 
         // todo: Warn if shift is already assigned?
-        dispatch(editShift({ ...shift, sheriffId }));
+
+        return await dispatch(editShift({ ...shift, sheriffId }));
     };
 
-export const unlinkShift: ThunkAction<SheriffShiftLink> =
-    ({ sheriffId, shiftId }: SheriffShiftLink) => (dispatch, getState, extra) => {
+export const unlinkShift: ThunkAction<SheriffShiftLink, Shift|undefined> =
+    ({ sheriffId, shiftId }: SheriffShiftLink) => async (dispatch, getState, extra) => {
         const shift = getShift(shiftId)(getState());
         if (shift == null) {
-            return;
+            return undefined;
         }
 
         // todo: Warn if shift is already assigned?
-        dispatch(editShift({ ...shift, sheriffId: undefined }));
+
+        return await dispatch(editShift({ ...shift, sheriffId: undefined }));
     };

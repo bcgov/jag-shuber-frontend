@@ -1,8 +1,8 @@
-import * as React from 'react';
-import { default as SheriffAddModal } from '../containers/SheriffAddModal';
+import React from 'react';
 import SheriffList from '../containers/SheriffList';
 import { Well } from 'react-bootstrap';
 import Page from '../components/Page/Page';
+import SheriffProfileCreateModal from '../containers/SheriffProfileCreateModal';
 
 class ManageSheriffs extends React.PureComponent {
     render() {
@@ -12,7 +12,7 @@ class ManageSheriffs extends React.PureComponent {
                     <Page.Toolbar
                         right={(
                             <div style={{ marginTop: 3 }}>
-                                <SheriffAddModal />
+                                <SheriffProfileCreateModal.ShowButton />                                
                             </div>
                         )}
                     />

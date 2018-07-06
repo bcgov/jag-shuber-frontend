@@ -1,26 +1,26 @@
-import * as React from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { SheriffRank } from '../api/Api';
 import { allSheriffRankCodes } from '../modules/courthouse/selectors';
-import { FormFieldWrapperProps } from '../components/FormElements/FormFieldWrapper';
-import Selector from '../components/FormElements/Selector';
+import Selector, { SelectorProps } from '../components/FormElements/Selector';
 
 interface CourthouseSheriffRankListStateProps {
     sheriffRanks: SheriffRank[];
 }
 
-interface CourthouseSheriffRankListProps extends FormFieldWrapperProps {
-}
-
 class CourthouseSheriffRankList extends React.PureComponent<
-    CourthouseSheriffRankListProps & CourthouseSheriffRankListStateProps> {
+    SelectorProps & CourthouseSheriffRankListStateProps> {
 
     render() {
-        const { sheriffRanks = [], ...restProps } = this.props;
+        const { sheriffRanks = [], label = 'Rank', ...restProps } = this.props;
         const selectorValues = sheriffRanks.map(rank => ({ key: rank.code, value: rank.description }));
         return (
-            <Selector {...restProps} data={selectorValues} />
+            <Selector 
+                data={selectorValues}
+                label={label}
+                {...restProps} 
+            />
         );
     }
 
@@ -33,6 +33,6 @@ const mapStateToProps = (state: RootState) => {
 };
 
 // tslint:disable-next-line:max-line-length
-export default connect<CourthouseSheriffRankListStateProps, {}, CourthouseSheriffRankListProps>(
+export default connect<CourthouseSheriffRankListStateProps, {}, SelectorProps>(
     mapStateToProps
 )(CourthouseSheriffRankList);

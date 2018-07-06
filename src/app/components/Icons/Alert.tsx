@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Glyphicon } from 'react-bootstrap';
 import './Icons.css';
 
@@ -7,7 +7,7 @@ export interface AlertIconProps {
 }
 export default class AlertIcon extends React.PureComponent<AlertIconProps> {
     render() {
-        const { backgroundColor = 'white' } = this.props;
+        const { backgroundColor = 'white', ...rest } = this.props;
         return (
             <Glyphicon
                 className="circle-icon"
@@ -19,6 +19,7 @@ export default class AlertIcon extends React.PureComponent<AlertIconProps> {
                     paddingTop: 2,
                     top: 0
                 }}
+                {...rest}
             />
         );
     }

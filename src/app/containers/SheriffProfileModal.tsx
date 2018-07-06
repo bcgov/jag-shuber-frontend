@@ -1,12 +1,11 @@
-import * as React from 'react';
+import React from 'react';
 import { RootState } from '../store';
 import {
     Modal
 } from 'react-bootstrap';
-import SheriffEditForm from './SheriffEditForm';
-import { 
-    Sheriff, 
-    IdType 
+import {
+    Sheriff,
+    IdType
 } from '../api';
 import { connect } from 'react-redux';
 import { IModalInjectedProps, connectModal } from 'redux-modal';
@@ -14,8 +13,8 @@ import { ConnectedShowModalButton } from './ConnectedShowModalButton';
 import { show as showModal, hide as hideModal } from 'redux-modal';
 import { Button } from 'react-bootstrap';
 import { Glyphicon } from 'react-bootstrap';
-import SheriffProfileDetails from '../components/SheriffProfileDetails';
-import { getSheriff } from '../modules/sheriffs/selectors';
+import { getSheriff } from '../modules/sheriffs/selectors';
+import SheriffProfile from './SheriffProfile';
 
 interface SheriffProfileModalProps {
     sheriffId: IdType;
@@ -30,13 +29,13 @@ export interface SheriffProfileModalDispatchProps {
     showSheriffProfileModal: (sheriffId: IdType, isEditing: boolean) => void;
 }
 
-type CompositeProps = 
+type CompositeProps =
     SheriffProfileModalProps & SheriffProfileModalDispatchProps & SheriffProfileModalStateProps & IModalInjectedProps;
 class SheriffProfileModal extends React.PureComponent<CompositeProps> {
 
     render() {
         const {
-            sheriff, 
+            // sheriff, 
             show,
             handleHide,
             isEditing = false,
@@ -54,32 +53,33 @@ class SheriffProfileModal extends React.PureComponent<CompositeProps> {
                 }}
             >
                 <Modal.Header closeButton={true}>
-                    Sheriff Profile
+                    {isEditing && 'Updating'} Sheriff Profile
                 </Modal.Header>
                 <Modal.Body>
-                    {!isEditing && <Button 
-                        bsStyle="primary" 
-                        style={{float: 'right'}}
+                    {!isEditing && <Button
+                        bsStyle="primary"
+                        style={{ position: 'absolute', right: 15 }}
                         onClick={() => showSheriffProfileModal(sheriffId, true)}
                     >
-                        <Glyphicon glyph="pencil"/>
+                        <Glyphicon glyph="pencil" />
                     </Button>}
-                    {isEditing && 
-                        <SheriffEditForm 
-                            id={sheriff.id} 
-                            onSubmitSuccess={() => showSheriffProfileModal(sheriffId, false)}
-                        />}
-                    {!isEditing && <SheriffProfileDetails sheriff={sheriff}/>}
+                    <SheriffProfile
+                        isEditing={isEditing}
+                        sheriffId={sheriffId}
+                        onSubmitSuccess={() => showSheriffProfileModal(sheriffId, false)}
+                    />
                 </Modal.Body>
-                <Modal.Footer>
-                    {isEditing && 
+                {isEditing &&
+                    <Modal.Footer>
                         <div>
                             <Button onClick={() => showSheriffProfileModal(sheriffId, false)}>
                                 Cancel
                             </Button>
-                            <SheriffEditForm.SubmitButton key="save">Save</SheriffEditForm.SubmitButton>
-                        </div>}
-                </Modal.Footer>
+                            <SheriffProfile.SubmitButton>
+                                Save
+                            </SheriffProfile.SubmitButton>
+                        </div>
+                    </Modal.Footer>}
             </Modal>
         );
     }
@@ -89,17 +89,17 @@ const modalConfig = {
     name: 'SheriffProfileModal'
 };
 
-const showAction = (sheriffId: IdType, isEditing: boolean = false) => (
-    showModal(modalConfig.name, { sheriffId, isEditing })
+const showAction = (sheriffId: IdType, isEditing: boolean = false, sectionName?: string) => (
+    showModal(modalConfig.name, { sheriffId, isEditing, sectionName })
 );
 // Here we extend the Higher Order Component so that we can add on some static
 // members that can be used to hide the modal configuration from consumers
 export default class extends connectModal(modalConfig)(
     connect<SheriffProfileModalStateProps, SheriffProfileModalDispatchProps, SheriffProfileModalProps, RootState>(
-        (state, {sheriffId}) => ({
+        (state, { sheriffId }) => ({
             sheriff: getSheriff(sheriffId)(state) as Sheriff
-        }), 
-        {showSheriffProfileModal: showAction})
+        }),
+        { showSheriffProfileModal: showAction })
         (SheriffProfileModal) as any
 ) {
     static modalName = modalConfig.name;

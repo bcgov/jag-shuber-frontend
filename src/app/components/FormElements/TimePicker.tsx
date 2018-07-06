@@ -87,7 +87,7 @@ export default class TimePicker extends React.Component<TimePickerProps> {
           handle={(p: any) =>
             <HandleWithTooltip
               overlayFormatter={(v) => moment(minTime).add('minutes', v).format('HH:mm')}
-              overlayStyle={{zIndex: 1000}}
+              overlayStyle={{zIndex: 1200}}
               {...p}
             />
           }

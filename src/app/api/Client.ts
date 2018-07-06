@@ -23,11 +23,12 @@ import {
     WorkSectionCode,
     ShiftUpdates,
     SheriffRank,
-    DateRange
+    DateRange,
+    LeaveSubCode,
+    LeaveCancelCode
 } from './Api';
 import MockApi from './Mock/MockApi';
 import { SubmissionError } from 'redux-form';
-
 
 export function extractWorksectionCode(workSectionCodePath: string): WorkSectionCode {
     const code = `${workSectionCodePath}`.split('/').slice(-1)[0] as any;
@@ -76,9 +77,10 @@ class ShuberApiClient extends ShuberApi.Client {
 }
 
 export default class Client implements API {
+
     private _client: ShuberApi.Client;
     private _courthouseId: string;
-    private _mockApi: MockApi;
+    private _mockApi: MockApi = new MockApi();
 
     constructor(baseUrl: string = '/') {
         this._client = new ShuberApiClient(baseUrl);
@@ -86,7 +88,7 @@ export default class Client implements API {
             req.set('TOKEN', 'TESTING');
             return req;
         };
-        this._mockApi = new MockApi();
+        this._mockApi.init();
     }
 
     get isCourthouseSet() {
@@ -105,6 +107,7 @@ export default class Client implements API {
         const sheriffList = (await this._client.GetSheriffs(this.currentCourthouse) as Sheriff[]);
         return sheriffList;
     }
+
     async createSheriff(newSheriff: Sheriff): Promise<Sheriff> {
         const {
             homeCourthouseId = this.currentCourthouse,
@@ -117,6 +120,7 @@ export default class Client implements API {
         });
         return sheriff as Sheriff;
     }
+
     async updateSheriff(sheriffToUpdate: Partial<Sheriff>): Promise<Sheriff> {
         const { id } = sheriffToUpdate;
         if (!id) {
@@ -251,9 +255,34 @@ export default class Client implements API {
         }) as Shift[];
     }
 
-    getLeaves(): Promise<Leave[]> {
-        console.warn('Using Mock API');
-        return this._mockApi.getLeaves();
+    async getLeaves(): Promise<Leave[]> {
+        const leaves = await this._client.GetLeaves();
+        return leaves.map(l => ({
+            ...l,
+            isPartial: l.isPartial === 1
+        } as Leave));
+    }
+
+    createLeave(newLeave: Partial<Leave>): Promise<Leave> {
+        return this._client.CreateLeave({
+            ...newLeave,
+            isPartial: newLeave.isPartial ? 1 : 0
+        } as any) as Promise<Leave>;
+    }
+
+    updateLeave(updatedLeave: Leave): Promise<Leave> {
+        return this._client.UpdateLeave(updatedLeave.id, {
+            ...updatedLeave,
+            isPartial: updatedLeave.isPartial ? 1 : 0
+        } as any) as Promise<Leave>;
+    }
+
+    getLeaveSubCodes(): Promise<LeaveSubCode[]> {
+        return this._client.GetLeaveSubCodes() as Promise<LeaveSubCode[]>;
+    }
+
+    getLeaveCancelCodes(): Promise<LeaveCancelCode[]> {
+        return this._client.GetLeaveCancelReasonCodes() as Promise<LeaveCancelCode[]>;
     }
 
     async getCourthouses(): Promise<Courthouse[]> {

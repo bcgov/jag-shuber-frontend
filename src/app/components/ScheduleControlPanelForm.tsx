@@ -16,6 +16,7 @@ import Selector from '../components/FormElements/Selector';
 import { ConfirmationModal } from './ConfirmationModal';
 import { IdType, ShiftUpdates } from '../api/Api';
 import TimePickerField from './FormElements/TimePickerField';
+import SelectorField from './FormElements/SelectorField';
 
 export interface ScheduleControlPanelFormProps {
     handleSubmit?: () => void;
@@ -31,11 +32,11 @@ export default class ScheduleControlPanelForm extends
     React.Component<ScheduleControlPanelFormProps & InjectedFormProps<{}, ScheduleControlPanelFormProps>, {}> {
 
     static parseUpdateDetailsFromValues(values: any): ShiftUpdates {
-        const {sheriffId, startTime, endTime, workSectionId} = values;
-        
-        return { 
+        const { sheriffId, startTime, endTime, workSectionId } = values;
+
+        return {
             sheriffId: !Selector.isVaried(sheriffId) ? sheriffId : undefined,
-            startTime, 
+            startTime,
             endTime,
             workSectionId: !Selector.isVaried(workSectionId) ? workSectionId : undefined
         } as ShiftUpdates;
@@ -48,29 +49,34 @@ export default class ScheduleControlPanelForm extends
                 <Form onSubmit={handleSubmit} inline={true}>
                     <Field
                         name="sheriffId"
-                        component={(p) => 
-                            <SheriffSelector {...p} showVariedOption={true} isDisabled={canAssignSheriff} />}
+                        component={(p) => <SelectorField
+                            {...p}
+                            SelectorComponent={
+                                (sp) =>
+                                    <SheriffSelector {...sp} showVariedOption={true} isDisabled={canAssignSheriff} />}
+                        />}
                     />
                     <Field
                         name="startTime"
                         component={
-                            (p) => 
-                                <TimePickerField 
-                                    {...p} 
+                            (p) => {
+                                return <TimePickerField
+                                    {...p}
                                     nullTimeLabel={
                                         (selectedShiftIds && selectedShiftIds.length > 0)
                                             ? '--:--' : 'Start'}
                                 />
+                            }
                         }
                         label="Start Time"
                     />
-                    <span style={{color: 'white'}}>&mdash;</span>
+                    <span style={{ color: 'white' }}>&mdash;</span>
                     <Field
                         name="endTime"
                         component={
-                            (p) => 
-                                <TimePickerField 
-                                    {...p} 
+                            (p) =>
+                                <TimePickerField
+                                    {...p}
                                     nullTimeLabel={
                                         (selectedShiftIds && selectedShiftIds.length > 0)
                                             ? '--:--' : 'End'}
@@ -80,7 +86,12 @@ export default class ScheduleControlPanelForm extends
                     />
                     <Field
                         name="workSectionId"
-                        component={(p) => <WorkSectionSelector {...p} showVariedOption={true} />}
+                        component={(p) => <SelectorField
+                            {...p}
+                            SelectorComponent={
+                                (sp) =>
+                                    <WorkSectionSelector {...sp} showVariedOption={true} />}
+                        />}
                     />
                     <ConfirmationModal
                         key="confirmationModal"
@@ -93,10 +104,10 @@ export default class ScheduleControlPanelForm extends
                         message={<p style={{ fontSize: 14 }}>Please confirm that you would like to <b>permanently delete</b> the selected shift(s).</p>}
                         title="Delete Shift(s)"
                     />
-                    <Button className="cancel-button" style={{marginRight: 6}} onClick={() => onClear && onClear()}>
+                    <Button className="cancel-button" style={{ marginRight: 6 }} onClick={() => onClear && onClear()}>
                         Deselect
                     </Button>
-                   <Button className="action-button" onClick={() => onApply && onApply()}>
+                    <Button className="action-button" onClick={() => onApply && onApply()}>
                         Apply <span style={{ paddingTop: 2, fontSize: 10 }}>&#9658;</span>
                     </Button>
                 </Form>

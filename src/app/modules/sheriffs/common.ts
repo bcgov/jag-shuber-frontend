@@ -1,14 +1,20 @@
 import { RequestActionState } from '../../infrastructure/Requests/RequestActionBase';
 import {
     Sheriff,
-    SheriffMap
-} from '../../api/index';
+    SheriffMap,
+    SheriffProfile
+} from '../../api/Api';
+
+export type ErrorMap = { [key: string]: Error | string };
 
 export interface SheriffModuleState {
-    // Assignments
     sheriffMap?: RequestActionState<SheriffMap>;
     createSheriff?: RequestActionState<Sheriff>;
     updateSheriff?: RequestActionState<Sheriff>;
+    createSheriffProfile?: RequestActionState<SheriffProfile>;
+    updateSheriffProfile?: RequestActionState<SheriffProfile>;
+    selectedProfileSection?: string;
+    pluginSubmitErrors?: ErrorMap;
 }
 
 export const STATE_KEY: string = 'sheriffs';

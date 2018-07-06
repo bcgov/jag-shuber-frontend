@@ -19,6 +19,7 @@ import TimeSliderField from './FormElements/TimeSliderField';
 import { getWorkSectionColour } from '../api/utils';
 import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 import SheriffSelector from '../containers/SheriffSelector';
+import SelectorField from './FormElements/SelectorField';
 export interface ScheduleShiftFormProps {
     handleSubmit?: () => void;
     onSubmitSuccess?: () => void;
@@ -88,7 +89,12 @@ export default class ScheduleShiftForm extends
             <div>
                 <Field
                     name="workSectionId"
-                    component={WorkSectionSelector as any}
+                    component={(p) => <SelectorField 
+                        {...p} 
+                        SelectorComponent={
+                            (sp) => 
+                                <WorkSectionSelector {...sp} />}  
+                    />}
                     label="Work Section"
                 />
                 <Field
@@ -111,7 +117,11 @@ export default class ScheduleShiftForm extends
         return (
             <Field
                 name="sheriffId"
-                component={SheriffSelector as any}
+                component={(p) => <SelectorField 
+                    {...p} 
+                    SelectorComponent={
+                        (sp) => <SheriffSelector {...sp} />}  
+                />}
                 label="Sheriff"
             />
         );

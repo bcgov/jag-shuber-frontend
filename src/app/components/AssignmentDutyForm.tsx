@@ -27,6 +27,7 @@ import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 import TextArea from './FormElements/TextArea';
 import { ConfirmationModal } from './ConfirmationModal';
 import * as Validators from '../infrastructure/Validators';
+import SelectorField from './FormElements/SelectorField';
 
 export interface AssignmentDutyFormProps {
     handleSubmit?: () => void;
@@ -137,7 +138,11 @@ export default class AssignmentDutyForm extends
                                             <div style={{ marginTop: 20 }}>
                                                 <Field
                                                     name={`${fieldInstanceName}.sheriffId`}
-                                                    component={SheriffSelector as any}
+                                                    component={(p) => <SelectorField 
+                                                        {...p} 
+                                                        SelectorComponent={
+                                                            (sp) => <SheriffSelector {...sp} />}  
+                                                    />}
                                                     label="Sheriff"
                                                 />
                                                 <Field

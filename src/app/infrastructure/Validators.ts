@@ -1,20 +1,27 @@
+import moment from 'moment';
+import { fromTimeString } from '../../../node_modules/jag-shuber-api/dist/client';
+
 export const VALIDATOR_MESSAGES = {
     INVALID_INTEGER: 'Must be an integer.',
     INVALID_NUMBER: 'Must be a number.',
     REQUIRED_VALUE: 'This is a required field.',
-    INVALID_INTEGER_RANGE: 'Must be an integer between 1 and 50'
+    INVALID_INTEGER_RANGE: 'Must be an integer between 1 and 50',
+    DATE_MUST_BE_BEFORE: 'Must be before',
+    DATE_MUST_BE_AFTER: 'Must be after'
 };
 
-export const required = (value?: any) => value || value === false ? undefined :  VALIDATOR_MESSAGES.REQUIRED_VALUE;
+type Validator = (value: any) => string | undefined;
 
-export const integer = (value: any) => {  
+export const required = (value?: any) => value || value === false ? undefined : VALIDATOR_MESSAGES.REQUIRED_VALUE;
+
+export const integer = (value: any) => {
     let invalidMessage = number(value);
     if (!invalidMessage) {
         const numericValue = Number(value);
         if (Math.floor(numericValue) === numericValue) {
             invalidMessage = undefined;
         } else {
-             invalidMessage = VALIDATOR_MESSAGES.INVALID_INTEGER;
+            invalidMessage = VALIDATOR_MESSAGES.INVALID_INTEGER;
         }
     }
     return invalidMessage;
@@ -38,7 +45,7 @@ export const min1 = minValidator(1);
 
 export const max10 = maxValidator(10);
 
-export const number = (value: any) => { 
+export const number = (value: any) => {
     return value && isNaN(value) ? VALIDATOR_MESSAGES.INVALID_NUMBER : undefined;
 };
 
@@ -47,4 +54,68 @@ export const maxLengthValidator = (maxLengthValue: number) => (
         value && value.length > maxLengthValue ? `Must be fewer than ${maxLengthValue} characters` : undefined
     )
 );
+
 export const maxLength200 = maxLengthValidator(200);
+
+export const isTimeBefore = (otherDateValue: any, otherDateName: string) => {
+    return (dateValue: any) => {
+        if (!fromTimeString(dateValue).isBefore(fromTimeString(otherDateValue))) {
+            return `${VALIDATOR_MESSAGES.DATE_MUST_BE_BEFORE} ${otherDateName}`;
+        }
+        return;
+    };
+};
+
+export const isTimeAfter = (otherDateValue: any, otherDateName: string) => {
+    return (dateValue: any) => {
+        if (!fromTimeString(dateValue).isAfter(fromTimeString(otherDateValue))) {
+            return `${VALIDATOR_MESSAGES.DATE_MUST_BE_BEFORE} ${otherDateName}`;
+        }
+        return;
+    };
+};
+
+
+export const isBefore = (otherDateValue: any, otherDateName: string) => {
+    return (dateValue: any) => {
+        if (!moment(dateValue).isBefore(moment(otherDateValue))) {
+            return `${VALIDATOR_MESSAGES.DATE_MUST_BE_BEFORE} ${otherDateName}`;
+        }
+        return;
+    };
+};
+
+export const isSameOrBefore = (otherDateValue: any, otherDateName: string) => {
+    return (dateValue: any) => {
+        if (!moment(dateValue).isSameOrBefore(moment(otherDateValue))) {
+            return `${VALIDATOR_MESSAGES.DATE_MUST_BE_BEFORE} ${otherDateName}`;
+        }
+        return;
+    };
+};
+
+export const isAfter = (otherDateValue: any, otherDateName: string) => {
+    return (dateValue: any) => {
+        if (!moment(dateValue).isAfter(moment(otherDateValue))) {
+            return `${VALIDATOR_MESSAGES.DATE_MUST_BE_BEFORE} ${otherDateName}`;
+        }
+        return;
+    };
+};
+
+export const isSameOrAfter = (otherDateValue: any, otherDateName: string) => {
+    return (dateValue: any) => {
+        if (!moment(dateValue).isSameOrAfter(moment(otherDateValue))) {
+            return `${VALIDATOR_MESSAGES.DATE_MUST_BE_AFTER} ${otherDateName}`;
+        }
+        return;
+    };
+};
+
+export function validateWith(...validators: Validator[]): Validator {
+    return (value: any) => (
+        validators.map(v => v(value))
+            .filter(m => m != undefined)
+            .join(', ')
+    );
+}

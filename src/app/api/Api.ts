@@ -21,6 +21,8 @@ export type AlternateAssignmentMap = MapType<AlternateAssignment>;
 export type DateRange = { startDate?: DateType, endDate?: DateType };
 export type CourthouseMap = MapType<Courthouse>;
 export type SheriffRankCodeMap = MapType<SheriffRank>;
+export type LeaveSubCodeMap = MapType<LeaveSubCode>;
+export type LeaveCancelCodeMap = MapType<LeaveCancelCode>;
 
 /* tslint:disable:no-bitwise */
 export enum DaysOfWeek {
@@ -36,7 +38,6 @@ export enum DaysOfWeek {
 }
 
 /* tslint:enable:no-bitwise */
-
 export namespace DaysOfWeek {
     export function getDisplayValues(value: DaysOfWeek, getIndividualDays: boolean = false): string[] {
         let dayDisplay = displayEnum(DaysOfWeek, value);
@@ -118,6 +119,12 @@ export const DEFAULT_RECURRENCE: DutyRecurrence[] = [
     }
 ];
 
+export const LEAVE_CODE_PERSONAL = 'PERSONAL';
+export const LEAVE_CODE_TRAINING = 'TRAINING';
+export interface SheriffProfile {
+    sheriff: Sheriff;
+    leaves?: Leave[];
+}
 export interface Sheriff {
     id: IdType;
     firstName: string;
@@ -239,8 +246,26 @@ export interface ShiftCopyOptions {
 export interface Leave {
     id: IdType;
     sheriffId: IdType;
-    date: DateType;
-    leaveCode?: string;
+    leaveCode: string;
+    leaveSubCode: string;
+    startDate: DateType;
+    endDate?: DateType;
+    cancelDate?: DateType;
+    cancelReasonCode?: string;
+    isPartial?: boolean;
+    startTime?: TimeType;
+    endTime?: TimeType;
+}
+
+export interface LeaveSubCode {
+    code: string;
+    subCode: string;
+    description: string;
+}
+
+export interface LeaveCancelCode {
+    code: string;
+    description: string;
 }
 
 export interface Run {
@@ -273,7 +298,7 @@ export interface API {
     createAssignmentDuty(duty: Partial<AssignmentDuty>): Promise<AssignmentDuty>;
     updateAssignmentDuty(duty: Partial<AssignmentDuty>): Promise<AssignmentDuty>;
     deleteAssignmentDuty(dutyId: IdType): Promise<void>;
-    
+
     createSheriffDuty(sheriffDuty: Partial<SheriffDuty>): Promise<SheriffDuty>;
     updateSheriffDuty(sheriffDuty: Partial<SheriffDuty>): Promise<SheriffDuty>;
     deleteSheriffDuty(sheriffDutyId: IdType): Promise<void>;
@@ -291,6 +316,10 @@ export interface API {
 
     // Sheriff Leaves
     getLeaves(): Promise<Leave[]>;
+    createLeave(newLeave: Partial<Leave>): Promise<Leave>;
+    updateLeave(updatedLeave: Leave): Promise<Leave>;
+    getLeaveSubCodes(): Promise<LeaveSubCode[]>;
+    getLeaveCancelCodes(): Promise<LeaveCancelCode[]>;
 
     getCourtrooms(): Promise<Courtroom[]>;
     getRuns(): Promise<Run[]>;

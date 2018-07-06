@@ -109,6 +109,10 @@ body {
   user-select: none; /* Standard */
 }
 
+.modal-medium{
+  width:43%;
+}
+
 .modal-xlarge{
   width:90%;
 }

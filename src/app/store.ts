@@ -21,12 +21,18 @@ import { updateVisibleTime as updateTimelineVisibleTime } from './modules/dutyRo
 import { default as scheduleReducer, ScheduleState } from './modules/schedule/reducer';
 import { updateVisibleTime as updateScheduleVisibleTime } from './modules/schedule/actions';
 import { UserState, registerReducer as registerUserReducer } from './modules/user/reducer';
+import { LeaveModuleState, registerReducer as registerLeavesReducer } from './modules/leaves/reducer';
+import {
+    getLeaveCancelCodes,
+    getLeaveSubCodes
+} from './modules/leaves/actions';
 
 export interface ThunkExtra {
     api: API;
 }
 
-export type ThunkAction<T> = (args?: T) => _ThunkAction<any, RootState, ThunkExtra>;
+export type Thunk<TResponse = void> = _ThunkAction<Promise<TResponse>, RootState, ThunkExtra>;
+export type ThunkAction<TRequest, TResponse = void> = (args?: TRequest) => Thunk<TResponse>;
 
 export interface RootState {
     sheriffs: SheriffModuleState;
@@ -36,17 +42,19 @@ export interface RootState {
     courthouse: CourthouseModuleState;
     schedule: ScheduleState;
     user: UserState;
+    leaves: LeaveModuleState;
 }
 
 const initialActions: any[] = [
     getAlternateAssignmentTypes,
     getJailRoles,
     getCourthouses,
-    () => updateTimelineVisibleTime(
-            TimeUtils.getDefaultStartTime(), TimeUtils.getDefaultEndTime()),
+    () => updateTimelineVisibleTime(TimeUtils.getDefaultStartTime(), TimeUtils.getDefaultEndTime()),
     () => updateScheduleVisibleTime(moment().startOf('week').add(1, 'day'), moment().endOf('week').subtract(1, 'day')),
     getSheriffRankCodes,
-    getShifts
+    getShifts,
+    getLeaveCancelCodes,
+    getLeaveSubCodes
 ];
 
 const reducers = {
@@ -61,6 +69,7 @@ registerShiftReducer(reducers);
 registerAssignmentReducer(reducers);
 registerCourthouseReducer(reducers);
 registerUserReducer(reducers);
+registerLeavesReducer(reducers);
 
 const rootReducer = combineReducers(reducers);
 

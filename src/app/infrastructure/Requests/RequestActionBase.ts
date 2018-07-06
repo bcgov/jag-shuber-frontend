@@ -1,6 +1,6 @@
 import {
-    ThunkAction,
-    ThunkExtra
+    ThunkExtra,
+    Thunk
 } from '../../store';
 import { AnyAction } from 'redux';
 import { Dispatch } from 'react-redux';
@@ -18,25 +18,30 @@ export interface RequestActionState<T> {
     data?: T;
 }
 
+export interface RequestToastConfig<TResponse> {
+    success?: string | ((entity: TResponse) => string);
+    error?: string | ((error: Error | string) => string);
+}
+
 export interface RequestActionConfig<TResponse> {
-    namespace: string;
-    actionName: string;
-    toasts?: {
-        success?: string | ((entity: TResponse) => string);
-        error?: string | ((error: Error | string) => string);
-    };
+    toasts?: RequestToastConfig<TResponse>;
+}
+
+export interface RequestConfig<TResponse> extends RequestActionConfig<TResponse> {
+    namespace?: string;
+    actionName?: string;
 }
 
 export default abstract class RequestAction<TRequest, TResponse, TModuleState extends {}>{
-    protected config: RequestActionConfig<TResponse>;
+    protected config: RequestConfig<TResponse>;
     public actionNames: { begin: string, success: string, fail: string }
     private beginAction: { type: string };
     protected get namespace(): string {
-        return this.config.namespace;
+        return this.config.namespace as string;
     }
 
     protected get actionName(): string {
-        return this.config.actionName;
+        return this.config.actionName as string;
     }
 
     private getFailAction(error: string) {
@@ -47,7 +52,7 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
         return { type: this.actionNames.success, payload: response };
     }
 
-    constructor(config: RequestActionConfig<TResponse>) {
+    constructor(config: RequestConfig<TResponse>) {
         this.config = {
             toasts: {
                 error: 'Error completing action'
@@ -55,6 +60,12 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
             ...config
         };
         const { namespace, actionName } = config;
+        if (namespace == undefined || namespace === '') {
+            throw new Error('namespace must be provided in request config');
+        }
+        if (actionName == undefined || actionName === '') {
+            throw new Error('actionName must be provided in request config');
+        }
         const upperNamespace = namespace.toUpperCase();
         const upperAction = actionName.toUpperCase();
 
@@ -69,28 +80,32 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
 
     public abstract doWork(request: TRequest, extra: ThunkExtra, getState: (() => any)): Promise<TResponse>;
 
-    public actionCreator: ThunkAction<TRequest> = (request: TRequest) => (async (dispatch, getState, extra) => {
-        return new Promise(async (resolve, reject) => {
+    protected _actionCreator(request: TRequest = {} as TRequest, config: RequestActionConfig<TResponse> = {}): Thunk<TResponse> {
+        return (async (dispatch, getState, extra) => {
             this.dispatchBegin(dispatch);
+            let response: TResponse | undefined = undefined;
             try {
-                const response = await this.doWork(request, extra, getState);
-                this.dispatchSuccess(dispatch, response);
-                resolve(response);
+                response = await this.doWork(request, extra, getState);
+                this.dispatchSuccess(dispatch, response, config);
             } catch (error) {
-                this.dispatchFailure(dispatch, error);
-                resolve();
+                this.dispatchFailure(dispatch, error, config);
             }
+            return response as TResponse;
         });
-    })
+    }
+
+    public get actionCreator(): (request?: TRequest, config?: RequestActionConfig<TResponse>) => Thunk<TResponse> {
+        return this._actionCreator.bind(this);
+    }
 
     protected dispatchBegin(dispatch: Dispatch<any>) {
         dispatch(this.beginAction);
     }
 
-    protected dispatchFailure(dispatch: Dispatch<any>, error: Error | string) {
+    protected dispatchFailure(dispatch: Dispatch<any>, error: Error | string, actionConfig: RequestActionConfig<TResponse> = {}) {
         const errorMessage = typeof error === 'string' ? error : error.message;
         dispatch(this.getFailAction(errorMessage));
-        const { toasts = {} } = this.config;
+        const { toasts = {} } = { ...this.config, ...actionConfig };
         if (toasts.error) {
             if (typeof toasts.error === 'string') {
                 toast.error(toasts.error);
@@ -103,9 +118,9 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
         console.error(errorMessage);
     }
 
-    protected dispatchSuccess(dispatch: Dispatch<any>, response: TResponse) {
+    protected dispatchSuccess(dispatch: Dispatch<any>, response: TResponse, actionConfig: RequestActionConfig<TResponse> = {}) {
         dispatch(this.getSuccessAction(response));
-        const { toasts = {} } = this.config;
+        const { toasts = {} } = { ...this.config, ...actionConfig };
         if (toasts.success) {
             if (typeof toasts.success === 'string') {
                 toast.success(toasts.success);
@@ -117,7 +132,6 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
 
     private _reducer(moduleState: TModuleState | undefined, action: AnyAction): TModuleState | undefined {
         let newState = (moduleState || undefined) as TModuleState;
-
         switch (action.type) {
             case this.actionNames.begin:
                 newState = this.reduceBegin(newState, action);

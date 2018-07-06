@@ -1,17 +1,15 @@
-import * as React from 'react';
-import * as moment from 'moment';
+import React from 'react';
+import moment from 'moment';
 import { connect } from 'react-redux';
 import { RootState } from '../../store';
-import {
-    allShifts,
-    allLeaves
-} from '../../modules/shifts/selectors';
+import { allShifts } from '../../modules/shifts/selectors';
+import { getFullDayLeaves, getPartialDayLeaves } from '../../modules/leaves/selectors';
 import {
     getShifts,
     unlinkShift,
     linkShift,
-    getLeaves
 } from '../../modules/shifts/actions';
+import { getLeaves } from '../../modules/leaves/actions';
 import {
     default as ShiftSchedule,
     ShiftScheduleProps
@@ -36,6 +34,7 @@ import {
 } from '../../modules/schedule/actions';
 import { sheriffLoanMap } from '../../modules/sheriffs/selectors';
 import { MapType } from '../../api/Api';
+import PartialLeavePopover from '../../components/PartialLeavePopover';
 
 interface LongTermScheduleProps extends Partial<ShiftScheduleProps> {
     sideBarWidth?: number;
@@ -53,7 +52,8 @@ interface LongTermScheduleDispatchProps {
 
 interface LongTermScheduleStateProps {
     shifts: Shift[];
-    leaves: Leave[];
+    fullDayLeaves: Leave[];
+    partialDayLeaves: Leave[];
     visibleTimeStart: any;
     visibleTimeEnd: any;
     selectedShifts: IdType[];
@@ -74,12 +74,23 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
         fetchLeaves();
     }
 
-    isSheriffOnLeave(sheriffId: IdType, shift: Shift): boolean {
-        const { leaves } = this.props;
-        let leavesForSheriff = leaves.filter(l => l.sheriffId === sheriffId);
+    isSheriffOnFullDayLeave(sheriffId: IdType, shift: Shift): boolean {
+        const { fullDayLeaves } = this.props;
+        let leavesForSheriff = fullDayLeaves.filter(l => l.sheriffId === sheriffId);
         let dateFilteredLeaves = leavesForSheriff.filter(l =>
-            moment(l.date).isBetween(shift.startDateTime, shift.endDateTime, 'days', '[]'));
+            (moment(shift.startDateTime).isBetween(moment(l.startDate), moment(l.endDate), 'days', '[]'))
+            && !l.cancelReasonCode);
         return dateFilteredLeaves.length > 0;
+    }
+
+    sheriffsPartialDayLeave(shift: Shift): Leave | undefined {
+        const { partialDayLeaves } = this.props;
+        let leavesForSheriff = partialDayLeaves.filter(l => l.sheriffId === shift.sheriffId);
+        let dateFilteredLeaves = leavesForSheriff.filter(l =>
+            (moment(l.startDate).isSame(moment(shift.startDateTime), 'days'))
+            && !l.cancelReasonCode);
+
+        return dateFilteredLeaves.length > 0 ? dateFilteredLeaves[0] : undefined;
     }
 
     isSheriffScheduledForDay(sheriffId: IdType, shiftStart: DateType): boolean {
@@ -124,31 +135,38 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
                     shifts={shifts}
                     visibleTimeEnd={visibleTimeEnd}
                     visibleTimeStart={visibleTimeStart}
-                    itemRenderer={(shift) => (
-                        <SheriffDropTarget
-                            style={{
-                                height: '100%',
-                                display: 'flex'
-                            }}
-                            onDropItem={(sheriff) => assignShift({ sheriffId: sheriff.id, shiftId: shift.id })}
-                            canDropItem={(sheriff) =>
-                                !this.isSheriffLoanedOut(sheriff.id)
-                                && !this.isSheriffOnLeave(sheriff.id, shift)
-                                && !this.isSheriffScheduledForDay(sheriff.id, moment(shift.startDateTime))
-                            }
-                            className="shift-card drop-shadow-hover"
-                            onClick={() => this.toggleShiftSelect(shift.id)}
-                        >
-                            <ShiftCard
-                                shift={shift}
-                                isSelected={this.isShiftSelected(shift.id)}
-                                isAssigned={shift.sheriffId != undefined}
+                    itemRenderer={(shift) => {
+                        const partialLeave = this.sheriffsPartialDayLeave(shift);
+                        return (
+                            <SheriffDropTarget
+                                style={{
+                                    height: '100%',
+                                    display: 'flex'
+                                }}
+                                onDropItem={(sheriff) => assignShift({ sheriffId: sheriff.id, shiftId: shift.id })}
+                                canDropItem={(sheriff) =>
+                                    !this.isSheriffLoanedOut(sheriff.id)
+                                    && !this.isSheriffOnFullDayLeave(sheriff.id, shift)
+                                    && !this.isSheriffScheduledForDay(sheriff.id, moment(shift.startDateTime))
+                                }
+                                className="shift-card drop-shadow-hover"
+                                onClick={() => this.toggleShiftSelect(shift.id)}
                             >
-                                <SheriffDisplay sheriffId={shift.sheriffId} />
-                                <div style={{ paddingBottom: 5 }}>{shift.title}</div>
-                            </ShiftCard>
-                        </SheriffDropTarget>
-                    )}
+                                <ShiftCard
+                                    shift={shift}
+                                    isSelected={this.isShiftSelected(shift.id)}
+                                    isAssigned={shift.sheriffId != undefined}
+                                >
+                                    {partialLeave !== undefined && 
+                                        <div style={{ position: 'absolute', top: 0, margin: 5 }}>
+                                            <PartialLeavePopover leave={partialLeave} />
+                                        </div>}
+                                    <SheriffDisplay sheriffId={shift.sheriffId} />
+                                    <div style={{ paddingBottom: 5 }}>{shift.title}</div>
+                                </ShiftCard>
+                            </SheriffDropTarget>
+                        );
+                    }}
                 />
             </div>
         );
@@ -159,7 +177,8 @@ const mapStateToProps = (state: RootState, props: LongTermScheduleProps) => {
     const currentVisibleTime = visibleTime(state);
     return {
         shifts: allShifts(state),
-        leaves: allLeaves(state),
+        fullDayLeaves: getFullDayLeaves(state),
+        partialDayLeaves: getPartialDayLeaves(state),
         ...currentVisibleTime,
         selectedShifts: selectedShiftIds(state),
         loanMap: sheriffLoanMap(state)

@@ -26,12 +26,14 @@ import {
     DaysOfWeek,
     Assignment,
     IdType,
-    AssignmentDuty
+    AssignmentDuty,
+    DutyRecurrence
 } from '../api';
 import TimeSliderField from './FormElements/TimeSliderField';
 import { getWorkSectionColour } from '../api/utils';
 import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 import { ConfirmationModal } from './ConfirmationModal';
+import SelectorField from './FormElements/SelectorField';
 class OtherFields extends React.PureComponent {
     render() {
         return (
@@ -39,7 +41,12 @@ class OtherFields extends React.PureComponent {
                 <Field
                     name="otherAssignCode"
                     label="Assignment"
-                    component={AlternateAssignmentSelector as any}
+                    component={
+                        (p) => <SelectorField 
+                            {...p} 
+                            SelectorComponent={
+                                (sp) => <AlternateAssignmentSelector {...sp} />}  
+                        /> }
                     validate={[Validators.required]}
                 />
             </div>
@@ -53,7 +60,11 @@ class EscortsFields extends React.PureComponent {
             <div>
                 <Field
                     name="runId"
-                    component={RunSelector as any}
+                    component={(p) => <SelectorField 
+                        {...p} 
+                        SelectorComponent={
+                            (sp) => <RunSelector {...sp} />}  
+                    />}
                     label="Assignment"
                     validate={[Validators.required]}
                 />
@@ -68,7 +79,11 @@ class JailFeilds extends React.PureComponent {
             <div>
                 <Field
                     name="jailRoleCode"
-                    component={JailRolesSelector as any}
+                    component={(p) => <SelectorField 
+                        {...p} 
+                        SelectorComponent={
+                            (sp) => <JailRolesSelector {...sp} />}  
+                    />}
                     label="Assignment"
                     validate={[Validators.required]}
                 />
@@ -83,7 +98,11 @@ class CourtSecurityFields extends React.PureComponent {
             <div>
                 <Field
                     name="courtroomId"
-                    component={CourtroomSelector as any}
+                    component={(p) => <SelectorField 
+                        {...p} 
+                        SelectorComponent={
+                            (sp) => <CourtroomSelector label="Home Location" {...sp} />}  
+                    />}
                     label="Courtroom"
                     validate={[Validators.required]}
                 />
@@ -167,26 +186,22 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
 
     static validateForm(values: any) {
         const errors: any = {};
-        let recurrenceArrayErrors: any[] = [];
-        if (values.dutyRecurrences && values.dutyRecurrences.length > 0) {
-            values.dutyRecurrences.forEach((recurrence: any, recurrenceIndex: any) => {
-                if (recurrence) {
-                    const validateSheriffsRequired = (value: any) => (
-                        [Validators.required, Validators.max10, Validators.min1]
-                            .map(v => v(value))
-                            .filter(m => m != undefined)
-                            .join(', ')
-                    );
-                    recurrenceArrayErrors[recurrenceIndex] = {
-                        sheriffsRequired: validateSheriffsRequired(recurrence.sheriffsRequired)
-                    };
+        const { dutyRecurrences = [] }: { dutyRecurrences: DutyRecurrence[] } = values;
+        if (dutyRecurrences.length > 0) {
+            const validateSheriffsRequired = Validators.validateWith(
+                Validators.required,
+                Validators.max10,
+                Validators.min1);
+            const recurrenceArrayErrors = dutyRecurrences.map(dr => (
+                {
+                    sheriffsRequired: validateSheriffsRequired(dr.sheriffsRequired)
                 }
-            });
+            ));
+            if (recurrenceArrayErrors.length) {
+                errors.dutyRecurrences = recurrenceArrayErrors;
+            }
         }
-        if (recurrenceArrayErrors.length) {
-            errors.dutyRecurrences = recurrenceArrayErrors;
-        }
-
+        
         return errors;
     }
 

@@ -31,7 +31,7 @@ import { getForegroundColor } from '../../infrastructure/colorUtils';
 import { visibleTime, dutiesForDraggingSheriff, draggingSheriff } from '../../modules/dutyRoster/selectors';
 import AssignmentDutyEditModal from '../AssignmentDutyEditModal';
 import * as TimeRangeUtils from '../../infrastructure/TimeRangeUtils';
-import ConfirmationModal from '../ConfirmationModal';
+import ConfirmationModal, { ConnectedConfirmationModalProps } from '../ConfirmationModal';
 import SheriffNameDisplay from '../SheriffNameDisplay';
 
 interface DutyRosterTimelineProps extends TimelineProps {
@@ -43,11 +43,7 @@ interface DutyRosterTimelineDispatchProps {
     fetchAssignments: (dateRange: DateRange) => void;
     linkSheriff: (link: { sheriffId: IdType, dutyId: IdType, sheriffDutyId: IdType }) => void;
     showAssignmentDutyEditModal: (id: IdType) => void;
-    showConfirmationModal: (
-        confirmationMessage?: React.ReactNode,
-        confirmBtnLabel?: string,
-        onConfirm?: () => void,
-    ) => void;
+    showConfirmationModal: (props: ConnectedConfirmationModalProps) => void;
 }
 
 interface DutyRosterTimelineStateProps {
@@ -141,12 +137,14 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
         } = this.props;
 
         if (this.isOverlappingSheriffDuties(dutyId, sheriffDutyId)) {
-            const confirmMessage = <h3>Assign {<SheriffNameDisplay id={sheriffId}/>} to overlapping duties?</h3>;
+            const confirmMessage = <h3>Assign {<SheriffNameDisplay id={sheriffId} />} to overlapping duties?</h3>;
             showConfirmationModal(
-                confirmMessage,
-                'OK',
-                // tslint:disable-next-line:no-unused-expression
-                () => { linkSheriff && linkSheriff({ sheriffId, dutyId, sheriffDutyId }); }
+                {
+                    confirmationMessage: confirmMessage,
+                    confirmBtnLabel: 'OK',
+                    // tslint:disable-next-line:no-unused-expression
+                    onConfirm: () => { linkSheriff && linkSheriff({ sheriffId, dutyId, sheriffDutyId }); }
+                }
             );
         } else {
             // tslint:disable-next-line:no-unused-expression
@@ -257,10 +255,6 @@ export default connect<DutyRosterTimelineStateProps, DutyRosterTimelineDispatchP
         fetchAssignmentDuties: getAssignmentDuties,
         linkSheriff: linkAssignment,
         showAssignmentDutyEditModal: (id: IdType) => AssignmentDutyEditModal.ShowAction(id),
-        showConfirmationModal: (
-            confirmationMessage?: React.ReactNode,
-            confirmBtnLabel?: string,
-            onConfirm?: () => void,
-        ) => ConfirmationModal.ShowAction(confirmationMessage, confirmBtnLabel, onConfirm)
+        showConfirmationModal: (props: ConnectedConfirmationModalProps) => ConfirmationModal.ShowAction(props)
     }
 )(DutyRosterTimeline);

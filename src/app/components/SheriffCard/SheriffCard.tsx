@@ -22,7 +22,7 @@ export default class SheriffCard extends React.PureComponent<SheriffCardProps, a
             sheriff: { firstName, lastName, badgeNo, imageUrl, rankCode = '' },
             onClick,
             isLoanedIn = false,
-            isLoanedOut = false
+            isLoanedOut = false,
         } = this.props;
         return (
             <div

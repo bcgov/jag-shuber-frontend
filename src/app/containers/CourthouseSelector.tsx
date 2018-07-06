@@ -3,25 +3,23 @@ import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { Courthouse } from '../api/index';
 import { allCourthouses } from '../modules/courthouse/selectors';
-import { FormFieldWrapperProps } from '../components/FormElements/FormFieldWrapper';
-import Selector from '../components/FormElements/Selector';
+import Selector, { SelectorProps } from '../components/FormElements/Selector';
 
 interface CourthouseSelectorStateProps {
     courthouses?: Courthouse[];
 }
 
-export interface CourthouseSelectorProps extends FormFieldWrapperProps {
-    courthouses?: Courthouse[];
-}
-
-class CourthouseSelector extends React.PureComponent<
-    CourthouseSelectorStateProps & CourthouseSelectorProps> {
+class CourthouseSelector extends React.PureComponent<CourthouseSelectorStateProps & SelectorProps> {
 
     render() {
-        const { courthouses = [], ...restProps } = this.props;
+        const { courthouses = [], label = 'Location', ...rest} = this.props;
         const selectorValues = courthouses.map(courthouse => ({ key: courthouse.id, value: courthouse.name }));
         return (
-            <Selector {...restProps} data={selectorValues} />
+            <Selector 
+                data={selectorValues} 
+                label={label} 
+                {...rest}
+            />
         );
     }
 
@@ -34,6 +32,6 @@ const mapStateToProps = (state: RootState) => {
 };
 
 // tslint:disable-next-line:max-line-length
-export default connect<CourthouseSelectorStateProps, {}, CourthouseSelectorProps>(
+export default connect<CourthouseSelectorStateProps, {}, SelectorProps>(
     mapStateToProps
 )(CourthouseSelector);

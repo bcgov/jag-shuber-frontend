@@ -23,7 +23,7 @@ export interface SheriffListProps {
 }
 
 export interface SheriffListStateProps {
-  sheriffLoanMap?: MapType<{isLoanedIn: boolean, isLoanedOut: boolean}>;
+  sheriffLoanMap?: MapType<{ isLoanedIn: boolean, isLoanedOut: boolean }>;
 }
 
 interface SheriffListDispatchProps {
@@ -54,15 +54,15 @@ class SheriffList extends React.Component<CompositeProps> {
     }
 
     return (
-      <div style={{ display: 'flex', flexFlow: 'row wrap', justifyContent:'center' }}>
+      <div style={{ display: 'flex', flexFlow: 'row wrap', justifyContent: 'center' }}>
         {sheriffs.map(sheriff => (
           <div
             key={sheriff.badgeNo}
           >
             {SheriffRenderer && <SheriffRenderer {...sheriff} />}
-            {!SheriffRenderer && 
-              <SheriffCard 
-                sheriff={sheriff} 
+            {!SheriffRenderer &&
+              <SheriffCard
+                sheriff={sheriff}
                 onClick={() => showSheriffProfileModal(sheriff.id)}
                 isLoanedIn={sheriffLoanMap[sheriff.id].isLoanedIn}
                 isLoanedOut={sheriffLoanMap[sheriff.id].isLoanedOut}

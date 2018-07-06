@@ -3,14 +3,10 @@ import {
     API,
     Sheriff,
     Assignment,
-    // TrainingType,
-    // Courthouse,
     Courtroom,
-    // Region,
     AssignmentDuty,
     IdType,
     Shift,
-    Leave,
     ShiftCopyOptions,
     Run,
     JailRole,
@@ -18,7 +14,10 @@ import {
     SheriffDuty,
     Courthouse,
     ShiftUpdates,
-    SheriffRank
+    SheriffRank,
+    Leave,
+    LeaveSubCode,
+    LeaveCancelCode
 } from '../Api';
 import {
     sheriffList,
@@ -34,6 +33,7 @@ import {
     ALTERNATE_ASSIGNMENTS,
     sheriffShifts,
     sheriffLeaves,
+    // sheriffLeaves,
 } from './MockData';
 import {
     isCourtAssignment,
@@ -61,6 +61,12 @@ function getAssignmentTitle(assignment: Partial<Assignment>): string {
 }
 
 export default class MockClient implements API {
+    getLeaveSubCodes(): Promise<LeaveSubCode[]> {
+        throw new Error("Method not implemented.");
+    }
+    getLeaveCancelCodes(): Promise<LeaveCancelCode[]> {
+        throw new Error("Method not implemented.");
+    }
     getSheriffRankCodes(): Promise<SheriffRank[]> {
         throw new Error("Method not implemented.");
     }
@@ -102,13 +108,13 @@ export default class MockClient implements API {
             if (newStartTime) {
                 const newHours = moment(newStartTime).hour();
                 const newMinutes = moment(newStartTime).minute();
-                
+
                 updatedShift.startDateTime = moment(updatedShift.startDateTime).hour(newHours).minute(newMinutes);
             }
             if (newEndTime) {
                 const newHours = moment(newEndTime).hour();
                 const newMinutes = moment(newEndTime).minute();
-                
+
                 updatedShift.endDateTime = moment(updatedShift.endDateTime).hour(newHours).minute(newMinutes);
             }
         }
@@ -246,7 +252,7 @@ export default class MockClient implements API {
 
     async updateMultipleShifts(shiftIds: IdType[], shiftUpdates: ShiftUpdates): Promise<Shift[]> {
         await randomDelay();
-        
+
         if (!shiftIds) {
             throw new Error('No ID specified');
         }
@@ -331,9 +337,23 @@ export default class MockClient implements API {
     }
 
     async getLeaves(): Promise<Leave[]> {
-        return sheriffLeaves;
+        return Object.keys(sheriffLeaves).map(k => sheriffLeaves[k]);
     }
 
+    createLeave(newLeave: Partial<Leave>): Promise<Leave> {
+        const id = this.getId();
+        const leave = { ...newLeave, id } as Leave;
+        sheriffLeaves[id] = leave;
+        return Promise.resolve({ ...leave });
+    }
+    updateLeave(updatedLeave: Leave): Promise<Leave> {
+        if (updatedLeave.id) {
+            sheriffLeaves[updatedLeave.id] = { ...updatedLeave };
+            return Promise.resolve({ ...updatedLeave });
+        } else {
+            return Promise.reject("No leave id provided");
+        }
+    }
     getCourtrooms(): Promise<Courtroom[]> {
         throw new Error("Method not implemented.");
     }
