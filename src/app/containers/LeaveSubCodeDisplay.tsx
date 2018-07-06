@@ -4,10 +4,10 @@ import { RootState } from '../store';
 import {
     LeaveSubCode
 } from '../api/Api';
-import { allLeaveSubCodes } from '../modules/leaves/selectors';
+import { allLeavesSubCodeMap } from '../modules/leaves/selectors';
 
 interface LeaveSubCodeDisplayStateProps {
-    leaveSubCodes?: LeaveSubCode[];
+    leaveSubCode?: LeaveSubCode;
 }
 
 interface LeaveSubCodeDisplayProps {
@@ -15,26 +15,23 @@ interface LeaveSubCodeDisplayProps {
 }
 
 class LeaveSubCodeDisplay extends React.PureComponent<
-LeaveSubCodeDisplayProps & LeaveSubCodeDisplayStateProps> {
+    LeaveSubCodeDisplayProps & LeaveSubCodeDisplayStateProps> {
 
     render() {
-        const { subCode, leaveSubCodes = []} = this.props;
-        const leaveWithSubCode = leaveSubCodes.find(sc => sc.subCode === subCode);
-        const displayValue = leaveWithSubCode ? leaveWithSubCode.description : 'not selected';
+        const { leaveSubCode } = this.props;
+        const displayValue = leaveSubCode ? leaveSubCode.description : 'not selected';
         return (
-           displayValue
+            displayValue
         );
     }
 }
 
-const mapStateToProps = (state: RootState) => {
-    return {
-        leaveSubCodes: allLeaveSubCodes(state)
-    };
-};
-
 // tslint:disable-next-line:max-line-length
 export default connect<LeaveSubCodeDisplayStateProps, {}, LeaveSubCodeDisplayProps, RootState>(
-    mapStateToProps,
+    (state: RootState, props) => {
+        return {
+            leaveSubCode: allLeavesSubCodeMap(state)[props.subCode]
+        };
+    },
     {}
 )(LeaveSubCodeDisplay);

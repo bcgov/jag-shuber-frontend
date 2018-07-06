@@ -8,7 +8,9 @@ import {
     LEAVE_CODE_TRAINING
 } from '../../api/Api';
 import mapToArray from '../../infrastructure/mapToArray';
+import arrayToMap from '../../infrastructure/arrayToMap';
 
+export const cancelReasonCodesMap = leaveRequests.leaveCancelCodeMapRequest.getData;
 export const allLeaves = createSelector(
     leaveRequests.leaveMapRequest.getData,
     (map) => mapToArray(map)
@@ -64,6 +66,14 @@ export const allLeaveCancelCodes = createSelector(
     (leaveCancelCodes) => mapToArray(leaveCancelCodes).sort((a, b) => a.description.localeCompare(b.description))
 );
 
+export const allLeavesSubCodeMap = createSelector(
+    leaveRequests.leaveTypeMapRequest.getData,
+    (leaveTypes) => {
+        const allSubCodes = leaveTypes[LEAVE_CODE_PERSONAL].concat(leaveTypes[LEAVE_CODE_TRAINING]);
+        return arrayToMap(allSubCodes, lt => lt.subCode);
+    }
+);
+
 export const getAllPersonalLeaveSubCodes = createSelector(
     leaveRequests.leaveTypeMapRequest.getData,
     (leaveTypes) => {
@@ -79,3 +89,4 @@ export const getAllTrainingLeaveSubCodes = createSelector(
             .localeCompare(`${b.description}`)) || [];
     }
 );
+
