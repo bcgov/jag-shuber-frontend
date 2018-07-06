@@ -59,26 +59,23 @@ export const getSheriffFullDayLeaves = (sheriffId?: IdType) => (state: RootState
     return [];
 };
 
-export const allLeaveSubCodes = createSelector(
-    leaveRequests.leaveTypeMapRequest.getData,
-    (leaveTypes) => mapToArray(leaveTypes).sort((a, b) => a.description.localeCompare(b.description))
-);
-
 export const allLeaveCancelCodes = createSelector(
     leaveRequests.leaveCancelCodeMapRequest.getData,
     (leaveCancelCodes) => mapToArray(leaveCancelCodes).sort((a, b) => a.description.localeCompare(b.description))
 );
 
-export const getAllPersonalLeaveSubCodes = (state: RootState) => {
-    if (state) {
-        return allLeaveSubCodes(state).filter(sb => sb.code === LEAVE_CODE_PERSONAL);
+export const getAllPersonalLeaveSubCodes = createSelector(
+    leaveRequests.leaveTypeMapRequest.getData,
+    (leaveTypes) => {
+        return leaveTypes[LEAVE_CODE_PERSONAL].sort((a, b) => `${a.description}`
+            .localeCompare(`${b.description}`)) || [];
     }
-    return [];
-};
+);
 
-export const getAllTrainingLeaveSubCodes = (state: RootState) => {
-    if (state) {
-        return allLeaveSubCodes(state).filter(sb => sb.code === LEAVE_CODE_TRAINING);
+export const getAllTrainingLeaveSubCodes = createSelector(
+    leaveRequests.leaveTypeMapRequest.getData,
+    (leaveTypes) => {
+        return leaveTypes[LEAVE_CODE_TRAINING].sort((a, b) => `${a.description}`
+            .localeCompare(`${b.description}`)) || [];
     }
-    return [];
-};
+);

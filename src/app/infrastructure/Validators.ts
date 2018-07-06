@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { fromTimeString } from '../../../node_modules/jag-shuber-api/dist/client';
 
 export const VALIDATOR_MESSAGES = {
     INVALID_INTEGER: 'Must be an integer.',
@@ -55,6 +56,25 @@ export const maxLengthValidator = (maxLengthValue: number) => (
 );
 
 export const maxLength200 = maxLengthValidator(200);
+
+export const isTimeBefore = (otherDateValue: any, otherDateName: string) => {
+    return (dateValue: any) => {
+        if (!fromTimeString(dateValue).isBefore(fromTimeString(otherDateValue))) {
+            return `${VALIDATOR_MESSAGES.DATE_MUST_BE_BEFORE} ${otherDateName}`;
+        }
+        return;
+    };
+};
+
+export const isTimeAfter = (otherDateValue: any, otherDateName: string) => {
+    return (dateValue: any) => {
+        if (!fromTimeString(dateValue).isAfter(fromTimeString(otherDateValue))) {
+            return `${VALIDATOR_MESSAGES.DATE_MUST_BE_BEFORE} ${otherDateName}`;
+        }
+        return;
+    };
+};
+
 
 export const isBefore = (otherDateValue: any, otherDateName: string) => {
     return (dateValue: any) => {

@@ -7,10 +7,11 @@ import { Leave } from '../../api/Api';
 import { Table, Button, Glyphicon } from 'react-bootstrap';
 import DateField from '../../components/FormElements/DateField';
 import SelectorField from '../../components/FormElements/SelectorField';
-import LeaveTypeSelector from '../LeaveTypeSelector';
+import PersonalLeaveSubCodeSelector from '../PersonalLeaveSubCodeSelector';
 import CancelLeaveButton from '../CancelLeaveButton';
 import LeaveCancelledPopover from '../../components/LeaveCancelledPopover';
 import TimePickerField from '../../components/FormElements/TimePickerField';
+import { fromTimeString, toTimeString } from '../../../../node_modules/jag-shuber-api/dist/client';
 
 export interface ColumnRendererProps {
     index: number;
@@ -56,24 +57,24 @@ export default class LeavesFieldTable extends React.Component<LeavesFieldTablePr
         )
     };
 
-    static LeaveCodeColumn: LeavesFieldTableColumn = {
+    static LeaveSubCodeColumn: LeavesFieldTableColumn = {
         title: 'Type',
         FormRenderer: ({ fieldInstanceName }) => (
             <Field
-                name={`${fieldInstanceName}.leaveTypeCode`}
+                name={`${fieldInstanceName}.leaveSubCode`}
                 component={(p) => <SelectorField
                     {...p}
                     showLabel={false}
                     SelectorComponent={
                         (sp) =>
-                            <LeaveTypeSelector {...sp} />}
+                            <PersonalLeaveSubCodeSelector {...sp} />}
                 />}
                 label="Type"
             />
         ),
         CanceledRender: ({ leave }) => (
             <span>
-                {leave.leaveTypeCode}
+                {leave.leaveSubCode}
             </span>
         )
     };
@@ -103,20 +104,31 @@ export default class LeavesFieldTable extends React.Component<LeavesFieldTablePr
                 <Field
                     name={`${fieldInstanceName}.${fieldName}`}
                     component={
-                        (p) =>
-                            <TimePickerField
-                                {...p}
-                                nullTimeLabel={nullTimeLabel}
-                                timeIncrement={30}
-                                style={{ width: 780 }}
-                            />
+                        (p) => {
+                            return (
+                                <TimePickerField
+                                    {...p}
+                                    nullTimeLabel={nullTimeLabel}
+                                    timeIncrement={30}
+                                    style={{ width: 780 }}
+                                />
+                            )
+                        }
                     }
                     label={label}
+                    format={(val) => {
+                        const newVal = fromTimeString(val);
+                        return newVal;
+                    }}
+                    normalize={(val) => {
+                        const newVal = toTimeString(val);
+                        return newVal;
+                    }}
                 />
             ),
             CanceledRender: ({ leave }) => (
                 <span>
-                    {moment(leave[fieldName]).format('HH:mm')}
+                    {fromTimeString(leave[fieldName]).format('HH:mm')}
                 </span>
             )
         };

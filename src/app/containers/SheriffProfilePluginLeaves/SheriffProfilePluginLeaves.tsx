@@ -1,19 +1,13 @@
 import React from 'react';
-// import moment from 'moment';
-import { IdType, Leave } from '../../api/Api';
+import { IdType, Leave, LEAVE_CODE_PERSONAL } from '../../api/Api';
 import {
     SheriffProfilePluginProps,
     SheriffProfileSectionPlugin
 } from '../../components/SheriffProfile/SheriffProfilePlugin';
 import {
-    // Table,
-    // Button,
-    // Glyphicon,
     Alert
 } from 'react-bootstrap';
 import {
-    // FieldArray,
-    // Field,
     FormErrors
 } from 'redux-form';
 import { Dispatch } from 'redux';
@@ -26,6 +20,7 @@ import {
 import LeavesDisplay from '../../components/LeavesDisplay';
 import * as Validators from '../../infrastructure/Validators';
 import LeavesFieldTable from './LeavesFieldTable';
+import { toTimeString } from '../../../../node_modules/jag-shuber-api/dist/client';
 
 export interface SheriffProfilePluginLeavesProps {
     partialDay: Leave[];
@@ -47,7 +42,7 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
                 columns={[
                     LeavesFieldTable.DateColumn('Start Date', 'startDate'),
                     LeavesFieldTable.DateColumn('End Date', 'endDate'),
-                    LeavesFieldTable.LeaveCodeColumn,
+                    LeavesFieldTable.LeaveSubCodeColumn,
                     LeavesFieldTable.CancelColumn
                 ]}
             />
@@ -57,9 +52,9 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
                 title="Partial Day"
                 columns={[
                     LeavesFieldTable.DateColumn('Date', 'startDate'),
-                    LeavesFieldTable.TimeColumn('Start Time', 'Start', 'startDate'),
-                    LeavesFieldTable.TimeColumn('End Time', 'End', 'endDate'),
-                    LeavesFieldTable.LeaveCodeColumn,
+                    LeavesFieldTable.TimeColumn('Start Time', 'Start', 'startTime'),
+                    LeavesFieldTable.TimeColumn('End Time', 'End', 'endTime'),
+                    LeavesFieldTable.LeaveSubCodeColumn,
                     LeavesFieldTable.CancelColumn
                 ]}
             />
@@ -84,7 +79,7 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
                     Validators.required,
                     Validators.isSameOrAfter(l.startDate, 'Start Date')
                 )(l.endDate),
-                leaveTypeCode: Validators.required(l.leaveTypeCode)
+                leaveSubCode: Validators.required(l.leaveSubCode)
             }
         ));
 
@@ -95,13 +90,13 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
                 )(l.startDate),
                 startTime: Validators.validateWith(
                     Validators.required,
-                    Validators.isSameOrBefore(l.endDate, 'End Time')
+                    Validators.isTimeBefore(l.endTime, 'End Time')
                 )(l.startTime),
                 endTime: Validators.validateWith(
                     Validators.required,
-                    Validators.isSameOrAfter(l.startTime, 'Start Time')
+                    Validators.isTimeAfter(l.startTime, 'Start Time')
                 )(l.endTime),
-                leaveTypeCode: Validators.required(l.leaveTypeCode)
+                leaveSubCode: Validators.required(l.leaveSubCode)
             }
         ));
 
@@ -113,7 +108,7 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
     fetchData(sheriffId: IdType, dispatch: Dispatch<any>) {
         dispatch(getLeaves());
     }
-
+    
     getData(sheriffId: IdType, state: RootState) {
         return {
             partialDay: getSheriffPartialLeaves(sheriffId)(state),
@@ -125,6 +120,12 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
         const data = this.getDataFromFormValues(formValues);
         const partialLeaves = data.partialDay.map(pl => ({ ...pl, sheriffId, isPartial: true }));
         const fullLeaves = data.fullDay.map(fl => ({ ...fl, sheriffId, isPartial: false }));
-        return await dispatch(createOrUpdateLeaves(partialLeaves.concat(fullLeaves), { toasts: {} }));
+        const allLeaves = partialLeaves.concat(fullLeaves).map(l => ({
+            ...l,
+            leaveCode: LEAVE_CODE_PERSONAL,
+            startTime: toTimeString(l.startTime),
+            endTime: toTimeString(l.endTime)
+        }));
+        return await dispatch(createOrUpdateLeaves(allLeaves, { toasts: {} }));
     }
 }
