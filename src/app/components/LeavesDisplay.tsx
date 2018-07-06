@@ -16,6 +16,7 @@ export default class LeavesDisplay extends React.PureComponent<LeavesDisplayProp
         const { fullDays = [], partialDays = [] } = this.props;
         return (
             <div>
+                <h3>Full Day</h3>
                 <Table responsive={true} striped={true} >
                     <thead>
                         <tr>
@@ -41,7 +42,7 @@ export default class LeavesDisplay extends React.PureComponent<LeavesDisplayProp
 
                     </tbody>
                 </Table>
-
+                <h3>Partial Day</h3>
                 <Table responsive={true} striped={true} >
                     <thead>
                         <tr>
