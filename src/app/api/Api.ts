@@ -246,7 +246,8 @@ export interface ShiftCopyOptions {
 export interface Leave {
     id: IdType;
     sheriffId: IdType;
-    leaveTypeCode: string;
+    leaveCode: string;
+    leaveSubCode: string;
     startDate: DateType;
     endDate?: DateType;
     cancelDate?: DateType;
@@ -297,7 +298,7 @@ export interface API {
     createAssignmentDuty(duty: Partial<AssignmentDuty>): Promise<AssignmentDuty>;
     updateAssignmentDuty(duty: Partial<AssignmentDuty>): Promise<AssignmentDuty>;
     deleteAssignmentDuty(dutyId: IdType): Promise<void>;
-    
+
     createSheriffDuty(sheriffDuty: Partial<SheriffDuty>): Promise<SheriffDuty>;
     updateSheriffDuty(sheriffDuty: Partial<SheriffDuty>): Promise<SheriffDuty>;
     deleteSheriffDuty(sheriffDutyId: IdType): Promise<void>;

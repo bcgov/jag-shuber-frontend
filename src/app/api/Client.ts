@@ -255,24 +255,34 @@ export default class Client implements API {
         }) as Shift[];
     }
 
-    getLeaves(): Promise<Leave[]> {
-        return this._client.GetLeaves() as Promise<Leave[]>;
+    async getLeaves(): Promise<Leave[]> {
+        const leaves = await this._client.GetLeaves();
+        return leaves.map(l => ({
+            ...l,
+            isPartial: l.isPartial === 1
+        } as Leave));
     }
 
     createLeave(newLeave: Partial<Leave>): Promise<Leave> {
-        return this._client.CreateLeave(newLeave as any) as Promise<Leave>;
+        return this._client.CreateLeave({
+            ...newLeave,
+            isPartial: newLeave.isPartial ? 1 : 0
+        } as any) as Promise<Leave>;
     }
 
     updateLeave(updatedLeave: Leave): Promise<Leave> {
-        return this._client.UpdateLeave(updatedLeave.id, updatedLeave as any) as Promise<Leave>;
+        return this._client.UpdateLeave(updatedLeave.id, {
+            ...updatedLeave,
+            isPartial: updatedLeave.isPartial ? 1 : 0
+        } as any) as Promise<Leave>;
     }
 
     getLeaveSubCodes(): Promise<LeaveSubCode[]> {
-        throw new Error("Method not implemented.");
+        return this._client.GetLeaveSubCodes() as Promise<LeaveSubCode[]>;
     }
 
     getLeaveCancelCodes(): Promise<LeaveCancelCode[]> {
-        throw new Error("Method not implemented.");
+        return this._client.GetLeaveCancelReasonCodes() as Promise<LeaveCancelCode[]>;
     }
 
     async getCourthouses(): Promise<Courthouse[]> {
