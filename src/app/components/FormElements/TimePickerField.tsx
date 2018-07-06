@@ -1,7 +1,8 @@
 import React from 'react';
+import Measure from 'react-measure';
 import moment from 'moment';
 import { default as FormFieldWrapper, FormFieldWrapperProps } from './FormFieldWrapper';
-import { FormControl, DropdownButton } from 'react-bootstrap';
+import { FormControl, Dropdown } from 'react-bootstrap';
 import * as TimeUtils from '../../infrastructure/TimeRangeUtils';
 import TimePicker from './TimePicker';
 
@@ -31,25 +32,42 @@ export default class TimePickerField extends
                 <FormControl
                     placeholder={`Enter ${label}`}
                     value={selectedTimeDisplay}
-                    style={{ display: 'none'  }}
+                    style={{ display: 'none' }}
                     type="input"
                 />
-                <DropdownButton
-                    title={selectedTimeDisplay}
-                    noCaret={true}
-                    id="time-picker-drop-down"
+                <Measure
+                    bounds={true}
+                    offset={false}
+                    client={false}
                 >
-                    <div style={{ width: 1100, padding: 15, ...style }}>
-                        <span style={{fontWeight: 'bold'}}>{label}</span>
-                        <TimePicker
-                            minTime={minTime}
-                            maxTime={maxTime}
-                            selectedTime={value}
-                            timeIncrement={timeIncrement}
-                            onTimeChanged={onChange}
-                        />
-                    </div>
-                </DropdownButton>
+                    {({ measureRef, contentRect }) => (
+                        <div ref={measureRef}>
+                            <Dropdown
+                                id="time-picker-drop-down"
+                            >
+                                <Dropdown.Toggle noCaret={true} bsClass="timepicker-field dropdown">
+                                    {selectedTimeDisplay}
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu
+                                    style={{
+                                        width: '80vw',
+                                        left: `calc(10vw - ${contentRect.bounds ? contentRect.bounds.left : 0}px)`
+                                    }}>
+                                    <div style={{ padding: 15, ...style }} >
+                                        <span style={{ fontWeight: 'bold' }}>{label}</span>
+                                        <TimePicker
+                                            minTime={minTime}
+                                            maxTime={maxTime}
+                                            selectedTime={value}
+                                            timeIncrement={timeIncrement}
+                                            onTimeChanged={onChange}
+                                        />
+                                    </div>
+                                </Dropdown.Menu>
+                            </Dropdown>
+                        </div>
+                    )}
+                </Measure>
             </FormFieldWrapper>
         );
     }
