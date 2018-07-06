@@ -116,10 +116,7 @@ export default class LeavesFieldTable extends React.Component<LeavesFieldTablePr
                         }
                     }
                     label={label}
-                    format={(val) => {
-                        const newVal = fromTimeString(val);
-                        return newVal;
-                    }}
+                    format={(val) => val ? fromTimeString(val) : undefined}
                     normalize={(val) => {
                         const newVal = toTimeString(val);
                         return newVal;
