@@ -38,7 +38,7 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
         <div>
             <LeavesFieldTable
                 fieldName={this.formFieldNames.fullDay}
-                title="Full Day"
+                title={<h3>Full Day</h3>}
                 columns={[
                     LeavesFieldTable.DateColumn('Start Date', 'startDate'),
                     LeavesFieldTable.DateColumn('End Date', 'endDate'),
@@ -49,7 +49,7 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
 
             <LeavesFieldTable
                 fieldName={this.formFieldNames.partialDay}
-                title="Partial Day"
+                title={<h3>Partial Day</h3>}
                 columns={[
                     LeavesFieldTable.DateColumn('Date', 'startDate'),
                     LeavesFieldTable.TimeColumn('Start Time', 'Start', 'startTime'),

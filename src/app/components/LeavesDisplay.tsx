@@ -4,10 +4,11 @@ import { Table } from 'react-bootstrap';
 import moment from 'moment';
 import LeaveCancelledPopover from './LeaveCancelledPopover';
 import { fromTimeString } from '../../../node_modules/jag-shuber-api/dist/client';
+import LeaveSubCodeDisplay from '../containers/LeaveSubCodeDisplay';
 
 export interface LeavesDisplayProps {
     partialDays: Leave[];
-    fullDays: Leave[]
+    fullDays: Leave[];
 }
 
 export default class LeavesDisplay extends React.PureComponent<LeavesDisplayProps, any> {
@@ -30,7 +31,7 @@ export default class LeavesDisplay extends React.PureComponent<LeavesDisplayProp
                                 <tr key={l.id}>
                                     <td>{moment(l.startDate).format('MMM D, YYYY')}</td>
                                     <td>{moment(l.endDate).format('MMM D, YYYY')}</td>
-                                    <td>{l.leaveCode}</td>
+                                    <td><LeaveSubCodeDisplay subCode={l.leaveSubCode}/></td>
                                     <td>
                                         {l.cancelDate && <LeaveCancelledPopover leave={l} />}
                                     </td>
@@ -58,7 +59,7 @@ export default class LeavesDisplay extends React.PureComponent<LeavesDisplayProp
                                     <td>{moment(l.startDate).format('MMM D, YYYY')}</td>
                                     <td>{fromTimeString(l.startTime as string).format('HH:mm')}</td>
                                     <td>{fromTimeString(l.endTime as string).format('HH:mm')}</td>
-                                    <td>{l.leaveCode}</td>
+                                    <td><LeaveSubCodeDisplay subCode={l.leaveSubCode}/></td>
                                     <td>
                                         {l.cancelDate && <LeaveCancelledPopover leave={l} />}
                                     </td>
