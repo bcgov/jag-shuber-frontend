@@ -47,18 +47,25 @@ export const getFullDayLeaves = (state: RootState) => {
     return [];
 };
 
-export const getSheriffPartialLeaves = (sheriffId?: IdType) => (state: RootState) => {
+export const getAllSheriffPartialLeaves = (sheriffId?: IdType) => (state: RootState) => {
     if (state && sheriffId != null) {
         return getPartialDayLeaves(state).filter(l => l.sheriffId === sheriffId);
     }
     return [];
 };
 
-export const getSheriffFullDayLeaves = (sheriffId?: IdType) => (state: RootState) => {
+export const getAllSheriffFullDayLeaves = (sheriffId?: IdType) => (state: RootState) => {
     if (state && sheriffId != null) {
         return getFullDayLeaves(state).filter(l => l.sheriffId === sheriffId);
     }
     return [];
+};
+
+export const getActiveSheriffPartialLeaves = (sheriffId?: IdType) => (state: RootState) => {
+    return getAllSheriffPartialLeaves(sheriffId)(state).filter(l => l.cancelDate == undefined);
+};
+export const getActiveSheriffFullDayLeaves = (sheriffId?: IdType) => (state: RootState) => {
+    return getAllSheriffFullDayLeaves(sheriffId)(state).filter(l => l.cancelDate == undefined);
 };
 
 export const allLeaveCancelCodes = createSelector(

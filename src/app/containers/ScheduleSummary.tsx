@@ -3,7 +3,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { getSheriffShifts } from '../modules/shifts/selectors';
-import { getSheriffFullDayLeaves, getSheriffPartialLeaves } from '../modules/leaves/selectors';
+import { getActiveSheriffFullDayLeaves, getActiveSheriffPartialLeaves } from '../modules/leaves/selectors';
 import { getShifts } from '../modules/shifts/actions';
 import { getLeaves } from '../modules/leaves/actions';
 import {
@@ -174,8 +174,8 @@ const mapStateToProps = (state: RootState, { sheriffId }: ConnectedScheduleSumma
     return {
         ...currentVisibleTime,
         shifts: getSheriffShifts(sheriffId)(state),
-        fullDayLeaves: getSheriffFullDayLeaves(sheriffId)(state),
-        partialDayLeaves: getSheriffPartialLeaves(sheriffId)(state),
+        fullDayLeaves: getActiveSheriffFullDayLeaves(sheriffId)(state),
+        partialDayLeaves: getActiveSheriffPartialLeaves(sheriffId)(state),
         sheriffLoanMap: sheriffLoanMapSelector(state)
     };
 };

@@ -1,9 +1,8 @@
 import React from 'react';
-import moment from 'moment';
 import Popover from './Popover';
 import { Glyphicon } from 'react-bootstrap';
 import { Leave } from '../api/Api';
-// import AlertIcon from './Icons/Alert';
+import { fromTimeString } from '../../../node_modules/jag-shuber-api/dist/client';
 
 export interface PartialLeavePopoverProps {
     leave?: Partial<Leave>;
@@ -26,7 +25,7 @@ export default class PartialLeavePopover extends React.Component<PartialLeavePop
                 placement={placement}
                 displayValue={
                     <span>
-                        {moment(leave.startTime).format('HH:mm')}-{moment(leave.endTime).format('HH:mm')}
+                        {fromTimeString(leave.startTime as string).format('HH:mm')}-{fromTimeString(leave.endTime as string).format('HH:mm')}
                     </span>
                 }
             />

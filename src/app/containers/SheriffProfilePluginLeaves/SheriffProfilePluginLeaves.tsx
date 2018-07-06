@@ -14,8 +14,8 @@ import { Dispatch } from 'redux';
 import { getLeaves, createOrUpdateLeaves } from '../../modules/leaves/actions';
 import { RootState } from '../../store';
 import {
-    getSheriffFullDayLeaves,
-    getSheriffPartialLeaves,
+    getAllSheriffFullDayLeaves,
+    getAllSheriffPartialLeaves,
 } from '../../modules/leaves/selectors';
 import LeavesDisplay from '../../components/LeavesDisplay';
 import * as Validators from '../../infrastructure/Validators';
@@ -111,8 +111,8 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
     
     getData(sheriffId: IdType, state: RootState) {
         return {
-            partialDay: getSheriffPartialLeaves(sheriffId)(state),
-            fullDay: getSheriffFullDayLeaves(sheriffId)(state)
+            partialDay: getAllSheriffPartialLeaves(sheriffId)(state),
+            fullDay: getAllSheriffFullDayLeaves(sheriffId)(state)
         };
     }
 

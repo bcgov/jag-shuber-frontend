@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import LeaveDisplay, { LeavesDisplayProps } from '../components/LeavesDisplay';
 import { IdType } from '../api';
-import { getSheriffFullDayLeaves, getSheriffPartialLeaves } from '../modules/leaves/selectors';
+import { getAllSheriffFullDayLeaves, getAllSheriffPartialLeaves } from '../modules/leaves/selectors';
 import { RootState } from '../store';
 
 export interface SheriffLeaveDisplayProps {
@@ -17,8 +17,8 @@ export default connect<SheriffLeaveDisplayStateProps, SheriffLeaveDisplayDispatc
     (
     (state, { sheriffId }) => {
         return {
-            fullDays: getSheriffFullDayLeaves(sheriffId)(state),
-            partialDays: getSheriffPartialLeaves(sheriffId)(state) 
+            fullDays: getAllSheriffFullDayLeaves(sheriffId)(state),
+            partialDays: getAllSheriffPartialLeaves(sheriffId)(state) 
         };
     },
     {

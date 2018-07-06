@@ -20,7 +20,7 @@ import CourthouseDisplay from './CourthouseDisplay';
 import SheriffLoanOutIcon from '../components/Icons/SheriffLoanOutIcon';
 import SheriffLoanInIcon from '../components/Icons/SheriffLoanInIcon';
 import { getLeaves } from '../modules/leaves/actions';
-import { getSheriffFullDayLeaves, getSheriffPartialLeaves } from '../modules/leaves/selectors';
+import { getActiveSheriffFullDayLeaves, getActiveSheriffPartialLeaves } from '../modules/leaves/selectors';
 import PartialLeavePopover from '../components/PartialLeavePopover';
 
 interface ConnectedDutyRosterSheriffCardProps {
@@ -129,8 +129,8 @@ const mapStateToProps = (state: RootState, { sheriff }: ConnectedDutyRosterSheri
         visibleTimeStart: visibleTime(state).visibleTimeStart,
         sheriffLoanMap: sheriffLoanMapSelecor(state),
         userCourthouseId: userCourthouse(state),
-        fullDayLeaves: getSheriffFullDayLeaves(sheriff.id)(state),
-        partialDayLeaves: getSheriffPartialLeaves(sheriff.id)(state)
+        fullDayLeaves: getActiveSheriffFullDayLeaves(sheriff.id)(state),
+        partialDayLeaves: getActiveSheriffPartialLeaves(sheriff.id)(state)
     };
 };
 
