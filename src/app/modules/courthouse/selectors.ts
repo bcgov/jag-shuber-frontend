@@ -8,6 +8,7 @@ import * as sheriffRankCodeRequests from './requests/sheriffRankCodes';
 import { IdType } from '../../api/Api';
 import { createSelector } from 'reselect';
 import mapToArray from '../../infrastructure/mapToArray';
+import { CodeSelector } from '../../infrastructure/CodeSelector';
 
 // Courtrooms
 export const allCourtrooms = createSelector(
@@ -22,17 +23,22 @@ export const allRuns = createSelector(
 );
 
 // Jail Roles
-export const allJailRoles = createSelector(
-    jailRoleRequests.jailRoleMapRequest.getData,
-    (jailRoles) => mapToArray(jailRoles).sort((a, b) => a.description.localeCompare(b.description))
+const jailRoleSelector = new CodeSelector(
+    jailRoleRequests.jailRoleMapRequest.getData
 );
 
+export const allJailRoles = jailRoleSelector.all;
+
+export const allEffectiveJailRoles = jailRoleSelector.effective;
+
 // Alternate Assignment Types
-export const allAlternateAssignmentTypes = createSelector(
-    alternateAssignmentTypeRequests.alternateAssignmentTypeMapRequest.getData,
-    (altAssignmentTypes) => mapToArray(altAssignmentTypes)
-        .sort((a, b) => a.description.localeCompare(b.description))
+const altAssignmentTypesSelector = new CodeSelector(
+    alternateAssignmentTypeRequests.alternateAssignmentTypeMapRequest.getData
 );
+
+export const allAlternateAssignmentTypes = altAssignmentTypesSelector.all;
+
+export const allEffectAlternateAssignmentTypes = altAssignmentTypesSelector.effective;
 
 // Courthouses
 export const allCourthouses = createSelector(
@@ -52,10 +58,13 @@ export const selectedCourthouse = (id: IdType) => (state: RootState) => {
 };
 
 // Sheriff Rank Codes
-export const allSheriffRankCodes = createSelector(
-    sheriffRankCodeRequests.sheriffRankCodeMapRequest.getData,
-    (roles) => mapToArray(roles).sort((a, b) => a.description.localeCompare(b.description))
+const sheriffRankCodeSelector = new CodeSelector(
+    sheriffRankCodeRequests.sheriffRankCodeMapRequest.getData
 );
+
+export const allSheriffRankCodes = sheriffRankCodeSelector.all;
+
+export const allEffectiveSheriffRankCodes = sheriffRankCodeSelector.effective;
 
 export const getSheriffRankByCode = (code: IdType) => (state: RootState) => {
     const map = sheriffRankCodeRequests.sheriffRankCodeMapRequest.getData(state);

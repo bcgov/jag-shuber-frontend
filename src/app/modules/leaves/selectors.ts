@@ -10,6 +10,7 @@ import {
 import mapToArray from '../../infrastructure/mapToArray';
 import arrayToMap from '../../infrastructure/arrayToMap';
 import moment from 'moment';
+import { CodeSelector } from '../../infrastructure/CodeSelector';
 
 export const cancelReasonCodesMap = leaveRequests.leaveCancelCodeMapRequest.getData;
 
@@ -125,10 +126,16 @@ export const getActiveSheriffFullDayLeaves = (sheriffId?: IdType) => (state: Roo
     return getAllSheriffFullDayLeaves(sheriffId)(state).filter(l => l.cancelDate == undefined);
 };
 
-export const allLeaveCancelCodes = createSelector(
-    leaveRequests.leaveCancelCodeMapRequest.getData,
-    (leaveCancelCodes) => mapToArray(leaveCancelCodes).sort((a, b) => a.description.localeCompare(b.description))
+// Leave Cancel Reason Codes
+const leaveCancelCodeSelector = new CodeSelector(
+    leaveRequests.leaveCancelCodeMapRequest.getData
 );
+
+export const allLeaveCancelCodes = leaveCancelCodeSelector.all;
+
+export const allEffectiveLeaveCancelCodes = leaveCancelCodeSelector.effective;
+
+// Leave Sub Codes
 
 export const allLeavesSubCodeMap = createSelector(
     leaveRequests.leaveTypeMapRequest.getData,

@@ -146,6 +146,7 @@ export interface Sheriff {
 export interface SheriffRank {
     code: string;
     description: string;
+    expiryDate?: DateType;
 }
 
 export interface BaseAssignment {
@@ -225,6 +226,7 @@ export interface Courtroom {
 export interface JailRole {
     code: IdType;
     description: string;
+    expiryDate?: DateType;
 }
 
 export interface Shift {
@@ -267,11 +269,13 @@ export interface LeaveSubCode {
     code: string;
     subCode: string;
     description: string;
+    expiryDate?: DateType;
 }
 
 export interface LeaveCancelCode {
     code: string;
     description: string;
+    expiryDate?: DateType;
 }
 
 export interface Run {
@@ -283,6 +287,7 @@ export interface Run {
 export interface AlternateAssignment {
     code: IdType | string;
     description: string;
+    expiryDate?: DateType;
 }
 
 export interface API {
