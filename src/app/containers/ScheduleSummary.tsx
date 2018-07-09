@@ -89,6 +89,8 @@ class ConnectedScheduleSummary extends React.Component<ConnectedScheduleSummaryP
             .filter(l => doTimeRangesOverlap(
                 { startTime: moment(l.startDate).toISOString(), endTime: moment(l.endDate).toISOString() },
                 { startTime: moment(visibleTimeStart).toISOString(), endTime: moment(visibleTimeEnd).toISOString() })
+                ||
+                moment(l.endDate).isSame(moment(visibleTimeStart))
             );
         const partialDayLeavesForWeek = partialDayLeaves
             .filter(l => moment(l.startDate).isBetween(visibleTimeStart, visibleTimeEnd, 'days', '[]'));
