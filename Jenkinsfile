@@ -26,25 +26,6 @@ def SLACK_DEV_CHANNEL="#sheriffscheduling_dev"
 def SLACK_MAIN_CHANNEL="#sheriff_scheduling"
 def work_space="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/jag-shuber-tools-frontend-pipeline/workspace@script"
 
-def hasRepoChanged = false;
-node{
-  def lastCommit = getLastCommit()
-  if(lastCommit != null){
-    // Ensure our CHANGE variables are set
-    if(env.CHANGE_AUTHOR_DISPLAY_NAME == null){
-      env.CHANGE_AUTHOR_DISPLAY_NAME = lastCommit.author.fullName
-    }
-
-    if(env.CHANGE_TITLE == null){
-      env.CHANGE_TITLE = getChangeString()
-    }
-    hasRepoChanged = true;
-  }else{
-    hasRepoChanged = false;
-  }
-}
-
-if(hasRepoChanged){
   stage('Build ' + APP_NAME) {
     node{
         // Cheking template exists  or else create
@@ -324,11 +305,7 @@ if(hasRepoChanged){
         }
     }
   }
-  }else{
-    stage('No Changes to Build 👍'){
-      currentBuild.result = 'SUCCESS'
-    }
-  }
+  
 
 // // Functions to check currentTarget (api-blue)deployment and mark to for deployment to newTarget(api-green) & vice versa
   def getCurrentTarget() {
