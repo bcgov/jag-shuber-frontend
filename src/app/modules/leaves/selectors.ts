@@ -136,7 +136,6 @@ export const allLeaveCancelCodes = leaveCancelCodeSelector.all;
 export const allEffectiveLeaveCancelCodes = leaveCancelCodeSelector.effective;
 
 // Leave Sub Codes
-
 export const allLeavesSubCodeMap = createSelector(
     leaveRequests.leaveTypeMapRequest.getData,
     (leaveTypes) => {

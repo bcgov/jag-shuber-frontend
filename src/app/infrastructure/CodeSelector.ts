@@ -9,7 +9,7 @@ export interface Code {
 
 export class CodeSelector extends EffectiveSelector<Code> {
     constructor(
-        mapSelector: ((state: any) => {[key: string]: Code})){
+        mapSelector: ((state: any) => {[key: string]: Code})) {
             super(mapSelector, (c) => c.expiryDate, (a, b) => a.description.localeCompare(b.description));
     }
 }
