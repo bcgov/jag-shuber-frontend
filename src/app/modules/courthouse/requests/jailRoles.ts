@@ -6,7 +6,7 @@ import {
 } from '../common';
 import {
     JailRole
-} from '../../../api/index';
+} from '../../../api';
 import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRequest';
 
 class JailRoleMapRequest extends GetEntityMapRequest<void, JailRole, CourthouseModuleState> {

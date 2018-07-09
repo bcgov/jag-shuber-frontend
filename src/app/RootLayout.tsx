@@ -26,7 +26,7 @@ import PublishSchedule from './pages/PublishSchedule/PublishSchedule';
 import Footer from './components/Footer/Footer';
 import {
   isCourthouseSet as isCurrentCourthouseSet
-} from '../app/modules/user/selectors';
+} from './modules/user/selectors';
 import ToastManager from './components/ToastManager/ToastManager';
 import ConnectedConfirmationModal from './containers/ConfirmationModal';
 import SheriffProfileCreateModal from './containers/SheriffProfileCreateModal';

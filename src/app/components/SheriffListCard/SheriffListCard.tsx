@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Sheriff } from '../../api/index';
+import { Sheriff } from '../../api';
 import {
     ListGroupItem
 } from 'react-bootstrap';

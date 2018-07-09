@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { DaysOfWeek } from '../../api/Api';
+import { DaysOfWeek } from '../Api';
 import { ShiftCreationPayload, ShiftFactory } from '../utils';
 
 const testPayload: ShiftCreationPayload = {

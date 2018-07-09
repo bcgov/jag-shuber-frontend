@@ -11,8 +11,8 @@ import {
     InjectedFormProps
 } from 'redux-form';
 import SheriffSelector from '../containers/SheriffSelector';
-import WorkSectionSelector from '../components/FormElements/WorkSectionSelector';
-import Selector from '../components/FormElements/Selector';
+import WorkSectionSelector from './FormElements/WorkSectionSelector';
+import Selector from './FormElements/Selector';
 import { ConfirmationModal } from './ConfirmationModal';
 import { IdType, ShiftUpdates } from '../api/Api';
 import TimePickerField from './FormElements/TimePickerField';

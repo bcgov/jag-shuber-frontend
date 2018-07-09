@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
-import { Sheriff } from '../api/index';
+import { Sheriff } from '../api';
 import { sheriffs } from '../modules/sheriffs/selectors';
 import Selector, { SelectorProps } from '../components/FormElements/Selector';
 

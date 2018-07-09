@@ -6,7 +6,7 @@ import {
 } from 'react-bootstrap';
 import SheriffScheduleDisplay from '../../containers/SheriffScheduleDisplay';
 import './PublishSchedule.css';
-import api from '../../api/index';
+import api from '../../api';
 import Client from '../../api/Client';
 import CourthouseDisplay from '../../containers/CourthouseDisplay';
 import SchedulePublishViewControls from '../../containers/SchedulePublishViewControls';

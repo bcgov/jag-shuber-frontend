@@ -6,7 +6,7 @@ import {
 } from '../common';
 import {
     Courtroom
-} from '../../../api/index';
+} from '../../../api';
 import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRequest';
 
 class CourtroomMapRequest extends GetEntityMapRequest<void, Courtroom, CourthouseModuleState> {
