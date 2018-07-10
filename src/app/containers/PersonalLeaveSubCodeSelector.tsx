@@ -14,11 +14,7 @@ class PersonalLeaveSubCodeSelector extends React.PureComponent<
 
     render() {
         const { 
-            personalLeaveSubCodes = [
-                {code: 'PERSONAL', subCode: 'STIP', description: 'STIP'},
-                {code: 'PERSONAL', subCode: 'AL', description: 'Annual Leave'},
-                {code: 'PERSONAL', subCode: 'SL', description: 'Special Leave'},
-            ], 
+            personalLeaveSubCodes = [], 
             ...restProps 
         } = this.props;
         const selectorValues = personalLeaveSubCodes.map(leave => ({ key: leave.subCode, value: leave.description }));
