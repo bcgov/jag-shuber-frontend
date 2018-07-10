@@ -9,14 +9,34 @@ import {
 } from '../../api/Api';
 import mapToArray from '../../infrastructure/mapToArray';
 import arrayToMap from '../../infrastructure/arrayToMap';
+import moment from 'moment';
 
 export const cancelReasonCodesMap = leaveRequests.leaveCancelCodeMapRequest.getData;
+
 export const allLeaves = createSelector(
     leaveRequests.leaveMapRequest.getData,
-    (map) => mapToArray(map)
-        .sort((a, b) => `${a.startDate}`
-            .localeCompare(`${b.startDate}`))
+    (map) => {
+        const leaveMap = mapToArray(map)
+            .filter(l => moment(l.startDate).isSameOrAfter(moment().subtract(1, 'year'), 'day'));
+        return leaveMap
+            .sort((a, b) => `${moment(a.startDate).toISOString()}`
+            .localeCompare(`${moment(b.startDate).toISOString()}`));
+    }
 );
+
+export const getAllPersonaLeaves = (state: RootState) => {
+    if (state) {
+        return allLeaves(state).filter(l => l.leaveCode === LEAVE_CODE_PERSONAL);
+    }
+    return undefined;
+};
+
+export const getAllTrainingLeaves = (state: RootState) => {
+    if (state) {
+        return allLeaves(state).filter(l => l.leaveCode === LEAVE_CODE_TRAINING);
+    }
+    return undefined;
+};
 
 export const getLeave = (id?: IdType) => (state: RootState) => {
     if (state && id != null) {
@@ -57,6 +77,24 @@ export const getAllSheriffPartialLeaves = (sheriffId?: IdType) => (state: RootSt
 export const getAllSheriffFullDayLeaves = (sheriffId?: IdType) => (state: RootState) => {
     if (state && sheriffId != null) {
         return getFullDayLeaves(state).filter(l => l.sheriffId === sheriffId);
+    }
+    return [];
+};
+
+export const getSheriffPartialPersonalLeaves = (sheriffId?: IdType) => (state: RootState) => {
+    if (state && sheriffId != null) {
+        return getPartialDayLeaves(state)
+            .filter(l => l.sheriffId === sheriffId)
+            .filter(sl => sl.leaveCode === LEAVE_CODE_PERSONAL);
+    }
+    return [];
+};
+
+export const getSheriffFullDayPersonalLeaves = (sheriffId?: IdType) => (state: RootState) => {
+    if (state && sheriffId != null) {
+        return getFullDayLeaves(state)
+            .filter(l => l.sheriffId === sheriffId)
+            .filter(sl => sl.leaveCode === LEAVE_CODE_PERSONAL);
     }
     return [];
 };

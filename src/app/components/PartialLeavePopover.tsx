@@ -15,7 +15,7 @@ export default class PartialLeavePopover extends React.Component<PartialLeavePop
         const { 
             leave = {}, 
             placement = 'left',
-            icon = <Glyphicon style={{ color: 'darkorange', zIndex: 2000}} glyph="alert" />
+            icon = <Glyphicon style={{ color: 'darkorange', zIndex: 1000}} glyph="alert" />
         } = this.props;
 
         return (

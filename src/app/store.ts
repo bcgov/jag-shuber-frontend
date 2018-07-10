@@ -24,7 +24,8 @@ import { UserState, registerReducer as registerUserReducer } from './modules/use
 import { LeaveModuleState, registerReducer as registerLeavesReducer } from './modules/leaves/reducer';
 import {
     getLeaveCancelCodes,
-    getLeaveSubCodes
+    getLeaveSubCodes,
+    getLeaves
 } from './modules/leaves/actions';
 
 export interface ThunkExtra {
@@ -54,7 +55,8 @@ const initialActions: any[] = [
     getSheriffRankCodes,
     getShifts,
     getLeaveCancelCodes,
-    getLeaveSubCodes
+    getLeaveSubCodes,
+    getLeaves
 ];
 
 const reducers = {
