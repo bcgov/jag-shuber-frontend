@@ -19,8 +19,8 @@ export const allLeaves = createSelector(
         const leaveMap = mapToArray(map)
             .filter(l => moment(l.startDate).isSameOrAfter(moment().subtract(1, 'year'), 'day'));
         return leaveMap
-        .sort((a, b) => `${a.startDate}`
-            .localeCompare(`${b.startDate}`));
+            .sort((a, b) => `${moment(a.startDate).toISOString()}`
+            .localeCompare(`${moment(b.startDate).toISOString()}`));
     }
 );
 
