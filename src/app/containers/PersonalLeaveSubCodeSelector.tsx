@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
-import { getAllPersonalLeaveSubCodes } from '../modules/leaves/selectors';
+import { allEffectivePersonalLeaveSubCodes } from '../modules/leaves/selectors';
 import Selector, { SelectorProps } from '../components/FormElements/Selector';
 import { LeaveSubCode } from '../api/Api';
 
@@ -27,7 +27,7 @@ class PersonalLeaveSubCodeSelector extends React.PureComponent<
 
 const mapStateToProps = (state: RootState) => {
     return {
-        personalLeaveSubCodes: getAllPersonalLeaveSubCodes(state)
+        personalLeaveSubCodes: allEffectivePersonalLeaveSubCodes()(state)
     };
 };
 

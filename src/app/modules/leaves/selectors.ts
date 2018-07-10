@@ -5,7 +5,8 @@ import {
     LeaveMap,
     IdType,
     LEAVE_CODE_PERSONAL,
-    LEAVE_CODE_TRAINING
+    LEAVE_CODE_TRAINING,
+    DateType
 } from '../../api/Api';
 import mapToArray from '../../infrastructure/mapToArray';
 import arrayToMap from '../../infrastructure/arrayToMap';
@@ -153,6 +154,15 @@ export const getAllPersonalLeaveSubCodes = createSelector(
     }
 );
 
+export const allEffectivePersonalLeaveSubCodes = (date?: DateType) => (state: RootState) => {
+    const allPersonalLeaveCodes = getAllPersonalLeaveSubCodes(state);
+    if (allPersonalLeaveCodes) {
+        return allPersonalLeaveCodes
+            .filter(pl => pl.expiryDate == undefined || moment(pl.expiryDate).isAfter(moment(date)));
+    }
+    return [];
+};
+
 export const getAllTrainingLeaveSubCodes = createSelector(
     leaveRequests.leaveTypeMapRequest.getData,
     (leaveTypes) => {
@@ -160,3 +170,12 @@ export const getAllTrainingLeaveSubCodes = createSelector(
             .localeCompare(`${b.description}`)) || [];
     }
 );
+
+export const allEffectiveTrainingLeaveSubCodes = (date?: DateType) => (state: RootState) => {
+    const allTrainingLeaveCodes = getAllTrainingLeaveSubCodes(state);
+    if (allTrainingLeaveCodes) {
+        return allTrainingLeaveCodes
+            .filter(pl => pl.expiryDate == undefined || moment(pl.expiryDate).isAfter(moment(date)));
+    }
+    return [];
+};
