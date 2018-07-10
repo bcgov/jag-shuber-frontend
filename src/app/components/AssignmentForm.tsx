@@ -101,7 +101,7 @@ class CourtSecurityFields extends React.PureComponent {
                     component={(p) => <SelectorField 
                         {...p} 
                         SelectorComponent={
-                            (sp) => <CourtroomSelector label="Home Location" {...sp} />}  
+                            (sp) => <CourtroomSelector {...sp} />}  
                     />}
                     label="Courtroom"
                     validate={[Validators.required]}

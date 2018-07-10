@@ -5,6 +5,7 @@ import * as jailRoleRequests from './requests/jailRoles';
 import * as alternateAssignmentTypeRequests from './requests/alternateAssignmentTypes';
 import * as courthouseRequests from './requests/courthouses';
 import * as sheriffRankCodeRequests from './requests/sheriffRankCodes';
+import * as courtRoleRequests from './requests/courtRoles';
 import { IdType } from '../../api/Api';
 import { createSelector } from 'reselect';
 import mapToArray from '../../infrastructure/mapToArray';
@@ -70,3 +71,12 @@ export const getSheriffRankByCode = (code: IdType) => (state: RootState) => {
     const map = sheriffRankCodeRequests.sheriffRankCodeMapRequest.getData(state);
     return map ? map[code] : undefined;
 };
+
+// Court Roles
+const courtRoleSelector = new CodeSelector(
+    courtRoleRequests.courtRoleMapRequest.getData
+);
+
+export const allCourtRoles = courtRoleSelector.all;
+
+export const allEffectiveCourtRoles = courtRoleSelector.effective;

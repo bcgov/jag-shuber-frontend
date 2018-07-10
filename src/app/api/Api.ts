@@ -23,6 +23,7 @@ export type CourthouseMap = MapType<Courthouse>;
 export type SheriffRankCodeMap = MapType<SheriffRank>;
 export type LeaveSubCodeMap = MapType<LeaveSubCode>;
 export type LeaveCancelCodeMap = MapType<LeaveCancelCode>;
+export type CourtRoleMap = MapType<CourtRole>;
 
 /* tslint:disable:no-bitwise */
 export enum DaysOfWeek {
@@ -229,6 +230,12 @@ export interface JailRole {
     expiryDate?: DateType;
 }
 
+export interface CourtRole {
+    code: IdType;
+    description: string;
+    expiryDate?: DateType;
+}
+
 export interface Shift {
     id: IdType;
     sheriffId?: IdType;
@@ -337,6 +344,7 @@ export interface API {
     getJailRoles(): Promise<JailRole[]>;
     getAlternateAssignmentTypes(): Promise<AlternateAssignment[]>;
     getSheriffRankCodes(): Promise<SheriffRank[]>;
+    getCourtRoles(): Promise<CourtRole[]>;
 
     getCourthouses(): Promise<Courthouse[]>;
 }
