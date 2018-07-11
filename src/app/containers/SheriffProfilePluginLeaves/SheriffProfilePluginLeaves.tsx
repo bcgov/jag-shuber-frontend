@@ -69,36 +69,43 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
         )
 
     validate(values: SheriffProfilePluginLeavesProps = { fullDay: [], partialDay: [] }): FormErrors | undefined {
-        const fullDayErrors = values.fullDay.map(l => (
-            {
-                startDate: Validators.validateWith(
-                    Validators.required,
-                    Validators.isSameOrBefore(l.endDate, 'End Date')
-                )(l.startDate),
-                endDate: Validators.validateWith(
-                    Validators.required,
-                    Validators.isSameOrAfter(l.startDate, 'Start Date')
-                )(l.endDate),
-                leaveSubCode: Validators.required(l.leaveSubCode)
-            }
-        ));
+        let fullDayErrors: any = [];
 
-        const partialDayErrors = values.partialDay.map(l => (
-            {
-                startDate: Validators.validateWith(
-                    Validators.required
-                )(l.startDate),
-                startTime: Validators.validateWith(
-                    Validators.required,
-                    Validators.isTimeBefore(l.endTime, 'End Time')
-                )(l.startTime),
-                endTime: Validators.validateWith(
-                    Validators.required,
-                    Validators.isTimeAfter(l.startTime, 'Start Time')
-                )(l.endTime),
-                leaveSubCode: Validators.required(l.leaveSubCode)
-            }
-        ));
+        if (values.fullDay) {
+            fullDayErrors = values.fullDay.map(l => (
+                {
+                    startDate: Validators.validateWith(
+                        Validators.required,
+                        Validators.isSameOrBefore(l.endDate, 'End Date')
+                    )(l.startDate),
+                    endDate: Validators.validateWith(
+                        Validators.required,
+                        Validators.isSameOrAfter(l.startDate, 'Start Date')
+                    )(l.endDate),
+                    leaveSubCode: Validators.required(l.leaveSubCode)
+                }
+            ));
+        }
+
+        let partialDayErrors: any = [];
+        if (values.partialDay) {
+            partialDayErrors = values.partialDay.map(l => (
+                {
+                    startDate: Validators.validateWith(
+                        Validators.required
+                    )(l.startDate),
+                    startTime: Validators.validateWith(
+                        Validators.required,
+                        Validators.isTimeBefore(l.endTime, 'End Time')
+                    )(l.startTime),
+                    endTime: Validators.validateWith(
+                        Validators.required,
+                        Validators.isTimeAfter(l.startTime, 'Start Time')
+                    )(l.endTime),
+                    leaveSubCode: Validators.required(l.leaveSubCode)
+                }
+            ));
+        }
 
         const errors = { fullDay: fullDayErrors, partialDay: partialDayErrors };
 
@@ -108,7 +115,7 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
     fetchData(sheriffId: IdType, dispatch: Dispatch<any>) {
         dispatch(getLeaves());
     }
-    
+
     getData(sheriffId: IdType, state: RootState) {
         return {
             partialDay: getSheriffPartialPersonalLeaves(sheriffId)(state),
