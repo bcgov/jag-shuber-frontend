@@ -13,6 +13,7 @@ import LeaveCancelledPopover from '../../components/LeaveCancelledPopover';
 import TimePickerField from '../../components/FormElements/TimePickerField';
 import { fromTimeString, toTimeString } from '../../../../node_modules/jag-shuber-api/dist/client';
 import LeaveSubCodeDisplay from '../LeaveSubCodeDisplay';
+import TrainingLeaveSubCodeSelector from '../TrainingLeaveSubCodeSelector';
 
 export interface ColumnRendererProps {
     index: number;
@@ -58,25 +59,30 @@ export default class LeavesFieldTable extends React.Component<LeavesFieldTablePr
         )
     };
 
-    static LeaveSubCodeColumn: LeavesFieldTableColumn = {
-        title: 'Type',
-        FormRenderer: ({ fieldInstanceName }) => (
-            <Field
-                name={`${fieldInstanceName}.leaveSubCode`}
-                component={(p) => <SelectorField
-                    {...p}
-                    showLabel={false}
-                    SelectorComponent={
-                        (sp) =>
-                            <PersonalLeaveSubCodeSelector {...sp} />}
-                />}
-                label="Type"
-            />
-        ),
-        CanceledRender: ({ leave }) => (
-            <LeaveSubCodeDisplay subCode={leave.leaveSubCode}/>
-        )
-    };
+    static LeaveSubCodeColumn(isPersonal: boolean): LeavesFieldTableColumn {
+        return {
+            title: 'Type',
+            FormRenderer: ({ fieldInstanceName }) => (
+                <Field
+                    name={`${fieldInstanceName}.leaveSubCode`}
+                    component={(p) => <SelectorField
+                        {...p}
+                        showLabel={false}
+                        SelectorComponent={
+                            (sp) =>
+                                isPersonal 
+                                ? <PersonalLeaveSubCodeSelector {...sp} />
+                                : <TrainingLeaveSubCodeSelector {...sp} />
+                            }
+                    />}
+                    label="Type"
+                />
+            ),
+            CanceledRender: ({ leave }) => (
+                <LeaveSubCodeDisplay subCode={leave.leaveSubCode} />
+            )
+        };
+    }
 
     static DateColumn(label: string, fieldName: string): LeavesFieldTableColumn {
         return {

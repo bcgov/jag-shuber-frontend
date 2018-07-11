@@ -21,7 +21,7 @@ export default class PartialLeavePopover extends React.Component<PartialLeavePop
         return (
             <Popover
                 trigger={icon}
-                title={'Leave - Partial Day'}
+                title={`${Leave.getLeaveTypeDisplay(leave)} - Partial Day`}
                 placement={placement}
                 displayValue={
                     <span>

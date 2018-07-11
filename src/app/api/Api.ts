@@ -90,6 +90,12 @@ export namespace DaysOfWeek {
     }
 }
 
+export namespace Leave {
+    export function getLeaveTypeDisplay(leave: Partial<Leave>): string{
+        return leave.leaveCode === LEAVE_CODE_PERSONAL ? 'Leave' : 'Training';
+    }
+}
+
 export const BLANK_SHERIFF: Sheriff = {
     id: '00000000-0000-0000-0000-000000000000',
     firstName: '',

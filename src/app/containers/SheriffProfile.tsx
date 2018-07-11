@@ -31,6 +31,7 @@ import {
     setSheriffProfilePluginSubmitErrors,
 } from '../modules/sheriffs/actions';
 import SheriffProfilePluginLeaves from './SheriffProfilePluginLeaves/SheriffProfilePluginLeaves';
+import SheriffProfilePluginTraining from './SheriffProfilePluginLeaves/SheriffProfilePluginTraining';
 import { SheriffProfilePlugin } from '../components/SheriffProfile/SheriffProfilePlugin';
 import { toast } from '../components/ToastManager/ToastManager';
 import { RequestActionConfig } from '../infrastructure/Requests/RequestActionBase';
@@ -273,7 +274,8 @@ export default class extends
             new SheriffProfilePluginHeader(),
             new SheriffProfilePluginIdentification(),
             new SheriffProfilePluginLocation(),
-            new SheriffProfilePluginLeaves()
+            new SheriffProfilePluginLeaves(),
+            new SheriffProfilePluginTraining()
         ]
     };
     static SubmitButton = (props: Partial<SubmitButtonProps>) => (

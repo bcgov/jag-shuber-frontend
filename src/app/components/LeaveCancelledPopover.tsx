@@ -16,7 +16,7 @@ export default class LeaveCancelledPopover extends React.Component<LeaveCancelle
         return (
             <Popover
                 trigger={<Glyphicon style={{ color: 'red', ...style }} glyph="ban-circle" />}
-                title={'Leave Cancelled'}
+                title={`${Leave.getLeaveTypeDisplay(leave)} Cancelled`}
                 displayValue={
                     <span>
                         <b>Date: </b>{moment(leave.cancelDate).format('MMM D, YYYY')}<br />

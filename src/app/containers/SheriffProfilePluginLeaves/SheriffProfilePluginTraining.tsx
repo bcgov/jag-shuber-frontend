@@ -1,5 +1,5 @@
 import React from 'react';
-import { IdType, Leave, LEAVE_CODE_PERSONAL } from '../../api/Api';
+import { IdType, Leave, LEAVE_CODE_TRAINING } from '../../api/Api';
 import {
     SheriffProfilePluginProps,
     SheriffProfileSectionPlugin
@@ -14,27 +14,29 @@ import { Dispatch } from 'redux';
 import { getLeaves, createOrUpdateLeaves } from '../../modules/leaves/actions';
 import { RootState } from '../../store';
 import {
-    getSheriffFullDayPersonalLeaves,
-    getSheriffPartialPersonalLeaves
+    getSheriffFullDayTrainingLeaves,
+    getSheriffPartialTrainingLeaves
 } from '../../modules/leaves/selectors';
 import LeavesDisplay from '../../components/LeavesDisplay';
 import * as Validators from '../../infrastructure/Validators';
 import LeavesFieldTable from './LeavesFieldTable';
 import { toTimeString } from 'jag-shuber-api/dist/client';
 
-export interface SheriffProfilePluginLeavesProps {
+export interface SheriffProfilePluginTrainingProps {
     partialDay: Leave[];
     fullDay: Leave[];
 }
 
-export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlugin<SheriffProfilePluginLeavesProps> {
-    name = 'leaves';
+export default class SheriffProfilePluginTraining 
+    extends SheriffProfileSectionPlugin<SheriffProfilePluginTrainingProps> {
+    
+    name = 'training';
     formFieldNames = {
-        fullDay: 'leaves.fullDay',
-        partialDay: 'leaves.partialDay'
+        fullDay: 'training.fullDay',
+        partialDay: 'training.partialDay'
     };
-    title: string = 'Leaves';
-    FormComponent = (props: SheriffProfilePluginProps<SheriffProfilePluginLeavesProps>) => (
+    title: string = 'Training';
+    FormComponent = (props: SheriffProfilePluginProps<SheriffProfilePluginTrainingProps>) => (
         <div>
             <LeavesFieldTable
                 fieldName={this.formFieldNames.fullDay}
@@ -42,7 +44,7 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
                 columns={[
                     LeavesFieldTable.DateColumn('Start Date', 'startDate'),
                     LeavesFieldTable.DateColumn('End Date', 'endDate'),
-                    LeavesFieldTable.LeaveSubCodeColumn(true),
+                    LeavesFieldTable.LeaveSubCodeColumn(false),
                     LeavesFieldTable.CancelColumn
                 ]}
             />
@@ -54,21 +56,21 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
                     LeavesFieldTable.DateColumn('Date', 'startDate'),
                     LeavesFieldTable.TimeColumn('Start Time', 'Start', 'startTime'),
                     LeavesFieldTable.TimeColumn('End Time', 'End', 'endTime'),
-                    LeavesFieldTable.LeaveSubCodeColumn(true),
+                    LeavesFieldTable.LeaveSubCodeColumn(false),
                     LeavesFieldTable.CancelColumn
                 ]}
             />
         </div>
     )
     DisplayComponent = (
-        { data = { fullDay: [], partialDay: [] } }: SheriffProfilePluginProps<SheriffProfilePluginLeavesProps>) => (
+        { data = { fullDay: [], partialDay: [] } }: SheriffProfilePluginProps<SheriffProfilePluginTrainingProps>) => (
 
             data && (data.fullDay.length > 0 || data.partialDay.length > 0)
                 ? <LeavesDisplay partialDays={data.partialDay} fullDays={data.fullDay} />
-                : <Alert> No Leaves </Alert>
+                : <Alert> No Training </Alert>
         )
 
-    validate(values: SheriffProfilePluginLeavesProps = { fullDay: [], partialDay: [] }): FormErrors | undefined {
+    validate(values: SheriffProfilePluginTrainingProps = { fullDay: [], partialDay: [] }): FormErrors | undefined {
         let fullDayErrors: any = [];
 
         if (values.fullDay) {
@@ -115,11 +117,11 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
     fetchData(sheriffId: IdType, dispatch: Dispatch<any>) {
         dispatch(getLeaves());
     }
-
+    
     getData(sheriffId: IdType, state: RootState) {
         return {
-            partialDay: getSheriffPartialPersonalLeaves(sheriffId)(state),
-            fullDay: getSheriffFullDayPersonalLeaves(sheriffId)(state)
+            partialDay: getSheriffPartialTrainingLeaves(sheriffId)(state),
+            fullDay: getSheriffFullDayTrainingLeaves(sheriffId)(state)
         };
     }
 
@@ -129,7 +131,7 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
         const fullLeaves = data.fullDay.map(fl => ({ ...fl, sheriffId, isPartial: false }));
         const allLeaves = partialLeaves.concat(fullLeaves).map(l => ({
             ...l,
-            leaveCode: LEAVE_CODE_PERSONAL,
+            leaveCode: LEAVE_CODE_TRAINING,
             startTime: toTimeString(l.startTime),
             endTime: toTimeString(l.endTime)
         }));
