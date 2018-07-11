@@ -22,6 +22,7 @@ export interface ScheduleControlPanelFormProps {
     handleSubmit?: () => void;
     onSubmitSuccess?: () => void;
     onClear?: () => void;
+    onSelectAll?: () => void;
     onDelete?: () => void;
     onApply?: () => void;
     selectedShiftIds?: IdType[];
@@ -43,7 +44,16 @@ export default class ScheduleControlPanelForm extends
     }
 
     render() {
-        const { handleSubmit, onApply, onClear, onDelete, selectedShiftIds, canAssignSheriff = true } = this.props;
+        const { 
+            handleSubmit, 
+            onApply, 
+            onClear, 
+            onDelete, 
+            selectedShiftIds, 
+            canAssignSheriff = true, 
+            onSelectAll 
+        } = this.props;
+        
         return (
             <div>
                 <Form onSubmit={handleSubmit} inline={true}>
@@ -104,6 +114,13 @@ export default class ScheduleControlPanelForm extends
                         message={<p style={{ fontSize: 14 }}>Please confirm that you would like to <b>permanently delete</b> the selected shift(s).</p>}
                         title="Delete Shift(s)"
                     />
+                    <Button 
+                        className="cancel-button" 
+                        style={{ marginRight: 6 }} 
+                        onClick={() => onSelectAll && onSelectAll()}
+                    >
+                        Select All
+                    </Button>
                     <Button className="cancel-button" style={{ marginRight: 6 }} onClick={() => onClear && onClear()}>
                         Deselect
                     </Button>

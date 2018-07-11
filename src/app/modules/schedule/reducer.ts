@@ -70,6 +70,18 @@ const reducer = createReducer<ScheduleState>({
   },
   SCHEDULE_PUBLISH_VIEW_SHOW_WORKSECTION: (state, showWorkSections) => {
     return { ...state, showWorkSections };
+  },
+  SCHEDULE_SHIFT_SELECT_ALL: (state, shiftIds) => {
+    const { selectedShiftIds = [] } = state;
+
+    let newSelectedShiftIds = selectedShiftIds.slice();
+    shiftIds.forEach(id => {
+      if (selectedShiftIds.indexOf(id) < 0) {
+        newSelectedShiftIds.push(id);
+      }
+    });
+
+    return { ...state, selectedShiftIds: newSelectedShiftIds };
   }
 });
 
