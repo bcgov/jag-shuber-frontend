@@ -15,7 +15,7 @@ import { visibleTime } from '../modules/dutyRoster/selectors';
 import WorkSectionIndicator from '../components/WorkSectionIndicator/WorkSectionIndicator';
 import { sheriffLoanMap as sheriffLoanMapSelecor } from '../modules/sheriffs/selectors';
 import { currentCourthouse as userCourthouse } from '../modules/user/selectors';
-import { MapType, IdType, Leave } from '../api/Api';
+import { MapType, IdType, Leave, LEAVE_CODE_PERSONAL } from '../api/Api';
 import CourthouseDisplay from './CourthouseDisplay';
 import SheriffLoanOutIcon from '../components/Icons/SheriffLoanOutIcon';
 import SheriffLoanInIcon from '../components/Icons/SheriffLoanInIcon';
@@ -65,11 +65,11 @@ class ConnectedDutyRosterSheriffCard extends React.Component<ConnectedDutyRoster
         return { shiftTime: '', workSectionId: undefined };
     }
 
-    isOnLeaveForVisibleDay(): boolean {
+    fullDayLeaveForVisibleDay(): Leave | undefined {
         const { fullDayLeaves = [], visibleTimeStart } = this.props;
         const leavesForVisibleDay =
             fullDayLeaves.filter(l => moment(visibleTimeStart).isBetween(l.startDate, l.endDate, 'days', '[]'));
-        return leavesForVisibleDay.length > 0;
+        return leavesForVisibleDay.length > 0 ? leavesForVisibleDay[0] : undefined;
     }
 
     partialLeaveForVisibleDay(): Leave | undefined {
@@ -89,7 +89,8 @@ class ConnectedDutyRosterSheriffCard extends React.Component<ConnectedDutyRoster
         const { shiftTime, workSectionId } = this.getShiftDisplayForDate(moment(visibleTimeStart).toISOString());
         const hasShift = shiftTime != '';
         const { isLoanedIn, isLoanedOut } = sheriffLoanMap[id];
-        const isOnLeaveForDay = this.isOnLeaveForVisibleDay();
+        const fullDayLeave = this.fullDayLeaveForVisibleDay();
+        const isOnLeaveForDay = fullDayLeave !== undefined;
         const partialDayLeave = this.partialLeaveForVisibleDay();
         const isOnLeaveForPartialDay = partialDayLeave !== undefined;
         const showScheduleDeatils = isLoanedIn || isLoanedOut || hasShift || isOnLeaveForDay || isOnLeaveForPartialDay;
@@ -106,11 +107,16 @@ class ConnectedDutyRosterSheriffCard extends React.Component<ConnectedDutyRoster
                         {isLoanedIn && <SheriffLoanInIcon />}
                         {isLoanedOut && <SheriffLoanOutIcon />}
                         <span style={{ marginLeft: 8, position: 'relative', bottom: 8 }}>
-                            {isOnLeaveForPartialDay && 
-                                <span style={{marginRight: 5}}><PartialLeavePopover leave={partialDayLeave}/></span>}
+                            {isOnLeaveForPartialDay &&
+                                <span style={{ marginRight: 5 }}><PartialLeavePopover leave={partialDayLeave} /></span>}
                             {!isLoanedOut && shiftTime}
                             {isLoanedOut && <CourthouseDisplay id={currentCourthouseId} />}
-                            {isOnLeaveForDay && 'On Leave'}
+                            {isOnLeaveForDay && fullDayLeave &&
+                                <span>
+                                    {fullDayLeave.leaveCode === LEAVE_CODE_PERSONAL
+                                        ? 'On Leave'
+                                        : 'On Training'}
+                                </span>}
                         </span>
                     </div>}
 

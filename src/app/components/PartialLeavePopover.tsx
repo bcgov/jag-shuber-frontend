@@ -1,7 +1,7 @@
 import React from 'react';
 import Popover from './Popover';
 import { Glyphicon } from 'react-bootstrap';
-import { Leave } from '../api/Api';
+import { Leave, LEAVE_CODE_PERSONAL } from '../api/Api';
 import { fromTimeString } from 'jag-shuber-api/dist/client';
 
 export interface PartialLeavePopoverProps {
@@ -21,7 +21,7 @@ export default class PartialLeavePopover extends React.Component<PartialLeavePop
         return (
             <Popover
                 trigger={icon}
-                title={'Leave - Partial Day'}
+                title={`${leave.leaveCode === LEAVE_CODE_PERSONAL ? 'Leave' : 'Training'} - Partial Day`}
                 placement={placement}
                 displayValue={
                     <span>
