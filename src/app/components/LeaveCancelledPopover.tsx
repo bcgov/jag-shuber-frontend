@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import Popover from './Popover';
 import { Glyphicon } from 'react-bootstrap';
-import { Leave, LEAVE_CODE_PERSONAL } from '../api/Api';
+import { Leave } from '../api/Api';
 import LeaveCancelReasonCodeDisplay from '../containers/LeaveCancelReasonCodeDisplay';
 
 export interface LeaveCancelledPopoverProps {
@@ -16,7 +16,7 @@ export default class LeaveCancelledPopover extends React.Component<LeaveCancelle
         return (
             <Popover
                 trigger={<Glyphicon style={{ color: 'red', ...style }} glyph="ban-circle" />}
-                title={`${leave.leaveCode === LEAVE_CODE_PERSONAL ? 'Leave' : 'Training'} Cancelled`}
+                title={`${Leave.getLeaveTypeDisplay(leave)} Cancelled`}
                 displayValue={
                     <span>
                         <b>Date: </b>{moment(leave.cancelDate).format('MMM D, YYYY')}<br />

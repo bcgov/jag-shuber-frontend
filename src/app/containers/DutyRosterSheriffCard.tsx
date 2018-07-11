@@ -15,7 +15,7 @@ import { visibleTime } from '../modules/dutyRoster/selectors';
 import WorkSectionIndicator from '../components/WorkSectionIndicator/WorkSectionIndicator';
 import { sheriffLoanMap as sheriffLoanMapSelecor } from '../modules/sheriffs/selectors';
 import { currentCourthouse as userCourthouse } from '../modules/user/selectors';
-import { MapType, IdType, Leave, LEAVE_CODE_PERSONAL } from '../api/Api';
+import { MapType, IdType, Leave } from '../api/Api';
 import CourthouseDisplay from './CourthouseDisplay';
 import SheriffLoanOutIcon from '../components/Icons/SheriffLoanOutIcon';
 import SheriffLoanInIcon from '../components/Icons/SheriffLoanInIcon';
@@ -113,9 +113,7 @@ class ConnectedDutyRosterSheriffCard extends React.Component<ConnectedDutyRoster
                             {isLoanedOut && <CourthouseDisplay id={currentCourthouseId} />}
                             {isOnLeaveForDay && fullDayLeave &&
                                 <span>
-                                    {fullDayLeave.leaveCode === LEAVE_CODE_PERSONAL
-                                        ? 'On Leave'
-                                        : 'On Training'}
+                                    {`On ${Leave.getLeaveTypeDisplay(fullDayLeave)}`}
                                 </span>}
                         </span>
                     </div>}
