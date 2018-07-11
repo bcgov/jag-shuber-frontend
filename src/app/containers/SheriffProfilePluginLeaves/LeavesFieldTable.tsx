@@ -114,9 +114,9 @@ export default class LeavesFieldTable extends React.Component<LeavesFieldTablePr
                                 <TimePickerField
                                     {...p}
                                     nullTimeLabel={nullTimeLabel}
-                                    timeIncrement={30}
+                                    timeIncrement={15}
                                 />
-                            )
+                            );
                         }
                     }
                     label={label}
