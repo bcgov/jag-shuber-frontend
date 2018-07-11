@@ -49,7 +49,7 @@ function getAssignmentTitle(assignment: Partial<Assignment>): string {
     let assignmentTitle = 'Assignment Title';
 
     if (isCourtAssignment(assignment)) {
-        assignmentTitle = COURTROOMS[assignment.courtroomId];
+        assignmentTitle = assignment.courtroomId ? COURTROOMS[assignment.courtroomId] : 'Title not found';
     } else if (isEscortAssignment(assignment)) {
         assignmentTitle = RUNS[assignment.runId];
     } else if (isJailAssignment(assignment)) {

@@ -128,6 +128,9 @@ export const DEFAULT_RECURRENCE: DutyRecurrence[] = [
 
 export const LEAVE_CODE_PERSONAL = 'PERSONAL';
 export const LEAVE_CODE_TRAINING = 'TRAINING';
+
+export const COURT_ASSIGNMENT_ROOM = 'ROOM';
+export const COURT_ASSIGNMENT_ROLE = 'ROLE';
 export interface SheriffProfile {
     sheriff: Sheriff;
     leaves?: Leave[];
@@ -160,7 +163,8 @@ export interface BaseAssignment {
 
 export interface CourtAssignment extends BaseAssignment {
     workSectionId: 'COURTS';
-    courtroomId: IdType;
+    courtroomId?: IdType;
+    courtroleId?: IdType;
 }
 
 export interface JailAssignment extends BaseAssignment {

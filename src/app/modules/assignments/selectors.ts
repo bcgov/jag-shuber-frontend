@@ -17,6 +17,7 @@ import { courtroomMapRequest } from '../courthouse/requests/courtrooms';
 import { jailRoleMapRequest } from '../courthouse/requests/jailRoles';
 import { runMapRequest } from '../courthouse/requests/runs';
 import { alternateAssignmentTypeMapRequest } from '../courthouse/requests/alternateAssignmentTypes';
+import { courtRoleMapRequest } from '../courthouse/requests/courtRoles';
 import mapToArray from '../../infrastructure/mapToArray';
 
 // Assignments
@@ -26,11 +27,14 @@ export const allAssignments = createSelector(
     jailRoleMapRequest.getData,
     runMapRequest.getData,
     alternateAssignmentTypeMapRequest.getData,
-    (map = {}, courtRooms = {}, jailRoles = {}, runs = {}, altAssignmentTypes = {}): Assignment[] => {
+    courtRoleMapRequest.getData,
+    (map = {}, courtRooms = {}, jailRoles = {}, runs = {}, altAssignmentTypes = {}, courtRoles = {}): Assignment[] => {
         return mapToArray(map)
             .map(a => {
                 if (isCourtAssignment(a)) {
-                    a.title = courtRooms[a.courtroomId] ? courtRooms[a.courtroomId].name : 'Courtroom Not Found';
+                    a.title = a.courtroomId 
+                        ? (courtRooms[a.courtroomId] ? courtRooms[a.courtroomId].name : 'Courtroom Not Found') 
+                        : (a.courtroleId && courtRoles[a.courtroleId] ? courtRoles[a.courtroleId].description : 'Court Role Not Found');
                 } else if (isJailAssignment(a)) {
                     a.title = jailRoles[a.jailRoleCode] ? jailRoles[a.jailRoleCode].description : 'Jail Role Not Found';
                 } else if (isEscortAssignment(a)) {
