@@ -24,10 +24,7 @@ def YARN_BUILD = 'yarn-builder'
 def IMAGESTREAM_NAME = APP_NAME
 def SLACK_DEV_CHANNEL="#sheriffscheduling_dev"
 def SLACK_MAIN_CHANNEL="#sheriff_scheduling"
-<<<<<<< HEAD
 def SLACK_PROD_CHANNEL="sheriff_prod_approval"
-=======
->>>>>>> 4014d2cc69e044030b9232c630b153448ad8b840
 def work_space="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/jag-shuber-tools-frontend-pipeline/workspace@script"
 
   stage('Build ' + APP_NAME) {
@@ -124,8 +121,6 @@ def work_space="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/jag-shuber-tools-fro
       } catch(error){
         echo "Error in creating postgress instance"
         throw error
-<<<<<<< HEAD
-=======
       }
     }
   }
@@ -143,31 +138,10 @@ def work_space="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/jag-shuber-tools-fro
     } catch(error){
       echo "Error while test cases are running"
       throw error
->>>>>>> 4014d2cc69e044030b9232c630b153448ad8b840
       }
     }
   }
 
-<<<<<<< HEAD
-
-  //Running functional Test cases - in tools project
-  stage('Run Test Cases'){
-    node{
-    try{
-      echo "Run Test Case scripts here"
-      POSTGRESS_DEL = sh (
-        script: """oc project jag-shuber-tools; oc process -f "${work_space}/openshift/test/frontend-deploy.json" | oc delete -f -; oc process -f "${work_space}/openshift/test/api-postgress-ephemeral.json" | oc delete -f - """)
-        echo ">> ${POSTGRESS_DEL}"
-      echo "postgress instance deleted successfully"
-    } catch(error){
-      echo "Error while test cases are running"
-      throw error
-      }
-    }
-  }
-
-=======
->>>>>>> 4014d2cc69e044030b9232c630b153448ad8b840
   // Deploying to Dev
   stage('Deploy ' + TAG_NAMES[0]) {
     def environment = TAG_NAMES[0]
@@ -244,7 +218,6 @@ def work_space="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/jag-shuber-tools-fro
             ],
             [
               type: "button",            
-<<<<<<< HEAD
               text: "Tag image production?",
               style: "primary",              
               url: "${currentBuild.absoluteUrl}/input"
@@ -299,62 +272,6 @@ def work_space="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/jag-shuber-tools-fro
               url: url: "${currentBuild.absoluteUrl}/input"
             ]
           ])
-=======
-              text: "Deploy to Production?",
-              style: "primary",              
-              url: "${currentBuild.absoluteUrl}/input"
-            ]
-          ])
-        } catch(error){
-          slackNotify(
-            "Couldn't deploy to ${environment} 🤕",
-            "The latest deployment of the ${APP_NAME} to ${environment} seems to have failed\n'${error.message}'",
-            'danger',
-            env.SLACK_HOOK,
-            SLACK_DEV_CHANNEL,
-            [
-              [
-                type: "button",
-                text: "View Build Logs",
-                style:"danger",        
-                url: "${currentBuild.absoluteUrl}/console"
-              ]
-            ])
-            echo "Build failed"
-            }   
-          }
-      }
-
-  // Deploying to production
-  stage('Tag Image to ' + TAG_NAMES[2]){
-    def environment = TAG_NAMES[2]
-    def url = APP_URLS[2]
-    timeout(time:3, unit: 'DAYS'){ input "Deploy to ${environment}?"}
-    node{
-      
-      try {
-      // Check for current route target 
-      ROUT_CHK = sh (
-      script: """oc project jag-shuber-prod; if [ `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.to.weight}'` == "100" ]; then `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.to.name}' > route-target`; else `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.alternateBackend[*].name}' > route-target`; fi ; cat route-target""")
-      
-      // Tag the new build as "prod"
-      openshiftTag destStream: IMAGESTREAM_NAME, verbose: 'true', destTag: environment, srcStream: IMAGESTREAM_NAME, srcTag: "${IMAGE_HASH}", waitTime: '900000'
-
-      slackNotify(
-          "Current production Image tagged to ${environment}",
-          "To Deploy ${newTarget} stack and with prod tagged image",
-          'To switch to new version',
-          env.SLACK_HOOK,
-          SLACK_MAIN_CHANNEL,
-            [
-              [
-                type: "button",            
-                text: "switch route to new version on ${newTarget}?",
-                style: "primary",              
-                url: "${currentBuild.absoluteUrl}/console"
-              ]
-            ])
->>>>>>> 4014d2cc69e044030b9232c630b153448ad8b840
     }catch(error){
       slackNotify(
               "Couldn't tag image to ${environment} 🤕",
@@ -378,11 +295,7 @@ def work_space="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/jag-shuber-tools-fro
   // Once approved (input step) switch production over to the new version.
   stage('Switch over to new production stack') {
     // Wait for administrator confirmation
-<<<<<<< HEAD
     timeout(time:3, unit: 'DAYS'){ input "Switch Production stack?", submitter: 'ronald-garcia-admin', submitterParameter: 'approvingSubmitter'}
-=======
-    timeout(time:3, unit: 'DAYS'){ input "Switch Production stack?"}
->>>>>>> 4014d2cc69e044030b9232c630b153448ad8b840
     node{
       try{
         //Trigger remote job
