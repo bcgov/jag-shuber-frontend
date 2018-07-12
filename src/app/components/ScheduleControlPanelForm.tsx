@@ -115,13 +115,13 @@ export default class ScheduleControlPanelForm extends
                         title="Delete Shift(s)"
                     />
                     <Button 
-                        className="cancel-button" 
+                        className="action-button secondary" 
                         style={{ marginRight: 6 }} 
                         onClick={() => onSelectAll && onSelectAll()}
                     >
                         Select All
                     </Button>
-                    <Button className="cancel-button" style={{ marginRight: 6 }} onClick={() => onClear && onClear()}>
+                    <Button className="action-button secondary" style={{ marginRight: 6 }} onClick={() => onClear && onClear()}>
                         Deselect
                     </Button>
                     <Button className="action-button" onClick={() => onApply && onApply()}>
