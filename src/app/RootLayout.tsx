@@ -10,8 +10,6 @@ import {
 } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import Navigation from './components/Navigation';
-import './assets/styles/Glyphicons.css';
-import './index.css';
 import DutyRoster from './pages/DutyRoster';
 import ManageSheriffs from './pages/ManageSheriffs';
 import DefaultAssignments from './pages/DefaultAssignments';
@@ -30,6 +28,7 @@ import {
 import ToastManager from './components/ToastManager/ToastManager';
 import ConnectedConfirmationModal from './containers/ConfirmationModal';
 import SheriffProfileCreateModal from './containers/SheriffProfileCreateModal';
+import resolveAppUrl from './infrastructure/resolveAppUrl';
 
 export interface LayoutStateProps {
   isCourthouseSet?: boolean;
@@ -40,13 +39,13 @@ export interface LayoutDispatchProps {
 class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
 
   render() {
-    const { 
-      isCourthouseSet = false, 
+    const {
+      isCourthouseSet = false,
     } = this.props;
     return (
-      <Router>
+      <Router basename={resolveAppUrl('')}>
         <div className="App">
-          <ToastManager/>
+          <ToastManager />
           <div className="headerArea">
             <Navigation />
           </div>
@@ -58,7 +57,7 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
                   maxWidth: '80%',
                   minWidth: 800,
                   height: '100%',
-                  margin:'auto'
+                  margin: 'auto'
                 }}
               >
                 <div style={{ paddingTop: 10 }}>
@@ -71,18 +70,18 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
 
           {isCourthouseSet && (
             <div className="mainArea">
-              <Route exact={true} path="/" component={DutyRoster} />
-              <Route path="/sheriffs/schedule" component={Scheduling} />
-              <Route path="/sheriffs/manage" component={ManageSheriffs} />
-              <Route path="/assignments/manage/default" component={DefaultAssignments} />
-              <Route path="/schedule/publishView" component={PublishSchedule} />
+              <Route exact={true} path={Navigation.Routes.dutyRoster.timeline.path} component={DutyRoster} />
+              <Route path={Navigation.Routes.schedule.manage.path} component={Scheduling} />
+              <Route path={Navigation.Routes.team.path} component={ManageSheriffs} />
+              <Route path={Navigation.Routes.dutyRoster.setup.path} component={DefaultAssignments} />
+              <Route path={Navigation.Routes.schedule.distribute.path} component={PublishSchedule} />
 
               <AssignmentDutyEditModal />
               <SheriffProfileModal />
               <SheriffProfileCreateModal />
               <ScheduleShiftCopyModal />
               <ScheduleShiftAddModal />
-              <ConnectedConfirmationModal /> 
+              <ConnectedConfirmationModal />
             </div>
           )}
           <div className="footerArea">

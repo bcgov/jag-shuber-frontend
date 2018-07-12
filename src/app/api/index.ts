@@ -43,9 +43,10 @@ export {
 
 import Client from './Client';
 import MockClient from './Mock/MockApi';
+import resolveAppUrl from '../infrastructure/resolveAppUrl';
 
 const mock = false;
 
-const client = mock ? new MockClient() : new Client(`/api/v1`);
+const client = mock ? new MockClient() : new Client(resolveAppUrl('/api/v1'));
 
 export default client;

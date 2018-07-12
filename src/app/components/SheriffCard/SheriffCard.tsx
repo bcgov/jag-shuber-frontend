@@ -7,6 +7,7 @@ import './SheriffCard.css';
 import SheriffLoanInIcon from '../Icons/SheriffLoanInIcon';
 import SheriffLoanOutIcon from '../Icons/SheriffLoanOutIcon';
 import SheriffRankDisplay from '../../containers/SheriffRankDisplay';
+import avatarImg from '../../assets/images/avatar.png';
 
 export interface SheriffCardProps {
     sheriff: Sheriff;
@@ -35,7 +36,7 @@ export default class SheriffCard extends React.PureComponent<SheriffCardProps, a
                     {isLoanedOut && <SheriffLoanOutIcon />}
                     {!isLoanedIn && !isLoanedOut && <div style={{ width: 23, height: 23 }} />}
                 </div>
-                <Image src={imageUrl ? imageUrl : '/img/avatar.png'} circle={true} width="127" height="132" />
+                <Image src={imageUrl ? imageUrl : avatarImg} circle={true} width="127" height="132" />
                
                 <div style={{marginTop: 30, fontSize: 14}}>#{badgeNo}</div>
                 <div style={{fontWeight: 'bold', fontSize: 18}}>{firstName.toUpperCase()} {lastName.toUpperCase()}</div>

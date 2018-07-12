@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { displayEnum } from '../infrastructure/EnumUtils';
+import avatarImg from '../assets/images/avatar.png';
 
 export type MapType<T> = { [key: string]: T };
 
@@ -103,7 +104,7 @@ export const BLANK_SHERIFF: Sheriff = {
     firstName: '',
     lastName: '',
     badgeNo: '-1',
-    imageUrl: '/img/avatar.png'
+    imageUrl: avatarImg
 };
 
 export const BLANK_COURTHOUSE: Courthouse = {

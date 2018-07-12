@@ -8,7 +8,7 @@ import {
 } from 'react-router-dom';
 
 interface NavigationLinkProps {
-    to: string;
+    path: string;
     label: string;
     exactMatch?: boolean;
     onSelect?: (key: any, event: any) => void;
@@ -25,18 +25,24 @@ class NavigationLink extends React.Component<NavigationLinkProps, {}> {
     }
 
     render() {
-        const { to, exactMatch = false, label } = this.props;
+        const { path, exactMatch = false, label } = this.props;
 
         return (
             <Route
-                path={to}
+                path={path}
                 exact={exactMatch}
                 children={({ match }) => {
                     const isActive = match ? true : false;
                     return (
                         <NavItem
                             active={isActive}
-                            componentClass={() => <Link to={to} onClick={(e) => this.handleClick(e)}>{label}</Link>}
+                            componentClass={() =>
+                                <Link
+                                    to={path}
+                                    onClick={(e) => this.handleClick(e)}
+                                >
+                                    {label}
+                                </Link>}
                         />
                     );
                 }}

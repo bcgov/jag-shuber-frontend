@@ -41,19 +41,19 @@
 }
 
 .sheriff-duty-bar.drop-target.is-over.can-drop.is-overlap.dark .drop-target-overlay {
-    background-image: url("/img/dutyRoster_warning_black.svg");
+    background-image: url("./dutyRoster-warning-black.svg?url");
 }
 
 .sheriff-duty-bar.drop-target.is-over.can-drop.is-overlap.light .drop-target-overlay {
-    background-image: url("/img/dutyRoster_warning_white.svg");
+    background-image: url("./dutyRoster-warning-white.svg?url");
 }
 
 .sheriff-duty-bar.drop-target.is-over.can-drop.dark .drop-target-overlay {
-    background-image: url("/img/dutyRoster_check_black.svg");
+    background-image: url("./dutyRoster-check-black.svg?url");
 }
 
 .sheriff-duty-bar.drop-target.is-over.can-drop.light .drop-target-overlay {
-    background-image: url("/img/dutyRoster_check_white.svg");
+    background-image: url("./dutyRoster-check-white.svg?url");
 }
 
 .sheriff-duty-bar.drop-target.is-over.cant-drop .drop-target-overlay {
