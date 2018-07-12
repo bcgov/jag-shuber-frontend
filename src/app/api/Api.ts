@@ -145,6 +145,7 @@ export interface Sheriff {
     rankCode?: string;
     homeCourthouseId?: IdType;
     currentCourthouseId?: IdType;
+    gender?: string;
 }
 
 export interface SheriffRank {
