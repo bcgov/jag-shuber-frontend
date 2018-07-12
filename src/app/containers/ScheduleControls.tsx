@@ -33,7 +33,7 @@ interface ScheduleControlsProps {
     submit?: () => void;
     clear?: () => void;
     deleteShift?: (shiftIds: IdType[]) => void;
-    selectShifts?: (shiftIds: IdType[]) => void;
+    setSelectedShifts?: (shiftIds: IdType[]) => void;
     selectedShifts?: IdType[];
     shifts?: Shift[];
 }
@@ -65,7 +65,7 @@ class ScheduleControls extends React.PureComponent<
             clear,
             deleteShift,
             selectedShifts = [],
-            selectShifts
+            setSelectedShifts
         } = this.props;
 
         return (
@@ -97,7 +97,7 @@ class ScheduleControls extends React.PureComponent<
                                 clear && clear();
                             }
                         }
-                        onSelectAll={() => selectShifts && selectShifts(this.allVisibleShiftIds())}
+                        onSelectAll={() => setSelectedShifts && setSelectedShifts(this.allVisibleShiftIds())}
                     />
                 </div>
 
@@ -172,7 +172,7 @@ const mapDispatchToProps = {
     submit: ScheduleShiftMultiEditForm.submitAction,
     clear: clearSelectedShifts,
     deleteShift: deleteShiftAction,
-    selectShifts: selectSetOfShifts
+    setSelectedShifts: selectSetOfShifts
 };
 
 // tslint:disable-next-line:max-line-length
