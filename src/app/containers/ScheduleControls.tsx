@@ -14,7 +14,7 @@ import {
 import {
     updateVisibleTime as setVisibleTime,
     clearSelectedShifts,
-    selectSetOfShifts
+    selectShifts
 } from '../modules/schedule/actions';
 import { deleteShift as deleteShiftAction } from '../modules/shifts/actions';
 import ScheduleShiftMultiEditForm from './ScheduleShiftMultiEditForm';
@@ -172,7 +172,7 @@ const mapDispatchToProps = {
     submit: ScheduleShiftMultiEditForm.submitAction,
     clear: clearSelectedShifts,
     deleteShift: deleteShiftAction,
-    setSelectedShifts: selectSetOfShifts
+    setSelectedShifts: selectShifts
 };
 
 // tslint:disable-next-line:max-line-length

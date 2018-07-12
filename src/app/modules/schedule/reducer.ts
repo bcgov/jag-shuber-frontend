@@ -71,7 +71,7 @@ const reducer = createReducer<ScheduleState>({
   SCHEDULE_PUBLISH_VIEW_SHOW_WORKSECTION: (state, showWorkSections) => {
     return { ...state, showWorkSections };
   },
-  SCHEDULE_SHIFT_SET_SELECTED: (state, shiftIds) => {
+  SCHEDULE_SHIFT_SELECT_MANY: (state, shiftIds) => {
     const { selectedShiftIds = [] } = state;
 
     let newSelectedShiftIds = selectedShiftIds.slice();
