@@ -24,6 +24,7 @@ def YARN_BUILD = 'yarn-builder'
 def IMAGESTREAM_NAME = APP_NAME
 def SLACK_DEV_CHANNEL="#sheriffscheduling_dev"
 def SLACK_MAIN_CHANNEL="#sheriff_scheduling"
+def SLACK_PROD_CHANNEL="sheriff_prod_approval"
 def work_space="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/jag-shuber-tools-frontend-pipeline/workspace@script"
 
   stage('Build ' + APP_NAME) {
@@ -197,7 +198,7 @@ def work_space="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/jag-shuber-tools-fro
   stage('Deploy ' + TAG_NAMES[1]){
     def environment = TAG_NAMES[1]
     def url = APP_URLS[1]
-    timeout(time:3, unit: 'DAYS'){ input "Deploy to ${environment}?"}
+    timeout(time:3, unit: 'DAYS'){ input "Deploy to ${environment}?", submitter: 'ronald-garcia-admin,cjam-admin', submitterParameter: 'approvingSubmitter'}
     node{
     try{
       openshiftTag destStream: IMAGESTREAM_NAME, verbose: 'true', destTag: environment, srcStream: IMAGESTREAM_NAME, srcTag: "${IMAGE_HASH}", waitTime: '900000'
@@ -217,7 +218,7 @@ def work_space="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/jag-shuber-tools-fro
             ],
             [
               type: "button",            
-              text: "Deploy to Production?",
+              text: "Tag image production?",
               style: "primary",              
               url: "${currentBuild.absoluteUrl}/input"
             ]
@@ -258,19 +259,19 @@ def work_space="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/jag-shuber-tools-fro
       openshiftTag destStream: IMAGESTREAM_NAME, verbose: 'true', destTag: environment, srcStream: IMAGESTREAM_NAME, srcTag: "${IMAGE_HASH}", waitTime: '900000'
 
       slackNotify(
-          "Current production Image tagged to ${environment}",
+          "Current ${IMAGESTREAM_NAME} Image tagged to ${environment}",
           "To Deploy ${newTarget} stack and with prod tagged image",
           'To switch to new version',
           env.SLACK_HOOK,
-          SLACK_MAIN_CHANNEL,
+          SLACK_PROD_CHANNEL,
+          [
             [
-              [
-                type: "button",            
-                text: "switch route to new version on ${newTarget}?",
-                style: "primary",              
-                url: "${currentBuild.absoluteUrl}/console"
-              ]
-            ])
+              type: "button",            
+              text: "switch route to new version on ${newTarget}?",
+              style: "primary",              
+              url: url: "${currentBuild.absoluteUrl}/input"
+            ]
+          ])
     }catch(error){
       slackNotify(
               "Couldn't tag image to ${environment} 🤕",
@@ -294,7 +295,7 @@ def work_space="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/jag-shuber-tools-fro
   // Once approved (input step) switch production over to the new version.
   stage('Switch over to new production stack') {
     // Wait for administrator confirmation
-    timeout(time:3, unit: 'DAYS'){ input "Switch Production stack?"}
+    timeout(time:3, unit: 'DAYS'){ input "Switch Production stack?", submitter: 'ronald-garcia-admin', submitterParameter: 'approvingSubmitter'}
     node{
       try{
         //Trigger remote job

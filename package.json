@@ -6,7 +6,7 @@
     "start": "node scripts/start.js",
     "start:dev": "API_URL=http://localhost:3001/ yarn start",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js --env=jsdom",
+    "test": "node scripts/test.js --env=jsdom --coverage",
     "prepare": "patch-package",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
@@ -27,9 +27,11 @@
     "hal-rest-client": "^0.3.4",
     "html-webpack-plugin": "2.29.0",
     "interact.js": "^1.2.8",
+    "istanbul": "^0.4.5",
     "jag-shuber-api": "github:bcgov/jag-shuber-api",
     "jest": "20.0.4",
-    "moment": "^2.22.1",
+    "map": "^1.0.1",
+    "moment": "^2.22.2",
     "object-assign": "4.1.1",
     "open-iconic": "^1.1.1",
     "postcss-flexbugs-fixes": "3.2.0",
@@ -117,7 +119,7 @@
   "jest": {
     "mapCoverage": true,
     "collectCoverageFrom": [
-      "src/**/*.{js,jsx,ts,tsx}"
+      "src/app/infrastructure/*.{js,ts}"
     ],
     "setupFiles": [
       "<rootDir>/config/polyfills.js"

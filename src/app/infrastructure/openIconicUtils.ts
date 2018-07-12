@@ -223,7 +223,7 @@ interface IconNames {
     'zoom-in': {};
     'zoom-out': {};
 }
-
+/* istanbul ignore file */
 export function loadIcon(name: keyof IconNames): React.ComponentType<React.SVGProps<SVGSVGElement>> {
     return require(`open-iconic/svg/${name}.svg`).default;
 }

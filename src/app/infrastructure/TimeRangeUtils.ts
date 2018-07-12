@@ -81,8 +81,9 @@ export function getDefaultTimePickerMaxTime (dayForTime?: moment.Moment): moment
     }
 }
 
+
 export function getDefaultTimePickerRange (dayForTime?: moment.Moment): {startTime: moment.Moment, endTime: moment.Moment} {
-    if (dayForTime && dayForTime.isValid()) {
+    if (dayForTime && dayForTime.isValid()) /* istanbul ignore if */{
         return {
              startTime: getDefaultTimePickerMinTime(dayForTime),
              endTime: getDefaultTimePickerMaxTime(dayForTime)
