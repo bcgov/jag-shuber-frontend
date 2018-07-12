@@ -13,14 +13,16 @@ import {
 } from '../modules/schedule/selectors';
 import {
     updateVisibleTime as setVisibleTime,
-    clearSelectedShifts
+    clearSelectedShifts,
+    selectShifts
 } from '../modules/schedule/actions';
 import { deleteShift as deleteShiftAction } from '../modules/shifts/actions';
 import ScheduleShiftMultiEditForm from './ScheduleShiftMultiEditForm';
 import ScheduleShiftAddModal from './ScheduleShiftAddModal';
 import ScheduleShiftCopyModal from './ScheduleShiftCopyModal';
-import { IdType } from '../api/Api';
+import { IdType, Shift } from '../api/Api';
 import DateRangeControls from '../components/DateRangeControls';
+import { allShifts } from '../modules/shifts/selectors';
 
 interface ScheduleControlsStateProps {
     visibleTimeStart: any;
@@ -31,7 +33,9 @@ interface ScheduleControlsProps {
     submit?: () => void;
     clear?: () => void;
     deleteShift?: (shiftIds: IdType[]) => void;
+    setSelectedShifts?: (shiftIds: IdType[]) => void;
     selectedShifts?: IdType[];
+    shifts?: Shift[];
 }
 
 interface ScheduleDistpatchProps {
@@ -43,6 +47,13 @@ interface ScheduleDistpatchProps {
 class ScheduleControls extends React.PureComponent<
     ScheduleControlsProps & ScheduleControlsStateProps & ScheduleDistpatchProps> {
 
+    allVisibleShiftIds() {
+        const { visibleTimeStart, visibleTimeEnd, shifts = [] } = this.props;
+        return shifts
+            .filter(s => moment(s.startDateTime).isBetween(visibleTimeStart, visibleTimeEnd, 'days', '[]'))
+            .map(vs => vs.id);
+    }
+
     render() {
         const {
             visibleTimeStart,
@@ -53,7 +64,8 @@ class ScheduleControls extends React.PureComponent<
             submit,
             clear,
             deleteShift,
-            selectedShifts = []
+            selectedShifts = [],
+            setSelectedShifts
         } = this.props;
 
         return (
@@ -67,7 +79,7 @@ class ScheduleControls extends React.PureComponent<
             >
                 <div
                     style={{
-                        margin: '5px 10px' ,
+                        margin: '5px 10px',
                         paddingRight: 15
                     }}
                 >
@@ -85,6 +97,7 @@ class ScheduleControls extends React.PureComponent<
                                 clear && clear();
                             }
                         }
+                        onSelectAll={() => setSelectedShifts && setSelectedShifts(this.allVisibleShiftIds())}
                     />
                 </div>
 
@@ -119,13 +132,13 @@ class ScheduleControls extends React.PureComponent<
                         <Dropdown id="schedule-control-menu" pullRight={true}>
                             <Dropdown.Toggle
                                 noCaret={true}
-                                style={{ 
-                                    fontSize: 22, 
-                                    background: 'transparent', 
-                                    color: 'white', 
+                                style={{
+                                    fontSize: 22,
+                                    background: 'transparent',
+                                    color: 'white',
                                     border: 0,
-                                    paddingLeft: 18, 
-                                    paddingRight: 15 
+                                    paddingLeft: 18,
+                                    paddingRight: 15
                                 }}
                             >
                                 <Glyphicon glyph="menu-hamburger" />
@@ -147,7 +160,8 @@ const mapStateToProps = (state: RootState) => {
     const currentVisibleTime = visibleTime(state);
     return {
         ...currentVisibleTime,
-        selectedShifts: selectedShiftIds(state)
+        selectedShifts: selectedShiftIds(state),
+        shifts: allShifts(state)
     };
 };
 
@@ -157,7 +171,8 @@ const mapDispatchToProps = {
     showShiftAddModal: () => ScheduleShiftAddModal.ShowAction(),
     submit: ScheduleShiftMultiEditForm.submitAction,
     clear: clearSelectedShifts,
-    deleteShift: deleteShiftAction
+    deleteShift: deleteShiftAction,
+    setSelectedShifts: selectShifts
 };
 
 // tslint:disable-next-line:max-line-length

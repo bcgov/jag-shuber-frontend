@@ -29,7 +29,7 @@ class ScheduleShiftAddModal extends React.Component<CompositeProps> {
                     maxSize: '70%'
                 }}
             >
-                <Modal.Header closeButton={true}>Edit Shift</Modal.Header>
+                <Modal.Header closeButton={true}>Add Shift</Modal.Header>
                 <Modal.Body>
                     <ScheduleShiftCreateForm
                         onSubmitSuccess={handleHide}
@@ -40,7 +40,7 @@ class ScheduleShiftAddModal extends React.Component<CompositeProps> {
                 <Modal.Footer>
                     <ScheduleShiftCreateForm.SubmitButton>
                         Save
-                        </ScheduleShiftCreateForm.SubmitButton>
+                    </ScheduleShiftCreateForm.SubmitButton>
                 </Modal.Footer>
             </Modal>
         );

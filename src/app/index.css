@@ -130,15 +130,14 @@ body {
   transition: box-shadow .5s;
 }
 
-.cancel-button {
-  border: 1px solid #F3BD48;
-  background: transparent;
-  color: #F3BD48;
-}
-
 .action-button {
   border: 1px solid #F3BD48;
   background: #F3BD48;
+}
+
+.action-button.secondary{
+  background: transparent;
+  color: #F3BD48;
 }
 
 .toolbar-calendar-control {
