@@ -317,7 +317,8 @@ export default class Client implements API {
     }
 
     async getCourtRoles(): Promise<CourtRole[]> {
-        throw 'method not implemented';
+        const list = await this._client.GetCourtRoleCodes();
+        return list as CourtRole[];
     }
 
 }

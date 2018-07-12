@@ -3,14 +3,14 @@ import { connect } from 'react-redux';
 import { RootState } from '../store';
 import {
     Courtroom, COURT_ASSIGNMENT_ROOM, COURT_ASSIGNMENT_ROLE,
-    // CourtRole
+    CourtRole
 } from '../api/Api';
-import { allCourtrooms } from '../modules/courthouse/selectors';
+import { allCourtrooms, allCourtRoles } from '../modules/courthouse/selectors';
 import SelectorWithOptGroup, { SelectorWithOptGroupProps } from '../components/FormElements/SelectorWithOptGroups';
 
 interface CourthouseCourtAssignmentSelectorStateProps {
     courtrooms: Courtroom[];
-    // courtRoles: CourtRole[];
+    courtRoles: CourtRole[];
 }
 
 class CourthouseCourtAssignmentList extends React.PureComponent<
@@ -19,11 +19,9 @@ class CourthouseCourtAssignmentList extends React.PureComponent<
     render() {
         const {
             courtrooms = [],
-            // courtRoles = [],
+            courtRoles = [],
             ...restProps
         } = this.props;
-
-        const courtRoles = [{ code: 'ROVER', description: 'Rover' }, { code: 'VIDEO', description: 'Video' }];
 
         const courtroomSelectorValues = courtrooms
             .map(courtroom => ({ key: `${COURT_ASSIGNMENT_ROOM}:${courtroom.id}`, value: courtroom.name }));
@@ -31,10 +29,6 @@ class CourthouseCourtAssignmentList extends React.PureComponent<
             .map(role => ({ key: `${COURT_ASSIGNMENT_ROLE}:${role.code}`, value: role.description }));
 
         return (
-            // <Selector {...restProps} data={selectorValues} />
-
-            // { optGroupLabel: string, options: { key: string | number, value: string }[] }[];
-
             <SelectorWithOptGroup
                 {...restProps}
                 data={[
@@ -49,7 +43,8 @@ class CourthouseCourtAssignmentList extends React.PureComponent<
 
 const mapStateToProps = (state: RootState) => {
     return {
-        courtrooms: allCourtrooms(state)
+        courtrooms: allCourtrooms(state),
+        courtRoles: allCourtRoles(state)
     };
 };
 

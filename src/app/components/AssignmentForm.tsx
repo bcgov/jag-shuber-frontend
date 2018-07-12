@@ -209,7 +209,7 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
             courtAssignmentId: isCourtAssignment(rest) 
                     ? (rest.courtroomId 
                         ? CourtSecurityFields.assignmentValueToCourtAssignmentId(rest.courtroomId, true)
-                        : CourtSecurityFields.assignmentValueToCourtAssignmentId(rest.courtroleId, false)) 
+                        : CourtSecurityFields.assignmentValueToCourtAssignmentId(rest.courtRoleId, false)) 
                     : undefined
         };
     }

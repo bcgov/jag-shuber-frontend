@@ -164,7 +164,7 @@ export interface BaseAssignment {
 export interface CourtAssignment extends BaseAssignment {
     workSectionId: 'COURTS';
     courtroomId?: IdType;
-    courtroleId?: IdType;
+    courtRoleId?: IdType;
 }
 
 export interface JailAssignment extends BaseAssignment {
