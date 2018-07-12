@@ -4,6 +4,7 @@ import * as jailRoleRequests from './requests/jailRoles';
 import * as alternateAssignmentTypeRequests from './requests/alternateAssignmentTypes';
 import * as courthouseRequests from './requests/courthouses';
 import * as sherriffRankRequests from './requests/sheriffRankCodes';
+import * as courtRoleRequest from './requests/courtRoles';
 
 // Courtrooms
 export const getCourtrooms = courtroomRequests.courtroomMapRequest.actionCreator;
@@ -23,3 +24,6 @@ export const getCourthouses = courthouseRequests.courthouseMapRequest.actionCrea
 
 // Sheriff Rank Codes
 export const getSheriffRankCodes = sherriffRankRequests.sheriffRankCodeMapRequest.actionCreator;
+
+// Court Roles
+export const getCourtRoles = courtRoleRequest.courtRoleMapRequest.actionCreator;

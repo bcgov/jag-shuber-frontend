@@ -14,7 +14,8 @@ import {
     getAlternateAssignmentTypes,
     getJailRoles,
     getCourthouses,
-    getSheriffRankCodes
+    getSheriffRankCodes, 
+    getCourtRoles
 } from './modules/courthouse/action';
 import { getShifts } from './modules/shifts/actions';
 import { updateVisibleTime as updateTimelineVisibleTime } from './modules/dutyRoster/actions';
@@ -56,7 +57,8 @@ const initialActions: any[] = [
     getShifts,
     getLeaveCancelCodes,
     getLeaveSubCodes,
-    getLeaves
+    getLeaves,
+    getCourtRoles
 ];
 
 const reducers = {

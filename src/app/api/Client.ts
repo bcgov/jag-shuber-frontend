@@ -25,7 +25,8 @@ import {
     SheriffRank,
     DateRange,
     LeaveSubCode,
-    LeaveCancelCode
+    LeaveCancelCode,
+    CourtRole
 } from './Api';
 import MockApi from './Mock/MockApi';
 import { SubmissionError } from 'redux-form';
@@ -313,6 +314,11 @@ export default class Client implements API {
     async getSheriffRankCodes(): Promise<SheriffRank[]> {
         const list = await this._client.GetSheriffRankCodes();
         return list as SheriffRank[];
+    }
+
+    async getCourtRoles(): Promise<CourtRole[]> {
+        const list = await this._client.GetCourtRoleCodes();
+        return list as CourtRole[];
     }
 
 }

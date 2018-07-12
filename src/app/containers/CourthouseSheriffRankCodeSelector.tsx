@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { SheriffRank } from '../api/Api';
-import { allSheriffRankCodes } from '../modules/courthouse/selectors';
+import { allEffectiveSheriffRankCodes } from '../modules/courthouse/selectors';
 import Selector, { SelectorProps } from '../components/FormElements/Selector';
 
 interface CourthouseSheriffRankListStateProps {
@@ -28,7 +28,7 @@ class CourthouseSheriffRankList extends React.PureComponent<
 
 const mapStateToProps = (state: RootState) => {
     return {
-        sheriffRanks: allSheriffRankCodes(state)
+        sheriffRanks: allEffectiveSheriffRankCodes()(state)
     };
 };
 

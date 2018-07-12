@@ -23,6 +23,7 @@ export type CourthouseMap = MapType<Courthouse>;
 export type SheriffRankCodeMap = MapType<SheriffRank>;
 export type LeaveSubCodeMap = MapType<LeaveSubCode>;
 export type LeaveCancelCodeMap = MapType<LeaveCancelCode>;
+export type CourtRoleMap = MapType<CourtRole>;
 
 /* tslint:disable:no-bitwise */
 export enum DaysOfWeek {
@@ -127,6 +128,9 @@ export const DEFAULT_RECURRENCE: DutyRecurrence[] = [
 
 export const LEAVE_CODE_PERSONAL = 'PERSONAL';
 export const LEAVE_CODE_TRAINING = 'TRAINING';
+
+export const COURT_ASSIGNMENT_ROOM = 'ROOM';
+export const COURT_ASSIGNMENT_ROLE = 'ROLE';
 export interface SheriffProfile {
     sheriff: Sheriff;
     leaves?: Leave[];
@@ -146,6 +150,7 @@ export interface Sheriff {
 export interface SheriffRank {
     code: string;
     description: string;
+    expiryDate?: DateType;
 }
 
 export interface BaseAssignment {
@@ -158,7 +163,8 @@ export interface BaseAssignment {
 
 export interface CourtAssignment extends BaseAssignment {
     workSectionId: 'COURTS';
-    courtroomId: IdType;
+    courtroomId?: IdType;
+    courtRoleId?: IdType;
 }
 
 export interface JailAssignment extends BaseAssignment {
@@ -225,6 +231,13 @@ export interface Courtroom {
 export interface JailRole {
     code: IdType;
     description: string;
+    expiryDate?: DateType;
+}
+
+export interface CourtRole {
+    code: IdType;
+    description: string;
+    expiryDate?: DateType;
 }
 
 export interface Shift {
@@ -267,11 +280,13 @@ export interface LeaveSubCode {
     code: string;
     subCode: string;
     description: string;
+    expiryDate?: DateType;
 }
 
 export interface LeaveCancelCode {
     code: string;
     description: string;
+    expiryDate?: DateType;
 }
 
 export interface Run {
@@ -283,6 +298,7 @@ export interface Run {
 export interface AlternateAssignment {
     code: IdType | string;
     description: string;
+    expiryDate?: DateType;
 }
 
 export interface API {
@@ -332,6 +348,7 @@ export interface API {
     getJailRoles(): Promise<JailRole[]>;
     getAlternateAssignmentTypes(): Promise<AlternateAssignment[]>;
     getSheriffRankCodes(): Promise<SheriffRank[]>;
+    getCourtRoles(): Promise<CourtRole[]>;
 
     getCourthouses(): Promise<Courthouse[]>;
 }

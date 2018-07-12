@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
-import { allLeaveCancelCodes } from '../modules/leaves/selectors';
+import { allEffectiveLeaveCancelCodes } from '../modules/leaves/selectors';
 import Selector, { SelectorProps } from '../components/FormElements/Selector';
 import { LeaveCancelCode } from '../api/Api';
 
@@ -14,11 +14,7 @@ class LeaveCancelReasonSelector extends React.PureComponent<
 
     render() {
         const { 
-            cancelCodes = [
-                {code: 'OPD', description: 'Cover Opperational Demands'},
-                {code: 'PD', description: 'Personal Decision'},
-                {code: 'ER', description: 'Entry Error'},
-            ],
+            cancelCodes = [],
             ...rest
         } = this.props;
         const selectorValues = cancelCodes.map(cancel => ({ key: cancel.code, value: cancel.description }));
@@ -34,7 +30,7 @@ class LeaveCancelReasonSelector extends React.PureComponent<
 
 const mapStateToProps = (state: RootState) => {
     return {
-        cancelCodes: allLeaveCancelCodes(state)
+        cancelCodes: allEffectiveLeaveCancelCodes()(state)
     };
 };
 

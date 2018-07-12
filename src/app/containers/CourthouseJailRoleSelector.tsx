@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { JailRole } from '../api';
-import { allJailRoles } from '../modules/courthouse/selectors';
+import { allEffectiveJailRoles } from '../modules/courthouse/selectors';
 import Selector, { SelectorProps } from '../components/FormElements/Selector';
 
 interface CourthouseJailRoleListStateProps {
@@ -24,7 +24,7 @@ class CourthouseJailRoleList extends React.PureComponent<
 
 const mapStateToProps = (state: RootState) => {
     return {
-        jailRoles: allJailRoles(state)
+        jailRoles: allEffectiveJailRoles()(state)
     };
 };
 

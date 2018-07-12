@@ -17,7 +17,8 @@ import {
     SheriffRank,
     Leave,
     LeaveSubCode,
-    LeaveCancelCode
+    LeaveCancelCode,
+    CourtRole
 } from '../Api';
 import {
     sheriffList,
@@ -48,7 +49,7 @@ function getAssignmentTitle(assignment: Partial<Assignment>): string {
     let assignmentTitle = 'Assignment Title';
 
     if (isCourtAssignment(assignment)) {
-        assignmentTitle = COURTROOMS[assignment.courtroomId];
+        assignmentTitle = assignment.courtroomId ? COURTROOMS[assignment.courtroomId] : 'Title not found';
     } else if (isEscortAssignment(assignment)) {
         assignmentTitle = RUNS[assignment.runId];
     } else if (isJailAssignment(assignment)) {
@@ -61,6 +62,10 @@ function getAssignmentTitle(assignment: Partial<Assignment>): string {
 }
 
 export default class MockClient implements API {
+    getCourtRoles(): Promise<CourtRole[]> {
+        throw new Error("Method not implemented.");
+    }
+
     getLeaveSubCodes(): Promise<LeaveSubCode[]> {
         throw new Error("Method not implemented.");
     }

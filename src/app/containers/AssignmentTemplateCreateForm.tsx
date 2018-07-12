@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { reduxForm, ConfigProps, SubmissionError } from 'redux-form';
 import { default as AssignmentForm, AssignmentFormProps } from '../components/AssignmentForm';
 import { createAssignment } from '../modules/assignments/actions';

@@ -13,7 +13,7 @@ import {
 } from 'redux-form';
 import Form from './FormElements/Form';
 import * as Validators from '../infrastructure/Validators';
-import CourtroomSelector from '../containers/CourthouseCourtroomSelector';
+import CourtAssignmentSelector from '../containers/CourthouseCourtAssignmentSelector';
 import DaysOfWeekChecklist from './FormElements/DaysOfWeekChecklist';
 import JailRolesSelector from '../containers/CourthouseJailRoleSelector';
 import RunSelector from '../containers/CourthouseRunSelector';
@@ -30,10 +30,11 @@ import {
     DutyRecurrence
 } from '../api';
 import TimeSliderField from './FormElements/TimeSliderField';
-import { getWorkSectionColour } from '../api/utils';
+import { getWorkSectionColour, isCourtAssignment } from '../api/utils';
 import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 import { ConfirmationModal } from './ConfirmationModal';
 import SelectorField from './FormElements/SelectorField';
+import { COURT_ASSIGNMENT_ROOM, COURT_ASSIGNMENT_ROLE } from '../api/Api';
 class OtherFields extends React.PureComponent {
     render() {
         return (
@@ -42,11 +43,11 @@ class OtherFields extends React.PureComponent {
                     name="otherAssignCode"
                     label="Assignment"
                     component={
-                        (p) => <SelectorField 
-                            {...p} 
+                        (p) => <SelectorField
+                            {...p}
                             SelectorComponent={
-                                (sp) => <AlternateAssignmentSelector {...sp} />}  
-                        /> }
+                                (sp) => <AlternateAssignmentSelector {...sp} label="Assignment"/>}
+                        />}
                     validate={[Validators.required]}
                 />
             </div>
@@ -60,10 +61,10 @@ class EscortsFields extends React.PureComponent {
             <div>
                 <Field
                     name="runId"
-                    component={(p) => <SelectorField 
-                        {...p} 
+                    component={(p) => <SelectorField
+                        {...p}
                         SelectorComponent={
-                            (sp) => <RunSelector {...sp} />}  
+                            (sp) => <RunSelector {...sp} label="Assignment"/>}
                     />}
                     label="Assignment"
                     validate={[Validators.required]}
@@ -79,10 +80,10 @@ class JailFeilds extends React.PureComponent {
             <div>
                 <Field
                     name="jailRoleCode"
-                    component={(p) => <SelectorField 
-                        {...p} 
+                    component={(p) => <SelectorField
+                        {...p}
                         SelectorComponent={
-                            (sp) => <JailRolesSelector {...sp} />}  
+                            (sp) => <JailRolesSelector {...sp} label="Assignment" />}
                     />}
                     label="Assignment"
                     validate={[Validators.required]}
@@ -93,17 +94,31 @@ class JailFeilds extends React.PureComponent {
 }
 
 class CourtSecurityFields extends React.PureComponent {
+    // static method here to be called from the parser and to form values
+    static isCourtAssignmentIdCourtroom(courtAssignmentId: string = '') {
+        return courtAssignmentId.includes(`${COURT_ASSIGNMENT_ROOM}:`);
+    }
+
+    static courtAssignmentIdToAssignmentValue(courtAssignmentId: string = '') {
+        const match = courtAssignmentId.match(/:(.*)/);
+        return match ? match[1] : '';
+    }
+
+    static assignmentValueToCourtAssignmentId(value: string = '', isCourtRoom: boolean) {
+        return isCourtRoom ? `${COURT_ASSIGNMENT_ROOM}:${value}` : `${COURT_ASSIGNMENT_ROLE}:${value}`;
+    }
+
     render() {
         return (
             <div>
                 <Field
-                    name="courtroomId"
-                    component={(p) => <SelectorField 
-                        {...p} 
+                    name="courtAssignmentId"
+                    component={(p) => <SelectorField
+                        {...p}
                         SelectorComponent={
-                            (sp) => <CourtroomSelector label="Home Location" {...sp} />}  
+                            (sp) => <CourtAssignmentSelector {...sp} label="Assignment"/>}
                     />}
-                    label="Courtroom"
+                    label="Assignment"
                     validate={[Validators.required]}
                 />
             </div>
@@ -138,7 +153,7 @@ interface AssignmentFormData {
     workSectionId: WorkSectionCode;
     dutyRecurrences: DutyRecurrenceFormData[];
     jailRoleId?: string;
-    courtroomId?: string;
+    courtAssignmentId?: string;
     otherAssignmentTypeId?: string;
     runId?: string;
 }
@@ -159,8 +174,9 @@ const TIME_FORMAT = 'HH:mm:ss';
 export default class AssignmentForm extends React.Component<AssignmentFormProps & InjectedFormProps<any, AssignmentFormProps>> {
 
     static parseAssignmentFromValues(values: any): Assignment {
-        const { dutyRecurrences = [], ...rest } = (values as AssignmentFormData);
+        const { dutyRecurrences = [], courtAssignmentId, ...rest } = (values as AssignmentFormData);
         let assignment: any = { ...rest };
+
         assignment.dutyRecurrences = dutyRecurrences.map((element) => ({
             id: element.id,
             daysBitmap: element.daysBitmap,
@@ -168,6 +184,15 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
             endTime: moment(element.timeRange.endTime).format(TIME_FORMAT),
             sheriffsRequired: element.sheriffsRequired
         }));
+
+        const courtAssignment = CourtSecurityFields.courtAssignmentIdToAssignmentValue(courtAssignmentId);
+        const isCourtroomAssignment = CourtSecurityFields.isCourtAssignmentIdCourtroom(courtAssignmentId);
+        if (isCourtroomAssignment) {
+            assignment.courtroomId = courtAssignment;
+        } else {
+            assignment.courtRoleId = courtAssignment;
+        }
+
         return assignment as Assignment;
     }
 
@@ -180,7 +205,12 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
                     startTime: moment(startTime, TIME_FORMAT).toISOString(),
                     endTime: moment(endTime, TIME_FORMAT).toISOString()
                 }
-            }))
+            })),
+            courtAssignmentId: isCourtAssignment(rest) 
+                    ? (rest.courtroomId 
+                        ? CourtSecurityFields.assignmentValueToCourtAssignmentId(rest.courtroomId, true)
+                        : CourtSecurityFields.assignmentValueToCourtAssignmentId(rest.courtRoleId, false)) 
+                    : undefined
         };
     }
 
@@ -201,7 +231,7 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
                 errors.dutyRecurrences = recurrenceArrayErrors;
             }
         }
-        
+
         return errors;
     }
 
