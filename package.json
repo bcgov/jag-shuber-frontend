@@ -2,6 +2,7 @@
   "name": "shuber",
   "version": "0.1.0",
   "private": true,
+  "homepage": "/sheriff-scheduling",
   "scripts": {
     "start": "node scripts/start.js",
     "start:dev": "API_URL=http://localhost:3001/ yarn start",
@@ -22,7 +23,7 @@
     "css-loader": "0.28.4",
     "dotenv": "4.0.0",
     "extract-text-webpack-plugin": "3.0.0",
-    "file-loader": "0.11.2",
+    "file-loader": "^1.1.11",
     "fs-extra": "3.0.1",
     "hal-rest-client": "^0.3.4",
     "html-webpack-plugin": "2.29.0",
