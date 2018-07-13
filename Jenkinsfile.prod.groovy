@@ -107,7 +107,7 @@ stage('Approval notification'){
   // Once approved (input step) switch production over to the new version.
   stage('Switch over to new Version') {
     // Wait for administrator confirmation
-    timeout(time:3, unit: 'DAYS'){ input id:'ApprovalProd', message:"Switch Production from ${currentTarget} stack to ${newTarget} stack?", submitter: 'ronald-garcia-admin', submitterParameter: 'approvingSubmitter'}
+    timeout(time:3, unit: 'DAYS'){ input id: 'ApprovalProd', message: "Switch Production from ${currentTarget} stack to ${newTarget} stack?", submitter: 'ronald-garcia-admin', submitterParameter: 'approvingSubmitter'}
     node{
       try{
         
