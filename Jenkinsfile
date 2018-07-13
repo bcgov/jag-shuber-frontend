@@ -269,7 +269,7 @@ def work_space="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/jag-shuber-tools-fro
               type: "button",            
               text: "switch route to new version on ${newTarget}?",
               style: "primary",              
-              url: url: "${currentBuild.absoluteUrl}/input"
+              url: "${currentBuild.absoluteUrl}/input"
             ]
           ])
     }catch(error){
