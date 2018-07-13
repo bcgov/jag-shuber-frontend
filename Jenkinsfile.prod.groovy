@@ -44,7 +44,7 @@ stage('Approval notification'){
   stage('Deploy ' + TAG_NAMES[0]){
     def environment = TAG_NAMES[0]
     def url = APP_URLS[0]
-    timeout(time:3, unit: 'DAYS'){ input "Deploy to ${environment}?", submitter: 'ronald-garcia-admin,cjam-admin', submitterParameter: 'approvingSubmitter'}
+    timeout(time:3, unit: 'DAYS'){ input id:'ApprovalProd', message:"Deploy to ${environment}?", submitter: 'ronald-garcia-admin', submitterParameter: 'approvingSubmitter'}
     node{
       // Checking current targeted route
       try {
@@ -107,7 +107,7 @@ stage('Approval notification'){
   // Once approved (input step) switch production over to the new version.
   stage('Switch over to new Version') {
     // Wait for administrator confirmation
-    timeout(time:3, unit: 'DAYS'){ input "Switch Production from ${currentTarget} stack to ${newTarget} stack?"}
+    timeout(time:3, unit: 'DAYS'){ input id:'ApprovalProd', message:"Switch Production from ${currentTarget} stack to ${newTarget} stack?", submitter: 'ronald-garcia-admin', submitterParameter: 'approvingSubmitter'}
     node{
       try{
         
