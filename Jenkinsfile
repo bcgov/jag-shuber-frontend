@@ -25,7 +25,7 @@ def IMAGESTREAM_NAME = APP_NAME
 def SLACK_DEV_CHANNEL="#sheriffscheduling_dev"
 def SLACK_MAIN_CHANNEL="#sheriff_scheduling"
 def SLACK_PROD_CHANNEL="sheriff_prod_approval"
-def work_space="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/jag-shuber-tools-frontend-pipeline/workspace@script"
+def work_space="/var/lib/jenkins/jobs/jag-shuber-tools-frontend-pipeline/workspace@script"
 
   stage('Build ' + APP_NAME) {
     node{
