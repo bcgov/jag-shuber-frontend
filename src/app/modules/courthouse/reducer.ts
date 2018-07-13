@@ -1,6 +1,5 @@
 
 import * as runRequests from './requests/runs';
-import * as jailRoleRequests from './requests/jailRoles';
 import * as sheriffRankRequests from './requests/sheriffRankCodes';
 import NestedReducer from '../../infrastructure/NestedReducer';
 import { ReducersMapObject } from 'redux';
@@ -15,10 +14,7 @@ export {
 const nestedReducer = new NestedReducer ([
 
     // Runs
-    runRequests.runMapRequest.reducer,
-
-    // Jail Roles
-    jailRoleRequests.jailRoleMapRequest.reducer,
+    runRequests.runMapRequest.reducer,   
 
     // Sheriff Rank
     sheriffRankRequests.sheriffRankCodeMapRequest.reducer

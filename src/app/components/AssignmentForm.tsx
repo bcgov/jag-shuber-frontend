@@ -15,7 +15,7 @@ import Form from './FormElements/Form';
 import * as Validators from '../infrastructure/Validators';
 import CourtAssignmentSelector from '../containers/AssignmentCourtTypeSelector';
 import DaysOfWeekChecklist from './FormElements/DaysOfWeekChecklist';
-import JailRolesSelector from '../containers/CourthouseJailRoleSelector';
+import JailRolesSelector from '../containers/AssignmentJailRoleSelector';
 import RunSelector from '../containers/CourthouseRunSelector';
 import NumberSpinner from './FormElements/NumberSpinner';
 import OtherAssignmentTypeSelector from '../containers/AssignmentOtherTypeSelector';

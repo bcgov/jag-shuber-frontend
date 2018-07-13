@@ -3,6 +3,7 @@ import * as assignmentDutyRequests from './requests/assignmentDuties';
 import * as alternateAssignmentTypeRequests from './requests/alternateAssignmentTypes';
 import * as courtRoleRequest from './requests/courtRoles';
 import * as courtroomRequests from './requests/courtrooms';
+import * as jailRoleRequests from './requests/jailRoles';
 import { IdType, AssignmentDuty } from '../../api';
 import { ThunkAction } from '../../store';
 import { getAssignmentDuty } from './selectors';
@@ -18,6 +19,7 @@ export const getAlternateAssignmentTypes =
     alternateAssignmentTypeRequests.alternateAssignmentTypeMapRequest.actionCreator;
 export const getCourtRoles = courtRoleRequest.courtRoleMapRequest.actionCreator;
 export const getCourtrooms = courtroomRequests.courtroomMapRequest.actionCreator;
+export const getJailRoles = jailRoleRequests.jailRoleMapRequest.actionCreator;
 
 // Assignment Duties
 export const getAssignmentDuties = assignmentDutyRequests.assignmentDutyMapRequest.actionCreator;

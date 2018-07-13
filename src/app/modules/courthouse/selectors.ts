@@ -1,6 +1,6 @@
 import { RootState } from '../../store';
 import * as runRequests from './requests/runs';
-import * as jailRoleRequests from './requests/jailRoles';
+
 import * as sheriffRankCodeRequests from './requests/sheriffRankCodes';
 import { IdType } from '../../api/Api';
 import { createSelector } from 'reselect';
@@ -12,15 +12,6 @@ export const allRuns = createSelector(
     runRequests.runMapRequest.getData,
     (runs) => mapToArray(runs).sort((a, b) => a.title.localeCompare(b.title))
 );
-
-// Jail Roles
-const jailRoleSelector = new CodeSelector(
-    jailRoleRequests.jailRoleMapRequest.getData
-);
-
-export const allJailRoles = jailRoleSelector.all;
-
-export const allEffectiveJailRoles = jailRoleSelector.effective;
 
 // Sheriff Rank Codes
 const sheriffRankCodeSelector = new CodeSelector(

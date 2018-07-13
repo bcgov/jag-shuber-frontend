@@ -16,7 +16,7 @@ import {
     isOtherAssignment
 } from '../../api/utils';
 import * as courtroomRequests from './requests/courtrooms';
-import { jailRoleMapRequest } from '../courthouse/requests/jailRoles';
+import * as jailRoleRequests from './requests/jailRoles';
 import { runMapRequest } from '../courthouse/requests/runs';
 import mapToArray from '../../infrastructure/mapToArray';
 import { CodeSelector } from '../../infrastructure/CodeSelector';
@@ -25,7 +25,7 @@ import { CodeSelector } from '../../infrastructure/CodeSelector';
 export const allAssignments = createSelector(
     assignmentRequests.assignmentMapRequest.getData,
     courtroomRequests.courtroomMapRequest.getData,
-    jailRoleMapRequest.getData,
+    jailRoleRequests.jailRoleMapRequest.getData,
     runMapRequest.getData,
     alternateAssignmentTypeRequests.alternateAssignmentTypeMapRequest.getData,
     courtRoleRequests.courtRoleMapRequest.getData,
@@ -100,3 +100,12 @@ export const allCourtrooms = createSelector(
     courtroomRequests.courtroomMapRequest.getData,
     (courtrooms) => mapToArray(courtrooms).sort((a, b) => a.name.localeCompare(b.name))
 );
+
+// Jail Roles
+const jailRoleSelector = new CodeSelector(
+    jailRoleRequests.jailRoleMapRequest.getData
+);
+
+export const allJailRoles = jailRoleSelector.all;
+
+export const allEffectiveJailRoles = jailRoleSelector.effective;

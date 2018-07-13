@@ -11,13 +11,13 @@ import {
 } from '../modules/assignments/selectors';
 import SelectorWithOptGroup, { SelectorWithOptGroupProps } from '../components/FormElements/SelectorWithOptGroups';
 
-interface CourthouseCourtAssignmentSelectorStateProps {
+interface CourtAssignmentSelectorStateProps {
     courtrooms: Courtroom[];
     courtRoles: CourtRole[];
 }
 
-class CourthouseCourtAssignmentList extends React.PureComponent<
-    SelectorWithOptGroupProps & CourthouseCourtAssignmentSelectorStateProps> {
+class CourtAssignmentList extends React.PureComponent<
+    SelectorWithOptGroupProps & CourtAssignmentSelectorStateProps> {
 
     render() {
         const {
@@ -52,6 +52,6 @@ const mapStateToProps = (state: RootState) => {
 };
 
 // tslint:disable-next-line:max-line-length
-export default connect<CourthouseCourtAssignmentSelectorStateProps, {}, SelectorWithOptGroupProps>(
+export default connect<CourtAssignmentSelectorStateProps, {}, SelectorWithOptGroupProps>(
     mapStateToProps
-)(CourthouseCourtAssignmentList);
+)(CourtAssignmentList);

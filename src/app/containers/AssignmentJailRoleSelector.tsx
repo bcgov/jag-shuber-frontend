@@ -2,15 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { JailRole } from '../api';
-import { allEffectiveJailRoles } from '../modules/courthouse/selectors';
+import { allEffectiveJailRoles } from '../modules/assignments/selectors';
 import Selector, { SelectorProps } from '../components/FormElements/Selector';
 
-interface CourthouseJailRoleListStateProps {
+interface JailRoleListStateProps {
     jailRoles: JailRole[];
 }
 
-class CourthouseJailRoleList extends React.PureComponent<
-    SelectorProps & CourthouseJailRoleListStateProps> {
+class JailRoleList extends React.PureComponent<
+    SelectorProps & JailRoleListStateProps> {
 
     render() {
         const { jailRoles = [], ...restProps } = this.props;
@@ -29,6 +29,6 @@ const mapStateToProps = (state: RootState) => {
 };
 
 // tslint:disable-next-line:max-line-length
-export default connect<CourthouseJailRoleListStateProps, {}, SelectorProps>(
+export default connect<JailRoleListStateProps, {}, SelectorProps>(
     mapStateToProps
-)(CourthouseJailRoleList);
+)(JailRoleList);
