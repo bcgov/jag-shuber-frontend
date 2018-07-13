@@ -7,13 +7,13 @@ import { Leave } from '../../api/Api';
 import { Table, Button, Glyphicon } from 'react-bootstrap';
 import DateField from '../../components/FormElements/DateField';
 import SelectorField from '../../components/FormElements/SelectorField';
-import PersonalLeaveSubCodeSelector from '../PersonalLeaveSubCodeSelector';
+import LeavePersonalSubCodeSelector from '../LeavePersonalSubCodeSelector';
 import CancelLeaveButton from '../CancelLeaveButton';
 import LeaveCancelledPopover from '../../components/LeaveCancelledPopover';
 import TimePickerField from '../../components/FormElements/TimePickerField';
 import { fromTimeString, toTimeString } from '../../../../node_modules/jag-shuber-api/dist/client';
 import LeaveSubCodeDisplay from '../LeaveSubCodeDisplay';
-import TrainingLeaveSubCodeSelector from '../TrainingLeaveSubCodeSelector';
+import LeaveTrainingSubCodeSelector from '../LeaveTrainingSubCodeSelector';
 
 export interface ColumnRendererProps {
     index: number;
@@ -71,8 +71,8 @@ export default class LeavesFieldTable extends React.Component<LeavesFieldTablePr
                         SelectorComponent={
                             (sp) =>
                                 isPersonal 
-                                ? <PersonalLeaveSubCodeSelector {...sp} />
-                                : <TrainingLeaveSubCodeSelector {...sp} />
+                                ? <LeavePersonalSubCodeSelector {...sp} />
+                                : <LeaveTrainingSubCodeSelector {...sp} />
                             }
                     />}
                     label="Type"
