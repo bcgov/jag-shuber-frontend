@@ -2,7 +2,6 @@ import { RootState } from '../../store';
 import * as courtroomRequests from './requests/courtrooms';
 import * as runRequests from './requests/runs';
 import * as jailRoleRequests from './requests/jailRoles';
-import * as alternateAssignmentTypeRequests from './requests/alternateAssignmentTypes';
 import * as sheriffRankCodeRequests from './requests/sheriffRankCodes';
 import * as courtRoleRequests from './requests/courtRoles';
 import { IdType } from '../../api/Api';
@@ -30,15 +29,6 @@ const jailRoleSelector = new CodeSelector(
 export const allJailRoles = jailRoleSelector.all;
 
 export const allEffectiveJailRoles = jailRoleSelector.effective;
-
-// Alternate Assignment Types
-const altAssignmentTypesSelector = new CodeSelector(
-    alternateAssignmentTypeRequests.alternateAssignmentTypeMapRequest.getData
-);
-
-export const allAlternateAssignmentTypes = altAssignmentTypesSelector.all;
-
-export const allEffectAlternateAssignmentTypes = altAssignmentTypesSelector.effective;
 
 // Sheriff Rank Codes
 const sheriffRankCodeSelector = new CodeSelector(

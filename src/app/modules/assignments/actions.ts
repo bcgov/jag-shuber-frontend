@@ -1,5 +1,6 @@
 import * as assignmentRequests from './requests/assignments';
 import * as assignmentDutyRequests from './requests/assignmentDuties';
+import * as alternateAssignmentTypeRequests from './requests/alternateAssignmentTypes';
 import { IdType, AssignmentDuty } from '../../api';
 import { ThunkAction } from '../../store';
 import { getAssignmentDuty } from './selectors';
@@ -10,6 +11,9 @@ export const createAssignment = assignmentRequests.createAssignmentRequest.actio
 export const editAssignment = assignmentRequests.updateAssignmentRequest.actionCreator;
 export const deleteAssignment = assignmentRequests.deleteAssignmentRequest.actionCreator;
 export const deleteDutyRecurrence = assignmentRequests.deleteAssignmentDutyRecurrenceRequest.actionCreator;
+
+export const getAlternateAssignmentTypes = 
+    alternateAssignmentTypeRequests.alternateAssignmentTypeMapRequest.actionCreator;
 
 // Assignment Duties
 export const getAssignmentDuties = assignmentDutyRequests.assignmentDutyMapRequest.actionCreator;

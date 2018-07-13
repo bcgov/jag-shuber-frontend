@@ -2,7 +2,7 @@ import { ThunkExtra } from '../../../store';
 import arrayToMap from '../../../infrastructure/arrayToMap';
 import {
     STATE_KEY,
-    CourthouseModuleState
+    AssignmentModuleState
 } from '../common';
 import {
     AlternateAssignment
@@ -10,7 +10,7 @@ import {
 import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRequest';
 
 class AlternateAssignmentTypeMapRequest
-    extends GetEntityMapRequest<void, AlternateAssignment, CourthouseModuleState> {
+    extends GetEntityMapRequest<void, AlternateAssignment, AssignmentModuleState> {
     constructor() {
         super({ namespace: STATE_KEY, actionName: 'alternateAssignmentMap' });
     }

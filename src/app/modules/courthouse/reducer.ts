@@ -1,7 +1,6 @@
 import * as courtroomRequests from './requests/courtrooms';
 import * as runRequests from './requests/runs';
 import * as jailRoleRequests from './requests/jailRoles';
-import * as alternateAssignmentTypeRequests from './requests/alternateAssignmentTypes';
 import * as sheriffRankRequests from './requests/sheriffRankCodes';
 import * as courtRoleRequests from './requests/courtRoles';
 import NestedReducer from '../../infrastructure/NestedReducer';
@@ -23,9 +22,6 @@ const nestedReducer = new NestedReducer ([
 
     // Jail Roles
     jailRoleRequests.jailRoleMapRequest.reducer,
-
-    // Alternate Assignment Types
-    alternateAssignmentTypeRequests.alternateAssignmentTypeMapRequest.reducer,
 
     // Sheriff Rank
     sheriffRankRequests.sheriffRankCodeMapRequest.reducer,

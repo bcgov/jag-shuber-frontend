@@ -1,5 +1,6 @@
 import * as assignmentRequests from './requests/assignments';
 import * as assignmentDutyRequests from './requests/assignmentDuties';
+import * as alternateAssignmentTypeRequests from './requests/alternateAssignmentTypes';
 import NestedReducer from '../../infrastructure/NestedReducer';
 import { ReducersMapObject } from 'redux';
 import { STATE_KEY } from './common';
@@ -17,6 +18,8 @@ const nestedReducer = new NestedReducer([
   assignmentRequests.updateAssignmentRequest.reducer,
   assignmentRequests.deleteAssignmentRequest.reducer,
   assignmentRequests.deleteAssignmentDutyRecurrenceRequest.reducer,
+
+  alternateAssignmentTypeRequests.alternateAssignmentTypeMapRequest.reducer,
   
   // Assignment Duties
   assignmentDutyRequests.assignmentDutyMapRequest.reducer,

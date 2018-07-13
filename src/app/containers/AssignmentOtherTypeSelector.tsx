@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { AlternateAssignment } from '../api';
-import { allEffectAlternateAssignmentTypes } from '../modules/courthouse/selectors';
+import { allEffectAlternateAssignmentTypes } from '../modules/assignments/selectors';
 import Selector, { SelectorProps } from '../components/FormElements/Selector';
 
 interface AlternateAssignmentTypeListStateProps {

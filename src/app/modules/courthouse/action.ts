@@ -1,7 +1,6 @@
 import * as courtroomRequests from './requests/courtrooms';
 import * as runRequests from './requests/runs';
 import * as jailRoleRequests from './requests/jailRoles';
-import * as alternateAssignmentTypeRequests from './requests/alternateAssignmentTypes';
 import * as sherriffRankRequests from './requests/sheriffRankCodes';
 import * as courtRoleRequest from './requests/courtRoles';
 
@@ -13,10 +12,6 @@ export const getRuns = runRequests.runMapRequest.actionCreator;
 
 // Jail Roles
 export const getJailRoles = jailRoleRequests.jailRoleMapRequest.actionCreator;
-
-// Alternate Assign
-export const getAlternateAssignmentTypes = 
-    alternateAssignmentTypeRequests.alternateAssignmentTypeMapRequest.actionCreator;
 
 // Sheriff Rank Codes
 export const getSheriffRankCodes = sherriffRankRequests.sheriffRankCodeMapRequest.actionCreator;

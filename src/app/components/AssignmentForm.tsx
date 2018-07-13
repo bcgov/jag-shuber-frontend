@@ -18,7 +18,7 @@ import DaysOfWeekChecklist from './FormElements/DaysOfWeekChecklist';
 import JailRolesSelector from '../containers/CourthouseJailRoleSelector';
 import RunSelector from '../containers/CourthouseRunSelector';
 import NumberSpinner from './FormElements/NumberSpinner';
-import AlternateAssignmentSelector from '../containers/AlternateAssignmentTypeSelector';
+import OtherAssignmentTypeSelector from '../containers/AssignmentOtherTypeSelector';
 import {
     WORK_SECTIONS,
     TimeType,
@@ -46,7 +46,7 @@ class OtherFields extends React.PureComponent {
                         (p) => <SelectorField
                             {...p}
                             SelectorComponent={
-                                (sp) => <AlternateAssignmentSelector {...sp} label="Assignment"/>}
+                                (sp) => <OtherAssignmentTypeSelector {...sp} label="Assignment"/>}
                         />}
                     validate={[Validators.required]}
                 />

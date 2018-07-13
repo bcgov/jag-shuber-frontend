@@ -3,7 +3,6 @@ import {
    CourtroomMap,
    RunMap,
    JailRoleMap,
-   AlternateAssignmentMap,
    SheriffRankCodeMap,
    CourtRoleMap
 } from '../../api/Api';
@@ -17,10 +16,7 @@ export interface CourthouseModuleState {
 
     // Jail Roles
     jailRoleMap?: RequestActionState<JailRoleMap>;
-
-    // Alternate Assignment Types
-    alternateAssignmentMap?: RequestActionState<AlternateAssignmentMap>;
-
+    
     // Sheriff Rank Codes
     sheriffRankCodeMap?: RequestActionState<SheriffRankCodeMap>;
 

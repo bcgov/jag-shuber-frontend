@@ -11,7 +11,6 @@ import { registerReducer as registerCourthouseReducer, CourthouseModuleState } f
 import { default as dutyRosterReducer, DutyRosterState } from './modules/dutyRoster/reducer';
 import { reducer as formReducer } from 'redux-form';
 import {
-    getAlternateAssignmentTypes,
     getJailRoles,
     getSheriffRankCodes,
     getCourtRoles
@@ -32,7 +31,7 @@ import {
     getCourthouses
 } from './modules/system/action';
 import { registerReducer as registerSystemReducer, SystemModuleState } from './modules/system/reducer';
-
+import { getAlternateAssignmentTypes } from './modules/assignments/actions';
 export interface ThunkExtra {
     api: API;
 }

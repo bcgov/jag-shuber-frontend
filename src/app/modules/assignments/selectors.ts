@@ -2,6 +2,7 @@ import { createSelector } from 'reselect';
 import { RootState } from '../../store';
 import * as assignmentRequests from './requests/assignments';
 import * as assignmentDutyRequests from './requests/assignmentDuties';
+import * as alternateAssignmentTypeRequests from './requests/alternateAssignmentTypes';
 import {
     Assignment,
     AssignmentDuty,
@@ -16,9 +17,9 @@ import {
 import { courtroomMapRequest } from '../courthouse/requests/courtrooms';
 import { jailRoleMapRequest } from '../courthouse/requests/jailRoles';
 import { runMapRequest } from '../courthouse/requests/runs';
-import { alternateAssignmentTypeMapRequest } from '../courthouse/requests/alternateAssignmentTypes';
 import { courtRoleMapRequest } from '../courthouse/requests/courtRoles';
 import mapToArray from '../../infrastructure/mapToArray';
+import { CodeSelector } from '../../infrastructure/CodeSelector';
 
 // Assignments
 export const allAssignments = createSelector(
@@ -26,7 +27,7 @@ export const allAssignments = createSelector(
     courtroomMapRequest.getData,
     jailRoleMapRequest.getData,
     runMapRequest.getData,
-    alternateAssignmentTypeMapRequest.getData,
+    alternateAssignmentTypeRequests.alternateAssignmentTypeMapRequest.getData,
     courtRoleMapRequest.getData,
     (map = {}, courtRooms = {}, jailRoles = {}, runs = {}, altAssignmentTypes = {}, courtRoles = {}): Assignment[] => {
         return mapToArray(map)
@@ -75,3 +76,12 @@ export const getAssignmentDuty = (id?: IdType) => (state: RootState) => {
     }
     return undefined;
 };
+
+// Alternate Assignment Types
+const altAssignmentTypesSelector = new CodeSelector(
+    alternateAssignmentTypeRequests.alternateAssignmentTypeMapRequest.getData
+);
+
+export const allAlternateAssignmentTypes = altAssignmentTypesSelector.all;
+
+export const allEffectAlternateAssignmentTypes = altAssignmentTypesSelector.effective;

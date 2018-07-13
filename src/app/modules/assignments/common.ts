@@ -4,6 +4,7 @@ import {
     Assignment,
     AssignmentMap,
     AssignmentDuty,
+    AlternateAssignmentMap,
 } from '../../api/Api';
 
 export interface AssignmentModuleState {
@@ -12,6 +13,8 @@ export interface AssignmentModuleState {
     createAssignment?: RequestActionState<Assignment>;
     updateAssignment?: RequestActionState<Assignment>;
     deleteAssignmentDutyRecurrence?: RequestActionState<void>;
+
+    alternateAssignmentMap?: RequestActionState<AlternateAssignmentMap>;
 
     // Duties
     assignmentDutyMap?: RequestActionState<AssignmentDutyMap>;
@@ -22,5 +25,6 @@ export interface AssignmentModuleState {
 
     // Sheriff Duties
     deleteSheriffDuty?: RequestActionState<void>;
+
 }
 export const STATE_KEY: string = 'assignments';
