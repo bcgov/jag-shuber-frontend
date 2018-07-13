@@ -11,6 +11,7 @@ import GetEntityMapRequest from '../../infrastructure/Requests/GetEntityMapReque
 import CreateEntityRequest from '../../infrastructure/Requests/CreateEntityRequest';
 import UpdateEntityRequest from '../../infrastructure/Requests/UpdateEntityRequest';
 import toTitleCase from '../../infrastructure/toTitleCase';
+import { SheriffRank } from '../../api/Api';
 
 // Sheriff Map
 class SheriffMapRequest extends GetEntityMapRequest<void, Sheriff, SheriffModuleState> {
@@ -79,3 +80,16 @@ class UpdateSheriffRequest extends UpdateEntityRequest<Sheriff, SheriffModuleSta
 }
 
 export const updateSheriffRequest = new UpdateSheriffRequest();
+
+// Sheriff Rank Codes
+class SheriffRankCodeMapRequest extends GetEntityMapRequest<void, SheriffRank, SheriffModuleState> {
+    constructor() {
+        super({ namespace: STATE_KEY, actionName: 'sheriffRankCodeMap' });
+    }
+    public async doWork(request: void, { api }: ThunkExtra) {
+        let rankCodes = await api.getSheriffRankCodes();
+        return arrayToMap(rankCodes, r => r.code);
+    }
+}
+
+export const sheriffRankCodeMapRequest = new SheriffRankCodeMapRequest();

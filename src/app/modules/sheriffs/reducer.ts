@@ -48,6 +48,7 @@ const nestedReducer = new NestedReducer([
   sheriffRequests.sheriffMapRequest.reducer,
   sheriffRequests.createSheriffRequest.reducer,
   sheriffRequests.updateSheriffRequest.reducer,
+  sheriffRequests.sheriffRankCodeMapRequest.reducer,
   actionReducer
 ]);
 

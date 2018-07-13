@@ -10,7 +10,7 @@ import SheriffRankDisplay from './SheriffRankDisplay';
 import { Field } from 'redux-form';
 import TextField from '../components/FormElements/TextField';
 import * as Validators from '../infrastructure/Validators';
-import CourthouseSheriffRankCodeSelector from './CourthouseSheriffRankCodeSelector';
+import SheriffRankCodeSelector from './SheriffRankCodeSelector';
 import SelectorField from '../components/FormElements/SelectorField';
 import GenderSelector from './GenderSelector';
 import GenderCodeDisplay from './GenderCodeDisplay';
@@ -81,7 +81,7 @@ export default class SheriffProfilePluginId extends SheriffProfileSectionPlugin<
                     (p) => <SelectorField 
                         {...p} 
                         SelectorComponent={
-                            (sp) => <CourthouseSheriffRankCodeSelector {...sp} />}  
+                            (sp) => <SheriffRankCodeSelector {...sp} />}  
                     /> }
                 label="Rank"
                 validate={[Validators.required]}

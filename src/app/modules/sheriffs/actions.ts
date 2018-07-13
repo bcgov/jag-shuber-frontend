@@ -5,6 +5,7 @@ import { ErrorMap } from './common';
 export const getSheriffList = sheriffRequests.sheriffMapRequest.actionCreator;
 export const updateSheriff = sheriffRequests.updateSheriffRequest.actionCreator;
 export const createSheriff = sheriffRequests.createSheriffRequest.actionCreator;
+export const getSheriffRankCodes = sheriffRequests.sheriffRankCodeMapRequest.actionCreator;
 
 type IActionMap = {
     'SHERIFF_PROFILE_SELECT_SECTION': string | undefined;
