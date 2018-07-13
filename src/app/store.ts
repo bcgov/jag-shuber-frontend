@@ -12,8 +12,7 @@ import { default as dutyRosterReducer, DutyRosterState } from './modules/dutyRos
 import { reducer as formReducer } from 'redux-form';
 import {
     getJailRoles,
-    getSheriffRankCodes,
-    getCourtRoles
+    getSheriffRankCodes
 } from './modules/courthouse/action';
 import { getShifts } from './modules/shifts/actions';
 import { updateVisibleTime as updateTimelineVisibleTime } from './modules/dutyRoster/actions';
@@ -31,7 +30,10 @@ import {
     getCourthouses
 } from './modules/system/action';
 import { registerReducer as registerSystemReducer, SystemModuleState } from './modules/system/reducer';
-import { getAlternateAssignmentTypes } from './modules/assignments/actions';
+import { 
+    getAlternateAssignmentTypes,
+    getCourtRoles 
+} from './modules/assignments/actions';
 export interface ThunkExtra {
     api: API;
 }

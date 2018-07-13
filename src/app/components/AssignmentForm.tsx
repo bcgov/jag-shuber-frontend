@@ -13,7 +13,7 @@ import {
 } from 'redux-form';
 import Form from './FormElements/Form';
 import * as Validators from '../infrastructure/Validators';
-import CourtAssignmentSelector from '../containers/CourthouseCourtAssignmentSelector';
+import CourtAssignmentSelector from '../containers/AssignmentCourtTypeSelector';
 import DaysOfWeekChecklist from './FormElements/DaysOfWeekChecklist';
 import JailRolesSelector from '../containers/CourthouseJailRoleSelector';
 import RunSelector from '../containers/CourthouseRunSelector';

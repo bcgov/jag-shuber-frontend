@@ -5,7 +5,8 @@ import {
     Courtroom, COURT_ASSIGNMENT_ROOM, COURT_ASSIGNMENT_ROLE,
     CourtRole
 } from '../api/Api';
-import { allCourtrooms, allCourtRoles } from '../modules/courthouse/selectors';
+import { allCourtrooms } from '../modules/courthouse/selectors';
+import { allCourtRoles } from '../modules/assignments/selectors';
 import SelectorWithOptGroup, { SelectorWithOptGroupProps } from '../components/FormElements/SelectorWithOptGroups';
 
 interface CourthouseCourtAssignmentSelectorStateProps {

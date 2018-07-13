@@ -3,6 +3,7 @@ import { RootState } from '../../store';
 import * as assignmentRequests from './requests/assignments';
 import * as assignmentDutyRequests from './requests/assignmentDuties';
 import * as alternateAssignmentTypeRequests from './requests/alternateAssignmentTypes';
+import * as courtRoleRequests from './requests/courtRoles';
 import {
     Assignment,
     AssignmentDuty,
@@ -17,7 +18,6 @@ import {
 import { courtroomMapRequest } from '../courthouse/requests/courtrooms';
 import { jailRoleMapRequest } from '../courthouse/requests/jailRoles';
 import { runMapRequest } from '../courthouse/requests/runs';
-import { courtRoleMapRequest } from '../courthouse/requests/courtRoles';
 import mapToArray from '../../infrastructure/mapToArray';
 import { CodeSelector } from '../../infrastructure/CodeSelector';
 
@@ -28,7 +28,7 @@ export const allAssignments = createSelector(
     jailRoleMapRequest.getData,
     runMapRequest.getData,
     alternateAssignmentTypeRequests.alternateAssignmentTypeMapRequest.getData,
-    courtRoleMapRequest.getData,
+    courtRoleRequests.courtRoleMapRequest.getData,
     (map = {}, courtRooms = {}, jailRoles = {}, runs = {}, altAssignmentTypes = {}, courtRoles = {}): Assignment[] => {
         return mapToArray(map)
             .map(a => {
@@ -85,3 +85,12 @@ const altAssignmentTypesSelector = new CodeSelector(
 export const allAlternateAssignmentTypes = altAssignmentTypesSelector.all;
 
 export const allEffectAlternateAssignmentTypes = altAssignmentTypesSelector.effective;
+
+// Court Roles
+const courtRoleSelector = new CodeSelector(
+    courtRoleRequests.courtRoleMapRequest.getData
+);
+
+export const allCourtRoles = courtRoleSelector.all;
+
+export const allEffectiveCourtRoles = courtRoleSelector.effective;
