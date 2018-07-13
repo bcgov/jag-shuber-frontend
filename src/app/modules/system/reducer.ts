@@ -1,4 +1,5 @@
 import * as genderCodeRequests from './requests/genders';
+import * as courthouseRequests from './requests/courthouses';
 import NestedReducer from '../../infrastructure/NestedReducer';
 import { ReducersMapObject } from 'redux';
 import { STATE_KEY } from './common';
@@ -11,7 +12,10 @@ export {
 
 const nestedReducer = new NestedReducer ([
     // Gender Codes
-    genderCodeRequests.genderCodeMapRequest.reducer
+    genderCodeRequests.genderCodeMapRequest.reducer,
+    
+      // Courthouses
+      courthouseRequests.courthouseMapRequest.reducer
 ]);
 
 const reducer = nestedReducer.reducer;

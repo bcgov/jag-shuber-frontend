@@ -13,7 +13,6 @@ import { reducer as formReducer } from 'redux-form';
 import {
     getAlternateAssignmentTypes,
     getJailRoles,
-    getCourthouses,
     getSheriffRankCodes,
     getCourtRoles
 } from './modules/courthouse/action';
@@ -29,7 +28,8 @@ import {
     getLeaves
 } from './modules/leaves/actions';
 import {
-    getGenderCodes
+    getGenderCodes,
+    getCourthouses
 } from './modules/system/action';
 import { registerReducer as registerSystemReducer, SystemModuleState } from './modules/system/reducer';
 

@@ -13,7 +13,7 @@ import { getWorkSectionColour } from '../api/utils';
 import { getForegroundColor } from '../infrastructure/colorUtils';
 import toTitleCase from '../infrastructure/toTitleCase';
 import SheriffLoanOutIcon from './Icons/SheriffLoanOutIcon';
-import CourthouseDisplay from '../containers/CourthouseDisplay';
+import CourthouseDisplay from '../containers/SystemCourthouseDisplay';
 
 export interface ScheduleDeputyViewListProps {
     daysToDisplay?: DaysOfWeek;

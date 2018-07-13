@@ -1,11 +1,11 @@
-import * as React from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
 import {
     Courthouse,
     IdType
 } from '../api/Api';
-import { courthouseById } from '../modules/courthouse/selectors';
+import { courthouseById } from '../modules/system/selectors';
 import { currentCourthouse } from '../modules/user/selectors';
 
 interface CurrentCourthouseDisplayStateProps {

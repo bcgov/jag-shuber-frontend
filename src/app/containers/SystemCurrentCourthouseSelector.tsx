@@ -4,7 +4,7 @@ import { RootState } from '../store';
 import { IdType } from '../api';
 import { updateCurrentCourthouse } from '../modules/user/actions';
 import { currentCourthouse as currentCourthouseSelector } from '../modules/user/selectors';
-import CourthouseSelector from './CourthouseSelector';
+import CourthouseSelector from './SystemCourthouseSelector';
 
 interface CourthouseListStateProps {
     currentCourthouse: IdType;

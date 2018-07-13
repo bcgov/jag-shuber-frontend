@@ -2,7 +2,7 @@ import { ThunkExtra } from '../../../store';
 import arrayToMap from '../../../infrastructure/arrayToMap';
 import {
     STATE_KEY,
-    CourthouseModuleState
+    SystemModuleState
 } from '../common';
 import {
     Courthouse
@@ -10,7 +10,7 @@ import {
 import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRequest';
 
 
-class CourthouseMapRequest extends GetEntityMapRequest<void, Courthouse, CourthouseModuleState> {
+class CourthouseMapRequest extends GetEntityMapRequest<void, Courthouse, SystemModuleState> {
     constructor() {
         super({ namespace: STATE_KEY, actionName: 'courthouseMap' });
     }

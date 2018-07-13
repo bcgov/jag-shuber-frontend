@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { Courthouse } from '../api';
-import { allCourthouses } from '../modules/courthouse/selectors';
+import { allCourthouses } from '../modules/system/selectors';
 import Selector, { SelectorProps } from '../components/FormElements/Selector';
 
 interface CourthouseSelectorStateProps {

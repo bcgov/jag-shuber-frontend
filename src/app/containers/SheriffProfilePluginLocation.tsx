@@ -8,8 +8,8 @@ import SheriffDisplay from './SheriffDisplay';
 import { Table } from 'react-bootstrap';
 import { Field } from 'redux-form';
 import * as Validators from '../infrastructure/Validators';
-import CourthouseSelector from './CourthouseSelector';
-import CourthouseDisplay from './CourthouseDisplay';
+import CourthouseSelector from './SystemCourthouseSelector';
+import CourthouseDisplay from './SystemCourthouseDisplay';
 import SelectorField from '../components/FormElements/SelectorField';
 
 export default class SheriffProfilePluginLocation extends SheriffProfileSectionPlugin<Sheriff> {
