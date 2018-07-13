@@ -1,26 +1,28 @@
 import React from 'react';
-// import { connect } from 'react-redux';
-// import { RootState } from '../store';
-// import { allEffectiveLeaveCancelCodes } from '../modules/leaves/selectors';
+import { connect } from 'react-redux';
+import { allEffectiveGenderCodes } from '../modules/system/selectors';
 import Selector, { SelectorProps } from '../components/FormElements/Selector';
-// import { LeaveCancelCode } from '../api/Api';
+import { GenderCode } from '../api/Api';
+import { RootState } from '../store';
 
 interface GenderSelectorStateProps {
-    genderCodes?: any[];
+    genderCodes?: GenderCode[];
 }
 
-export class GenderSelector extends React.PureComponent<
+class GenderSelector extends React.PureComponent<
     GenderSelectorStateProps & SelectorProps> {
 
     render() {
         const { 
-            genderCodes = [{code: 'M', description: 'Male'}, {code: 'F', description: 'Female'}, {code: 'O', description: 'Other'}],
+            genderCodes = [],
+            label = 'Gender',
             ...rest
         } = this.props;
         const selectorValues = genderCodes.map(gender => ({ key: gender.code, value: gender.description }));
         return (
             <Selector 
                 data={selectorValues} 
+                label={label}
                 {...rest}
             />
         );
@@ -28,13 +30,13 @@ export class GenderSelector extends React.PureComponent<
 
 }
 
-// const mapStateToProps = (state: RootState) => {
-//     return {
-//         cancelCodes: allEffectiveLeaveCancelCodes()(state)
-//     };
-// };
+const mapStateToProps = (state: RootState) => {
+    return {
+        genderCodes: allEffectiveGenderCodes()(state)
+    };
+};
 
-// // tslint:disable-next-line:max-line-length
-// export default connect<GenderSelectorStateProps, {}, SelectorProps>(
-//     mapStateToProps
-// )(LeaveCancelReasonSelector);
+// tslint:disable-next-line:max-line-length
+export default connect<GenderSelectorStateProps, {}, SelectorProps>(
+    mapStateToProps
+)(GenderSelector);

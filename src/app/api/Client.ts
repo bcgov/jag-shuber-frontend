@@ -26,7 +26,8 @@ import {
     DateRange,
     LeaveSubCode,
     LeaveCancelCode,
-    CourtRole
+    CourtRole,
+    GenderCode
 } from './Api';
 import MockApi from './Mock/MockApi';
 import { SubmissionError } from 'redux-form';
@@ -118,7 +119,7 @@ export default class Client implements API {
             ...newSheriff,
             homeCourthouseId,
             rankCode
-        });
+        } as any );
         return sheriff as Sheriff;
     }
 
@@ -319,6 +320,11 @@ export default class Client implements API {
     async getCourtRoles(): Promise<CourtRole[]> {
         const list = await this._client.GetCourtRoleCodes();
         return list as CourtRole[];
+    }
+
+    async getGenderCodes(): Promise<GenderCode[]> {
+        const list = await this._client.GetGenderCodes();
+        return list as GenderCode[];
     }
 
 }

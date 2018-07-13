@@ -12,7 +12,8 @@ import TextField from '../components/FormElements/TextField';
 import * as Validators from '../infrastructure/Validators';
 import CourthouseSheriffRankCodeSelector from './CourthouseSheriffRankCodeSelector';
 import SelectorField from '../components/FormElements/SelectorField';
-import { GenderSelector } from './GenderSelector';
+import GenderSelector from './GenderSelector';
+import GenderCodeDisplay from './GenderCodeDisplay';
 
 export default class SheriffProfilePluginId extends SheriffProfileSectionPlugin<Sheriff> {
     name = 'identification';
@@ -22,7 +23,7 @@ export default class SheriffProfilePluginId extends SheriffProfileSectionPlugin<
         rankCode: 'sheriff.rankCode',
         badgeNo: 'sheriff.badgeNo',
         alias: 'sheriff.alias',
-        gender: 'sheriff.gender'
+        genderCode: 'sheriff.genderCode'
     };
     title: string = 'Identification';
     DisplayComponent = ({ sheriffId }: SheriffProfilePluginProps) => (
@@ -32,7 +33,7 @@ export default class SheriffProfilePluginId extends SheriffProfileSectionPlugin<
                 rankCode = '',
                 badgeNo = '',
                 alias = undefined,
-                gender = undefined
+                genderCode = undefined
             } = {} }) =>
                 (
                     <Table responsive={true} >
@@ -51,7 +52,7 @@ export default class SheriffProfilePluginId extends SheriffProfileSectionPlugin<
                             </tr>
                             <tr>
                                 <td><strong>Gender</strong></td>
-                                <td>{gender ? gender : '-'}</td>
+                                <td><GenderCodeDisplay code={genderCode}/></td>
                             </tr>
                         </tbody>
                     </Table>
@@ -97,7 +98,7 @@ export default class SheriffProfilePluginId extends SheriffProfileSectionPlugin<
                 label="Alias"
             />
             <Field
-                name={this.formFieldNames.gender}
+                name={this.formFieldNames.genderCode}
                 component={
                     (p) => <SelectorField 
                         {...p} 

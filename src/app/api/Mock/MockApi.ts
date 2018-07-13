@@ -18,7 +18,8 @@ import {
     Leave,
     LeaveSubCode,
     LeaveCancelCode,
-    CourtRole
+    CourtRole,
+    GenderCode
 } from '../Api';
 import {
     sheriffList,
@@ -62,6 +63,10 @@ function getAssignmentTitle(assignment: Partial<Assignment>): string {
 }
 
 export default class MockClient implements API {
+    getGenderCodes(): Promise<GenderCode[]> {
+        throw new Error("Method not implemented.");
+    }
+    
     getCourtRoles(): Promise<CourtRole[]> {
         throw new Error("Method not implemented.");
     }

@@ -14,7 +14,7 @@ import {
     getAlternateAssignmentTypes,
     getJailRoles,
     getCourthouses,
-    getSheriffRankCodes, 
+    getSheriffRankCodes,
     getCourtRoles
 } from './modules/courthouse/action';
 import { getShifts } from './modules/shifts/actions';
@@ -28,6 +28,10 @@ import {
     getLeaveSubCodes,
     getLeaves
 } from './modules/leaves/actions';
+import {
+    getGenderCodes
+} from './modules/system/action';
+import { registerReducer as registerSystemReducer, SystemModuleState } from './modules/system/reducer';
 
 export interface ThunkExtra {
     api: API;
@@ -45,6 +49,7 @@ export interface RootState {
     schedule: ScheduleState;
     user: UserState;
     leaves: LeaveModuleState;
+    system: SystemModuleState;
 }
 
 const initialActions: any[] = [
@@ -58,7 +63,8 @@ const initialActions: any[] = [
     getLeaveCancelCodes,
     getLeaveSubCodes,
     getLeaves,
-    getCourtRoles
+    getCourtRoles,
+    getGenderCodes
 ];
 
 const reducers = {
@@ -74,6 +80,7 @@ registerAssignmentReducer(reducers);
 registerCourthouseReducer(reducers);
 registerUserReducer(reducers);
 registerLeavesReducer(reducers);
+registerSystemReducer(reducers);
 
 const rootReducer = combineReducers(reducers);
 
