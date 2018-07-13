@@ -1,15 +1,11 @@
 import { RequestActionState } from '../../infrastructure/Requests/RequestActionBase';
 import {
-   CourtroomMap,
    RunMap,
    JailRoleMap,
    SheriffRankCodeMap
 } from '../../api/Api';
 
-export interface CourthouseModuleState {
-    // Courtrooms
-    courtroomMap?: RequestActionState<CourtroomMap>;
-    
+export interface CourthouseModuleState {    
     // Runs
     runMap?: RequestActionState<RunMap>;
 

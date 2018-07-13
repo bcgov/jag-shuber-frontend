@@ -2,6 +2,7 @@ import * as assignmentRequests from './requests/assignments';
 import * as assignmentDutyRequests from './requests/assignmentDuties';
 import * as alternateAssignmentTypeRequests from './requests/alternateAssignmentTypes';
 import * as courtRoleRequests from './requests/courtRoles';
+import * as courtroomRequests from './requests/courtrooms';
 import NestedReducer from '../../infrastructure/NestedReducer';
 import { ReducersMapObject } from 'redux';
 import { STATE_KEY } from './common';
@@ -22,6 +23,7 @@ const nestedReducer = new NestedReducer([
 
   alternateAssignmentTypeRequests.alternateAssignmentTypeMapRequest.reducer,
   courtRoleRequests.courtRoleMapRequest.reducer,
+  courtroomRequests.courtroomMapRequest.reducer,
 
   // Assignment Duties
   assignmentDutyRequests.assignmentDutyMapRequest.reducer,

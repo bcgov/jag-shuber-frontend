@@ -1,4 +1,4 @@
-import * as courtroomRequests from './requests/courtrooms';
+
 import * as runRequests from './requests/runs';
 import * as jailRoleRequests from './requests/jailRoles';
 import * as sheriffRankRequests from './requests/sheriffRankCodes';
@@ -13,8 +13,6 @@ export {
 } from './common';
 
 const nestedReducer = new NestedReducer ([
-    // Courtrooms
-    courtroomRequests.courtroomMapRequest.reducer,  
 
     // Runs
     runRequests.runMapRequest.reducer,

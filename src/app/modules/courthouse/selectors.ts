@@ -1,5 +1,4 @@
 import { RootState } from '../../store';
-import * as courtroomRequests from './requests/courtrooms';
 import * as runRequests from './requests/runs';
 import * as jailRoleRequests from './requests/jailRoles';
 import * as sheriffRankCodeRequests from './requests/sheriffRankCodes';
@@ -7,12 +6,6 @@ import { IdType } from '../../api/Api';
 import { createSelector } from 'reselect';
 import mapToArray from '../../infrastructure/mapToArray';
 import { CodeSelector } from '../../infrastructure/CodeSelector';
-
-// Courtrooms
-export const allCourtrooms = createSelector(
-    courtroomRequests.courtroomMapRequest.getData,
-    (courtrooms) => mapToArray(courtrooms).sort((a, b) => a.name.localeCompare(b.name))
-);
 
 // Runs
 export const allRuns = createSelector(

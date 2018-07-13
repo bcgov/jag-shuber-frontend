@@ -15,7 +15,7 @@ import {
     isEscortAssignment,
     isOtherAssignment
 } from '../../api/utils';
-import { courtroomMapRequest } from '../courthouse/requests/courtrooms';
+import * as courtroomRequests from './requests/courtrooms';
 import { jailRoleMapRequest } from '../courthouse/requests/jailRoles';
 import { runMapRequest } from '../courthouse/requests/runs';
 import mapToArray from '../../infrastructure/mapToArray';
@@ -24,7 +24,7 @@ import { CodeSelector } from '../../infrastructure/CodeSelector';
 // Assignments
 export const allAssignments = createSelector(
     assignmentRequests.assignmentMapRequest.getData,
-    courtroomMapRequest.getData,
+    courtroomRequests.courtroomMapRequest.getData,
     jailRoleMapRequest.getData,
     runMapRequest.getData,
     alternateAssignmentTypeRequests.alternateAssignmentTypeMapRequest.getData,
@@ -94,3 +94,9 @@ const courtRoleSelector = new CodeSelector(
 export const allCourtRoles = courtRoleSelector.all;
 
 export const allEffectiveCourtRoles = courtRoleSelector.effective;
+
+// Courtrooms
+export const allCourtrooms = createSelector(
+    courtroomRequests.courtroomMapRequest.getData,
+    (courtrooms) => mapToArray(courtrooms).sort((a, b) => a.name.localeCompare(b.name))
+);
