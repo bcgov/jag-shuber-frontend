@@ -101,7 +101,7 @@ class CourtSecurityFields extends React.PureComponent {
 
     static courtAssignmentIdToAssignmentValue(courtAssignmentId: string = '') {
         const match = courtAssignmentId.match(/:(.*)/);
-        return match ? match[1] : '';
+        return match ? match[1] : undefined;
     }
 
     static assignmentValueToCourtAssignmentId(value: string = '', isCourtRoom: boolean) {
