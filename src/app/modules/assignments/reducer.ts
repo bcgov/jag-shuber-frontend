@@ -4,6 +4,7 @@ import * as alternateAssignmentTypeRequests from './requests/alternateAssignment
 import * as courtRoleRequests from './requests/courtRoles';
 import * as courtroomRequests from './requests/courtrooms';
 import * as jailRoleRequests from './requests/jailRoles';
+import * as runRequests from './requests/runs';
 import NestedReducer from '../../infrastructure/NestedReducer';
 import { ReducersMapObject } from 'redux';
 import { STATE_KEY } from './common';
@@ -26,6 +27,7 @@ const nestedReducer = new NestedReducer([
   courtRoleRequests.courtRoleMapRequest.reducer,
   courtroomRequests.courtroomMapRequest.reducer,
   jailRoleRequests.jailRoleMapRequest.reducer,
+  runRequests.runMapRequest.reducer,
 
   // Assignment Duties
   assignmentDutyRequests.assignmentDutyMapRequest.reducer,

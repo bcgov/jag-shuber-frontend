@@ -7,7 +7,8 @@ import {
     AlternateAssignmentMap,
     CourtRoleMap,
     CourtroomMap,
-    JailRoleMap
+    JailRoleMap,
+    RunMap
 } from '../../api/Api';
 
 export interface AssignmentModuleState {
@@ -21,6 +22,7 @@ export interface AssignmentModuleState {
     courtRoleMap?: RequestActionState<CourtRoleMap>;
     courtroomMap?: RequestActionState<CourtroomMap>;
     jailRoleMap?: RequestActionState<JailRoleMap>;
+    runMap?: RequestActionState<RunMap>;
 
     // Duties
     assignmentDutyMap?: RequestActionState<AssignmentDutyMap>;

@@ -2,15 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { Run } from '../api';
-import { allRuns } from '../modules/courthouse/selectors';
+import { allRuns } from '../modules/assignments/selectors';
 import Selector, { SelectorProps } from '../components/FormElements/Selector';
 
-interface CourthouseRunListStateProps {
+interface RunListStateProps {
     runs: Run[];
 }
 
-class CourthouseRunList extends React.PureComponent<
-    SelectorProps & CourthouseRunListStateProps> {
+class RunList extends React.PureComponent<
+    SelectorProps & RunListStateProps> {
 
     render() {
         const { runs = [], ...restProps } = this.props;
@@ -31,6 +31,6 @@ const mapStateToProps = (state: RootState) => {
 };
 
 // tslint:disable-next-line:max-line-length
-export default connect<CourthouseRunListStateProps, {}, SelectorProps>(
+export default connect<RunListStateProps, {}, SelectorProps>(
     mapStateToProps
-)(CourthouseRunList);
+)(RunList);
