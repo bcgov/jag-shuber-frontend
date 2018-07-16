@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {
-    Button,
-    Glyphicon
-} from 'react-bootstrap';
+// import {
+//     Button,
+//     Glyphicon
+// } from 'react-bootstrap';
 import {
     Form
 } from 'react-bootstrap';
@@ -13,7 +13,7 @@ import {
 import SheriffSelector from '../containers/SheriffSelector';
 import WorkSectionSelector from './FormElements/WorkSectionSelector';
 import Selector from './FormElements/Selector';
-import { ConfirmationModal } from './ConfirmationModal';
+// import { ConfirmationModal } from './ConfirmationModal';
 import { IdType, ShiftUpdates } from '../api/Api';
 import TimePickerDropDownField from './FormElements/TimePickerDropDownField';
 import SelectorField from './FormElements/SelectorField';
@@ -21,10 +21,10 @@ import SelectorField from './FormElements/SelectorField';
 export interface ScheduleControlPanelFormProps {
     handleSubmit?: () => void;
     onSubmitSuccess?: () => void;
-    onClear?: () => void;
-    onSelectAll?: () => void;
-    onDelete?: () => void;
-    onApply?: () => void;
+    // onClear?: () => void;
+    // onSelectAll?: () => void;
+    // onDelete?: () => void;
+    // onApply?: () => void;
     selectedShiftIds?: IdType[];
     canAssignSheriff?: boolean;
 }
@@ -46,12 +46,12 @@ export default class ScheduleControlPanelForm extends
     render() {
         const { 
             handleSubmit, 
-            onApply, 
-            onClear, 
-            onDelete, 
+            // onApply, 
+            // onClear, 
+            // onDelete, 
             selectedShiftIds, 
             canAssignSheriff = true, 
-            onSelectAll 
+            // onSelectAll 
         } = this.props;
         
         return (
@@ -103,7 +103,7 @@ export default class ScheduleControlPanelForm extends
                                     <WorkSectionSelector {...sp} showVariedOption={true} />}
                         />}
                     />
-                    <ConfirmationModal
+                    {/* <ConfirmationModal
                         key="confirmationModal"
                         onConfirm={() => onDelete && onDelete()}
                         actionBtnLabel={<Glyphicon glyph="trash" />}
@@ -126,7 +126,7 @@ export default class ScheduleControlPanelForm extends
                     </Button>
                     <Button className="action-button" onClick={() => onApply && onApply()}>
                         Apply <span style={{ paddingTop: 2, fontSize: 10 }}>&#9658;</span>
-                    </Button>
+                    </Button> */}
                 </Form>
             </div>
         );

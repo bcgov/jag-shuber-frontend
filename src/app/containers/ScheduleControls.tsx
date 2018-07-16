@@ -22,6 +22,8 @@ import ScheduleShiftCopyModal from './ScheduleShiftCopyModal';
 import { IdType, Shift } from '../api/Api';
 import DateRangeControls from '../components/DateRangeControls';
 import { allShifts } from '../modules/shifts/selectors';
+import { ConfirmationModal } from '../components/ConfirmationModal';
+import ScheduleMultiShiftEditModal from './ScheduleMultiShiftEditModal';
 
 interface ScheduleControlsStateProps {
     visibleTimeStart: any;
@@ -41,6 +43,7 @@ interface ScheduleDistpatchProps {
     updateVisibleTime: (startTime: any, endTime: any) => void;
     showShiftCopyModal: () => void;
     showShiftAddModal: () => void;
+    showMultiShiftEditModal: (selectedShiftIds: IdType[]) => void;
 }
 
 class ScheduleControls extends React.PureComponent<
@@ -61,6 +64,7 @@ class ScheduleControls extends React.PureComponent<
             showShiftCopyModal,
             showShiftAddModal,
             // submit,
+            showMultiShiftEditModal,
             clear,
             deleteShift,
             selectedShifts = [],
@@ -101,7 +105,7 @@ class ScheduleControls extends React.PureComponent<
                     style={{ 
                         position: 'absolute', 
                         right: 10,
-                        paddingTop: 10 
+                        paddingTop: 5 
                     }}
                 >
                     <Button
@@ -114,7 +118,7 @@ class ScheduleControls extends React.PureComponent<
 
                     <Button
                         className="action-button secondary"
-                        style={{ marginRight: 20 }} 
+                        style={{ marginRight: 40 }} 
                         onClick={() => clear && clear()}
                     >
                         Deselect
@@ -130,22 +134,28 @@ class ScheduleControls extends React.PureComponent<
 
                     <Button 
                         bsStyle="primary"
-                        style={{ marginRight: 6 }}
+                        style={{ marginRight: -6 }}
+                        onClick={() => showMultiShiftEditModal(selectedShifts)}
                     >
                         <Glyphicon glyph="pencil" />
                     </Button>
 
-                    <Button
-                        style={{ marginRight: 20 }} 
-                        onClick={() => deleteShift && deleteShift(selectedShifts)}
-                        bsStyle="danger"
-                    >
-                        <Glyphicon glyph="trash" />
-                    </Button>
+                    <ConfirmationModal
+                        key="confirmationModal"
+                        onConfirm={() => deleteShift && deleteShift(selectedShifts)}
+                        actionBtnLabel={<Glyphicon glyph="trash" />}
+                        actionBtnStyle="danger"
+                        confirmBtnLabel="Delete"
+                        confirmBtnStyle="danger"
+                        // tslint:disable-next-line:max-line-length
+                        message={<p style={{ fontSize: 14 }}>Please confirm that you would like to <b>permanently delete</b> the selected shift(s).</p>}
+                        title="Delete Shift(s)"
+                    />
 
                     <Button
                         className="action-button"
                         onClick={() => showShiftCopyModal()}
+                        style={{ marginLeft: 20 }} 
                     >
                         Import Shifts
                     </Button>
@@ -172,7 +182,8 @@ const mapDispatchToProps = {
     submit: ScheduleShiftMultiEditForm.submitAction,
     clear: clearSelectedShifts,
     deleteShift: deleteShiftAction,
-    setSelectedShifts: selectShifts
+    setSelectedShifts: selectShifts,
+    showMultiShiftEditModal: (selectedShifts: IdType[]) => ScheduleMultiShiftEditModal.ShowAction(selectedShifts)
 };
 
 // tslint:disable-next-line:max-line-length

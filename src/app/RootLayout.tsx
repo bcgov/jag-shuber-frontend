@@ -34,6 +34,7 @@ import ConnectedConfirmationModal from './containers/ConfirmationModal';
 import SheriffProfileCreateModal from './containers/SheriffProfileCreateModal';
 import resolveAppUrl from './infrastructure/resolveAppUrl';
 import CustomDragLayer from './infrastructure/DragDrop/CustomDragLayer';
+import ScheduleShiftMultiEditModal from './containers/ScheduleMultiShiftEditModal';
 
 export interface LayoutStateProps {
   isCourthouseSet?: boolean;
@@ -117,6 +118,7 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
               <ScheduleShiftAddModal />
               <ConnectedConfirmationModal />
               <AssignmentSheriffDutyReassignmentModal />
+              <ScheduleShiftMultiEditModal /> 
             </div>
           )}
           <div className="footerArea">
