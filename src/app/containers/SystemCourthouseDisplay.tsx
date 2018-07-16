@@ -5,7 +5,7 @@ import {
     Courthouse,
     IdType
 } from '../api/Api';
-import { courthouseById } from '../modules/courthouse/selectors';
+import { courthouseById } from '../modules/system/selectors';
 
 interface CourthouseDisplayListStateProps {
     courthouse?: Courthouse;

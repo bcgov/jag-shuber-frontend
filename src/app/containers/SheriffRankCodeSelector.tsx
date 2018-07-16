@@ -2,15 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { SheriffRank } from '../api/Api';
-import { allEffectiveSheriffRankCodes } from '../modules/courthouse/selectors';
+import { allEffectiveSheriffRankCodes } from '../modules/sheriffs/selectors';
 import Selector, { SelectorProps } from '../components/FormElements/Selector';
 
-interface CourthouseSheriffRankListStateProps {
+interface SheriffRankListStateProps {
     sheriffRanks: SheriffRank[];
 }
 
-class CourthouseSheriffRankList extends React.PureComponent<
-    SelectorProps & CourthouseSheriffRankListStateProps> {
+class SheriffRankList extends React.PureComponent<
+    SelectorProps & SheriffRankListStateProps> {
 
     render() {
         const { sheriffRanks = [], label = 'Rank', ...restProps } = this.props;
@@ -33,6 +33,6 @@ const mapStateToProps = (state: RootState) => {
 };
 
 // tslint:disable-next-line:max-line-length
-export default connect<CourthouseSheriffRankListStateProps, {}, SelectorProps>(
+export default connect<SheriffRankListStateProps, {}, SelectorProps>(
     mapStateToProps
-)(CourthouseSheriffRankList);
+)(SheriffRankList);

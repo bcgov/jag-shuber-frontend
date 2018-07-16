@@ -2,6 +2,8 @@ import { createSelector } from 'reselect';
 import { RootState } from '../../store';
 import * as assignmentRequests from './requests/assignments';
 import * as assignmentDutyRequests from './requests/assignmentDuties';
+import * as alternateAssignmentTypeRequests from './requests/alternateAssignmentTypes';
+import * as courtRoleRequests from './requests/courtRoles';
 import {
     Assignment,
     AssignmentDuty,
@@ -13,21 +15,20 @@ import {
     isEscortAssignment,
     isOtherAssignment
 } from '../../api/utils';
-import { courtroomMapRequest } from '../courthouse/requests/courtrooms';
-import { jailRoleMapRequest } from '../courthouse/requests/jailRoles';
-import { runMapRequest } from '../courthouse/requests/runs';
-import { alternateAssignmentTypeMapRequest } from '../courthouse/requests/alternateAssignmentTypes';
-import { courtRoleMapRequest } from '../courthouse/requests/courtRoles';
+import * as courtroomRequests from './requests/courtrooms';
+import * as jailRoleRequests from './requests/jailRoles';
+import * as runRequests from './requests/runs';
 import mapToArray from '../../infrastructure/mapToArray';
+import { CodeSelector } from '../../infrastructure/CodeSelector';
 
 // Assignments
 export const allAssignments = createSelector(
     assignmentRequests.assignmentMapRequest.getData,
-    courtroomMapRequest.getData,
-    jailRoleMapRequest.getData,
-    runMapRequest.getData,
-    alternateAssignmentTypeMapRequest.getData,
-    courtRoleMapRequest.getData,
+    courtroomRequests.courtroomMapRequest.getData,
+    jailRoleRequests.jailRoleMapRequest.getData,
+    runRequests.runMapRequest.getData,
+    alternateAssignmentTypeRequests.alternateAssignmentTypeMapRequest.getData,
+    courtRoleRequests.courtRoleMapRequest.getData,
     (map = {}, courtRooms = {}, jailRoles = {}, runs = {}, altAssignmentTypes = {}, courtRoles = {}): Assignment[] => {
         return mapToArray(map)
             .map(a => {
@@ -75,3 +76,42 @@ export const getAssignmentDuty = (id?: IdType) => (state: RootState) => {
     }
     return undefined;
 };
+
+// Alternate Assignment Types
+const altAssignmentTypesSelector = new CodeSelector(
+    alternateAssignmentTypeRequests.alternateAssignmentTypeMapRequest.getData
+);
+
+export const allAlternateAssignmentTypes = altAssignmentTypesSelector.all;
+
+export const allEffectAlternateAssignmentTypes = altAssignmentTypesSelector.effective;
+
+// Court Roles
+const courtRoleSelector = new CodeSelector(
+    courtRoleRequests.courtRoleMapRequest.getData
+);
+
+export const allCourtRoles = courtRoleSelector.all;
+
+export const allEffectiveCourtRoles = courtRoleSelector.effective;
+
+// Courtrooms
+export const allCourtrooms = createSelector(
+    courtroomRequests.courtroomMapRequest.getData,
+    (courtrooms) => mapToArray(courtrooms).sort((a, b) => a.name.localeCompare(b.name))
+);
+
+// Jail Roles
+const jailRoleSelector = new CodeSelector(
+    jailRoleRequests.jailRoleMapRequest.getData
+);
+
+export const allJailRoles = jailRoleSelector.all;
+
+export const allEffectiveJailRoles = jailRoleSelector.effective;
+
+// Runs
+export const allRuns = createSelector(
+    runRequests.runMapRequest.getData,
+    (runs) => mapToArray(runs).sort((a, b) => a.title.localeCompare(b.title))
+);

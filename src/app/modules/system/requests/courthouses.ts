@@ -2,21 +2,22 @@ import { ThunkExtra } from '../../../store';
 import arrayToMap from '../../../infrastructure/arrayToMap';
 import {
     STATE_KEY,
-    CourthouseModuleState
+    SystemModuleState
 } from '../common';
 import {
-    CourtRole
+    Courthouse
 } from '../../../api/Api';
 import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRequest';
 
-class CourtRoleMapRequest extends GetEntityMapRequest<void, CourtRole, CourthouseModuleState> {
+
+class CourthouseMapRequest extends GetEntityMapRequest<void, Courthouse, SystemModuleState> {
     constructor() {
-        super({ namespace: STATE_KEY, actionName: 'courtRoleMap' });
+        super({ namespace: STATE_KEY, actionName: 'courthouseMap' });
     }
     public async doWork(request: void, { api }: ThunkExtra) {
-        let courtRoles = await api.getCourtRoles();
-        return arrayToMap(courtRoles, cr => cr.code);
+        let courthouses = await api.getCourthouses();
+        return arrayToMap(courthouses, c => c.id);
     }
 }
 
-export const courtRoleMapRequest = new CourtRoleMapRequest();
+export const courthouseMapRequest = new CourthouseMapRequest();

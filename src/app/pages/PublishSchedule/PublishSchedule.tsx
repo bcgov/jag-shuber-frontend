@@ -8,7 +8,7 @@ import SheriffScheduleDisplay from '../../containers/SheriffScheduleDisplay';
 import './PublishSchedule.css';
 import api from '../../api';
 import Client from '../../api/Client';
-import CourthouseDisplay from '../../containers/CourthouseDisplay';
+import CourthouseDisplay from '../../containers/SystemCourthouseDisplay';
 import SchedulePublishViewControls from '../../containers/SchedulePublishViewControls';
 import SchedulePublishViewSelectedWeekDisplay from '../../containers/SchedulePublishViewSelectedWeekDisplay';
 import Page from '../../components/Page/Page';

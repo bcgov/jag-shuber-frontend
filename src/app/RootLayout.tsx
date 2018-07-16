@@ -17,7 +17,7 @@ import ManageSheriffs from './pages/ManageSheriffs';
 import DefaultAssignments from './pages/DefaultAssignments';
 import Scheduling from './pages/Scheduling';
 import AssignmentDutyEditModal from './containers/AssignmentDutyEditModal';
-import CurrentCourthouseSelector from './containers/CurrentCourthouseSelector';
+import CurrentCourthouseSelector from './containers/SystemCurrentCourthouseSelector';
 import { Well } from 'react-bootstrap';
 import SheriffProfileModal from './containers/SheriffProfileModal';
 import ScheduleShiftCopyModal from './containers/ScheduleShiftCopyModal';

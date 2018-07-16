@@ -6,7 +6,7 @@ import {
     NavDropdown
 } from 'react-bootstrap';
 import NavigationLink from './NavigationLink';
-import CurrentCourthouseSelector from '../containers/CurrentCourthouseSelector';
+import CurrentCourthouseSelector from '../containers/SystemCurrentCourthouseSelector';
 
 export interface NavigationProps {
 

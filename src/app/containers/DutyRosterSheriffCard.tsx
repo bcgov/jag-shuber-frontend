@@ -16,7 +16,7 @@ import WorkSectionIndicator from '../components/WorkSectionIndicator/WorkSection
 import { sheriffLoanMap as sheriffLoanMapSelecor } from '../modules/sheriffs/selectors';
 import { currentCourthouse as userCourthouse } from '../modules/user/selectors';
 import { MapType, IdType, Leave } from '../api/Api';
-import CourthouseDisplay from './CourthouseDisplay';
+import CourthouseDisplay from './SystemCourthouseDisplay';
 import SheriffLoanOutIcon from '../components/Icons/SheriffLoanOutIcon';
 import SheriffLoanInIcon from '../components/Icons/SheriffLoanInIcon';
 import { getLeaves } from '../modules/leaves/actions';

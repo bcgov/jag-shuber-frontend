@@ -13,12 +13,12 @@ import {
 } from 'redux-form';
 import Form from './FormElements/Form';
 import * as Validators from '../infrastructure/Validators';
-import CourtAssignmentSelector from '../containers/CourthouseCourtAssignmentSelector';
+import CourtAssignmentSelector from '../containers/AssignmentCourtTypeSelector';
 import DaysOfWeekChecklist from './FormElements/DaysOfWeekChecklist';
-import JailRolesSelector from '../containers/CourthouseJailRoleSelector';
-import RunSelector from '../containers/CourthouseRunSelector';
+import JailRolesSelector from '../containers/AssignmentJailRoleSelector';
+import RunSelector from '../containers/AssignmentRunSelector';
 import NumberSpinner from './FormElements/NumberSpinner';
-import AlternateAssignmentSelector from '../containers/AlternateAssignmentTypeSelector';
+import OtherAssignmentTypeSelector from '../containers/AssignmentOtherTypeSelector';
 import {
     WORK_SECTIONS,
     TimeType,
@@ -46,7 +46,7 @@ class OtherFields extends React.PureComponent {
                         (p) => <SelectorField
                             {...p}
                             SelectorComponent={
-                                (sp) => <AlternateAssignmentSelector {...sp} label="Assignment"/>}
+                                (sp) => <OtherAssignmentTypeSelector {...sp} label="Assignment"/>}
                         />}
                     validate={[Validators.required]}
                 />

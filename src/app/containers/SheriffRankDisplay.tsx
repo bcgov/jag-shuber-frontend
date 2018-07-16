@@ -5,7 +5,7 @@ import {
     SheriffRank,
     IdType
 } from '../api/Api';
-import { getSheriffRankByCode } from '../modules/courthouse/selectors';
+import { getSheriffRankByCode } from '../modules/sheriffs/selectors';
 
 interface SheriffRankDisplayListStateProps {
     sheriffRank?: SheriffRank;

@@ -1,13 +1,11 @@
 import { Action } from 'redux';
 import { ThunkAction } from '../../store';
-import {
-  getRuns,
-  getCourtrooms
-} from '../courthouse/action';
 import { getSheriffList } from '../sheriffs/actions';
 import {
   getAssignments,
   getAssignmentDuties,
+  getCourtrooms,
+  getRuns
 } from '../assignments/actions';
 import { getShifts } from '../shifts/actions';
 

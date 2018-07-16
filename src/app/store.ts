@@ -7,16 +7,8 @@ import { default as api, API } from './api';
 import { registerReducer as registerSheriffReducer, SheriffModuleState } from './modules/sheriffs/reducer';
 import { registerReducer as registerAssignmentReducer, AssignmentModuleState } from './modules/assignments/reducer';
 import { registerReducer as registerShiftReducer, ShiftModuleState } from './modules/shifts/reducer';
-import { registerReducer as registerCourthouseReducer, CourthouseModuleState } from './modules/courthouse/reducer';
 import { default as dutyRosterReducer, DutyRosterState } from './modules/dutyRoster/reducer';
 import { reducer as formReducer } from 'redux-form';
-import {
-    getAlternateAssignmentTypes,
-    getJailRoles,
-    getCourthouses,
-    getSheriffRankCodes,
-    getCourtRoles
-} from './modules/courthouse/action';
 import { getShifts } from './modules/shifts/actions';
 import { updateVisibleTime as updateTimelineVisibleTime } from './modules/dutyRoster/actions';
 import { default as scheduleReducer, ScheduleState } from './modules/schedule/reducer';
@@ -29,10 +21,16 @@ import {
     getLeaves
 } from './modules/leaves/actions';
 import {
-    getGenderCodes
+    getGenderCodes,
+    getCourthouses
 } from './modules/system/action';
 import { registerReducer as registerSystemReducer, SystemModuleState } from './modules/system/reducer';
-
+import { 
+    getAlternateAssignmentTypes,
+    getCourtRoles,
+    getJailRoles 
+} from './modules/assignments/actions';
+import { getSheriffRankCodes } from './modules/sheriffs/actions';
 export interface ThunkExtra {
     api: API;
 }
@@ -45,7 +43,6 @@ export interface RootState {
     assignments: AssignmentModuleState;
     dutyRoster: DutyRosterState;
     shifts: ShiftModuleState;
-    courthouse: CourthouseModuleState;
     schedule: ScheduleState;
     user: UserState;
     leaves: LeaveModuleState;
@@ -77,7 +74,6 @@ const reducers = {
 registerSheriffReducer(reducers);
 registerShiftReducer(reducers);
 registerAssignmentReducer(reducers);
-registerCourthouseReducer(reducers);
 registerUserReducer(reducers);
 registerLeavesReducer(reducers);
 registerSystemReducer(reducers);

@@ -8,6 +8,7 @@ import mapToArray from '../../infrastructure/mapToArray';
 import { currentCourthouse as currentCourthouseSelector } from '../user/selectors';
 import arrayToMap from '../../infrastructure/arrayToMap';
 import { ErrorMap } from './common';
+import { CodeSelector } from '../../infrastructure/CodeSelector';
 
 export const sheriffs = createSelector(
     requests.sheriffMapRequest.getData,
@@ -78,4 +79,18 @@ export const selectedSheriffProfileSection = (state: RootState) => {
 export const getSheriffProfilePluginErrors = (state: RootState) => {
     const { sheriffs: { pluginSubmitErrors = {} } = {} } = state;
     return pluginSubmitErrors as ErrorMap;
+};
+
+// Sheriff Rank Codes
+const sheriffRankCodeSelector = new CodeSelector(
+    requests.sheriffRankCodeMapRequest.getData
+);
+
+export const allSheriffRankCodes = sheriffRankCodeSelector.all;
+
+export const allEffectiveSheriffRankCodes = sheriffRankCodeSelector.effective;
+
+export const getSheriffRankByCode = (code: IdType) => (state: RootState) => {
+    const map = requests.sheriffRankCodeMapRequest.getData(state);
+    return map ? map[code] : undefined;
 };
