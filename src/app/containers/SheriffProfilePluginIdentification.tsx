@@ -12,6 +12,8 @@ import TextField from '../components/FormElements/TextField';
 import * as Validators from '../infrastructure/Validators';
 import CourthouseSheriffRankCodeSelector from './CourthouseSheriffRankCodeSelector';
 import SelectorField from '../components/FormElements/SelectorField';
+import GenderSelector from './GenderSelector';
+import GenderCodeDisplay from './GenderCodeDisplay';
 
 export default class SheriffProfilePluginId extends SheriffProfileSectionPlugin<Sheriff> {
     name = 'identification';
@@ -20,7 +22,8 @@ export default class SheriffProfilePluginId extends SheriffProfileSectionPlugin<
         lastName: 'sheriff.lastName',
         rankCode: 'sheriff.rankCode',
         badgeNo: 'sheriff.badgeNo',
-        alias: 'sheriff.alias'
+        alias: 'sheriff.alias',
+        genderCode: 'sheriff.genderCode'
     };
     title: string = 'Identification';
     DisplayComponent = ({ sheriffId }: SheriffProfilePluginProps) => (
@@ -29,7 +32,8 @@ export default class SheriffProfilePluginId extends SheriffProfileSectionPlugin<
             RenderComponent={({ sheriff: {
                 rankCode = '',
                 badgeNo = '',
-                alias = undefined
+                alias = undefined,
+                genderCode = undefined
             } = {} }) =>
                 (
                     <Table responsive={true} >
@@ -45,6 +49,10 @@ export default class SheriffProfilePluginId extends SheriffProfileSectionPlugin<
                             <tr>
                                 <td><strong>Alias</strong></td>
                                 <td>{alias ? alias : '-'}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Gender</strong></td>
+                                <td><GenderCodeDisplay code={genderCode}/></td>
                             </tr>
                         </tbody>
                     </Table>
@@ -88,6 +96,17 @@ export default class SheriffProfilePluginId extends SheriffProfileSectionPlugin<
                 name={this.formFieldNames.alias}
                 component={TextField as any}
                 label="Alias"
+            />
+            <Field
+                name={this.formFieldNames.genderCode}
+                component={
+                    (p) => <SelectorField 
+                        {...p} 
+                        SelectorComponent={
+                            (sp) => <GenderSelector {...sp} />}  
+                    /> }
+                label="Gender"
+                validate={[Validators.required]}
             />
         </div>
     )
