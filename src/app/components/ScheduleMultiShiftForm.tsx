@@ -1,8 +1,4 @@
-import * as React from 'react';
-// import {
-//     Button,
-//     Glyphicon
-// } from 'react-bootstrap';
+import React from 'react';
 import {
     Form
 } from 'react-bootstrap';
@@ -13,24 +9,19 @@ import {
 import SheriffSelector from '../containers/SheriffSelector';
 import WorkSectionSelector from './FormElements/WorkSectionSelector';
 import Selector from './FormElements/Selector';
-// import { ConfirmationModal } from './ConfirmationModal';
 import { IdType, ShiftUpdates } from '../api/Api';
 import TimePickerDropDownField from './FormElements/TimePickerDropDownField';
 import SelectorField from './FormElements/SelectorField';
 
-export interface ScheduleControlPanelFormProps {
+export interface ScheduleMultiShiftFormProps {
     handleSubmit?: () => void;
     onSubmitSuccess?: () => void;
-    // onClear?: () => void;
-    // onSelectAll?: () => void;
-    // onDelete?: () => void;
-    // onApply?: () => void;
     selectedShiftIds?: IdType[];
     canAssignSheriff?: boolean;
 }
 
-export default class ScheduleControlPanelForm extends
-    React.Component<ScheduleControlPanelFormProps & InjectedFormProps<{}, ScheduleControlPanelFormProps>, {}> {
+export default class ScheduleMultiShiftForm extends
+    React.Component<ScheduleMultiShiftFormProps & InjectedFormProps<{}, ScheduleMultiShiftFormProps>, {}> {
 
     static parseUpdateDetailsFromValues(values: any): ShiftUpdates {
         const { sheriffId, startTime, endTime, workSectionId } = values;
@@ -44,19 +35,15 @@ export default class ScheduleControlPanelForm extends
     }
 
     render() {
-        const { 
-            handleSubmit, 
-            // onApply, 
-            // onClear, 
-            // onDelete, 
-            selectedShiftIds, 
-            canAssignSheriff = true, 
-            // onSelectAll 
+        const {
+            handleSubmit,
+            selectedShiftIds,
+            canAssignSheriff = true,
         } = this.props;
-        
+
         return (
             <div>
-                <Form onSubmit={handleSubmit} inline={true}>
+                <Form onSubmit={handleSubmit}>
                     <Field
                         name="sheriffId"
                         component={(p) => <SelectorField
@@ -65,7 +52,9 @@ export default class ScheduleControlPanelForm extends
                                 (sp) =>
                                     <SheriffSelector {...sp} showVariedOption={true} isDisabled={canAssignSheriff} />}
                         />}
+                        label="Sheriff"
                     />
+                    <label>Start Time</label>
                     <Field
                         name="startTime"
                         component={
@@ -78,9 +67,8 @@ export default class ScheduleControlPanelForm extends
                                 />
                             }
                         }
-                        label="Start Time"
                     />
-                    <span style={{ color: 'white' }}>&mdash;</span>
+                    <label>End Time</label>
                     <Field
                         name="endTime"
                         component={
@@ -92,7 +80,6 @@ export default class ScheduleControlPanelForm extends
                                             ? '--:--' : 'End'}
                                 />
                         }
-                        label="End Time"
                     />
                     <Field
                         name="workSectionId"
@@ -102,31 +89,8 @@ export default class ScheduleControlPanelForm extends
                                 (sp) =>
                                     <WorkSectionSelector {...sp} showVariedOption={true} />}
                         />}
+                        label="Work Section"
                     />
-                    {/* <ConfirmationModal
-                        key="confirmationModal"
-                        onConfirm={() => onDelete && onDelete()}
-                        actionBtnLabel={<Glyphicon glyph="trash" />}
-                        actionBtnStyle="danger"
-                        confirmBtnLabel="Delete"
-                        confirmBtnStyle="danger"
-                        // tslint:disable-next-line:max-line-length
-                        message={<p style={{ fontSize: 14 }}>Please confirm that you would like to <b>permanently delete</b> the selected shift(s).</p>}
-                        title="Delete Shift(s)"
-                    />
-                    <Button 
-                        className="action-button secondary" 
-                        style={{ marginRight: 6 }} 
-                        onClick={() => onSelectAll && onSelectAll()}
-                    >
-                        Select All
-                    </Button>
-                    <Button className="action-button secondary" style={{ marginRight: 6 }} onClick={() => onClear && onClear()}>
-                        Deselect
-                    </Button>
-                    <Button className="action-button" onClick={() => onApply && onApply()}>
-                        Apply <span style={{ paddingTop: 2, fontSize: 10 }}>&#9658;</span>
-                    </Button> */}
                 </Form>
             </div>
         );

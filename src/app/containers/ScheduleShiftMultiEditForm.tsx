@@ -5,9 +5,9 @@ import {
     submit
 } from 'redux-form';
 import {
-    default as ScheduleControlPanelForm,
-    ScheduleControlPanelFormProps
-} from '../components/ScheduleControlPanelForm';
+    default as ScheduleMultiShiftForm,
+    ScheduleMultiShiftFormProps
+} from '../components/ScheduleMultiShiftForm';
 import { default as FormSubmitButton, SubmitButtonProps } from '../components/FormElements/SubmitButton';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
@@ -24,11 +24,11 @@ import { editMultipleShifts } from '../modules/shifts/actions';
 import { toTimeString } from 'jag-shuber-api/dist/client';
 
 // wrapping generic assignment form in redux-form
-const formConfig: ConfigProps<any, ScheduleControlPanelFormProps> = {
+const formConfig: ConfigProps<any, ScheduleMultiShiftFormProps> = {
     form: 'EditMultipleShift',
     onSubmit: (values, dispatch, props) => {
 
-        const updateDetails = ScheduleControlPanelForm.parseUpdateDetailsFromValues(values);
+        const updateDetails = ScheduleMultiShiftForm.parseUpdateDetailsFromValues(values);
         if (toTimeString(updateDetails.endTime) === toTimeString(props.initialValues.endTime)) {
             delete updateDetails.endTime;
         }
@@ -47,7 +47,7 @@ const formConfig: ConfigProps<any, ScheduleControlPanelFormProps> = {
     enableReinitialize: true
 };
 
-export interface ScheduleShiftMultiEditFormProps extends ScheduleControlPanelFormProps {
+export interface ScheduleShiftMultiEditFormProps extends ScheduleMultiShiftFormProps {
 }
 
 const mapStateToProps = (state: RootState, props: ScheduleShiftMultiEditFormProps) => {
@@ -76,7 +76,7 @@ const mapStateToProps = (state: RootState, props: ScheduleShiftMultiEditFormProp
 // Here we create a class that extends the configured assignment form so that we
 // can add a static SubmitButton member to it to make the API cleaner
 export default class ScheduleShiftMultiEditForm extends
-    connect<any, {}, ScheduleShiftMultiEditFormProps>(mapStateToProps)(reduxForm(formConfig)(ScheduleControlPanelForm)) {
+    connect<any, {}, ScheduleShiftMultiEditFormProps>(mapStateToProps)(reduxForm(formConfig)(ScheduleMultiShiftForm)) {
     static SubmitButton = (props: Partial<SubmitButtonProps>) =>
         <FormSubmitButton {...props} formName={formConfig.form} />
 

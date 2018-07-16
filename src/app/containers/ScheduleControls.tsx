@@ -139,6 +139,8 @@ class ScheduleControls extends React.PureComponent<
                             marginRight: -6, 
                             backgroundColor: areShiftsSelected ? '#327AB7' : 'grey',
                             borderColor: areShiftsSelected ? '#327AB7' : 'grey',
+                            // backgroundColor: areShiftsSelected ? 'green' : 'grey',
+                            // borderColor: areShiftsSelected ? 'green' : 'grey',
                             color: 'white'
                         }}
                         onClick={() => showMultiShiftEditModal(selectedShifts)}
@@ -150,7 +152,7 @@ class ScheduleControls extends React.PureComponent<
                     <ConfirmationModal
                         key="confirmationModal"
                         onConfirm={() => deleteShift && deleteShift(selectedShifts)}
-                        actionBtnLabel={<Glyphicon glyph="trash" />}
+                        actionBtnLabel={<Glyphicon glyph="trash" style={{fontSize: 18}} />}
                         actionBtnStyle="danger"
                         confirmBtnLabel="Delete"
                         confirmBtnStyle="danger"
