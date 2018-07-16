@@ -4,8 +4,7 @@ import { connect } from 'react-redux';
 import { RootState } from '../store';
 import {
     Glyphicon,
-    Dropdown,
-    MenuItem
+    Button
 } from 'react-bootstrap';
 import {
     visibleTime,
@@ -61,7 +60,7 @@ class ScheduleControls extends React.PureComponent<
             updateVisibleTime,
             showShiftCopyModal,
             showShiftAddModal,
-            submit,
+            // submit,
             clear,
             deleteShift,
             selectedShifts = [],
@@ -72,34 +71,9 @@ class ScheduleControls extends React.PureComponent<
             <div
                 style={{
                     display: 'flex',
-                    justifyContent: 'space-between',
-                    width: '100%',
                     paddingLeft: 200
                 }}
             >
-                <div
-                    style={{
-                        margin: '5px 10px',
-                        paddingRight: 15
-                    }}
-                >
-                    <ScheduleShiftMultiEditForm
-                        onApply={
-                            () => {
-                                submit && submit();
-                                clear && clear();
-                            }
-                        }
-                        onClear={() => clear && clear()}
-                        onDelete={
-                            () => {
-                                deleteShift && deleteShift(selectedShifts);
-                                clear && clear();
-                            }
-                        }
-                        onSelectAll={() => setSelectedShifts && setSelectedShifts(this.allVisibleShiftIds())}
-                    />
-                </div>
 
                 <div className="toolbar-calendar-control">
                     <DateRangeControls
@@ -121,37 +95,63 @@ class ScheduleControls extends React.PureComponent<
                             moment().endOf('week').subtract(1, 'day')
                         )}
                     />
-                    <div
-                        style={{
-                            paddingTop: 2,
-                            background: '#003366',
-                            zIndex: 900,
-                            textAlign: 'left'
-                        }}
+                </div>
+
+                <div 
+                    style={{ 
+                        position: 'absolute', 
+                        right: 10,
+                        paddingTop: 10 
+                    }}
+                >
+                    <Button
+                        className="action-button secondary"
+                        style={{ marginRight: 6 }}
+                        onClick={() => setSelectedShifts && setSelectedShifts(this.allVisibleShiftIds())}
                     >
-                        <Dropdown id="schedule-control-menu" pullRight={true}>
-                            <Dropdown.Toggle
-                                noCaret={true}
-                                style={{
-                                    fontSize: 22,
-                                    background: 'transparent',
-                                    color: 'white',
-                                    border: 0,
-                                    paddingLeft: 18,
-                                    paddingRight: 15
-                                }}
-                            >
-                                <Glyphicon glyph="menu-hamburger" />
-                            </Dropdown.Toggle>
-                            <Dropdown.Menu>
-                                <MenuItem onClick={() => showShiftAddModal()}>Add Shift</MenuItem>
-                                <MenuItem onClick={() => showShiftCopyModal()}>Import Shifts</MenuItem>
-                            </Dropdown.Menu>
-                        </Dropdown>
-                    </div>
+                        Select All
+                    </Button>
+
+                    <Button
+                        className="action-button secondary"
+                        style={{ marginRight: 20 }} 
+                        onClick={() => clear && clear()}
+                    >
+                        Deselect
+                    </Button>
+
+                    <Button
+                        className="action-button"
+                        style={{ marginRight: 6 }} 
+                        onClick={() => showShiftAddModal()}
+                    >
+                        <Glyphicon glyph="plus" />
+                    </Button>
+
+                    <Button 
+                        bsStyle="primary"
+                        style={{ marginRight: 6 }}
+                    >
+                        <Glyphicon glyph="pencil" />
+                    </Button>
+
+                    <Button
+                        style={{ marginRight: 20 }} 
+                        onClick={() => deleteShift && deleteShift(selectedShifts)}
+                        bsStyle="danger"
+                    >
+                        <Glyphicon glyph="trash" />
+                    </Button>
+
+                    <Button
+                        className="action-button"
+                        onClick={() => showShiftCopyModal()}
+                    >
+                        Import Shifts
+                    </Button>
+
                 </div>
             </div>
-
         );
     }
 }
