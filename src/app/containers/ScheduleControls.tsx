@@ -71,6 +71,8 @@ class ScheduleControls extends React.PureComponent<
             setSelectedShifts
         } = this.props;
 
+        const areShiftsSelected = selectedShifts.length > 0;
+
         return (
             <div
                 style={{
@@ -133,9 +135,14 @@ class ScheduleControls extends React.PureComponent<
                     </Button>
 
                     <Button 
-                        bsStyle="primary"
-                        style={{ marginRight: -6 }}
+                        style={{ 
+                            marginRight: -6, 
+                            backgroundColor: areShiftsSelected ? '#327AB7' : 'grey',
+                            borderColor: areShiftsSelected ? '#327AB7' : 'grey',
+                            color: 'white'
+                        }}
                         onClick={() => showMultiShiftEditModal(selectedShifts)}
+                        disabled={!areShiftsSelected}
                     >
                         <Glyphicon glyph="pencil" />
                     </Button>
