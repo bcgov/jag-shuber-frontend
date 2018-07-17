@@ -1,10 +1,9 @@
-import * as React from 'react';
+import React from 'react';
 import { Shift } from '../api';
 import {
   getWorkSectionColour
 } from '../api/utils';
 import { getForegroundColor } from '../infrastructure/colorUtils';
-import WorkSectionIndicator from './WorkSectionIndicator/WorkSectionIndicator';
 
 export interface ShiftCardProps {
   shift: Shift;
