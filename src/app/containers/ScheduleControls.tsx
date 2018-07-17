@@ -4,7 +4,9 @@ import { connect } from 'react-redux';
 import { RootState } from '../store';
 import {
     Glyphicon,
-    Button
+    Button,
+    MenuItem,
+    Dropdown
 } from 'react-bootstrap';
 import {
     visibleTime,
@@ -19,11 +21,12 @@ import { deleteShift as deleteShiftAction } from '../modules/shifts/actions';
 import ScheduleShiftMultiEditForm from './ScheduleShiftMultiEditForm';
 import ScheduleShiftAddModal from './ScheduleShiftAddModal';
 import ScheduleShiftCopyModal from './ScheduleShiftCopyModal';
-import { IdType, Shift } from '../api/Api';
+import { IdType, Shift, WorkSectionCode } from '../api/Api';
 import DateRangeControls from '../components/DateRangeControls';
 import { allShifts } from '../modules/shifts/selectors';
 import { ConfirmationModal } from '../components/ConfirmationModal';
 import ScheduleMultiShiftEditModal from './ScheduleMultiShiftEditModal';
+import { WORK_SECTIONS } from '../api';
 
 interface ScheduleControlsStateProps {
     visibleTimeStart: any;
@@ -42,7 +45,7 @@ interface ScheduleControlsProps {
 interface ScheduleDistpatchProps {
     updateVisibleTime: (startTime: any, endTime: any) => void;
     showShiftCopyModal: () => void;
-    showShiftAddModal: () => void;
+    showShiftAddModal: (workSectionId?: WorkSectionCode) => void;
     showMultiShiftEditModal: (selectedShiftIds: IdType[]) => void;
 }
 
@@ -63,7 +66,6 @@ class ScheduleControls extends React.PureComponent<
             updateVisibleTime,
             showShiftCopyModal,
             showShiftAddModal,
-            // submit,
             showMultiShiftEditModal,
             clear,
             deleteShift,
@@ -103,11 +105,11 @@ class ScheduleControls extends React.PureComponent<
                     />
                 </div>
 
-                <div 
-                    style={{ 
-                        position: 'absolute', 
+                <div
+                    style={{
+                        position: 'absolute',
                         right: 10,
-                        paddingTop: 5 
+                        paddingTop: 5
                     }}
                 >
                     <Button
@@ -120,23 +122,42 @@ class ScheduleControls extends React.PureComponent<
 
                     <Button
                         className="action-button secondary"
-                        style={{ marginRight: 40 }} 
+                        style={{ marginRight: 40 }}
                         onClick={() => clear && clear()}
                     >
                         Deselect
                     </Button>
 
-                    <Button
-                        className="action-button"
-                        style={{ marginRight: 6 }} 
-                        onClick={() => showShiftAddModal()}
+                    <Dropdown
+                        id="task-type-dropdown"
+                        style={{ marginRight: 6 }}
                     >
-                        <Glyphicon glyph="plus" />
-                    </Button>
-
-                    <Button 
-                        style={{ 
-                            marginRight: -6, 
+                        <Dropdown.Toggle noCaret={true}  className="action-button">
+                            <Glyphicon glyph="plus" />
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            {
+                                Object.keys(WORK_SECTIONS).map((k) => {
+                                    return (
+                                        <MenuItem
+                                            key={k}
+                                            onSelect={() => showShiftAddModal(k as WorkSectionCode)}
+                                        >
+                                            {WORK_SECTIONS[k]}
+                                        </MenuItem>
+                                    );
+                                })
+                                
+                            }
+                            <MenuItem key={'NA'} onSelect={() => showShiftAddModal()}>
+                                Not Applicable
+                            </MenuItem>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                
+                    <Button
+                        style={{
+                            marginRight: -6,
                             backgroundColor: areShiftsSelected ? '#327AB7' : 'grey',
                             borderColor: areShiftsSelected ? '#327AB7' : 'grey',
                             // backgroundColor: areShiftsSelected ? 'green' : 'grey',
@@ -152,7 +173,7 @@ class ScheduleControls extends React.PureComponent<
                     <ConfirmationModal
                         key="confirmationModal"
                         onConfirm={() => deleteShift && deleteShift(selectedShifts)}
-                        actionBtnLabel={<Glyphicon glyph="trash" style={{fontSize: 18}} />}
+                        actionBtnLabel={<Glyphicon glyph="trash" style={{ fontSize: 18 }} />}
                         actionBtnStyle="danger"
                         confirmBtnLabel="Delete"
                         confirmBtnStyle="danger"
@@ -164,7 +185,7 @@ class ScheduleControls extends React.PureComponent<
                     <Button
                         className="action-button"
                         onClick={() => showShiftCopyModal()}
-                        style={{ marginLeft: 20 }} 
+                        style={{ marginLeft: 20 }}
                     >
                         Import Shifts
                     </Button>
@@ -187,7 +208,7 @@ const mapStateToProps = (state: RootState) => {
 const mapDispatchToProps = {
     updateVisibleTime: setVisibleTime,
     showShiftCopyModal: () => ScheduleShiftCopyModal.ShowAction(),
-    showShiftAddModal: () => ScheduleShiftAddModal.ShowAction(),
+    showShiftAddModal: (workSectionId?: WorkSectionCode) => ScheduleShiftAddModal.ShowAction(workSectionId),
     submit: ScheduleShiftMultiEditForm.submitAction,
     clear: clearSelectedShifts,
     deleteShift: deleteShiftAction,

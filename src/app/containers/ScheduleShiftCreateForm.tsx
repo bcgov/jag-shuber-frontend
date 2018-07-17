@@ -27,6 +27,7 @@ const formConfig: ConfigProps<any, ScheduleShiftFormProps> = {
         newShiftCreatorPayload.weekStart = weekStart;
         newShiftCreatorPayload.startTime = timeRange.startTime;
         newShiftCreatorPayload.endTime = timeRange.endTime;
+        newShiftCreatorPayload.workSectionId = props.workSectionId;
         dispatch(createShifts(newShiftCreatorPayload as ShiftCreationPayload));
     }
 };

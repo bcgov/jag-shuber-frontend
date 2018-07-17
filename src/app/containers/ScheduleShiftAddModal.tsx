@@ -8,9 +8,10 @@ import { connect } from 'react-redux';
 import { IModalInjectedProps, connectModal } from 'redux-modal';
 import { ConnectedShowModalButton } from './ConnectedShowModalButton';
 import { show as showModal, hide as hideModal } from 'redux-modal';
+import { WorkSectionCode } from '../api';
 
 export interface ScheduleShiftAddModalProps {
-
+    workSectionId?: WorkSectionCode;
 }
 
 type CompositeProps = ScheduleShiftAddModalProps & IModalInjectedProps;
@@ -18,7 +19,8 @@ class ScheduleShiftAddModal extends React.Component<CompositeProps> {
     render() {
         const {
             show,
-            handleHide
+            handleHide,
+            workSectionId
         } = this.props;
         return (
             <Modal
@@ -35,6 +37,7 @@ class ScheduleShiftAddModal extends React.Component<CompositeProps> {
                         onSubmitSuccess={handleHide}
                         weekStart={moment().startOf('week')}
                         isSingleShift={false}
+                        workSectionId={workSectionId}
                     />
                 </Modal.Body>
                 <Modal.Footer>
@@ -64,6 +67,6 @@ export default class extends connectModal(modalConfig)(
         <ConnectedShowModalButton modalName={modalConfig.name} modalProps={props} />
     )
 
-    static ShowAction = () => showModal(modalConfig.name, {});
+    static ShowAction = (workSectionId?: WorkSectionCode) => showModal(modalConfig.name, {workSectionId});
     static HideAction = () => hideModal(modalConfig.name);
 }

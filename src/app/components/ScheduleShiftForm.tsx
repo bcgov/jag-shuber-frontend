@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as moment from 'moment';
+import React from 'react';
+import moment from 'moment';
 import Form from './FormElements/Form';
 import {
     Field,
@@ -13,13 +13,13 @@ import {
     Shift
 } from '../api/Api';
 import DaysOfWeekChecklist from './FormElements/DaysOfWeekChecklist';
-import WorkSectionSelector from './FormElements/WorkSectionSelector';
 import NumberSpinner from './FormElements/NumberSpinner';
 import TimeSliderField from './FormElements/TimeSliderField';
 import { getWorkSectionColour } from '../api/utils';
 import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 import SheriffSelector from '../containers/SheriffSelector';
 import SelectorField from './FormElements/SelectorField';
+import toTitleCase from '../infrastructure/toTitleCase';
 export interface ScheduleShiftFormProps {
     handleSubmit?: () => void;
     onSubmitSuccess?: () => void;
@@ -39,7 +39,7 @@ export default class ScheduleShiftForm extends
         const updatedShift = {
             ...shiftValues, 
             startDateTime: timeRange.startTime,
-            endDateTime: timeRange.endTime
+            endDateTime: timeRange.endTime,
         };
 
         return updatedShift as Shift;
@@ -87,16 +87,7 @@ export default class ScheduleShiftForm extends
         } = this.props;
         return (
             <div>
-                <Field
-                    name="workSectionId"
-                    component={(p) => <SelectorField 
-                        {...p} 
-                        SelectorComponent={
-                            (sp) => 
-                                <WorkSectionSelector {...sp} />}  
-                    />}
-                    label="Work Section"
-                />
+                <h1>{toTitleCase(workSectionId)}</h1>
                 <Field
                     name="timeRange"
                     component={(p) => <TimeSliderField
