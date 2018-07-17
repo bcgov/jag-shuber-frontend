@@ -36,7 +36,6 @@ class ScheduleShiftAddModal extends React.Component<CompositeProps> {
                     <ScheduleShiftCreateForm
                         onSubmitSuccess={handleHide}
                         weekStart={moment().startOf('week')}
-                        isSingleShift={false}
                         workSectionId={workSectionId}
                     />
                 </Modal.Body>

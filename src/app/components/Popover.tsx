@@ -5,7 +5,7 @@ export interface PopoverProps {
     placement?: string;
     displayValue: React.ReactNode;
     trigger: React.ReactNode;
-    title: string;
+    title?: string;
 }
 
 export default class Popover extends React.Component<PopoverProps, any> {
@@ -15,7 +15,10 @@ export default class Popover extends React.Component<PopoverProps, any> {
             <OverlayTrigger
                 trigger={['hover', 'focus']}
                 placement={placement}
-                overlay={<ReactPopover title={title}>{displayValue}</ReactPopover>}
+                overlay={
+                    title 
+                    ? <ReactPopover title={title}>{displayValue}</ReactPopover>
+                    : <ReactPopover>{displayValue}</ReactPopover>}
             >
                 {trigger}
             </OverlayTrigger>
