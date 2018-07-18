@@ -94,6 +94,7 @@ export default class ScheduleShiftForm extends
                         Validators.integer
                     ]}
                 />
+                <br/>
                 {workSectionId && <Field
                     name="anticipatedAssignment"
                     component={(p) => <SelectorField
