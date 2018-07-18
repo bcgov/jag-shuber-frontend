@@ -5,7 +5,7 @@ import { RootState } from '../store';
 import { visibleTime } from '../modules/dutyRoster/selectors';
 import { updateVisibleTime as setVisibleTime } from '../modules/dutyRoster/actions';
 import * as TimeUtils from '../infrastructure/TimeRangeUtils';
-import ImportDefaultDutiesModal from './ImportDefaultDutiesModal';
+import ImportDefaultDutiesModal from './ImportDefaultDutiesModal/ImportDefaultDutiesModal';
 import DateRangeControls from '../components/DateRangeControls';
 
 interface DutyRosterControlsStateProps {
