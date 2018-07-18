@@ -42,7 +42,7 @@ class ScheduleMultiShiftEditModal extends React.PureComponent<CompositeProps> {
                 }}
             >
                 <Modal.Header closeButton={true}>
-                    Shift Edit
+                    Edit Selected Shift(s)
                 </Modal.Header>
                 <Modal.Body>
                     <ScheduleShiftMultiEditForm selectedShiftIds={selectedShifts} onSubmitSuccess={handleHide}/> 

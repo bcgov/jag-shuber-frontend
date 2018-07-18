@@ -4,14 +4,20 @@ import {
 } from 'react-bootstrap';
 import {
     Field,
-    InjectedFormProps
+    InjectedFormProps,
+    formValues
 } from 'redux-form';
 import SheriffSelector from '../containers/SheriffSelector';
 import WorkSectionSelector from './FormElements/WorkSectionSelector';
 import Selector from './FormElements/Selector';
-import { IdType, ShiftUpdates } from '../api/Api';
-import TimePickerDropDownField from './FormElements/TimePickerDropDownField';
+import { 
+    IdType, 
+    ShiftUpdates 
+} from '../api/Api';
+import TimePickerField from './FormElements/TimePickerField';
 import SelectorField from './FormElements/SelectorField';
+import AssignmentSelector from '../containers/AssignmentSelector';
+import HelpPopover from './HelpPopover';
 
 export interface ScheduleMultiShiftFormProps {
     handleSubmit?: () => void;
@@ -34,53 +40,75 @@ export default class ScheduleMultiShiftForm extends
         } as ShiftUpdates;
     }
 
+    renderAnticipatedAssignmentField(): React.ComponentClass {
+        return formValues('workSectionId')((workSectionProps: any) => {
+            const { workSectionId } = workSectionProps;
+
+            return (
+                <Field
+                    name="anticipatedAssignment"
+                    component={(p) => <SelectorField
+                        {...p}
+                        SelectorComponent={
+                            (sp) => <AssignmentSelector
+                                {...sp}
+                                workSectionId={workSectionId}
+                                label="Anticipated Assignment"
+                            />}
+
+                    />}
+                    fieldToolTip={
+                        <HelpPopover
+                            // tslint:disable-next-line:max-line-length
+                            helpText={'For shift assignments already imported into the duty roster, make your edits in the duty roster.'}
+                        />}
+                    label="Anticipated Assignment"
+                />
+            );
+        });
+    }
+
     render() {
         const {
             handleSubmit,
             selectedShiftIds,
             canAssignSheriff = true,
         } = this.props;
-
+        const AnticipatedAssignmentField = this.renderAnticipatedAssignmentField();
         return (
             <div>
                 <Form onSubmit={handleSubmit}>
-                    <Field
-                        name="sheriffId"
-                        component={(p) => <SelectorField
-                            {...p}
-                            SelectorComponent={
-                                (sp) =>
-                                    <SheriffSelector {...sp} showVariedOption={true} isDisabled={canAssignSheriff} />}
-                        />}
-                        label="Sheriff"
-                    />
-                    <label>Start Time</label>
-                    <Field
-                        name="startTime"
-                        component={
-                            (p) => {
-                                return <TimePickerDropDownField
-                                    {...p}
-                                    nullTimeLabel={
-                                        (selectedShiftIds && selectedShiftIds.length > 0)
-                                            ? '--:--' : 'Start'}
-                                />
+                    <label>Time</label>
+                    <Form inline={true}>
+                        <Field
+                            name="startTime"
+                            component={
+                                (p) =>
+                                    <TimePickerField
+                                        {...p}
+                                        nullTimeLabel={
+                                            (selectedShiftIds && selectedShiftIds.length > 0)
+                                                ? '--:--' : 'Start'}
+                                        label="Start Time"
+                                    />
                             }
-                        }
-                    />
-                    <label>End Time</label>
-                    <Field
-                        name="endTime"
-                        component={
-                            (p) =>
-                                <TimePickerDropDownField
-                                    {...p}
-                                    nullTimeLabel={
-                                        (selectedShiftIds && selectedShiftIds.length > 0)
-                                            ? '--:--' : 'End'}
-                                />
-                        }
-                    />
+                        />
+                        &mdash;
+                        <Field
+                            name="endTime"
+                            component={
+                                (p) =>
+                                    <TimePickerField
+                                        {...p}
+                                        nullTimeLabel={
+                                            (selectedShiftIds && selectedShiftIds.length > 0)
+                                                ? '--:--' : 'End'}
+                                        label="End Time"
+                                    />
+                            }
+                        />
+                    </Form>
+                    <br />
                     <Field
                         name="workSectionId"
                         component={(p) => <SelectorField
@@ -90,6 +118,17 @@ export default class ScheduleMultiShiftForm extends
                                     <WorkSectionSelector {...sp} showVariedOption={true} />}
                         />}
                         label="Work Section"
+                    />
+                    <AnticipatedAssignmentField />
+                    <Field
+                        name="sheriffId"
+                        component={(p) => <SelectorField
+                            {...p}
+                            SelectorComponent={
+                                (sp) =>
+                                    <SheriffSelector {...sp} showVariedOption={true} isDisabled={canAssignSheriff} />}
+                        />}
+                        label="Sheriff"
                     />
                 </Form>
             </div>
