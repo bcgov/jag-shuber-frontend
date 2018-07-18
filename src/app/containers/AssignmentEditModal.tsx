@@ -37,9 +37,12 @@ class AssignmentEditModal extends React.PureComponent<
             assignmentTitle = 'Assignment'
         } = this.props;
 
-        const deleteConfirmationMessage =
-            // tslint:disable-next-line:max-line-length
-            <p style={{ fontSize: 14 }}><b>This will impact your Duty Roster!</b> <br />{toTitleCase(assignmentTitle)} duties for today and all future days will be removed.</p>;
+        const deleteConfirmationMessage = (            
+            <p style={{ fontSize: 14 }}>
+                <b>This will impact your Duty Roster!</b><br />
+                {toTitleCase(assignmentTitle)} duties for today and all future days will be removed.
+            </p>
+        );
 
         return (
             <div>

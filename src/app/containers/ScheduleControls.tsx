@@ -183,7 +183,7 @@ class ScheduleControls extends React.PureComponent<
                         confirmBtnLabel="Delete"
                         confirmBtnStyle="danger"
                         // tslint:disable-next-line:max-line-length
-                        message={<p style={{ fontSize: 14 }}>Please confirm that you would like to <b>permanently delete</b> the selected shift(s).</p>}
+                        message={<p style={{ fontSize: 14 }}><b>Permanently delete</b> the selected shift(s)?</p>}
                         title="Delete Shift(s)"
                     />
 
