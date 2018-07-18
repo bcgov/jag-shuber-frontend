@@ -82,6 +82,7 @@ export default class ScheduleShiftForm extends
                     label="Days"
                     validate={[Validators.required]}
                 />
+                <br />
                 <Field
                     name="repeatNumber"
                     component={NumberSpinner as any}

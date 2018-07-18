@@ -10,8 +10,10 @@ import { IModalInjectedProps, connectModal } from 'redux-modal';
 import { ConnectedShowModalButton } from './ConnectedShowModalButton';
 import { show as showModal, hide as hideModal } from 'redux-modal';
 import ScheduleShiftMultiEditForm from './ScheduleShiftMultiEditForm';
+import { clearSelectedShifts as clearSelectedShiftsAction } from '../modules/schedule/actions';
 
 interface ScheduleMultiShiftEditModalProps {
+    clearSelectedShifts?: () => void;
 }
 
 interface ScheduleMultiShiftEditModalStateProps {
@@ -19,8 +21,8 @@ interface ScheduleMultiShiftEditModalStateProps {
 }
 
 type CompositeProps =
-    ScheduleMultiShiftEditModalProps 
-    & ScheduleMultiShiftEditModalStateProps 
+    ScheduleMultiShiftEditModalProps
+    & ScheduleMultiShiftEditModalStateProps
     & IModalInjectedProps;
 
 class ScheduleMultiShiftEditModal extends React.PureComponent<CompositeProps> {
@@ -29,7 +31,8 @@ class ScheduleMultiShiftEditModal extends React.PureComponent<CompositeProps> {
         const {
             show,
             handleHide,
-            selectedShifts = []
+            selectedShifts = [],
+            clearSelectedShifts
         } = this.props;
 
         return (
@@ -45,13 +48,21 @@ class ScheduleMultiShiftEditModal extends React.PureComponent<CompositeProps> {
                     Edit Selected Shift(s)
                 </Modal.Header>
                 <Modal.Body>
-                    <ScheduleShiftMultiEditForm selectedShiftIds={selectedShifts} onSubmitSuccess={handleHide}/> 
+                    <ScheduleShiftMultiEditForm
+                        selectedShiftIds={selectedShifts}
+                        onSubmitSuccess={() => {
+                            handleHide();
+                            if (clearSelectedShifts) {
+                                clearSelectedShifts();
+                            }
+                        }}
+                    />
                 </Modal.Body>
-               
+
                 <Modal.Footer>
-                      <ScheduleShiftMultiEditForm.SubmitButton key="save">
+                    <ScheduleShiftMultiEditForm.SubmitButton key="save">
                         Save
-                    </ScheduleShiftMultiEditForm.SubmitButton> 
+                    </ScheduleShiftMultiEditForm.SubmitButton>
                 </Modal.Footer>
             </Modal>
         );
@@ -65,7 +76,9 @@ const modalConfig = {
 export default class extends connectModal(modalConfig)(
     connect<{}, {}, ScheduleMultiShiftEditModalProps>(
         null,
-        {})
+        {
+            clearSelectedShifts: clearSelectedShiftsAction
+        })
         (ScheduleMultiShiftEditModal) as any
 ) {
     static modalName = modalConfig.name;

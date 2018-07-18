@@ -30,10 +30,10 @@ class ImportDefaultDutiesModal extends React.PureComponent<
         return (
             <div style={{position: 'absolute', right: 2}}>
                 <ConfirmationModal
-                    title="Import Default Duties"
+                    title="Import"
                     message={importConfirmationMessage}
                     actionBtnClassName="action-button"
-                    actionBtnLabel={<span> Import Defaults</span>}
+                    actionBtnLabel={<span>Import</span>}
                     confirmBtnLabel="Yes"
                     confirmBtnStyle="success"
                     cancelBtnLabel="No"

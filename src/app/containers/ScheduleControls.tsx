@@ -132,7 +132,7 @@ class ScheduleControls extends React.PureComponent<
                         id="task-type-dropdown"
                         style={{ marginRight: 6 }}
                     >
-                        <Dropdown.Toggle noCaret={true}  className="action-button">
+                        <Dropdown.Toggle noCaret={true} className="action-button">
                             <Glyphicon glyph="plus" />
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
@@ -147,21 +147,19 @@ class ScheduleControls extends React.PureComponent<
                                         </MenuItem>
                                     );
                                 })
-                                
+
                             }
                             <MenuItem key={'NA'} onSelect={() => showShiftAddModal()}>
                                 Not Applicable
                             </MenuItem>
                         </Dropdown.Menu>
                     </Dropdown>
-                
+
                     <Button
                         style={{
                             marginRight: -6,
                             backgroundColor: areShiftsSelected ? '#327AB7' : 'grey',
                             borderColor: areShiftsSelected ? '#327AB7' : 'grey',
-                            // backgroundColor: areShiftsSelected ? 'green' : 'grey',
-                            // borderColor: areShiftsSelected ? 'green' : 'grey',
                             color: 'white'
                         }}
                         onClick={() => showMultiShiftEditModal(selectedShifts)}
@@ -172,7 +170,14 @@ class ScheduleControls extends React.PureComponent<
 
                     <ConfirmationModal
                         key="confirmationModal"
-                        onConfirm={() => deleteShift && deleteShift(selectedShifts)}
+                        onConfirm={() => {
+                            if (deleteShift) {
+                                deleteShift(selectedShifts);
+                            }
+                            if (clear) {
+                                clear();
+                            }
+                        }}
                         actionBtnLabel={<Glyphicon glyph="trash" style={{ fontSize: 18 }} />}
                         actionBtnStyle="danger"
                         confirmBtnLabel="Delete"
