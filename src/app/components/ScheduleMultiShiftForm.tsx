@@ -46,7 +46,7 @@ export default class ScheduleMultiShiftForm extends
 
             return (
                 <Field
-                    name="anticipatedAssignment"
+                    name="assignmentId"
                     component={(p) => <SelectorField
                         {...p}
                         SelectorComponent={
@@ -54,6 +54,7 @@ export default class ScheduleMultiShiftForm extends
                                 {...sp}
                                 workSectionId={workSectionId}
                                 label="Anticipated Assignment"
+                                showVariedOption={true}
                             />}
 
                     />}

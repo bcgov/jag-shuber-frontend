@@ -262,6 +262,7 @@ export interface Shift {
     workSectionId?: WorkSectionCode;
     startDateTime: DateType;
     endDateTime: DateType;
+    assignmentId?: IdType;
 }
 
 export interface ShiftUpdates {

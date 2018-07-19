@@ -18,7 +18,8 @@ import {
     selectedShiftsAssignedSheriffs,
     selectedShiftsEndTimes,
     selectedShiftsStartTimes,
-    selectedShiftsWorkSectionId
+    selectedShiftsWorkSectionId,
+    selectedShiftsAnticipatedAssignment
 } from '../modules/schedule/selectors';
 import { editMultipleShifts } from '../modules/shifts/actions';
 import { toTimeString } from 'jag-shuber-api/dist/client';
@@ -60,7 +61,8 @@ const mapStateToProps = (state: RootState, props: ScheduleShiftMultiEditFormProp
                     workSectionId: selectedShiftsWorkSectionId()(state),
                     sheriffId: selectedShiftsAssignedSheriffs()(state),
                     startTime: selectedShiftsStartTimes()(state),
-                    endTime: selectedShiftsEndTimes()(state)
+                    endTime: selectedShiftsEndTimes()(state),
+                    assignmentId: selectedShiftsAnticipatedAssignment()(state)
                 },
                 selectedShiftIds: initialSelectedShiftIds,
                 canAssignSheriff: anySelectedShiftsOnSameDay(state)

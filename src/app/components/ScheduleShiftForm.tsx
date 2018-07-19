@@ -96,7 +96,7 @@ export default class ScheduleShiftForm extends
                 />
                 <br/>
                 {workSectionId && <Field
-                    name="anticipatedAssignment"
+                    name="assignmentId"
                     component={(p) => <SelectorField
                         {...p}
                         SelectorComponent={

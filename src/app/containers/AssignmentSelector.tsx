@@ -19,6 +19,7 @@ import { visibleTime } from '../modules/schedule/selectors';
 interface AssignmentSelectorProps {
     workSectionId?: WorkSectionCode;
     label?: string;
+    showVariedOption?: boolean;
 }
 interface AssignmentSelectorStateProps {
     assignments: Assignment[];
@@ -64,11 +65,14 @@ class AssignmentSelector extends React.PureComponent<
     }
 
     render() {
-        const { assignments = [], workSectionId, label, ...restProps } = this.props;
+        const { assignments = [], workSectionId, label, showVariedOption = false, ...restProps } = this.props;
         const workSectionAssignments = assignments.filter(a => a.workSectionId == workSectionId);
         const selectorValues = workSectionAssignments.map(a => ({ key: a.id, value: a.title }));
         return (
-            <Selector {...restProps} data={selectorValues} label={label} />
+            <Selector {...restProps} data={selectorValues} label={label} allowNone={true}
+            noneLabel="Not Applicable"
+            showVariedOption={showVariedOption}
+            variedLabel="Anticipated Assignment Varied"/>
         );
     }
 

@@ -34,7 +34,7 @@ export const allAssignments = createSelector(
             .map(a => {
                 if (isCourtAssignment(a)) {
                     a.title = a.courtroomId 
-                        ? (courtRooms[a.courtroomId] ? courtRooms[a.courtroomId].name : 'Courtroom Not Found') 
+                        ? (courtRooms[a.courtroomId] ? courtRooms[a.courtroomId].code : 'Courtroom Not Found') 
                         : (a.courtRoleId && courtRoles[a.courtRoleId] ? courtRoles[a.courtRoleId].description : 'Court Role Not Found');
                 } else if (isJailAssignment(a)) {
                     a.title = jailRoles[a.jailRoleCode] ? jailRoles[a.jailRoleCode].description : 'Jail Role Not Found';
