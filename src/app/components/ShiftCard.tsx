@@ -4,6 +4,7 @@ import {
   getWorkSectionColour
 } from '../api/utils';
 import { getForegroundColor } from '../infrastructure/colorUtils';
+import AssignmentTitleDisplay from '../containers/AssignmentTitleDisplay';
 
 export interface ShiftCardProps {
   shift: Shift;
@@ -19,6 +20,14 @@ export default class ShiftCard extends React.Component<ShiftCardProps, {}> {
 
     const shiftColor = getWorkSectionColour(shift.workSectionId);
     const foreground = getForegroundColor(shiftColor);
+
+    const shiftTitle = shift.workSectionId 
+                        ? <div>
+                            {shift.workSectionId.charAt(0)} 
+                            {shift.assignmentId ? ' - ' : ''}
+                            <AssignmentTitleDisplay id={shift.assignmentId}/>
+                          </div> 
+                        : 'NA';
 
     return (
       <div
