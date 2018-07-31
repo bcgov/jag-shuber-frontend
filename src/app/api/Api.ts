@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { displayEnum } from '../infrastructure/EnumUtils';
+import avatarImg from '../assets/images/avatar.png';
 
 export type MapType<T> = { [key: string]: T };
 
@@ -93,7 +94,7 @@ export namespace DaysOfWeek {
 }
 
 export namespace Leave {
-    export function getLeaveTypeDisplay(leave: Partial<Leave>): string{
+    export function getLeaveTypeDisplay(leave: Partial<Leave>): string {
         return leave.leaveCode === LEAVE_CODE_PERSONAL ? 'Leave' : 'Training';
     }
 }
@@ -103,7 +104,7 @@ export const BLANK_SHERIFF: Sheriff = {
     firstName: '',
     lastName: '',
     badgeNo: '-1',
-    imageUrl: '/img/avatar.png'
+    imageUrl: avatarImg
 };
 
 export const BLANK_COURTHOUSE: Courthouse = {
@@ -360,4 +361,7 @@ export interface API {
     getGenderCodes(): Promise<GenderCode[]>;
 
     getCourthouses(): Promise<Courthouse[]>;
+
+    getToken(): Promise<string>;
+    logout(): Promise<void>;
 }

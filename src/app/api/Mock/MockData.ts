@@ -168,42 +168,36 @@ export const sheriffList: Sheriff[] = [
         firstName: 'Garfield',
         lastName: 'Shirley',
         badgeNo: '969',
-        imageUrl: '/img/garfield_shirley.jpg'
     },
     {
         id: '2',
         firstName: 'Jaqueline',
         lastName: 'Jackson',
         badgeNo: '204',
-        imageUrl: '/img/jaqueline_jackson.jpg'
     },
     {
         id: '3',
         firstName: 'Landon',
         lastName: 'Bludnell',
         badgeNo: '790',
-        imageUrl: '/img/landon_bludnell.jpg'
     },
     {
         id: '4',
         firstName: 'Rob',
         lastName: 'Lucas',
         badgeNo: '987',
-        imageUrl: '/img/rob_lucas.jpg'
     },
     {
         id: '5',
         firstName: 'Steve',
         lastName: 'Gill',
         badgeNo: '932',
-        imageUrl: '/img/steve_gill.jpg'
     },
     {
         id: '6',
         firstName: 'Steve',
         lastName: 'Jervis',
         badgeNo: '579',
-        imageUrl: '/img/steve_jervis.jpg'
     }
 ];
 

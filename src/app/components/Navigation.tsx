@@ -7,19 +7,48 @@ import {
 } from 'react-bootstrap';
 import NavigationLink from './NavigationLink';
 import CurrentCourthouseSelector from '../containers/SystemCurrentCourthouseSelector';
+import bcLogo from '../assets/images/bc-logo-transparent.png';
+import bcLogoDark from '../assets/images/bc-logo-transparent-dark.png';
 
 export interface NavigationProps {
 
 }
 
 export default class Navigation extends React.Component<NavigationProps, any> {
+    static Routes = {
+        dutyRoster: {
+            timeline: {
+                path: '/',
+                label: 'Duty Roster'
+            },
+            setup: {
+                path: '/assignments/manage/default',
+                label: 'Set-up'
+            }
+        },
+        schedule: {
+            manage: {
+                path: '/sheriffs/schedule',
+                label: 'Manage Schedule'
+            },
+            distribute: {
+                path: '/schedule/publishView',
+                label: 'Distribute Schedule'
+            }
+        },
+        team: {
+            path: '/sheriffs/manage',
+            label: 'My Team'
+        }
+    }
     render() {
         return (
             <div id="header-main" >
                 <span className="logo">
-                    <img className="hidden-xs" src="/img/bc_logo_transparent.png" />
-                    <img className="visible-xs" src="/img/bc_logo_transparent-dark.png" />
+                    <img className="hidden-xs" src={bcLogo} />
+                    <img className="visible-xs" src={bcLogoDark} />
                 </span>
+
 
                 <Navbar staticTop={true} fluid={true} style={{ borderRadius: 4 }}>
                     <Navbar.Header color="#003366">
@@ -29,14 +58,14 @@ export default class Navigation extends React.Component<NavigationProps, any> {
                     </Navbar.Header>
                     <Nav bsStyle="tabs">
                         <NavDropdown title="Duty Roster" id="duty_roster_dropdown">
-                            <NavigationLink exactMatch={true} to="/" label="Duty Roster" />
-                            <NavigationLink to="/assignments/manage/default" label="Set-Up" />
+                            <NavigationLink exactMatch={true} {...Navigation.Routes.dutyRoster.timeline} />
+                            <NavigationLink {...Navigation.Routes.dutyRoster.setup} />
                         </NavDropdown>
                         <NavDropdown title="Shift Schedule" id="schedule_dropdown">
-                            <NavigationLink to="/sheriffs/schedule" label="Manage Schedule" />
-                            <NavigationLink to="/schedule/publishView" label="Distribute Schedule" />
+                            <NavigationLink {...Navigation.Routes.schedule.manage} />
+                            <NavigationLink {...Navigation.Routes.schedule.distribute} />
                         </NavDropdown>
-                        <NavigationLink to="/sheriffs/manage" label="My Team" />
+                        <NavigationLink {...Navigation.Routes.team} />
                     </Nav>
                     <Nav pullRight={true} style={{ paddingTop: 13, paddingRight: 15 }}>
                         <CurrentCourthouseSelector />

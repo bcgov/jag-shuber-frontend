@@ -44,6 +44,7 @@ import {
     isOtherAssignment
 } from '../utils';
 import { randomDelay } from '../PromiseExtensions';
+import avatarImg from '../../assets/images/avatar.png';
 
 // Helpers
 function getAssignmentTitle(assignment: Partial<Assignment>): string {
@@ -63,6 +64,12 @@ function getAssignmentTitle(assignment: Partial<Assignment>): string {
 }
 
 export default class MockClient implements API {
+    getToken(): Promise<string> {
+        throw new Error('Method not implemented.');
+    }
+    logout(): Promise<void> {
+        throw new Error('Method not implemented.');
+    }
     getGenderCodes(): Promise<GenderCode[]> {
         throw new Error("Method not implemented.");
     }
@@ -142,7 +149,7 @@ export default class MockClient implements API {
         await randomDelay();
         // This is a hack to throw in a profile picture
         if (!newSheriff.imageUrl) {
-            newSheriff.imageUrl = '/img/avatar.png';
+            newSheriff.imageUrl = avatarImg;
         }
         newSheriff.id = this.getId();
         sheriffList.push(newSheriff);

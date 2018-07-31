@@ -9,7 +9,6 @@ import {
 } from '../../../api/Api';
 import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRequest';
 
-
 class CourthouseMapRequest extends GetEntityMapRequest<void, Courthouse, SystemModuleState> {
     constructor() {
         super({ namespace: STATE_KEY, actionName: 'courthouseMap' });

@@ -14,6 +14,7 @@ const paths = require('./paths');
 const getClientEnvironment = require('./env');
 const fs = require('fs');
 const lockfile = require('@yarnpkg/lockfile');
+const common = require('./webpack.common');
 
 function getVersionFileConfig() {
   let lockFile = fs.readFileSync('yarn.lock', 'utf8');
@@ -146,133 +147,47 @@ module.exports = {
       // TODO: Disable require.ensure as it's not a standard language feature.
       // We are waiting for https://github.com/facebookincubator/create-react-app/issues/2176.
       // { parser: { requireEnsure: false } },
-
-      // First, run the linter.
-      // It's important to do this before Typescript runs.
-      {
-        test: /\.(ts|tsx)$/,
-        loader: require.resolve('tslint-loader'),
-        enforce: 'pre',
-        include: paths.appSrc,
-      },
-      {
-        test: /\.js$/,
-        loader: require.resolve('source-map-loader'),
-        enforce: 'pre',
-        include: paths.appSrc,
-      },
-      {
-        // "oneOf" will traverse all following loaders until one will
-        // match the requirements. When no loader matches it will fall
-        // back to the "file" loader at the end of the loader list.
-        oneOf: [
-          // "url" loader works just like "file" loader but it also embeds
-          // assets smaller than specified size as data URLs to avoid requests.
-          {
-            test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
-            loader: require.resolve('url-loader'),
-            options: {
-              limit: 10000,
-              name: 'static/media/[name].[hash:8].[ext]',
-            },
-          },
-          // Use the SVG Loader to load svg files as react components
-          {
-            test: /\.svg$/,
-            use: [
-              "babel-loader",
+      ...common.mainRules,
+      common.getOneOfRules((defaultOneOfRules) => ([
+        ...defaultOneOfRules,
+        // The notation here is somewhat confusing.
+        // "postcss" loader applies autoprefixer to our CSS.
+        // "css" loader resolves paths in CSS and adds assets as dependencies.
+        // "style" loader normally turns CSS into JS modules injecting <style>,
+        // but unlike in development configuration, we do something different.
+        // `ExtractTextPlugin` first applies the "postcss" and "css" loaders
+        // (second argument), then grabs the result CSS and puts it into a
+        // separate file in our build process. This way we actually ship
+        // a single CSS file in production instead of JS code injecting <style>
+        // tags. If you use code splitting, however, any async bundles will still
+        // use the "style" loader inside the async code so CSS from them won't be
+        // in the main CSS file.
+        {
+          test: /\.css$/,
+          loader: ExtractTextPlugin.extract(
+            Object.assign(
               {
-                loader: require.resolve('react-svg-loader'), // 'react-svg'
-                options: {
-                  svgo: {
-                    pretty: true,
-                    plugins: [{ removeStyleElement: true }]
-                  }
-                }
-              }
-            ]
-          },
-          //Compile .tsx?
-          {
-            test: /\.(ts|tsx)$/,
-            include: paths.appSrc,
-            loader: require.resolve('ts-loader')
-          },
-          // The notation here is somewhat confusing.
-          // "postcss" loader applies autoprefixer to our CSS.
-          // "css" loader resolves paths in CSS and adds assets as dependencies.
-          // "style" loader normally turns CSS into JS modules injecting <style>,
-          // but unlike in development configuration, we do something different.
-          // `ExtractTextPlugin` first applies the "postcss" and "css" loaders
-          // (second argument), then grabs the result CSS and puts it into a
-          // separate file in our build process. This way we actually ship
-          // a single CSS file in production instead of JS code injecting <style>
-          // tags. If you use code splitting, however, any async bundles will still
-          // use the "style" loader inside the async code so CSS from them won't be
-          // in the main CSS file.
-          {
-            test: /\.css$/,
-            loader: ExtractTextPlugin.extract(
-              Object.assign(
-                {
-                  fallback: require.resolve('style-loader'),
-                  use: [
-                    {
-                      loader: require.resolve('css-loader'),
-                      options: {
-                        importLoaders: 1,
-                        minimize: true,
-                        sourceMap: shouldUseSourceMap,
-                      },
+                fallback: require.resolve('style-loader'),
+                use: [
+                  {
+                    loader: require.resolve('css-loader'),
+                    options: {
+                      importLoaders: 1,
+                      minimize: true,
+                      sourceMap: shouldUseSourceMap,
                     },
-                    {
-                      loader: require.resolve('postcss-loader'),
-                      options: {
-                        // Necessary for external CSS imports to work
-                        // https://github.com/facebookincubator/create-react-app/issues/2677
-                        ident: 'postcss',
-                        plugins: () => [
-                          require('postcss-flexbugs-fixes'),
-                          autoprefixer({
-                            browsers: [
-                              '>1%',
-                              'last 4 versions',
-                              'Firefox ESR',
-                              'not ie < 9', // React doesn't support IE8 anyway
-                            ],
-                            flexbox: 'no-2009',
-                          }),
-                        ],
-                      },
-                    },
-                  ],
-                },
-                extractTextPluginOptions
-              )
-            ),
-            // Note: this won't work without `new ExtractTextPlugin()` in `plugins`.
-          },
-          // "file" loader makes sure assets end up in the `build` folder.
-          // When you `import` an asset, you get its filename.
-          // This loader don't uses a "test" so it will catch all modules
-          // that fall through the other loaders.
-          {
-            loader: require.resolve('file-loader'),
-            // Exclude `js` files to keep "css" loader working as it injects
-            // it's runtime that would otherwise processed through "file" loader.
-            // Also exclude `html` and `json` extensions so they get processed
-            // by webpacks internal loaders.
-            exclude: [/\.js$/, /\.html$/, /\.json$/],
-            options: {
-              name: 'static/media/[name].[hash:8].[ext]',
-            },
-          },
-          // ** STOP ** Are you adding a new loader?
-          // Make sure to add the new loader(s) before the "file" loader.
-        ],
-      },
+                  },
+                  common.rules.postCssRule,
+                ],
+              },
+              extractTextPluginOptions
+            )
+          ),
+          // Note: this won't work without `new ExtractTextPlugin()` in `plugins`.
+        }
+      ]))
     ],
-  },
+},
   plugins: [
     new VersionFile(getVersionFileConfig()),
     // Makes some environment variables available in index.html.
@@ -368,13 +283,13 @@ module.exports = {
     // You can remove this if you don't use Moment.js:
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
   ],
-  // Some libraries import Node modules but don't use them in the browser.
-  // Tell Webpack to provide empty mocks for them so importing them works.
-  node: {
-    dgram: 'empty',
+    // Some libraries import Node modules but don't use them in the browser.
+    // Tell Webpack to provide empty mocks for them so importing them works.
+    node: {
+  dgram: 'empty',
     fs: 'empty',
-    net: 'empty',
-    tls: 'empty',
-    child_process: 'empty',
+      net: 'empty',
+        tls: 'empty',
+          child_process: 'empty',
   },
 };

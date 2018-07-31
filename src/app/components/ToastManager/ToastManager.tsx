@@ -18,7 +18,7 @@ export default class ToastManager extends React.PureComponent {
     }
 }
 
-class ToastMessage extends React.PureComponent<{ title: string, text: string }>{
+class ToastMessage extends React.PureComponent<{ title: string, text: string }> {
     render() {
         const { title, text } = this.props;
         return (
@@ -37,11 +37,11 @@ export namespace toast {
     }
 
     export function error(text: string, options?: ToastOptions) {
-        _toast.error(<ToastMessage title="Error" text={text} />, { 
-            autoClose: false, 
-            closeOnClick: true, 
+        _toast.error(<ToastMessage title="Error" text={text} />, {
+            autoClose: false,
+            closeOnClick: true,
             closeButton: true,
-            ...options 
+            ...options
         });
     }
 }

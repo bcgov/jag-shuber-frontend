@@ -10,6 +10,7 @@ import {
 } from '../../components/SheriffProfile/SheriffProfilePlugin';
 import { Sheriff } from '../../api';
 import './SheriffProfilePluginHeader.css';
+import avatarImg from '../../assets/images/avatar.png';
 
 export default class SheriffProfilePluginHeader extends SheriffProfilePluginBase<Sheriff> {
     name = 'header';
@@ -26,7 +27,7 @@ export default class SheriffProfilePluginHeader extends SheriffProfilePluginBase
                 (
                     <div className="sheriff-profile-header">
                         <Image
-                            src={imageUrl ? imageUrl : '/img/avatar.png'}
+                            src={imageUrl ? imageUrl : avatarImg}
                             circle={true}
                             width="115"
                             height="115"
@@ -49,7 +50,7 @@ export default class SheriffProfilePluginHeader extends SheriffProfilePluginBase
                 (
                     <div style={{ padding: 10, textAlign: 'center' }}>
                         <Image
-                            src={imageUrl ? imageUrl : '/img/avatar.png'}
+                            src={imageUrl ? imageUrl : avatarImg}
                             circle={true}
                             width="115"
                             height="115"
