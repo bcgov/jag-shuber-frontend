@@ -8,6 +8,8 @@ import {
   getRuns
 } from '../assignments/actions';
 import { getShifts } from '../shifts/actions';
+import { userTokenRequest } from './requests';
+import { decodeJwt } from '../../../../node_modules/jag-shuber-api/dist/client';
 
 // The following gives us type-safe redux actions
 // see https://medium.com/@dhruvrajvanshi/some-tips-on-type-safety-with-redux-98588a85604c
@@ -52,3 +54,10 @@ export const updateCurrentCourthouse: ThunkAction<string> =
       dispatch(getShifts())
     ]);
   };
+
+export const updateUserToken: ThunkAction<string> = (token?: string) => async (dispatch, getState, extra) => {
+  const payload = decodeJwt(token);
+  userTokenRequest.dispatchSuccess(dispatch, payload);
+};
+
+export const requestUserToken = userTokenRequest.actionCreator;

@@ -94,7 +94,7 @@ export namespace DaysOfWeek {
 }
 
 export namespace Leave {
-    export function getLeaveTypeDisplay(leave: Partial<Leave>): string{
+    export function getLeaveTypeDisplay(leave: Partial<Leave>): string {
         return leave.leaveCode === LEAVE_CODE_PERSONAL ? 'Leave' : 'Training';
     }
 }
@@ -361,4 +361,7 @@ export interface API {
     getGenderCodes(): Promise<GenderCode[]>;
 
     getCourthouses(): Promise<Courthouse[]>;
+
+    getToken(): Promise<string>;
+    logout(): Promise<void>;
 }

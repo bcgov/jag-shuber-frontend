@@ -1,5 +1,3 @@
-import moment from 'moment';
-import * as TimeUtils from './infrastructure/TimeRangeUtils';
 import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
 import { default as thunk, ThunkAction as _ThunkAction } from 'redux-thunk';
 import { reducer as modalReducer } from 'redux-modal';
@@ -9,28 +7,13 @@ import { registerReducer as registerAssignmentReducer, AssignmentModuleState } f
 import { registerReducer as registerShiftReducer, ShiftModuleState } from './modules/shifts/reducer';
 import { default as dutyRosterReducer, DutyRosterState } from './modules/dutyRoster/reducer';
 import { reducer as formReducer } from 'redux-form';
-import { getShifts } from './modules/shifts/actions';
-import { updateVisibleTime as updateTimelineVisibleTime } from './modules/dutyRoster/actions';
 import { default as scheduleReducer, ScheduleState } from './modules/schedule/reducer';
-import { updateVisibleTime as updateScheduleVisibleTime } from './modules/schedule/actions';
 import { UserState, registerReducer as registerUserReducer } from './modules/user/reducer';
 import { LeaveModuleState, registerReducer as registerLeavesReducer } from './modules/leaves/reducer';
-import {
-    getLeaveCancelCodes,
-    getLeaveSubCodes,
-    getLeaves
-} from './modules/leaves/actions';
-import {
-    getGenderCodes,
-    getCourthouses
-} from './modules/system/action';
+
 import { registerReducer as registerSystemReducer, SystemModuleState } from './modules/system/reducer';
-import { 
-    getAlternateAssignmentTypes,
-    getCourtRoles,
-    getJailRoles 
-} from './modules/assignments/actions';
-import { getSheriffRankCodes } from './modules/sheriffs/actions';
+import Client from './api/Client';
+import { requestUserToken, updateUserToken } from './modules/user/actions';
 export interface ThunkExtra {
     api: API;
 }
@@ -48,21 +31,6 @@ export interface RootState {
     leaves: LeaveModuleState;
     system: SystemModuleState;
 }
-
-const initialActions: any[] = [
-    getAlternateAssignmentTypes,
-    getJailRoles,
-    getCourthouses,
-    () => updateTimelineVisibleTime(TimeUtils.getDefaultStartTime(), TimeUtils.getDefaultEndTime()),
-    () => updateScheduleVisibleTime(moment().startOf('week').add(1, 'day'), moment().endOf('week').subtract(1, 'day')),
-    getSheriffRankCodes,
-    getShifts,
-    getLeaveCancelCodes,
-    getLeaveSubCodes,
-    getLeaves,
-    getCourtRoles,
-    getGenderCodes
-];
 
 const reducers = {
     dutyRoster: dutyRosterReducer,
@@ -90,5 +58,12 @@ const enhancers = composeEnhancers(
 );
 
 const store = createStore(rootReducer, enhancers);
-initialActions.forEach(actionCreator => store.dispatch(actionCreator()));
+
+// Wire up the Token change event to the store
+(api as Client).onTokenChanged.on(t => {
+    store.dispatch(updateUserToken(t));
+});
+// Request the initial token
+store.dispatch(requestUserToken());
+
 export default store;

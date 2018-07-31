@@ -8,6 +8,8 @@ import Client from '../../api/Client';
 import { ReducersMapObject } from 'redux';
 import { addReducerToMap } from '../../infrastructure/reduxUtils';
 import { UserState, STATE_KEY } from './common';
+import NestedReducer from '../../infrastructure/NestedReducer';
+import { userTokenRequest } from './requests';
 
 export {
   UserState,
@@ -35,13 +37,17 @@ export function createReducer<State>(
   };
 }
 
-const reducer = createReducer<UserState>({
-  USER_UPDATE_CURRENT_COURTHOUSE: (state, currentCourthouse) => {
-    (api as Client).setCurrentCourthouse(currentCourthouse);
-    return { ...state, currentCourthouse };
-  }
-});
+const nestedReducer = new NestedReducer([
+  createReducer<UserState>({
+    USER_UPDATE_CURRENT_COURTHOUSE: (state, currentCourthouse) => {
+      (api as Client).setCurrentCourthouse(currentCourthouse);
+      return { ...state, currentCourthouse };
+    }
+  }),
+  userTokenRequest.reducer
+]);
 
+const reducer = nestedReducer.reducer;
 export default reducer;
 
 export function registerReducer(reducersMap: ReducersMapObject) {

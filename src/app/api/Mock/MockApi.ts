@@ -64,6 +64,12 @@ function getAssignmentTitle(assignment: Partial<Assignment>): string {
 }
 
 export default class MockClient implements API {
+    getToken(): Promise<string> {
+        throw new Error('Method not implemented.');
+    }
+    logout(): Promise<void> {
+        throw new Error('Method not implemented.');
+    }
     getGenderCodes(): Promise<GenderCode[]> {
         throw new Error("Method not implemented.");
     }

@@ -93,6 +93,10 @@ export default class Client implements API {
         this._mockApi.init();
     }
 
+    get onTokenChanged(): ShuberApi.TypedEvent<string | undefined> {
+        return this._client.onTokenChanged;
+    }
+
     get isCourthouseSet() {
         return this._courthouseId != undefined;
     }
@@ -119,7 +123,7 @@ export default class Client implements API {
             ...newSheriff,
             homeCourthouseId,
             rankCode
-        } as any );
+        } as any);
         return sheriff as Sheriff;
     }
 
@@ -325,6 +329,14 @@ export default class Client implements API {
     async getGenderCodes(): Promise<GenderCode[]> {
         const list = await this._client.GetGenderCodes();
         return list as GenderCode[];
+    }
+
+
+    getToken(): Promise<string> {
+        return this._client.GetToken();    
+    }
+    logout(): Promise<void> {
+        return this._client.Logout();
     }
 
 }
