@@ -4383,7 +4383,7 @@ handlebars-helper-create-frame@^0.1.0:
     create-frame "^1.0.0"
     isobject "^3.0.0"
 
-handlebars-helpers@^0.9.5, handlebars-helpers@^0.9.8:
+handlebars-helpers@^0.9.8:
   version "0.9.8"
   resolved "https://registry.yarnpkg.com/handlebars-helpers/-/handlebars-helpers-0.9.8.tgz#d32ec2f041dab14ebe3caf5e0c23067a8b594ecc"
   dependencies:
@@ -9529,23 +9529,6 @@ tslint@^5.7.0:
     tslib "^1.7.1"
     tsutils "^2.12.1"
 
-tsoa@^2.1.4:
-  version "2.1.4"
-  resolved "https://registry.yarnpkg.com/tsoa/-/tsoa-2.1.4.tgz#9b68e17299e835d47ba4ce150fab14d95ecc026a"
-  dependencies:
-    handlebars "^4.0.10"
-    handlebars-helpers "^0.9.5"
-    lodash.indexof "^4.0.5"
-    lodash.map "^4.6.0"
-    merge "^1.2.0"
-    minimatch "^3.0.4"
-    moment "^2.18.1"
-    typescript "^2.7.2"
-    typescript-formatter "^7.0.1"
-    validator "^8.0.0"
-    yamljs "^0.3.0"
-    yargs "^8.0.2"
-
 tsoa@^2.1.8:
   version "2.1.8"
   resolved "https://registry.yarnpkg.com/tsoa/-/tsoa-2.1.8.tgz#1c1a865b0c5c0731666cac4f9bed7684de77d1d2"
@@ -9613,23 +9596,12 @@ typeof-article@^0.1.1:
   dependencies:
     kind-of "^3.1.0"
 
-typescript-formatter@^7.0.1:
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/typescript-formatter/-/typescript-formatter-7.2.0.tgz#1c7868dd2524eb4bd573644b1c912a10b8111034"
-  dependencies:
-    commandpost "^1.0.0"
-    editorconfig "^0.15.0"
-
 typescript-formatter@^7.2.0:
   version "7.2.2"
   resolved "https://registry.yarnpkg.com/typescript-formatter/-/typescript-formatter-7.2.2.tgz#a147181839b7bb09c2377b072f20f6336547c00a"
   dependencies:
     commandpost "^1.0.0"
     editorconfig "^0.15.0"
-
-typescript@^2.7.2:
-  version "2.8.3"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.8.3.tgz#5d817f9b6f31bb871835f4edf0089f21abe6c170"
 
 typescript@^2.9.2:
   version "2.9.2"
@@ -9927,7 +9899,7 @@ validate-npm-package-license@^3.0.1:
     spdx-correct "~1.0.0"
     spdx-expression-parse "~1.0.0"
 
-validator@^8.0.0, validator@^8.2.0:
+validator@^8.2.0:
   version "8.2.0"
   resolved "https://registry.yarnpkg.com/validator/-/validator-8.2.0.tgz#3c1237290e37092355344fef78c231249dab77b9"
 

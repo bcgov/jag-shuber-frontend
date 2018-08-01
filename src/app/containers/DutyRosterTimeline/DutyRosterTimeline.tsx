@@ -33,6 +33,7 @@ import AssignmentDutyEditModal from '../AssignmentDutyEditModal';
 import * as TimeRangeUtils from '../../infrastructure/TimeRangeUtils';
 import ConfirmationModal, { ConnectedConfirmationModalProps } from '../ConfirmationModal';
 import SheriffNameDisplay from '../SheriffNameDisplay';
+import SheriffDutyDragSource from '../SheriffDutyDragSource';
 
 interface DutyRosterTimelineProps extends TimelineProps {
     allowTimeDrag?: boolean;
@@ -197,7 +198,7 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
                                     borderColor: workSectionColor,
                                     color
                                 }}
-                                onClick={() => showAssignmentDutyEditModal(duty.id)}
+                                onDoubleClick={() => showAssignmentDutyEditModal(duty.id)}
                                 SheriffAssignmentRenderer={(p) => (
                                     <SheriffDutyBarList
                                         {...p}
@@ -213,12 +214,16 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
                                             classNames.push(!isOpen ? 'is-overlap' : '');
                                             classNames.push(color === '#FFFFFF' ? 'light' : 'dark');
                                             return (
-                                                <ConnectedSheriffDutyBar
-                                                    {...barP}
-                                                    style={style}
-                                                    canDropSheriff={() => true}
-                                                    className={classNames.join(' ')}
-                                                />
+                                                <SheriffDutyDragSource
+                                                    sheriffDuty={sheriffDuty} 
+                                                >
+                                                    <ConnectedSheriffDutyBar
+                                                        {...barP}
+                                                        style={style}
+                                                        canDropSheriff={() => true}
+                                                        className={classNames.join(' ')}
+                                                    />
+                                                </SheriffDutyDragSource>
                                             );
                                         }}
                                         onDropSheriff={
