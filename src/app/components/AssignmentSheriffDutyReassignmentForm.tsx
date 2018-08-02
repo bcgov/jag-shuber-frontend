@@ -1,5 +1,4 @@
 import React from 'react';
-// import moment from 'moment';
 import {
     Field,
     InjectedFormProps
@@ -13,6 +12,7 @@ import {
 } from '../api';
 import TimePickerField from './FormElements/TimePickerField';
 import Form from './FormElements/Form';
+import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 
 export interface AssignmentDutyFormProps {
     handleSubmit?: () => void;
@@ -62,7 +62,10 @@ export default class AssignmentDutyForm extends
 
     render() {
         // const {} = this.props;
+        const minTime = TimeUtils.getDefaultTimePickerMinTime().toISOString();
+        const maxTime = TimeUtils.getDefaultTimePickerMaxTime().toISOString();
         return (
+            
             <div>
                 {/* <h1 style={{ marginBottom: 20 }}>{assignmentTitle}</h1> */}
                 <Form {...this.props}>
@@ -70,10 +73,10 @@ export default class AssignmentDutyForm extends
                         name="sourceDutyEndTime"
                         component={(p) => <TimePickerField
                             {...p}
-                            // minTime={minTime}
-                            // maxTime={maxTime}
-                            // timeIncrement={15}
-                            // color={getWorkSectionColour(workSectionId)}
+                            minTime={minTime}
+                            maxTime={maxTime}
+                            timeIncrement={15}
+                            color={'red'}
                             label={<h2 style={{ marginBottom: 5 }}>End Time @</h2>}
                         />}
                     />
@@ -81,10 +84,10 @@ export default class AssignmentDutyForm extends
                         name="targetDutyStartTime"
                         component={(p) => <TimePickerField
                             {...p}
-                            // minTime={minTime}
-                            // maxTime={maxTime}
-                            // timeIncrement={15}
-                            // color={getWorkSectionColour(workSectionId)}
+                            minTime={minTime}
+                            maxTime={maxTime}
+                            timeIncrement={15}
+                            color={'red'}
                             label={<h2 style={{ marginBottom: 5 }}>Start Time @</h2>}
                         />}
                     />
