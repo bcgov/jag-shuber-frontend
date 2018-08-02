@@ -34,7 +34,7 @@ import * as TimeRangeUtils from '../../infrastructure/TimeRangeUtils';
 import ConfirmationModal, { ConnectedConfirmationModalProps } from '../ConfirmationModal';
 import SheriffNameDisplay from '../SheriffNameDisplay';
 import SheriffDutyDragSource from '../SheriffDutyDragSource';
-import AssignmentSheriffDutySplittingModal from '../AssignmentSheriffDutySplittingModal';
+import AssignmentSheriffDutyReassignmentModal from '../AssignmentSheriffDutyReassignmentModal';
 
 interface DutyRosterTimelineProps extends TimelineProps {
     allowTimeDrag?: boolean;
@@ -269,6 +269,6 @@ export default connect<DutyRosterTimelineStateProps, DutyRosterTimelineDispatchP
         showAssignmentDutyEditModal: (id: IdType) => AssignmentDutyEditModal.ShowAction(id),
         showConfirmationModal: (props: ConnectedConfirmationModalProps) => ConfirmationModal.ShowAction(props),
         showSheriffDutySplittingModal: (source: SheriffDuty, target: SheriffDuty) => 
-                                                AssignmentSheriffDutySplittingModal.ShowAction(source, target)
+                                                AssignmentSheriffDutyReassignmentModal.ShowAction(source, target)
     }
 )(DutyRosterTimeline);

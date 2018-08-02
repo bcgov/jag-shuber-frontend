@@ -2,25 +2,27 @@ import React from 'react';
 import {
     Modal
 } from 'react-bootstrap';
-// import AssignmentDutyEditForm from './AssignmentDutyEditForm';
+import AssignmentSheriffDutyReassignmentForm from './AssignmentSheriffDutyReassignmentForm';
 import { SheriffDuty } from '../api';
 import { connect } from 'react-redux';
 import { IModalInjectedProps, connectModal } from 'redux-modal';
 import { ConnectedShowModalButton } from './ConnectedShowModalButton';
 import { show as showModal, hide as hideModal } from 'redux-modal';
 
-export interface AssignmentSheriffDutySplittingModalProps {
+export interface AssignmentSheriffDutyReassignmentModalProps {
     sourceSheriffDuty: SheriffDuty;
     targetSheriffDuty: SheriffDuty;
 }
 
-export interface AssignmentSheriffDutySplittingModalDispatchProps {
+export interface AssignmentSheriffDutyReassignmentModalDispatchProps {
 }
 
 type CompositeProps = 
-    AssignmentSheriffDutySplittingModalProps & AssignmentSheriffDutySplittingModalDispatchProps & IModalInjectedProps;
+    AssignmentSheriffDutyReassignmentModalProps 
+    & AssignmentSheriffDutyReassignmentModalDispatchProps 
+    & IModalInjectedProps;
 
-class AssignmentSheriffDutySplittingModal extends React.PureComponent<CompositeProps> {
+class AssignmentSheriffDutyReassignmentModal extends React.PureComponent<CompositeProps> {
 
     render() {
         const {
@@ -39,12 +41,15 @@ class AssignmentSheriffDutySplittingModal extends React.PureComponent<CompositeP
             >
                 <Modal.Header closeButton={true}>Re-Assign Sheriff</Modal.Header>
                 <Modal.Body>
+                    <AssignmentSheriffDutyReassignmentForm />
                     {/* <AssignmentDutyEditForm id={dutyId} onSubmitSuccess={handleHide} /> */}
                     Here is the body of the duty splitting form
                 </Modal.Body>
                 <Modal.Footer>
                     here is the footer
-                    {/* <AssignmentDutyEditForm.SubmitButton key="save">Save</AssignmentDutyEditForm.SubmitButton> */}
+                    <AssignmentSheriffDutyReassignmentForm.SubmitButton key="save">
+                        Save
+                    </AssignmentSheriffDutyReassignmentForm.SubmitButton>
                 </Modal.Footer>
             </Modal>
         );
@@ -52,20 +57,20 @@ class AssignmentSheriffDutySplittingModal extends React.PureComponent<CompositeP
 }
 
 const modalConfig = {
-    name: 'AssignmentSheriffDutySplittingModal'
+    name: 'AssignmentSheriffDutyReassignmentModal'
 };
 
 // Here we extend the Higher Order Component so that we can add on some static
 // members that can be used to hide the modal configuration from consumers
 export default class extends connectModal(modalConfig)(
-    connect<{}, AssignmentSheriffDutySplittingModalDispatchProps, AssignmentSheriffDutySplittingModalProps>(
+    connect<{}, AssignmentSheriffDutyReassignmentModalDispatchProps, AssignmentSheriffDutyReassignmentModalProps>(
         null,
         {})
-        (AssignmentSheriffDutySplittingModal) as any
+        (AssignmentSheriffDutyReassignmentModal) as any
 ) {
     static modalName = modalConfig.name;
 
-    static ShowButton = (props: AssignmentSheriffDutySplittingModalProps) => (
+    static ShowButton = (props: AssignmentSheriffDutyReassignmentModalProps) => (
         <ConnectedShowModalButton modalName={modalConfig.name} modalProps={props} />
     )
 

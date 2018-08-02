@@ -20,7 +20,7 @@ import { Well, Alert, Button } from 'react-bootstrap';
 import SheriffProfileModal from './containers/SheriffProfileModal';
 import ScheduleShiftCopyModal from './containers/ScheduleShiftCopyModal';
 import ScheduleShiftAddModal from './containers/ScheduleShiftAddModal';
-import AssignmentSheriffDutySplittingModal from './containers/AssignmentSheriffDutySplittingModal';
+import AssignmentSheriffDutyReassignmentModal from './containers/AssignmentSheriffDutyReassignmentModal';
 import PublishSchedule from './pages/PublishSchedule/PublishSchedule';
 import Footer from './components/Footer/Footer';
 import {
@@ -114,7 +114,7 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
               <ScheduleShiftCopyModal />
               <ScheduleShiftAddModal />
               <ConnectedConfirmationModal />
-              <AssignmentSheriffDutySplittingModal />
+              <AssignmentSheriffDutyReassignmentModal />
             </div>
           )}
           <div className="footerArea">
