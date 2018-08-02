@@ -1,6 +1,5 @@
 import React from 'react';
 import dragSourceFactory from '../infrastructure/DragDrop/dragSourceFactory';
-import ItemTypes from '../infrastructure/DragDrop/ItemTypes';
 import { SheriffDuty } from '../api';
 
 export interface DraggedSheriffDuty extends SheriffDuty {
@@ -18,7 +17,7 @@ interface SheriffSourceFactoryProps {
 }
 
 const GenericSheriffDutyDragSource = dragSourceFactory<SheriffSourceFactoryProps, DraggedSheriffDuty, void>
-    (ItemTypes.SHERIFF_DUTY);
+    ('SheriffDuty');
 
 interface SheriffDutyDragSourceProps {
     sheriffDuty: SheriffDuty;

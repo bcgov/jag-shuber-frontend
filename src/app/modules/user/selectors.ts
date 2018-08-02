@@ -1,6 +1,6 @@
 import { RootState } from '../../store';
 import { createSelector } from 'reselect';
-import { TokenPayload } from 'jag-shuber-api';
+import { TokenPayload } from 'jag-shuber-api/dist/client';
 import { userTokenRequest } from './requests';
 
 export const currentCourthouse = (state: RootState): string => {

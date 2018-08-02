@@ -1,8 +1,10 @@
 import React from 'react';
 import { DragSource, DragSourceSpec } from 'react-dnd';
 import { CSSProperties } from 'react';
+import { ItemType } from './ItemTypes';
 
-export default function dragSourceFactory<T, TDrag, TDropResult>(itemType: string | ((props: any) => string), styleOverride?: CSSProperties) {
+export default function dragSourceFactory
+    <T, TDrag, TDropResult>(itemType: ItemType | ((props: any) => string), styleOverride?: CSSProperties) {
 
     const sourceCallbacks: DragSourceSpec<GenericDragSourceProps> = {
         beginDrag: (props, monitor): TDrag => {

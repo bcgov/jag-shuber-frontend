@@ -4,6 +4,7 @@ import {
     DropTargetSpec
 } from 'react-dnd';
 import './dragDrop.css';
+import { ItemType } from './ItemTypes';
 
 export interface DragDropStatus {
     isActive?: boolean;
@@ -11,22 +12,41 @@ export interface DragDropStatus {
     canDrop?: boolean;
 }
 
-export default function dropTargetFactory<TDrag, TDrop>(itemTypes: string | string[], styleOverride?: React.CSSProperties) {
+export default function dropTargetFactory
+    <TDrag, TDrop>(itemTypes: ItemType | ItemType[], styleOverride?: React.CSSProperties) {
 
     const targetCallbacks: DropTargetSpec<GenericDropTargetProps> = {
         canDrop(props, monitor) {
+            if (monitor) {
+                let item = monitor.getItem() as TDrag;
+                let itemType = monitor.getItemType();
+                const { itemHandlers = [] } = props;
 
-            let item = (monitor ? monitor.getItem() : {}) as TDrag;
-            // canDropItem with a default of => true
-            const { canDropItem = (_item: TDrag) => true } = props;
-            return canDropItem(item);
+                // If there is a handler registered for this type, use it instead of the default canDrop
+                const handler = itemHandlers.find(h => h.type === itemType);
+                if (handler && handler.canDropItem) {
+                    return handler.canDropItem(item);
+                }
+
+                // canDropItem with a default of => true
+                const { canDropItem = (_item: TDrag) => true } = props;
+                return canDropItem(item);
+            }
+            return false;
         },
         drop(props, monitor): TDrop {
-            const { onDropItem } = props;
+            const { onDropItem, itemHandlers = [] } = props;
             let result = {} as TDrop;
-            if (onDropItem && monitor) {
+            if (monitor) {
                 let item = monitor.getItem() as TDrag;
-                result = onDropItem(item);
+                let itemType = monitor.getItemType();
+                // if there is a handler registered for this type use it instead of the default onDrop
+                const handler = itemHandlers.find(h => h.type === itemType);
+                if (handler && handler.onDropItem) {
+                    result = handler.onDropItem(item);
+                } else if (onDropItem) {
+                    result = onDropItem(item);
+                }
             }
             return result;
         }
@@ -40,9 +60,16 @@ export default function dropTargetFactory<TDrag, TDrop>(itemTypes: string | stri
         };
     }
 
+    interface ItemHandler {
+        type: ItemType;
+        onDropItem?: (item: any) => any;
+        canDropItem?: (item: any) => boolean;
+    }
+
     interface GenericDropTargetProps {
         onDropItem?: (item: TDrag) => TDrop;
         canDropItem?: (item: TDrag) => boolean;
+        itemHandlers?: ItemHandler[];
         connectDropTarget?: any;
         isOver?: boolean;
         canDrop?: boolean;
@@ -70,7 +97,7 @@ export default function dropTargetFactory<TDrag, TDrop>(itemTypes: string | stri
             const isActive = isOver && canDrop;
 
             const computedStyle = computeStyle ? computeStyle({ isActive, isOver, canDrop }) : {};
-            
+
             const classNames = ['drop-target'];
             if (className) {
                 classNames.push(className);
@@ -79,7 +106,7 @@ export default function dropTargetFactory<TDrag, TDrop>(itemTypes: string | stri
                 classNames.push('is-over');
             }
             classNames.push(canDrop === true ? 'can-drop' : canDrop === false ? 'cant-drop' : '');
-            
+
             return connectDropTarget(
                 <div style={style} className={classNames.join(' ')} onClick={() => onClick && onClick()}>
                     {children}

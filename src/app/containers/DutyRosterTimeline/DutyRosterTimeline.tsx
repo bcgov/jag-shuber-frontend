@@ -229,6 +229,7 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
                                         onDropSheriff={
                                             ({ id: sheriffId }, { id: sheriffDutyId }) =>
                                                 this.onDropSheriff(duty.id, sheriffDutyId, sheriffId)}
+                                        onDropSheriffDuty={({sheriffId: sourceId}, {sheriffId: targetId}) => alert(`Source sheriff: ${sourceId} Target Sheriff: ${targetId}`)}
                                         workSection={workSectionMap[duty.assignmentId]}
                                     />
                                 )}

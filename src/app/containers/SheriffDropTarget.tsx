@@ -1,14 +1,12 @@
 import React from 'react';
-import { SheriffDropResult, DraggedSheriff } from './SheriffDragSource';
 import {
     default as dropTargetFactory,
 } from '../infrastructure/DragDrop/dropTargetFactory';
-import ItemTypes from '../infrastructure/DragDrop/ItemTypes';
 import { Sheriff } from '../api';
 
 type DroppableItem = Sheriff;
 
-const GenericDropTarget = dropTargetFactory<DroppableItem, void>(ItemTypes.SHERIFF);
+const GenericDropTarget = dropTargetFactory<DroppableItem, void>('Sheriff');
 
 interface SheriffDropTargetProps {
     canDropItem?: (item: DroppableItem) => boolean;
@@ -20,17 +18,6 @@ interface SheriffDropTargetProps {
 }
 
 export default class SheriffDropTarget extends React.PureComponent<SheriffDropTargetProps> {
-
-    canDropItem(sheriff: DraggedSheriff) {
-        return true;
-    }
-
-    onDropItem(dragged: DraggedSheriff): SheriffDropResult {
-        return {
-            ...dragged
-        };
-    }
-
     render() {
         const {
             canDropItem,
