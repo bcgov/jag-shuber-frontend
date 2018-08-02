@@ -4,11 +4,11 @@ import {
     InjectedFormProps
 } from 'redux-form';
 import {
-    IdType,
+    // IdType,
     TimeType,
     WorkSectionCode,
     // AssignmentDuty,
-    // SheriffDuty
+    SheriffDuty
 } from '../api';
 import TimePickerField from './FormElements/TimePickerField';
 import Form from './FormElements/Form';
@@ -17,12 +17,11 @@ import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 export interface AssignmentDutyFormProps {
     handleSubmit?: () => void;
     onSubmitSuccess?: () => void;
-    assignmentTitle?: string;
-    assignmentId?: IdType;
     minTime?: TimeType;
     maxTime?: TimeType;
     workSectionId?: WorkSectionCode;
-    isNewDuty?: boolean;
+    sourceDuty: SheriffDuty;
+    targetDuty: SheriffDuty;
 }
 
 export default class AssignmentDutyForm extends

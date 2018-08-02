@@ -27,7 +27,9 @@ class AssignmentSheriffDutyReassignmentModal extends React.PureComponent<Composi
     render() {
         const {
             show,
-            handleHide
+            handleHide,
+            sourceSheriffDuty,
+            targetSheriffDuty
         } = this.props;
 
         return (
@@ -41,12 +43,12 @@ class AssignmentSheriffDutyReassignmentModal extends React.PureComponent<Composi
             >
                 <Modal.Header closeButton={true}>Re-Assign Sheriff</Modal.Header>
                 <Modal.Body>
-                    <AssignmentSheriffDutyReassignmentForm />
-                    {/* <AssignmentDutyEditForm id={dutyId} onSubmitSuccess={handleHide} /> */}
-                    Here is the body of the duty splitting form
+                    <AssignmentSheriffDutyReassignmentForm 
+                        sourceDuty={sourceSheriffDuty} 
+                        targetDuty={targetSheriffDuty} 
+                    />
                 </Modal.Body>
                 <Modal.Footer>
-                    here is the footer
                     <AssignmentSheriffDutyReassignmentForm.SubmitButton key="save">
                         Save
                     </AssignmentSheriffDutyReassignmentForm.SubmitButton>
