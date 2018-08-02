@@ -34,6 +34,7 @@ import * as TimeRangeUtils from '../../infrastructure/TimeRangeUtils';
 import ConfirmationModal, { ConnectedConfirmationModalProps } from '../ConfirmationModal';
 import SheriffNameDisplay from '../SheriffNameDisplay';
 import SheriffDutyDragSource from '../SheriffDutyDragSource';
+import AssignmentSheriffDutySplittingModal from '../AssignmentSheriffDutySplittingModal';
 
 interface DutyRosterTimelineProps extends TimelineProps {
     allowTimeDrag?: boolean;
@@ -45,6 +46,7 @@ interface DutyRosterTimelineDispatchProps {
     linkSheriff: (link: { sheriffId: IdType, dutyId: IdType, sheriffDutyId: IdType }) => void;
     showAssignmentDutyEditModal: (id: IdType) => void;
     showConfirmationModal: (props: ConnectedConfirmationModalProps) => void;
+    showSheriffDutySplittingModal: (source: SheriffDuty, target: SheriffDuty) => void;
 }
 
 interface DutyRosterTimelineStateProps {
@@ -165,6 +167,7 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
             showAssignmentDutyEditModal,
             draggingSheriffAssignmentDuties = [],
             draggingSheriffId,
+            showSheriffDutySplittingModal,
             ...rest
         } = this.props;
 
@@ -229,7 +232,10 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
                                         onDropSheriff={
                                             ({ id: sheriffId }, { id: sheriffDutyId }) =>
                                                 this.onDropSheriff(duty.id, sheriffDutyId, sheriffId)}
-                                        onDropSheriffDuty={({sheriffId: sourceId}, {sheriffId: targetId}) => alert(`Source sheriff: ${sourceId} Target Sheriff: ${targetId}`)}
+                                        onDropSheriffDuty={
+                                            (source: SheriffDuty, target: SheriffDuty) => 
+                                                showSheriffDutySplittingModal(source, target)
+                                        }
                                         workSection={workSectionMap[duty.assignmentId]}
                                     />
                                 )}
@@ -261,6 +267,8 @@ export default connect<DutyRosterTimelineStateProps, DutyRosterTimelineDispatchP
         fetchAssignmentDuties: getAssignmentDuties,
         linkSheriff: linkAssignment,
         showAssignmentDutyEditModal: (id: IdType) => AssignmentDutyEditModal.ShowAction(id),
-        showConfirmationModal: (props: ConnectedConfirmationModalProps) => ConfirmationModal.ShowAction(props)
+        showConfirmationModal: (props: ConnectedConfirmationModalProps) => ConfirmationModal.ShowAction(props),
+        showSheriffDutySplittingModal: (source: SheriffDuty, target: SheriffDuty) => 
+                                                AssignmentSheriffDutySplittingModal.ShowAction(source, target)
     }
 )(DutyRosterTimeline);

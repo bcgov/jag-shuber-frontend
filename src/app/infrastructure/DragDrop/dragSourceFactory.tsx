@@ -23,7 +23,7 @@ export default function dragSourceFactory
                 endDrag(result);
             }
         }
-    }
+    };
 
     function collect(connect: any, monitor: any) {
         return {
@@ -48,7 +48,7 @@ export default function dragSourceFactory
         render() {
             const {
                 connectDragSource,
-                children,
+                children
             } = this.props;
 
             return connectDragSource(

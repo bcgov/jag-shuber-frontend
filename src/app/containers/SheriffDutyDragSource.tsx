@@ -3,7 +3,6 @@ import dragSourceFactory from '../infrastructure/DragDrop/dragSourceFactory';
 import { SheriffDuty } from '../api';
 
 export interface DraggedSheriffDuty extends SheriffDuty {
-
 }
 
 export interface SheriffDutyDropResult extends SheriffDuty {
@@ -25,7 +24,7 @@ interface SheriffDutyDragSourceProps {
     endDrag?: (args: any) => void;
 }
 
-export default class SheriffDragSource extends React.PureComponent<SheriffDutyDragSourceProps> {
+export default class SheriffDutyDragSource extends React.PureComponent<SheriffDutyDragSourceProps> {
     render() {
         const { children, sheriffDuty, beginDrag, endDrag } = this.props;
         return (
