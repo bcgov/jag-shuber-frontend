@@ -11,7 +11,8 @@ export interface TimePickerProps {
   selectedTime?: TimeType;
   timeIncrement?: number;
   onTimeChanged?: (selectedTime: TimeType) => void;
-  color?: string;
+  handleColor?: string;
+  railColor?: string;
 }
 export default class TimePicker extends React.Component<TimePickerProps> {
 
@@ -51,7 +52,8 @@ export default class TimePicker extends React.Component<TimePickerProps> {
       maxTime: _maxTime,
       timeIncrement = 15,
       selectedTime: _selectedTime,
-      color = '#003366'
+      handleColor = '#003366',
+      railColor = '#9bc2e4'
     } = this.props;
     const minTime = moment(_minTime);
     const maxTime = moment(_maxTime);
@@ -78,10 +80,10 @@ export default class TimePicker extends React.Component<TimePickerProps> {
           min={0}
           max={durationMinutes}
           marks={markLabels}
-          dotStyle={{ borderColor: '#9bc2e4' }}
-          activeDotStyle={{ borderColor: '#9bc2e4' }}
-          railStyle={{ backgroundColor: '#9bc2e4' }}
-          handleStyle={{ borderColor: color, backgroundColor: color }}
+          dotStyle={{ borderColor: railColor }}
+          activeDotStyle={{ borderColor: railColor }}
+          railStyle={{ backgroundColor: railColor }}
+          handleStyle={{ borderColor: handleColor, backgroundColor: handleColor }}
           trackStyle={{ backgroundColor: 'transparent' }}
           onAfterChange={(e) => this.handleAfterChange(e)}
           handle={(p: any) =>

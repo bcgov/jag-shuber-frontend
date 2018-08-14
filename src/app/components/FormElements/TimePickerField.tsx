@@ -16,7 +16,8 @@ export default class TimePickerField extends React.PureComponent<FormFieldWrappe
                     selectedTime={value}
                     timeIncrement={timeIncrement}
                     onTimeChanged={onChange}
-                    color={color}
+                    handleColor={color}
+                    railColor={color}
                 />
             </FormFieldWrapper>
         );

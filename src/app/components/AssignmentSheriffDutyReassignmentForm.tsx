@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import {
     Field,
     InjectedFormProps
@@ -13,20 +14,33 @@ import {
 import TimePickerField from './FormElements/TimePickerField';
 import Form from './FormElements/Form';
 import * as TimeUtils from '../infrastructure/TimeRangeUtils';
-
-export interface AssignmentDutyFormProps {
+import toTitleCase from '../infrastructure/toTitleCase';
+import { getWorkSectionColour } from '../api/utils';
+export type DutyReassignmentDetails = {
+    workSectionId?: WorkSectionCode;
+    title?: string;
+    sheriffFirstName?: string;
+    sheriffLastName?: string;
+};
+export interface SheriffDutyReassignmentFormProps {
     handleSubmit?: () => void;
     onSubmitSuccess?: () => void;
     minTime?: TimeType;
     maxTime?: TimeType;
-    workSectionId?: WorkSectionCode;
     sourceDuty: SheriffDuty;
     targetDuty: SheriffDuty;
+    sourceReassignmentDetails?: DutyReassignmentDetails;
+    targetReassignmentDetails?: DutyReassignmentDetails;
+
 }
 
-export default class AssignmentDutyForm extends
-    React.Component<AssignmentDutyFormProps & InjectedFormProps<{}, AssignmentDutyFormProps>, {}> {
+export default class SheriffDutyReassignmentForm extends
+    React.Component<SheriffDutyReassignmentFormProps & InjectedFormProps<{}, SheriffDutyReassignmentFormProps>, {}> {
 
+    static parseSheriffDutyReassignmentFromValues(values: any): { sourceDuty: SheriffDuty, targetDuty: SheriffDuty } {
+        // const { sourceDuty, targetDuty } = values;
+        return values;
+    }
     // static parseAssignmentDutyFromValues(values: any): AssignmentDuty {
     //     const { timeRange: { startTime, endTime }, sheriffDuties, ...rest } = values;
     //     const assignmentDuty = { ...rest };
@@ -41,6 +55,13 @@ export default class AssignmentDutyForm extends
     //     return assignmentDuty as AssignmentDuty;
     // }
 
+    static sheriffDutiesToFormValues() {
+        const roundedCurrentTime = TimeUtils.roundTimeToNearestQuaterHour(moment()).toISOString();
+        return {
+            sourceDutyEndTime: roundedCurrentTime,
+            targetDutyStartTime: roundedCurrentTime
+        };
+    }
     // static assignmentDutyToFormValues(duty: AssignmentDuty) {
     //     return {
     //         ...duty,
@@ -60,13 +81,19 @@ export default class AssignmentDutyForm extends
     // }
 
     render() {
-        // const {} = this.props;
+        const {
+            sourceReassignmentDetails = {},
+            targetReassignmentDetails = {}
+        } = this.props;
         const minTime = TimeUtils.getDefaultTimePickerMinTime().toISOString();
         const maxTime = TimeUtils.getDefaultTimePickerMaxTime().toISOString();
         return (
-            
+
             <div>
-                {/* <h1 style={{ marginBottom: 20 }}>{assignmentTitle}</h1> */}
+                <h1>
+                    Move {toTitleCase(sourceReassignmentDetails.sheriffFirstName)} {toTitleCase(sourceReassignmentDetails.sheriffLastName)}
+                </h1>
+                <br />
                 <Form {...this.props}>
                     <Field
                         name="sourceDutyEndTime"
@@ -75,10 +102,11 @@ export default class AssignmentDutyForm extends
                             minTime={minTime}
                             maxTime={maxTime}
                             timeIncrement={15}
-                            color={'red'}
-                            label={<h2 style={{ marginBottom: 5 }}>End Time @</h2>}
+                            color={getWorkSectionColour(sourceReassignmentDetails.workSectionId)}
+                            label={<h2 style={{ marginBottom: 5 }}>From {sourceReassignmentDetails.title} at</h2>}
                         />}
                     />
+                    <br /><br />
                     <Field
                         name="targetDutyStartTime"
                         component={(p) => <TimePickerField
@@ -86,8 +114,8 @@ export default class AssignmentDutyForm extends
                             minTime={minTime}
                             maxTime={maxTime}
                             timeIncrement={15}
-                            color={'red'}
-                            label={<h2 style={{ marginBottom: 5 }}>Start Time @</h2>}
+                            color={getWorkSectionColour(targetReassignmentDetails.workSectionId)}
+                            label={<h2 style={{ marginBottom: 5 }}>To {targetReassignmentDetails.title} at</h2>}
                         />}
                     />
                 </Form>

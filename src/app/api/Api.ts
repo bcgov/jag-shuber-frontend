@@ -209,7 +209,6 @@ export interface SheriffDuty {
     startDateTime: DateType;
     endDateTime: DateType;
 }
-
 export interface DutyRecurrence {
     id?: IdType;
     assignmentId?: IdType;
