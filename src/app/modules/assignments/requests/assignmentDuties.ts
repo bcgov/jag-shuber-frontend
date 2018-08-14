@@ -10,7 +10,9 @@ import {
     AssignmentDuty,
     IdType,
     DateRange,
-    DateType
+    DateType,
+    SheriffDutyReassignmentDetails,
+    SheriffDuty
 } from '../../../api/Api';
 import CreateEntityRequest from '../../../infrastructure/Requests/CreateEntityRequest';
 import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRequest';
@@ -177,3 +179,40 @@ class DeleteSheriffDutyRequest extends RequestAction<string, string, AssignmentM
 }
 
 export const deleteSheriffDutyRequest = new DeleteSheriffDutyRequest();
+
+class ReassignSheriffDutyRequest extends RequestAction<
+    SheriffDutyReassignmentDetails, SheriffDuty[], AssignmentModuleState> {
+    constructor() {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'reassignSheriffDuty',
+            toasts: {
+                success: 'Sheriff has been reassigned',
+                // tslint:disable-next-line:max-line-length
+                error: (err) => `Problem encountered while reassigning sheriff: ${err ? err.toString() : 'Unknown Error'}`
+            }
+        });
+    }
+
+    public async doWork(reassignment: SheriffDutyReassignmentDetails, { api }: ThunkExtra): Promise<SheriffDuty[]> {
+        let updatedSheriffDuties = await api.reassignSheriffDuty(reassignment);
+        return updatedSheriffDuties;
+    }
+
+    // setRequestData(moduleState: AssignmentModuleState, updatedDuties: SheriffDuty[] = []) {
+    //     const newMap = { ...assignmentDutyMapRequest.getRequestData(moduleState) };
+    //     let sheriffDutyParent: AssignmentDuty | undefined =
+    //         Object.keys(newMap).map((key) => newMap[key] as AssignmentDuty)
+    //             .find(ad => ad.sheriffDuties.some(sd => sd.id === id));
+
+    //     if (sheriffDutyParent) {
+    //         const sheriffDutyIndex = sheriffDutyParent.sheriffDuties.findIndex(sd => sd.id === id);
+    //         sheriffDutyParent.sheriffDuties.splice(sheriffDutyIndex, 1);
+    //         newMap[sheriffDutyParent.id] = sheriffDutyParent;
+    //     }
+
+    //     return assignmentDutyMapRequest.setRequestData(moduleState, newMap);
+    // }
+}
+
+export const reassignSheriffDutyRequest = new ReassignSheriffDutyRequest();

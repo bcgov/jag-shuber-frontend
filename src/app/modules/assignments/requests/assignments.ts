@@ -6,9 +6,9 @@ import {
 } from '../common';
 import {
     IdType,
-    Assignment
-} from '../../../api';
-import { DateRange } from '../../../api/Api';
+    Assignment,
+    DateRange
+} from '../../../api/Api';
 import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRequest';
 import CreateEntityRequest from '../../../infrastructure/Requests/CreateEntityRequest';
 import UpdateEntityRequest from '../../../infrastructure/Requests/UpdateEntityRequest';

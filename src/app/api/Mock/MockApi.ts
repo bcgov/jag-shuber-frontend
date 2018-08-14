@@ -19,7 +19,8 @@ import {
     LeaveSubCode,
     LeaveCancelCode,
     CourtRole,
-    GenderCode
+    GenderCode,
+    SheriffDutyReassignmentDetails
 } from '../Api';
 import {
     sheriffList,
@@ -64,6 +65,9 @@ function getAssignmentTitle(assignment: Partial<Assignment>): string {
 }
 
 export default class MockClient implements API {
+    reassignSheriffDuty(reassignmentDetails: SheriffDutyReassignmentDetails): Promise<SheriffDuty[]> {
+        throw new Error("Method not implemented.");
+    }
     getToken(): Promise<string> {
         throw new Error('Method not implemented.');
     }

@@ -45,7 +45,8 @@ class AssignmentSheriffDutyReassignmentModal extends React.PureComponent<Composi
                 <Modal.Body>
                     <AssignmentSheriffDutyReassignmentForm 
                         sourceDuty={sourceSheriffDuty} 
-                        targetDuty={targetSheriffDuty} 
+                        targetDuty={targetSheriffDuty}
+                        onSubmitSuccess={handleHide} 
                     />
                 </Modal.Body>
                 <Modal.Footer>

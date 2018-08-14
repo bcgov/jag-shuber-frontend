@@ -37,7 +37,8 @@ const nestedReducer = new NestedReducer([
   assignmentDutyRequests.createDefaultDutiesRequest.reducer,
 
   // Sheriff Duties
-  assignmentDutyRequests.deleteSheriffDutyRequest.reducer
+  assignmentDutyRequests.deleteSheriffDutyRequest.reducer,
+  assignmentDutyRequests.reassignSheriffDutyRequest.reducer
 ]);
 
 const reducer = nestedReducer.reducer;

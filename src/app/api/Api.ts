@@ -209,6 +209,13 @@ export interface SheriffDuty {
     startDateTime: DateType;
     endDateTime: DateType;
 }
+
+export interface SheriffDutyReassignmentDetails {
+    sourceSheriffDuty: SheriffDuty; 
+    newSourceDutyEndTime: DateType;
+    targetSheriffDuty: SheriffDuty; 
+    newTargetDutyStartTime: DateType;
+}
 export interface DutyRecurrence {
     id?: IdType;
     assignmentId?: IdType;
@@ -332,6 +339,7 @@ export interface API {
     createSheriffDuty(sheriffDuty: Partial<SheriffDuty>): Promise<SheriffDuty>;
     updateSheriffDuty(sheriffDuty: Partial<SheriffDuty>): Promise<SheriffDuty>;
     deleteSheriffDuty(sheriffDutyId: IdType): Promise<void>;
+    reassignSheriffDuty(reassignmentDetails: SheriffDutyReassignmentDetails): Promise<SheriffDuty[]>;
 
     // Default Duties
     createDefaultDuties(date?: DateType): Promise<AssignmentDuty[]>;

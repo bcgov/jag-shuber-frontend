@@ -100,16 +100,16 @@ export function roundTimeToNearestQuaterHour (timeToRound: moment.Moment): momen
     const hour = moment(timeToRound).hours();
 
     if (minutes <= 7) {
-        return moment(timeToRound).minute(0);
+        return moment(timeToRound).minute(0).second(0).millisecond(0);
     } else if (minutes >= 8 && minutes <= 22) {
-        return moment(timeToRound).minute(15);
+        return moment(timeToRound).minute(15).second(0).millisecond(0);
     } else if (minutes >= 23 && minutes <= 37) {
-        return moment(timeToRound).minute(30);
+        return moment(timeToRound).minute(30).second(0).millisecond(0);
     } else if (minutes >= 38 && minutes <= 52) {
-        return moment(timeToRound).minute(45);
+        return moment(timeToRound).minute(45).second(0).millisecond(0);
     } else if (minutes >= 53) {
-        return moment(timeToRound).hour(hour + 1).minute(0);
+        return moment(timeToRound).hour(hour + 1).minute(0).second(0).millisecond(0);
     } else {
-        return moment(timeToRound).minute(0);
+        return moment(timeToRound).minute(0).second(0).millisecond(0);
     }
 }

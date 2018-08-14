@@ -1,14 +1,12 @@
 import React from 'react';
-import moment from 'moment';
+// import moment from 'moment';
 import {
     Field,
     InjectedFormProps
 } from 'redux-form';
 import {
-    // IdType,
     TimeType,
     WorkSectionCode,
-    // AssignmentDuty,
     SheriffDuty
 } from '../api';
 import TimePickerField from './FormElements/TimePickerField';
@@ -36,50 +34,6 @@ export interface SheriffDutyReassignmentFormProps {
 
 export default class SheriffDutyReassignmentForm extends
     React.Component<SheriffDutyReassignmentFormProps & InjectedFormProps<{}, SheriffDutyReassignmentFormProps>, {}> {
-
-    static parseSheriffDutyReassignmentFromValues(values: any): { sourceDuty: SheriffDuty, targetDuty: SheriffDuty } {
-        // const { sourceDuty, targetDuty } = values;
-        return values;
-    }
-    // static parseAssignmentDutyFromValues(values: any): AssignmentDuty {
-    //     const { timeRange: { startTime, endTime }, sheriffDuties, ...rest } = values;
-    //     const assignmentDuty = { ...rest };
-    //     assignmentDuty.startDateTime = startTime;
-    //     assignmentDuty.endDateTime = endTime;
-    //     assignmentDuty.sheriffDuties = sheriffDuties.map((element: any) => ({
-    //         ...element,
-    //         sheriffId: element.sheriffId === '' ? undefined : element.sheriffId,
-    //         startDateTime: moment(element.timeRange.startTime).toISOString(),
-    //         endDateTime: moment(element.timeRange.endTime).toISOString(),
-    //     }));
-    //     return assignmentDuty as AssignmentDuty;
-    // }
-
-    static sheriffDutiesToFormValues() {
-        const roundedCurrentTime = TimeUtils.roundTimeToNearestQuaterHour(moment()).toISOString();
-        return {
-            sourceDutyEndTime: roundedCurrentTime,
-            targetDutyStartTime: roundedCurrentTime
-        };
-    }
-    // static assignmentDutyToFormValues(duty: AssignmentDuty) {
-    //     return {
-    //         ...duty,
-    //         timeRange: {
-    //             startTime: moment(duty.startDateTime).toISOString(),
-    //             endTime: moment(duty.endDateTime).toISOString()
-    //         },
-    //         sheriffDuties: duty.sheriffDuties.map((element: any) => ({
-    //             ...element,
-    //             sheriffId: element.sheriffId == undefined ? '' : element.sheriffId,
-    //             timeRange: {
-    //                 startTime: moment(element.startDateTime).toISOString(),
-    //                 endTime: moment(element.endDateTime).toISOString()
-    //             }
-    //         }))
-    //     };
-    // }
-
     render() {
         const {
             sourceReassignmentDetails = {},
