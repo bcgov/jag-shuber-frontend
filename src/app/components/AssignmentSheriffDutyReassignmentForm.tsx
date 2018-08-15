@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import {
     Field,
     InjectedFormProps
@@ -33,6 +34,22 @@ export interface SheriffDutyReassignmentFormProps {
 
 export default class SheriffDutyReassignmentForm extends
     React.Component<SheriffDutyReassignmentFormProps & InjectedFormProps<{}, SheriffDutyReassignmentFormProps>, {}> {
+
+    static reassignmentDetailsFormValues(sourceDuty: SheriffDuty, targetDuty: SheriffDuty) {
+        const isCurrentTimeDuringSourceDuty = 
+            moment().isBetween(moment(sourceDuty.startDateTime), moment(sourceDuty.endDateTime));
+        const isCurrentTimeDuringTargetDuty = 
+            moment().isBetween(moment(targetDuty.startDateTime), moment(targetDuty.endDateTime));
+        const roundedCurrentTime = TimeUtils.roundTimeToNearestQuaterHour(moment()).toISOString();
+        
+        return {
+            sourceDutyEndTime: isCurrentTimeDuringSourceDuty 
+                                    ? roundedCurrentTime : moment(sourceDuty.startDateTime).toISOString(),
+            targetDutyStartTime: isCurrentTimeDuringTargetDuty 
+                                    ? roundedCurrentTime : moment(targetDuty.startDateTime).toISOString()
+        };
+    }
+
     render() {
         const {
             sourceReassignmentDetails = {},

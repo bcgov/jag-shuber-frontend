@@ -1,5 +1,4 @@
 import React from 'react';
-import moment from 'moment';
 import {
     reduxForm,
     ConfigProps
@@ -20,7 +19,6 @@ import {
 } from '../modules/assignments/selectors';
 import { getSheriff } from '../modules/sheriffs/selectors';
 import { reassignSheriffDuty } from '../modules/assignments/actions';
-import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 
 // wrapping generic assignment form in redux-form
 const formConfig: ConfigProps<any, SheriffDutyReassignmentFormProps> = {
@@ -48,12 +46,8 @@ const mapStateToProps = (state: RootState, props: AssignmentSheriffDutyReassignm
     const targetDuty = getAssignmentDuty(targetSheriffDuty.dutyId)(state);
     const targetAssignment = targetDuty ? getAssignment(targetDuty.assignmentId)(state) : undefined;
 
-    const roundedCurrentTime = TimeUtils.roundTimeToNearestQuaterHour(moment()).toISOString();
     return {
-        initialValues: {
-            sourceDutyEndTime: roundedCurrentTime,
-            targetDutyStartTime: roundedCurrentTime
-        },
+        initialValues: SheriffDutyReassignmentForm.reassignmentDetailsFormValues(sourceSheriffDuty, targetSheriffDuty),
         sourceReassignmentDetails: {
             workSectionId: sourceAssignment ? sourceAssignment.workSectionId : '',
             title: sourceAssignment ? sourceAssignment.title : 'Source Assignment',
