@@ -244,23 +244,26 @@ export default class Client implements API {
             .toISOString();
 
         // Create a new sheriff duty to account for the time the source sheriff will spend in the target duty
-        const newTargetSheriffDuty = this.createSheriffDuty({
+        const splitTargetSheriffDuty = this.createSheriffDuty({
             dutyId: targetSheriffDuty.dutyId,
             startDateTime: targetCutOffTime,
             endDateTime: moment(targetSheriffDuty.endDateTime).toISOString(),
             sheriffId: sourceSheriffDuty.sheriffId
         });
 
-        // End the target sheriff duty at the new target start time
-        const updatedTargetSheriffDuty = this.updateSheriffDuty({
-            ...targetSheriffDuty,
-            endDateTime: targetCutOffTime,
-        });
+        let updatedTargetSheriffDuty = { ...targetSheriffDuty };
+        if (!targetSheriffDuty.sheriffId) {
+            // End the target sheriff duty at the new target start time
+            updatedTargetSheriffDuty = await this.updateSheriffDuty({
+                ...targetSheriffDuty,
+                endDateTime: targetCutOffTime,
+            });
+        }             
 
         return Promise.all([
             remainingSourceDuty,
             updatedSourceSheriffDuty,
-            newTargetSheriffDuty,
+            splitTargetSheriffDuty,
             updatedTargetSheriffDuty
         ]);
     }
