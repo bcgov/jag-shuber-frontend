@@ -80,7 +80,7 @@ class ShuberApiClient extends ShuberApi.Client {
 }
 
 export default class Client implements API {
-    
+
     private _client: ShuberApi.Client;
     private _courthouseId: string;
     private _mockApi: MockApi = new MockApi();
@@ -210,41 +210,41 @@ export default class Client implements API {
 
     async reassignSheriffDuty(reassignmentDetails: SheriffDutyReassignmentDetails): Promise<SheriffDuty[]> {
         const {
-            newSourceDutyEndTime, 
-            sourceSheriffDuty, 
-            newTargetDutyStartTime, 
+            newSourceDutyEndTime,
+            sourceSheriffDuty,
+            newTargetDutyStartTime,
             targetSheriffDuty
         } = reassignmentDetails;
-        
+
         // Source Sheriff Duty
         const sourceEndTimeMoment = moment(newSourceDutyEndTime);
         const sourceCutOffTime = moment(sourceSheriffDuty.startDateTime)
-                                    .hours(sourceEndTimeMoment.hour())
-                                    .minutes(sourceEndTimeMoment.minute())
-                                    .toISOString();
+            .hours(sourceEndTimeMoment.hour())
+            .minutes(sourceEndTimeMoment.minute())
+            .toISOString();
 
         // Create a new sheriff duty to account for the remaining/uncoverd time in the source sheriff duty
-        const remainingSourceDuty =  await this.createSheriffDuty({
+        const remainingSourceDuty = this.createSheriffDuty({
             dutyId: sourceSheriffDuty.dutyId,
             startDateTime: sourceCutOffTime,
             endDateTime: moment(sourceSheriffDuty.endDateTime).toISOString()
         });
 
         // End the source sheriff duty at the new source end time
-        const updatedSourceSheriffDuty = await this.updateSheriffDuty({
-            ...sourceSheriffDuty, 
+        const updatedSourceSheriffDuty = this.updateSheriffDuty({
+            ...sourceSheriffDuty,
             endDateTime: sourceCutOffTime,
         });
 
         // Target Sheriff Duty
         const targetStartTimeMoment = moment(newTargetDutyStartTime);
         const targetCutOffTime = moment(targetSheriffDuty.startDateTime)
-                                    .hours(targetStartTimeMoment.hour())
-                                    .minutes(targetStartTimeMoment.minute())
-                                    .toISOString();
+            .hours(targetStartTimeMoment.hour())
+            .minutes(targetStartTimeMoment.minute())
+            .toISOString();
+
         // Create a new sheriff duty to account for the time the source sheriff will spend in the target duty
-         
-        const newTargetSheriffDuty = await this.createSheriffDuty({
+        const newTargetSheriffDuty = this.createSheriffDuty({
             dutyId: targetSheriffDuty.dutyId,
             startDateTime: targetCutOffTime,
             endDateTime: moment(targetSheriffDuty.endDateTime).toISOString(),
@@ -252,12 +252,17 @@ export default class Client implements API {
         });
 
         // End the target sheriff duty at the new target start time
-        const updatedTargetSheriffDuty = await this.updateSheriffDuty({
-            ...targetSheriffDuty, 
+        const updatedTargetSheriffDuty = this.updateSheriffDuty({
+            ...targetSheriffDuty,
             endDateTime: targetCutOffTime,
         });
-        
-        return [remainingSourceDuty, updatedSourceSheriffDuty, newTargetSheriffDuty, updatedTargetSheriffDuty]
+
+        return Promise.all([
+            remainingSourceDuty,
+            updatedSourceSheriffDuty,
+            newTargetSheriffDuty,
+            updatedTargetSheriffDuty
+        ]);
     }
 
     async createDefaultDuties(date: moment.Moment = moment()): Promise<AssignmentDuty[]> {
@@ -386,7 +391,7 @@ export default class Client implements API {
 
 
     getToken(): Promise<string> {
-        return this._client.GetToken();    
+        return this._client.GetToken();
     }
     logout(): Promise<void> {
         return this._client.Logout();
