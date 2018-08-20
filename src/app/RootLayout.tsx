@@ -33,6 +33,7 @@ import ToastManager from './components/ToastManager/ToastManager';
 import ConnectedConfirmationModal from './containers/ConfirmationModal';
 import SheriffProfileCreateModal from './containers/SheriffProfileCreateModal';
 import resolveAppUrl from './infrastructure/resolveAppUrl';
+import CustomDragLayer from './infrastructure/DragDrop/CustomDragLayer';
 
 export interface LayoutStateProps {
   isCourthouseSet?: boolean;
@@ -77,6 +78,7 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
     return (
       <Router basename={resolveAppUrl('')}>
         <div className="App">
+          <CustomDragLayer/>
           <ToastManager />
           <div className="headerArea">
             <Navigation />

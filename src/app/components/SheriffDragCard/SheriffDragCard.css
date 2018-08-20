@@ -1,0 +1,33 @@
+.sheriff-drag-card {
+    border-color: #003366; 
+    border-width: 2px;
+    font-size: 14px;
+    width: 190px;
+    margin-left: 1.5px;
+    margin-right: 1.5px;
+    margin-top: 6px;
+    transition: box-shadow .5s;
+    text-align: center;
+    opacity:0.85;
+    /* transform: rotate(-10deg) */
+}
+
+.sheriff-drag-card.not-active { 
+    background-color: #CDCDCD;
+}
+
+.sheriff-card-badge-number {
+    font-size: 14px;
+    font-style: italic;
+}
+
+.sheriff-card-alias {
+    position: absolute; 
+    right: 8px;
+    font-weight: bold;
+}
+
+.sheriff-card-name {
+    font-size: 16.5px;
+    font-weight: bold;
+}
