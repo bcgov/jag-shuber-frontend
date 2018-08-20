@@ -1,5 +1,6 @@
 import React from 'react';
 import Tooltip from 'rc-tooltip';
+import { TimeType } from '../../api/Api';
 import Slider, { Handle, SliderProps } from 'rc-slider';
 import 'rc-tooltip/assets/bootstrap.css';
 import moment, { Moment } from 'moment';
@@ -46,7 +47,7 @@ export interface SliderMark {
     label: string;
 }
 
-export type SliderMarkCollection = { [key: number]: SliderMark };
+export type SliderMarkCollection = { [key: number]: SliderMark | string };
 
 export function createMarks(minTime: Moment, maxTime: Moment, timeIncrement: number): SliderMarkCollection {
     const durationMinutes: number = moment.duration(maxTime.diff(minTime)).asMinutes();
@@ -87,6 +88,17 @@ export function adjustMarks(marks: SliderMarkCollection, adjustment: number): Sl
             {});
 }
 
+function getMinMaxMarks(marks: SliderMarkCollection): { min: number, max: number } | undefined {
+    const sorted = Object.keys(marks).map(k => parseFloat(k)).sort((a, b) => a - b);
+    if (sorted.length > 0) {
+        return {
+            min: sorted[0],
+            max: sorted[sorted.length - 1]
+        };
+    }
+    return undefined;
+}
+
 export interface DisabledSliderSectionProps extends SliderProps {
     fullDuration: number;
 }
@@ -103,9 +115,11 @@ export class DisabledSliderSection extends React.PureComponent<DisabledSliderSec
     render() {
         const railColor = 'lightgray';
         const handleColor = 'lightgray';
-        const { fullDuration, min = 0, max = 0 } = this.props;
-        const { style = {}, ...restProps } = this.props;
-        const width = `${(max - min) / fullDuration * 100}%`;
+        const { fullDuration, marks = {} } = this.props;
+        const { style = {}, min, max, ...restProps } = this.props;
+        const { min: minMark = 0, max: maxMark = 0 } = getMinMaxMarks(marks as any) || {};
+        const disabledDuration = maxMark - minMark;
+        const width = `${(disabledDuration) / fullDuration * 100}%`;
         return (
             <Slider
                 handle={(p) => null}
@@ -121,8 +135,123 @@ export class DisabledSliderSection extends React.PureComponent<DisabledSliderSec
                     style,
                     width
                 }}
+                min={minMark}
+                max={maxMark}
                 {...restProps}
             />
         );
     }
+}
+
+export interface TimeLimitProps {
+    minAllowedTime?: TimeType;
+    maxAllowedTime?: TimeType;
+}
+
+export interface TimeRangeProps {
+    minTime: TimeType;
+    maxTime: TimeType;
+    timeIncrement?: number;
+    style?: React.CSSProperties;
+}
+
+/**
+ * Wraps a Time Slider type component and provides the ability to add limits
+ * to the slider component which are displayed as disabled slider components.
+ *
+ * @export
+ * @template P
+ * @param {React.ComponentType<P>} ComponentToWrap
+ * @returns {(React.ComponentType<P & TimeLimitProps>)}
+ */
+// tslint:disable-next-line:max-line-length
+export function sliderWithLimits<P extends TimeRangeProps>(ComponentToWrap: React.ComponentType<P>): React.ComponentType<P & TimeLimitProps> {
+    class WrappedSlider extends React.Component<P & TimeLimitProps>{
+        render() {
+
+            const {
+                minTime: _minTime,
+                maxTime: _maxTime,
+                timeIncrement = 15,
+                // minAllowedTime,
+                // maxAllowedTime,
+            } = this.props;
+            const minTime = moment(_minTime);
+            const maxTime = moment(_maxTime);
+
+            const minAllowedTime = moment(minTime).add(2, 'hours');
+            const maxAllowedTime = moment(maxTime).subtract(2, 'hours');
+
+            let disabledMinMarks: SliderMarkCollection | undefined = undefined;
+            let disabledMaxMarks: SliderMarkCollection | undefined = undefined;
+
+            const fullDuration = moment.duration(maxTime.diff(minTime)).asMinutes();
+            const mainMintime = minAllowedTime || minTime;
+            const mainMaxTime = maxAllowedTime || maxTime;
+
+            if (minAllowedTime) {
+                disabledMinMarks = createMarks(moment(minTime), moment(minAllowedTime), timeIncrement);
+
+                // Blank the label on the last mark of the disabled timeline since we have that mark
+                // in the main section
+                const sortedKeys = Object.keys(disabledMinMarks)
+                    .map(k => parseFloat(k))
+                    .sort((a, b) => a - b);
+                const lastKey = sortedKeys[sortedKeys.length - 1];
+                disabledMinMarks[lastKey] = '';
+            }
+
+            if (maxAllowedTime) {
+                disabledMaxMarks = createMarks(moment(maxAllowedTime), moment(maxTime), timeIncrement)
+
+                // Blank the label on the first mark of the disabled timeline since we have that mark
+                // in the main section
+                const firstKey = Object.keys(disabledMaxMarks)
+                    .map(k => parseFloat(k))
+                    .sort((a, b) => a - b)[0];
+                disabledMaxMarks[firstKey] = '';
+            }
+
+            return (
+                <div
+                    style={{
+                        display: 'flex',
+                        marginLeft: 5,
+                        marginRight: 15,
+                        marginBottom: 25,
+                        marginTop: 15
+                    }}
+                >
+                    {disabledMinMarks &&
+                        <DisabledSliderSection
+                            fullDuration={fullDuration}
+                            step={timeIncrement}
+                            dots={true}
+                            marks={disabledMinMarks}
+                        />
+                    }
+
+                    <ComponentToWrap
+                        {...this.props}
+                        minTime={mainMintime}
+                        maxTime={mainMaxTime}
+                        style={{
+                            zIndex: 105
+                        }}
+                    />
+
+                    {disabledMaxMarks &&
+                        <DisabledSliderSection
+                            fullDuration={fullDuration}
+                            step={timeIncrement}
+                            dots={true}
+                            marks={disabledMaxMarks}
+                        />
+                    }
+                </div>
+            );
+        }
+    }
+
+    return WrappedSlider;
 }
