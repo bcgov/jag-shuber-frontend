@@ -115,11 +115,14 @@ export class DisabledSliderSection extends React.PureComponent<DisabledSliderSec
     render() {
         const railColor = 'lightgray';
         const handleColor = 'lightgray';
-        const { fullDuration, marks = {} } = this.props;
+        const {
+            fullDuration,
+            marks = {} } = this.props;
         const { style = {}, min, max, ...restProps } = this.props;
         const { min: minMark = 0, max: maxMark = 0 } = getMinMaxMarks(marks as any) || {};
         const disabledDuration = maxMark - minMark;
         const width = `${(disabledDuration) / fullDuration * 100}%`;
+        // const width = disabledDuration > 0 ? '33%' : '0%';
         return (
             <Slider
                 handle={(p) => null}
@@ -173,14 +176,11 @@ export function sliderWithLimits<P extends TimeRangeProps>(ComponentToWrap: Reac
                 minTime: _minTime,
                 maxTime: _maxTime,
                 timeIncrement = 15,
-                // minAllowedTime,
-                // maxAllowedTime,
+                minAllowedTime,
+                maxAllowedTime,
             } = this.props;
             const minTime = moment(_minTime);
             const maxTime = moment(_maxTime);
-
-            const minAllowedTime = moment(minTime).add(2, 'hours');
-            const maxAllowedTime = moment(maxTime).subtract(2, 'hours');
 
             let disabledMinMarks: SliderMarkCollection | undefined = undefined;
             let disabledMaxMarks: SliderMarkCollection | undefined = undefined;
@@ -188,6 +188,8 @@ export function sliderWithLimits<P extends TimeRangeProps>(ComponentToWrap: Reac
             const fullDuration = moment.duration(maxTime.diff(minTime)).asMinutes();
             const mainMintime = minAllowedTime || minTime;
             const mainMaxTime = maxAllowedTime || maxTime;
+            const mainDuration = moment.duration(moment(mainMaxTime).diff(moment(mainMintime))).asMinutes();
+            const mainWidth = `${(mainDuration / fullDuration) * 100}%`;
 
             if (minAllowedTime) {
                 disabledMinMarks = createMarks(moment(minTime), moment(minAllowedTime), timeIncrement);
@@ -236,7 +238,8 @@ export function sliderWithLimits<P extends TimeRangeProps>(ComponentToWrap: Reac
                         minTime={mainMintime}
                         maxTime={mainMaxTime}
                         style={{
-                            zIndex: 105
+                            zIndex: 105,
+                            width: mainWidth
                         }}
                     />
 

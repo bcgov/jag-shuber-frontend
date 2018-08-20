@@ -3,11 +3,26 @@ import { default as FormFieldWrapper, FormFieldWrapperProps } from './FormFieldW
 import TimeSlider from './TimeSlider';
 import { TimeType } from '../../api/Api';
 
-export default class TimeSliderField extends React.PureComponent<FormFieldWrapperProps
-    & { minTime: TimeType, maxTime: TimeType, timeIncrement: number, color: string}> {
+export interface TimeSliderFieldProps {
+    minTime: TimeType; 
+    maxTime: TimeType; 
+    timeIncrement: number; 
+    color: string; 
+    minAllowedTime?: TimeType; 
+    maxAllowedTime?: TimeType;
+}
+export default class TimeSliderField extends React.PureComponent<FormFieldWrapperProps & TimeSliderFieldProps> {
 
     render() {
-        const { input: { onChange, value }, minTime, maxTime, timeIncrement, color } = this.props;
+        const { 
+            input: { onChange, value }, 
+            minTime, 
+            maxTime, 
+            timeIncrement, 
+            color,
+            minAllowedTime,
+            maxAllowedTime  
+        } = this.props;
         const { startTime, endTime} = value;
         return (
             <FormFieldWrapper {...this.props}>
@@ -19,6 +34,8 @@ export default class TimeSliderField extends React.PureComponent<FormFieldWrappe
                     timeIncrement={timeIncrement}
                     onTimeChanged={onChange}
                     color={color}
+                    minAllowedTime={minAllowedTime}
+                    maxAllowedTime={maxAllowedTime}
                 />
             </FormFieldWrapper>
         );

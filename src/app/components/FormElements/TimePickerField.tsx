@@ -3,11 +3,27 @@ import { default as FormFieldWrapper, FormFieldWrapperProps } from './FormFieldW
 import TimePicker from './TimePicker';
 import { TimeType } from '../../api/Api';
 
-export default class TimePickerField extends React.PureComponent<FormFieldWrapperProps
-    & { minTime: TimeType, maxTime: TimeType, timeIncrement: number, color: string}> {
+export interface TimePickerFieldProps {
+    minTime: TimeType;
+    maxTime: TimeType;
+    timeIncrement: number;
+    color: string;
+    minAllowedTime?: TimeType;
+    maxAllowedTime?: TimeType;
+}
+export default class TimePickerField extends React.PureComponent<FormFieldWrapperProps & TimePickerFieldProps> {
 
     render() {
-        const { input: { onChange, value }, minTime, maxTime, timeIncrement, color } = this.props;
+        const {
+            input: { onChange, value },
+            minTime,
+            maxTime,
+            timeIncrement,
+            color,
+            minAllowedTime,
+            maxAllowedTime
+        } = this.props;
+
         return (
             <FormFieldWrapper {...this.props}>
                 <TimePicker
@@ -18,6 +34,8 @@ export default class TimePickerField extends React.PureComponent<FormFieldWrappe
                     onTimeChanged={onChange}
                     handleColor={color}
                     railColor={color}
+                    minAllowedTime={minAllowedTime}
+                    maxAllowedTime={maxAllowedTime}
                 />
             </FormFieldWrapper>
         );

@@ -54,7 +54,7 @@ export default class SheriffDutyReassignmentForm extends
     renderSourceTimePicker(minTime: TimeType, maxTime: TimeType): React.ComponentClass {
         return formValues('sourceDutyEndTime')((sourceTimeProps: any) => {
             const { sourceDutyEndTime } = sourceTimeProps;
-            const { sourceReassignmentDetails = {} } = this.props;
+            const { sourceReassignmentDetails = {}, sourceDuty } = this.props;
             const timeDisplay = moment(sourceDutyEndTime).format('HH:mm');
             return (
                 <Field
@@ -63,6 +63,8 @@ export default class SheriffDutyReassignmentForm extends
                         {...p}
                         minTime={minTime}
                         maxTime={maxTime}
+                        minAllowedTime={moment(sourceDuty.startDateTime).toISOString()}
+                        maxAllowedTime={moment(sourceDuty.endDateTime).toISOString()}
                         timeIncrement={15}
                         color={getWorkSectionColour(sourceReassignmentDetails.workSectionId)}
                         label={
@@ -78,7 +80,7 @@ export default class SheriffDutyReassignmentForm extends
     renderTargetTimePicker(minTime: TimeType, maxTime: TimeType): React.ComponentClass {
         return formValues('targetDutyStartTime')((targetTimeProps: any) => {
             const { targetDutyStartTime } = targetTimeProps;
-            const { targetReassignmentDetails = {} } = this.props;
+            const { targetReassignmentDetails = {}, targetDuty } = this.props;
             const timeDisplay = moment(targetDutyStartTime).format('HH:mm');
             return (
                 <Field
@@ -87,11 +89,13 @@ export default class SheriffDutyReassignmentForm extends
                         {...p}
                         minTime={minTime}
                         maxTime={maxTime}
+                        minAllowedTime={moment(targetDuty.startDateTime).toISOString()}
+                        maxAllowedTime={moment(targetDuty.endDateTime).toISOString()}
                         timeIncrement={15}
                         color={getWorkSectionColour(targetReassignmentDetails.workSectionId)}
                         label={
                             <h2 style={{ marginBottom: 5 }}>
-                                From {targetReassignmentDetails.title} at {timeDisplay}
+                                To {targetReassignmentDetails.title} at {timeDisplay}
                             </h2>}
                     />}
                 />
