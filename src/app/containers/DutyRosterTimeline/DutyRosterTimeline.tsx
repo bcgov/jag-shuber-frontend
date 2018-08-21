@@ -46,7 +46,7 @@ interface DutyRosterTimelineDispatchProps {
     linkSheriff: (link: { sheriffId: IdType, dutyId: IdType, sheriffDutyId: IdType }) => void;
     showAssignmentDutyEditModal: (id: IdType) => void;
     showConfirmationModal: (props: ConnectedConfirmationModalProps) => void;
-    showSheriffDutySplittingModal: (source: SheriffDuty, target: SheriffDuty) => void;
+    showSheriffDutySplittingModal: (source: SheriffDuty, target: SheriffDuty, isDoubleBooking: boolean) => void;
 }
 
 interface DutyRosterTimelineStateProps {
@@ -133,6 +133,34 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
 
         return anyOverlap;
     }
+
+    protected isDoubleBookingOnReassignment(
+        sheriffToAssign: IdType = '', sheriffDutyToAssign: SheriffDuty, sourceSheriffDuty: SheriffDuty): boolean {
+       
+        const {
+            assignmentDuties = []
+        } = this.props;
+
+        const sdToAssignStartTime = moment(sheriffDutyToAssign.startDateTime).toISOString();
+        const sdToAssignEndTime = moment(sheriffDutyToAssign.endDateTime).toISOString();
+
+        const sheriffDutiesForSheriffToAssign =
+            assignmentDuties.reduce((sduties: SheriffDuty[], duty) => {
+                sduties.push(...duty.sheriffDuties.filter(sd => sd.sheriffId === sheriffToAssign));
+                return sduties;
+            }, []);
+
+        const anyOverlap = sheriffDutiesForSheriffToAssign.filter(sDuty => sDuty.id !== sourceSheriffDuty.id)
+            .some(sd => TimeRangeUtils
+            .doTimeRangesOverlap(
+                // tslint:disable-next-line:max-line-length
+                { startTime: moment(sd.startDateTime).toISOString(), endTime: moment(sd.endDateTime).toISOString() },
+                { startTime: sdToAssignStartTime, endTime: sdToAssignEndTime }
+            ));
+
+        return anyOverlap;
+    }
+
     protected onDropSheriff(dutyId: IdType, sheriffDutyId: IdType, sheriffId: IdType) {
         const {
             linkSheriff,
@@ -235,8 +263,12 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
                                                 this.onDropSheriff(duty.id, sheriffDutyId, sheriffId)}
                                         onDropSheriffDuty={
                                             (source: SheriffDuty, target: SheriffDuty) =>
-                                                showSheriffDutySplittingModal(source, target)
-                                        }                                        
+                                                showSheriffDutySplittingModal(
+                                                    source,
+                                                    target,
+                                                    this.isDoubleBookingOnReassignment(source.sheriffId, target, source)
+                                                )
+                                        }
                                         workSection={workSectionMap[duty.assignmentId]}
                                     />
                                 )}
@@ -269,7 +301,7 @@ export default connect<DutyRosterTimelineStateProps, DutyRosterTimelineDispatchP
         linkSheriff: linkAssignment,
         showAssignmentDutyEditModal: (id: IdType) => AssignmentDutyEditModal.ShowAction(id),
         showConfirmationModal: (props: ConnectedConfirmationModalProps) => ConfirmationModal.ShowAction(props),
-        showSheriffDutySplittingModal: (source: SheriffDuty, target: SheriffDuty) =>
-            AssignmentSheriffDutyReassignmentModal.ShowAction(source, target)
+        showSheriffDutySplittingModal: (source: SheriffDuty, target: SheriffDuty, isDoubleBooking: boolean) =>
+            AssignmentSheriffDutyReassignmentModal.ShowAction(source, target, isDoubleBooking),
     }
 )(DutyRosterTimeline);

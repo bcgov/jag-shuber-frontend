@@ -12,6 +12,7 @@ import { show as showModal, hide as hideModal } from 'redux-modal';
 export interface AssignmentSheriffDutyReassignmentModalProps {
     sourceSheriffDuty: SheriffDuty;
     targetSheriffDuty: SheriffDuty;
+    isDoubleBooking: boolean;
 }
 
 export interface AssignmentSheriffDutyReassignmentModalDispatchProps {
@@ -29,7 +30,8 @@ class AssignmentSheriffDutyReassignmentModal extends React.PureComponent<Composi
             show,
             handleHide,
             sourceSheriffDuty,
-            targetSheriffDuty
+            targetSheriffDuty,
+            isDoubleBooking
         } = this.props;
 
         return (
@@ -46,6 +48,7 @@ class AssignmentSheriffDutyReassignmentModal extends React.PureComponent<Composi
                     <AssignmentSheriffDutyReassignmentForm 
                         sourceDuty={sourceSheriffDuty} 
                         targetDuty={targetSheriffDuty}
+                        isDoubleBooking={isDoubleBooking}
                         onSubmitSuccess={handleHide} 
                     />
                 </Modal.Body>
@@ -77,7 +80,7 @@ export default class extends connectModal(modalConfig)(
         <ConnectedShowModalButton modalName={modalConfig.name} modalProps={props} />
     )
 
-    static ShowAction = (sourceSheriffDuty: SheriffDuty, targetSheriffDuty: SheriffDuty) => 
-        showModal(modalConfig.name, { sourceSheriffDuty, targetSheriffDuty })
+    static ShowAction = (sourceSheriffDuty: SheriffDuty, targetSheriffDuty: SheriffDuty, isDoubleBooking: boolean) => 
+        showModal(modalConfig.name, { sourceSheriffDuty, targetSheriffDuty, isDoubleBooking })
     static HideAction = () => hideModal(modalConfig.name);
 }

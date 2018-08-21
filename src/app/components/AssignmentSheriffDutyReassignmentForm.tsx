@@ -15,6 +15,7 @@ import Form from './FormElements/Form';
 import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 import toTitleCase from '../infrastructure/toTitleCase';
 import { getWorkSectionColour } from '../api/utils';
+import { Glyphicon } from 'react-bootstrap';
 
 export type DutyReassignmentDetails = {
     workSectionId?: WorkSectionCode;
@@ -31,6 +32,7 @@ export interface SheriffDutyReassignmentFormProps {
     targetDuty: SheriffDuty;
     sourceReassignmentDetails?: DutyReassignmentDetails;
     targetReassignmentDetails?: DutyReassignmentDetails;
+    isDoubleBooking: boolean;
 }
 
 export default class SheriffDutyReassignmentForm extends
@@ -104,22 +106,27 @@ export default class SheriffDutyReassignmentForm extends
     }
    
         render() {
-            const { sourceReassignmentDetails = {} } = this.props;
+            const { sourceReassignmentDetails = {}, isDoubleBooking } = this.props;
             const minTime = TimeUtils.getDefaultTimePickerMinTime().toISOString();
             const maxTime = TimeUtils.getDefaultTimePickerMaxTime().toISOString();
             const SourceTimeField = this.renderSourceTimePicker(minTime, maxTime);
             const TargetTimeField = this.renderTargetTimePicker(minTime, maxTime);
+            // tslint:disable-next-line:max-line-length
+            const sheriffName = `${toTitleCase(sourceReassignmentDetails.sheriffFirstName)} ${toTitleCase(sourceReassignmentDetails.sheriffLastName)}`;
             return (
                 <div>
-                    <h1>
-                        Move {toTitleCase(sourceReassignmentDetails.sheriffFirstName)} {toTitleCase(sourceReassignmentDetails.sheriffLastName)}
-                    </h1>
+                    <h1> Move {sheriffName} </h1>
                     <br />
                     <Form {...this.props}>
                         <SourceTimeField />
                         <br /><br />
                         <TargetTimeField />
                     </Form>
+                    {isDoubleBooking && 
+                        <div className="warning-message">
+                            <Glyphicon glyph="alert" style={{marginRight: 7, fontSize: 18}} />
+                            Overlapping duties for {sheriffName}
+                        </div>}
                 </div>
             );
         }
