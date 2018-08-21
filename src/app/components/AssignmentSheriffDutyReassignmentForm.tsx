@@ -71,7 +71,7 @@ export default class SheriffDutyReassignmentForm extends
                         color={getWorkSectionColour(sourceReassignmentDetails.workSectionId)}
                         label={
                             <h2 style={{ marginBottom: 5 }}>
-                                From {sourceReassignmentDetails.title} at {timeDisplay}
+                               From <b>{sourceReassignmentDetails.title}</b> at {timeDisplay}
                             </h2>}
                     />}
                 />
@@ -96,8 +96,8 @@ export default class SheriffDutyReassignmentForm extends
                         timeIncrement={15}
                         color={getWorkSectionColour(targetReassignmentDetails.workSectionId)}
                         label={
-                            <h2 style={{ marginBottom: 5 }}>
-                                To {targetReassignmentDetails.title} at {timeDisplay}
+                            <h2 style={{ marginBottom: 5, fontSize: 21 }}>
+                                To <b>{targetReassignmentDetails.title}</b> at {timeDisplay}
                             </h2>}
                     />}
                 />
@@ -107,7 +107,8 @@ export default class SheriffDutyReassignmentForm extends
    
         render() {
             const { 
-                sourceReassignmentDetails = {}, 
+                sourceReassignmentDetails = {},
+                targetReassignmentDetails = {}, 
                 isDoubleBooking,
                 minTime = TimeUtils.getDefaultTimePickerMinTime().toISOString(),
                 maxTime = TimeUtils.getDefaultTimePickerMaxTime().toISOString() 
@@ -118,7 +119,7 @@ export default class SheriffDutyReassignmentForm extends
             const sheriffName = `${toTitleCase(sourceReassignmentDetails.sheriffFirstName)} ${toTitleCase(sourceReassignmentDetails.sheriffLastName)}`;
             return (
                 <div>
-                    <h1> Move {sheriffName} </h1>
+                    <div style={{fontSize: 24}}> Move <b>{sheriffName}</b> </div>
                     <br />
                     <Form {...this.props}>
                         <SourceTimeField />
@@ -128,7 +129,7 @@ export default class SheriffDutyReassignmentForm extends
                     {isDoubleBooking && 
                         <div className="warning-message">
                             <Glyphicon glyph="alert" style={{marginRight: 7, fontSize: 18}} />
-                            Overlapping duties for {sheriffName}
+                            {targetReassignmentDetails.title} overlaps with another duty to which {sheriffName} is assigned.
                         </div>}
                 </div>
             );
