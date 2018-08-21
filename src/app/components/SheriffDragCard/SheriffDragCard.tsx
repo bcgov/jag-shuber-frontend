@@ -3,12 +3,10 @@ import { Sheriff } from '../../api';
 import './SheriffDragCard.css';
 import { Glyphicon } from 'react-bootstrap';
 
-export interface SheriffListCardProps {
-    onClick?: () => void;
+export interface SheriffDragCardProps {   
     sheriff: Sheriff;
-    disabled?: boolean;
 }
-export default class SheriffDragCard extends React.PureComponent<SheriffListCardProps, {}> {
+export default class SheriffDragCard extends React.PureComponent<SheriffDragCardProps, {}> {
     render() {
         const { sheriff } = this.props;
         const {

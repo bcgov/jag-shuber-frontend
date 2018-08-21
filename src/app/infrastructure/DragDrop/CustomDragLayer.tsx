@@ -1,9 +1,9 @@
-
-import * as React from 'react';
+import React from 'react';
 import { ItemType } from './ItemTypes';
 import { XYCoord, DragLayer } from 'react-dnd';
 import { Sheriff, SheriffDuty } from '../../api';
 import SheriffDragCard from '../../components/SheriffDragCard/SheriffDragCard';
+import SheriffDisplay from '../../containers/SheriffDisplay';
 
 export interface CustomDragLayerProps {
     item?: any;
@@ -61,12 +61,7 @@ class CustomDragLayer extends React.Component<CustomDragLayerProps> {
                 break;            
             case 'SheriffDuty':
                 const duty = item as SheriffDuty;
-                renderedItem =(
-                    <div>
-                        <h2>Duty: {duty.dutyId}</h2>
-                        <h2>Sheriff: {duty.sheriffId}</h2>
-                    </div>
-                );
+                renderedItem = <SheriffDisplay sheriffId={duty.sheriffId} RenderComponent={SheriffDragCard} />;
                 break;
             default:
                 renderedItem = null;
@@ -89,7 +84,6 @@ class CustomDragLayer extends React.Component<CustomDragLayerProps> {
     }
 }
 
-
 export default DragLayer<CustomDragLayerProps, any, CustomDragLayer, any>(monitor => ({
     item: monitor.getItem(),
     itemType: monitor.getItemType(),
@@ -97,4 +91,3 @@ export default DragLayer<CustomDragLayerProps, any, CustomDragLayer, any>(monito
     currentOffset: monitor.getSourceClientOffset(),
     isDragging: monitor.isDragging()
 }))(CustomDragLayer);
-
