@@ -10,6 +10,8 @@ export interface CustomDragLayerProps {
     itemType?: ItemType;
     initialOffset?: XYCoord;
     currentOffset?: XYCoord;
+    pointerOffset?: XYCoord;
+    offsetDelta?: XYCoord;
     isDragging?: boolean;
 }
 
@@ -24,22 +26,14 @@ const layerStyles: React.CSSProperties = {
 };
 
 function getItemStyles(props: CustomDragLayerProps) {
-    const { initialOffset, currentOffset } = props;
-    if (!initialOffset || !currentOffset) {
+    const { initialOffset, currentOffset, pointerOffset } = props;
+    if (!initialOffset || !currentOffset || !pointerOffset) {
         return {
             display: 'none',
         };
     }
 
-    let { x, y } = currentOffset;
-
-    // if (props.snapToGrid) {
-    //     x -= initialOffset.x
-    //     y -= initialOffset.y
-    //         ;[x, y] = snapToGrid(x, y)
-    //     x += initialOffset.x
-    //     y += initialOffset.y
-    // }
+    let { x, y } = pointerOffset;
 
     const transform = `translate(${x}px, ${y}px)`;
     return {
@@ -58,7 +52,7 @@ class CustomDragLayer extends React.Component<CustomDragLayerProps> {
             case 'Sheriff':
                 const sheriff = item as Sheriff;
                 renderedItem = <SheriffDragCard sheriff={sheriff} />;
-                break;            
+                break;
             case 'SheriffDuty':
                 const duty = item as SheriffDuty;
                 renderedItem = <SheriffDisplay sheriffId={duty.sheriffId} RenderComponent={SheriffDragCard} />;
@@ -89,5 +83,7 @@ export default DragLayer<CustomDragLayerProps, any, CustomDragLayer, any>(monito
     itemType: monitor.getItemType(),
     initialOffset: monitor.getInitialSourceClientOffset(),
     currentOffset: monitor.getSourceClientOffset(),
+    pointerOffset: monitor.getClientOffset(),
+    offsetDelta: monitor.getDifferenceFromInitialOffset(),
     isDragging: monitor.isDragging()
 }))(CustomDragLayer);
