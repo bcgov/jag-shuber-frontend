@@ -99,7 +99,7 @@ body {
 }
 
 [draggable]:active {
-  opacity: 0.5;
+  opacity: 1;
 }
 
 .unselectable{
