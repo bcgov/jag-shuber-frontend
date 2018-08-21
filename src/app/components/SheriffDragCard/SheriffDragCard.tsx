@@ -1,10 +1,7 @@
-import * as React from 'react';
+import React from 'react';
 import { Sheriff } from '../../api';
-import {
-    ListGroupItem
-} from 'react-bootstrap';
-// import SheriffRankDisplay from '../../containers/SheriffRankDisplay';
 import './SheriffDragCard.css';
+import { Glyphicon } from 'react-bootstrap';
 
 export interface SheriffListCardProps {
     onClick?: () => void;
@@ -13,24 +10,17 @@ export interface SheriffListCardProps {
 }
 export default class SheriffDragCard extends React.PureComponent<SheriffListCardProps, {}> {
     render() {
-        const { sheriff, disabled = false } = this.props;
-        const { 
-            firstName, 
-            lastName, 
-        //     badgeNo, 
-        //     rankCode = '', 
-        // alias = '' 
-    } = sheriff;
+        const { sheriff } = this.props;
+        const {
+            firstName,
+            lastName
+        } = sheriff;
 
         return (
-            <ListGroupItem 
-                className={`sheriff-drag-card drop-shadow-hover ${disabled ? 'not-active' : ''}`}
-                >
-                <span className="sheriff-card-name">
-                    {lastName.toUpperCase()}, {firstName.charAt(0).toUpperCase()}
-                </span><br />
-                {this.props.children}
-            </ListGroupItem>
+            <div className="sheriff-drag-card">
+               <Glyphicon glyph="user" style={{marginRight: 7, marginLeft: 10}}/> 
+               <span>{lastName.toUpperCase()}, {firstName.charAt(0).toUpperCase()}</span>
+            </div>
         );
     }
 }

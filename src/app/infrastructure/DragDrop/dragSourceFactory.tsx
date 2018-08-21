@@ -55,7 +55,7 @@ export default function dragSourceFactory
                     // IE fallback: specify that we'd rather screenshot the node
                     // when it already knows it's being dragged so we can hide it with CSS.
                     captureDraggingState: true,
-                })
+                });
             }
         }
         render() {
