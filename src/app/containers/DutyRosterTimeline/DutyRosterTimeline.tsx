@@ -218,7 +218,8 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
                                             classNames.push(color === '#FFFFFF' ? 'light' : 'dark');
                                             return (
                                                 <SheriffDutyDragSource
-                                                    sheriffDuty={sheriffDuty} 
+                                                    sheriffDuty={sheriffDuty}
+                                                    canDrag={sd => sd.sheriffId != undefined}
                                                 >
                                                     <ConnectedSheriffDutyBar
                                                         {...barP}
@@ -233,9 +234,9 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
                                             ({ id: sheriffId }, { id: sheriffDutyId }) =>
                                                 this.onDropSheriff(duty.id, sheriffDutyId, sheriffId)}
                                         onDropSheriffDuty={
-                                            (source: SheriffDuty, target: SheriffDuty) => 
+                                            (source: SheriffDuty, target: SheriffDuty) =>
                                                 showSheriffDutySplittingModal(source, target)
-                                        }
+                                        }                                        
                                         workSection={workSectionMap[duty.assignmentId]}
                                     />
                                 )}
@@ -268,7 +269,7 @@ export default connect<DutyRosterTimelineStateProps, DutyRosterTimelineDispatchP
         linkSheriff: linkAssignment,
         showAssignmentDutyEditModal: (id: IdType) => AssignmentDutyEditModal.ShowAction(id),
         showConfirmationModal: (props: ConnectedConfirmationModalProps) => ConfirmationModal.ShowAction(props),
-        showSheriffDutySplittingModal: (source: SheriffDuty, target: SheriffDuty) => 
-                                                AssignmentSheriffDutyReassignmentModal.ShowAction(source, target)
+        showSheriffDutySplittingModal: (source: SheriffDuty, target: SheriffDuty) =>
+            AssignmentSheriffDutyReassignmentModal.ShowAction(source, target)
     }
 )(DutyRosterTimeline);

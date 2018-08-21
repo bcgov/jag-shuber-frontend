@@ -45,7 +45,7 @@ function createFakeMinder(options = {}) {
         if (webEndpoints.some(ep => req.url.indexOf(ep) == 0)) {
             return proxy.web(req, res);
         } else {
-            console.log(`404 ${req.url}`)
+            console.warn(`404 ${req.url}`)
             res.statusCode = 404;
             res.end();
         }

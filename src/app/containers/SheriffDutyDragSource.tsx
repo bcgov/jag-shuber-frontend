@@ -22,16 +22,24 @@ interface SheriffDutyDragSourceProps {
     sheriffDuty: SheriffDuty;
     beginDrag?: (sheriffDuty: SheriffDuty) => void;
     endDrag?: (args: any) => void;
+    canDrag?: (sheriffDuty: SheriffDuty) => boolean;
 }
 
 export default class SheriffDutyDragSource extends React.PureComponent<SheriffDutyDragSourceProps> {
     render() {
-        const { children, sheriffDuty, beginDrag, endDrag } = this.props;
+        const {
+            children,
+            sheriffDuty,
+            beginDrag,
+            endDrag,
+            canDrag = (sd: SheriffDuty) => sd && sd.sheriffId != undefined
+        } = this.props;
         return (
-            <GenericSheriffDutyDragSource 
-                getDragData={() => sheriffDuty} 
-                beginDrag={beginDrag} 
+            <GenericSheriffDutyDragSource
+                getDragData={() => sheriffDuty}
+                beginDrag={beginDrag}
                 endDrag={endDrag}
+                canDrag={() => canDrag(sheriffDuty)}
             >
                 {children}
             </GenericSheriffDutyDragSource>

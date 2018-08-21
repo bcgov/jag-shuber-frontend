@@ -24,6 +24,7 @@ export interface SheriffDutyBarProps {
     canDropSheriff?: (sheriff: Sheriff) => boolean;
     onDropSheriff?: (sheriff: Sheriff, sheriffDuty: SheriffDuty) => void;
     onDropSheriffDuty?: (sourceSheriffDuty: SheriffDuty, targetSheriffDuty: SheriffDuty) => void;
+    canDropSheriffDuty?: (sheriffDuty: SheriffDuty) => boolean;
     style?: React.CSSProperties;
     computeStyle?: (status: { isActive: boolean, isOver: boolean, canDrop: boolean }) => React.CSSProperties;
     className?: string;
@@ -114,7 +115,7 @@ export default class SheriffDutyBar extends React.PureComponent<SheriffDutyBarPr
                 onDropSheriff={(s) => onDropSheriff && onDropSheriff(s, sheriffDuty)}
                 canDropSheriff={(s: Sheriff) => canDropSheriff && canDropSheriff(s)}
                 onDropSheriffDuty={(sd) => onDropSheriffDuty && onDropSheriffDuty(sd, sheriffDuty)}
-                canDropSheriffDuty={() => true}
+                canDropSheriffDuty={(sd) => sd.id != sheriffDuty.id}
                 computeStyle={computeStyle}
                 className={`sheriff-duty-bar ${className}`}
                 style={{

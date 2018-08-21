@@ -23,6 +23,10 @@ export default function dragSourceFactory
                 let result = monitor.getDropResult() as TDropResult;
                 endDrag(result);
             }
+        },
+        canDrag: (props: GenericDragSourceProps, monitor) => {
+            const { canDrag } = props;
+            return canDrag ? canDrag() : true;
         }
     };
 
@@ -36,8 +40,9 @@ export default function dragSourceFactory
 
     interface GenericDragSourceProps {
         getDragData?: () => TDrag;
-        endDrag?: (result?: TDropResult) => void;
         beginDrag?: (item: TDrag) => void;
+        endDrag?: (result?: TDropResult) => void;
+        canDrag?: () => boolean;
         connectDragSource?: any;
         connectDragPreview?: any;
         isDragging?: boolean;
