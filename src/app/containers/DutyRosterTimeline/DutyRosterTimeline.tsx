@@ -28,9 +28,9 @@ import AssignmentTimeline from '../../components/AssignmentTimeline/AssignmentTi
 import { TimelineProps } from '../../components/Timeline/Timeline';
 import AssignmentCard from '../../components/AssignmentCard/AssignmentCard';
 import { getForegroundColor } from '../../infrastructure/colorUtils';
-import { 
-    visibleTime, 
-    dutiesForDraggingSheriff, 
+import {
+    visibleTime,
+    dutiesForDraggingSheriff,
     draggingSheriff
 } from '../../modules/dutyRoster/selectors';
 import AssignmentDutyEditModal from '../AssignmentDutyEditModal';
@@ -104,7 +104,7 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
 
     protected isDoubleBookingSheriff(
         sheriffToAssign: IdType = '', sheriffDutyToAssign: SheriffDuty, sourceSheriffDuty?: SheriffDuty): boolean {
-       
+
         const {
             assignmentDuties = []
         } = this.props;
@@ -117,11 +117,17 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
                 sduties.push(...duty.sheriffDuties.filter(sd => sd.sheriffId === sheriffToAssign));
                 return sduties;
             }, []);
-        
+
+        let sheriffDutiesForSheriffToAssignSourceRemoved: SheriffDuty[] | undefined = undefined;
         if (sourceSheriffDuty) {
-            sheriffDutiesForSheriffToAssign.filter(sDuty => sDuty.id !== sourceSheriffDuty.id)
+            sheriffDutiesForSheriffToAssignSourceRemoved =
+                sheriffDutiesForSheriffToAssign.filter(sDuty => sDuty.id !== sourceSheriffDuty.id);
         }
-        const anyOverlap = sheriffDutiesForSheriffToAssign.some(sd => TimeRangeUtils
+        const finalListOfSheriffDuties = sheriffDutiesForSheriffToAssignSourceRemoved ?
+            sheriffDutiesForSheriffToAssignSourceRemoved
+            : sheriffDutiesForSheriffToAssign;
+
+        const anyOverlap = finalListOfSheriffDuties.some(sd => TimeRangeUtils
             .doTimeRangesOverlap(
                 // tslint:disable-next-line:max-line-length
                 { startTime: moment(sd.startDateTime).toISOString(), endTime: moment(sd.endDateTime).toISOString() },
