@@ -28,7 +28,11 @@ import AssignmentTimeline from '../../components/AssignmentTimeline/AssignmentTi
 import { TimelineProps } from '../../components/Timeline/Timeline';
 import AssignmentCard from '../../components/AssignmentCard/AssignmentCard';
 import { getForegroundColor } from '../../infrastructure/colorUtils';
-import { visibleTime, dutiesForDraggingSheriff, draggingSheriff } from '../../modules/dutyRoster/selectors';
+import { 
+    visibleTime, 
+    dutiesForDraggingSheriff, 
+    draggingSheriff
+} from '../../modules/dutyRoster/selectors';
 import AssignmentDutyEditModal from '../AssignmentDutyEditModal';
 import * as TimeRangeUtils from '../../infrastructure/TimeRangeUtils';
 import ConfirmationModal, { ConnectedConfirmationModalProps } from '../ConfirmationModal';
@@ -56,6 +60,7 @@ interface DutyRosterTimelineStateProps {
     visibleTimeEnd: any;
     draggingSheriffAssignmentDuties: AssignmentDuty[];
     draggingSheriffId?: IdType;
+    willAssigningSheriffBeDoubleBooked?: boolean;
 }
 
 type CompositeProps = DutyRosterTimelineProps & DutyRosterTimelineStateProps & DutyRosterTimelineDispatchProps;
@@ -97,45 +102,8 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
         }
     }
 
-    protected isOverlappingSheriffDuties(dutyId: IdType, sheriffDutyId: IdType): boolean {
-        const {
-            draggingSheriffAssignmentDuties = [],
-            assignmentDuties = [],
-            draggingSheriffId
-        } = this.props;
-
-        const dutyWithSheriffDutyToAssign = assignmentDuties.find(ad => ad.id === dutyId);
-        let sheriffDutyToAssign: SheriffDuty | undefined;
-        if (dutyWithSheriffDutyToAssign !== undefined) {
-            sheriffDutyToAssign = dutyWithSheriffDutyToAssign.sheriffDuties.find(sd => sd.id === sheriffDutyId);
-        }
-
-        let anyOverlap: boolean = false;
-        if (dutyWithSheriffDutyToAssign) {
-            if (sheriffDutyToAssign !== undefined) {
-                const sdToAssignStartTime = moment(sheriffDutyToAssign.startDateTime).toISOString();
-                const sdToAssignEndTime = moment(sheriffDutyToAssign.endDateTime).toISOString();
-
-                const sheriffDutiesForDraggingSheriff =
-                    draggingSheriffAssignmentDuties.reduce((sduties: SheriffDuty[], duty) => {
-                        sduties.push(...duty.sheriffDuties.filter(sd => sd.sheriffId === draggingSheriffId));
-                        return sduties;
-                    }, []);
-
-                anyOverlap = sheriffDutiesForDraggingSheriff.some(sd => TimeRangeUtils
-                    .doTimeRangesOverlap(
-                        // tslint:disable-next-line:max-line-length
-                        { startTime: moment(sd.startDateTime).toISOString(), endTime: moment(sd.endDateTime).toISOString() },
-                        { startTime: sdToAssignStartTime, endTime: sdToAssignEndTime }
-                    ));
-            }
-        }
-
-        return anyOverlap;
-    }
-
-    protected isDoubleBookingOnReassignment(
-        sheriffToAssign: IdType = '', sheriffDutyToAssign: SheriffDuty, sourceSheriffDuty: SheriffDuty): boolean {
+    protected isDoubleBookingSheriff(
+        sheriffToAssign: IdType = '', sheriffDutyToAssign: SheriffDuty, sourceSheriffDuty?: SheriffDuty): boolean {
        
         const {
             assignmentDuties = []
@@ -149,9 +117,11 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
                 sduties.push(...duty.sheriffDuties.filter(sd => sd.sheriffId === sheriffToAssign));
                 return sduties;
             }, []);
-
-        const anyOverlap = sheriffDutiesForSheriffToAssign.filter(sDuty => sDuty.id !== sourceSheriffDuty.id)
-            .some(sd => TimeRangeUtils
+        
+        if (sourceSheriffDuty) {
+            sheriffDutiesForSheriffToAssign.filter(sDuty => sDuty.id !== sourceSheriffDuty.id)
+        }
+        const anyOverlap = sheriffDutiesForSheriffToAssign.some(sd => TimeRangeUtils
             .doTimeRangesOverlap(
                 // tslint:disable-next-line:max-line-length
                 { startTime: moment(sd.startDateTime).toISOString(), endTime: moment(sd.endDateTime).toISOString() },
@@ -161,13 +131,15 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
         return anyOverlap;
     }
 
-    protected onDropSheriff(dutyId: IdType, sheriffDutyId: IdType, sheriffId: IdType) {
+    protected onDropSheriff(dutyId: IdType, sheriffDutyToAssign: SheriffDuty, sheriffId: IdType) {
         const {
             linkSheriff,
             showConfirmationModal
         } = this.props;
 
-        if (this.isOverlappingSheriffDuties(dutyId, sheriffDutyId)) {
+        const sheriffDutyId = sheriffDutyToAssign.id;
+
+        if (this.isDoubleBookingSheriff(sheriffId, sheriffDutyToAssign)) {
             const confirmMessage = <h3>Assign {<SheriffNameDisplay id={sheriffId} />} to overlapping duties?</h3>;
             showConfirmationModal(
                 {
@@ -237,7 +209,8 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
                                             const { sheriffDuty } = barP;
                                             const isAssignedToDraggingSheriff =
                                                 draggingSheriffId && sheriffDuty.sheriffId === draggingSheriffId;
-                                            const isOpen = !this.isOverlappingSheriffDuties(duty.id, sheriffDuty.id);
+                                            // tslint:disable-next-line:max-line-length
+                                            const isOpen = !this.isDoubleBookingSheriff(draggingSheriffId, sheriffDuty);
                                             const style: React.CSSProperties = {
                                                 opacity: isAssignedToDraggingSheriff || isOpen ? 1 : .6
                                             };
@@ -259,14 +232,14 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
                                             );
                                         }}
                                         onDropSheriff={
-                                            ({ id: sheriffId }, { id: sheriffDutyId }) =>
-                                                this.onDropSheriff(duty.id, sheriffDutyId, sheriffId)}
+                                            ({ id: sheriffId }, sheriffDutyToAssign: SheriffDuty) =>
+                                                this.onDropSheriff(duty.id, sheriffDutyToAssign, sheriffId)}
                                         onDropSheriffDuty={
                                             (source: SheriffDuty, target: SheriffDuty) =>
                                                 showSheriffDutySplittingModal(
                                                     source,
                                                     target,
-                                                    this.isDoubleBookingOnReassignment(source.sheriffId, target, source)
+                                                    this.isDoubleBookingSheriff(source.sheriffId, target, source)
                                                 )
                                         }
                                         workSection={workSectionMap[duty.assignmentId]}
@@ -290,6 +263,7 @@ const mapStateToProps = (state: RootState, props: DutyRosterTimelineProps) => {
         ...currentVisibleTime,
         draggingSheriffAssignmentDuties: dutiesForDraggingSheriff(state),
         draggingSheriffId: draggingSheriff(state)
+
     };
 };
 

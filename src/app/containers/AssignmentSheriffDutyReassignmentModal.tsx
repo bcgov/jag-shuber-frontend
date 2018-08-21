@@ -1,4 +1,6 @@
 import React from 'react';
+import moment from 'moment';
+import { RootState } from '../store';
 import {
     Modal
 } from 'react-bootstrap';
@@ -8,6 +10,8 @@ import { connect } from 'react-redux';
 import { IModalInjectedProps, connectModal } from 'redux-modal';
 import { ConnectedShowModalButton } from './ConnectedShowModalButton';
 import { show as showModal, hide as hideModal } from 'redux-modal';
+import { visibleTime } from '../modules/dutyRoster/selectors';
+import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 
 export interface AssignmentSheriffDutyReassignmentModalProps {
     sourceSheriffDuty: SheriffDuty;
@@ -18,9 +22,15 @@ export interface AssignmentSheriffDutyReassignmentModalProps {
 export interface AssignmentSheriffDutyReassignmentModalDispatchProps {
 }
 
+export interface AssignmentSheriffDutyReassignmentModalStateProps {
+    visibleTimeStart: any;
+    visibleTimeEnd: any;
+}
+
 type CompositeProps = 
     AssignmentSheriffDutyReassignmentModalProps 
-    & AssignmentSheriffDutyReassignmentModalDispatchProps 
+    & AssignmentSheriffDutyReassignmentModalDispatchProps
+    & AssignmentSheriffDutyReassignmentModalStateProps 
     & IModalInjectedProps;
 
 class AssignmentSheriffDutyReassignmentModal extends React.PureComponent<CompositeProps> {
@@ -31,7 +41,8 @@ class AssignmentSheriffDutyReassignmentModal extends React.PureComponent<Composi
             handleHide,
             sourceSheriffDuty,
             targetSheriffDuty,
-            isDoubleBooking
+            isDoubleBooking,
+            visibleTimeStart
         } = this.props;
 
         return (
@@ -49,7 +60,9 @@ class AssignmentSheriffDutyReassignmentModal extends React.PureComponent<Composi
                         sourceDuty={sourceSheriffDuty} 
                         targetDuty={targetSheriffDuty}
                         isDoubleBooking={isDoubleBooking}
-                        onSubmitSuccess={handleHide} 
+                        onSubmitSuccess={handleHide}
+                        minTime={TimeUtils.getDefaultTimePickerMinTime(moment(visibleTimeStart)).toISOString()}
+                        maxTime={TimeUtils.getDefaultTimePickerMaxTime(moment(visibleTimeStart)).toISOString()}
                     />
                 </Modal.Body>
                 <Modal.Footer>
@@ -66,11 +79,18 @@ const modalConfig = {
     name: 'AssignmentSheriffDutyReassignmentModal'
 };
 
+const mapStateToProps = (state: RootState) => {
+    const currentVisibleTime = visibleTime(state);
+    return {
+        ...currentVisibleTime,
+    };
+};
+
 // Here we extend the Higher Order Component so that we can add on some static
 // members that can be used to hide the modal configuration from consumers
 export default class extends connectModal(modalConfig)(
-    connect<{}, AssignmentSheriffDutyReassignmentModalDispatchProps, AssignmentSheriffDutyReassignmentModalProps>(
-        null,
+    connect<AssignmentSheriffDutyReassignmentModalStateProps, AssignmentSheriffDutyReassignmentModalDispatchProps, AssignmentSheriffDutyReassignmentModalProps>(
+        mapStateToProps,
         {})
         (AssignmentSheriffDutyReassignmentModal) as any
 ) {

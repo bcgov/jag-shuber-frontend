@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as moment from 'moment';
+import React from 'react';
+import moment from 'moment';
 import {
     Field,
     InjectedFormProps,
@@ -88,7 +88,9 @@ export default class AssignmentDutyForm extends
 
     renderSheriffDutyFieldsComponent(workSectionId: WorkSectionCode): React.ComponentClass {
         const {
-            onRemoveSheriffDuty
+            onRemoveSheriffDuty,
+            minTime = TimeUtils.getDefaultTimePickerMinTime().toISOString(),
+            maxTime = TimeUtils.getDefaultTimePickerMaxTime().toISOString(),
         } = this.props;
         return formValues('timeRange')((timeRangeProps: any) => {
             const {
@@ -149,8 +151,8 @@ export default class AssignmentDutyForm extends
                                                     name={`${fieldInstanceName}.timeRange`}
                                                     component={(p) => <TimeSliderField
                                                         {...p}
-                                                        minTime={TimeUtils.getDefaultTimePickerMinTime().toISOString()}
-                                                        maxTime={TimeUtils.getDefaultTimePickerMaxTime().toISOString()}
+                                                        minTime={minTime}
+                                                        maxTime={maxTime}
                                                         minAllowedTime={startTime}
                                                         maxAllowedTime={endTime}
                                                         timeIncrement={15}

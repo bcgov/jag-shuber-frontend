@@ -106,9 +106,12 @@ export default class SheriffDutyReassignmentForm extends
     }
    
         render() {
-            const { sourceReassignmentDetails = {}, isDoubleBooking } = this.props;
-            const minTime = TimeUtils.getDefaultTimePickerMinTime().toISOString();
-            const maxTime = TimeUtils.getDefaultTimePickerMaxTime().toISOString();
+            const { 
+                sourceReassignmentDetails = {}, 
+                isDoubleBooking,
+                minTime = TimeUtils.getDefaultTimePickerMinTime().toISOString(),
+                maxTime = TimeUtils.getDefaultTimePickerMaxTime().toISOString() 
+            } = this.props;
             const SourceTimeField = this.renderSourceTimePicker(minTime, maxTime);
             const TargetTimeField = this.renderTargetTimePicker(minTime, maxTime);
             // tslint:disable-next-line:max-line-length
