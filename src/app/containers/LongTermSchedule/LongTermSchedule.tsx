@@ -143,7 +143,7 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
                                     height: '100%',
                                     display: 'flex'
                                 }}
-                                onDropItem={(sheriff) => assignShift({ sheriffId: sheriff.id, shiftId: shift.id })}
+                                onDropItem={(sheriff) => { assignShift({ sheriffId: sheriff.id, shiftId: shift.id }); }}
                                 canDropItem={(sheriff) =>
                                     !this.isSheriffLoanedOut(sheriff.id)
                                     && !this.isSheriffOnFullDayLeave(sheriff.id, shift)
@@ -157,7 +157,7 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
                                     isSelected={this.isShiftSelected(shift.id)}
                                     isAssigned={shift.sheriffId != undefined}
                                 >
-                                    {partialLeave !== undefined && 
+                                    {partialLeave !== undefined &&
                                         <div style={{ position: 'absolute', top: 0, margin: 5 }}>
                                             <PartialLeavePopover leave={partialLeave} />
                                         </div>}

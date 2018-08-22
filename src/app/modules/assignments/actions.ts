@@ -33,6 +33,7 @@ export const createDefaultDuties = assignmentDutyRequests.createDefaultDutiesReq
 
 // Sheriff Duties
 export const deleteSheriffDuty = assignmentDutyRequests.deleteSheriffDutyRequest.actionCreator;
+export const reassignSheriffDuty = assignmentDutyRequests.reassignSheriffDutyRequest.actionCreator;
 
 type SheriffDutyLink = { sheriffId: IdType, dutyId: IdType, sheriffDutyId: IdType };
 export const linkAssignment: ThunkAction<SheriffDutyLink, AssignmentDuty | undefined> =

@@ -5,14 +5,15 @@
 }
 
 .assignment-actions {
-    display: none;
+    /* display: none; */
+    display: block;
     float: right; 
     padding-right: 5px;
 }
 
-.assignment-card:hover .assignment-actions {
+/* .assignment-card:hover .assignment-actions {
     display: block;
-}
+} */
 
 .assignment-card-title {
     max-width: 80%;

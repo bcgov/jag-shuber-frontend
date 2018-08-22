@@ -10,7 +10,10 @@ import {
     AssignmentDuty,
     IdType,
     DateRange,
-    DateType
+    DateType,
+    SheriffDutyReassignmentDetails,
+    SheriffDuty,
+    MapType
 } from '../../../api/Api';
 import CreateEntityRequest from '../../../infrastructure/Requests/CreateEntityRequest';
 import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRequest';
@@ -177,3 +180,47 @@ class DeleteSheriffDutyRequest extends RequestAction<string, string, AssignmentM
 }
 
 export const deleteSheriffDutyRequest = new DeleteSheriffDutyRequest();
+
+class ReassignSheriffDutyRequest extends RequestAction<
+    SheriffDutyReassignmentDetails, SheriffDuty[], AssignmentModuleState> {
+    constructor() {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'reassignSheriffDuty',
+            toasts: {
+                success: 'Sheriff has been reassigned',
+                // tslint:disable-next-line:max-line-length
+                error: (err) => `Problem encountered while reassigning sheriff: ${err ? err.toString() : 'Unknown Error'}`
+            }
+        });
+    }
+
+    public async doWork(reassignment: SheriffDutyReassignmentDetails, { api }: ThunkExtra): Promise<SheriffDuty[]> {
+        let updatedSheriffDuties = await api.reassignSheriffDuty(reassignment);
+        return updatedSheriffDuties;
+    }
+
+    setRequestData(moduleState: AssignmentModuleState, updatedDuties: SheriffDuty[] = []) {
+        const newMap = { ...assignmentDutyMapRequest.getRequestData(moduleState) } as MapType<AssignmentDuty>;
+
+        updatedDuties.forEach(updatedSd => {
+            const sheriffDutyParent = newMap[updatedSd.dutyId];
+
+            if (sheriffDutyParent) {
+                const sheriffDutyIndex = sheriffDutyParent.sheriffDuties.findIndex(sd => sd.id === updatedSd.id);
+                // if it already exists, replace it in the array
+                if (sheriffDutyIndex >= 0) {
+                    sheriffDutyParent.sheriffDuties[sheriffDutyIndex] = updatedSd;
+                } else {
+                    sheriffDutyParent.sheriffDuties.push(updatedSd);
+                }
+
+                newMap[sheriffDutyParent.id] = sheriffDutyParent;
+            }
+        });
+
+        return assignmentDutyMapRequest.setRequestData(moduleState, newMap);
+    }
+}
+
+export const reassignSheriffDutyRequest = new ReassignSheriffDutyRequest();

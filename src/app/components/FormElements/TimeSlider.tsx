@@ -3,7 +3,7 @@ import moment from 'moment';
 import { Range } from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import { TimeType } from '../../api/Api';
-import { HandleWithTooltip, createMarks } from './TimeSliderCommon';
+import { HandleWithTooltip, createMarks, sliderWithLimits } from './TimeSliderCommon';
 
 export interface TimeSliderProps {
   minTime: TimeType;
@@ -14,7 +14,7 @@ export interface TimeSliderProps {
   onTimeChanged?: (newTimes: { startTime: TimeType, endTime: TimeType }) => void;
   color?: string;
 }
-export default class TimeSlider extends React.Component<TimeSliderProps> {
+class TimeSlider extends React.Component<TimeSliderProps> {
 
   private handleAfterChange(arg: number[]) {
     const { minTime, onTimeChanged } = this.props;
@@ -79,14 +79,8 @@ export default class TimeSlider extends React.Component<TimeSliderProps> {
     const markLabels = createMarks(moment(minTime), moment(maxTime), timeIncrement);
 
     return (
-      <div 
-        style={{ 
-          marginLeft: 5,
-          marginRight: 15,
-          marginBottom: 25
-        }}
-      >
         <Range
+          {...this.props}
           step={timeIncrement}
           dots={true}
           allowCross={false}
@@ -110,7 +104,8 @@ export default class TimeSlider extends React.Component<TimeSliderProps> {
             />
           }
         />
-      </div>
     );
   }
 }
+
+export default sliderWithLimits(TimeSlider);

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Assignment } from '../../api';
 import AssignmentDutyAddModal from '../../containers/AssignmentDutyAddModal';
 import './AssignmentCard.css';

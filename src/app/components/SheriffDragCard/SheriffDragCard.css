@@ -1,0 +1,11 @@
+.sheriff-drag-card {
+    border: solid #003366 1px;
+    border-radius: 6px;
+    font-size: 14px;
+    width: 190px;
+    padding-top: 6px; 
+    padding-bottom: 6px;
+    box-shadow: 0 6px 15px rgba(0,0,0,.4);
+    background-color: white;
+    opacity:0.85;
+}

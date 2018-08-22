@@ -28,11 +28,17 @@ import AssignmentTimeline from '../../components/AssignmentTimeline/AssignmentTi
 import { TimelineProps } from '../../components/Timeline/Timeline';
 import AssignmentCard from '../../components/AssignmentCard/AssignmentCard';
 import { getForegroundColor } from '../../infrastructure/colorUtils';
-import { visibleTime, dutiesForDraggingSheriff, draggingSheriff } from '../../modules/dutyRoster/selectors';
+import {
+    visibleTime,
+    dutiesForDraggingSheriff,
+    draggingSheriff
+} from '../../modules/dutyRoster/selectors';
 import AssignmentDutyEditModal from '../AssignmentDutyEditModal';
 import * as TimeRangeUtils from '../../infrastructure/TimeRangeUtils';
 import ConfirmationModal, { ConnectedConfirmationModalProps } from '../ConfirmationModal';
 import SheriffNameDisplay from '../SheriffNameDisplay';
+import SheriffDutyDragSource from '../SheriffDutyDragSource';
+import AssignmentSheriffDutyReassignmentModal from '../AssignmentSheriffDutyReassignmentModal';
 
 interface DutyRosterTimelineProps extends TimelineProps {
     allowTimeDrag?: boolean;
@@ -44,6 +50,7 @@ interface DutyRosterTimelineDispatchProps {
     linkSheriff: (link: { sheriffId: IdType, dutyId: IdType, sheriffDutyId: IdType }) => void;
     showAssignmentDutyEditModal: (id: IdType) => void;
     showConfirmationModal: (props: ConnectedConfirmationModalProps) => void;
+    showSheriffDutySplittingModal: (source: SheriffDuty, target: SheriffDuty, isDoubleBooking: boolean) => void;
 }
 
 interface DutyRosterTimelineStateProps {
@@ -53,6 +60,7 @@ interface DutyRosterTimelineStateProps {
     visibleTimeEnd: any;
     draggingSheriffAssignmentDuties: AssignmentDuty[];
     draggingSheriffId?: IdType;
+    willAssigningSheriffBeDoubleBooked?: boolean;
 }
 
 type CompositeProps = DutyRosterTimelineProps & DutyRosterTimelineStateProps & DutyRosterTimelineDispatchProps;
@@ -94,49 +102,50 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
         }
     }
 
-    protected isOverlappingSheriffDuties(dutyId: IdType, sheriffDutyId: IdType): boolean {
+    protected isDoubleBookingSheriff(
+        sheriffToAssign: IdType = '', sheriffDutyToAssign: SheriffDuty, sourceSheriffDuty?: SheriffDuty): boolean {
+
         const {
-            draggingSheriffAssignmentDuties = [],
-            assignmentDuties = [],
-            draggingSheriffId
+            assignmentDuties = []
         } = this.props;
 
-        const dutyWithSheriffDutyToAssign = assignmentDuties.find(ad => ad.id === dutyId);
-        let sheriffDutyToAssign: SheriffDuty | undefined;
-        if (dutyWithSheriffDutyToAssign !== undefined) {
-            sheriffDutyToAssign = dutyWithSheriffDutyToAssign.sheriffDuties.find(sd => sd.id === sheriffDutyId);
+        const sdToAssignStartTime = moment(sheriffDutyToAssign.startDateTime).toISOString();
+        const sdToAssignEndTime = moment(sheriffDutyToAssign.endDateTime).toISOString();
+
+        const sheriffDutiesForSheriffToAssign =
+            assignmentDuties.reduce((sduties: SheriffDuty[], duty) => {
+                sduties.push(...duty.sheriffDuties.filter(sd => sd.sheriffId === sheriffToAssign));
+                return sduties;
+            }, []);
+
+        let sheriffDutiesForSheriffToAssignSourceRemoved: SheriffDuty[] | undefined = undefined;
+        if (sourceSheriffDuty) {
+            sheriffDutiesForSheriffToAssignSourceRemoved =
+                sheriffDutiesForSheriffToAssign.filter(sDuty => sDuty.id !== sourceSheriffDuty.id);
         }
+        const finalListOfSheriffDuties = sheriffDutiesForSheriffToAssignSourceRemoved ?
+            sheriffDutiesForSheriffToAssignSourceRemoved
+            : sheriffDutiesForSheriffToAssign;
 
-        let anyOverlap: boolean = false;
-        if (dutyWithSheriffDutyToAssign) {
-            if (sheriffDutyToAssign !== undefined) {
-                const sdToAssignStartTime = moment(sheriffDutyToAssign.startDateTime).toISOString();
-                const sdToAssignEndTime = moment(sheriffDutyToAssign.endDateTime).toISOString();
-
-                const sheriffDutiesForDraggingSheriff =
-                    draggingSheriffAssignmentDuties.reduce((sduties: SheriffDuty[], duty) => {
-                        sduties.push(...duty.sheriffDuties.filter(sd => sd.sheriffId === draggingSheriffId));
-                        return sduties;
-                    }, []);
-
-                anyOverlap = sheriffDutiesForDraggingSheriff.some(sd => TimeRangeUtils
-                    .doTimeRangesOverlap(
-                        // tslint:disable-next-line:max-line-length
-                        { startTime: moment(sd.startDateTime).toISOString(), endTime: moment(sd.endDateTime).toISOString() },
-                        { startTime: sdToAssignStartTime, endTime: sdToAssignEndTime }
-                    ));
-            }
-        }
+        const anyOverlap = finalListOfSheriffDuties.some(sd => TimeRangeUtils
+            .doTimeRangesOverlap(
+                // tslint:disable-next-line:max-line-length
+                { startTime: moment(sd.startDateTime).toISOString(), endTime: moment(sd.endDateTime).toISOString() },
+                { startTime: sdToAssignStartTime, endTime: sdToAssignEndTime }
+            ));
 
         return anyOverlap;
     }
-    protected onDropSheriff(dutyId: IdType, sheriffDutyId: IdType, sheriffId: IdType) {
+
+    protected onDropSheriff(dutyId: IdType, sheriffDutyToAssign: SheriffDuty, sheriffId: IdType) {
         const {
             linkSheriff,
             showConfirmationModal
         } = this.props;
 
-        if (this.isOverlappingSheriffDuties(dutyId, sheriffDutyId)) {
+        const sheriffDutyId = sheriffDutyToAssign.id;
+
+        if (this.isDoubleBookingSheriff(sheriffId, sheriffDutyToAssign)) {
             const confirmMessage = <h3>Assign {<SheriffNameDisplay id={sheriffId} />} to overlapping duties?</h3>;
             showConfirmationModal(
                 {
@@ -164,6 +173,7 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
             showAssignmentDutyEditModal,
             draggingSheriffAssignmentDuties = [],
             draggingSheriffId,
+            showSheriffDutySplittingModal,
             ...rest
         } = this.props;
 
@@ -197,7 +207,7 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
                                     borderColor: workSectionColor,
                                     color
                                 }}
-                                onClick={() => showAssignmentDutyEditModal(duty.id)}
+                                onDoubleClick={() => showAssignmentDutyEditModal(duty.id)}
                                 SheriffAssignmentRenderer={(p) => (
                                     <SheriffDutyBarList
                                         {...p}
@@ -205,7 +215,8 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
                                             const { sheriffDuty } = barP;
                                             const isAssignedToDraggingSheriff =
                                                 draggingSheriffId && sheriffDuty.sheriffId === draggingSheriffId;
-                                            const isOpen = !this.isOverlappingSheriffDuties(duty.id, sheriffDuty.id);
+                                            // tslint:disable-next-line:max-line-length
+                                            const isOpen = !this.isDoubleBookingSheriff(draggingSheriffId, sheriffDuty);
                                             const style: React.CSSProperties = {
                                                 opacity: isAssignedToDraggingSheriff || isOpen ? 1 : .6
                                             };
@@ -213,17 +224,30 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
                                             classNames.push(!isOpen ? 'is-overlap' : '');
                                             classNames.push(color === '#FFFFFF' ? 'light' : 'dark');
                                             return (
-                                                <ConnectedSheriffDutyBar
-                                                    {...barP}
-                                                    style={style}
-                                                    canDropSheriff={() => true}
-                                                    className={classNames.join(' ')}
-                                                />
+                                                <SheriffDutyDragSource
+                                                    sheriffDuty={sheriffDuty}
+                                                    canDrag={sd => sd.sheriffId != undefined}
+                                                >
+                                                    <ConnectedSheriffDutyBar
+                                                        {...barP}
+                                                        style={style}
+                                                        canDropSheriff={() => true}
+                                                        className={classNames.join(' ')}
+                                                    />
+                                                </SheriffDutyDragSource>
                                             );
                                         }}
                                         onDropSheriff={
-                                            ({ id: sheriffId }, { id: sheriffDutyId }) =>
-                                                this.onDropSheriff(duty.id, sheriffDutyId, sheriffId)}
+                                            ({ id: sheriffId }, sheriffDutyToAssign: SheriffDuty) =>
+                                                this.onDropSheriff(duty.id, sheriffDutyToAssign, sheriffId)}
+                                        onDropSheriffDuty={
+                                            (source: SheriffDuty, target: SheriffDuty) =>
+                                                showSheriffDutySplittingModal(
+                                                    source,
+                                                    target,
+                                                    this.isDoubleBookingSheriff(source.sheriffId, target, source)
+                                                )
+                                        }
                                         workSection={workSectionMap[duty.assignmentId]}
                                     />
                                 )}
@@ -245,6 +269,7 @@ const mapStateToProps = (state: RootState, props: DutyRosterTimelineProps) => {
         ...currentVisibleTime,
         draggingSheriffAssignmentDuties: dutiesForDraggingSheriff(state),
         draggingSheriffId: draggingSheriff(state)
+
     };
 };
 
@@ -255,6 +280,8 @@ export default connect<DutyRosterTimelineStateProps, DutyRosterTimelineDispatchP
         fetchAssignmentDuties: getAssignmentDuties,
         linkSheriff: linkAssignment,
         showAssignmentDutyEditModal: (id: IdType) => AssignmentDutyEditModal.ShowAction(id),
-        showConfirmationModal: (props: ConnectedConfirmationModalProps) => ConfirmationModal.ShowAction(props)
+        showConfirmationModal: (props: ConnectedConfirmationModalProps) => ConfirmationModal.ShowAction(props),
+        showSheriffDutySplittingModal: (source: SheriffDuty, target: SheriffDuty, isDoubleBooking: boolean) =>
+            AssignmentSheriffDutyReassignmentModal.ShowAction(source, target, isDoubleBooking),
     }
 )(DutyRosterTimeline);

@@ -10,7 +10,7 @@ import SelectorField from '../../components/FormElements/SelectorField';
 import LeavePersonalSubCodeSelector from '../LeavePersonalSubCodeSelector';
 import CancelLeaveButton from '../CancelLeaveButton';
 import LeaveCancelledPopover from '../../components/LeaveCancelledPopover';
-import TimePickerField from '../../components/FormElements/TimePickerField';
+import TimePickerDropDownField from '../../components/FormElements/TimePickerDropDownField';
 import { fromTimeString, toTimeString } from 'jag-shuber-api/dist/client';
 import LeaveSubCodeDisplay from '../LeaveSubCodeDisplay';
 import LeaveTrainingSubCodeSelector from '../LeaveTrainingSubCodeSelector';
@@ -111,7 +111,7 @@ export default class LeavesFieldTable extends React.Component<LeavesFieldTablePr
                     component={
                         (p) => {
                             return (
-                                <TimePickerField
+                                <TimePickerDropDownField
                                     {...p}
                                     nullTimeLabel={nullTimeLabel}
                                     timeIncrement={15}

@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as moment from 'moment';
+import React from 'react';
+import moment from 'moment';
 import {
     Field,
     InjectedFormProps,
@@ -86,15 +86,17 @@ export default class AssignmentDutyForm extends
         };
     }
 
-    renderSheriffDutyFieldsComponent(): React.ComponentClass {
+    renderSheriffDutyFieldsComponent(workSectionId: WorkSectionCode): React.ComponentClass {
         const {
-            onRemoveSheriffDuty
+            onRemoveSheriffDuty,
+            minTime = TimeUtils.getDefaultTimePickerMinTime().toISOString(),
+            maxTime = TimeUtils.getDefaultTimePickerMaxTime().toISOString(),
         } = this.props;
         return formValues('timeRange')((timeRangeProps: any) => {
             const {
                 timeRange: {
-                    startTime: minTime = TimeUtils.getDefaultStartTime().toISOString(),
-                    endTime: maxTime = TimeUtils.getDefaultEndTime().toISOString()
+                    startTime = TimeUtils.getDefaultStartTime().toISOString(),
+                    endTime = TimeUtils.getDefaultEndTime().toISOString()
                 }
             } = timeRangeProps;
             return (
@@ -151,8 +153,10 @@ export default class AssignmentDutyForm extends
                                                         {...p}
                                                         minTime={minTime}
                                                         maxTime={maxTime}
+                                                        minAllowedTime={startTime}
+                                                        maxAllowedTime={endTime}
                                                         timeIncrement={15}
-                                                        color={'#888'}
+                                                        color={getWorkSectionColour(workSectionId)}
                                                     />}
                                                 />
                                             </div>
@@ -164,8 +168,8 @@ export default class AssignmentDutyForm extends
                                 <Button
                                     onClick={() => fields.push({
                                         timeRange: {
-                                            startTime: minTime,
-                                            endTime: maxTime
+                                            startTime,
+                                            endTime
                                         }
                                     })}
                                 >
@@ -187,7 +191,7 @@ export default class AssignmentDutyForm extends
             workSectionId = 'OTHER',
             isNewDuty = false
         } = this.props;
-        const SheriffDutyFields = this.renderSheriffDutyFieldsComponent();
+        const SheriffDutyFields = this.renderSheriffDutyFieldsComponent(workSectionId);
         return (
             <div>
                 <h1 style={{ marginBottom: 20 }}>{assignmentTitle}</h1>

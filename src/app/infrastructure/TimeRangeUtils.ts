@@ -1,41 +1,41 @@
 import moment from 'moment';
 import { TimeType } from '../api/Api';
 
-export function doTimeRangesOverlap (
-    timeRangeOne: {startTime: TimeType, endTime: TimeType}, 
-    timeRangeTwo: {startTime: TimeType, endTime: TimeType}): boolean {
-    
+export function doTimeRangesOverlap(
+    timeRangeOne: { startTime: TimeType, endTime: TimeType },
+    timeRangeTwo: { startTime: TimeType, endTime: TimeType }): boolean {
+
     const startTimeOneMoment = moment(timeRangeOne.startTime);
     const endTimeOneMoment = moment(timeRangeOne.endTime);
-    
+
     const startTimeTwoMoment = moment(timeRangeTwo.startTime);
     const endTimeTwoMoment = moment(timeRangeTwo.endTime);
-    
+
     return (
-        (startTimeOneMoment.isBetween(startTimeTwoMoment, endTimeTwoMoment) 
+        (startTimeOneMoment.isBetween(startTimeTwoMoment, endTimeTwoMoment)
             || endTimeOneMoment.isBetween(startTimeTwoMoment, endTimeTwoMoment))
         ||
-        (startTimeTwoMoment.isBetween(startTimeOneMoment, endTimeOneMoment) 
+        (startTimeTwoMoment.isBetween(startTimeOneMoment, endTimeOneMoment)
             || endTimeTwoMoment.isBetween(startTimeOneMoment, endTimeOneMoment))
         ||
-        (startTimeOneMoment.isSame(startTimeTwoMoment) 
+        (startTimeOneMoment.isSame(startTimeTwoMoment)
             && endTimeOneMoment.isSame(endTimeTwoMoment))
         ||
-        (startTimeOneMoment.isSame(startTimeTwoMoment) 
+        (startTimeOneMoment.isSame(startTimeTwoMoment)
             && endTimeOneMoment.isBetween(startTimeTwoMoment, endTimeTwoMoment))
         ||
-        (endTimeOneMoment.isSame(endTimeTwoMoment) 
-        && startTimeOneMoment.isBetween(startTimeTwoMoment, endTimeTwoMoment))
+        (endTimeOneMoment.isSame(endTimeTwoMoment)
+            && startTimeOneMoment.isBetween(startTimeTwoMoment, endTimeTwoMoment))
         ||
-        (startTimeTwoMoment.isSame(startTimeOneMoment) 
+        (startTimeTwoMoment.isSame(startTimeOneMoment)
             && endTimeTwoMoment.isBetween(startTimeOneMoment, endTimeOneMoment))
         ||
-        (endTimeTwoMoment.isSame(endTimeOneMoment) 
-        && startTimeTwoMoment.isBetween(startTimeOneMoment, endTimeOneMoment))
+        (endTimeTwoMoment.isSame(endTimeOneMoment)
+            && startTimeTwoMoment.isBetween(startTimeOneMoment, endTimeOneMoment))
     );
 }
 
-export function getDefaultStartTime (dayForTime?: moment.Moment): moment.Moment {
+export function getDefaultStartTime(dayForTime?: moment.Moment): moment.Moment {
     if (dayForTime && dayForTime.isValid()) {
         return dayForTime.startOf('day').add(6, 'hour');
     } else {
@@ -43,7 +43,7 @@ export function getDefaultStartTime (dayForTime?: moment.Moment): moment.Moment 
     }
 }
 
-export function getDefaultEndTime (dayForTime?: moment.Moment): moment.Moment {
+export function getDefaultEndTime(dayForTime?: moment.Moment): moment.Moment {
     if (dayForTime && dayForTime.isValid()) {
         return dayForTime.startOf('day').add(18, 'hour');
     } else {
@@ -51,21 +51,21 @@ export function getDefaultEndTime (dayForTime?: moment.Moment): moment.Moment {
     }
 }
 
-export function getDefaultTimeRange (dayForTime?: moment.Moment): {startTime: moment.Moment, endTime: moment.Moment} {
-   if (dayForTime && dayForTime.isValid()) {
-       return {
+export function getDefaultTimeRange(dayForTime?: moment.Moment): { startTime: moment.Moment, endTime: moment.Moment } {
+    if (dayForTime && dayForTime.isValid()) {
+        return {
             startTime: getDefaultStartTime(dayForTime),
             endTime: getDefaultEndTime(dayForTime)
-       };
+        };
     } else {
-       return {
-        startTime: getDefaultStartTime(moment()),
-        endTime: getDefaultEndTime(moment())
-       };
-   }
+        return {
+            startTime: getDefaultStartTime(moment()),
+            endTime: getDefaultEndTime(moment())
+        };
+    }
 }
 
-export function getDefaultTimePickerMinTime (dayForTime?: moment.Moment): moment.Moment {
+export function getDefaultTimePickerMinTime(dayForTime?: moment.Moment): moment.Moment {
     if (dayForTime && dayForTime.isValid()) {
         return dayForTime.startOf('day').add(6, 'hour');
     } else {
@@ -73,7 +73,7 @@ export function getDefaultTimePickerMinTime (dayForTime?: moment.Moment): moment
     }
 }
 
-export function getDefaultTimePickerMaxTime (dayForTime?: moment.Moment): moment.Moment {
+export function getDefaultTimePickerMaxTime(dayForTime?: moment.Moment): moment.Moment {
     if (dayForTime && dayForTime.isValid()) {
         return dayForTime.startOf('day').add(22, 'hour');
     } else {
@@ -81,17 +81,22 @@ export function getDefaultTimePickerMaxTime (dayForTime?: moment.Moment): moment
     }
 }
 
-
-export function getDefaultTimePickerRange (dayForTime?: moment.Moment): {startTime: moment.Moment, endTime: moment.Moment} {
-    if (dayForTime && dayForTime.isValid()) /* istanbul ignore if */{
+export function getDefaultTimePickerRange(dayForTime?: moment.Moment): { startTime: moment.Moment, endTime: moment.Moment } {
+    if (dayForTime && dayForTime.isValid()) /* istanbul ignore if */ {
         return {
-             startTime: getDefaultTimePickerMinTime(dayForTime),
-             endTime: getDefaultTimePickerMaxTime(dayForTime)
+            startTime: getDefaultTimePickerMinTime(dayForTime),
+            endTime: getDefaultTimePickerMaxTime(dayForTime)
         };
-     } else {
+    } else {
         return {
-         startTime: getDefaultTimePickerMinTime(moment()),
-         endTime: getDefaultTimePickerMaxTime(moment())
+            startTime: getDefaultTimePickerMinTime(moment()),
+            endTime: getDefaultTimePickerMaxTime(moment())
         };
     }
+}
+
+export function roundTimeToNearestQuarterHour(timeToRound: moment.Moment): moment.Moment {
+    const minutes = moment(timeToRound).minutes();
+    const roundedMinutes = Math.round(minutes / 15.0) * 15;
+    return moment(timeToRound).minute(roundedMinutes).second(0).millisecond(0);
 }

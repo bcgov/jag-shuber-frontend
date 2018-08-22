@@ -27,7 +27,8 @@ import {
     LeaveSubCode,
     LeaveCancelCode,
     CourtRole,
-    GenderCode
+    GenderCode,
+    SheriffDutyReassignmentDetails
 } from './Api';
 import MockApi from './Mock/MockApi';
 import { SubmissionError } from 'redux-form';
@@ -199,12 +200,86 @@ export default class Client implements API {
     async updateSheriffDuty(sheriffDuty: Partial<SheriffDuty>): Promise<SheriffDuty> {
         const { id } = sheriffDuty;
         if (!id) {
-            throw "No Id included in sheriffDuty to update";
+            throw 'No Id included in sheriffDuty to update';
         }
         return await this._client.UpdateSheriffDuty(id, sheriffDuty as any) as SheriffDuty;
     }
     async deleteSheriffDuty(sheriffDutyId: string): Promise<void> {
         await this._client.DeleteSheriffDuty(sheriffDutyId);
+    }
+
+    async reassignSheriffDuty(reassignmentDetails: SheriffDutyReassignmentDetails): Promise<SheriffDuty[]> {
+        const {
+            newSourceDutyEndTime,
+            sourceSheriffDuty,
+            newTargetDutyStartTime,
+            targetSheriffDuty
+        } = reassignmentDetails;
+
+        const sheriffDutyPromises: Promise<SheriffDuty>[] = [];
+
+        // Source Sheriff Duty
+        const sourceEndTimeMoment = moment(newSourceDutyEndTime);
+        const sourceCutOffTime = moment(sourceSheriffDuty.startDateTime)
+            .hours(sourceEndTimeMoment.hour())
+            .minutes(sourceEndTimeMoment.minute())
+            .toISOString();
+
+        if (moment(sourceCutOffTime).isSame(moment(sourceSheriffDuty.startDateTime), 'minute')) {
+            // Remove the sheriff from the source duty
+            sheriffDutyPromises.push(this.updateSheriffDuty({
+                ...sourceSheriffDuty,
+                sheriffId: undefined
+            }));
+        } else if (!moment(sourceCutOffTime).isSame(moment(sourceSheriffDuty.endDateTime), 'minute')) {
+            // Create a new sheriff duty to account for the remaining/uncoverd time in the source sheriff duty
+            sheriffDutyPromises.push(this.createSheriffDuty({
+                dutyId: sourceSheriffDuty.dutyId,
+                startDateTime: sourceCutOffTime,
+                endDateTime: moment(sourceSheriffDuty.endDateTime).toISOString()
+            }));
+
+            // End the source sheriff duty at the new source end time
+            sheriffDutyPromises.push(this.updateSheriffDuty({
+                ...sourceSheriffDuty,
+                endDateTime: sourceCutOffTime,
+            }));
+
+        }
+
+        // Target Sheriff Duty
+        const targetStartTimeMoment = moment(newTargetDutyStartTime);
+        const targetCutOffTime = moment(targetSheriffDuty.startDateTime)
+            .hours(targetStartTimeMoment.hour())
+            .minutes(targetStartTimeMoment.minute())
+            .toISOString();
+
+        if (moment(targetCutOffTime).isSame(moment(targetSheriffDuty.startDateTime), 'minute')
+            && !targetSheriffDuty.sheriffId) {
+            // Assign source sheriff to exisitng target sheriff duty
+            sheriffDutyPromises.push(this.updateSheriffDuty({
+                ...targetSheriffDuty,
+                sheriffId: sourceSheriffDuty.sheriffId
+            }));
+        } else {
+            // Create a new sheriff duty to account for the time the source sheriff will spend in the target duty
+            sheriffDutyPromises.push(this.createSheriffDuty({
+                dutyId: targetSheriffDuty.dutyId,
+                startDateTime: targetCutOffTime,
+                endDateTime: moment(targetSheriffDuty.endDateTime).toISOString(),
+                sheriffId: sourceSheriffDuty.sheriffId
+            }));
+
+            if (!targetSheriffDuty.sheriffId) {
+                //End the target sheriff duty at the new target start time
+                sheriffDutyPromises.push(this.updateSheriffDuty({
+                    ...targetSheriffDuty,
+                    endDateTime: targetCutOffTime,
+                }));
+            }
+        }
+
+        return Promise.all(sheriffDutyPromises);
     }
 
     async createDefaultDuties(date: moment.Moment = moment()): Promise<AssignmentDuty[]> {
@@ -333,7 +408,7 @@ export default class Client implements API {
 
 
     getToken(): Promise<string> {
-        return this._client.GetToken();    
+        return this._client.GetToken();
     }
     logout(): Promise<void> {
         return this._client.Logout();

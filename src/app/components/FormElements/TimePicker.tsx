@@ -2,8 +2,12 @@ import React from 'react';
 import moment from 'moment';
 import Slider from 'rc-slider';
 import { TimeType } from '../../api/Api';
+import {
+  HandleWithTooltip,
+  createMarks,
+  sliderWithLimits
+} from './TimeSliderCommon';
 import 'rc-slider/assets/index.css';
-import { HandleWithTooltip, createMarks } from './TimeSliderCommon';
 
 export interface TimePickerProps {
   minTime: TimeType;
@@ -11,9 +15,11 @@ export interface TimePickerProps {
   selectedTime?: TimeType;
   timeIncrement?: number;
   onTimeChanged?: (selectedTime: TimeType) => void;
-  color?: string;
+  handleColor?: string;
+  railColor?: string;
 }
-export default class TimePicker extends React.Component<TimePickerProps> {
+
+class TimePicker extends React.Component<TimePickerProps> {
 
   private handleAfterChange(selectedMinutes: any) {
     const { minTime, onTimeChanged } = this.props;
@@ -42,7 +48,6 @@ export default class TimePicker extends React.Component<TimePickerProps> {
         }
       }
     }
-
   }
 
   render() {
@@ -51,49 +56,43 @@ export default class TimePicker extends React.Component<TimePickerProps> {
       maxTime: _maxTime,
       timeIncrement = 15,
       selectedTime: _selectedTime,
-      color = '#003366'
+      handleColor = '#003366',
+      railColor = '#9bc2e4'
     } = this.props;
     const minTime = moment(_minTime);
     const maxTime = moment(_maxTime);
-    const selectedTime = _selectedTime ? moment(_selectedTime) : minTime;
 
+    const selectedTime = _selectedTime ? moment(_selectedTime) : minTime;
     const durationMinutes: number = moment.duration(maxTime.diff(minTime)).asMinutes();
     const defaultSelectedMin = selectedTime ? moment.duration(selectedTime.diff(minTime)).asMinutes() : 0;
 
     const markLabels = createMarks(moment(minTime), moment(maxTime), timeIncrement);
 
     return (
-      <div
-        style={{
-          marginLeft: 5,
-          marginRight: 15,
-          marginBottom: 25,
-          marginTop: 15
-        }}
-      >
-        <Slider
-          step={timeIncrement}
-          dots={true}
-          defaultValue={defaultSelectedMin}
-          min={0}
-          max={durationMinutes}
-          marks={markLabels}
-          dotStyle={{ borderColor: '#9bc2e4' }}
-          activeDotStyle={{ borderColor: '#9bc2e4' }}
-          railStyle={{ backgroundColor: '#9bc2e4' }}
-          handleStyle={{ borderColor: color, backgroundColor: color }}
-          trackStyle={{ backgroundColor: 'transparent' }}
-          onAfterChange={(e) => this.handleAfterChange(e)}
-          handle={(p: any) =>
-            <HandleWithTooltip
-              overlayFormatter={(v) => moment(minTime).add('minutes', v).format('HH:mm')}
-              overlayStyle={{zIndex: 1200}}
-              {...p}
-            />
-          }
-        />
-        
-      </div>
+      <Slider
+        {...this.props}
+        step={timeIncrement}
+        dots={true}
+        defaultValue={defaultSelectedMin}
+        min={0}
+        max={durationMinutes}
+        marks={markLabels}
+        dotStyle={{ borderColor: railColor }}
+        activeDotStyle={{ borderColor: railColor }}
+        railStyle={{ backgroundColor: railColor }}
+        handleStyle={{ borderColor: handleColor, backgroundColor: handleColor }}
+        trackStyle={{ backgroundColor: railColor }}
+        onAfterChange={(e) => this.handleAfterChange(e)}
+        handle={(p: any) =>
+          <HandleWithTooltip
+            overlayFormatter={(v) => moment(minTime).add('minutes', v).format('HH:mm')}
+            overlayStyle={{ zIndex: 1200 }}
+            {...p}
+          />
+        }
+      />
     );
   }
 }
+
+export default sliderWithLimits(TimePicker);

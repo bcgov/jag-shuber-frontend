@@ -15,7 +15,7 @@ import WorkSectionSelector from './FormElements/WorkSectionSelector';
 import Selector from './FormElements/Selector';
 import { ConfirmationModal } from './ConfirmationModal';
 import { IdType, ShiftUpdates } from '../api/Api';
-import TimePickerField from './FormElements/TimePickerField';
+import TimePickerDropDownField from './FormElements/TimePickerDropDownField';
 import SelectorField from './FormElements/SelectorField';
 
 export interface ScheduleControlPanelFormProps {
@@ -70,7 +70,7 @@ export default class ScheduleControlPanelForm extends
                         name="startTime"
                         component={
                             (p) => {
-                                return <TimePickerField
+                                return <TimePickerDropDownField
                                     {...p}
                                     nullTimeLabel={
                                         (selectedShiftIds && selectedShiftIds.length > 0)
@@ -85,7 +85,7 @@ export default class ScheduleControlPanelForm extends
                         name="endTime"
                         component={
                             (p) =>
-                                <TimePickerField
+                                <TimePickerDropDownField
                                     {...p}
                                     nullTimeLabel={
                                         (selectedShiftIds && selectedShiftIds.length > 0)

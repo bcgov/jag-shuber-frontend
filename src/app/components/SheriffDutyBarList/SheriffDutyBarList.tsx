@@ -15,6 +15,7 @@ import {
 interface SheriffDutyBarListProps extends SheriffAssignmentRendererProps {
     onRemove?: (sheriffId: IdType) => void;
     onDropSheriff?: (sheriff: Sheriff, sheriffDuty: SheriffDuty) => void;
+    onDropSheriffDuty?: (sourceSheriffDuty: SheriffDuty, targetSheriffDuty: SheriffDuty) => void;    
     BarRenderer?: React.ComponentType<SheriffDutyBarProps>;
     workSection?: WorkSectionCode;
 }
@@ -26,6 +27,7 @@ export default class SheriffDutyBarList extends React.PureComponent<SheriffDutyB
             sheriffsRequired = 0,
             onRemove,
             onDropSheriff,
+            onDropSheriffDuty,
             BarRenderer = SheriffDutyBar,
             duty,
             workSection
@@ -47,6 +49,7 @@ export default class SheriffDutyBarList extends React.PureComponent<SheriffDutyB
                             onDropSheriff={onDropSheriff}
                             isExtra={index + 1 > sheriffsRequired}
                             showBorder={index + 1 !== sheriffDuties.length}
+                            onDropSheriffDuty={onDropSheriffDuty}                            
                         />
                     );
                 }
