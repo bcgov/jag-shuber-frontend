@@ -12,8 +12,6 @@ import 'rc-slider/assets/index.css';
 export interface TimePickerProps {
   minTime: TimeType;
   maxTime: TimeType;
-  minAllowedTime?: TimeType;
-  maxAllowedTime?: TimeType;
   selectedTime?: TimeType;
   timeIncrement?: number;
   onTimeChanged?: (selectedTime: TimeType) => void;

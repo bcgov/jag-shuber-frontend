@@ -14,7 +14,6 @@
     "update-api": "yarn add github:bcgov/jag-shuber-api"
   },
   "dependencies": {
-    "add": "^2.0.6",
     "autoprefixer": "7.1.2",
     "babel-loader": "^7.1.4",
     "bootstrap": "^3.3.7",

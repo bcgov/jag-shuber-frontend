@@ -43,7 +43,7 @@ export default class SheriffDutyReassignmentForm extends
             moment().isBetween(moment(sourceDuty.startDateTime), moment(sourceDuty.endDateTime));
         const isCurrentTimeDuringTargetDuty =
             moment().isBetween(moment(targetDuty.startDateTime), moment(targetDuty.endDateTime));
-        const roundedCurrentTime = TimeUtils.roundTimeToNearestQuaterHour(moment()).toISOString();
+        const roundedCurrentTime = TimeUtils.roundTimeToNearestQuarterHour(moment()).toISOString();
 
         return {
             sourceDutyEndTime: isCurrentTimeDuringSourceDuty

@@ -89,8 +89,8 @@ describe('doTimeRangesOverlap() ', () => {
 
 });
 
-describe('roundTimeToNearestQuaterHour() ', () => {
-    const util = TimeRangeUtils.roundTimeToNearestQuaterHour;
+describe('roundTimeToNearestQuarterHour() ', () => {
+    const util = TimeRangeUtils.roundTimeToNearestQuarterHour;
 
     /* tslint:disable:max-line-length */
     const onePM = moment().hour(13).minute(0).second(0).millisecond(0);
