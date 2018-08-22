@@ -39,6 +39,7 @@ import ConfirmationModal, { ConnectedConfirmationModalProps } from '../Confirmat
 import SheriffNameDisplay from '../SheriffNameDisplay';
 import SheriffDutyDragSource from '../SheriffDutyDragSource';
 import AssignmentSheriffDutyReassignmentModal from '../AssignmentSheriffDutyReassignmentModal';
+import { updateDraggingSheriff } from '../../modules/dutyRoster/actions';
 
 interface DutyRosterTimelineProps extends TimelineProps {
     allowTimeDrag?: boolean;
@@ -51,6 +52,7 @@ interface DutyRosterTimelineDispatchProps {
     showAssignmentDutyEditModal: (id: IdType) => void;
     showConfirmationModal: (props: ConnectedConfirmationModalProps) => void;
     showSheriffDutySplittingModal: (source: SheriffDuty, target: SheriffDuty, isDoubleBooking: boolean) => void;
+    setDraggingSheriff: (sheriffId?: IdType) => void;
 }
 
 interface DutyRosterTimelineStateProps {
@@ -174,6 +176,7 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
             draggingSheriffAssignmentDuties = [],
             draggingSheriffId,
             showSheriffDutySplittingModal,
+            setDraggingSheriff,
             ...rest
         } = this.props;
 
@@ -227,6 +230,8 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
                                                 <SheriffDutyDragSource
                                                     sheriffDuty={sheriffDuty}
                                                     canDrag={sd => sd.sheriffId != undefined}
+                                                    beginDrag={() => setDraggingSheriff(sheriffDuty.sheriffId)}
+                                                    endDrag={() => setDraggingSheriff()}
                                                 >
                                                     <ConnectedSheriffDutyBar
                                                         {...barP}
@@ -283,5 +288,6 @@ export default connect<DutyRosterTimelineStateProps, DutyRosterTimelineDispatchP
         showConfirmationModal: (props: ConnectedConfirmationModalProps) => ConfirmationModal.ShowAction(props),
         showSheriffDutySplittingModal: (source: SheriffDuty, target: SheriffDuty, isDoubleBooking: boolean) =>
             AssignmentSheriffDutyReassignmentModal.ShowAction(source, target, isDoubleBooking),
+        setDraggingSheriff: updateDraggingSheriff
     }
 )(DutyRosterTimeline);
