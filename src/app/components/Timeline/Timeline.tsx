@@ -169,7 +169,7 @@ export default class Timeline<TItem, TGroup> extends React.PureComponent<Timelin
             )
         } = this.props;
         return (
-            <TimelineCard>
+            <TimelineCard key={item.id}>
                 {itemRenderer(item)}
             </TimelineCard>
         );

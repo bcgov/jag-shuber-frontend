@@ -10,7 +10,6 @@ export interface SheriffDutyDropResult extends SheriffDuty {
 }
 
 interface SheriffSourceFactoryProps {
-    getDragData: () => DraggedSheriffDuty;
     beginDrag?: (sheriffDuty: SheriffDuty) => void;
     endDrag?: (args: any) => void;
 }
@@ -36,7 +35,7 @@ export default class SheriffDutyDragSource extends React.PureComponent<SheriffDu
         } = this.props;
         return (
             <GenericSheriffDutyDragSource
-                getDragData={() => sheriffDuty}
+                data={sheriffDuty}
                 beginDrag={beginDrag}
                 endDrag={endDrag}
                 canDrag={() => canDrag(sheriffDuty)}

@@ -78,7 +78,7 @@ class CustomDragLayer extends React.Component<CustomDragLayerProps> {
     }
 }
 
-export default DragLayer<CustomDragLayerProps, any, CustomDragLayer, any>(monitor => ({
+export default DragLayer<CustomDragLayerProps>(monitor => ({
     item: monitor.getItem(),
     itemType: monitor.getItemType(),
     initialOffset: monitor.getInitialSourceClientOffset(),
