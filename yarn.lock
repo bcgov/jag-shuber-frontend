@@ -455,10 +455,6 @@ add-dom-event-listener@1.x:
   dependencies:
     object-assign "4.x"
 
-add@^2.0.6:
-  version "2.0.6"
-  resolved "https://registry.yarnpkg.com/add/-/add-2.0.6.tgz#248f0a9f6e5a528ef2295dbeec30532130ae2235"
-
 address@1.0.3, address@^1.0.1:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/address/-/address-1.0.3.tgz#b5f50631f8d6cec8bd20c963963afb55e06cbce9"
@@ -2302,6 +2298,10 @@ cache-base@^1.0.1:
     to-object-path "^0.3.0"
     union-value "^1.0.0"
     unset-value "^1.0.0"
+
+callsites@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/callsites/-/callsites-1.0.1.tgz#c14c24188ce8e1d6a030b4c3c942e6ba895b6a1a"
 
 callsites@^2.0.0:
   version "2.0.0"
@@ -4269,6 +4269,13 @@ glob-parent@^2.0.0:
   dependencies:
     is-glob "^2.0.0"
 
+glob-parent@^3.0.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/glob-parent/-/glob-parent-3.1.0.tgz#9e6af6299d8d3bd2bd40430832bd113df906c5ae"
+  dependencies:
+    is-glob "^3.1.0"
+    path-dirname "^1.0.0"
+
 glob-to-regexp@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/glob-to-regexp/-/glob-to-regexp-0.3.0.tgz#8c5a1494d2066c570cc3bfe4496175acc4d502ab"
@@ -4340,7 +4347,7 @@ globby@^5.0.0:
     pify "^2.0.0"
     pinkie-promise "^2.0.0"
 
-globby@^6.1.0:
+globby@^6.0.0, globby@^6.1.0:
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/globby/-/globby-6.1.0.tgz#f5a6d70e8395e21c858fb0489d64df02424d506c"
   dependencies:
@@ -5401,8 +5408,8 @@ istanbul@^0.4.5:
     wordwrap "^1.0.0"
 
 "jag-shuber-api@github:bcgov/jag-shuber-api":
-  version "1.4.0"
-  resolved "https://codeload.github.com/bcgov/jag-shuber-api/tar.gz/3302f8bd1f6cc5ec8dd6d858caf1e923871a9c73"
+  version "1.4.2"
+  resolved "https://codeload.github.com/bcgov/jag-shuber-api/tar.gz/c7706d755ebd07b7f7710d1baf29ad65787131a9"
   dependencies:
     jsonwebtoken "^8.3.0"
     jwt-decode "^2.2.0"
@@ -5418,6 +5425,7 @@ istanbul@^0.4.5:
     superagent-prefix "^0.0.2"
     superagent-use "^0.1.0"
     tsoa "^2.1.8"
+    typescript-ioc "^1.2.4"
     uuid "^3.2.1"
 
 jest-changed-files@^20.0.3:
@@ -6934,6 +6942,12 @@ param-case@2.1.x:
   dependencies:
     no-case "^2.2.0"
 
+parent-module@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/parent-module/-/parent-module-0.1.0.tgz#b5292863a1e8c476ecf857e7d75c98920b24b8a6"
+  dependencies:
+    callsites "^1.0.0"
+
 parse-asn1@^5.0.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/parse-asn1/-/parse-asn1-5.1.0.tgz#37c4f9b7ed3ab65c74817b5f2480937fbf97c712"
@@ -6991,6 +7005,10 @@ patch-package@^5.0.0:
 path-browserify@0.0.0:
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/path-browserify/-/path-browserify-0.0.0.tgz#a0b870729aae214005b7d5032ec2cbbb0fb4451a"
+
+path-dirname@^1.0.0:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/path-dirname/-/path-dirname-1.0.2.tgz#cc33d24d525e099a5388c0336c6e32b9160609e0"
 
 path-exists@^2.0.0:
   version "2.1.0"
@@ -8328,7 +8346,7 @@ redux@^4.0.0:
     loose-envify "^1.1.0"
     symbol-observable "^1.2.0"
 
-reflect-metadata@^0.1.9:
+reflect-metadata@^0.1.10, reflect-metadata@^0.1.9:
   version "0.1.12"
   resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.12.tgz#311bf0c6b63cd782f228a81abe146a2bfa9c56f2"
 
@@ -8506,6 +8524,14 @@ require-directory@^2.1.1:
 require-from-string@^1.1.0:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/require-from-string/-/require-from-string-1.2.1.tgz#529c9ccef27380adfec9a2f965b649bbee636418"
+
+require-glob@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/require-glob/-/require-glob-3.2.0.tgz#90bfe2c8efb4b9f972eb9a3f5e580832e04f64d3"
+  dependencies:
+    glob-parent "^3.0.0"
+    globby "^6.0.0"
+    parent-module "^0.1.0"
 
 require-main-filename@^1.0.1:
   version "1.0.1"
@@ -9637,6 +9663,13 @@ typescript-formatter@^7.2.0:
   dependencies:
     commandpost "^1.0.0"
     editorconfig "^0.15.0"
+
+typescript-ioc@^1.2.4:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/typescript-ioc/-/typescript-ioc-1.2.4.tgz#21290097b163632de58a3abba7553daef8651f49"
+  dependencies:
+    reflect-metadata "^0.1.10"
+    require-glob "^3.2.0"
 
 typescript@^2.9.2:
   version "2.9.2"
