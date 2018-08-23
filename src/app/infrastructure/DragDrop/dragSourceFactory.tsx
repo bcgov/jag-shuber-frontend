@@ -53,7 +53,6 @@ export default function dragSourceFactory
 
     interface GenericDragSourceProps {
         data: TDrag;
-        // getDragData?: () => TDrag;
         beginDrag?: (item: TDrag) => void;
         endDrag?: (result?: TDropResult) => void;
         canDrag?: () => boolean;
@@ -79,9 +78,6 @@ export default function dragSourceFactory
             }
         }
 
-        componentWillUnmount() {
-            console.log('unmounting', this.props.data);
-        }
         render() {
             const {
                 connectDragSource,
