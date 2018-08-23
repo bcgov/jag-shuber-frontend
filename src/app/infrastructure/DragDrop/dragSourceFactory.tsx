@@ -5,28 +5,41 @@ import { ItemType } from './ItemTypes';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
 export default function dragSourceFactory
-    <T, TDrag, TDropResult>(itemType: ItemType | ((props: any) => string), styleOverride?: CSSProperties) {
+    <T, TDrag extends { id: string }, TDropResult>(itemType: ItemType | ((props: any) => string), styleOverride?: CSSProperties) {
 
-    const sourceCallbacks: DragSourceSpec<GenericDragSourceProps, {}, GenericDragSource, any> = {
+    const sourceCallbacks: DragSourceSpec<GenericDragSourceProps, TDrag> = {
         beginDrag: (props, monitor): TDrag => {
-            const { getDragData = () => ({} as TDrag), beginDrag } = props;
-            const data = getDragData();
+            const { data = {}, beginDrag } = props;
             if (beginDrag) {
-                beginDrag(data);
+                // The setTimeout is necessary here as we need to handle
+                // operations on the next tick (i.e. let the drag and drop backend
+                // have a chance to go through its regular beginDrag flow before 
+                // we potentially allow the consumer of this api to change the state)
+                setTimeout(() => beginDrag(data as TDrag), 0);
             }
-            return data;
+            return data as TDrag;
         },
         endDrag: (props: GenericDragSourceProps, monitor) => {
             const { endDrag } = props;
-
             if (endDrag && monitor) {
                 let result = monitor.getDropResult() as TDropResult;
-                endDrag(result);
+
+                // The setTimeout is necessary here as we need to handle
+                // operations on the next tick (i.e. let the drag and drop backend
+                // have a chance to go through its regular endDrag flow before 
+                // we potentially allow the consumer of this api to change the state)
+                setTimeout(() => endDrag(result), 0);
             }
         },
         canDrag: (props: GenericDragSourceProps, monitor) => {
             const { canDrag } = props;
             return canDrag ? canDrag() : true;
+        },
+        isDragging: (props: GenericDragSourceProps, monitor) => {
+            const { id: itemId } = monitor.getItem() as TDrag;
+            const type = monitor.getItemType();
+            const { data: { id } } = props;
+            return type === itemType && id != undefined && id === itemId;
         }
     };
 
@@ -39,17 +52,18 @@ export default function dragSourceFactory
     }
 
     interface GenericDragSourceProps {
-        getDragData?: () => TDrag;
+        data: TDrag;
         beginDrag?: (item: TDrag) => void;
         endDrag?: (result?: TDropResult) => void;
         canDrag?: () => boolean;
+
         connectDragSource?: any;
         connectDragPreview?: any;
         isDragging?: boolean;
         style?: CSSProperties;
     }
 
-    @DragSource<GenericDragSourceProps & T, any, GenericDragSource, any, any>(itemType, sourceCallbacks, collect)
+    @DragSource<GenericDragSourceProps & T, any>(itemType, sourceCallbacks, collect)
     class GenericDragSource extends React.PureComponent<GenericDragSourceProps & T, {}> {
         componentDidMount() {
             const { connectDragPreview } = this.props;
@@ -63,6 +77,7 @@ export default function dragSourceFactory
                 });
             }
         }
+
         render() {
             const {
                 connectDragSource,

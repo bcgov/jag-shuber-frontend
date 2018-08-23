@@ -15,7 +15,7 @@ export interface DragDropStatus {
 export default function dropTargetFactory
     <TDrag, TDrop>(itemTypes: ItemType | ItemType[], styleOverride?: React.CSSProperties) {
 
-    const targetCallbacks: DropTargetSpec<GenericDropTargetProps, {}, GenericDropTarget> = {
+    const targetCallbacks: DropTargetSpec<GenericDropTargetProps> = {
         canDrop(props, monitor) {
             if (monitor) {
                 let item = monitor.getItem() as TDrag;
@@ -79,7 +79,7 @@ export default function dropTargetFactory
         onClick?: () => void;
     }
 
-    @DropTarget<GenericDropTargetProps, {}, GenericDropTarget, any>(itemTypes, targetCallbacks, collect)
+    @DropTarget<GenericDropTargetProps>(itemTypes, targetCallbacks, collect)
     class GenericDropTarget extends React.PureComponent<GenericDropTargetProps, {}>{
 
         render() {
