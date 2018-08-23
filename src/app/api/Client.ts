@@ -88,7 +88,6 @@ export default class Client implements API {
     constructor(baseUrl: string = '/') {
         this._client = new ShuberApiClient(baseUrl);
         this._client.requestInterceptor = (req) => {
-            req.set('TOKEN', 'TESTING');
             return req;
         };
         this._mockApi.init();
