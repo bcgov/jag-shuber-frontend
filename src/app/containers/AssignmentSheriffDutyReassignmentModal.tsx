@@ -16,7 +16,7 @@ import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 export interface AssignmentSheriffDutyReassignmentModalProps {
     sourceSheriffDuty: SheriffDuty;
     targetSheriffDuty: SheriffDuty;
-    isDoubleBooking: boolean;
+    overlappingDuties: SheriffDuty[];
 }
 
 export interface AssignmentSheriffDutyReassignmentModalDispatchProps {
@@ -41,7 +41,7 @@ class AssignmentSheriffDutyReassignmentModal extends React.PureComponent<Composi
             handleHide,
             sourceSheriffDuty,
             targetSheriffDuty,
-            isDoubleBooking,
+            overlappingDuties,
             visibleTimeStart
         } = this.props;
 
@@ -59,7 +59,7 @@ class AssignmentSheriffDutyReassignmentModal extends React.PureComponent<Composi
                     <AssignmentSheriffDutyReassignmentForm 
                         sourceDuty={sourceSheriffDuty} 
                         targetDuty={targetSheriffDuty}
-                        isDoubleBooking={isDoubleBooking}
+                        overlappingDuties={overlappingDuties}
                         onSubmitSuccess={handleHide}
                         minTime={TimeUtils.getDefaultTimePickerMinTime(moment(visibleTimeStart)).toISOString()}
                         maxTime={TimeUtils.getDefaultTimePickerMaxTime(moment(visibleTimeStart)).toISOString()}
@@ -100,7 +100,7 @@ export default class extends connectModal(modalConfig)(
         <ConnectedShowModalButton modalName={modalConfig.name} modalProps={props} />
     )
 
-    static ShowAction = (sourceSheriffDuty: SheriffDuty, targetSheriffDuty: SheriffDuty, isDoubleBooking: boolean) => 
-        showModal(modalConfig.name, { sourceSheriffDuty, targetSheriffDuty, isDoubleBooking })
+    static ShowAction = (sourceSheriffDuty: SheriffDuty, targetSheriffDuty: SheriffDuty, overlappingDuties: SheriffDuty[]) => 
+        showModal(modalConfig.name, { sourceSheriffDuty, targetSheriffDuty, overlappingDuties })
     static HideAction = () => hideModal(modalConfig.name);
 }
