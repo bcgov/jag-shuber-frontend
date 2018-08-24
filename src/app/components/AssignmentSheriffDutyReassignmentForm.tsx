@@ -32,7 +32,7 @@ export interface SheriffDutyReassignmentFormProps {
     targetDuty: SheriffDuty;
     sourceReassignmentDetails?: DutyReassignmentDetails;
     targetReassignmentDetails?: DutyReassignmentDetails;
-    isDoubleBooking: boolean;
+    overlappingDuties: SheriffDuty[];
 }
 
 export default class SheriffDutyReassignmentForm extends
@@ -109,12 +109,15 @@ export default class SheriffDutyReassignmentForm extends
             const { 
                 sourceReassignmentDetails = {},
                 targetReassignmentDetails = {}, 
-                isDoubleBooking,
+                overlappingDuties = [],
                 minTime = TimeUtils.getDefaultTimePickerMinTime().toISOString(),
-                maxTime = TimeUtils.getDefaultTimePickerMaxTime().toISOString() 
+                maxTime = TimeUtils.getDefaultTimePickerMaxTime().toISOString(),
+                sourceDuty 
             } = this.props;
             const SourceTimeField = this.renderSourceTimePicker(minTime, maxTime);
             const TargetTimeField = this.renderTargetTimePicker(minTime, maxTime);
+            const showWarningForSourceDuty = overlappingDuties.some(od => od.id === sourceDuty.id);
+            const showWarningForTargetDuty = showWarningForSourceDuty && overlappingDuties.length > 1;
             // tslint:disable-next-line:max-line-length
             const sheriffName = `${toTitleCase(sourceReassignmentDetails.sheriffFirstName)} ${toTitleCase(sourceReassignmentDetails.sheriffLastName)}`;
             return (
@@ -123,10 +126,15 @@ export default class SheriffDutyReassignmentForm extends
                     <br />
                     <Form {...this.props}>
                         <SourceTimeField />
+                        {showWarningForSourceDuty && 
+                        <div className="warning-message">
+                            <Glyphicon glyph="alert" style={{marginRight: 7, fontSize: 18}} />
+                            To prevent overlap with {targetReassignmentDetails.title} adjust time above.
+                        </div>}
                         <br /><br />
                         <TargetTimeField />
                     </Form>
-                    {isDoubleBooking && 
+                    {showWarningForTargetDuty && 
                         <div className="warning-message">
                             <Glyphicon glyph="alert" style={{marginRight: 7, fontSize: 18}} />
                             {targetReassignmentDetails.title} overlaps with another duty to which {sheriffName} is assigned.
