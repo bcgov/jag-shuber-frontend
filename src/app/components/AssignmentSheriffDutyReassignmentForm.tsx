@@ -116,9 +116,21 @@ export default class SheriffDutyReassignmentForm extends
         } = this.props;
         const SourceTimeField = this.renderSourceTimePicker(minTime, maxTime);
         const TargetTimeField = this.renderTargetTimePicker(minTime, maxTime);
-        const showWarningForSourceDuty = overlappingDuties.some(od => od.id === sourceDuty.id);
-        const showWarningForTargetDuty = 
-            (showWarningForSourceDuty && overlappingDuties.length >= 1) || overlappingDuties.length >= 1;
+        
+        let showWarningForSourceDuty = false;
+        let showWarningForTargetDuty = false;
+        const overlappingDutiesIncludeSourceDuty = overlappingDuties.some(od => od.id === sourceDuty.id);
+        const overlappingDutiesLength = overlappingDuties.length;
+        if (overlappingDutiesLength === 1 && overlappingDutiesIncludeSourceDuty) {
+            showWarningForSourceDuty = true;
+            showWarningForTargetDuty = false;
+        } else if (overlappingDutiesLength >= 1 && !overlappingDutiesIncludeSourceDuty) {
+            showWarningForSourceDuty = false;
+            showWarningForTargetDuty = true;
+        } else if (overlappingDutiesLength > 1 && overlappingDutiesIncludeSourceDuty) {
+            showWarningForSourceDuty = true;
+            showWarningForTargetDuty = true;
+        }
         // tslint:disable-next-line:max-line-length
         const sheriffName = `${toTitleCase(sourceReassignmentDetails.sheriffFirstName)} ${toTitleCase(sourceReassignmentDetails.sheriffLastName)}`;
         return (
