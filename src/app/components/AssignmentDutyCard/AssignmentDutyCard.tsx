@@ -33,7 +33,6 @@ export default class AssignmentDutyCard extends React.PureComponent<AssignmentDu
                 sheriffsRequired = 0,
                 comments = ''
             } = {},
-            // details,
             onDoubleClick,
             onClick,
             style = {}

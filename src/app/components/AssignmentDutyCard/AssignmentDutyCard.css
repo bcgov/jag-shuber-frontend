@@ -1,14 +1,8 @@
 .assignment-duty-card{
     background-color: transparent;
-    border: solid;
-    border-color: #96c0e6;
-    border-width: 2px;
     flex: 1;
     z-index: 70;
     position: relative;
-}
-
-.assignment-duty-card:hover{
-    margin: 1px;
+    line-height: normal;
 }
 
