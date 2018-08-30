@@ -29,9 +29,9 @@ export default class AppVersionDisplay extends React.PureComponent<AppVersionDis
             buildDate && `Built: ${moment(Version.BUILD_DATE).calendar()}`,
         ].filter(i => i !== false);
         return (
-            <div className='app-version-display' style={{...style }}>
-                {itemsToDisplay.map(item => (
-                    <span>{item}</span>
+            <div className="app-version-display" style={{ ...style }}>
+                {itemsToDisplay.map((item, i) => (
+                    <span key={i}>{item}</span>
                 ))}
             </div>
         );
