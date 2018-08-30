@@ -1,8 +1,6 @@
-// Type definitions for react-calendar-timeline v0.8.1
+// Type definitions for react-calendar-timeline v0.19.0
 // Project: https://github.com/namespace-ee/react-calendar-timeline
-// Definitions by: Rajab Shakirov <https://github.com/radziksh>
-// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
-// TypeScript Version: 2.3
+// Definitions by: Colter Mcquay <https://github.com/cjam>
 
 /// <reference types="react"/>
 declare module "react-calendar-timeline" {
@@ -17,9 +15,18 @@ declare module "react-calendar-timeline" {
         itemTimeEndKey: string;
     }
 
+    export interface ReactCalendarTimelineTimeSteps {
+        second: number;
+        minute: number;
+        hour: number;
+        day: number;
+        month: number;
+        year: number;
+    }
+
     export interface ReactCalendarTimelineItem {
-        id: number|string;
-        group: number|string;
+        id: number | string;
+        group: number | string;
         title?: React.ReactNode;
         start_time: any;
         end_time: any;
@@ -27,10 +34,11 @@ declare module "react-calendar-timeline" {
         canResize?: boolean;
         canChangeGroup?: boolean;
         className?: string;
+        style?:React.CSSProperties;
     }
 
     export interface ReactCalendarTimelineGroup {
-        id: number|string;
+        id: number | string;
         title: React.ReactNode;
     }
 
@@ -59,53 +67,136 @@ declare module "react-calendar-timeline" {
         keys?: ReactCalendarTimelineKeys;
     }
 
+    export interface ReactCalendarTimelineContext {
+        timelineWidth: number;
+        visibleTimeStart: number;
+        visibleTimeEnd: number;
+        canvasTimeStart: number;
+        canvasTimeEnd: number;
+
+    }
+
+    export interface ReactCalendarTimelineItemContext {
+        dimensions: {
+            top: number;
+            order: number;
+            stack: boolean;
+            height: number;
+            isDragging: boolean;
+        },
+        useResizeHandle: boolean;
+        title: string;
+        canMove: boolean;
+        canResizeLeft: boolean;
+        canResizeRight: boolean;
+        selected: boolean;
+        dragging?: boolean;
+        dragStart?: { x: number, y: number };
+        dragTime?: number;
+        dragGroupDelta?: number;
+        resizing?: boolean;
+        resizeEdge?: number;
+        resizeStart?: number;
+        resizeTime?: number;
+        width: number;
+    }
+
+    export interface ReactCalendarTimelineItemProps {
+        className: string;
+        onMouseDown: React.MouseEventHandler<any>;
+        onMouseUp: React.MouseEventHandler<any>;
+        onTouchStart: React.TouchEventHandler<any>;
+        onTouchEnd: React.TouchEventHandler<any>;
+        onDoubleClick: React.MouseEventHandler<any>;
+        onContextMenu: React.MouseEventHandler<any>;
+        style: React.CSSProperties;
+    }
+
+    export interface ReactCalendarTimelineItemRendererProps {
+        item: ReactCalendarTimelineItem;
+        timelineContext: ReactCalendarTimelineContext;
+        itemContext: ReactCalendarTimelineItemContext;
+        getItemProps(props?: Partial<ReactCalendarTimelineItemProps>): ReactCalendarTimelineItemProps & { key: number | string, ref: any }
+        getResizeProps(props?: { leftStyle?: React.CSSProperties, rightStyle?: React.CSSProperties }): { left: { ref: any, style: React.CSSProperties }, right: { ref: any, style: React.CSSProperties } };
+    }
+
+    type ItemEventHandler = (itemId: number | string, e: React.SyntheticEvent<any>) => void;
+
+    // The following interface was built from the proptypes here:
+    // https://github.com/namespace-ee/react-calendar-timeline/blob/8cf6f579ad9f7227dc8b459e2f606cfd39e7d3bd/src/lib/Timeline.js#L37-L163
     interface ReactCalendarTimelineProps {
         groups: ReactCalendarTimelineGroup[];
         items: ReactCalendarTimelineItem[];
-        keys?: ReactCalendarTimelineKeys;
-        sidebarContent?: React.ReactNode;
         sidebarWidth?: number;
-        rightSidebarContent?: React.ReactNode;
+        sidebarContent?: React.ReactNode;
         rightSidebarWidth?: number;
+        rightSidebarContent?: React.ReactNode;
         dragSnap?: number;
         minResizeWidth?: number;
-        fixedHeader?: "fixed" | "none";
-        fullUpdate?: boolean;
-        zIndexStart?: number;
+        stickyOffset?: number;
+        stickyHeader?: boolean;
         lineHeight?: number;
         headerLabelGroupHeight?: number;
         headerLabelHeight?: number;
         itemHeightRatio?: number;
+
         minZoom?: number;
         maxZoom?: number;
-        canMove?: boolean;
+
+        clickTolerance?: number;
+
         canChangeGroup?: boolean;
+        canMove?: boolean;
         canResize?: boolean;
         useResizeHandle?: boolean;
+        canSelect?: boolean;
+
         stackItems?: boolean;
+
         traditionalZoom?: boolean;
+
         itemTouchSendsClick?: boolean;
-        headerLabelFormats?: HeaderLabelFormats;
-        subHeaderLabelFormats?: HeaderLabelFormats;
+
+        horizontalLineClassNamesForGroup?(args: any): any;  // todo: Improve this
+
         onItemMove?(itemId: any, dragTime: any, newGroupOrder: any): any;
         onItemResize?(itemId: any, newResizeEnd: any): any;
-        onItemSelect?(itemId: any): any;
         onItemClick?(itemId: any): any;
+        onItemSelect?(itemId: any): any;
+        onItemDeselect?(itemId: any): any;
         onCanvasClick?(groupId: any, time: any, e: any): any;
         onItemDoubleClick?(itemId: any): any;
+        onItemContextMenu?(itemId: any): any;
+        onCanvasDoubleClick?(groupId: any, time: any, e: any): any;
+        onCanvasContextMenu?(groupId: any, time: any, e: any): any;
+        onZoom?(args: any): any; // todo: improve this
+
         moveResizeValidator?(action: any, itemId: any, time: any): any;
+
+        itemRenderer?: (props: ReactCalendarTimelineItemRendererProps) => React.ReactNode;
+        groupRenderer?: (props: { group: ReactCalendarTimelineGroup }) => React.ReactNode;
+
+        style?: React.CSSProperties
+
+        keys?: ReactCalendarTimelineKeys;
+        headerRef?(args: any): any; // todo: improve
+        scrollRef?(args: any): any; // todo: improve
+
+        timeSteps?: ReactCalendarTimelineTimeSteps;
+
         defaultTimeStart?: any;
         defaultTimeEnd?: any;
+
         visibleTimeStart?: any;
         visibleTimeEnd?: any;
         onTimeChange?(visibleTimeStart: any, visibleTimeEnd: any, updateScrollCanvas: (start: number, end: number) => void): any;
-        onTimeInit?(visibleTimeStart: any, visibleTimeEnd: any): any;
         onBoundsChange?(canvasTimeStart: any, canvasTimeEnd: any): any;
+
+        selected?: (number | string)[];
+        headerLabelFormats?: HeaderLabelFormats;
+        subHeaderLabelFormats?: HeaderLabelFormats;
+
         children?: any;
-        stickyOffset?:number;
-        stickyHeader?:boolean;
-        itemRenderer?: (props: { item: ReactCalendarTimelineItem }) => React.ReactNode;
-        groupRenderer?: (props: { group: ReactCalendarTimelineGroup }) => React.ReactNode;
     }
 
     export interface HeaderLabelFormats {
@@ -131,6 +222,14 @@ declare module "react-calendar-timeline" {
     export const defaultHeaderLabelFormats: HeaderLabelFormats;
     export const defaultSubHeaderLabelFormats: HeaderLabelFormats;
 
+    export class TimelineMarkers extends React.Component{
+
+    }
+
+    export class TodayMarker extends React.Component{
+        
+    }
+
     // let ReactCalendarTimeline : React.ClassicComponentClass<ReactCalendarTimelineProps>;
     export default ReactCalendarTimeline;
 }
@@ -142,6 +241,7 @@ declare module 'react-calendar-timeline/lib' {
         HeaderLabelFormats,
         ReactCalendarTimelineExtension,
         ReactCalendarTimelineGroup,
-        ReactCalendarTimelineItem
+        ReactCalendarTimelineItem,
+        ReactCalendarTimelineItemRendererProps
     } from 'react-calendar-timeline'
 }
