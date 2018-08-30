@@ -3,13 +3,19 @@ import {
     default as ReactTimeline,
     ReactCalendarTimelineGroup as TimelineGroupProps,
     ReactCalendarTimelineItem as TimelineItemProps,
-    HeaderLabelFormats
+    HeaderLabelFormats,
+    ReactCalendarTimelineItemRendererProps
 } from 'react-calendar-timeline/lib';
+import 'react-calendar-timeline/lib/Timeline.css';
 import './Timeline.css';
 import TimelineCard from './TimelineCard';
 
 export type TimelineGroup<T> = TimelineGroupProps & T;
 export type TimelineItem<T> = TimelineItemProps & T;
+
+interface TimelineItemRendererProps<T extends TimelineItemProps> extends ReactCalendarTimelineItemRendererProps {
+    item: T;
+}
 
 interface TimelineItemGroupProps<TItem, TGroup> {
     groups: TGroup[];
@@ -50,10 +56,10 @@ export default class Timeline<TItem, TGroup> extends React.PureComponent<Timelin
         };
 
         const subHeaderLabelFormats: Partial<HeaderLabelFormats> = {
-            ...ReactTimeline.defaultProps.subHeaderLabelFormats, 
+            ...ReactTimeline.defaultProps.subHeaderLabelFormats,
             dayLong: 'ddd D'
         };
-        
+
         const {
             groups = [],
             items = [],
@@ -90,6 +96,7 @@ export default class Timeline<TItem, TGroup> extends React.PureComponent<Timelin
                 canMove={false}
                 canResize={false}
                 canChangeGroup={false}
+                canSelect={false}
                 stackItems={true}
                 lineHeight={lineHeight}
                 sidebarWidth={sidebarWidth}
@@ -97,9 +104,7 @@ export default class Timeline<TItem, TGroup> extends React.PureComponent<Timelin
                 sidebarContent={sideBarHeaderComponent(this.props)}
                 traditionalZoom={true}
                 itemHeightRatio={itemHeightRatio}
-                stickyHeader={true}
-                stickyOffset={200}
-                itemRenderer={({ item }: { item: TimelineItemProps & TItem }) => this.renderItem(item)}
+                itemRenderer={(rendererProps: TimelineItemRendererProps<TItem & TimelineItemProps>) => this.renderItem(rendererProps)}
                 groupRenderer={({ group }: { group: TimelineGroupProps & TGroup }) => this.renderGroup(group)}
                 ref={(t) => this._timelineRef = t}
             >
@@ -162,14 +167,28 @@ export default class Timeline<TItem, TGroup> extends React.PureComponent<Timelin
             );
         }
     }
-    private renderItem(item: (TimelineItemProps & TItem)): React.ReactNode {
+    private renderItem(rendererProps: TimelineItemRendererProps<TItem & TimelineItemProps>): React.ReactNode {
         const {
-            itemRenderer = ({ title }: TimelineItemProps & TItem) => (
+            itemRenderer = ({ title }: TItem & TimelineItemProps) => (
                 <div>{title}</div>
             )
         } = this.props;
+        const {
+            item,
+            getItemProps
+        } = rendererProps;
+        const timelineCardProps = getItemProps({ style: item.style });
+        const { key, ref, style, className } = timelineCardProps;
         return (
-            <TimelineCard key={item.id}>
+            <TimelineCard
+                key={key}
+                ref={ref}
+                style={{
+                    ...style,
+                    lineHeight: undefined
+                }}
+                className={`${className}`}
+            >
                 {itemRenderer(item)}
             </TimelineCard>
         );

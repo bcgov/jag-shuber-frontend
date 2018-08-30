@@ -1,6 +1,10 @@
-.react-calendar-timeline .rct-sidebar .rct-sidebar-header{
+.react-calendar-timeline .rct-sidebar-header{
     background: #327AB7;
-    text-align: center;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    border-right-color: #000;
+    border-bottom-width: 0;
 }
 
 .react-calendar-timeline .rct-sidebar .rct-sidebar-row{
