@@ -40,7 +40,7 @@ dotenvFiles.forEach(dotenvFile => {
 // If not set, default the API_URL to the default dev environment version
 if(!process.env.API_URL){
   // Todo: perhaps make this more robust by searching for instance via minishift / oc cli's
-  process.env.API_URL = "https://api-dev.192.168.99.100.nip.io/"
+  process.env.API_URL = "https://frontend-jag-shuber-dev.pathfinder.gov.bc.ca/"
 }
 
 // We support resolving modules according to `NODE_PATH`.
