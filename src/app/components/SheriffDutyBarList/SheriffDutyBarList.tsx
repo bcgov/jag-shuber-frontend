@@ -24,7 +24,6 @@ export default class SheriffDutyBarList extends React.PureComponent<SheriffDutyB
     render() {
         const {
             sheriffDuties = [],
-            sheriffsRequired = 0,
             onRemove,
             onDropSheriff,
             onDropSheriffDuty,
@@ -35,7 +34,7 @@ export default class SheriffDutyBarList extends React.PureComponent<SheriffDutyB
 
         return (
             <div className="sheriff-duty-bar-list">
-                {sheriffDuties.map((sheriffDuty, index) => {
+                {sheriffDuties.map((sheriffDuty) => {
                     const { id, sheriffId } = sheriffDuty;
                     const _onRemove = onRemove && id !== undefined ? () => onRemove(id) : undefined;
                     return (
@@ -46,9 +45,7 @@ export default class SheriffDutyBarList extends React.PureComponent<SheriffDutyB
                             duty={duty}
                             dutyWorkSection={workSection}
                             onRemove={_onRemove}
-                            onDropSheriff={onDropSheriff}
-                            isExtra={index + 1 > sheriffsRequired}
-                            showBorder={index + 1 !== sheriffDuties.length}
+                            onDropSheriff={onDropSheriff}                            
                             onDropSheriffDuty={onDropSheriffDuty}                            
                         />
                     );

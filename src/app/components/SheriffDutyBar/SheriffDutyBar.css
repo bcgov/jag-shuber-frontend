@@ -1,6 +1,5 @@
 .sheriff-duty-bar{
-    height: 100%;
-    border-bottom:solid white;    
+    height: 100%;  
     display: flex;
     align-content: stretch;
     align-items: stretch;
@@ -15,4 +14,21 @@
 
 .sheriff-duty-bar:hover .remove-assignment-btn{
     display:inline;
+}
+
+/* Adds an overlay over the duty bar on hover to give some visual feedback */
+.sheriff-duty-bar:hover::before{
+        content:"";
+        display: block;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: rgba(255, 255, 255, .2);
+}
+
+/* Don't Display the overlay if we click on the duty-bar */
+.sheriff-duty-bar:active::before{
+    display: none;
 }

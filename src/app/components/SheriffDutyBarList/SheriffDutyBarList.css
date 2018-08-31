@@ -8,3 +8,11 @@
     display: flex;
     flex-direction: column;
 }
+
+.sheriff-duty-bar-list .sheriff-duty-bar{
+    border-bottom: 1px solid white;
+}
+
+.sheriff-duty-bar-list > div:last-of-type .sheriff-duty-bar{
+    border-bottom:unset;
+}

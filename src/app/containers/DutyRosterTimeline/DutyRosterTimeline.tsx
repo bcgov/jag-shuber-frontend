@@ -20,14 +20,13 @@ import {
     Assignment,
     AssignmentDuty,
     SheriffDuty,
+    DateType,
 } from '../../api/Api';
 import SheriffDutyBarList from '../../components/SheriffDutyBarList/SheriffDutyBarList';
 import ConnectedSheriffDutyBar from '../SheriffDutyBar';
-import { getWorkSectionColour } from '../../api/utils';
 import AssignmentTimeline from '../../components/AssignmentTimeline/AssignmentTimeline';
 import { TimelineProps } from '../../components/Timeline/Timeline';
 import AssignmentCard from '../../components/AssignmentCard/AssignmentCard';
-import { getForegroundColor } from '../../infrastructure/colorUtils';
 import {
     visibleTime,
     dutiesForDraggingSheriff,
@@ -40,6 +39,7 @@ import SheriffNameDisplay from '../SheriffNameDisplay';
 import SheriffDutyDragSource from '../SheriffDutyDragSource';
 import AssignmentSheriffDutyReassignmentModal from '../AssignmentSheriffDutyReassignmentModal';
 import { updateDraggingSheriff } from '../../modules/dutyRoster/actions';
+import { TimelineMarkers, TodayMarker } from 'react-calendar-timeline';
 
 interface DutyRosterTimelineProps extends TimelineProps {
     allowTimeDrag?: boolean;
@@ -105,8 +105,8 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
     }
 
     protected getOverlappingSheriffDutiesForSheriff(
-        sheriffToAssign: IdType = '', 
-        sheriffDutyToAssign: SheriffDuty, 
+        sheriffToAssign: IdType = '',
+        sheriffDutyToAssign: SheriffDuty,
         sourceSheriffDuty?: SheriffDuty): SheriffDuty[] {
 
         const {
@@ -194,15 +194,9 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
                         <AssignmentCard assignment={assignment} />
                     )}
                     itemRenderer={(duty) => {
-                        const workSectionColor = getWorkSectionColour(workSectionMap[duty.assignmentId]);
-                        const color = getForegroundColor(workSectionColor);
                         return (
                             <AssignmentDutyCard
                                 duty={duty}
-                                style={{
-                                    borderColor: workSectionColor,
-                                    color
-                                }}
                                 onDoubleClick={() => showAssignmentDutyEditModal(duty.id)}
                                 SheriffAssignmentRenderer={(p) => (
                                     <SheriffDutyBarList
@@ -218,7 +212,7 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
                                             };
                                             const classNames: string[] = ['sheriff-duty'];
                                             classNames.push(!isOpen ? 'is-overlap' : '');
-                                            classNames.push(color === '#FFFFFF' ? 'light' : 'dark');
+                                            classNames.push(duty && duty.style && duty.style.color === '#FFFFFF' ? 'light' : 'dark');
                                             return (
                                                 <SheriffDutyDragSource
                                                     sheriffDuty={sheriffDuty}
@@ -253,7 +247,15 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
                         );
                     }}
                     {...rest}
-                />
+                >
+                    <TimelineMarkers>
+                        <TodayMarker>
+                            {({ styles }: { styles: React.CSSProperties, date: DateType }) => {
+                                return <div style={{ ...styles, backgroundColor: 'red' }} />;
+                            }}
+                        </TodayMarker>
+                    </TimelineMarkers>
+                </AssignmentTimeline>
             </div>
         );
     }

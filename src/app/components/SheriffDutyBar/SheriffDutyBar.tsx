@@ -18,8 +18,6 @@ export interface SheriffDutyBarProps {
     duty: AssignmentDuty;
     dutyWorkSection?: WorkSectionCode;
     title?: string;
-    isExtra?: boolean;
-    showBorder?: boolean;
     onRemove?: () => void;
     canDropSheriff?: (sheriff: Sheriff) => boolean;
     onDropSheriff?: (sheriff: Sheriff, sheriffDuty: SheriffDuty) => void;
@@ -98,7 +96,6 @@ export default class SheriffDutyBar extends React.PureComponent<SheriffDutyBarPr
         const {
             sheriffId,
             sheriffDuty,
-            showBorder = true,
             dutyWorkSection = 'OTHER',
             canDropSheriff = (s: Sheriff) => this.canAssignSheriff(s),
             onDropSheriff,
@@ -120,7 +117,6 @@ export default class SheriffDutyBar extends React.PureComponent<SheriffDutyBarPr
                 className={`sheriff-duty-bar ${className}`}
                 style={{
                     backgroundColor: getWorkSectionColour(dutyWorkSection),
-                    borderBottomWidth: showBorder ? 1 : 0,
                     ...style,
                     width: this.getDutyBarWidth(),
                     position: 'absolute',

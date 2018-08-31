@@ -3,7 +3,14 @@
     position: absolute;
     z-index: 81;
     right: 0; 
-    height: 50%;
-    width: 40px;
+    margin-top: 5px;
+    margin-right: 5px;
     background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.assignment-duty-information-panel:empty{
+    display:none;
 }
