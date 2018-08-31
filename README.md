@@ -1,150 +1,99 @@
-# Shuber Frontend
+# Scheriff Scheduling Frontend (Shuber)
 The frontend portion of the Sheriff Scheduling System (code named Shuber).
 
-## Table of Contents
-
-- [Getting Started](#getting-started)
-- [Developing Features](#developing-features)
-- [Conventions](#conventions)
-- [Documentation](#documentation)
-- [Available Scripts](#available-scripts)
-- [Debugging in the Editor](#debugging-in-the-editor)
-- [Folder Structure](#folder-structure)
-- [Deployment](#openshift-deployment)
-- [Getting help or issues](#getting-help-or-reporting-an-issue)
-- [How to Contribute](#how-to-contribute)
-- [Third Party Libraries Used](#third-party-libraries)
-- [License](#license)
+## Project Architecture
+The notes on the projects architecture as well as other development notes can be found in the [Project Docs](./docs/index.md)
 
 
 ## Getting Started
 
-### Developer Workstation Setup
+### Development Environment
 * Install the following:
-    - [Node.js]
-    - [Yarn]
+    - [Node.js](https://nodejs.org/en/)
+    - [Yarn](https://yarnpkg.com/lang/en/)
     - [VS Code] and extensions (below)
        - [Git Lens](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens)
+       - [Debugger for Chrome](https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome)
 * Mac Users
-    - Install Homebrew
-    - Use Homebrew to install watchman (brew install watchman)
+    - Install [Homebrew](https://brew.sh/)
+    - Use Homebrew to install watchman
+        `brew install watchman`
 * Clone Repo
 * Install Dependencies
-    - Run `yarn` or `npm install` in the root of the project
-* Start Development Server
-    - Run `yarn start` or `npm start` 
-    - This should automatically open up a browser to [http://localhost:3000](http://localhost:3000)
+    - Run `yarn` in the root of the project
 
-> See [Available Scripts](#available-scripts) for more info
+## Environment Variables
+The development scripts for this application allow customization via an environment file in the root directory called `.env.local`.  If this file is present, it will be used to override environment variables for the development environment.  Here's an example of the environment variables that can be overridden (and their default values):
 
-## Developing Features
-The following process should be used when developing a feature
-* Create a Branch - a branch should be created for any new piece of work
-    - Switch to the branch you would like to branch from (e.g. master) and sync that branch
-    - Create a new branch, named for the feture you are working on using kabob case (_e.g._ my-new-branch)
-* Commit and Sync Often
-    - When working on your branch, commit and sync your changes to github often
-    - Try to logicially group and name your commits; this makes it easier for the PR
-* Create a Pull Request (PR)
-    - Sync your local master with origin
-    - Switch to your working branch
-    - Rebase your working branch (_e.g._ my-new-branch) against master 
-        - Ensure all changes have been comitted and synchronized
-        - Run `git rebase master`
-        - Resolve any conflicts
-        - Run `git rebase --continue`
-        - Continue to resolve the conflicts and continue the rebase, until no conflicts remain (NOTE: the rebase can be ended at any time by running `git rebase --abort`)
-    -  Force Push the rebase onto your remote brach
-        - Run `git push -f`
-    -  Create a Pull Request for your branch from GitHub, add at least one reviewer
-* Review comments on PR, make any changes, and commit
-    - mark comments as reviewed/addressed, by reacting with the `thumbsup` emoji
-* Merge branch into master and delete branch
-* From VS Code, prune your branches
-    - Run `git prune`
-* From VS Code, delete your local branch  
-    - Switch to a non-working branch (_e.g._ master) 
-    - Hit `Ctrl+Shift+P`
-    - Start typing `Git: Delete Branch` and select the option when it appears
-    - Select your working branch to delete it
-
-## Conventions
-
-### `Index.ts` Files
-- To reduce the complexity of project structure, this projet does not use `index.ts` files.
-
-### Imports
-
-When importing more than one item from an external library, place each import on its own line; this makes imports easier to comment out when debugging / testing an idea.
-
-```ts
-import {
-    Glyphicon,
-    Button,
-    Image
-} from 'react-bootstrap'
-```
-vs
-```ts
-import {Glyphicon, Button, Image} from 'react-bootstrap'
+```env
+# Location to proxy API Traffic
+API_URL="https://frontend-jag-shuber-dev.pathfinder.gov.bc.ca/"
+# Fake Siteminder Header Overrides
+SMGOV_USERGUID='SOMEGUIDGOESHERE'
+SMGOV_USERDISPLAYNAME='Name, Your'
+SMGOV_USERTYPE='user'
+SMGOV_USERIDENTIFIER='yname'
 ```
 
-### Components
+if you had an instance of the api in minishift you can change your `API_URL` to point your development frontend at that instance instead of our running dev instance in pathfinder for instance your `.env.local` might contain:
 
-* Components are visual representations of business objects and data, and should not contain state (_i.e._ should be "dumb components")
-* Components live in the Components direcotry, and should only be placed in a folder (by the same name as the compoent) if the component requires its own style sheet or contributing compoenets. 
-* Components should be named using the following convention: _domain_component description, where _domain_ is a major business domain for the application (_e.g._ Assignment, Sheriff, Courthouse, Region, etc.); this will help to group related components.
+```
+API_URL="https://api-dev.192.168.99.100.nip.io/"
+SMGOV_USERGUID='bnye'
+```
 
-### Containers
-* Containers are higher level components that wire state from Redux into regular Components. 
-* Containers live in the Container directory.
-* Containers should be named using the same convention as Components (see above).
-## Documentation
-* [React-Bootstrap Components](https://react-bootstrap.github.io/components/alerts/)
-* [Bootstrap CSS](https://bootstrapcreative.com/resources/bootstrap-3-css-classes-index/)
-* [Redux Forms](https://redux-form.com/7.2.0/docs/gettingstarted.md/)
+## Commands
 
-## Available Scripts
+### Development
 
-[Yarn][yarn] or npm can be user for packaging and script running needs; yarn has become the perferred method, as such the following scripts are described from the **yarn** perspective.
+The following commands support various development scenarios and needs.
 
-In the project directory, you can run:
 
-### `yarn start`
+> `yarn start`
+>
+> Runs the [webpack-dev-server]() in conjuction with a [fake siteminder proxy]() to facilitate proxying API traffic to the url specified by the `API_URL` environment variable.  (See [Environment Variables](#environment-variables)).  
+Open [http://localhost:8000](http://localhost:8000) to view it in the browser.<br/>
+> The page will reload if you make edits.<br/>
+> You will also see any lint errors in the console.
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+> `yarn start:dev`
+>
+> The same as `yarn:start` however overrides the API_URL to point at a development instance of the API at its default port [http://localhost:3001](http://localhost:3001).  Note: you must be running the [API Project](https://github.com/bcgov/jag-shuber-api) concurrently.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
-
-### `yarn start:dev`
-
-Runs the app in the development mode, pointing the app at a local instance of the API on [http://localhost:3001](http://localhost:3001).
-
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.<br>
+> `yarn test`
+>
+> Launches the test runner in the interactive watch mode.<br>
 See the section about [running tests](#running-tests) for more information.
 
+> `yarn update-api`
+>
+> Upates [jag-shuber-api](https://github.com/bcgov/jag-shuber-api) package to the most recent version. 
 
-### `yarn build`
+> `yarn storybook`
+>
+> Starts the [Storybook](https://storybook.js.org/) dev server which operates on [http://localhost:6006](http://localhost:6006)
+> <br/> <span style="color:red">CURRENTLY BROKEN</span>
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.<br>
+### Support
+
+These commands are here to support the continuous integration and other esoteric development concerns.  You should rarely need to run these commands.
+
+> `yarn build`
+>
+> Builds the app for production to the `build` folder.
+> <br/> It bundles React in production mode and optimizes the build for the best performance.
+> <br/> The build is minified and the filenames include the hashes.
 Your app is ready to be deployed!
+> <br/> See the section about [deployment](#deployment) for more information.
 
-See the section about [deployment](#deployment) for more information.
+> `yarn prepare`
+>
+>  This command is automatically run by yarn/npm after an install operation.  In our projects case, it runs [`patch-package`](https://www.npmjs.com/package/patch-package) to address any shortcomings of packages that we are currently using.
 
-### `yarn storybook`
-
-Starts the Storybook dev server which operates on [http://localhost:6006](http://localhost:6006)
-
-### `yarn update-api`
-Upates [jag-shuber-api](https://github.com/bcgov/jag-shuber-api) to the most recent version.
-
+> `yarn build-storybook`
+>
+> Bundles up the storybook application so that it could be deployed (for documentation purposes).
 
 ## Debugging in the Editor
 
@@ -172,7 +121,7 @@ openshift/                - OpenShift-specific files
 ├── scripts               - helper scripts
 └── templates             - application templates
 
-config/                   - Public HTML Assets
+public/                   - Public HTML Assets (see )
 
 scripts/                  - Build, dev and test scripts
 
@@ -194,34 +143,6 @@ src/
 ## OpenShift Deployment
 
 See [OpenShift Readme](openshift/Readme.md)
-
-## Supported Language Features and Polyfills
-
-This project supports a superset of the latest JavaScript standard.<br>
-In addition to [ES6](https://github.com/lukehoban/es6features) syntax features, it also supports:
-
-* [Exponentiation Operator](https://github.com/rwaldron/exponentiation-operator) (ES2016).
-* [Async/await](https://github.com/tc39/ecmascript-asyncawait) (ES2017).
-* [Object Rest/Spread Properties](https://github.com/sebmarkbage/ecmascript-rest-spread) (stage 3 proposal).
-* [Dynamic import()](https://github.com/tc39/proposal-dynamic-import) (stage 3 proposal)
-* [Class Fields and Static Properties](https://github.com/tc39/proposal-class-public-fields) (stage 2 proposal).
-* [JSX](https://facebook.github.io/react/docs/introducing-jsx.html) and [Flow](https://flowtype.org/) syntax.
-
-Learn more about [different proposal stages](https://babeljs.io/docs/plugins/#presets-stage-x-experimental-presets-).
-
-While we recommend to use experimental proposals with some caution, Facebook heavily uses these features in the product code, so we intend to provide [codemods](https://medium.com/@cpojer/effective-javascript-codemods-5a6686bb46fb) if any of these proposals change in the future.
-
-Note that **the project only includes a few ES6 [polyfills](https://en.wikipedia.org/wiki/Polyfill)**:
-
-* [`Object.assign()`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/assign) via [`object-assign`](https://github.com/sindresorhus/object-assign).
-* [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) via [`promise`](https://github.com/then/promise).
-* [`fetch()`](https://developer.mozilla.org/en/docs/Web/API/Fetch_API) via [`whatwg-fetch`](https://github.com/github/fetch).
-
-If you use any other ES6+ features that need **runtime support** (such as `Array.from()` or `Symbol`), make sure you are including the appropriate polyfills manually, or that the browsers you are targeting already support them.
-
-## Getting Help or Reporting an Issue
-
-To report bugs/issues/feature requests, please file an [issue](https://github.com/bcgov/bcjustice-shuber-frontend/issues/).
 
 ## How to Contribute
 
