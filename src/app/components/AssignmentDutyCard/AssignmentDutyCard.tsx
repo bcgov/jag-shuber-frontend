@@ -52,7 +52,7 @@ export default class AssignmentDutyCard extends React.PureComponent<AssignmentDu
                 />
                 <AssignmentDutyInformationPanel>
                     {comments &&
-                        <Glyphicon style={{ fontSize: 16, paddingTop: 10 }} title={comments} glyph="comment" />}
+                        <Glyphicon style={{ fontSize: 16}} title={comments} glyph="comment" />}
                 </AssignmentDutyInformationPanel>
             </div>
         );
