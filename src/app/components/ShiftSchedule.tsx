@@ -25,7 +25,7 @@ class ShiftScheduleTimeline extends Timeline<Shift, Courthouse> {
             </ShiftCard>
         ),
         mapItem: ShiftScheduleTimeline.mapItem,
-        
+
     };
 
     public static mapItem(shift: Shift, groups: Courthouse[]) {
@@ -37,7 +37,12 @@ class ShiftScheduleTimeline extends Timeline<Shift, Courthouse> {
             title: `${startTime.format('HH:mm')} - ${endTime.format('HH:mm')}`,
             group: shift.courthouseId,
             start_time: startTime,
-            end_time: endTime
+            end_time: endTime,
+            className: 'drop-shadow-hover',
+            style: {
+                background: 'white',
+                border: '0px'
+            }
         };
     }
 }

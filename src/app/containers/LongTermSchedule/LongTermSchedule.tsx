@@ -149,7 +149,7 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
                                     && !this.isSheriffOnFullDayLeave(sheriff.id, shift)
                                     && !this.isSheriffScheduledForDay(sheriff.id, moment(shift.startDateTime))
                                 }
-                                className="shift-card drop-shadow-hover"
+                                className="shift-card"
                                 onClick={() => this.toggleShiftSelect(shift.id)}
                             >
                                 <ShiftCard
@@ -161,8 +161,19 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
                                         <div style={{ position: 'absolute', top: 0, margin: 5 }}>
                                             <PartialLeavePopover leave={partialLeave} />
                                         </div>}
-                                    <SheriffDisplay sheriffId={shift.sheriffId} />
-                                    <div style={{ paddingBottom: 5 }}>{shift.title}</div>
+                                    <div
+                                        style={{
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            alignSelf: 'center',
+                                            justifyContent: 'center',
+                                            flex: 1,
+                                            paddingTop: 5
+                                        }}
+                                    >
+                                        <SheriffDisplay sheriffId={shift.sheriffId} />
+                                        <div>{shift.title}</div>
+                                    </div>
                                 </ShiftCard>
                             </SheriffDropTarget>
                         );

@@ -1,12 +1,12 @@
-.dimmed{
-    opacity:.6;
+.dimmed {
+    opacity: .6;
 }
 
-.dimmed:hover{
-    opacity:1.0;
+.dimmed:hover {
+    opacity: 1.0;
 }
 
-.scheduling-timeline{
+.scheduling-timeline {
     height: inherit;
 }
 
@@ -19,6 +19,22 @@
     border: 0px;
 }
 
-.scheduling-timeline .shift-card:hover {
-    margin: 1px;
+/* Adds an overlay over the duty bar on hover to give some visual feedback */
+
+.scheduling-timeline .shift-card:hover::before {
+    content: "";
+    display: block;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(255, 255, 255, .3);
+    z-index: 85;
+}
+
+/* Don't Display the overlay if we click on the duty-bar */
+
+.scheduling-timeline .shift-card:active::before {
+    display: none;
 }
