@@ -198,7 +198,7 @@ def work_space="/var/lib/jenkins/jobs/jag-shuber-tools-frontend-pipeline/workspa
   stage('Deploy ' + TAG_NAMES[1]){
     def environment = TAG_NAMES[1]
     def url = APP_URLS[1]
-    timeout(time:3, unit: 'DAYS'){ input id: 'Approval', message: "Deploy to ${environment}?", submitter: 'ronald-garcia-admin,cjam-admin', submitterParameter: 'approvingSubmitter'}
+    timeout(time:1, unit: 'WEEKS'){ input id: 'Approval', message: "Deploy to ${environment}?", submitter: 'ronald-garcia-admin,cjam-admin', submitterParameter: 'approvingSubmitter'}
     node{
     try{
       openshiftTag destStream: IMAGESTREAM_NAME, verbose: 'true', destTag: environment, srcStream: IMAGESTREAM_NAME, srcTag: "${IMAGE_HASH}", waitTime: '900000'
@@ -247,7 +247,7 @@ def work_space="/var/lib/jenkins/jobs/jag-shuber-tools-frontend-pipeline/workspa
   stage('Tag Image to ' + TAG_NAMES[2]){
     def environment = TAG_NAMES[2]
     def url = APP_URLS[2]
-    timeout(time:3, unit: 'DAYS'){ input "Deploy to ${environment}?"}
+    timeout(time:1, unit: 'WEEKS'){ input "Deploy to ${environment}?"}
     node{
       
       try {
@@ -295,7 +295,7 @@ def work_space="/var/lib/jenkins/jobs/jag-shuber-tools-frontend-pipeline/workspa
   // Once approved (input step) switch production over to the new version.
   stage('Switch over to new production stack') {
     // Wait for administrator confirmation
-    timeout(time:3, unit: 'DAYS'){ input id: 'Approval', message: "Switch Production stack?", submitter: 'ronald-garcia-admin', submitterParameter: 'approvingSubmitter'}
+    timeout(time:1, unit: 'WEEKS'){ input id: 'Approval', message: "Switch Production stack?", submitter: 'ronald-garcia-admin', submitterParameter: 'approvingSubmitter'}
     node{
       try{
         //Trigger remote job
