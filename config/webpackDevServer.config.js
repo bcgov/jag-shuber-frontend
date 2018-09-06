@@ -9,6 +9,7 @@ const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';
 const host = process.env.HOST || '0.0.0.0';
 
 module.exports = function(proxy, allowedHost) {
+  console.log("PUBLIC PATH",config.output.publicPath)
   return {
     // WebpackDevServer 2.4.3 introduced a security fix that prevents remote
     // websites from potentially accessing local content through DNS rebinding:
@@ -75,6 +76,12 @@ module.exports = function(proxy, allowedHost) {
       // Paths with dots should still use the history fallback.
       // See https://github.com/facebookincubator/create-react-app/issues/387.
       disableDotRule: true,
+      // The following adds a rewrite rule that will setup the dev server to serve our nested routes from our publicPath
+      // This is so that the devServer will recognize that it needs to inject the webpack bundles into the page subsequently
+      // letting the router in the app to handle the actual page to render.
+      rewrites:[
+        { from: RegExp(`^${config.output.publicPath.replace('/','\/')}.*$`), to: `${config.output.publicPath}` }
+      ]
     },
     public: allowedHost,
     proxy,
