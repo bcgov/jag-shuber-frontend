@@ -21,13 +21,13 @@ export default class ShiftCard extends React.Component<ShiftCardProps, {}> {
     const shiftColor = getWorkSectionColour(shift.workSectionId);
     const foreground = getForegroundColor(shiftColor);
 
-    const shiftTitle = shift.workSectionId 
-                        ? <div>
-                            {shift.workSectionId.charAt(0)} 
-                            {shift.assignmentId ? ' - ' : ''}
-                            <AssignmentTitleDisplay id={shift.assignmentId}/>
-                          </div> 
-                        : 'NA';
+    const shiftTitle = shift.workSectionId
+      ? <div>
+        {shift.workSectionId.charAt(0)}
+        {shift.assignmentId ? ' - ' : ''}
+        <AssignmentTitleDisplay id={shift.assignmentId} />
+      </div>
+      : 'NA';
 
     return (
       <div
@@ -44,7 +44,18 @@ export default class ShiftCard extends React.Component<ShiftCardProps, {}> {
           color: isSelected ? foreground : 'black'
         }}
       >
-        <WorkSectionIndicator workSectionId={shift.workSectionId} orientation={'top-right'} />
+        <div
+          style={{
+            width: '100%',
+            paddingTop: 1,
+            paddingBottom: 2,
+            backgroundColor: shiftColor,
+            color: shift.workSectionId ? foreground : shiftColor
+          }}
+        >
+          {shiftTitle}
+        </div>
+        {/* <WorkSectionIndicator workSectionId={shift.workSectionId} orientation={'top-right'} /> */}
         {this.props.children}
       </div>
     );

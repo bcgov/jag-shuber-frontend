@@ -14,7 +14,7 @@ import {
     IdType, 
     ShiftUpdates 
 } from '../api/Api';
-import TimePickerField from './FormElements/TimePickerField';
+import TimePickerDropdownField from './FormElements/TimePickerDropDownField';
 import SelectorField from './FormElements/SelectorField';
 import AssignmentSelector from '../containers/AssignmentSelector';
 import HelpPopover from './HelpPopover';
@@ -85,7 +85,7 @@ export default class ScheduleMultiShiftForm extends
                             name="startTime"
                             component={
                                 (p) =>
-                                    <TimePickerField
+                                    <TimePickerDropdownField
                                         {...p}
                                         nullTimeLabel={
                                             (selectedShiftIds && selectedShiftIds.length > 0)
@@ -99,7 +99,7 @@ export default class ScheduleMultiShiftForm extends
                             name="endTime"
                             component={
                                 (p) =>
-                                    <TimePickerField
+                                    <TimePickerDropdownField
                                         {...p}
                                         nullTimeLabel={
                                             (selectedShiftIds && selectedShiftIds.length > 0)
