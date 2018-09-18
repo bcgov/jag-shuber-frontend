@@ -14,9 +14,12 @@ class SchedulingPage extends React.PureComponent {
     render() {
         return (
             <Page
-                toolbar={
-                    <ScheduleControls />
-                }
+                toolbarStyle={{ justifyContent: 'center' }}
+                toolbar={(
+                    <div style={{ flex: 1, display: 'flex', position: 'relative', justifyContent: 'center' }}>
+                        <ScheduleControls />
+                    </div>
+                )}
                 contentStyle={{ height: 'inherit' }}
             >
                 <div style={{ display: 'flex', flexDirection: 'row', height: 'inherit' }}>
@@ -33,7 +36,7 @@ class SchedulingPage extends React.PureComponent {
                             />
                         </ListGroup>
                     </TimelineToolsPanel>
-                    <div style={{ flex: '1 0 0px', minWidth: 500, height:'inherit' }}>
+                    <div style={{ flex: '1 0 0px', minWidth: 500, height: 'inherit' }}>
                         <SchedulingTimeline />
                     </div>
                 </div>

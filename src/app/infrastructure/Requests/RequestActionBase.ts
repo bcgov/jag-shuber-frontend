@@ -218,7 +218,7 @@ export default abstract class RequestAction<TRequest, TResponse, TModuleState ex
 
     private _getData(state: any): TResponse {
         let requestState = this.selectRequestActionStateFromRootState(state);
-        return (requestState ? requestState.data : {}) as TResponse;
+        return (requestState && requestState.data ? requestState.data : {}) as TResponse;
     }
 
     get getData(): (state: any) => TResponse {

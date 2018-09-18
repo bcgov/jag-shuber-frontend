@@ -327,13 +327,12 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
                                                             title="Delete Duty Recurrence"
                                                             message={
                                                                 <p style={{ fontSize: 14 }}>
-                                                                    Please confirm that you would like to delete this duty recurrence.
+                                                                      <b>Delete</b> this duty recurrence?
                                                                 </p>}
                                                             actionBtnLabel={<Glyphicon glyph="trash" />}
                                                             actionBtnStyle="danger"
-                                                            confirmBtnLabel="Yes"
-                                                            confirmBtnStyle="success"
-                                                            cancelBtnLabel="No"
+                                                            confirmBtnLabel="Delete"
+                                                            confirmBtnStyle="danger"
                                                             onConfirm={() => {
                                                                 handleRemoveDutyRecurrence(index);
                                                             }}

@@ -27,7 +27,7 @@ class CourtAssignmentList extends React.PureComponent<
         } = this.props;
 
         const courtroomSelectorValues = courtrooms
-            .map(courtroom => ({ key: `${COURT_ASSIGNMENT_ROOM}:${courtroom.id}`, value: courtroom.name }));
+            .map(courtroom => ({ key: `${COURT_ASSIGNMENT_ROOM}:${courtroom.id}`, value: courtroom.code }));
         const rolesSelectorValues = courtRoles
             .map(role => ({ key: `${COURT_ASSIGNMENT_ROLE}:${role.code}`, value: role.description }));
 

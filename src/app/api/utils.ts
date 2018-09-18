@@ -8,7 +8,8 @@ import {
     WorkSectionCode,
     Shift,
     DateType,
-    DaysOfWeek
+    DaysOfWeek,
+    IdType
 } from './Api';
 
 export type ShiftCreationPayload = {
@@ -18,6 +19,7 @@ export type ShiftCreationPayload = {
     endTime: DateType;
     days: DaysOfWeek;
     repeatNumber: number;
+    assignmentId?: IdType;
 };
 
 export function isCourtAssignment(assignment: Partial<Assignment>): assignment is CourtAssignment {
@@ -75,7 +77,8 @@ export class ShiftFactory {
                 ),
                 endDateTime: moment(shiftInfo.weekStart).day(0).add(
                     { days: day, hours: endTimeMoment.hours(), minutes: endTimeMoment.minutes() }
-                )
+                ),
+                assignmentId: shiftInfo.assignmentId
             };
 
             for (let i = 1; i <= shiftInfo.repeatNumber; i++) {

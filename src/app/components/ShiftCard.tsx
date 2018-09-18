@@ -1,10 +1,10 @@
-import * as React from 'react';
+import React from 'react';
 import { Shift } from '../api';
 import {
   getWorkSectionColour
 } from '../api/utils';
 import { getForegroundColor } from '../infrastructure/colorUtils';
-import WorkSectionIndicator from './WorkSectionIndicator/WorkSectionIndicator';
+import AssignmentTitleDisplay from '../containers/AssignmentTitleDisplay';
 
 export interface ShiftCardProps {
   shift: Shift;
@@ -21,6 +21,14 @@ export default class ShiftCard extends React.Component<ShiftCardProps, {}> {
     const shiftColor = getWorkSectionColour(shift.workSectionId);
     const foreground = getForegroundColor(shiftColor);
 
+    const shiftTitle = shift.workSectionId
+      ? <div>
+        {shift.workSectionId.charAt(0)}
+        {shift.assignmentId ? ' - ' : ''}
+        <AssignmentTitleDisplay id={shift.assignmentId} />
+      </div>
+      : 'NA';
+
     return (
       <div
         style={{
@@ -36,7 +44,18 @@ export default class ShiftCard extends React.Component<ShiftCardProps, {}> {
           color: isSelected ? foreground : 'black'
         }}
       >
-        <WorkSectionIndicator workSectionId={shift.workSectionId} orientation={'top-right'} />
+        <div
+          style={{
+            width: '100%',
+            paddingTop: 1,
+            paddingBottom: 2,
+            backgroundColor: shiftColor,
+            color: shift.workSectionId ? foreground : shiftColor
+          }}
+        >
+          {shiftTitle}
+        </div>
+        {/* <WorkSectionIndicator workSectionId={shift.workSectionId} orientation={'top-right'} /> */}
         {this.props.children}
       </div>
     );

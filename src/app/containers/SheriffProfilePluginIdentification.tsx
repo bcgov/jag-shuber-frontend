@@ -106,7 +106,6 @@ export default class SheriffProfilePluginId extends SheriffProfileSectionPlugin<
                             (sp) => <GenderSelector {...sp} />}  
                     /> }
                 label="Gender"
-                validate={[Validators.required]}
             />
         </div>
     )

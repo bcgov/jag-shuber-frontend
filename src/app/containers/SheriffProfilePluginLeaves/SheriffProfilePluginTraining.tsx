@@ -27,9 +27,9 @@ export interface SheriffProfilePluginTrainingProps {
     fullDay: Leave[];
 }
 
-export default class SheriffProfilePluginTraining 
+export default class SheriffProfilePluginTraining
     extends SheriffProfileSectionPlugin<SheriffProfilePluginTrainingProps> {
-    
+
     name = 'training';
     formFieldNames = {
         fullDay: 'training.fullDay',
@@ -117,11 +117,18 @@ export default class SheriffProfilePluginTraining
     fetchData(sheriffId: IdType, dispatch: Dispatch<any>) {
         dispatch(getLeaves());
     }
-    
+
     getData(sheriffId: IdType, state: RootState) {
         return {
             partialDay: getSheriffPartialTrainingLeaves(sheriffId)(state),
             fullDay: getSheriffFullDayTrainingLeaves(sheriffId)(state)
+        };
+    }
+
+    getDataFromFormValues(formValues: any): SheriffProfilePluginTrainingProps {
+        return super.getDataFromFormValues(formValues) || {
+            fullDay: [],
+            partialDay: []
         };
     }
 
@@ -135,6 +142,7 @@ export default class SheriffProfilePluginTraining
             startTime: toTimeString(l.startTime),
             endTime: toTimeString(l.endTime)
         }));
-        return await dispatch(createOrUpdateLeaves(allLeaves, { toasts: {} }));
+
+        return allLeaves.length > 0 ? await dispatch(createOrUpdateLeaves(allLeaves, { toasts: {} })) : [];
     }
 }

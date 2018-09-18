@@ -1,0 +1,9 @@
+.import-default-duties-form{
+    margin:10px;
+}
+
+.import-default-duties-form .form-group{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

@@ -115,7 +115,7 @@ export default class AssignmentDutyForm extends
                         }
                         const deleteConfirmMessage = (
                             <p style={{ fontSize: 14 }}>
-                                Please confirm that you would like to <b>permanently delete</b> this sheriff duty.
+                                <b>Permanently delete</b> this sheriff duty?
                             </p>
                         );
                         return (
@@ -129,9 +129,8 @@ export default class AssignmentDutyForm extends
                                                     message={deleteConfirmMessage}
                                                     actionBtnLabel={<Glyphicon glyph="trash" />}
                                                     actionBtnStyle="danger"
-                                                    confirmBtnLabel="Yes"
-                                                    confirmBtnStyle="success"
-                                                    cancelBtnLabel="No"
+                                                    confirmBtnLabel="Delete"
+                                                    confirmBtnStyle="danger"
                                                     onConfirm={() => {
                                                         handleRemoveSheriffDuty(index);
                                                     }}

@@ -115,6 +115,22 @@ export const selectedShiftsEndTimes = (variedValue: string | null = null) => cre
     }
 );
 
+export const selectedShiftsAnticipatedAssignment = (variedValue: string = 'varied') => createSelector(
+    selectedShifts,
+    (shifts: Shift[] = []) => {
+        const allSameAssignments: boolean = allSame(
+            shifts.map(shift => shift.assignmentId), 
+            (compareAssignmentId, currentAssignmentId) => currentAssignmentId === compareAssignmentId
+        );
+
+        if (allSameAssignments && shifts.length > 0) {
+            return shifts[0].assignmentId;
+        } else {
+            return variedValue;
+        }
+    }
+);
+
 export const isShowWorkSections = (state: RootState): boolean => {
     const { showWorkSections = true } = state.schedule;
     return showWorkSections;

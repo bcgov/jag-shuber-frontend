@@ -34,6 +34,8 @@ import ConnectedConfirmationModal from './containers/ConfirmationModal';
 import SheriffProfileCreateModal from './containers/SheriffProfileCreateModal';
 import resolveAppUrl from './infrastructure/resolveAppUrl';
 import CustomDragLayer from './infrastructure/DragDrop/CustomDragLayer';
+import ScheduleShiftMultiEditModal from './containers/ScheduleMultiShiftEditModal';
+import DutyRosterToolsModal from './containers/DutyRosterToolsModal';
 
 export interface LayoutStateProps {
   isCourthouseSet?: boolean;
@@ -109,7 +111,7 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
               <Route path={Navigation.Routes.team.path} component={ManageSheriffs} />
               <Route path={Navigation.Routes.dutyRoster.setup.path} component={DefaultAssignments} />
               <Route path={Navigation.Routes.schedule.distribute.path} component={PublishSchedule} />
-
+              <DutyRosterToolsModal />
               <AssignmentDutyEditModal />
               <SheriffProfileModal />
               <SheriffProfileCreateModal />
@@ -117,6 +119,7 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
               <ScheduleShiftAddModal />
               <ConnectedConfirmationModal />
               <AssignmentSheriffDutyReassignmentModal />
+              <ScheduleShiftMultiEditModal /> 
             </div>
           )}
           <div className="footerArea">

@@ -1,10 +1,10 @@
 import moment from 'moment';
 import { displayEnum } from '../infrastructure/EnumUtils';
 import avatarImg from '../assets/images/avatar.png';
+import * as ApiTypes from 'jag-shuber-api/dist/common/types';
 
 export type MapType<T> = { [key: string]: T };
-
-export type DateType = Date | moment.Moment | string;
+export type DateType = ApiTypes.DateType;
 export type StringMap = MapType<string>;
 export type IdType = string;
 export type ShiftMap = MapType<Shift>;
@@ -14,7 +14,7 @@ export type AssignmentMap = MapType<Assignment>;
 export type AssignmentDutyMap = MapType<AssignmentDuty>;
 export type WorkSectionCode = 'COURTS' | 'JAIL' | 'ESCORTS' | 'OTHER';
 export type Assignment = CourtAssignment | JailAssignment | EscortAssignment | OtherAssignment;
-export type TimeType = string | number;
+export type TimeType = ApiTypes.TimeType;
 export type CourtroomMap = MapType<Courtroom>;
 export type RunMap = MapType<Run>;
 export type JailRoleMap = MapType<JailRole>;
@@ -160,6 +160,7 @@ export interface SheriffRank {
     code: string;
     description: string;
     expiryDate?: DateType;
+    order: number;
 }
 
 export interface BaseAssignment {
@@ -211,9 +212,9 @@ export interface SheriffDuty {
 }
 
 export interface SheriffDutyReassignmentDetails {
-    sourceSheriffDuty: SheriffDuty; 
+    sourceSheriffDuty: SheriffDuty;
     newSourceDutyEndTime: DateType;
-    targetSheriffDuty: SheriffDuty; 
+    targetSheriffDuty: SheriffDuty;
     newTargetDutyStartTime: DateType;
 }
 export interface DutyRecurrence {
@@ -262,6 +263,7 @@ export interface Shift {
     workSectionId?: WorkSectionCode;
     startDateTime: DateType;
     endDateTime: DateType;
+    assignmentId?: IdType;
 }
 
 export interface ShiftUpdates {
@@ -269,6 +271,7 @@ export interface ShiftUpdates {
     startTime?: DateType;
     endTime?: DateType;
     workSectionId?: WorkSectionCode | 'varied';
+    assignmentId?: string | 'varied';
 }
 
 export interface ShiftCopyOptions {
@@ -343,6 +346,9 @@ export interface API {
 
     // Default Duties
     createDefaultDuties(date?: DateType): Promise<AssignmentDuty[]>;
+
+    // Auto Assign Sheriff Duties
+    autoAssignSheriffDuties(date?: DateType): Promise<SheriffDuty[]>;
 
     // Sheriff Shifts
     getShifts(): Promise<Shift[]>;

@@ -7,9 +7,11 @@ export interface Code {
     expiryDate?: DateType;
 }
 
-export class CodeSelector extends EffectiveSelector<Code> {
+export class CodeSelector<P extends Code> extends EffectiveSelector<P> {
     constructor(
-        mapSelector: ((state: any) => {[key: string]: Code})) {
-            super(mapSelector, (c) => c.expiryDate, (a, b) => a.description.localeCompare(b.description));
+        mapSelector: ((state: any) => { [key: string]: P }),
+        sort: ((a: P, b: P) => number) = (a, b) => a.description.localeCompare(b.description)
+    ) {
+        super(mapSelector, (c) => c.expiryDate, sort);
     }
 }

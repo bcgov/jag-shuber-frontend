@@ -109,6 +109,15 @@ body {
   user-select: none; /* Standard */
 }
 
+.modal-xsmall{
+  width: 350px;
+  margin:30px auto;
+}
+
+.modal-small{
+  width: 30%;
+}
+
 .modal-medium{
   width:43%;
 }

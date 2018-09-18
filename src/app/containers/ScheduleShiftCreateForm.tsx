@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {
     reduxForm,
     ConfigProps
@@ -22,11 +22,13 @@ const formConfig: ConfigProps<any, ScheduleShiftFormProps> = {
     form: 'CreateScheduleShift',
     onSubmit: (values, dispatch, props) => {
         const { weekStart } = props;
-        const { timeRange, ...rest} = values;
+        const { timeRange, assignmentId, ...rest} = values;
         let newShiftCreatorPayload: Partial<ShiftCreationPayload> = Object.assign({}, {...rest});
         newShiftCreatorPayload.weekStart = weekStart;
         newShiftCreatorPayload.startTime = timeRange.startTime;
         newShiftCreatorPayload.endTime = timeRange.endTime;
+        newShiftCreatorPayload.workSectionId = props.workSectionId;
+        newShiftCreatorPayload.assignmentId = assignmentId;
         dispatch(createShifts(newShiftCreatorPayload as ShiftCreationPayload));
     }
 };

@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 import { RootState } from '../store';
 import {
     Glyphicon,
-    Dropdown,
-    MenuItem
+    Button,
+    MenuItem,
+    Dropdown
 } from 'react-bootstrap';
 import {
     visibleTime,
@@ -20,9 +21,12 @@ import { deleteShift as deleteShiftAction } from '../modules/shifts/actions';
 import ScheduleShiftMultiEditForm from './ScheduleShiftMultiEditForm';
 import ScheduleShiftAddModal from './ScheduleShiftAddModal';
 import ScheduleShiftCopyModal from './ScheduleShiftCopyModal';
-import { IdType, Shift } from '../api/Api';
+import { IdType, Shift, WorkSectionCode } from '../api/Api';
 import DateRangeControls from '../components/DateRangeControls';
 import { allShifts } from '../modules/shifts/selectors';
+import { ConfirmationModal } from '../components/ConfirmationModal';
+import ScheduleMultiShiftEditModal from './ScheduleMultiShiftEditModal';
+import { WORK_SECTIONS } from '../api';
 
 interface ScheduleControlsStateProps {
     visibleTimeStart: any;
@@ -41,7 +45,8 @@ interface ScheduleControlsProps {
 interface ScheduleDistpatchProps {
     updateVisibleTime: (startTime: any, endTime: any) => void;
     showShiftCopyModal: () => void;
-    showShiftAddModal: () => void;
+    showShiftAddModal: (workSectionId?: WorkSectionCode) => void;
+    showMultiShiftEditModal: (selectedShiftIds: IdType[]) => void;
 }
 
 class ScheduleControls extends React.PureComponent<
@@ -61,45 +66,22 @@ class ScheduleControls extends React.PureComponent<
             updateVisibleTime,
             showShiftCopyModal,
             showShiftAddModal,
-            submit,
+            showMultiShiftEditModal,
             clear,
             deleteShift,
             selectedShifts = [],
             setSelectedShifts
         } = this.props;
 
+        const areShiftsSelected = selectedShifts.length > 0;
+
         return (
             <div
                 style={{
                     display: 'flex',
-                    justifyContent: 'space-between',
-                    width: '100%',
                     paddingLeft: 200
                 }}
             >
-                <div
-                    style={{
-                        margin: '5px 10px',
-                        paddingRight: 15
-                    }}
-                >
-                    <ScheduleShiftMultiEditForm
-                        onApply={
-                            () => {
-                                submit && submit();
-                                clear && clear();
-                            }
-                        }
-                        onClear={() => clear && clear()}
-                        onDelete={
-                            () => {
-                                deleteShift && deleteShift(selectedShifts);
-                                clear && clear();
-                            }
-                        }
-                        onSelectAll={() => setSelectedShifts && setSelectedShifts(this.allVisibleShiftIds())}
-                    />
-                </div>
 
                 <div className="toolbar-calendar-control">
                     <DateRangeControls
@@ -121,37 +103,100 @@ class ScheduleControls extends React.PureComponent<
                             moment().endOf('week').subtract(1, 'day')
                         )}
                     />
-                    <div
-                        style={{
-                            paddingTop: 2,
-                            background: '#003366',
-                            zIndex: 900,
-                            textAlign: 'left'
-                        }}
+                </div>
+
+                <div
+                    style={{
+                        position: 'absolute',
+                        right: 10,
+                        paddingTop: 5
+                    }}
+                >
+                    <Button
+                        className="action-button secondary"
+                        style={{ marginRight: 6 }}
+                        onClick={() => setSelectedShifts && setSelectedShifts(this.allVisibleShiftIds())}
                     >
-                        <Dropdown id="schedule-control-menu" pullRight={true}>
-                            <Dropdown.Toggle
-                                noCaret={true}
-                                style={{
-                                    fontSize: 22,
-                                    background: 'transparent',
-                                    color: 'white',
-                                    border: 0,
-                                    paddingLeft: 18,
-                                    paddingRight: 15
-                                }}
-                            >
-                                <Glyphicon glyph="menu-hamburger" />
-                            </Dropdown.Toggle>
-                            <Dropdown.Menu>
-                                <MenuItem onClick={() => showShiftAddModal()}>Add Shift</MenuItem>
-                                <MenuItem onClick={() => showShiftCopyModal()}>Import Shifts</MenuItem>
-                            </Dropdown.Menu>
-                        </Dropdown>
-                    </div>
+                        Select All
+                    </Button>
+
+                    <Button
+                        className="action-button secondary"
+                        style={{ marginRight: 40 }}
+                        onClick={() => clear && clear()}
+                    >
+                        Deselect
+                    </Button>
+
+                    <Dropdown
+                        id="task-type-dropdown"
+                        style={{ marginRight: 6 }}
+                    >
+                        <Dropdown.Toggle noCaret={true} className="action-button">
+                            <Glyphicon glyph="plus" />
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            {
+                                Object.keys(WORK_SECTIONS).map((k) => {
+                                    return (
+                                        <MenuItem
+                                            key={k}
+                                            onSelect={() => showShiftAddModal(k as WorkSectionCode)}
+                                        >
+                                            {WORK_SECTIONS[k]}
+                                        </MenuItem>
+                                    );
+                                })
+
+                            }
+                            <MenuItem key={'NA'} onSelect={() => showShiftAddModal()}>
+                                Not Applicable
+                            </MenuItem>
+                        </Dropdown.Menu>
+                    </Dropdown>
+
+                    <Button
+                        style={{
+                            marginRight: -6,
+                            backgroundColor: areShiftsSelected ? '#327AB7' : 'grey',
+                            borderColor: areShiftsSelected ? '#327AB7' : 'grey',
+                            color: 'white'
+                        }}
+                        onClick={() => showMultiShiftEditModal(selectedShifts)}
+                        disabled={!areShiftsSelected}
+                    >
+                        <Glyphicon glyph="pencil" />
+                    </Button>
+
+                    <ConfirmationModal
+                        key="confirmationModal"
+                        onConfirm={() => {
+                            if (deleteShift) {
+                                deleteShift(selectedShifts);
+                            }
+                            if (clear) {
+                                clear();
+                            }
+                        }}
+                        actionBtnLabel={<Glyphicon glyph="trash" style={{ fontSize: 18 }} />}
+                        actionBtnStyle="danger"
+                        confirmBtnLabel="Delete"
+                        confirmBtnStyle="danger"
+                        // tslint:disable-next-line:max-line-length
+                        message={<p style={{ fontSize: 14 }}><b>Permanently delete</b> the selected shift(s)?</p>}
+                        title="Delete Shift(s)"
+                    />
+
+                    <Button
+                        className="action-button"
+                        onClick={() => showShiftCopyModal()}
+                        style={{ marginLeft: 20 }}
+                    >
+                        Import Shifts
+                    </Button>
+
                 </div>
             </div>
-
         );
     }
 }
@@ -168,11 +213,12 @@ const mapStateToProps = (state: RootState) => {
 const mapDispatchToProps = {
     updateVisibleTime: setVisibleTime,
     showShiftCopyModal: () => ScheduleShiftCopyModal.ShowAction(),
-    showShiftAddModal: () => ScheduleShiftAddModal.ShowAction(),
+    showShiftAddModal: (workSectionId?: WorkSectionCode) => ScheduleShiftAddModal.ShowAction(workSectionId),
     submit: ScheduleShiftMultiEditForm.submitAction,
     clear: clearSelectedShifts,
     deleteShift: deleteShiftAction,
-    setSelectedShifts: selectShifts
+    setSelectedShifts: selectShifts,
+    showMultiShiftEditModal: (selectedShifts: IdType[]) => ScheduleMultiShiftEditModal.ShowAction(selectedShifts)
 };
 
 // tslint:disable-next-line:max-line-length

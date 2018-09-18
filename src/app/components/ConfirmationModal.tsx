@@ -11,19 +11,10 @@ export interface ConfirmationModalProps {
     message?: React.ReactNode;
     confirmBtnLabel?: React.ReactNode;
     confirmBtnStyle?: string;
-    cancelBtnLabel?: React.ReactNode;
-    cancelBtnStyle?: string;
     onConfirm: () => void;
-    onCancel?: () => void;
 }
 
 export class ConfirmationModal extends React.PureComponent<ConfirmationModalProps> {
-    private handleCancel() {
-        const { onCancel } = this.props;
-        if (onCancel) {
-            onCancel();
-        }
-    }
 
     private handleConfirm() {
         const { onConfirm } = this.props;
@@ -39,11 +30,9 @@ export class ConfirmationModal extends React.PureComponent<ConfirmationModalProp
             actionBtnStyle = '',
             actionBtnSize = '',
             title = 'Confirm',
-            message = <p style={{fontSize: 16}}>Please confirm that you would like to complete this action.</p>,
+            message = <p style={{fontSize: 16}}>Complete this action.</p>,
             confirmBtnLabel = 'Confirm',
-            confirmBtnStyle = 'primary',
-            cancelBtnLabel = 'Cancel',
-            cancelBtnStyle = 'default'
+            confirmBtnStyle = 'primary'
         } = this.props;
         
         return (
@@ -61,16 +50,6 @@ export class ConfirmationModal extends React.PureComponent<ConfirmationModalProp
                         </Button>}
                     body={() => message}
                     footerComponent={({ handleClose }) => [
-                        <Button 
-                            key="cancel" 
-                            bsStyle={cancelBtnStyle}
-                            onClick={() => {
-                                this.handleCancel();
-                                handleClose();
-                            }}
-                        >
-                            {cancelBtnLabel}
-                        </Button>,
                         <Button 
                             key="confirm" 
                             bsStyle={confirmBtnStyle} 

@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as moment from 'moment';
+import React from 'react';
+import moment from 'moment';
 import Form from './FormElements/Form';
 import {
     Field,
@@ -13,19 +13,18 @@ import {
     Shift
 } from '../api/Api';
 import DaysOfWeekChecklist from './FormElements/DaysOfWeekChecklist';
-import WorkSectionSelector from './FormElements/WorkSectionSelector';
 import NumberSpinner from './FormElements/NumberSpinner';
 import TimeSliderField from './FormElements/TimeSliderField';
 import { getWorkSectionColour } from '../api/utils';
 import * as TimeUtils from '../infrastructure/TimeRangeUtils';
-import SheriffSelector from '../containers/SheriffSelector';
 import SelectorField from './FormElements/SelectorField';
+import toTitleCase from '../infrastructure/toTitleCase';
+import AssignmentSelector from '../containers/AssignmentSelector';
+import HelpPopover from './HelpPopover';
 export interface ScheduleShiftFormProps {
     handleSubmit?: () => void;
     onSubmitSuccess?: () => void;
     weekStart?: DateType;
-    isSingleShift?: boolean;
-    shiftTitle?: string;
     minTime?: TimeType;
     maxTime?: TimeType;
     workSectionId?: WorkSectionCode;
@@ -37,46 +36,22 @@ export default class ScheduleShiftForm extends
     static parseShiftFormValues(values: any): Shift {
         const { timeRange, ...shiftValues } = values;
         const updatedShift = {
-            ...shiftValues, 
+            ...shiftValues,
             startDateTime: timeRange.startTime,
-            endDateTime: timeRange.endTime
+            endDateTime: timeRange.endTime,
         };
 
         return updatedShift as Shift;
     }
 
     static shiftToFormValues(shift: Shift) {
-        return{ 
-            ...shift, 
+        return {
+            ...shift,
             timeRange: {
                 startTime: moment(shift.startDateTime).toISOString(),
                 endTime: moment(shift.endDateTime).toISOString()
             }
         };
-    }
-
-    private renderMultiShiftCreationFields() {
-        return (
-            <div>
-                <Field
-                    name="days"
-                    component={DaysOfWeekChecklist as any}
-                    label="Days"
-                    validate={[Validators.required]}
-                />
-                <Field
-                    name="repeatNumber"
-                    component={NumberSpinner as any}
-                    label="Number of FTEs required"
-                    validate={[
-                        Validators.required,
-                        Validators.max50,
-                        Validators.min1,
-                        Validators.integer
-                    ]}
-                />
-            </div>
-        );
     }
 
     private renderShiftFields() {
@@ -87,16 +62,8 @@ export default class ScheduleShiftForm extends
         } = this.props;
         return (
             <div>
-                <Field
-                    name="workSectionId"
-                    component={(p) => <SelectorField 
-                        {...p} 
-                        SelectorComponent={
-                            (sp) => 
-                                <WorkSectionSelector {...sp} />}  
-                    />}
-                    label="Work Section"
-                />
+                <h1>{toTitleCase(workSectionId)}</h1>
+                <br/>
                 <Field
                     name="timeRange"
                     component={(p) => <TimeSliderField
@@ -109,33 +76,53 @@ export default class ScheduleShiftForm extends
                     label="Time Range"
                 />
                 <br />
+                <Field
+                    name="days"
+                    component={DaysOfWeekChecklist as any}
+                    label="Days"
+                    validate={[Validators.required]}
+                />
+                <br />
+                <Field
+                    name="repeatNumber"
+                    component={NumberSpinner as any}
+                    label="Number of FTEs required"
+                    validate={[
+                        Validators.required,
+                        Validators.max50,
+                        Validators.min1,
+                        Validators.integer
+                    ]}
+                />
+                <br/>
+                {workSectionId && <Field
+                    name="assignmentId"
+                    component={(p) => <SelectorField
+                        {...p}
+                        SelectorComponent={
+                            (sp) => <AssignmentSelector
+                                {...sp}
+                                workSectionId={workSectionId}
+                                label="Anticipated Assignment"
+                            />}
+
+                    />}
+                    fieldToolTip={
+                        <HelpPopover 
+                            // tslint:disable-next-line:max-line-length
+                            helpText={'For shift assignments already imported into the duty roster, make your edits in the duty roster.'}
+                        />}
+                    label="Anticipated Assignment"
+                />}
             </div>
         );
     }
 
-    private renderSheriffField() {
-        return (
-            <Field
-                name="sheriffId"
-                component={(p) => <SelectorField 
-                    {...p} 
-                    SelectorComponent={
-                        (sp) => <SheriffSelector {...sp} />}  
-                />}
-                label="Sheriff"
-            />
-        );
-    }
-
     render() {
-        const { shiftTitle, isSingleShift } = this.props;
         return (
             <div>
-                <h1>{shiftTitle}</h1>
                 <Form {...this.props}>
                     {this.renderShiftFields()}
-                    {!isSingleShift && this.renderMultiShiftCreationFields()}
-                    {isSingleShift && this.renderSheriffField()}
                 </Form>
             </div>
         );

@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 import * as requests from './requests';
 import { RootState } from '../../store';
 import {
-    IdType
+    IdType, Sheriff
 } from '../../api/Api';
 import mapToArray from '../../infrastructure/mapToArray';
 import { currentCourthouse as currentCourthouseSelector } from '../user/selectors';
@@ -10,10 +10,21 @@ import arrayToMap from '../../infrastructure/arrayToMap';
 import { ErrorMap } from './common';
 import { CodeSelector } from '../../infrastructure/CodeSelector';
 
+export const DEFAULT_SHERIFF_SORTER = createSelector(
+    requests.sheriffRankCodeMapRequest.getData,
+    (rankMap) => {
+        function getSortString(s: Sheriff) {
+            return `${rankMap[s.rankCode as string].order}${s.lastName}${s.firstName}`;
+        }
+        return (a: Sheriff, b: Sheriff) => getSortString(a).localeCompare(getSortString(b));
+});
+
 export const sheriffs = createSelector(
     requests.sheriffMapRequest.getData,
-    (map) => mapToArray(map)
-        .sort((a, b) => `${a.lastName} ${a.firstName}`.localeCompare(`${b.lastName} ${b.firstName}`))
+    DEFAULT_SHERIFF_SORTER,
+    (map, sorter) => {
+        return mapToArray(map).sort(sorter) || [];
+    }
 );
 
 export const sheriffsForCurrentCourthouse = createSelector(
@@ -70,7 +81,6 @@ export const sheriffLoanMap = createSelector(
     }
 );
 
-
 export const selectedSheriffProfileSection = (state: RootState) => {
     const { sheriffs: { selectedProfileSection = undefined } = {} } = state;
     return selectedProfileSection;
@@ -83,7 +93,8 @@ export const getSheriffProfilePluginErrors = (state: RootState) => {
 
 // Sheriff Rank Codes
 const sheriffRankCodeSelector = new CodeSelector(
-    requests.sheriffRankCodeMapRequest.getData
+    requests.sheriffRankCodeMapRequest.getData,
+    (a, b) => a.order - b.order
 );
 
 export const allSheriffRankCodes = sheriffRankCodeSelector.all;

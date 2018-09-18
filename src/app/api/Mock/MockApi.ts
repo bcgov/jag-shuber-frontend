@@ -65,6 +65,9 @@ function getAssignmentTitle(assignment: Partial<Assignment>): string {
 }
 
 export default class MockClient implements API {
+    autoAssignSheriffDuties(date?: string | moment.Moment | Date | undefined): Promise<SheriffDuty[]> {
+        throw new Error('Method not implemented.');
+    }
     reassignSheriffDuty(reassignmentDetails: SheriffDutyReassignmentDetails): Promise<SheriffDuty[]> {
         throw new Error("Method not implemented.");
     }

@@ -8,7 +8,7 @@ export interface SelectorProps {
     showVariedOption?: boolean;
     variedLabel?: string;
     isDisabled?: boolean;
-    label?: string;
+    label?:  string;
     value?: string;
     onChange?: (val: string) => void;
 }
