@@ -22,7 +22,7 @@ import {
     selectedShiftsAnticipatedAssignment
 } from '../modules/schedule/selectors';
 import { editMultipleShifts } from '../modules/shifts/actions';
-import { toTimeString } from 'jag-shuber-api/dist/client';
+import { toTimeString } from 'jag-shuber-api';
 
 // wrapping generic assignment form in redux-form
 const formConfig: ConfigProps<any, ScheduleMultiShiftFormProps> = {

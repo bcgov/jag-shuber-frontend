@@ -10,9 +10,9 @@ import {
 import SheriffSelector from '../containers/SheriffSelector';
 import WorkSectionSelector from './FormElements/WorkSectionSelector';
 import Selector from './FormElements/Selector';
-import { 
-    IdType, 
-    ShiftUpdates 
+import {
+    IdType,
+    ShiftUpdates
 } from '../api/Api';
 import TimePickerDropdownField from './FormElements/TimePickerDropDownField';
 import SelectorField from './FormElements/SelectorField';
@@ -30,13 +30,14 @@ export default class ScheduleMultiShiftForm extends
     React.Component<ScheduleMultiShiftFormProps & InjectedFormProps<{}, ScheduleMultiShiftFormProps>, {}> {
 
     static parseUpdateDetailsFromValues(values: any): ShiftUpdates {
-        const { sheriffId, startTime, endTime, workSectionId } = values;
+        const { sheriffId, startTime, endTime, workSectionId, assignmentId } = values;
 
         return {
             sheriffId: !Selector.isVaried(sheriffId) ? sheriffId : undefined,
             startTime,
             endTime,
-            workSectionId: !Selector.isVaried(workSectionId) ? workSectionId : undefined
+            workSectionId: !Selector.isVaried(workSectionId) ? workSectionId : undefined,
+            assignmentId: !Selector.isVaried(assignmentId) ? assignmentId : undefined
         } as ShiftUpdates;
     }
 
