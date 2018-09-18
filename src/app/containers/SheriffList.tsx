@@ -6,7 +6,7 @@ import {
 import { RootState } from '../store';
 import { getSheriffList } from '../modules/sheriffs/actions';
 import {
-  sheriffsForCurrentCourthouse as sheriffsSelector,
+  sheriffsForCurrentCourthouse,
   sheriffListLoading,
   sheriffLoanMap as sheriffLoanMapSelector
 } from '../modules/sheriffs/selectors';
@@ -20,6 +20,7 @@ export interface SheriffListProps {
   loading?: boolean;
   SheriffListComponent?: React.ReactType<{ sheriffs?: Sheriff[], SheriffRenderer?: React.ReactType<Sheriff> }>;
   SheriffRenderer?: React.ReactType<Sheriff>;
+  sheriffsSelector?: (state: RootState) => Sheriff[];
 }
 
 export interface SheriffListStateProps {
@@ -76,7 +77,7 @@ class SheriffList extends React.Component<CompositeProps> {
 }
 
 export default connect<SheriffListStateProps, SheriffListDispatchProps, SheriffListProps, RootState>(
-  (state, props) => ({
+  (state, {sheriffsSelector = sheriffsForCurrentCourthouse}) => ({
     sheriffs: sheriffsSelector(state),
     loading: sheriffListLoading(state),
     sheriffLoanMap: sheriffLoanMapSelector(state)

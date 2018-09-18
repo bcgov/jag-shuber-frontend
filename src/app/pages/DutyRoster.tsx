@@ -7,6 +7,7 @@ import { ListGroup } from 'react-bootstrap';
 import DutyRosterControls from '../containers/DutyRosterControls';
 import Page from '../components/Page/Page';
 import DutyRosterSheriff from '../containers/DutyRosterSheriff';
+import { sheriffsOnShift,sheriffsOffShift } from '../modules/dutyRoster/selectors';
 
 class DutyRoster extends React.PureComponent {
     render() {
@@ -28,7 +29,12 @@ class DutyRoster extends React.PureComponent {
                     <TimelineToolsPanel titleText="My Team" titleBackgroundBorderLeft="1px solid #003366">
                         <ListGroup>
                             <SheriffList
-                                SheriffRenderer={(s: Sheriff) => <DutyRosterSheriff sheriff={s}/>}
+                                SheriffRenderer={(s: Sheriff) => <DutyRosterSheriff sheriff={s} />}
+                                sheriffsSelector={sheriffsOnShift}
+                            />
+                            <SheriffList
+                                SheriffRenderer={(s: Sheriff) => <DutyRosterSheriff sheriff={s} />}
+                                sheriffsSelector={sheriffsOffShift}
                             />
                         </ListGroup>
                     </TimelineToolsPanel>
