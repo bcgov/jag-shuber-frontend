@@ -123,6 +123,13 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
         };
     }
 
+    getDataFromFormValues(formValues: any): SheriffProfilePluginLeavesProps {
+        return super.getDataFromFormValues(formValues) || {
+            fullDay: [],
+            partialDay: []
+        };
+    }
+
     async onSubmit(sheriffId: IdType, formValues: any, dispatch: Dispatch<any>): Promise<Leave[]> {
         const data = this.getDataFromFormValues(formValues);
         const partialLeaves = data.partialDay.map(pl => ({ ...pl, sheriffId, isPartial: true }));
@@ -133,6 +140,6 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
             startTime: toTimeString(l.startTime),
             endTime: toTimeString(l.endTime)
         }));
-        return await dispatch(createOrUpdateLeaves(allLeaves, { toasts: {} }));
+        return allLeaves.length > 0 ? await dispatch(createOrUpdateLeaves(allLeaves, { toasts: {} })) : [];
     }
 }
