@@ -1,4 +1,4 @@
-import * as ShuberApi from 'jag-shuber-api/dist/client';
+import * as ShuberApi from 'jag-shuber-api';
 import moment from 'moment';
 import {
     API,
@@ -288,19 +288,27 @@ export default class Client implements API {
         }) as AssignmentDuty[];
     }
 
+    async autoAssignSheriffDuties(date: moment.Moment = moment()): Promise<SheriffDuty[]> {
+        return await this._client.AutoAssignSheriffDuties({
+            courthouseId: this.currentCourthouse,
+            date: date.toISOString()
+        }) as SheriffDuty[];
+    }
+
     async getShifts(): Promise<Shift[]> {
         const list = await this._client.GetShifts(this.currentCourthouse);
         return list as Shift[];
     }
 
     async updateMultipleShifts(shiftIds: IdType[], shiftUpdates: ShiftUpdates): Promise<Shift[]> {
-        const { sheriffId, startTime, endTime, workSectionId } = shiftUpdates;
+        const { sheriffId, startTime, endTime, workSectionId, assignmentId } = shiftUpdates;
         return await this._client.UpdateMultipleShifts({
             shiftIds,
             sheriffId,
             workSectionId,
             startTime: startTime ? moment(startTime).toISOString() : undefined,
-            endTime: endTime ? moment(endTime).toISOString() : undefined
+            endTime: endTime ? moment(endTime).toISOString() : undefined,
+            assignmentId
         }) as Shift[];
     }
 

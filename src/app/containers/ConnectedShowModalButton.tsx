@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 interface ShowModalConnectProps {
     modalName: string;
     modalProps?: any;
+    className?: string;
 }
 
 interface ShowModalDispatchProps {
@@ -18,9 +19,20 @@ export const ConnectedShowModalButton = connect<{}, ShowModalDispatchProps, Show
 )(
     class ShowModalButton extends React.PureComponent<ShowModalConnectProps & ShowModalDispatchProps>{
         render() {
-            const { showModal: show, modalName, modalProps, children } = this.props;
+            const {
+                showModal: show,
+                modalName,
+                modalProps,
+                children,
+                className
+            } = this.props;
             return (
-                <Button onClick={() => show(modalName, modalProps)}>{children}</Button>
+                <Button
+                    className={className}
+                    onClick={() => show(modalName, modalProps)} 
+                >
+                    {children}
+                </Button>
             );
         }
     }

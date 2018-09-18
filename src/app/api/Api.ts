@@ -160,6 +160,7 @@ export interface SheriffRank {
     code: string;
     description: string;
     expiryDate?: DateType;
+    order: number;
 }
 
 export interface BaseAssignment {
@@ -211,9 +212,9 @@ export interface SheriffDuty {
 }
 
 export interface SheriffDutyReassignmentDetails {
-    sourceSheriffDuty: SheriffDuty; 
+    sourceSheriffDuty: SheriffDuty;
     newSourceDutyEndTime: DateType;
-    targetSheriffDuty: SheriffDuty; 
+    targetSheriffDuty: SheriffDuty;
     newTargetDutyStartTime: DateType;
 }
 export interface DutyRecurrence {
@@ -270,6 +271,7 @@ export interface ShiftUpdates {
     startTime?: DateType;
     endTime?: DateType;
     workSectionId?: WorkSectionCode | 'varied';
+    assignmentId?: string | 'varied';
 }
 
 export interface ShiftCopyOptions {
@@ -344,6 +346,9 @@ export interface API {
 
     // Default Duties
     createDefaultDuties(date?: DateType): Promise<AssignmentDuty[]>;
+
+    // Auto Assign Sheriff Duties
+    autoAssignSheriffDuties(date?: DateType): Promise<SheriffDuty[]>;
 
     // Sheriff Shifts
     getShifts(): Promise<Shift[]>;

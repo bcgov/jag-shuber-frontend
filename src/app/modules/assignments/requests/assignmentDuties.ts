@@ -151,7 +151,9 @@ class CreateDefaultDutiesRequest extends RequestAction<DateType, AssignmentDuty[
     }
 }
 
+
 export const createDefaultDutiesRequest = new CreateDefaultDutiesRequest();
+
 
 // Delete Sheriff Duty 
 class DeleteSheriffDutyRequest extends RequestAction<string, string, AssignmentModuleState> {
@@ -224,3 +226,33 @@ class ReassignSheriffDutyRequest extends RequestAction<
 }
 
 export const reassignSheriffDutyRequest = new ReassignSheriffDutyRequest();
+
+// Auto Assign duties
+class AutoAssignSheriffDuties extends RequestAction<DateType, SheriffDuty[], AssignmentModuleState> {
+    constructor() {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'autoAssignSheriffDuties',
+            toasts: {
+                success: (duties) => (
+                    duties.length > 0
+                        ? `${duties.length} ${duties.length === 1 ? 'duty' : 'duties'} auto assigned`
+                        : 'Could not find any Sheriff Duties that could be auto assigned for today'
+                ),
+                error: (err) => (
+                    `Problem encountered while auto assigning duties: ${err ? err.toString() : 'Unknown Error'}`
+                )
+            }
+        });
+    }
+    public async doWork(request: DateType, { api }: ThunkExtra): Promise<SheriffDuty[]> {
+        return await api.autoAssignSheriffDuties(request);
+    }
+
+    setRequestData(moduleState: AssignmentModuleState, assignedSheriffDuties: SheriffDuty[] = []) {
+        // We can use the same logic as the re-assign request for updating the sheriff duties
+        return reassignSheriffDutyRequest.setRequestData(moduleState, assignedSheriffDuties);
+    }
+}
+
+export const autoAssignSheriffDutiesRequest = new AutoAssignSheriffDuties();

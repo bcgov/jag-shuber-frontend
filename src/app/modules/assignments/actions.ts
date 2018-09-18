@@ -31,6 +31,8 @@ export const assignSheriffToDuty = assignmentDutyRequests.assignSheriffRequest.a
 export const deleteAssignmentDuty = assignmentDutyRequests.deleteAssignmentDutyRequest.actionCreator;
 export const createDefaultDuties = assignmentDutyRequests.createDefaultDutiesRequest.actionCreator;
 
+export const autoAssignSheriffDuties = assignmentDutyRequests.autoAssignSheriffDutiesRequest.actionCreator;
+
 // Sheriff Duties
 export const deleteSheriffDuty = assignmentDutyRequests.deleteSheriffDutyRequest.actionCreator;
 export const reassignSheriffDuty = assignmentDutyRequests.reassignSheriffDutyRequest.actionCreator;

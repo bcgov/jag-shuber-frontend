@@ -5,7 +5,7 @@ import { RootState } from '../store';
 import { visibleTime } from '../modules/dutyRoster/selectors';
 import { updateVisibleTime as setVisibleTime } from '../modules/dutyRoster/actions';
 import * as TimeUtils from '../infrastructure/TimeRangeUtils';
-import ImportDefaultDutiesModal from './ImportDefaultDutiesModal/ImportDefaultDutiesModal';
+import DutyRosterToolsModal from './DutyRosterToolsModal';
 import DateRangeControls from '../components/DateRangeControls';
 
 interface DutyRosterControlsStateProps {
@@ -48,7 +48,11 @@ class DutyRosterControls extends React.PureComponent<
                         )}
                     />
                 </div>
-                <ImportDefaultDutiesModal date={visibleTimeStart} />
+                <div style={{ position: 'absolute', right: 2 }}>
+                    <div className="btn">
+                        <DutyRosterToolsModal.ShowButton date={visibleTimeStart} />                        
+                    </div>
+                </div>
             </div >
         );
     }
