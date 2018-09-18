@@ -9,8 +9,8 @@ import {
     Sheriff
 } from '../../api';
 import { getWorkSectionColour } from '../../api/utils';
-import * as TimeRangeUtils from '../../infrastructure/TimeRangeUtils';
 import SheriffDutyDropTarget from '../../containers/SheriffDutyDropTarget';
+import { doTimeRangesOverlap } from 'jag-shuber-api';
 
 export interface SheriffDutyBarProps {
     sheriffId?: IdType;
@@ -82,8 +82,7 @@ export default class SheriffDutyBar extends React.PureComponent<SheriffDutyBarPr
         const sdToAssignEndTime = moment(sheriffDutyToAssign.endDateTime).toISOString();
 
         const anyOverlap: boolean = sheriffDuties.filter(sd => sd.sheriffId === sheriff.id)
-            .some(sd => TimeRangeUtils
-                .doTimeRangesOverlap(
+            .some(sd => doTimeRangesOverlap(
                     // tslint:disable-next-line:max-line-length
                     { startTime: moment(sd.startDateTime).toISOString(), endTime: moment(sd.endDateTime).toISOString() },
                     { startTime: sdToAssignStartTime, endTime: sdToAssignEndTime }

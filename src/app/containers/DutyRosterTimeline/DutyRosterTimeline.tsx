@@ -33,13 +33,13 @@ import {
     draggingSheriff
 } from '../../modules/dutyRoster/selectors';
 import AssignmentDutyEditModal from '../AssignmentDutyEditModal';
-import * as TimeRangeUtils from '../../infrastructure/TimeRangeUtils';
 import ConfirmationModal, { ConnectedConfirmationModalProps } from '../ConfirmationModal';
 import SheriffNameDisplay from '../SheriffNameDisplay';
 import SheriffDutyDragSource from '../SheriffDutyDragSource';
 import AssignmentSheriffDutyReassignmentModal from '../AssignmentSheriffDutyReassignmentModal';
 import { updateDraggingSheriff } from '../../modules/dutyRoster/actions';
 import { TimelineMarkers, TodayMarker } from 'react-calendar-timeline';
+import { doTimeRangesOverlap } from 'jag-shuber-api';
 
 interface DutyRosterTimelineProps extends TimelineProps {
     allowTimeDrag?: boolean;
@@ -122,8 +122,7 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
                 return sduties;
             }, []);
 
-        const overlappingDuties = sheriffDutiesForSheriffToAssign.filter(sd => TimeRangeUtils
-            .doTimeRangesOverlap(
+        const overlappingDuties = sheriffDutiesForSheriffToAssign.filter(sd => doTimeRangesOverlap(
                 // tslint:disable-next-line:max-line-length
                 { startTime: moment(sd.startDateTime).toISOString(), endTime: moment(sd.endDateTime).toISOString() },
                 { startTime: sdToAssignStartTime, endTime: sdToAssignEndTime }

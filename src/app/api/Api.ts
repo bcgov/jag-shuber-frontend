@@ -1,10 +1,10 @@
 import moment from 'moment';
 import { displayEnum } from '../infrastructure/EnumUtils';
 import avatarImg from '../assets/images/avatar.png';
+import * as ApiTypes from 'jag-shuber-api/dist/common/types';
 
 export type MapType<T> = { [key: string]: T };
-
-export type DateType = Date | moment.Moment | string;
+export type DateType = ApiTypes.DateType;
 export type StringMap = MapType<string>;
 export type IdType = string;
 export type ShiftMap = MapType<Shift>;
@@ -14,7 +14,7 @@ export type AssignmentMap = MapType<Assignment>;
 export type AssignmentDutyMap = MapType<AssignmentDuty>;
 export type WorkSectionCode = 'COURTS' | 'JAIL' | 'ESCORTS' | 'OTHER';
 export type Assignment = CourtAssignment | JailAssignment | EscortAssignment | OtherAssignment;
-export type TimeType = string | number;
+export type TimeType = ApiTypes.TimeType;
 export type CourtroomMap = MapType<Courtroom>;
 export type RunMap = MapType<Run>;
 export type JailRoleMap = MapType<JailRole>;
