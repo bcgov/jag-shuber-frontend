@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Form as BootstrapForm, FormProps } from 'react-bootstrap'
+import { Form as BootstrapForm, FormProps } from 'react-bootstrap';
 import FormWrapper from './FormWrapper';
 import { InjectedFormProps } from 'redux-form';
 

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import moment from 'moment';
 import {
     default as ReactTimeline,
     ReactCalendarTimelineGroup as TimelineGroupProps,
@@ -90,8 +91,8 @@ export default class Timeline<TItem, TGroup> extends React.PureComponent<Timelin
                 items={mappedItems}
                 headerLabelFormats={headerLabelFormats as HeaderLabelFormats}
                 subHeaderLabelFormats={subHeaderLabelFormats as HeaderLabelFormats}
-                visibleTimeStart={visibleTimeStart}
-                visibleTimeEnd={visibleTimeEnd}
+                visibleTimeStart={moment(visibleTimeStart).valueOf()}
+                visibleTimeEnd={moment(visibleTimeEnd).valueOf()}
                 onTimeChange={(s, e, cb) => this.handleTimeChange(s, e, cb)}
                 canMove={false}
                 canResize={false}
