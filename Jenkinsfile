@@ -118,39 +118,39 @@ def getLatestHash = {imageStreamName ->
     }
   }
   
-
-  // Creating Emphemeral post-gress instance for testing
-  stage('Emphemeral Test Environment'){
-    node{
-      try{
-        echo "Creating Ephemeral Postgress instance for testing"
-        POSTGRESS = sh (
-          script: """oc project jag-shuber-tools; oc process -f "${work_space}/openshift/test/frontend-deploy.json" | oc create -f -; oc process -f "${work_space}/openshift/test/api-postgress-ephemeral.json" | oc create -f - """)
-          echo ">> POSTGRESS: ${POSTGRESS}" 
+  // We have Functional tests in our API project, commenting out these stages
+  // as we do not currently have e2e tests within our frontend.
+  // // Creating Emphemeral post-gress instance for testing
+  // stage('Emphemeral Test Environment'){
+  //   node{
+  //     try{
+  //       echo "Creating Ephemeral Postgress instance for testing"
+  //       POSTGRESS = sh (
+  //         script: """oc project jag-shuber-tools; oc process -f "${work_space}/openshift/test/frontend-deploy.json" | oc create -f -; oc process -f "${work_space}/openshift/test/api-postgress-ephemeral.json" | oc create -f - """)
+  //         echo ">> POSTGRESS: ${POSTGRESS}" 
         
-      } catch(error){
-        echo "Error in creating postgress instance"
-        throw error
-      }
-    }
-  }
+  //     } catch(error){
+  //       echo "Error in creating postgress instance"
+  //       throw error
+  //     }
+  //   }
+  // }
 
-
-  //Running functional Test cases - in tools project
-  stage('Run Test Cases'){
-    node{
-    try{
-      echo "Run Test Case scripts here"
-      POSTGRESS_DEL = sh (
-        script: """oc project jag-shuber-tools; oc process -f "${work_space}/openshift/test/frontend-deploy.json" | oc delete -f -; oc process -f "${work_space}/openshift/test/api-postgress-ephemeral.json" | oc delete -f - """)
-        echo ">> ${POSTGRESS_DEL}"
-      echo "postgress instance deleted successfully"
-    } catch(error){
-      echo "Error while test cases are running"
-      throw error
-      }
-    }
-  }
+  // //Running functional Test cases - in tools project
+  // stage('Run Test Cases'){
+  //   node{
+  //   try{
+  //     echo "Run Test Case scripts here"
+  //     POSTGRESS_DEL = sh (
+  //       script: """oc project jag-shuber-tools; oc process -f "${work_space}/openshift/test/frontend-deploy.json" | oc delete -f -; oc process -f "${work_space}/openshift/test/api-postgress-ephemeral.json" | oc delete -f - """)
+  //       echo ">> ${POSTGRESS_DEL}"
+  //     echo "postgress instance deleted successfully"
+  //   } catch(error){
+  //     echo "Error while test cases are running"
+  //     throw error
+  //     }
+  //   }
+  // }
 
   // Deploying to Dev
   stage('Deploy ' + TAG_NAMES[0]) {
