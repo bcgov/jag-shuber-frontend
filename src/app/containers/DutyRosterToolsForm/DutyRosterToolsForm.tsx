@@ -95,7 +95,7 @@ export default class ConnectedImportDefaultDutiesForm extends connect<any, {}, I
     (state, props) => (
         {
             initialValues: {
-                shouldImportDefaultDuties: true,
+                shouldImportDefaultDuties: false,
                 shouldAutoAssignSheriffDuties: false
             }
         }
