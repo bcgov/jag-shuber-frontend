@@ -3,7 +3,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
 import {
-    getSheriffShifts
+    allShifts
 } from '../modules/shifts/selectors';
 import {
     getShifts
@@ -80,7 +80,7 @@ class SheriffScheduleDisplay extends React.Component<SheriffScheduleDisplayProps
 
 const mapStateToProps = (state: RootState) => {
     return {
-        shifts: getSheriffShifts()(state),
+        shifts: allShifts(state),
         sheriffs: sheriffs(state),
         weekStart: publishViewVisibleWeek(state),
         includeWorkSection: isShowWorkSections(state),
