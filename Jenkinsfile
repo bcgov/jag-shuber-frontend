@@ -27,10 +27,19 @@ def SLACK_MAIN_CHANNEL="#sheriff_scheduling"
 def SLACK_PROD_CHANNEL="sheriff_prod_approval"
 def work_space="/var/lib/jenkins/jobs/jag-shuber-tools-frontend-pipeline/workspace@script"
 
+def getLatestHash = {imageStreamName ->
+  sh (
+    script: """oc get istag ${imageStreamName}:latest -o=jsonpath='{@.image.metadata.name}' | sed -e 's/sha256://g'""",
+    returnStdout: true
+  ).trim()
+}
+
   stage('Build ' + APP_NAME) {
     node{
         // Cheking template exists  or else create
         openshift.withProject() {
+
+
           def templateSelector_RUN = openshift.selector( "bc/${NGINX_BUILD}" )
           def templateExists_RUN = templateSelector_RUN.exists()
 
@@ -80,11 +89,8 @@ def work_space="/var/lib/jenkins/jobs/jag-shuber-tools-frontend-pipeline/workspa
           
           // Don't tag with BUILD_ID so the pruner can do it's job; it won't delete tagged images.
           // Tag the images for deployment based on the image's hash
-          IMAGE_HASH = sh (
-          script: """oc get istag ${IMAGESTREAM_NAME}:latest | grep sha256: | awk -F "sha256:" '{print \$3 }'""",
-          returnStdout: true).trim()
+          IMAGE_HASH = getLatestHash(IMAGESTREAM_NAME)          
           echo ">> IMAGE_HASH: ${IMAGE_HASH}"
-          // if ( IMAGE_HASH:
 
         }catch(error){
           echo "Error in Build"
