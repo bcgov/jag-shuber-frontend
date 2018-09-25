@@ -1,4 +1,8 @@
-@Library('devops-library') _
+// Load shared devops utils
+library identifier: 'devops-library@master', retriever: modernSCM([
+  $class: 'GitSCMSource',
+  remote: 'https://github.com/BCDevOps/jenkins-pipeline-shared-lib.git'
+])
 
 // Edit your app's name below
 def APP_NAME = 'frontend'
@@ -27,10 +31,19 @@ def SLACK_MAIN_CHANNEL="#sheriff_scheduling"
 def SLACK_PROD_CHANNEL="sheriff_prod_approval"
 def work_space="/var/lib/jenkins/jobs/jag-shuber-tools-frontend-pipeline/workspace@script"
 
+def getLatestHash = {imageStreamName ->
+  sh (
+    script: """oc get istag ${imageStreamName}:latest -o=jsonpath='{@.image.metadata.name}' | sed -e 's/sha256://g'""",
+    returnStdout: true
+  ).trim()
+}
+
   stage('Build ' + APP_NAME) {
     node{
         // Cheking template exists  or else create
         openshift.withProject() {
+
+
           def templateSelector_RUN = openshift.selector( "bc/${NGINX_BUILD}" )
           def templateExists_RUN = templateSelector_RUN.exists()
 
@@ -80,11 +93,8 @@ def work_space="/var/lib/jenkins/jobs/jag-shuber-tools-frontend-pipeline/workspa
           
           // Don't tag with BUILD_ID so the pruner can do it's job; it won't delete tagged images.
           // Tag the images for deployment based on the image's hash
-          IMAGE_HASH = sh (
-          script: """oc get istag ${IMAGESTREAM_NAME}:latest | grep sha256: | awk -F "sha256:" '{print \$3 }'""",
-          returnStdout: true).trim()
+          IMAGE_HASH = getLatestHash(IMAGESTREAM_NAME)          
           echo ">> IMAGE_HASH: ${IMAGE_HASH}"
-          // if ( IMAGE_HASH:
 
         }catch(error){
           echo "Error in Build"
@@ -108,39 +118,39 @@ def work_space="/var/lib/jenkins/jobs/jag-shuber-tools-frontend-pipeline/workspa
     }
   }
   
-
-  // Creating Emphemeral post-gress instance for testing
-  stage('Emphemeral Test Environment'){
-    node{
-      try{
-        echo "Creating Ephemeral Postgress instance for testing"
-        POSTGRESS = sh (
-          script: """oc project jag-shuber-tools; oc process -f "${work_space}/openshift/test/frontend-deploy.json" | oc create -f -; oc process -f "${work_space}/openshift/test/api-postgress-ephemeral.json" | oc create -f - """)
-          echo ">> POSTGRESS: ${POSTGRESS}" 
+  // We have Functional tests in our API project, commenting out these stages
+  // as we do not currently have e2e tests within our frontend.
+  // // Creating Emphemeral post-gress instance for testing
+  // stage('Emphemeral Test Environment'){
+  //   node{
+  //     try{
+  //       echo "Creating Ephemeral Postgress instance for testing"
+  //       POSTGRESS = sh (
+  //         script: """oc project jag-shuber-tools; oc process -f "${work_space}/openshift/test/frontend-deploy.json" | oc create -f -; oc process -f "${work_space}/openshift/test/api-postgress-ephemeral.json" | oc create -f - """)
+  //         echo ">> POSTGRESS: ${POSTGRESS}" 
         
-      } catch(error){
-        echo "Error in creating postgress instance"
-        throw error
-      }
-    }
-  }
+  //     } catch(error){
+  //       echo "Error in creating postgress instance"
+  //       throw error
+  //     }
+  //   }
+  // }
 
-
-  //Running functional Test cases - in tools project
-  stage('Run Test Cases'){
-    node{
-    try{
-      echo "Run Test Case scripts here"
-      POSTGRESS_DEL = sh (
-        script: """oc project jag-shuber-tools; oc process -f "${work_space}/openshift/test/frontend-deploy.json" | oc delete -f -; oc process -f "${work_space}/openshift/test/api-postgress-ephemeral.json" | oc delete -f - """)
-        echo ">> ${POSTGRESS_DEL}"
-      echo "postgress instance deleted successfully"
-    } catch(error){
-      echo "Error while test cases are running"
-      throw error
-      }
-    }
-  }
+  // //Running functional Test cases - in tools project
+  // stage('Run Test Cases'){
+  //   node{
+  //   try{
+  //     echo "Run Test Case scripts here"
+  //     POSTGRESS_DEL = sh (
+  //       script: """oc project jag-shuber-tools; oc process -f "${work_space}/openshift/test/frontend-deploy.json" | oc delete -f -; oc process -f "${work_space}/openshift/test/api-postgress-ephemeral.json" | oc delete -f - """)
+  //       echo ">> ${POSTGRESS_DEL}"
+  //     echo "postgress instance deleted successfully"
+  //   } catch(error){
+  //     echo "Error while test cases are running"
+  //     throw error
+  //     }
+  //   }
+  // }
 
   // Deploying to Dev
   stage('Deploy ' + TAG_NAMES[0]) {
@@ -157,7 +167,7 @@ def work_space="/var/lib/jenkins/jobs/jag-shuber-tools-frontend-pipeline/workspa
         
         slackNotify(
             "New Version in ${environment} 🚀",
-            "A new version of the ${APP_NAME} is now in ${environment}",
+            "A new version of the ${APP_NAME} is now in ${environment}\nChanges:${getChangeString()}",
             'good',
             env.SLACK_HOOK,
             SLACK_MAIN_CHANNEL,
@@ -206,7 +216,7 @@ def work_space="/var/lib/jenkins/jobs/jag-shuber-tools-frontend-pipeline/workspa
       openshiftVerifyDeployment deploymentConfig: IMAGESTREAM_NAME, namespace: "${PROJECT_PREFIX}"+"-"+environment, waitTime: '900000'
       slackNotify(
         "New Version in ${environment} 🚀",
-        "A new version of the ${APP_NAME} is now in ${environment}",
+        "A new version of the ${APP_NAME} is now in ${environment}\nChanges:${getChangeString()}",
         'good',
         env.SLACK_HOOK,
         SLACK_MAIN_CHANNEL,
