@@ -167,7 +167,7 @@ def getLatestHash = {imageStreamName ->
         
         slackNotify(
             "New Version in ${environment} 🚀",
-            "A new version of the ${APP_NAME} is now in ${environment}",
+            "A new version of the ${APP_NAME} is now in ${environment}\nChanges:${getChangeString()}",
             'good',
             env.SLACK_HOOK,
             SLACK_MAIN_CHANNEL,
@@ -216,7 +216,7 @@ def getLatestHash = {imageStreamName ->
       openshiftVerifyDeployment deploymentConfig: IMAGESTREAM_NAME, namespace: "${PROJECT_PREFIX}"+"-"+environment, waitTime: '900000'
       slackNotify(
         "New Version in ${environment} 🚀",
-        "A new version of the ${APP_NAME} is now in ${environment}",
+        "A new version of the ${APP_NAME} is now in ${environment}\nChanges:${getChangeString()}",
         'good',
         env.SLACK_HOOK,
         SLACK_MAIN_CHANNEL,
