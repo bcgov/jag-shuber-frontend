@@ -237,7 +237,7 @@ class AutoAssignSheriffDuties extends RequestAction<DateType, SheriffDuty[], Ass
                 success: (duties) => (
                     duties.length > 0
                         ? `${duties.length} ${duties.length === 1 ? 'duty' : 'duties'} auto assigned`
-                        : 'Could not find any Sheriff Duties that could be auto assigned for today'
+                        : 'Have already auto assigned as many duties as possible based on today\'s schedule'
                 ),
                 error: (err) => (
                     `Problem encountered while auto assigning duties: ${err ? err.toString() : 'Unknown Error'}`
