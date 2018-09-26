@@ -6,7 +6,7 @@ import {
     Assignment,
     AssignmentDuty,
     CourtAssignment,
-    Courthouse,
+    Location,
     Courtroom,
     DateType,
     EscortAssignment,
@@ -15,7 +15,7 @@ import {
     JailRole,
     Leave,
     OtherAssignment,
-    Run,
+    EscortRun,
     Sheriff,
     SheriffDuty,
     Shift,
@@ -30,7 +30,6 @@ import {
     GenderCode,
     SheriffDutyReassignmentDetails
 } from './Api';
-import MockApi from './Mock/MockApi';
 import { SubmissionError } from 'redux-form';
 
 export function extractWorksectionCode(workSectionCodePath: string): WorkSectionCode {
@@ -82,46 +81,44 @@ class ShuberApiClient extends ShuberApi.Client {
 export default class Client implements API {
 
     private _client: ShuberApi.Client;
-    private _courthouseId: string;
-    private _mockApi: MockApi = new MockApi();
+    private _locationId: string;
 
     constructor(baseUrl: string = '/') {
         this._client = new ShuberApiClient(baseUrl);
         this._client.requestInterceptor = (req) => {
             return req;
         };
-        this._mockApi.init();
     }
 
     get onTokenChanged(): ShuberApi.TypedEvent<string | undefined> {
         return this._client.onTokenChanged;
     }
 
-    get isCourthouseSet() {
-        return this._courthouseId != undefined;
+    get isLocationSet() {
+        return this._locationId != undefined;
     }
 
-    setCurrentCourthouse(id: IdType) {
-        this._courthouseId = id;
+    setCurrentLocation(id: IdType) {
+        this._locationId = id;
     }
 
-    get currentCourthouse(): string {
-        return this._courthouseId;
+    get currentLocation(): string {
+        return this._locationId;
     }
 
     async getSheriffs(): Promise<Sheriff[]> {
-        const sheriffList = (await this._client.GetSheriffs(this.currentCourthouse) as Sheriff[]);
+        const sheriffList = (await this._client.GetSheriffs(this.currentLocation) as Sheriff[]);
         return sheriffList;
     }
 
     async createSheriff(newSheriff: Sheriff): Promise<Sheriff> {
         const {
-            homeCourthouseId = this.currentCourthouse,
+            homeLocationId = this.currentLocation,
             rankCode = 'DEPUTYSHERIFF'
         } = newSheriff;
         const sheriff = await this._client.CreateSheriff({
             ...newSheriff,
-            homeCourthouseId,
+            homeLocationId,
             rankCode
         } as any);
         return sheriff as Sheriff;
@@ -137,13 +134,13 @@ export default class Client implements API {
 
     async getAssignments(dateRange: DateRange = {}): Promise<(CourtAssignment | JailAssignment | EscortAssignment | OtherAssignment)[]> {
         const { startDate, endDate } = dateRange;
-        const list = await this._client.GetAssignments(this.currentCourthouse, startDate, endDate);
+        const list = await this._client.GetAssignments(this.currentLocation, startDate, endDate);
         return list as Assignment[];
     }
     async createAssignment(assignment: Partial<Assignment>): Promise<Assignment> {
         const assignmentToCreate: any = {
             ...assignment,
-            courthouseId: this.currentCourthouse
+            locationId: this.currentLocation
         };
         const created = await this._client.CreateAssignment(assignmentToCreate);
         return created as Assignment;
@@ -283,20 +280,20 @@ export default class Client implements API {
 
     async createDefaultDuties(date: moment.Moment = moment()): Promise<AssignmentDuty[]> {
         return await this._client.ImportDefaultDuties({
-            courthouseId: this.currentCourthouse,
+            locationId: this.currentLocation,
             date: date.toISOString()
         }) as AssignmentDuty[];
     }
 
     async autoAssignSheriffDuties(date: moment.Moment = moment()): Promise<SheriffDuty[]> {
         return await this._client.AutoAssignSheriffDuties({
-            courthouseId: this.currentCourthouse,
+            locationId: this.currentLocation,
             date: date.toISOString()
         }) as SheriffDuty[];
     }
 
     async getShifts(): Promise<Shift[]> {
-        const list = await this._client.GetShifts(this.currentCourthouse);
+        const list = await this._client.GetShifts(this.currentLocation);
         return list as Shift[];
     }
 
@@ -323,7 +320,7 @@ export default class Client implements API {
     async createShift(newShift: Partial<Shift>): Promise<Shift> {
         const shiftToCreate: any = {
             ...newShift,
-            courthouseId: this.currentCourthouse
+            locationId: this.currentLocation
         };
         const created = await this._client.CreateShift(shiftToCreate);
         return created as Shift;
@@ -339,7 +336,7 @@ export default class Client implements API {
             startOfWeekDestination: moment(startOfWeekDestination).toISOString(),
             startOfWeekSource: moment(startOfWeekSource).toISOString(),
             shouldIncludeSheriffs,
-            courthouseId: this.currentCourthouse
+            locationId: this.currentLocation
         }) as Shift[];
     }
 
@@ -373,19 +370,19 @@ export default class Client implements API {
         return this._client.GetLeaveCancelReasonCodes() as Promise<LeaveCancelCode[]>;
     }
 
-    async getCourthouses(): Promise<Courthouse[]> {
-        const list = await this._client.GetCourthouses();
-        return list as Courthouse[];
+    async getLocations(): Promise<Location[]> {
+        const list = await this._client.GetLocations();
+        return list as Location[];
     }
 
     async getCourtrooms(): Promise<Courtroom[]> {
-        const list = await this._client.GetCourtrooms(this.currentCourthouse);
+        const list = await this._client.GetCourtrooms(this.currentLocation);
         return list as Courtroom[];
     }
 
-    async getRuns(): Promise<Run[]> {
-        const list = await this._client.GetRuns(this.currentCourthouse);
-        return list as Run[];
+    async getEscortRuns(): Promise<EscortRun[]> {
+        const list = await this._client.GetEscortRuns(this.currentLocation);
+        return list as EscortRun[];
     }
 
     async getJailRoles(): Promise<JailRole[]> {

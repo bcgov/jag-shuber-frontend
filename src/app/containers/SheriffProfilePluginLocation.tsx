@@ -8,15 +8,15 @@ import SheriffDisplay from './SheriffDisplay';
 import { Table } from 'react-bootstrap';
 import { Field } from 'redux-form';
 import * as Validators from '../infrastructure/Validators';
-import CourthouseSelector from './SystemCourthouseSelector';
-import CourthouseDisplay from './SystemCourthouseDisplay';
+import LocationSelector from './LocationSelector';
+import LocationDisplay from './LocationDisplay';
 import SelectorField from '../components/FormElements/SelectorField';
 
 export default class SheriffProfilePluginLocation extends SheriffProfileSectionPlugin<Sheriff> {
     name = 'location';
     formFieldNames = {
-        currentCourthouse: 'sheriff.currentCourthouseId',
-        homeCourthouse: 'sheriff.homeCourthouseId'
+        currentLocation: 'sheriff.currentLocationId',
+        homeLocation: 'sheriff.homeLocationId'
     };
 
     title: string = 'Location';
@@ -25,19 +25,19 @@ export default class SheriffProfilePluginLocation extends SheriffProfileSectionP
         <SheriffDisplay
             sheriffId={sheriffId}
             RenderComponent={({ sheriff: {
-                homeCourthouseId = '',
-                currentCourthouseId = ''
+                homeLocationId = '',
+                currentLocationId = ''
             } = {} }) =>
                 (
                     <Table responsive={true} >
                         <tbody>
                             <tr>
                                 <td><strong>Home Location</strong></td>
-                                <td><CourthouseDisplay id={homeCourthouseId} /></td>
+                                <td><LocationDisplay id={homeLocationId} /></td>
                             </tr>
                             <tr>
                                 <td><strong>Current Location</strong></td>
-                                <td><CourthouseDisplay id={currentCourthouseId} /></td>
+                                <td><LocationDisplay id={currentLocationId} /></td>
                             </tr>
                         </tbody>
                     </Table>
@@ -49,23 +49,23 @@ export default class SheriffProfilePluginLocation extends SheriffProfileSectionP
     FormComponent = ({ sheriffId }: SheriffProfilePluginProps) => (
         <div>
             <Field
-                name={this.formFieldNames.homeCourthouse}
+                name={this.formFieldNames.homeLocation}
                 component={
                     (p) => <SelectorField 
                         {...p} 
                         SelectorComponent={
-                            (sp) => <CourthouseSelector label="Home Location" {...sp} />}  
+                            (sp) => <LocationSelector label="Home Location" {...sp} />}  
                     /> }
                 label="Home Location"
                 validate={[Validators.required]}
             />
             <Field
-                name={this.formFieldNames.currentCourthouse}
+                name={this.formFieldNames.currentLocation}
                 component={
                     (p) => <SelectorField 
                         {...p} 
                         SelectorComponent={
-                            (sp) => <CourthouseSelector label="Current Location" {...sp} />}  
+                            (sp) => <LocationSelector label="Current Location" {...sp} />}  
                     /> }
                 label="Current Location"
             />

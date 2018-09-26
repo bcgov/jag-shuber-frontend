@@ -14,9 +14,9 @@ import SheriffListCard from '../components/SheriffListCard/SheriffListCard';
 import { visibleTime } from '../modules/dutyRoster/selectors';
 import WorkSectionIndicator from '../components/WorkSectionIndicator/WorkSectionIndicator';
 import { sheriffLoanMap as sheriffLoanMapSelecor } from '../modules/sheriffs/selectors';
-import { currentCourthouse as userCourthouse } from '../modules/user/selectors';
+import { currentLocation as currentSystemLocation } from '../modules/user/selectors';
 import { MapType, IdType, Leave } from '../api/Api';
-import CourthouseDisplay from './SystemCourthouseDisplay';
+import LocationDisplay from './LocationDisplay';
 import SheriffLoanOutIcon from '../components/Icons/SheriffLoanOutIcon';
 import SheriffLoanInIcon from '../components/Icons/SheriffLoanInIcon';
 import { getLeaves } from '../modules/leaves/actions';
@@ -36,7 +36,7 @@ interface ConnectedDutyRosterSheriffCardStateProps {
     shifts: Shift[];
     visibleTimeStart: any;
     sheriffLoanMap?: MapType<{ isLoanedIn: boolean, isLoanedOut: boolean }>;
-    userCourthouseId?: IdType;
+    currentLocationId?: IdType;
     fullDayLeaves?: Leave[];
     partialDayLeaves?: Leave[];
 }
@@ -46,9 +46,9 @@ class ConnectedDutyRosterSheriffCard extends React.Component<ConnectedDutyRoster
     & ConnectedDutyRosterSheriffCardDispatchProps> {
 
     getShiftDisplayForDate(date: TimeType): { shiftTime: string, workSectionId?: WorkSectionCode } {
-        const { shifts, userCourthouseId } = this.props;
+        const { shifts, currentLocationId } = this.props;
         const shiftsForDay =
-            shifts.filter(s => s.courthouseId == userCourthouseId)
+            shifts.filter(s => s.locationId == currentLocationId)
                 .filter(s => moment(date).isSame(s.startDateTime, 'day'));
         if (shiftsForDay.length > 1) {
             return {
@@ -83,7 +83,7 @@ class ConnectedDutyRosterSheriffCard extends React.Component<ConnectedDutyRoster
         const {
             visibleTimeStart,
             sheriff,
-            sheriff: { id, currentCourthouseId = '' },
+            sheriff: { id, currentLocationId = '' },
             sheriffLoanMap = {}
         } = this.props;
         const { shiftTime, workSectionId } = this.getShiftDisplayForDate(moment(visibleTimeStart).toISOString());
@@ -110,7 +110,7 @@ class ConnectedDutyRosterSheriffCard extends React.Component<ConnectedDutyRoster
                             {isOnLeaveForPartialDay &&
                                 <span style={{ marginRight: 5 }}><PartialLeavePopover leave={partialDayLeave} /></span>}
                             {!isLoanedOut && shiftTime}
-                            {isLoanedOut && <CourthouseDisplay id={currentCourthouseId} />}
+                            {isLoanedOut && <LocationDisplay id={currentLocationId} />}
                             {isOnLeaveForDay && fullDayLeave &&
                                 <span>
                                     {`On ${Leave.getLeaveTypeDisplay(fullDayLeave)}`}
@@ -132,7 +132,7 @@ const mapStateToProps = (state: RootState, { sheriff }: ConnectedDutyRosterSheri
         shifts: getSheriffShifts(sheriff.id)(state),
         visibleTimeStart: visibleTime(state).visibleTimeStart,
         sheriffLoanMap: sheriffLoanMapSelecor(state),
-        userCourthouseId: userCourthouse(state),
+        currentLocationId: currentSystemLocation(state),
         fullDayLeaves: getActiveSheriffFullDayLeaves(sheriff.id)(state),
         partialDayLeaves: getActiveSheriffPartialLeaves(sheriff.id)(state)
     };

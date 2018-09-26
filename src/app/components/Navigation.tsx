@@ -6,7 +6,7 @@ import {
     NavDropdown
 } from 'react-bootstrap';
 import NavigationLink from './NavigationLink';
-import CurrentCourthouseSelector from '../containers/SystemCurrentCourthouseSelector';
+import LocationSelector from '../containers/LocationSelector';
 import bcLogo from '../assets/images/bc-logo-transparent.png';
 import bcLogoDark from '../assets/images/bc-logo-transparent-dark.png';
 
@@ -68,7 +68,7 @@ export default class Navigation extends React.Component<NavigationProps, any> {
                         <NavigationLink {...Navigation.Routes.team} />
                     </Nav>
                     <Nav pullRight={true} style={{ paddingTop: 13, paddingRight: 15 }}>
-                        <CurrentCourthouseSelector />
+                        <LocationSelector.Current />
                     </Nav>
                 </Navbar>
             </div >

@@ -5,7 +5,7 @@ import {
     IdType, Sheriff
 } from '../../api/Api';
 import mapToArray from '../../infrastructure/mapToArray';
-import { currentCourthouse as currentCourthouseSelector } from '../user/selectors';
+import { currentLocation as currentLocationSelector } from '../user/selectors';
 import arrayToMap from '../../infrastructure/arrayToMap';
 import { ErrorMap } from './common';
 import { CodeSelector } from '../../infrastructure/CodeSelector';
@@ -27,11 +27,11 @@ export const sheriffs = createSelector(
     }
 );
 
-export const sheriffsForCurrentCourthouse = createSelector(
+export const sheriffsForCurrentLocation = createSelector(
     sheriffs,
-    currentCourthouseSelector,
-    (sheriffList, courthouse) => {
-        return sheriffList.filter(s => s.homeCourthouseId === courthouse || s.currentCourthouseId === courthouse);
+    currentLocationSelector,
+    (sheriffList, location) => {
+        return sheriffList.filter(s => s.homeLocationId === location || s.currentLocationId === location);
     }
 );
 
@@ -49,23 +49,23 @@ export const sheriffListError = requests.sheriffMapRequest.getError;
 
 export const sheriffLoanMap = createSelector(
     requests.sheriffMapRequest.getData,
-    currentCourthouseSelector,
-    (map = {}, currentCourthouse) => {
+    currentLocationSelector,
+    (map = {}, currentLocation) => {
         const loanInOutArray = Object.keys(map).map(id => {
             const {
-                homeCourthouseId: homeLocation,
-                currentCourthouseId: currentLocation
+                homeLocationId: homeLocation,
+                currentLocationId: currentLocation
             } = map[id];
             let isLoanedIn = false;
             let isLoanedOut = false;
 
-            if (currentCourthouse !== homeLocation) {
-                if (currentLocation && currentLocation === currentCourthouse) {
+            if (currentLocation !== homeLocation) {
+                if (currentLocation && currentLocation === currentLocation) {
                     isLoanedIn = true;
                 }
             }
 
-            if (currentCourthouse === homeLocation) {
+            if (currentLocation === homeLocation) {
                 if (currentLocation && currentLocation !== homeLocation) {
                     isLoanedOut = true;
                 }

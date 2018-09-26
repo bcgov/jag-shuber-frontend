@@ -1,5 +1,5 @@
 import RequestActionBase, { RequestActionConfig } from '../../infrastructure/Requests/RequestActionBase';
-import { TokenPayload, decodeJwt } from 'jag-shuber-api/dist/client';
+import { TokenPayload, decodeJwt } from 'jag-shuber-api';
 import { UserState, STATE_KEY } from './common';
 import { ThunkExtra } from '../../store';
 import { Dispatch } from 'redux';

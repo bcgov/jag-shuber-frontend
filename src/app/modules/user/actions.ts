@@ -9,14 +9,14 @@ import {
 } from '../assignments/actions';
 import { getShifts } from '../shifts/actions';
 import { userTokenRequest } from './requests';
-import { decodeJwt } from 'jag-shuber-api/dist/client';
+import { decodeJwt } from 'jag-shuber-api';
 
 // The following gives us type-safe redux actions
 // see https://medium.com/@dhruvrajvanshi/some-tips-on-type-safety-with-redux-98588a85604c
 // Todo: Would be great to make this more generic and factor it out into infrastructure, leaving as is for now
 
 type IActionMap = {
-  'USER_UPDATE_CURRENT_COURTHOUSE': string;
+  'USER_UPDATE_CURRENT_LOCATION': string;
 };
 
 export type IActionType = keyof IActionMap;
@@ -37,13 +37,13 @@ function actionCreator<Type extends IActionType>(type: Type) {
     ({ type: type, payload: payload });
 }
 
-const _updateCurrentCourthouse = (currentCourthouse: string) => (
-  actionCreator('USER_UPDATE_CURRENT_COURTHOUSE')(currentCourthouse)
+const _updateCurrentLocation = (currentLocation: string) => (
+  actionCreator('USER_UPDATE_CURRENT_LOCATION')(currentLocation)
 );
 
-export const updateCurrentCourthouse: ThunkAction<string> =
-  (courthouseId = '') => async (dispatch, getState, extra) => {
-    dispatch(_updateCurrentCourthouse(courthouseId));
+export const updateCurrentLocation: ThunkAction<string> =
+  (locationId = '') => async (dispatch, getState, extra) => {
+    dispatch(_updateCurrentLocation(locationId));
 
     await Promise.all([
       dispatch(getRuns()),

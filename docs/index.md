@@ -58,7 +58,7 @@ import {Glyphicon, Button, Image} from 'react-bootstrap'
 
 * Components are visual representations of business objects and data, and should not contain state (_i.e._ should be "dumb components")
 * Components live in the Components direcotry, and should only be placed in a folder (by the same name as the compoent) if the component requires its own style sheet or contributing components. 
-* Components should be named using the following convention: _domain_component description, where _domain_ is a major business domain for the application (_e.g._ Assignment, Sheriff, Courthouse, Region, etc.); this helps to group related components alphabetically within the filesystem and vscode.
+* Components should be named using the following convention: _domain_component description, where _domain_ is a major business domain for the application (_e.g._ Assignment, Sheriff, Location, Region, etc.); this helps to group related components alphabetically within the filesystem and vscode.
 
 ### Containers
 * Containers are higher level components that wire state from Redux into regular Components. 

@@ -4,7 +4,7 @@ import {
     Sheriff,
     StringMap,
     DEFAULT_RECURRENCE,
-    Courthouse,
+    Location,
     Courtroom,
     CourtAssignment,
     JailAssignment,
@@ -206,7 +206,7 @@ const courtroomAssignments: CourtAssignment[] = [
         id: '0',
         title: COURTROOMS[101],
         workSectionId: 'COURTS',
-        courthouseId: '1',
+        locationId: '1',
         courtroomId: '101',
         dutyRecurrences: DEFAULT_RECURRENCE
     },
@@ -214,7 +214,7 @@ const courtroomAssignments: CourtAssignment[] = [
         id: '1',
         title: COURTROOMS[102],
         workSectionId: 'COURTS',
-        courthouseId: '1',
+        locationId: '1',
         courtroomId: '102',
         dutyRecurrences: DEFAULT_RECURRENCE
     },
@@ -222,7 +222,7 @@ const courtroomAssignments: CourtAssignment[] = [
         id: '2',
         title: COURTROOMS[103],
         workSectionId: 'COURTS',
-        courthouseId: '1',
+        locationId: '1',
         courtroomId: '103',
         dutyRecurrences: DEFAULT_RECURRENCE
     },
@@ -230,7 +230,7 @@ const courtroomAssignments: CourtAssignment[] = [
         id: '3',
         title: COURTROOMS[104],
         workSectionId: 'COURTS',
-        courthouseId: '1',
+        locationId: '1',
         courtroomId: '104',
         dutyRecurrences: DEFAULT_RECURRENCE
     },
@@ -238,7 +238,7 @@ const courtroomAssignments: CourtAssignment[] = [
         id: '4',
         title: COURTROOMS[201],
         workSectionId: 'COURTS',
-        courthouseId: '1',
+        locationId: '1',
         courtroomId: '201',
         dutyRecurrences: DEFAULT_RECURRENCE
     },
@@ -249,7 +249,7 @@ const jailAssingments: JailAssignment[] = [
         id: '5',
         title: JAIL_ROLES[1],
         workSectionId: 'JAIL',
-        courthouseId: '1',
+        locationId: '1',
         jailRoleCode: '1',
         dutyRecurrences: DEFAULT_RECURRENCE
     },
@@ -257,7 +257,7 @@ const jailAssingments: JailAssignment[] = [
         id: '6',
         title: JAIL_ROLES[2],
         workSectionId: 'JAIL',
-        courthouseId: '1',
+        locationId: '1',
         jailRoleCode: '1',
         dutyRecurrences: DEFAULT_RECURRENCE
     }
@@ -268,16 +268,16 @@ const escortAssignments: EscortAssignment[] = [
         id: '7',
         title: RUNS[1],
         workSectionId: 'ESCORTS',
-        courthouseId: '1',
-        runId: '1',
+        locationId: '1',
+        escortRunId: '1',
         dutyRecurrences: DEFAULT_RECURRENCE
     },
     {
         id: '8',
         title: RUNS[2],
         workSectionId: 'ESCORTS',
-        courthouseId: '1',
-        runId: '2',
+        locationId: '1',
+        escortRunId: '2',
         dutyRecurrences: DEFAULT_RECURRENCE
     }
 ];
@@ -287,7 +287,7 @@ const otherAssignments: OtherAssignment[] = [
         id: '9',
         title: ALTERNATE_ASSIGNMENTS[1],
         workSectionId: 'OTHER',
-        courthouseId: '1',
+        locationId: '1',
         otherAssignCode: '1',
         dutyRecurrences: DEFAULT_RECURRENCE
     },
@@ -295,7 +295,7 @@ const otherAssignments: OtherAssignment[] = [
         id: '10',
         title: ALTERNATE_ASSIGNMENTS['3'],
         workSectionId: 'OTHER',
-        courthouseId: '1',
+        locationId: '1',
         otherAssignCode: '3',
         dutyRecurrences: DEFAULT_RECURRENCE
     }
@@ -315,7 +315,7 @@ function createAssignmentDuties(): AssignmentDuty[] {
 
 export const assignmentDuties: AssignmentDuty[] = createAssignmentDuties();
 
-export const courthouses: Courthouse[] = [];
+export const courthouses: Location[] = [];
 
 // export const courthouses: Courthouse[] = [
 //     {
@@ -758,49 +758,49 @@ export const courthouses: Courthouse[] = [];
 export const courtrooms: Courtroom[] = [
     {
         id: '0',
-        courthouseId: '79',
+        locationId: '79',
         code: '101',
         name: 'Courtroom 101'
     },
     {
         id: '1',
-        courthouseId: '79',
+        locationId: '79',
         code: '102',
         name: 'Courtroom 102'
     },
     {
         id: '2',
-        courthouseId: '79',
+        locationId: '79',
         code: '103',
         name: 'Courtroom 103'
     },
     {
         id: '3',
-        courthouseId: '79',
+        locationId: '79',
         code: '104',
         name: 'Courtroom 104'
     },
     {
         id: '4',
-        courthouseId: '79',
+        locationId: '79',
         code: '201',
         name: 'Courtroom 201'
     },
     {
         id: '5',
-        courthouseId: '79',
+        locationId: '79',
         code: '202',
         name: 'Courtroom 202'
     },
     {
         id: '6',
-        courthouseId: '79',
+        locationId: '79',
         code: '203',
         name: 'Courtroom 203'
     },
     {
         id: '7',
-        courthouseId: '79',
+        locationId: '79',
         code: '204',
         name: 'Courtroom 204'
     }
@@ -809,7 +809,7 @@ export const courtrooms: Courtroom[] = [
 export const sheriffShifts: Shift[] = [
     {
         id: '501',
-        courthouseId: '1',
+        locationId: '1',
         workSectionId: 'COURTS',
         sheriffId: '3',
         startDateTime: moment().startOf('week').subtract(1, 'week').add(1, 'day').add(6, 'hours'),
@@ -817,46 +817,46 @@ export const sheriffShifts: Shift[] = [
     },
     {
         id: '502',
-        courthouseId: '1',
+        locationId: '1',
         workSectionId: 'JAIL',
         startDateTime: moment().startOf('week').subtract(1, 'week').add(1, 'day').add(6, 'hours'),
         endDateTime: moment().startOf('week').subtract(1, 'week').add(1, 'day').add(13.5, 'hours')
     },
     {
         id: '503',
-        courthouseId: '1',
+        locationId: '1',
         startDateTime: moment().startOf('week').subtract(1, 'week').add(1, 'day').add(6, 'hours'),
         endDateTime: moment().startOf('week').subtract(1, 'week').add(1, 'day').add(13.5, 'hours')
     },
     {
         id: '504',
-        courthouseId: '1',
+        locationId: '1',
         startDateTime: moment().startOf('week').subtract(1, 'week').add(1, 'day').add(8, 'hours'),
         endDateTime: moment().startOf('week').subtract(1, 'week').add(1, 'day').add(15.5, 'hours')
     },
     {
         id: '505',
-        courthouseId: '1',
+        locationId: '1',
         workSectionId: 'ESCORTS',
         startDateTime: moment().startOf('week').subtract(1, 'week').add(1, 'day').add(8, 'hours'),
         endDateTime: moment().startOf('week').subtract(1, 'week').add(1, 'day').add(15.5, 'hours')
     },
     {
         id: '506',
-        courthouseId: '1',
+        locationId: '1',
         startDateTime: moment().startOf('week').subtract(1, 'week').add(1, 'day').add(8, 'hours'),
         endDateTime: moment().startOf('week').subtract(1, 'week').add(1, 'day').add(15.5, 'hours')
     },
     {
         id: '507',
-        courthouseId: '1',
+        locationId: '1',
         workSectionId: 'OTHER',
         startDateTime: moment().startOf('week').subtract(1, 'week').add(1, 'day').add(8, 'hours'),
         endDateTime: moment().startOf('week').subtract(1, 'week').add(1, 'day').add(15.5, 'hours')
     },
     {
         id: '508',
-        courthouseId: '1',
+        locationId: '1',
         workSectionId: 'COURTS',
         sheriffId: '3',
         startDateTime: moment().startOf('week').subtract(1, 'week').add(2, 'day').add(6, 'hours'),
@@ -864,46 +864,46 @@ export const sheriffShifts: Shift[] = [
     },
     {
         id: '509',
-        courthouseId: '1',
+        locationId: '1',
         workSectionId: 'JAIL',
         startDateTime: moment().startOf('week').subtract(1, 'week').add(2, 'day').add(6, 'hours'),
         endDateTime: moment().startOf('week').subtract(1, 'week').add(2, 'day').add(13.5, 'hours')
     },
     {
         id: '5010',
-        courthouseId: '1',
+        locationId: '1',
         startDateTime: moment().startOf('week').subtract(1, 'week').add(2, 'day').add(6, 'hours'),
         endDateTime: moment().startOf('week').subtract(1, 'week').add(2, 'day').add(13.5, 'hours')
     },
     {
         id: '5011',
-        courthouseId: '1',
+        locationId: '1',
         startDateTime: moment().startOf('week').subtract(1, 'week').add(2, 'day').add(8, 'hours'),
         endDateTime: moment().startOf('week').subtract(1, 'week').add(2, 'day').add(15.5, 'hours')
     },
     {
         id: '5012',
-        courthouseId: '1',
+        locationId: '1',
         workSectionId: 'ESCORTS',
         startDateTime: moment().startOf('week').subtract(1, 'week').add(2, 'day').add(8, 'hours'),
         endDateTime: moment().startOf('week').subtract(1, 'week').add(2, 'day').add(15.5, 'hours')
     },
     {
         id: '5013',
-        courthouseId: '1',
+        locationId: '1',
         startDateTime: moment().startOf('week').subtract(1, 'week').add(2, 'day').add(8, 'hours'),
         endDateTime: moment().startOf('week').subtract(1, 'week').add(2, 'day').add(15.5, 'hours')
     },
     {
         id: '5014',
-        courthouseId: '1',
+        locationId: '1',
         workSectionId: 'OTHER',
         startDateTime: moment().startOf('week').subtract(1, 'week').add(2, 'day').add(8, 'hours'),
         endDateTime: moment().startOf('week').subtract(1, 'week').add(2, 'day').add(15.5, 'hours')
     },
     {
         id: '5015',
-        courthouseId: '1',
+        locationId: '1',
         workSectionId: 'COURTS',
         sheriffId: '3',
         startDateTime: moment().startOf('week').subtract(1, 'week').add(3, 'day').add(6, 'hours'),
@@ -911,46 +911,46 @@ export const sheriffShifts: Shift[] = [
     },
     {
         id: '5016',
-        courthouseId: '1',
+        locationId: '1',
         workSectionId: 'JAIL',
         startDateTime: moment().startOf('week').subtract(1, 'week').add(3, 'day').add(6, 'hours'),
         endDateTime: moment().startOf('week').subtract(1, 'week').add(3, 'day').add(13.5, 'hours')
     },
     {
         id: '5017',
-        courthouseId: '1',
+        locationId: '1',
         startDateTime: moment().startOf('week').subtract(1, 'week').add(3, 'day').add(6, 'hours'),
         endDateTime: moment().startOf('week').subtract(1, 'week').add(3, 'day').add(13.5, 'hours')
     },
     {
         id: '5018',
-        courthouseId: '1',
+        locationId: '1',
         startDateTime: moment().startOf('week').subtract(1, 'week').add(3, 'day').add(8, 'hours'),
         endDateTime: moment().startOf('week').subtract(1, 'week').add(3, 'day').add(15.5, 'hours')
     },
     {
         id: '5019',
-        courthouseId: '1',
+        locationId: '1',
         workSectionId: 'ESCORTS',
         startDateTime: moment().startOf('week').subtract(1, 'week').add(3, 'day').add(8, 'hours'),
         endDateTime: moment().startOf('week').subtract(1, 'week').add(3, 'day').add(15.5, 'hours')
     },
     {
         id: '5020',
-        courthouseId: '1',
+        locationId: '1',
         startDateTime: moment().startOf('week').subtract(1, 'week').add(3, 'day').add(8, 'hours'),
         endDateTime: moment().startOf('week').subtract(1, 'week').add(3, 'day').add(15.5, 'hours')
     },
     {
         id: '5021',
-        courthouseId: '1',
+        locationId: '1',
         workSectionId: 'OTHER',
         startDateTime: moment().startOf('week').subtract(1, 'week').add(3, 'day').add(8, 'hours'),
         endDateTime: moment().startOf('week').subtract(1, 'week').add(3, 'day').add(15.5, 'hours')
     },
     {
         id: '5022',
-        courthouseId: '1',
+        locationId: '1',
         workSectionId: 'COURTS',
         sheriffId: '3',
         startDateTime: moment().startOf('week').subtract(1, 'week').add(4, 'day').add(6, 'hours'),
@@ -958,46 +958,46 @@ export const sheriffShifts: Shift[] = [
     },
     {
         id: '5023',
-        courthouseId: '1',
+        locationId: '1',
         workSectionId: 'JAIL',
         startDateTime: moment().startOf('week').subtract(1, 'week').add(4, 'day').add(6, 'hours'),
         endDateTime: moment().startOf('week').subtract(1, 'week').add(4, 'day').add(13.5, 'hours')
     },
     {
         id: '5024',
-        courthouseId: '1',
+        locationId: '1',
         startDateTime: moment().startOf('week').subtract(1, 'week').add(4, 'day').add(6, 'hours'),
         endDateTime: moment().startOf('week').subtract(1, 'week').add(4, 'day').add(13.5, 'hours')
     },
     {
         id: '5025',
-        courthouseId: '1',
+        locationId: '1',
         startDateTime: moment().startOf('week').subtract(1, 'week').add(4, 'day').add(8, 'hours'),
         endDateTime: moment().startOf('week').subtract(1, 'week').add(4, 'day').add(15.5, 'hours')
     },
     {
         id: '5026',
-        courthouseId: '1',
+        locationId: '1',
         workSectionId: 'ESCORTS',
         startDateTime: moment().startOf('week').subtract(1, 'week').add(4, 'day').add(8, 'hours'),
         endDateTime: moment().startOf('week').subtract(1, 'week').add(4, 'day').add(15.5, 'hours')
     },
     {
         id: '5027',
-        courthouseId: '1',
+        locationId: '1',
         startDateTime: moment().startOf('week').subtract(1, 'week').add(4, 'day').add(8, 'hours'),
         endDateTime: moment().startOf('week').subtract(1, 'week').add(4, 'day').add(15.5, 'hours')
     },
     {
         id: '5028',
-        courthouseId: '1',
+        locationId: '1',
         workSectionId: 'OTHER',
         startDateTime: moment().startOf('week').subtract(1, 'week').add(4, 'day').add(8, 'hours'),
         endDateTime: moment().startOf('week').subtract(1, 'week').add(4, 'day').add(15.5, 'hours')
     },
     {
         id: '5029',
-        courthouseId: '1',
+        locationId: '1',
         workSectionId: 'COURTS',
         sheriffId: '3',
         startDateTime: moment().startOf('week').subtract(1, 'week').add(5, 'day').add(6, 'hours'),
@@ -1005,39 +1005,39 @@ export const sheriffShifts: Shift[] = [
     },
     {
         id: '5030',
-        courthouseId: '1',
+        locationId: '1',
         workSectionId: 'JAIL',
         startDateTime: moment().startOf('week').subtract(1, 'week').add(5, 'day').add(6, 'hours'),
         endDateTime: moment().startOf('week').subtract(1, 'week').add(5, 'day').add(13.5, 'hours')
     },
     {
         id: '5031',
-        courthouseId: '1',
+        locationId: '1',
         startDateTime: moment().startOf('week').subtract(1, 'week').add(5, 'day').add(6, 'hours'),
         endDateTime: moment().startOf('week').subtract(1, 'week').add(5, 'day').add(13.5, 'hours')
     },
     {
         id: '5032',
-        courthouseId: '1',
+        locationId: '1',
         startDateTime: moment().startOf('week').subtract(1, 'week').add(5, 'day').add(8, 'hours'),
         endDateTime: moment().startOf('week').subtract(1, 'week').add(5, 'day').add(15.5, 'hours')
     },
     {
         id: '5033',
-        courthouseId: '1',
+        locationId: '1',
         workSectionId: 'ESCORTS',
         startDateTime: moment().startOf('week').subtract(1, 'week').add(5, 'day').add(8, 'hours'),
         endDateTime: moment().startOf('week').subtract(1, 'week').add(5, 'day').add(15.5, 'hours')
     },
     {
         id: '5034',
-        courthouseId: '1',
+        locationId: '1',
         startDateTime: moment().startOf('week').subtract(1, 'week').add(5, 'day').add(8, 'hours'),
         endDateTime: moment().startOf('week').subtract(1, 'week').add(5, 'day').add(15.5, 'hours')
     },
     {
         id: '5035',
-        courthouseId: '1',
+        locationId: '1',
         workSectionId: 'OTHER',
         startDateTime: moment().startOf('week').subtract(1, 'week').add(5, 'day').add(8, 'hours'),
         endDateTime: moment().startOf('week').subtract(1, 'week').add(5, 'day').add(15.5, 'hours')

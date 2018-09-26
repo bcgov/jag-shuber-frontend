@@ -3,7 +3,7 @@ import { Leave } from '../api';
 import { Table } from 'react-bootstrap';
 import moment from 'moment';
 import LeaveCancelledPopover from './LeaveCancelledPopover';
-import { fromTimeString } from 'jag-shuber-api/dist/client';
+import { fromTimeString } from 'jag-shuber-api';
 import LeaveSubCodeDisplay from '../containers/LeaveSubCodeDisplay';
 
 export interface LeavesDisplayProps {

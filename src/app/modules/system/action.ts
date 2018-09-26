@@ -2,7 +2,7 @@ import moment from 'moment';
 import { ThunkAction } from '../../store';
 import * as TimeUtils from '../../infrastructure/TimeRangeUtils';
 import * as genderCodeRequests from './requests/genders';
-import * as courthouseRequests from './requests/courthouses';
+import * as locationRequests from './requests/locations';
 import { getAlternateAssignmentTypes, getJailRoles, getCourtRoles } from '../assignments/actions';
 import { getLeaves, getLeaveSubCodes, getLeaveCancelCodes } from '../leaves/actions';
 import { getShifts } from '../shifts/actions';
@@ -13,13 +13,13 @@ import { updateVisibleTime as updateScheduleVisibleTime } from '../schedule/acti
 // Gender Codes
 export const getGenderCodes = genderCodeRequests.genderCodeMapRequest.actionCreator;
 
-// Courthouses
-export const getCourthouses = courthouseRequests.courthouseMapRequest.actionCreator;
+// Locations
+export const getLocations = locationRequests.locationMapRequest.actionCreator;
 
 const initialActions: any[] = [
     getAlternateAssignmentTypes,
     getJailRoles,
-    getCourthouses,
+    getLocations,
     () => updateTimelineVisibleTime(TimeUtils.getDefaultStartTime(), TimeUtils.getDefaultEndTime()),
     () => updateScheduleVisibleTime(moment().startOf('week').add(1, 'day'), moment().endOf('week').subtract(1, 'day')),
     getSheriffRankCodes,

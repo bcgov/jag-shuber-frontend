@@ -1,5 +1,5 @@
 import * as genderCodeRequests from './requests/genders';
-import * as courthouseRequests from './requests/courthouses';
+import * as locationRequests from './requests/locations';
 import { CodeSelector } from '../../infrastructure/CodeSelector';
 import { createSelector } from 'reselect';
 import mapToArray from '../../infrastructure/mapToArray';
@@ -17,19 +17,19 @@ export const allGenderCodes = genderCodeSelector.all;
 
 export const allEffectiveGenderCodes = genderCodeSelector.effective;
 
-// Courthouses
-export const allCourthouses = createSelector(
-    courthouseRequests.courthouseMapRequest.getData,
-    (courthouses) => mapToArray(courthouses)
+// Locations
+export const allLocations = createSelector(
+    locationRequests.locationMapRequest.getData,
+    (locations) => mapToArray(locations)
         .sort((a, b) => a.name.localeCompare(b.name))
 );
 
-export const courthouseById = (id: IdType) => (state: RootState) => {
-    const map = courthouseRequests.courthouseMapRequest.getData(state);
+export const locationById = (id: IdType) => (state: RootState) => {
+    const map = locationRequests.locationMapRequest.getData(state);
     return id && map ? map[id] : undefined;
 };
 
-export const selectedCourthouse = (id: IdType) => (state: RootState) => {
-    const { courthouseMap } = state.system;
-    return courthouseMap ? courthouseMap[id] : '';
+export const selectedLocation = (id: IdType) => (state: RootState) => {
+    const { locationMap } = state.system;
+    return locationMap ? locationMap[id] : '';
 };

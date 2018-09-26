@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { displayEnum } from '../infrastructure/EnumUtils';
 import avatarImg from '../assets/images/avatar.png';
-import * as ApiTypes from 'jag-shuber-api/dist/common/types';
+import * as ApiTypes from '../../../../jag-shuber-api/dist/common/types';
 
 export type MapType<T> = { [key: string]: T };
 export type DateType = ApiTypes.DateType;
@@ -16,16 +16,23 @@ export type WorkSectionCode = 'COURTS' | 'JAIL' | 'ESCORTS' | 'OTHER';
 export type Assignment = CourtAssignment | JailAssignment | EscortAssignment | OtherAssignment;
 export type TimeType = ApiTypes.TimeType;
 export type CourtroomMap = MapType<Courtroom>;
-export type RunMap = MapType<Run>;
+export type RunMap = MapType<EscortRun>;
 export type JailRoleMap = MapType<JailRole>;
 export type AlternateAssignmentMap = MapType<AlternateAssignment>;
 export type DateRange = { startDate?: DateType, endDate?: DateType };
-export type CourthouseMap = MapType<Courthouse>;
+export type LocationMap = MapType<Location>;
 export type SheriffRankCodeMap = MapType<SheriffRank>;
 export type LeaveSubCodeMap = MapType<LeaveSubCode>;
 export type LeaveCancelCodeMap = MapType<LeaveCancelCode>;
 export type CourtRoleMap = MapType<CourtRole>;
 export type GenderCodeMap = MapType<GenderCode>;
+
+export const WORK_SECTIONS: StringMap = {
+    COURTS: 'Courts',
+    JAIL: 'Jail',
+    ESCORTS: 'Escorts',
+    OTHER: 'Other'
+};
 
 /* tslint:disable:no-bitwise */
 export enum DaysOfWeek {
@@ -107,10 +114,11 @@ export const BLANK_SHERIFF: Sheriff = {
     imageUrl: avatarImg
 };
 
-export const BLANK_COURTHOUSE: Courthouse = {
+export const BLANK_LOCATION: Location = {
     id: '-1',
     name: '',
-    code: ''
+    code: '',
+    regionId: ''
 };
 
 export const DEFAULT_RECURRENCE: DutyRecurrence[] = [
@@ -146,8 +154,8 @@ export interface Sheriff {
     alias?: string;
     genderCode?: string;
     rankCode?: string;
-    homeCourthouseId?: IdType;
-    currentCourthouseId?: IdType;
+    homeLocationId?: IdType;
+    currentLocationId?: IdType;
 }
 
 export interface GenderCode {
@@ -166,7 +174,7 @@ export interface SheriffRank {
 export interface BaseAssignment {
     id: IdType;
     title: string;
-    courthouseId: IdType;
+    locationId: IdType;
     workSectionId: WorkSectionCode;
     dutyRecurrences?: DutyRecurrence[];
 }
@@ -184,7 +192,7 @@ export interface JailAssignment extends BaseAssignment {
 
 export interface EscortAssignment extends BaseAssignment {
     workSectionId: 'ESCORTS';
-    runId: IdType;
+    escortRunId: IdType;
 }
 
 export interface OtherAssignment extends BaseAssignment {
@@ -226,10 +234,12 @@ export interface DutyRecurrence {
     sheriffsRequired: number;
 }
 
-export interface Courthouse {
+export interface Location {
     id: IdType;
     name: string;
     code: string;
+    parentLocationId?: string;
+    regionId: string;
 }
 
 export interface Region {
@@ -239,7 +249,7 @@ export interface Region {
 
 export interface Courtroom {
     id: IdType;
-    courthouseId: IdType;
+    locationId: IdType;
     code: IdType;
     name: string;
 }
@@ -259,7 +269,7 @@ export interface CourtRole {
 export interface Shift {
     id: IdType;
     sheriffId?: IdType;
-    courthouseId: IdType;
+    locationId: IdType;
     workSectionId?: WorkSectionCode;
     startDateTime: DateType;
     endDateTime: DateType;
@@ -307,9 +317,9 @@ export interface LeaveCancelCode {
     expiryDate?: DateType;
 }
 
-export interface Run {
+export interface EscortRun {
     id: IdType;
-    courthouseId: IdType | string;
+    locationId: IdType | string;
     title: string;
 }
 
@@ -366,14 +376,14 @@ export interface API {
     getLeaveCancelCodes(): Promise<LeaveCancelCode[]>;
 
     getCourtrooms(): Promise<Courtroom[]>;
-    getRuns(): Promise<Run[]>;
+    getEscortRuns(): Promise<EscortRun[]>;
     getJailRoles(): Promise<JailRole[]>;
     getAlternateAssignmentTypes(): Promise<AlternateAssignment[]>;
     getSheriffRankCodes(): Promise<SheriffRank[]>;
     getCourtRoles(): Promise<CourtRole[]>;
     getGenderCodes(): Promise<GenderCode[]>;
 
-    getCourthouses(): Promise<Courthouse[]>;
+    getLocations(): Promise<Location[]>;
 
     getToken(): Promise<string>;
     logout(): Promise<void>;

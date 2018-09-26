@@ -2,7 +2,7 @@ import { TokenPayload } from 'jag-shuber-api';
 import { RequestActionState } from '../../infrastructure/Requests/RequestActionBase';
 
 export interface UserState {
-    currentCourthouse: string;
+    currentLocation: string;
     userToken?: RequestActionState<TokenPayload>;
 }
 

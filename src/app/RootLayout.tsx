@@ -15,7 +15,7 @@ import ManageSheriffs from './pages/ManageSheriffs';
 import DefaultAssignments from './pages/DefaultAssignments';
 import Scheduling from './pages/Scheduling';
 import AssignmentDutyEditModal from './containers/AssignmentDutyEditModal';
-import CurrentCourthouseSelector from './containers/SystemCurrentCourthouseSelector';
+import LocationSelector from './containers/LocationSelector';
 import { Well, Alert, Button } from 'react-bootstrap';
 import SheriffProfileModal from './containers/SheriffProfileModal';
 import ScheduleShiftCopyModal from './containers/ScheduleShiftCopyModal';
@@ -24,7 +24,7 @@ import AssignmentSheriffDutyReassignmentModal from './containers/AssignmentSheri
 import PublishSchedule from './pages/PublishSchedule/PublishSchedule';
 import Footer from './components/Footer/Footer';
 import {
-  isCourthouseSet as isCurrentCourthouseSet,
+  isLocationSet as isCurrentLocationSet,
   isLoggedIn as isUserLoggedIn,
   isLoadingToken as isLoadingUserToken,
   loadingTokenError
@@ -38,7 +38,7 @@ import ScheduleShiftMultiEditModal from './containers/ScheduleMultiShiftEditModa
 import DutyRosterToolsModal from './containers/DutyRosterToolsModal';
 
 export interface LayoutStateProps {
-  isCourthouseSet?: boolean;
+  isLocationSet?: boolean;
   isLoggedIn?: boolean;
   isLoadingToken?: boolean;
   tokenLoadingError?: any;
@@ -58,7 +58,7 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
 
   render() {
     const {
-      isCourthouseSet = false,
+      isLocationSet = false,
       tokenLoadingError,
       isLoggedIn,
       isLoadingToken = true
@@ -85,7 +85,7 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
           <div className="headerArea">
             <Navigation />
           </div>
-          {!isCourthouseSet && (
+          {!isLocationSet && (
             <div className="mainArea">
               <Well
                 style={{
@@ -98,13 +98,13 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
               >
                 <div style={{ paddingTop: 10 }}>
                   <h1>Select your Location</h1>
-                  <CurrentCourthouseSelector />
+                  <LocationSelector.Current />
                 </div>
               </Well>
             </div>
           )}
 
-          {isCourthouseSet && (
+          {isLocationSet && (
             <div className="mainArea">
               <Route exact={true} path={Navigation.Routes.dutyRoster.timeline.path} component={DutyRoster} />
               <Route path={Navigation.Routes.schedule.manage.path} component={Scheduling} />
@@ -133,7 +133,7 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
 
 const mapStateToProps = (state: RootState) => {
   return {
-    isCourthouseSet: isCurrentCourthouseSet(state),
+    isLocationSet: isCurrentLocationSet(state),
     isLoggedIn: isUserLoggedIn(state),
     isLoadingToken: isLoadingUserToken(state),
     tokenLoadingError: loadingTokenError(state)
