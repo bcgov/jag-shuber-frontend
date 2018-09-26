@@ -2,6 +2,8 @@
 The frontend portion of the Sheriff Scheduling System (code named Shuber).
 
 ## Project Architecture
+![Context Diagram](https://github.com/bcgov/jag-shuber-api/blob/master/docs/Context%20diagram%20for%20Scheduling%20System.png)
+
 The notes on the projects architecture as well as other development notes can be found in the [Project Docs](./docs/index.md)
 
 
