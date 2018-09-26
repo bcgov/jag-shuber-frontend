@@ -5,7 +5,7 @@ import {
     Location,
     IdType
 } from '../api/Api';
-import { locationById } from '../modules/system/selectors';
+import { getLocationById } from '../modules/system/selectors';
 import { currentLocation } from '../modules/user/selectors';
 
 interface LocationDisplayListStateProps {
@@ -13,7 +13,7 @@ interface LocationDisplayListStateProps {
 }
 
 interface LocationDisplayListProps {
-    id: IdType;
+    id?: IdType;
 }
 
 class LocationDisplay extends React.PureComponent<
@@ -30,7 +30,7 @@ class LocationDisplay extends React.PureComponent<
 // tslint:disable-next-line:max-line-length
 const ConnectedLocationDisplay = connect<LocationDisplayListStateProps, {}, LocationDisplayListProps, RootState>(
     (state, { id }) => ({
-        location: locationById(id)(state)
+        location: getLocationById(id)(state)
     })
 )(LocationDisplay);
 

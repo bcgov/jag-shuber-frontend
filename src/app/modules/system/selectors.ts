@@ -24,7 +24,10 @@ export const allLocations = createSelector(
         .sort((a, b) => a.name.localeCompare(b.name))
 );
 
-export const locationById = (id: IdType) => (state: RootState) => {
+export const getLocationById = (id?: IdType) => (state: RootState) => {
+    if (id == undefined) {
+        return undefined;
+    }
     const map = locationRequests.locationMapRequest.getData(state);
     return id && map ? map[id] : undefined;
 };
