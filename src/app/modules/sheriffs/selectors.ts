@@ -5,10 +5,11 @@ import {
     IdType, Sheriff
 } from '../../api/Api';
 import mapToArray from '../../infrastructure/mapToArray';
-import { currentCourthouse as currentCourthouseSelector } from '../user/selectors';
+import { currentLocation as currentLocationSelector } from '../user/selectors';
 import arrayToMap from '../../infrastructure/arrayToMap';
 import { ErrorMap } from './common';
 import { CodeSelector } from '../../infrastructure/CodeSelector';
+import { getLocationById } from '../system/selectors';
 
 export const DEFAULT_SHERIFF_SORTER = createSelector(
     requests.sheriffRankCodeMapRequest.getData,
@@ -17,7 +18,7 @@ export const DEFAULT_SHERIFF_SORTER = createSelector(
             return `${rankMap[s.rankCode as string].order}${s.lastName}${s.firstName}`;
         }
         return (a: Sheriff, b: Sheriff) => getSortString(a).localeCompare(getSortString(b));
-});
+    });
 
 export const sheriffs = createSelector(
     requests.sheriffMapRequest.getData,
@@ -27,11 +28,11 @@ export const sheriffs = createSelector(
     }
 );
 
-export const sheriffsForCurrentCourthouse = createSelector(
+export const sheriffsForCurrentLocation = createSelector(
     sheriffs,
-    currentCourthouseSelector,
-    (sheriffList, courthouse) => {
-        return sheriffList.filter(s => s.homeCourthouseId === courthouse || s.currentCourthouseId === courthouse);
+    currentLocationSelector,
+    (sheriffList, location) => {
+        return sheriffList.filter(s => s.homeLocationId === location || s.currentLocationId === location);
     }
 );
 
@@ -44,29 +45,51 @@ export const getSheriff = (id?: IdType) => (state: RootState) => {
     return undefined;
 };
 
+export function getSheriffHomeLocation(sheriffId: IdType) {
+    return (state: RootState) => {
+        const { homeLocationId } = getSheriff(sheriffId)(state) as Sheriff;
+        return homeLocationId == undefined ? undefined : getLocationById(homeLocationId)(state);
+    };
+}
+
+export function getSheriffCurrentLocation(sheriffId: IdType) {
+    return (state: RootState) => {
+        const { currentLocationId, homeLocationId } = getSheriff(sheriffId)(state) as Sheriff;
+        return currentLocationId == undefined ? 
+            getLocationById(homeLocationId)(state) : 
+            getLocationById(currentLocationId)(state);
+    };
+}
+
 export const sheriffListLoading = requests.sheriffMapRequest.getIsBusy;
 export const sheriffListError = requests.sheriffMapRequest.getError;
 
+export interface SheriffLoanStatus {
+    isLoanedOut: boolean;
+    isLoanedIn: boolean;
+    sheriffId: string;
+}
+
 export const sheriffLoanMap = createSelector(
     requests.sheriffMapRequest.getData,
-    currentCourthouseSelector,
-    (map = {}, currentCourthouse) => {
+    currentLocationSelector,
+    (map = {}, currentSystemLocation) => {
         const loanInOutArray = Object.keys(map).map(id => {
             const {
-                homeCourthouseId: homeLocation,
-                currentCourthouseId: currentLocation
+                homeLocationId: homeLocation,
+                currentLocationId: currentSheriffLocation
             } = map[id];
             let isLoanedIn = false;
             let isLoanedOut = false;
 
-            if (currentCourthouse !== homeLocation) {
-                if (currentLocation && currentLocation === currentCourthouse) {
+            if (currentSystemLocation !== homeLocation) {
+                if (currentSheriffLocation && currentSheriffLocation === currentSystemLocation) {
                     isLoanedIn = true;
                 }
             }
 
-            if (currentCourthouse === homeLocation) {
-                if (currentLocation && currentLocation !== homeLocation) {
+            if (currentSystemLocation === homeLocation) {
+                if (currentSheriffLocation && currentSheriffLocation !== homeLocation) {
                     isLoanedOut = true;
                 }
             }
@@ -75,11 +98,56 @@ export const sheriffLoanMap = createSelector(
                 sheriffId: id,
                 isLoanedIn: isLoanedIn,
                 isLoanedOut: isLoanedOut
-            };
+            } as SheriffLoanStatus;
         });
-        return arrayToMap(loanInOutArray, (lio) => lio.sheriffId);
+        return arrayToMap(loanInOutArray, (lio) => lio.sheriffId) as { [sheriffId: string]: SheriffLoanStatus };
     }
 );
+
+/**
+ * Gets the Loan status of a given sheriff
+ *
+ * @param {string} sheriffId the sheriff Id to check
+ * @returns
+ */
+export function getSheriffLoanStatus(sheriffId: string) {
+    return (state: RootState) => {
+        const status = sheriffLoanMap(state)[sheriffId] || {
+            sheriffId,
+            isLoanedIn: false,
+            isLoanedOut: false
+        };
+        return status;
+    };
+}
+
+/**
+ * Selector returns whether or not the given sheriffId belongs to a sheriff who 
+ * is loaned out
+ *
+ * @param {string} sheriffId the sheriff Id to check
+ * @returns
+ */
+export function isSheriffLoanedOut(sheriffId: string) {
+    return (state: RootState) => {
+        const { isLoanedOut = false } = getSheriffLoanStatus(sheriffId)(state);
+        return isLoanedOut;
+    };
+}
+
+/**
+ * Selector returns whether or not the given sheriffId belongs to a sheriff who 
+ * is loaned In
+ *
+ * @param {string} sheriffId the sheriff Id to check
+ * @returns
+ */
+export function isSheriffLoanedIn(sheriffId: string) {
+    return (state: RootState) => {
+        const { isLoanedIn = false } = getSheriffLoanStatus(sheriffId)(state);
+        return isLoanedIn;
+    };
+}
 
 export const selectedSheriffProfileSection = (state: RootState) => {
     const { sheriffs: { selectedProfileSection = undefined } = {} } = state;

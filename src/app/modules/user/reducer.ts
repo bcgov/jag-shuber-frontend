@@ -39,9 +39,9 @@ export function createReducer<State>(
 
 const nestedReducer = new NestedReducer([
   createReducer<UserState>({
-    USER_UPDATE_CURRENT_COURTHOUSE: (state, currentCourthouse) => {
-      (api as Client).setCurrentCourthouse(currentCourthouse);
-      return { ...state, currentCourthouse };
+    USER_UPDATE_CURRENT_LOCATION: (state, currentLocation) => {
+      (api as Client).setCurrentLocation(currentLocation);
+      return { ...state, currentLocation };
     }
   }),
   userTokenRequest.reducer

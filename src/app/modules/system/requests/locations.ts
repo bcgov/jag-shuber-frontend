@@ -5,18 +5,18 @@ import {
     SystemModuleState
 } from '../common';
 import {
-    Courthouse
+    Location
 } from '../../../api/Api';
 import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRequest';
 
-class CourthouseMapRequest extends GetEntityMapRequest<void, Courthouse, SystemModuleState> {
+class LocationMapRequest extends GetEntityMapRequest<void, Location, SystemModuleState> {
     constructor() {
-        super({ namespace: STATE_KEY, actionName: 'courthouseMap' });
+        super({ namespace: STATE_KEY, actionName: 'locationMap' });
     }
     public async doWork(request: void, { api }: ThunkExtra) {
-        let courthouses = await api.getCourthouses();
-        return arrayToMap(courthouses, c => c.id);
+        let entities = await api.getLocations();
+        return arrayToMap(entities, l => l.id);
     }
 }
 
-export const courthouseMapRequest = new CourthouseMapRequest();
+export const locationMapRequest = new LocationMapRequest();

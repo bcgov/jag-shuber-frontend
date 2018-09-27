@@ -6,9 +6,7 @@ import {
 } from 'react-bootstrap';
 import SheriffScheduleDisplay from '../../containers/SheriffScheduleDisplay';
 import './PublishSchedule.css';
-import api from '../../api';
-import Client from '../../api/Client';
-import CourthouseDisplay from '../../containers/SystemCourthouseDisplay';
+import LocationDisplay from '../../containers/LocationDisplay';
 import SchedulePublishViewControls from '../../containers/SchedulePublishViewControls';
 import SchedulePublishViewSelectedWeekDisplay from '../../containers/SchedulePublishViewSelectedWeekDisplay';
 import Page from '../../components/Page/Page';
@@ -16,7 +14,6 @@ import BCCrestImg from '../../assets/images/bcss-crest.png';
 
 class DeputySchedule extends React.PureComponent {
     render() {
-        const currentCourthouseId = (api as Client).currentCourthouse;
         return (
             <Page
                 toolbar={<SchedulePublishViewControls />}
@@ -47,8 +44,8 @@ class DeputySchedule extends React.PureComponent {
                                     </div>
                                     <div className="deputy-schedule-header-date-box ">
                                         <div style={{ fontSize: 18, fontWeight: 'bold', color: '#666666' }}>
-                                            <CourthouseDisplay id={currentCourthouseId} /> Schedule
-                            </div>
+                                            <LocationDisplay.Current /> Schedule
+                                        </div>
                                         <div style={{ fontSize: 20, fontWeight: 'bold' }}>
                                             <SchedulePublishViewSelectedWeekDisplay />
                                         </div>

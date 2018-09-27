@@ -13,7 +13,7 @@ import { getWorkSectionColour } from '../api/utils';
 import { getForegroundColor } from '../infrastructure/colorUtils';
 import toTitleCase from '../infrastructure/toTitleCase';
 import SheriffLoanOutIcon from './Icons/SheriffLoanOutIcon';
-import CourthouseDisplay from '../containers/SystemCourthouseDisplay';
+import LocationDisplay from '../containers/LocationDisplay';
 
 export interface ScheduleDeputyViewListProps {
     daysToDisplay?: DaysOfWeek;
@@ -69,13 +69,13 @@ export default class ScheduleDeputyViewList extends React.PureComponent<Schedule
                                         const loanedOutForDay = 
                                             sheriffLoanMap[sheriff.id].isLoanedOut && moment().weekday() === dayNum;
                                         if (loanedOutForDay) {
-                                            const { currentCourthouseId = '' } = sheriff;
+                                            const { currentLocationId = '' } = sheriff;
                                             return (
                                                 <td>
                                                     <div style={{ display: 'flex', alignItems: 'center' }}>
                                                         <SheriffLoanOutIcon />
                                                         <span style={{marginLeft: 8}}>
-                                                            <CourthouseDisplay id={currentCourthouseId} />
+                                                            <LocationDisplay id={currentLocationId} />
                                                         </span>
                                                     </div>
                                                 </td>

@@ -1,18 +1,18 @@
 import { RootState } from '../../store';
 import { createSelector } from 'reselect';
-import { TokenPayload } from 'jag-shuber-api/dist/client';
+import { TokenPayload } from 'jag-shuber-api';
 import { userTokenRequest } from './requests';
 
-export const currentCourthouse = (state: RootState): string => {
-    const { user: { currentCourthouse: courthouse = '' } = {} } = state;
-    return courthouse;
+export const currentLocation = (state: RootState): string => {
+    const { user: { currentLocation: location = '' } = {} } = state;
+    return location;
 };
 
-export const isCourthouseSet = createSelector(
-    currentCourthouse,
-    (courthouse) => {
+export const isLocationSet = createSelector(
+    currentLocation,
+    (location) => {
         // tslint:disable-next-line:triple-equals
-        return courthouse != undefined && courthouse !== '';
+        return location != undefined && location !== '';
     }
 );
 

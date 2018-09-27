@@ -11,7 +11,7 @@ export {
     DaysOfWeek,
     DEFAULT_RECURRENCE,
     DutyRecurrence,
-    Courthouse,
+    Location,
     Region,
     Courtroom,
     API,
@@ -22,31 +22,17 @@ export {
     TimeType,
     WorkSectionCode,
     CourtroomMap,
-    Run,
+    EscortRun,
     RunMap,
     JailRole,
     JailRoleMap,
     AlternateAssignment,
-    AlternateAssignmentMap
+    AlternateAssignmentMap,
+    WORK_SECTIONS
 } from './Api';
 
-// Todo: We need to create reducers for the following
-export {
-    WORK_SECTIONS,
-    TRAINING_TYPES,
-    COURTHOUSES,
-    COURTROOMS,
-    JAIL_ROLES,
-    RUNS,
-    ALTERNATE_ASSIGNMENTS
-} from './Mock/MockData';
-
 import Client from './Client';
-import MockClient from './Mock/MockApi';
 import resolveAppUrl from '../infrastructure/resolveAppUrl';
 
-const mock = false;
-
-const client = mock ? new MockClient() : new Client(resolveAppUrl('/api/v1'));
-
+const client = new Client(resolveAppUrl('/api/v1'));
 export default client;

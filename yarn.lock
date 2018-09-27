@@ -5421,8 +5421,8 @@ istanbul@^0.4.5:
     wordwrap "^1.0.0"
 
 "jag-shuber-api@github:bcgov/jag-shuber-api":
-  version "1.5.0"
-  resolved "https://codeload.github.com/bcgov/jag-shuber-api/tar.gz/dc065f4018f8c6ec052387bc8fe56cd52f6393f9"
+  version "2.0.0"
+  resolved "https://codeload.github.com/bcgov/jag-shuber-api/tar.gz/389da97a5b6517463ab8faa478b078148184e8ab"
   dependencies:
     jsonwebtoken "^8.3.0"
     jwt-decode "^2.2.0"

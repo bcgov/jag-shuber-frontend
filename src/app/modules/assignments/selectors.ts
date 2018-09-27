@@ -39,7 +39,7 @@ export const allAssignments = createSelector(
                 } else if (isJailAssignment(a)) {
                     a.title = jailRoles[a.jailRoleCode] ? jailRoles[a.jailRoleCode].description : 'Jail Role Not Found';
                 } else if (isEscortAssignment(a)) {
-                    a.title = runs[a.runId] ? runs[a.runId].title : 'Run Not Found';
+                    a.title = runs[a.escortRunId] ? runs[a.escortRunId].title : 'Run Not Found';
                 } else if (isOtherAssignment(a)) {
                     a.title = altAssignmentTypes[a.otherAssignCode]
                         ? altAssignmentTypes[a.otherAssignCode].description : 'Other Type Not Found';

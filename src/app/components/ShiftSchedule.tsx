@@ -5,18 +5,18 @@ import {
 } from './Timeline/Timeline';
 import {
     Shift,
-    BLANK_COURTHOUSE,
-    Courthouse
+    BLANK_LOCATION,
+    Location
 } from '../api/Api';
 import ShiftCard from './ShiftCard';
 import { ensureMoment } from '../infrastructure/momentUtils';
 import { ReactCalendarTimelineItem } from 'react-calendar-timeline';
 
-interface ShiftScheduleTimelineProps extends TimelineComponentProps<Shift, Courthouse> {
+interface ShiftScheduleTimelineProps extends TimelineComponentProps<Shift, Location> {
 
 }
 
-class ShiftScheduleTimeline extends Timeline<Shift, Courthouse> {
+class ShiftScheduleTimeline extends Timeline<Shift, Location> {
     static defaultProps: Partial<ShiftScheduleTimelineProps> = {
         sideBarHeaderTitle: 'Assignments',
         itemRenderer: (item) => (
@@ -28,14 +28,14 @@ class ShiftScheduleTimeline extends Timeline<Shift, Courthouse> {
 
     };
 
-    public static mapItem(shift: Shift, groups: Courthouse[]) {
+    public static mapItem(shift: Shift, groups: Location[]) {
         const { startDateTime, endDateTime } = shift;
         const startTime = ensureMoment(startDateTime);
         const endTime = ensureMoment(endDateTime);
         return {
             ...shift,
             title: `${startTime.format('HH:mm')} - ${endTime.format('HH:mm')}`,
-            group: shift.courthouseId,
+            group: shift.locationId,
             start_time: startTime,
             end_time: endTime,
             className: 'drop-shadow-hover',
@@ -72,11 +72,11 @@ export default class ShiftSchedule extends React.PureComponent<ShiftScheduleProp
         return (
             <ShiftScheduleTimeline
                 allowChangeTime={allowTimeChange}
-                groups={[BLANK_COURTHOUSE]}
+                groups={[BLANK_LOCATION]}
                 items={shifts}
                 mapItem={(item, groupList) => {
                     let shift = ShiftScheduleTimeline.mapItem(item, groupList);
-                    shift.group = BLANK_COURTHOUSE.id;
+                    shift.group = BLANK_LOCATION.id;
                     return shift;
                 }}
                 sidebarWidth={0}

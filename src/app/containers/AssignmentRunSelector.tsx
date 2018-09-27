@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
-import { Run } from '../api';
+import { EscortRun } from '../api';
 import { allRuns } from '../modules/assignments/selectors';
 import Selector, { SelectorProps } from '../components/FormElements/Selector';
 
 interface RunListStateProps {
-    runs: Run[];
+    runs: EscortRun[];
 }
 
 class RunList extends React.PureComponent<

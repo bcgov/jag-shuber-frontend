@@ -36,7 +36,7 @@ import { SheriffProfilePlugin } from '../components/SheriffProfile/SheriffProfil
 import { toast } from '../components/ToastManager/ToastManager';
 import { RequestActionConfig } from '../infrastructure/Requests/RequestActionBase';
 import { Alert } from 'react-bootstrap';
-import { currentCourthouse } from '../modules/user/selectors';
+import { currentLocation } from '../modules/user/selectors';
 import toTitleCase from '../infrastructure/toTitleCase';
 
 async function submitPlugins(
@@ -241,10 +241,10 @@ export default class extends
                         }
                     );
             } else {
-                const contextCourthouse = currentCourthouse(state);
+                const contextLocation = currentLocation(state);
                 const initialSheriff: Partial<Sheriff> = {
-                    homeCourthouseId: contextCourthouse,
-                    currentCourthouseId: contextCourthouse
+                    homeLocationId: contextLocation,
+                    currentLocationId: contextLocation
                 };
                 initialValues.sheriff = { ...initialSheriff };
             }

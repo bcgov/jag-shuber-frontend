@@ -2,7 +2,7 @@ import React from 'react';
 import Popover from './Popover';
 import { Glyphicon } from 'react-bootstrap';
 import { Leave } from '../api/Api';
-import { fromTimeString } from 'jag-shuber-api/dist/client';
+import { fromTimeString } from 'jag-shuber-api';
 
 export interface PartialLeavePopoverProps {
     leave?: Partial<Leave>;
