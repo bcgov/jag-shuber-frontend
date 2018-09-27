@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { displayEnum } from '../infrastructure/EnumUtils';
 import avatarImg from '../assets/images/avatar.png';
-import * as ApiTypes from '../../../../jag-shuber-api/dist/common/types';
+import * as ApiTypes from 'jag-shuber-api/dist/common/types';
 
 export type MapType<T> = { [key: string]: T };
 export type DateType = ApiTypes.DateType;
