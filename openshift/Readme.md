@@ -1,23 +1,63 @@
-# How to configure a CI/CD pipeline for TFRS on OpenShift
+# Frontend Devops Resources
 
-We have created a [template](./templates/nginx-frontend-template.yml) yaml which describes the front end build environment.  It sets up the Jenkins instance, image streams and build configurations.
+## Structure
 
 ```
-oc process -f openshift/templates/nginx-frontend-template.yml | oc create -f -
+templates/
+    frontend/
+        frontend-build.json             // The Frontend builds to be added to tools project
+        frontend-deploy.json            // Frontend deployment, to be added to application environments (dev, test, etc)
+        frontend-deploy-prod.json       
+    nginx-runtime/
+        nginx-runtime-build.json        // nginx-runtime build to be added to tools
+    yarn-builder/
+        yarn-builder-build.json         // yarn-builder build to be added to tools
 ```
 
-For now all this does is setup the Jenkins pods so that they can build our front end.
+## Pipeline
 
-> This template was based on experimentation done using the [tfrs repo](https://github.com/bcgov/tfrs/tree/master/openshift/templates)
+### Policies
 
-## Web UI
-- Login to https://console.pathfinder.gov.bc.ca:8443; you'll be prompted for GitHub authorization.
+#### Dev
+```
+oc policy add-role-to-user system:image-puller system:serviceaccount:jag-shuber-dev:default -n jag-shuber-tools
+oc policy add-role-to-user edit system:serviceaccount:jag-shuber-tools:jenkins -n jag-shuber-dev
 
-## Command-line (```oc```) tools
-- Download OpenShift [command line tools](https://github.com/openshift/origin/releases/download/v1.2.1/openshift-origin-client-tools-v1.2.1-5e723f6-mac.zip), unzip, and add ```oc``` to your PATH.  
-- Copy command line login string from https://console.pathfinder.gov.bc.ca:8443/console/command-line.  It will look like ```oc login https://console.pathfinder.gov.bc.ca:8443 --token=xtyz123xtyz123xtyz123xtyz123```
-- Paste the login string into a terminal session.  You are now authenticated against OpenShift and will be able to execute ```oc``` commands. ```oc -h``` provides a summary of available commands.
+```
 
+#### Test
+```
+oc policy add-role-to-user system:image-puller system:serviceaccount:jag-shuber-test:default -n jag-shuber-tools
+oc policy add-role-to-user edit system:serviceaccount:jag-shuber-tools:jenkins -n jag-shuber-test
+
+```
+
+#### Prod
+```
+oc policy add-role-to-user system:image-puller system:serviceaccount:jag-shuber-prod:default -n jag-shuber-tools
+oc policy add-role-to-user edit system:serviceaccount:jag-shuber-tools:jenkins -n jag-shuber-prod
+
+```
+
+
+
+
+The `frontend-build.json` defines a build configuration for a *Jenkins Pipeline* which uses the (`jenkinsfile`)[../Jenkinsfile] in the root of the repository.  This file defines our declarative pipeline, currently this is how the pipeline is structured:
+
+- Assemble Runtime and Builder images
+- ⬇
+- Build Application Artifacts
+- Combine Artifacts with Runtime
+- ⬇
+- Tag the Image as `dev`
+- Verify deployment in dev project
+- Wait for approval ⏱
+- ⬇
+- Tag the Image as `test`
+- Verify deployment in test project
+- Wait for approval ⏱ to tag for prod
+- ⬇
+- Tag the Image as `prod`
 
 
 # Background reading/Resources
