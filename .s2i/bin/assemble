@@ -54,13 +54,17 @@ if [ -n "$NPM_MIRROR" ]; then
 	npm config set registry $NPM_MIRROR
 fi
 
-if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
-  echo "---> Restoring build artifacts..."
-  mv /tmp/artifacts/* ./
-fi
+# THE INCREMENTAL BUILDS SEEM TO BE CAUSING SLOWNESS
+# if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
+#   echo "---> Restoring build artifacts..."
+#   mv /tmp/artifacts/* ./
+# fi
 
 echo "---> Installing application dependencies"
 yarn install
 
 echo "---> Building application from source"
 yarn build
+
+echo "---> Removing node modules from image"
+rm -rf ./node_modules 

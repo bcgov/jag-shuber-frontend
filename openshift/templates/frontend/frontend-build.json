@@ -29,11 +29,7 @@
             "spec": {
                 "runPolicy": "Parallel",
                 "completionDeadlineSeconds": 1800,
-                "triggers": [
-                    {
-                        "type": "ImageChange"
-                    }
-                ],
+                "triggers": [],
                 "source": {
                     "type": "Git",
                     "git": {
@@ -54,7 +50,8 @@
                                 "name": "NPM_MIRROR",
                                 "value": "${NPM_MIRROR}"
                             }
-                        ]
+                        ],
+                        "incremental":false
                     }
                 },
                 "output": {
@@ -86,11 +83,7 @@
             "spec": {
                 "runPolicy": "Parallel",
                 "completionDeadlineSeconds": 1800,
-                "triggers": [
-                    {
-                        "type": "ImageChange"
-                    }
-                ],
+                "triggers": [],
                 "source": {
                     "dockerfile": "FROM ${NAME}-artifacts:latest\nCOPY * /tmp/app/dist/\nCMD  /usr/libexec/s2i/run",
                     "images": [
@@ -181,7 +174,7 @@
                 },
                 "strategy": {
                     "jenkinsPipelineStrategy": {
-                        "jenkinsfilePath": "Jenkinsfile_Path/Jenkinsfile"
+                        "jenkinsfilePath": "Jenkinsfile.prod.groovy"
                     },
                     "type": "JenkinsPipeline"
                 }

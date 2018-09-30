@@ -60,6 +60,10 @@ getApiUrl (){
   echo ${API_URL}
 }
 export API_URL=$(getApiUrl)
+if [ -z "$API_URL" ]; then
+  echo "Could not find API Service to proxy to, exiting"
+  exit 1
+fi
 echo "---> Replacing Configuration ..."
 echo "Setting:"
 echo "RealIpFrom = ${RealIpFrom:-172.51.0.0/16}"
