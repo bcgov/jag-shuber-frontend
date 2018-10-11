@@ -24,7 +24,7 @@ class AppEnvironment{
 environments = [
   dev:new AppEnvironment(name:'Development',tag:'dev',url:'https://dev.jag.gov.bc.ca/sheriff-scheduling/'),
   test:new AppEnvironment(name:'Test',tag:'test',url:'https://test.jag.gov.bc.ca/sheriff-scheduling/'),
-  prod:new AppEnvironment(name:'Prod',tag:'prod',url:'https://dev.jag.gov.bc.ca/sheriff-scheduling/')
+  prod:new AppEnvironment(name:'Prod',tag:'prod',url:'https://jag.gov.bc.ca/sheriff-scheduling/')
 ]
 
 // Gets the container hash for the latest image in an image stream
@@ -42,6 +42,15 @@ def ensureBuildExists(buildConfigName,templatePath){
   }else{
     echo "Build Config '${buildConfigName}' already exists"
   }
+}
+
+def triggerBuild(buildConfigName){
+  echo "Building: ${buildConfigName}"
+  openshiftBuild bldCfg: buildConfigName, showBuildLogs: 'true', waitTime: '900000'  
+}
+
+def verifyBuild(buildConfigName){
+  openshiftVerifyBuild bldCfg: buildConfigName, showBuildLogs: 'true', waitTime: '900000'
 }
 
 def buildAndVerify(buildConfigName){

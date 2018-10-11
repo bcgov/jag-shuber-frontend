@@ -60,7 +60,7 @@ class EscortsFields extends React.PureComponent {
         return (
             <div>
                 <Field
-                    name="runId"
+                    name="escortRunId"
                     component={(p) => <SelectorField
                         {...p}
                         SelectorComponent={
@@ -155,7 +155,7 @@ interface AssignmentFormData {
     jailRoleId?: string;
     courtAssignmentId?: string;
     otherAssignmentTypeId?: string;
-    runId?: string;
+    escortRunId?: string;
 }
 
 interface DutyRecurrenceFormData {
