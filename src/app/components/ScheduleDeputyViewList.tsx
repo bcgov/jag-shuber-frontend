@@ -71,7 +71,7 @@ export default class ScheduleDeputyViewList extends React.PureComponent<Schedule
                                         if (loanedOutForDay) {
                                             const { currentLocationId = '' } = sheriff;
                                             return (
-                                                <td>
+                                                <td key={dayNum}>
                                                     <div style={{ display: 'flex', alignItems: 'center' }}>
                                                         <SheriffLoanOutIcon />
                                                         <span style={{marginLeft: 8}}>
@@ -86,7 +86,7 @@ export default class ScheduleDeputyViewList extends React.PureComponent<Schedule
                                             const backgroundColor = getWorkSectionColour(workSectionId);
                                             const foregroundColor = getForegroundColor(backgroundColor);
                                             return (
-                                                <td>
+                                                <td key={dayNum}>
                                                     <div style={{ display: 'flex', alignItems: 'center' }}>
                                                         {includeWorkSection &&
                                                             <CircleIcon
@@ -106,7 +106,7 @@ export default class ScheduleDeputyViewList extends React.PureComponent<Schedule
                                                 </td>
                                             );
                                         } else {
-                                            return <td />;
+                                            return <td key={dayNum} />;
                                         }
                                     }
                                     )

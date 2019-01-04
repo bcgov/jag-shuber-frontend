@@ -1,4 +1,5 @@
 import * as React from 'react';
+import moment from 'moment';
 import {
     default as Timeline,
     TimelineComponentProps
@@ -80,8 +81,8 @@ export default class ShiftSchedule extends React.PureComponent<ShiftScheduleProp
                     return shift;
                 }}
                 sidebarWidth={0}
-                visibleTimeStart={visibleTimeStart}
-                visibleTimeEnd={visibleTimeEnd}
+                visibleTimeStart={moment(visibleTimeStart).valueOf()}
+                visibleTimeEnd={moment(visibleTimeEnd).valueOf()}
                 itemRenderer={itemRenderer}
                 lineHeight={78}
             />
