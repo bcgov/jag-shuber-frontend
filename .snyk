@@ -1,5 +1,5 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.13.1
+version: v1.13.3
 ignore: {}
 # patches apply the minimum changes required to fix a vulnerability
 patch:
@@ -20,3 +20,6 @@ patch:
         patched: '2018-12-08T01:15:34.586Z'
     - webpack > watchpack > chokidar > fsevents > node-pre-gyp > hawk > cryptiles > boom > hoek:
         patched: '2018-12-08T01:15:34.586Z'
+  'npm:extend:20180424':
+    - jag-shuber-api > superagent-use > extend:
+        patched: '2019-01-03T02:04:27.836Z'
