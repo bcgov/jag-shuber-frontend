@@ -35,9 +35,9 @@ export default class AssignmentDefaultList extends React.Component<AssignmentDef
                             </tr>
                         </thead>
                         <tbody>
-                            {assignments.map((assignment) => {
+                            {assignments.map((assignment, index) => {
                                 return (
-                                    <tr key={assignment.id}>
+                                    <tr key={index}>
                                         <td style={{position:'relative'}}>
                                             <WorkSectionIndicator 
                                                 workSectionId={assignment.workSectionId} 

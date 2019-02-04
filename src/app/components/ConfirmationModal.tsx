@@ -28,7 +28,7 @@ export class ConfirmationModal extends React.PureComponent<ConfirmationModalProp
             actionBtnLabel, 
             actionBtnClassName = '',
             actionBtnStyle = '',
-            actionBtnSize = '',
+            actionBtnSize = null,
             title = 'Confirm',
             message = <p style={{fontSize: 16}}>Complete this action.</p>,
             confirmBtnLabel = 'Confirm',

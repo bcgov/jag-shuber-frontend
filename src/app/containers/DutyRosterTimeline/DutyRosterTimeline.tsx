@@ -81,6 +81,29 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
         fetchAssignments && fetchAssignments(dateRange);
         fetchAssignmentDuties && fetchAssignmentDuties(dateRange);
         /* tslint:enable:no-unused-expression */
+
+    }
+
+    componentDidMount() {
+        setTimeout(() => {
+            // Work around for react-calendar-timeline issue 411
+            // Miss alignment of headers on initial load
+            // #https://github.com/namespace-ee/react-calendar-timeline/issues/411
+            window.dispatchEvent(new Event('resize'));
+        }, 500);
+
+        window.addEventListener("resize", this.onWindowResize);
+    }
+
+    onWindowResize() {
+        // Work around for react-calendar-timeline issue 411
+        // Miss alignment of headers when scrollbar is visible
+        let timeline = document.getElementsByClassName('react-calendar-timeline')[0];
+        if (timeline.scrollHeight > timeline.clientHeight) {
+            // resize timeline component with correct width if scrollbar is visible
+            let header = document.getElementsByClassName('rct-header')[0];
+            header.parentElement!.style.width = `${header.parentElement!.clientWidth - 20}px`;
+        }
     }
 
     componentWillReceiveProps(nextProps: CompositeProps) {
@@ -186,8 +209,8 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
                     items={assignmentDuties}
                     groups={assignments}
                     sidebarWidth={sidebarWidth}
-                    visibleTimeStart={visibleTimeStart}
-                    visibleTimeEnd={visibleTimeEnd}
+                    visibleTimeStart={moment(visibleTimeStart).valueOf()}
+                    visibleTimeEnd={moment(visibleTimeEnd).valueOf()}
                     itemHeightRatio={.97}
                     groupRenderer={(assignment) => (
                         <AssignmentCard assignment={assignment} />

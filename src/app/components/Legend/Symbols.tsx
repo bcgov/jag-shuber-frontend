@@ -48,8 +48,8 @@ export default class Symbols extends React.PureComponent<SymbolsProps> {
         ]
         return (
             <div style={{ display: 'flex', alignItems: 'center' }}>
-                {symbols.map(({ label, content }) => (
-                    <SymbolDisplay label={label}>
+                {symbols.map(({ label, content }, index) => (
+                    <SymbolDisplay label={label} key={index}>
                         {content}
                     </SymbolDisplay>
                 ))}

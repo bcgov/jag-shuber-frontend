@@ -77,8 +77,8 @@ export default class ScheduleSummary extends React.PureComponent<ScheduleSummary
 
         return (
             <div className="schedule-summary-week" >
-                {dayStatus.map(({ status, key }) => (
-                    <StatusRenderComponent status={status} day={key} />
+                {dayStatus.map(({ status, key }, index) => (
+                    <StatusRenderComponent key={index} status={status} day={key} />
                 ))}
             </div>
         );
