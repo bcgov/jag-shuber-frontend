@@ -21,6 +21,8 @@ import {
     AssignmentDuty,
     SheriffDuty,
     DateType,
+    Shift,
+    SheriffUnassignedRange,
 } from '../../api/Api';
 import SheriffDutyBarList from '../../components/SheriffDutyBarList/SheriffDutyBarList';
 import ConnectedSheriffDutyBar from '../SheriffDutyBar';
@@ -30,7 +32,7 @@ import AssignmentCard from '../../components/AssignmentCard/AssignmentCard';
 import {
     visibleTime,
     dutiesForDraggingSheriff,
-    draggingSheriff
+    draggingSheriff,
 } from '../../modules/dutyRoster/selectors';
 import AssignmentDutyEditModal from '../AssignmentDutyEditModal';
 import ConfirmationModal, { ConnectedConfirmationModalProps } from '../ConfirmationModal';
@@ -40,6 +42,7 @@ import AssignmentSheriffDutyReassignmentModal from '../AssignmentSheriffDutyReas
 import { updateDraggingSheriff } from '../../modules/dutyRoster/actions';
 import { TimelineMarkers, TodayMarker } from 'react-calendar-timeline';
 import { doTimeRangesOverlap } from 'jag-shuber-api';
+import { allShifts } from '../../modules/shifts/selectors';
 
 interface DutyRosterTimelineProps extends TimelineProps {
     allowTimeDrag?: boolean;
@@ -63,6 +66,7 @@ interface DutyRosterTimelineStateProps {
     draggingSheriffAssignmentDuties: AssignmentDuty[];
     draggingSheriffId?: IdType;
     willAssigningSheriffBeDoubleBooked?: boolean;
+    sheriffsOnShift: Shift[];
 }
 
 type CompositeProps = DutyRosterTimelineProps & DutyRosterTimelineStateProps & DutyRosterTimelineDispatchProps;
@@ -131,6 +135,71 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
         return overlappingDuties;
     }
 
+    protected getUnassignedTimeRangesForSheriff(
+        dutyId: IdType = '',
+    ): { [key: string]: SheriffUnassignedRange[] } {
+
+        const {
+            assignmentDuties = [],
+            sheriffsOnShift,
+            visibleTimeStart
+        } = this.props;
+
+        const visibleStartMoment = moment(visibleTimeStart);
+        let sheriffUnassignedTimeRanges: { [key: string]: SheriffUnassignedRange[] } = {}
+
+        sheriffsOnShift
+        .filter(shift => visibleStartMoment.isSame(moment(shift.startDateTime), 'day'))
+        .forEach(shift => {
+            sheriffUnassignedTimeRanges[shift.sheriffId!] = sheriffUnassignedTimeRanges[shift.sheriffId!] || [];
+            sheriffUnassignedTimeRanges[shift.sheriffId!].push({ 
+                sheriffId: shift.sheriffId!,
+                startDateTime: shift.startDateTime, 
+                endDateTime: shift.endDateTime
+            });
+        });
+
+        assignmentDuties
+        .filter(duty => visibleTimeStart.isSame(moment(duty.startDateTime), 'day'))
+        .reduce((sduties: SheriffDuty[], duty) => {
+            sduties.push(...duty.sheriffDuties);
+            return sduties;
+        }, [])
+        .forEach(sheriffDuty => {
+            let unassignedTimeRanges = sheriffUnassignedTimeRanges[sheriffDuty.sheriffId!] || [];
+            
+            const dutyStartTime = moment(sheriffDuty.startDateTime);
+            const dutyEndTime = moment(sheriffDuty.endDateTime);
+            unassignedTimeRanges.forEach((unassignedTimeRange, index) => {
+                const range = { startTime: moment(unassignedTimeRange.startDateTime), endTime: moment(unassignedTimeRange.endDateTime) };
+                const overlap = doTimeRangesOverlap({ startTime: dutyStartTime, endTime: dutyEndTime }, range);
+                if (overlap) {
+                    unassignedTimeRanges.splice(index, 1);
+                    if (range.startTime < dutyStartTime)
+                    {
+                        unassignedTimeRanges.push({ 
+                            sheriffId: sheriffDuty.sheriffId!,
+                            startDateTime: range.startTime, 
+                            endDateTime: dutyStartTime
+                        });
+                    } 
+                    
+                    if (range.endTime > dutyEndTime)
+                    {
+                        unassignedTimeRanges.push({ 
+                            sheriffId: sheriffDuty.sheriffId!,
+                            startDateTime: dutyEndTime, 
+                            endDateTime: range.endTime
+                        });
+                    }
+
+                }
+            });
+        });
+
+        return sheriffUnassignedTimeRanges;
+    }
+
     protected onDropSheriff(dutyId: IdType, sheriffDutyToAssign: SheriffDuty, sheriffId: IdType) {
         const {
             linkSheriff,
@@ -195,6 +264,7 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
                     itemRenderer={(duty) => {
                         return (
                             <AssignmentDutyCard
+                                unassignedTimeRanges={this.getUnassignedTimeRangesForSheriff(duty.id)}
                                 duty={duty}
                                 onDoubleClick={() => showAssignmentDutyEditModal(duty.id)}
                                 SheriffAssignmentRenderer={(p) => (
@@ -267,8 +337,8 @@ const mapStateToProps = (state: RootState, props: DutyRosterTimelineProps) => {
         assignments: allAssignments(state),
         ...currentVisibleTime,
         draggingSheriffAssignmentDuties: dutiesForDraggingSheriff(state),
-        draggingSheriffId: draggingSheriff(state)
-
+        draggingSheriffId: draggingSheriff(state),
+        sheriffsOnShift: allShifts(state)
     };
 };
 

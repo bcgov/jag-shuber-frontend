@@ -3,6 +3,10 @@ import {
     default as SheriffDutyBar,
     SheriffDutyBarProps
 } from '../SheriffDutyBar/SheriffDutyBar';
+import {
+    default as SheriffUnassignedBar,
+    SheriffUnassignedBarProps
+} from '../SheriffUnassignedBar/SheriffUnassignedBar';
 import './SheriffDutyBarList.css';
 import { SheriffAssignmentRendererProps } from '../AssignmentDutyCard/AssignmentDutyCard';
 import { 
@@ -17,6 +21,7 @@ interface SheriffDutyBarListProps extends SheriffAssignmentRendererProps {
     onDropSheriff?: (sheriff: Sheriff, sheriffDuty: SheriffDuty) => void;
     onDropSheriffDuty?: (sourceSheriffDuty: SheriffDuty, targetSheriffDuty: SheriffDuty) => void;    
     BarRenderer?: React.ComponentType<SheriffDutyBarProps>;
+    UnassignedBarRenderer?: React.ComponentType<SheriffUnassignedBarProps>;
     workSection?: WorkSectionCode;
 }
 
@@ -28,26 +33,43 @@ export default class SheriffDutyBarList extends React.PureComponent<SheriffDutyB
             onDropSheriff,
             onDropSheriffDuty,
             BarRenderer = SheriffDutyBar,
+            UnassignedBarRenderer = SheriffUnassignedBar,
             duty,
-            workSection
+            workSection,
+            unassignedTimeRanges = { }
         } = this.props;
 
         return (
             <div className="sheriff-duty-bar-list">
-                {sheriffDuties.map((sheriffDuty) => {
+                {sheriffDuties.map((sheriffDuty, index) => {
                     const { id, sheriffId } = sheriffDuty;
                     const _onRemove = onRemove && id !== undefined ? () => onRemove(id) : undefined;
                     return (
-                        <BarRenderer
-                            key={id}
-                            sheriffId={sheriffId}
-                            sheriffDuty={sheriffDuty}
-                            duty={duty}
-                            dutyWorkSection={workSection}
-                            onRemove={_onRemove}
-                            onDropSheriff={onDropSheriff}                            
-                            onDropSheriffDuty={onDropSheriffDuty}                            
-                        />
+                        <div key={`sheriffDutyBarItem_${index}_${id}`}>
+                            <BarRenderer
+                                key={id}
+                                sheriffId={sheriffId}
+                                sheriffDuty={sheriffDuty}
+                                duty={duty}
+                                dutyWorkSection={workSection}
+                                onRemove={_onRemove}
+                                onDropSheriff={onDropSheriff}                            
+                                onDropSheriffDuty={onDropSheriffDuty}                            
+                            />
+                            {(unassignedTimeRanges[sheriffDuty.sheriffId!] || []).map((timeRange, index) => {
+                                return (
+                                    <UnassignedBarRenderer
+                                        key={`unassigned_${index}_${id}`}
+                                        unassignedTimeRange={timeRange}
+                                        sheriffId={sheriffId}
+                                        sheriffDuty={sheriffDuty}
+                                        duty={duty}
+                                        dutyWorkSection={workSection}
+                                        onRemove={_onRemove}
+                                    />
+                                );
+                            })}
+                        </div>
                     );
                 }
                 )}

@@ -1,8 +1,9 @@
 import React from 'react';
 import {
     AssignmentDuty,
-    SheriffDuty
-} from '../../api/Api';
+    SheriffDuty,
+    SheriffUnassignedRange,
+} from '../../api';
 import SheriffDutyBarList from '../SheriffDutyBarList/SheriffDutyBarList';
 import './AssignmentDutyCard.css';
 import { Glyphicon } from 'react-bootstrap';
@@ -12,6 +13,7 @@ export interface AssignmentDutyCardProps {
     duty: AssignmentDuty;
     SheriffAssignmentRenderer?: React.ComponentType<SheriffAssignmentRendererProps>;
     style?: React.CSSProperties;
+    unassignedTimeRanges?: { [key: string]: SheriffUnassignedRange[] };
     onDoubleClick?: () => void;
     onClick?: () => void;
 }
@@ -20,6 +22,7 @@ export interface SheriffAssignmentRendererProps {
     sheriffDuties: SheriffDuty[];
     duty: AssignmentDuty;
     sheriffsRequired?: number;
+    unassignedTimeRanges?: { [key: string]: SheriffUnassignedRange[] };
 }
 
 export default class AssignmentDutyCard extends React.PureComponent<AssignmentDutyCardProps> {
@@ -35,7 +38,8 @@ export default class AssignmentDutyCard extends React.PureComponent<AssignmentDu
             } = {},
             onDoubleClick,
             onClick,
-            style = {}
+            style = {},
+            unassignedTimeRanges
         } = this.props;
 
         return (
@@ -49,6 +53,7 @@ export default class AssignmentDutyCard extends React.PureComponent<AssignmentDu
                     sheriffDuties={sheriffDuties}
                     duty={duty}
                     sheriffsRequired={sheriffsRequired}
+                    unassignedTimeRanges={unassignedTimeRanges}
                 />
                 <AssignmentDutyInformationPanel>
                     {comments &&

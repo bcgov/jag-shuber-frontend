@@ -219,6 +219,12 @@ export interface SheriffDuty {
     endDateTime: DateType;
 }
 
+export interface SheriffUnassignedRange {
+    sheriffId: IdType;
+    startDateTime: DateType;
+    endDateTime: DateType;
+}
+
 export interface SheriffDutyReassignmentDetails {
     sourceSheriffDuty: SheriffDuty;
     newSourceDutyEndTime: DateType;
