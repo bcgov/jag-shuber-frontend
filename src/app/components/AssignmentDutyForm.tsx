@@ -122,9 +122,10 @@ export default class AssignmentDutyForm extends
                             <ListGroup >
                                 {fields.map((fieldInstanceName, index) => {
                                     return (
-                                        <ListGroupItem key={index}>
+                                        <ListGroupItem key={`listGroupItem_${index}`}>
                                             <div className="pull-right">
                                                 <ConfirmationModal
+                                                    key={index}
                                                     title="Delete Sheriff Duty"
                                                     message={deleteConfirmMessage}
                                                     actionBtnLabel={<Glyphicon glyph="trash" />}
@@ -138,6 +139,7 @@ export default class AssignmentDutyForm extends
                                             </div>
                                             <div style={{ marginTop: 20 }}>
                                                 <Field
+                                                    key={`${fieldInstanceName}_${index}.sheriffId`}
                                                     name={`${fieldInstanceName}.sheriffId`}
                                                     component={(p) => <SelectorField 
                                                         {...p} 
@@ -147,6 +149,7 @@ export default class AssignmentDutyForm extends
                                                     label="Sheriff"
                                                 />
                                                 <Field
+                                                    key={`${fieldInstanceName}_${index}.timeRange`}
                                                     name={`${fieldInstanceName}.timeRange`}
                                                     component={(p) => <TimeSliderField
                                                         {...p}

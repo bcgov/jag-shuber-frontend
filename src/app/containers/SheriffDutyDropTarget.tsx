@@ -10,7 +10,7 @@ const GenericDropTarget = dropTargetFactory<DroppableItem, void>(['SheriffDuty',
 
 interface SheriffDutyDropTargetProps {
     canDropSheriff?: (item: Sheriff) => boolean;
-    onDropSheriff: (item: Sheriff) => void;
+    onDropSheriff?: (item: Sheriff) => void;
     canDropSheriffDuty?: (item: SheriffDuty) => boolean;
     onDropSheriffDuty?: (item: SheriffDuty) => void;
     style?: React.CSSProperties;

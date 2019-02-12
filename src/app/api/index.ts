@@ -28,6 +28,7 @@ export {
     JailRoleMap,
     AlternateAssignment,
     AlternateAssignmentMap,
+    SheriffUnassignedRange,
     WORK_SECTIONS
 } from './Api';
 

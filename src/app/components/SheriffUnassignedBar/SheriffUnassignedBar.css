@@ -1,0 +1,35 @@
+.sheriff-unassigned-bar{
+    height: 50%;  
+    display: flex;
+    align-content: stretch;
+    align-items: stretch;
+    flex-direction: column;
+
+}
+
+.sheriff-unassigned-bar .remove-assignment-btn{
+    display:none;
+    position: absolute;
+    right: 2px;
+}
+
+.sheriff-unassigned-bar:hover .remove-assignment-btn{
+    display:inline;
+}
+
+/* Adds an overlay over the duty bar on hover to give some visual feedback
+.sheriff-unassigned-bar:hover::before{
+        content:"";
+        display: block;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: rgba(255, 255, 255, .2);
+} */
+
+/* Don't Display the overlay if we click on the duty-bar */
+.sheriff-unassigned-bar:active::before{
+    display: none;
+}
