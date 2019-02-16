@@ -61,11 +61,9 @@ export default class SheriffDutyBarList extends React.PureComponent<SheriffDutyB
                                     <UnassignedBarRenderer
                                         key={`unassigned_${index}_${id}`}
                                         unassignedTimeRange={timeRange}
-                                        sheriffId={sheriffId}
                                         sheriffDuty={sheriffDuty}
                                         duty={duty}
                                         dutyWorkSection={workSection}
-                                        onRemove={_onRemove}
                                     />
                                 );
                             })}

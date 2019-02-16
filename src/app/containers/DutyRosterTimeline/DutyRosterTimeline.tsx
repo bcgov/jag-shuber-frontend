@@ -23,12 +23,12 @@ import {
     DateType,
     Shift,
     SheriffUnassignedRange,
-} from '../../api/Api';
+} from '../../api';
 import SheriffDutyBarList from '../../components/SheriffDutyBarList/SheriffDutyBarList';
 import ConnectedSheriffDutyBar from '../SheriffDutyBar';
 import AssignmentTimeline from '../../components/AssignmentTimeline/AssignmentTimeline';
 import { TimelineProps } from '../../components/Timeline/Timeline';
-import AssignmentCard from '../../components/AssignmentCard/AssignmentCard';
+import AssignmentCard, { AssignmentGroup } from '../../components/AssignmentCard/AssignmentCard';
 import {
     visibleTime,
     dutiesForDraggingSheriff,
@@ -158,9 +158,7 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
         return overlappingDuties;
     }
 
-    protected getUnassignedTimeRangesForSheriff(
-        dutyId: IdType = '',
-    ): { [key: string]: SheriffUnassignedRange[] } {
+    protected getUnassignedTimeRanges(): { [key: string]: SheriffUnassignedRange[] } {
 
         const {
             assignmentDuties = [],
@@ -172,6 +170,7 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
         let sheriffUnassignedTimeRanges: { [key: string]: SheriffUnassignedRange[] } = {}
 
         sheriffsOnShift
+        .filter(shift => shift.sheriffId)
         .filter(shift => visibleStartMoment.isSame(moment(shift.startDateTime), 'day'))
         .forEach(shift => {
             sheriffUnassignedTimeRanges[shift.sheriffId!] = sheriffUnassignedTimeRanges[shift.sheriffId!] || [];
@@ -188,36 +187,42 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
             sduties.push(...duty.sheriffDuties);
             return sduties;
         }, [])
+        .filter(duty => duty.sheriffId)
+        .sort((a,b) => moment(a.startDateTime).diff(moment(a.endDateTime)) - moment(b.startDateTime).diff(moment(b.endDateTime)))
         .forEach(sheriffDuty => {
-            let unassignedTimeRanges = sheriffUnassignedTimeRanges[sheriffDuty.sheriffId!] || [];
-            
-            const dutyStartTime = moment(sheriffDuty.startDateTime);
-            const dutyEndTime = moment(sheriffDuty.endDateTime);
+            const unassignedTimeRanges = sheriffUnassignedTimeRanges[sheriffDuty.sheriffId!] || [];
+            const dutyTimeRange = { startTime: moment(sheriffDuty.startDateTime), endTime: moment(sheriffDuty.endDateTime) } ;
+            const addedUnassignedTimeRanges: SheriffUnassignedRange[] = [];
+            const removedIndexes: number[] = [];
             unassignedTimeRanges.forEach((unassignedTimeRange, index) => {
-                const range = { startTime: moment(unassignedTimeRange.startDateTime), endTime: moment(unassignedTimeRange.endDateTime) };
-                const overlap = doTimeRangesOverlap({ startTime: dutyStartTime, endTime: dutyEndTime }, range);
+                const unassignedRange = { startTime: moment(unassignedTimeRange.startDateTime), endTime: moment(unassignedTimeRange.endDateTime) };
+                const overlap = doTimeRangesOverlap(dutyTimeRange, unassignedRange);
                 if (overlap) {
-                    unassignedTimeRanges.splice(index, 1);
-                    if (range.startTime < dutyStartTime)
+                    removedIndexes.push(index);
+                    if (unassignedRange.startTime < dutyTimeRange.startTime)
                     {
-                        unassignedTimeRanges.push({ 
+                        addedUnassignedTimeRanges.push({ 
                             sheriffId: sheriffDuty.sheriffId!,
-                            startDateTime: range.startTime, 
-                            endDateTime: dutyStartTime
+                            startDateTime: unassignedRange.startTime, 
+                            endDateTime: dutyTimeRange.startTime
                         });
                     } 
                     
-                    if (range.endTime > dutyEndTime)
+                    if (unassignedRange.endTime > dutyTimeRange.endTime)
                     {
-                        unassignedTimeRanges.push({ 
+                        addedUnassignedTimeRanges.push({ 
                             sheriffId: sheriffDuty.sheriffId!,
-                            startDateTime: dutyEndTime, 
-                            endDateTime: range.endTime
+                            startDateTime: dutyTimeRange.endTime, 
+                            endDateTime: unassignedRange.endTime
                         });
                     }
 
                 }
             });
+
+            removedIndexes.forEach(i => unassignedTimeRanges.splice(i, 1));
+            addedUnassignedTimeRanges.forEach(add => unassignedTimeRanges.push(add));
+            
         });
 
         return sheriffUnassignedTimeRanges;
@@ -271,23 +276,33 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
             },
             {});
 
+        const groups = assignmentDuties
+            .filter(ad => moment(ad.startDateTime).isSame(moment(visibleTimeStart), "day"))
+            .map(ad => { 
+                const group = Object.assign({}, assignments.find(a => a.id === ad.assignmentId)) as AssignmentGroup;
+                group.assignmentId = group.id;
+                group.id = ad.id;
+                return group;
+         });
+
+        const unassignedTime = this.getUnassignedTimeRanges();
         return (
             <div className="duty-roster-timeline">
                 <AssignmentTimeline
                     allowChangeTime={false}
                     items={assignmentDuties}
-                    groups={assignments}
+                    groups={groups}
                     sidebarWidth={sidebarWidth}
                     visibleTimeStart={moment(visibleTimeStart).valueOf()}
                     visibleTimeEnd={moment(visibleTimeEnd).valueOf()}
                     itemHeightRatio={.97}
-                    groupRenderer={(assignment) => (
-                        <AssignmentCard assignment={assignment} />
+                    groupRenderer={(assignment: AssignmentGroup) => (
+                        <AssignmentCard assignmentGroup={assignment} />
                     )}
                     itemRenderer={(duty) => {
                         return (
                             <AssignmentDutyCard
-                                unassignedTimeRanges={this.getUnassignedTimeRangesForSheriff(duty.id)}
+                                unassignedTimeRanges={unassignedTime}
                                 duty={duty}
                                 onDoubleClick={() => showAssignmentDutyEditModal(duty.id)}
                                 SheriffAssignmentRenderer={(p) => (
@@ -311,7 +326,7 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
                                                     canDrag={sd => sd.sheriffId != undefined}
                                                     beginDrag={() => setDraggingSheriff(sheriffDuty.sheriffId)}
                                                     endDrag={() => setDraggingSheriff()}
-                                                >
+                                                    >
                                                     <ConnectedSheriffDutyBar
                                                         {...barP}
                                                         style={style}

@@ -2,26 +2,20 @@ import React from 'react';
 import moment from 'moment';
 import './SheriffUnassignedBar.css';
 import {
-    IdType,
     SheriffDuty,
     AssignmentDuty,
     WorkSectionCode,
     SheriffUnassignedRange
 } from '../../api';
 import { getWorkSectionColour } from '../../api/utils';
-import SheriffDutyDropTarget from '../../containers/SheriffDutyDropTarget';
 import {  } from '../../api/Api';
 
 export interface SheriffUnassignedBarProps {
-    sheriffId?: IdType;
     unassignedTimeRange: SheriffUnassignedRange;        
     sheriffDuty: SheriffDuty;
     duty: AssignmentDuty;
     dutyWorkSection?: WorkSectionCode;
-    title?: string;
-    onRemove?: () => void;
     style?: React.CSSProperties;
-    computeStyle?: (status: { isActive: boolean, isOver: boolean, canDrop: boolean }) => React.CSSProperties;
     className?: string;
 }
 
@@ -35,7 +29,7 @@ export default class SheriffUnassignedBar extends React.PureComponent<SheriffUna
         const sheriffDutyDuration: number = moment.duration(moment(end).diff(start)).asMinutes();
         const sheriffDutyPercentage = (sheriffDutyDuration / dutyDuration) * 100;
 
-        return `${sheriffDutyPercentage.toString()}%`;
+        return `${(Math.round(sheriffDutyPercentage * 100) / 100).toString()}%`;
     }
 
     private getDutyBarLeftPosition() {
@@ -47,7 +41,7 @@ export default class SheriffUnassignedBar extends React.PureComponent<SheriffUna
         const differenceBetweenStarts: number = moment.duration(moment(start).diff(dutyStart)).asMinutes();
         const startDifferencePercentage = (differenceBetweenStarts / dutyDuration) * 100;
 
-        return `${startDifferencePercentage.toString()}%`;
+        return `${(Math.round(startDifferencePercentage * 100) / 100).toString()}%`;
     }
 
     private getDutyBarTopPosition() {
@@ -57,7 +51,7 @@ export default class SheriffUnassignedBar extends React.PureComponent<SheriffUna
         } = this.props;
         if (sheriffDuties.length > 1) {
             const index = sheriffDuties.findIndex(s => s.id === sheriffDuty.id);
-            const heightPercentage = ((index / sheriffDuties.length) * 100) + (30 / sheriffDuties.length);
+            const heightPercentage = ((index / sheriffDuties.length) * 100) + (33 / sheriffDuties.length);
             return `${heightPercentage.toString()}%`;
         }
         return '42%';
@@ -66,14 +60,13 @@ export default class SheriffUnassignedBar extends React.PureComponent<SheriffUna
     render() {
         const {
             dutyWorkSection = 'OTHER',
-            computeStyle,
             style = {},
             className
         } = this.props;
 
         return (
-            <SheriffDutyDropTarget
-                computeStyle={computeStyle}
+            <div
+                onDoubleClick={(e) => {e.stopPropagation();}}
                 className={`sheriff-unassigned-bar ${className}`}
                 style={{
                     background: `repeating-linear-gradient(to right, transparent, transparent 7px, ${getWorkSectionColour(dutyWorkSection)} 7px, ${getWorkSectionColour(dutyWorkSection)} 15px)`,
@@ -81,11 +74,11 @@ export default class SheriffUnassignedBar extends React.PureComponent<SheriffUna
                     width: this.getBarWidth(),
                     position: 'absolute',
                     left: this.getDutyBarLeftPosition(),
-                    height: '15%',
+                    height: '7px',
                     top: this.getDutyBarTopPosition()
                 }}
             >
-            </SheriffDutyDropTarget>
+            </div>
         );
     }
 }
