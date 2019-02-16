@@ -4,7 +4,7 @@
     align-content: stretch;
     align-items: stretch;
     flex-direction: column;
-
+    cursor: auto;
 }
 
 .sheriff-unassigned-bar .remove-assignment-btn{
