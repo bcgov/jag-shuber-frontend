@@ -4,8 +4,8 @@ import {
     TimelineComponentProps
 } from '../Timeline/Timeline';
 import {
-    AssignmentDuty,
-    BaseAssignment
+    Assignment,
+    AssignmentDuty
 } from '../../api';
 import toTitleCase from '../../infrastructure/toTitleCase';
 import AssignmentDutyCard from '../AssignmentDutyCard/AssignmentDutyCard';
@@ -13,11 +13,11 @@ import { ensureMoment } from '../../infrastructure/momentUtils';
 import { getWorkSectionColour } from '../../api/utils';
 import { getForegroundColor } from '../../infrastructure/colorUtils';
 
-export interface AssignmentTimelineProps extends TimelineComponentProps<AssignmentDuty, BaseAssignment> {
+export interface AssignmentTimelineProps extends TimelineComponentProps<AssignmentDuty, Assignment> {
 
 }
 
-export default class extends Timeline<AssignmentDuty, BaseAssignment>{
+export default class extends Timeline<AssignmentDuty, Assignment>{
 
     static defaultProps: Partial<AssignmentTimelineProps> = {
         sideBarHeaderTitle: 'Assignments',
@@ -27,8 +27,8 @@ export default class extends Timeline<AssignmentDuty, BaseAssignment>{
             </AssignmentDutyCard>
         ),
         mapItem: (item, groups) => {
-            const { id, startDateTime, endDateTime } = item;
-            const assignment = groups.find(a => a.id === id);
+            const { assignmentId, startDateTime, endDateTime } = item;
+            const assignment = groups.find(a => a.id === assignmentId);
             const startTime = ensureMoment(startDateTime);
             const endTime = ensureMoment(endDateTime);
             let style: React.CSSProperties = {
@@ -42,7 +42,7 @@ export default class extends Timeline<AssignmentDuty, BaseAssignment>{
             return {
                 ...item,
                 title: assignment ? toTitleCase(assignment.title) : '',
-                group: id,
+                group: assignmentId,
                 start_time: startTime,
                 end_time: endTime,
                 style

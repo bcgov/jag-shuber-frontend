@@ -23,12 +23,12 @@ import {
     DateType,
     Shift,
     SheriffUnassignedRange,
-} from '../../api';
+} from '../../api/Api';
 import SheriffDutyBarList from '../../components/SheriffDutyBarList/SheriffDutyBarList';
 import ConnectedSheriffDutyBar from '../SheriffDutyBar';
 import AssignmentTimeline from '../../components/AssignmentTimeline/AssignmentTimeline';
 import { TimelineProps } from '../../components/Timeline/Timeline';
-import AssignmentCard, { AssignmentGroup } from '../../components/AssignmentCard/AssignmentCard';
+import AssignmentCard from '../../components/AssignmentCard/AssignmentCard';
 import {
     visibleTime,
     dutiesForDraggingSheriff,
@@ -276,28 +276,19 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
             },
             {});
 
-        const groups = assignmentDuties
-            .filter(ad => moment(ad.startDateTime).isSame(moment(visibleTimeStart), "day"))
-            .map(ad => { 
-                const group = Object.assign({}, assignments.find(a => a.id === ad.assignmentId)) as AssignmentGroup;
-                group.assignmentId = group.id;
-                group.id = ad.id;
-                return group;
-         });
-
         const unassignedTime = this.getUnassignedTimeRanges();
         return (
             <div className="duty-roster-timeline">
                 <AssignmentTimeline
                     allowChangeTime={false}
                     items={assignmentDuties}
-                    groups={groups}
+                    groups={assignments}
                     sidebarWidth={sidebarWidth}
                     visibleTimeStart={moment(visibleTimeStart).valueOf()}
                     visibleTimeEnd={moment(visibleTimeEnd).valueOf()}
                     itemHeightRatio={.97}
-                    groupRenderer={(assignment: AssignmentGroup) => (
-                        <AssignmentCard assignmentGroup={assignment} />
+                    groupRenderer={(assignment) => (
+                        <AssignmentCard assignment={assignment} />
                     )}
                     itemRenderer={(duty) => {
                         return (
@@ -326,7 +317,7 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
                                                     canDrag={sd => sd.sheriffId != undefined}
                                                     beginDrag={() => setDraggingSheriff(sheriffDuty.sheriffId)}
                                                     endDrag={() => setDraggingSheriff()}
-                                                    >
+                                                >
                                                     <ConnectedSheriffDutyBar
                                                         {...barP}
                                                         style={style}

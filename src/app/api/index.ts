@@ -2,7 +2,6 @@ export {
     Sheriff,
     Assignment,
     AssignmentMap,
-    BaseAssignment,
     AssignmentDuty,
     AssignmentDutyMap,
     SheriffMap,
@@ -30,8 +29,7 @@ export {
     AlternateAssignment,
     AlternateAssignmentMap,
     SheriffUnassignedRange,
-    WORK_SECTIONS,
-    DateRange
+    WORK_SECTIONS
 } from './Api';
 
 import Client from './Client';
