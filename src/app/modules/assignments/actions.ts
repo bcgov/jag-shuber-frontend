@@ -9,8 +9,9 @@ import { IdType, AssignmentDuty, SheriffDuty, Shift } from '../../api';
 import { ThunkAction } from '../../store';
 import { getAssignmentDuty } from './selectors';
 import { getSheriffShiftsForDate } from '../shifts/selectors';
-import { TimeRange, isTimeWithin, doTimeRangesOverlap } from 'jag-shuber-api';
-import moment from 'moment';
+import { TimeRange, isTimeWithin } from 'jag-shuber-api';
+//import { doTimeRangesOverlap } from 'jag-shuber-api';
+//import moment from 'moment';
 
 // Assignments
 export const getAssignments = assignmentRequests.assignmentMapRequest.actionCreator;
@@ -83,36 +84,30 @@ const setAssignmentBasedOnShift = (sheriffShifts: Shift[], sheriffDuty: SheriffD
             // if shift begins after the duty then create an assignment for the remaining time
             if (shift.startDateTime > duty.startDateTime)
             {
-                const sheriffDuties = duty.sheriffDuties.filter(sd => 
-                    sd.id != sheriffDuty.id && 
-                    doTimeRangesOverlap({ startTime: moment(sd.startDateTime), endTime: moment(sd.endDateTime)}, 
-                        { startTime: moment(sheriffDuty.startDateTime), endTime: moment(shift.endDateTime) }));
-                if (sheriffDuties.length < (duty.sheriffsRequired | 1))
-                {
-                    duty.sheriffDuties.push(<any>{
-                        dutyId: duty.id, 
-                        startDateTime: sheriffDuty.startDateTime, 
-                        endDateTime: shift.startDateTime 
-                    });
-                }
+                // Check if the minimum required amount of sheriffs is match
+                // const sheriffDuties = duty.sheriffDuties.filter(sd => 
+                //     sd.id != sheriffDuty.id && 
+                //     doTimeRangesOverlap({ startTime: moment(sd.startDateTime), endTime: moment(sd.endDateTime)}, 
+                //         { startTime: moment(sheriffDuty.startDateTime), endTime: moment(shift.endDateTime) }));
+                // if (sheriffDuties.length < (duty.sheriffsRequired | 1))
+                // {
+                duty.sheriffDuties.push(<any>{ dutyId: duty.id, startDateTime: sheriffDuty.startDateTime, endDateTime: shift.startDateTime });
+                //}
                 sheriffDuty.startDateTime = shift.startDateTime;
             }
             
             // if shift ends before the duty then create an assignment for the remaining time
             if (shift.endDateTime < duty.endDateTime)
             {
-                const sheriffDuties = duty.sheriffDuties.filter(sd => 
-                    sd.id != sheriffDuty.id && 
-                    doTimeRangesOverlap({ startTime: moment(sd.startDateTime), endTime: moment(sd.endDateTime)}, 
-                        { startTime: moment(shift.endDateTime), endTime: moment(sheriffDuty.endDateTime) }));
-                if (sheriffDuties.length < (duty.sheriffsRequired | 1))
-                {
-                    duty.sheriffDuties.push(<any>{ 
-                        dutyId: duty.id, 
-                        startDateTime: shift.endDateTime, 
-                        endDateTime: sheriffDuty.endDateTime});
-                    sheriffDuty.endDateTime = shift.endDateTime;
-                }
+                // const sheriffDuties = duty.sheriffDuties.filter(sd => 
+                //     sd.id != sheriffDuty.id && 
+                //     doTimeRangesOverlap({ startTime: moment(sd.startDateTime), endTime: moment(sd.endDateTime)}, 
+                //         { startTime: moment(shift.endDateTime), endTime: moment(sheriffDuty.endDateTime) }));
+                // if (sheriffDuties.length < (duty.sheriffsRequired | 1))
+                // {
+                duty.sheriffDuties.push(<any>{ dutyId: duty.id, startDateTime: shift.endDateTime, endDateTime: sheriffDuty.endDateTime });
+                // }
+                sheriffDuty.endDateTime = shift.endDateTime;
             }
         }
     }
