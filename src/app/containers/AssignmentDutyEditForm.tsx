@@ -19,7 +19,7 @@ import {
     getAssignment, 
 } from '../modules/assignments/selectors';
 import { 
-    editAssignmentDuty,
+    editAssignmentDuty, linkSheriff,
 } from '../modules/assignments/actions';
 import { 
     IdType, 
@@ -33,6 +33,7 @@ const formConfig: ConfigProps<any, AssignmentDutyFormProps> = {
     onSubmit: (values, dispatch, props) => {
         // const { comments, ...rest } = values;
         const updatedAssignmentDuty = AssignmentDutyForm.parseAssignmentDutyFromValues(values);
+        dispatch(linkSheriff(updatedAssignmentDuty));
         dispatch(editAssignmentDuty(updatedAssignmentDuty));
     }
 };
@@ -52,7 +53,7 @@ const mapStateToProps = (state: RootState, props: AssignmentDutyEditFormProps) =
             minTime: TimeUtils.getDefaultTimePickerMinTime(moment(initialAssignmentDuty.startDateTime)),
             maxTime: TimeUtils.getDefaultTimePickerMaxTime(moment(initialAssignmentDuty.endDateTime)),
             workSectionId: initialAssignment ? initialAssignment.workSectionId : undefined,
-            isNewDuty: false  
+            isNewDuty: false
         };
     } else {
         return {};
@@ -60,7 +61,7 @@ const mapStateToProps = (state: RootState, props: AssignmentDutyEditFormProps) =
 };
 
 const mapDispatchToProps = {
-    onRemoveSheriffDuty: deleteSheriffDuty
+    onRemoveSheriffDuty: deleteSheriffDuty    
 };
 
 // Here we create a class that extends the configured assignment form so that we

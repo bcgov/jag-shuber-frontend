@@ -9,7 +9,7 @@ import { default as FormSubmitButton, SubmitButtonProps } from '../components/Fo
 import { connect } from 'react-redux';
 import { RootState } from '../store';
 import {
-    createAssignmentDuty
+    createAssignmentDuty, linkSheriff
 } from '../modules/assignments/actions';
 import { getAssignment } from '../modules/assignments/selectors';
 import { visibleTime } from '../modules/dutyRoster/selectors';
@@ -27,6 +27,7 @@ const formConfig: ConfigProps<any, AssignmentDutyFormProps> = {
         // const { comments, ...rest } = values;
         let newAssignmentDuty = AssignmentDutyForm.parseAssignmentDutyFromValues(values);
         newAssignmentDuty.assignmentId = assignmentId;
+        dispatch(linkSheriff(newAssignmentDuty));
         await dispatch(createAssignmentDuty(newAssignmentDuty));
     }
 };
