@@ -8,6 +8,7 @@ import {
     getAssignments,
     getAssignmentDuties,
     linkAssignment,
+    SheriffDutyLink,
 } from '../../modules/assignments/actions';
 import { connect } from 'react-redux';
 import { RootState } from '../../store';
@@ -51,7 +52,7 @@ interface DutyRosterTimelineProps extends TimelineProps {
 interface DutyRosterTimelineDispatchProps {
     fetchAssignmentDuties: (dateRange: DateRange) => void;
     fetchAssignments: (dateRange: DateRange) => void;
-    linkSheriff: (link: { sheriffId: IdType, dutyId: IdType, sheriffDutyId: IdType }) => void;
+    linkSheriff: (link: SheriffDutyLink) => void;
     showAssignmentDutyEditModal: (id: IdType) => void;
     showConfirmationModal: (props: ConnectedConfirmationModalProps) => void;
     showSheriffDutySplittingModal: (source: SheriffDuty, target: SheriffDuty, overlappingDuties: SheriffDuty[]) => void;
