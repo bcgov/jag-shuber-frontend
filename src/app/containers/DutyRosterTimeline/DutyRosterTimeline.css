@@ -24,6 +24,11 @@
     border: 0px;
 }
 
+.duty-roster-timeline .react-calendar-timeline .rct-header .rct-label{
+    text-align: left;
+    padding-left: 2px;
+}
+
 .duty-roster-timeline .react-calendar-timeline .rct-sidebar .rct-sidebar-header{
     border-right: 1px solid #003366;
 }
