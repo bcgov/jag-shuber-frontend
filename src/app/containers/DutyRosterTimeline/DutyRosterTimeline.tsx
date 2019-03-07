@@ -42,7 +42,7 @@ import SheriffDutyDragSource from '../SheriffDutyDragSource';
 import AssignmentSheriffDutyReassignmentModal from '../AssignmentSheriffDutyReassignmentModal';
 import { updateDraggingSheriff } from '../../modules/dutyRoster/actions';
 import { TimelineMarkers, TodayMarker } from 'react-calendar-timeline';
-import { doTimeRangesOverlap } from 'jag-shuber-api';
+import { doTimeRangesOverlap, isTimeWithin, TimeRange } from 'jag-shuber-api';
 import { allShifts } from '../../modules/shifts/selectors';
 
 interface DutyRosterTimelineProps extends TimelineProps {
@@ -130,6 +130,29 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
             fetchAssignmentDuties && fetchAssignmentDuties(dateRange);
             // tslint:enable:no-unused-expression           
         }
+    }
+
+    protected isSheriffDutyOutsideOfShift(
+        sheriffToAssign: IdType = '',
+        sheriffDuty: SheriffDuty): boolean {
+
+        if (!sheriffToAssign) return false;
+        const {
+            sheriffsOnShift = [],
+            visibleTimeStart
+        } = this.props;
+
+        const visibleStartMoment = moment(visibleTimeStart);
+        const shiftsFound = sheriffsOnShift
+        .filter(shift => shift.sheriffId == sheriffToAssign)
+        .filter(shift => visibleStartMoment.isSame(moment(shift.startDateTime), 'day'))
+        .filter(shift => {
+            const shiftRange = { startTime: shift.startDateTime, endTime: shift.endDateTime } as TimeRange;
+            const dutyRange = { startTime: sheriffDuty.startDateTime, endTime: sheriffDuty.endDateTime } as TimeRange;
+            return isTimeWithin(shiftRange.startTime, dutyRange) || isTimeWithin(shiftRange.endTime, dutyRange);
+        });
+
+        return shiftsFound.length == 0;
     }
 
     protected getOverlappingSheriffDutiesForSheriff(
@@ -237,18 +260,22 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
 
         const sheriffDutyId = sheriffDutyToAssign.id;
 
-        if (this.getOverlappingSheriffDutiesForSheriff(sheriffId, sheriffDutyToAssign).length > 0) {
-            const confirmMessage = <h3>Assign {<SheriffNameDisplay id={sheriffId} />} to overlapping duties?</h3>;
+        const isOverlapping = this.getOverlappingSheriffDutiesForSheriff(sheriffId, sheriffDutyToAssign).length > 0;
+        const isOutsideOfShift = this.isSheriffDutyOutsideOfShift(sheriffId, sheriffDutyToAssign);
+
+        if ((isOutsideOfShift || isOverlapping) && sheriffDutyToAssign.sheriffId != sheriffId)
+        {
             showConfirmationModal(
                 {
-                    confirmationMessage: confirmMessage,
+                    confirmationMessage: <div>
+                        { (isOverlapping) ? <h3>Assign {<SheriffNameDisplay id={sheriffId} />} to overlapping duties?</h3> : null }
+                        { (isOutsideOfShift) ? <h3>Duty is outside of {<SheriffNameDisplay id={sheriffId} />}'s shift, proceed?</h3> : null }
+                    </div>,
                     confirmBtnLabel: 'OK',
-                    // tslint:disable-next-line:no-unused-expression
                     onConfirm: () => { linkSheriff && linkSheriff({ sheriffId, dutyId, sheriffDutyId }); }
                 }
             );
         } else {
-            // tslint:disable-next-line:no-unused-expression
             linkSheriff && linkSheriff({ sheriffId, dutyId, sheriffDutyId });
         }
     }
@@ -305,7 +332,10 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
                                             const isAssignedToDraggingSheriff =
                                                 draggingSheriffId && sheriffDuty.sheriffId === draggingSheriffId;
                                             // tslint:disable-next-line:max-line-length
-                                            const isOpen = this.getOverlappingSheriffDutiesForSheriff(draggingSheriffId, sheriffDuty).length <= 0;
+                                            const isOpen = 
+                                                this.getOverlappingSheriffDutiesForSheriff(draggingSheriffId, sheriffDuty).length <= 0 &&
+                                                this.isSheriffDutyOutsideOfShift(draggingSheriffId, sheriffDuty) == false;
+
                                             const style: React.CSSProperties = {
                                                 opacity: isAssignedToDraggingSheriff || isOpen ? 1 : .6
                                             };
