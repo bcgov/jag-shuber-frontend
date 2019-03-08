@@ -269,7 +269,7 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
                 {
                     confirmationMessage: <div>
                         { (isOverlapping) ? <h3>Assign {<SheriffNameDisplay id={sheriffId} />} to overlapping duties?</h3> : null }
-                        { (isOutsideOfShift) ? <h3>Duty is outside of {<SheriffNameDisplay id={sheriffId} />}'s shift, proceed?</h3> : null }
+                        { (isOutsideOfShift) ? <h3>This assignment is outside of {<SheriffNameDisplay id={sheriffId} />}'s shift. Schedule anyway?</h3> : null }
                     </div>,
                     confirmBtnLabel: 'OK',
                     onConfirm: () => { linkSheriff && linkSheriff({ sheriffId, dutyId, sheriffDutyId }); }
