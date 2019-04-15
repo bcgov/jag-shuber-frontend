@@ -35,7 +35,8 @@ import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 import { ConfirmationModal } from './ConfirmationModal';
 import SelectorField from './FormElements/SelectorField';
 import { COURT_ASSIGNMENT_ROOM, COURT_ASSIGNMENT_ROLE } from '../api/Api';
-class OtherFields extends React.PureComponent {
+
+export class OtherFields extends React.PureComponent {
     render() {
         return (
             <div>
@@ -55,7 +56,7 @@ class OtherFields extends React.PureComponent {
     }
 }
 
-class EscortsFields extends React.PureComponent {
+export class EscortsFields extends React.PureComponent {
     render() {
         return (
             <div>
@@ -74,7 +75,7 @@ class EscortsFields extends React.PureComponent {
     }
 }
 
-class JailFeilds extends React.PureComponent {
+export class JailFeilds extends React.PureComponent {
     render() {
         return (
             <div>
@@ -93,7 +94,7 @@ class JailFeilds extends React.PureComponent {
     }
 }
 
-class CourtSecurityFields extends React.PureComponent {
+export class CourtSecurityFields extends React.PureComponent {
     // static method here to be called from the parser and to form values
     static isCourtAssignmentIdCourtroom(courtAssignmentId: string = '') {
         return courtAssignmentId.includes(`${COURT_ASSIGNMENT_ROOM}:`);

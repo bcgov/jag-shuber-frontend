@@ -10,17 +10,20 @@ import {
     DateType,
     TimeType,
     WorkSectionCode,
-    Shift
+    Shift,
+    WORK_SECTIONS,
+    Assignment
 } from '../api/Api';
 import DaysOfWeekChecklist from './FormElements/DaysOfWeekChecklist';
 import NumberSpinner from './FormElements/NumberSpinner';
 import TimeSliderField from './FormElements/TimeSliderField';
 import { getWorkSectionColour } from '../api/utils';
 import * as TimeUtils from '../infrastructure/TimeRangeUtils';
-import SelectorField from './FormElements/SelectorField';
+//import SelectorField from './FormElements/SelectorField';
 import toTitleCase from '../infrastructure/toTitleCase';
-import AssignmentSelector from '../containers/AssignmentSelector';
-import HelpPopover from './HelpPopover';
+//import AssignmentSelector from '../containers/AssignmentSelector';
+//import HelpPopover from './HelpPopover';
+import { CourtSecurityFields, JailFeilds, EscortsFields, OtherFields } from './AssignmentForm';
 export interface ScheduleShiftFormProps {
     handleSubmit?: () => void;
     onSubmitSuccess?: () => void;
@@ -28,6 +31,7 @@ export interface ScheduleShiftFormProps {
     minTime?: TimeType;
     maxTime?: TimeType;
     workSectionId?: WorkSectionCode;
+    assignments?: Assignment[];
 }
 
 export default class ScheduleShiftForm extends
@@ -95,25 +99,7 @@ export default class ScheduleShiftForm extends
                     ]}
                 />
                 <br/>
-                {workSectionId && <Field
-                    name="assignmentId"
-                    component={(p) => <SelectorField
-                        {...p}
-                        SelectorComponent={
-                            (sp) => <AssignmentSelector
-                                {...sp}
-                                workSectionId={workSectionId}
-                                label="Anticipated Assignment"
-                            />}
-
-                    />}
-                    fieldToolTip={
-                        <HelpPopover 
-                            // tslint:disable-next-line:max-line-length
-                            helpText={'For shift assignments already imported into the duty roster, make your edits in the duty roster.'}
-                        />}
-                    label="Anticipated Assignment"
-                />}
+                {this.renderWorkSectionFields()}
             </div>
         );
     }
@@ -127,4 +113,33 @@ export default class ScheduleShiftForm extends
             </div>
         );
     }
+
+    private renderWorkSectionFields() {
+        let returnFields;
+        if (this.props) {
+            const { workSectionId = 'OTHER' } = this.props;
+
+            switch (WORK_SECTIONS[workSectionId]) {
+                case WORK_SECTIONS.COURTS:
+                    returnFields = <CourtSecurityFields />;
+                    break;
+                case WORK_SECTIONS.JAIL:
+                    returnFields = <JailFeilds />;
+                    break;
+                case WORK_SECTIONS.ESCORTS:
+                    returnFields = <EscortsFields />;
+                    break;
+                case WORK_SECTIONS.OTHER:
+                    returnFields = <OtherFields />;
+                    break;
+                default:
+                    returnFields = '';
+                    break;
+            }
+        } else {
+            returnFields = '';
+        }
+        return returnFields;
+    }
+
 }
