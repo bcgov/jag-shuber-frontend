@@ -55,7 +55,7 @@
     "react-measure": "^2.0.2",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
-    "react-svg-loader": "^2.1.0",
+    "react-svg-loader": "^3.0.1",
     "react-toastify": "^4.1.0",
     "react-toggle": "^4.0.2",
     "redux": "^3.7.2",
