@@ -208,6 +208,7 @@ const courtroomAssignments: CourtAssignment[] = [
         workSectionId: 'COURTS',
         locationId: '1',
         courtroomId: '101',
+        startDateTime: moment().startOf('week').subtract(1, 'week'),
         dutyRecurrences: DEFAULT_RECURRENCE
     },
     {
@@ -216,6 +217,7 @@ const courtroomAssignments: CourtAssignment[] = [
         workSectionId: 'COURTS',
         locationId: '1',
         courtroomId: '102',
+        startDateTime: moment().startOf('week').subtract(1, 'week'),
         dutyRecurrences: DEFAULT_RECURRENCE
     },
     {
@@ -224,6 +226,7 @@ const courtroomAssignments: CourtAssignment[] = [
         workSectionId: 'COURTS',
         locationId: '1',
         courtroomId: '103',
+        startDateTime: moment().startOf('week').subtract(1, 'week'),
         dutyRecurrences: DEFAULT_RECURRENCE
     },
     {
@@ -232,6 +235,7 @@ const courtroomAssignments: CourtAssignment[] = [
         workSectionId: 'COURTS',
         locationId: '1',
         courtroomId: '104',
+        startDateTime: moment().startOf('week').subtract(1, 'week'),
         dutyRecurrences: DEFAULT_RECURRENCE
     },
     {
@@ -240,6 +244,7 @@ const courtroomAssignments: CourtAssignment[] = [
         workSectionId: 'COURTS',
         locationId: '1',
         courtroomId: '201',
+        startDateTime: moment().startOf('week').subtract(1, 'week'),
         dutyRecurrences: DEFAULT_RECURRENCE
     },
 ];
@@ -251,6 +256,7 @@ const jailAssingments: JailAssignment[] = [
         workSectionId: 'JAIL',
         locationId: '1',
         jailRoleCode: '1',
+        startDateTime: moment().startOf('week').subtract(1, 'week'),
         dutyRecurrences: DEFAULT_RECURRENCE
     },
     {
@@ -259,6 +265,7 @@ const jailAssingments: JailAssignment[] = [
         workSectionId: 'JAIL',
         locationId: '1',
         jailRoleCode: '1',
+        startDateTime: moment().startOf('week').subtract(1, 'week'),
         dutyRecurrences: DEFAULT_RECURRENCE
     }
 ];
@@ -270,6 +277,7 @@ const escortAssignments: EscortAssignment[] = [
         workSectionId: 'ESCORTS',
         locationId: '1',
         escortRunId: '1',
+        startDateTime: moment().startOf('week').subtract(1, 'week'),
         dutyRecurrences: DEFAULT_RECURRENCE
     },
     {
@@ -278,6 +286,7 @@ const escortAssignments: EscortAssignment[] = [
         workSectionId: 'ESCORTS',
         locationId: '1',
         escortRunId: '2',
+        startDateTime: moment().startOf('week').subtract(1, 'week'),
         dutyRecurrences: DEFAULT_RECURRENCE
     }
 ];
@@ -289,6 +298,7 @@ const otherAssignments: OtherAssignment[] = [
         workSectionId: 'OTHER',
         locationId: '1',
         otherAssignCode: '1',
+        startDateTime: moment().startOf('week').subtract(1, 'week'),
         dutyRecurrences: DEFAULT_RECURRENCE
     },
     {
@@ -297,6 +307,7 @@ const otherAssignments: OtherAssignment[] = [
         workSectionId: 'OTHER',
         locationId: '1',
         otherAssignCode: '3',
+        startDateTime: moment().startOf('week').subtract(1, 'week'),
         dutyRecurrences: DEFAULT_RECURRENCE
     }
 ];

@@ -15,6 +15,10 @@ const formConfig: ConfigProps<any, AssignmentFormProps> = {
     onSubmit: async (values, dispatch, props) => {
         try {
             const newAssignment = AssignmentForm.parseAssignmentFromValues(values);
+            newAssignment.endDateTime = props.endDateTime;
+            if (props.startDateTime) {
+                newAssignment.startDateTime = props.startDateTime;
+            }
             await dispatch(createAssignment(newAssignment));
         } catch (e) {
             throw new SubmissionError({ _error: e.message });

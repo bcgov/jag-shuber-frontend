@@ -36,6 +36,8 @@ import resolveAppUrl from './infrastructure/resolveAppUrl';
 import CustomDragLayer from './infrastructure/DragDrop/CustomDragLayer';
 import ScheduleShiftMultiEditModal from './containers/ScheduleMultiShiftEditModal';
 import DutyRosterToolsModal from './containers/DutyRosterToolsModal';
+import AssignmentPage from './pages/Assignments';
+import AssignmentScheduleAddModal from './containers/AssignmentScheduleAddModal';
 
 export interface LayoutStateProps {
   isLocationSet?: boolean;
@@ -110,6 +112,7 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
               <Route path={Navigation.Routes.schedule.manage.path} component={Scheduling} />
               <Route path={Navigation.Routes.team.path} component={ManageSheriffs} />
               <Route path={Navigation.Routes.dutyRoster.setup.path} component={DefaultAssignments} />
+              <Route path={Navigation.Routes.assignment.path} component={AssignmentPage} />
               <Route path={Navigation.Routes.schedule.distribute.path} component={PublishSchedule} />
               <DutyRosterToolsModal />
               <AssignmentDutyEditModal />
@@ -117,6 +120,7 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
               <SheriffProfileCreateModal />
               <ScheduleShiftCopyModal />
               <ScheduleShiftAddModal />
+              <AssignmentScheduleAddModal />
               <ConnectedConfirmationModal />
               <AssignmentSheriffDutyReassignmentModal />
               <ScheduleShiftMultiEditModal /> 

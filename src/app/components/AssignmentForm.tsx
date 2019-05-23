@@ -34,7 +34,7 @@ import { getWorkSectionColour, isCourtAssignment } from '../api/utils';
 import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 import { ConfirmationModal } from './ConfirmationModal';
 import SelectorField from './FormElements/SelectorField';
-import { COURT_ASSIGNMENT_ROOM, COURT_ASSIGNMENT_ROLE } from '../api/Api';
+import { COURT_ASSIGNMENT_ROOM, COURT_ASSIGNMENT_ROLE, DateType } from '../api/Api';
 
 export class OtherFields extends React.PureComponent {
     render() {
@@ -148,6 +148,8 @@ export interface AssignmentFormProps {
     workSectionId?: WorkSectionCode;
     allowDelete?: boolean;
     allowEdit?: boolean;
+    startDateTime?: DateType;
+    endDateTime?: DateType;
 }
 
 interface AssignmentFormData {

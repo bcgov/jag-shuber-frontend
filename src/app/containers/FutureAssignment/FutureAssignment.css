@@ -1,0 +1,40 @@
+.dimmed {
+    opacity: .6;
+}
+
+.dimmed:hover {
+    opacity: 1.0;
+}
+
+.scheduling-timeline {
+    height: inherit;
+}
+
+.scheduling-timeline .react-calendar-timeline .rct-items .rct-item.selected {
+    background: transparent;
+    border: 0px;
+}
+
+.scheduling-timeline .react-calendar-timeline .rct-items .rct-item {
+    border: 0px;
+}
+
+/* Adds an overlay over the duty bar on hover to give some visual feedback */
+
+.scheduling-timeline .shift-card:hover::before {
+    content: "";
+    display: block;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(255, 255, 255, .3);
+    z-index: 85;
+}
+
+/* Don't Display the overlay if we click on the duty-bar */
+
+.scheduling-timeline .shift-card:active::before {
+    display: none;
+}

@@ -9,6 +9,7 @@ import { getShifts } from '../shifts/actions';
 import { getSheriffRankCodes } from '../sheriffs/actions';
 import { updateVisibleTime as updateTimelineVisibleTime } from '../dutyRoster/actions';
 import { updateVisibleTime as updateScheduleVisibleTime } from '../schedule/actions';
+import { updateVisibleTime as updateAssignmentScheduleVisibleTime } from '../assignmentSchedule/actions';
 
 // Gender Codes
 export const getGenderCodes = genderCodeRequests.genderCodeMapRequest.actionCreator;
@@ -22,6 +23,7 @@ const initialActions: any[] = [
     getLocations,
     () => updateTimelineVisibleTime(TimeUtils.getDefaultStartTime(), TimeUtils.getDefaultEndTime()),
     () => updateScheduleVisibleTime(moment().startOf('week').add(1, 'day'), moment().endOf('week').subtract(1, 'day')),
+    () => updateAssignmentScheduleVisibleTime(moment().startOf('week').add(1, 'day'), moment().endOf('week').subtract(1, 'day')),
     getSheriffRankCodes,
     getShifts,
     getLeaveCancelCodes,

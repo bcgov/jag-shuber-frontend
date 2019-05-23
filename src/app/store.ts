@@ -14,6 +14,7 @@ import { LeaveModuleState, registerReducer as registerLeavesReducer } from './mo
 import { registerReducer as registerSystemReducer, SystemModuleState } from './modules/system/reducer';
 import Client from './api/Client';
 import { requestUserToken, updateUserToken } from './modules/user/actions';
+import { default as assignmentScheduleReducer, AssignmentScheduleState } from './modules/assignmentSchedule/reducer';
 export interface ThunkExtra {
     api: API;
 }
@@ -24,6 +25,7 @@ export type ThunkAction<TRequest, TResponse = void> = (args?: TRequest) => Thunk
 export interface RootState {
     sheriffs: SheriffModuleState;
     assignments: AssignmentModuleState;
+    assignmentSchedule: AssignmentScheduleState;
     dutyRoster: DutyRosterState;
     shifts: ShiftModuleState;
     schedule: ScheduleState;
@@ -34,6 +36,7 @@ export interface RootState {
 
 const reducers = {
     dutyRoster: dutyRosterReducer,
+    assignmentSchedule: assignmentScheduleReducer,
     schedule: scheduleReducer,
     modal: modalReducer,
     form: formReducer
