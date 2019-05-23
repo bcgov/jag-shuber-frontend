@@ -29,23 +29,25 @@ export const allScheduledAssignments = createSelector(
         mapToArray(map).filter(item =>
             moment(item.startDateTime).startOf('day').diff(moment(visibleTime.visibleTimeStart).startOf('day'), 'days') == 0 &&
             moment(item.endDateTime).startOf('day').diff(moment(visibleTime.visibleTimeEnd).startOf('day').add(1, "day"), 'days') == 0
-        ).forEach((item, index) => { 
+        ).forEach((item, assignmentIndex) => { 
 
             console.log(moment(item.startDateTime).startOf('day'));
             console.log(moment(visibleTime.visibleTimeStart).startOf('day').add(1, "day"));
 
-            item.dutyRecurrences!.forEach(r => {
-                let startTime = moment(r.startTime, 'HH:mm');
-                let endTime = moment(r.endTime, 'HH:mm');
-                DaysOfWeek.getWeekdayNumbers(r.daysBitmap).forEach((d, i) => {
-                    assignmentList.push({
-                        assignmentId: item.id,
-                        startDateTime: moment(visibleTime.visibleTimeStart).set("weekday", d).set('hour', startTime.get("hour")),
-                        endDateTime: moment(visibleTime.visibleTimeStart).set("weekday", d).set('hour', endTime.get("hour")),
-                        id: `assignment_${index}_${i}`,
-                        locationId: item.locationId,
-                        workSectionId: item.workSectionId
-                    });
+            item.dutyRecurrences!.forEach(recurrence => {
+                let startTime = moment(recurrence.startTime, 'HH:mm');
+                let endTime = moment(recurrence.endTime, 'HH:mm');
+                DaysOfWeek.getWeekdayNumbers(recurrence.daysBitmap).forEach((day, dayIndex) => {
+                    for(let numSheriffs = 1; numSheriffs <= recurrence.sheriffsRequired; numSheriffs++) {
+                        assignmentList.push({
+                            assignmentId: item.id,
+                            startDateTime: moment(visibleTime.visibleTimeStart).set("weekday", day).set('hour', startTime.get("hour")),
+                            endDateTime: moment(visibleTime.visibleTimeStart).set("weekday", day).set('hour', endTime.get("hour")),
+                            id: `${item.id}_${assignmentIndex}_${dayIndex}_${numSheriffs}`,
+                            locationId: item.locationId,
+                            workSectionId: item.workSectionId
+                        });
+                    }
                 })
             })
         })

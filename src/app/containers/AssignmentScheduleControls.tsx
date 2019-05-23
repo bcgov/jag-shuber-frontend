@@ -17,12 +17,12 @@ import ScheduleShiftMultiEditForm from './ScheduleShiftMultiEditForm';
 import { IdType, WorkSectionCode, AssignmentScheduleItem, DateType } from '../api/Api';
 import DateRangeControls from '../components/DateRangeControls';
 import { ConfirmationModal } from '../components/ConfirmationModal';
-import ScheduleMultiShiftEditModal from './ScheduleMultiShiftEditModal';
 import { WORK_SECTIONS } from '../api';
 import { deleteAssignment } from '../modules/assignments/actions';
 import AssignmentScheduleAddModal from './AssignmentScheduleAddModal';
 import { selectedAssignmentIds, visibleTime } from '../modules/assignmentSchedule/selectors';
 import { allScheduledAssignments } from '../modules/assignmentSchedule/selectors';
+import AssignmentScheduleEditModal from './AssignmentScheduleEditModal';
 
 interface AssignmentControlsStateProps {
     visibleTimeStart: any;
@@ -41,7 +41,7 @@ interface AssignmentControlsProps {
 interface AssignmentDistpatchProps {
     updateVisibleTime: (startTime: any, endTime: any) => void;
     showAddModal: (workSectionId: WorkSectionCode, startDateTime: any, endDateTime: any) => void;
-    showMultiEditModal: (selectedIds: IdType[]) => void;
+    showEditModal: (id: IdType) => void;
 }
 
 class AssignmentControls extends React.PureComponent<
@@ -60,7 +60,7 @@ class AssignmentControls extends React.PureComponent<
             visibleTimeEnd,
             updateVisibleTime,
             showAddModal,
-            showMultiEditModal,
+            showEditModal,
             clear,
             deleteAssignment,
             selectedAssignments = [],
@@ -156,7 +156,7 @@ class AssignmentControls extends React.PureComponent<
                             borderColor: areAssignmentsSelected ? '#327AB7' : 'grey',
                             color: 'white'
                         }}
-                        onClick={() => showMultiEditModal(selectedAssignments)}
+                        onClick={() => showEditModal(selectedAssignments[0])}
                         disabled={!areAssignmentsSelected}
                     >
                         <Glyphicon glyph="pencil" />
@@ -203,7 +203,7 @@ const mapDispatchToProps = {
     clear: clearSelectedAssignments,
     deleteAssignment: deleteAssignment,
     setSelectedAssignments: selectAssignments,
-    showMultiEditModal: (ids: IdType[]) => ScheduleMultiShiftEditModal.ShowAction(ids)
+    showEditModal: (id: IdType) => AssignmentScheduleEditModal.ShowAction(id)
 };
 
 // tslint:disable-next-line:max-line-length

@@ -113,25 +113,6 @@ class FutureAssignment extends React.Component<FutureAssignmentProps
 const mapStateToProps = (state: RootState, props: AssignmentScheduleProps) => {
     const currentVisibleTime = visibleTime(state);
 
-    // let assignments = allScheduledAssignments(state);
-    // let assignmentList: AssignmentScheduleItem[] = [];
-    // assignments.filter((a) => { a.endDateTime && a.endDateTime > currentVisibleTime.visibleTimeStart }).forEach((item, index) => { 
-    //     item.dutyRecurrences!.forEach(r => {
-    //         let startTime = moment(r.startTime, 'HH:mm');
-    //         let endTime = moment(r.endTime, 'HH:mm');
-    //         DaysOfWeek.getWeekdayNumbers(r.daysBitmap).forEach((d, i) => {
-    //             assignmentList.push({
-    //                 assignmentId: item.id,
-    //                 startDateTime: moment(currentVisibleTime.visibleTimeStart).set("weekday", d).set('hour', startTime.get("hour")),
-    //                 endDateTime: moment(currentVisibleTime.visibleTimeStart).set("weekday", d).set('hour', endTime.get("hour")),
-    //                 id: `assignment_${index}_${i}`,
-    //                 locationId: item.locationId,
-    //                 workSectionId: item.workSectionId
-    //             });
-    //         })
-    //     })
-    // });
-
     return {
         assignments: allScheduledAssignments(state),
         ...currentVisibleTime,

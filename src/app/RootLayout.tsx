@@ -38,6 +38,7 @@ import ScheduleShiftMultiEditModal from './containers/ScheduleMultiShiftEditModa
 import DutyRosterToolsModal from './containers/DutyRosterToolsModal';
 import AssignmentPage from './pages/Assignments';
 import AssignmentScheduleAddModal from './containers/AssignmentScheduleAddModal';
+import AssignmentScheduleEditModal from './containers/AssignmentScheduleEditModal';
 
 export interface LayoutStateProps {
   isLocationSet?: boolean;
@@ -121,6 +122,7 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
               <ScheduleShiftCopyModal />
               <ScheduleShiftAddModal />
               <AssignmentScheduleAddModal />
+              <AssignmentScheduleEditModal />
               <ConnectedConfirmationModal />
               <AssignmentSheriffDutyReassignmentModal />
               <ScheduleShiftMultiEditModal /> 
