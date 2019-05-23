@@ -177,6 +177,8 @@ export interface BaseAssignment {
     locationId: IdType;
     workSectionId: WorkSectionCode;
     dutyRecurrences?: DutyRecurrence[];
+    startDateTime: DateType; 
+    endDateTime?: DateType;
 }
 
 export interface CourtAssignment extends BaseAssignment {
@@ -333,6 +335,15 @@ export interface AlternateAssignment {
     code: IdType | string;
     description: string;
     expiryDate?: DateType;
+}
+
+export interface AssignmentScheduleItem {
+    id: string;
+    assignmentId: IdType;
+    locationId: IdType;
+    startDateTime: DateType;
+    endDateTime: DateType;
+    workSectionId: WorkSectionCode;
 }
 
 export interface API {

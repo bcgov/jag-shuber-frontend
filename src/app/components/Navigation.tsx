@@ -39,6 +39,10 @@ export default class Navigation extends React.Component<NavigationProps, any> {
         team: {
             path: '/sheriffs/manage',
             label: 'My Team'
+        },
+        assignment: {
+            path: '/assignments/manage/add',
+            label: 'Add Assignment'
         }
     }
     render() {
@@ -61,6 +65,7 @@ export default class Navigation extends React.Component<NavigationProps, any> {
                             <NavigationLink exactMatch={true} {...Navigation.Routes.dutyRoster.timeline} />
                             <NavigationLink {...Navigation.Routes.dutyRoster.setup} />
                         </NavDropdown>
+                        <NavigationLink {...Navigation.Routes.assignment} />
                         <NavDropdown title="Shift Schedule" id="schedule_dropdown">
                             <NavigationLink {...Navigation.Routes.schedule.manage} />
                             <NavigationLink {...Navigation.Routes.schedule.distribute} />
