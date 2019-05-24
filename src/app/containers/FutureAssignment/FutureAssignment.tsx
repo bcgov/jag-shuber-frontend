@@ -9,11 +9,12 @@ import {
 } from '../../api';
 import './FutureAssignment.css';
 import SheriffDropTarget from '../SheriffDropTarget';
-import { AssignmentScheduleItem } from '../../api/Api';
+import { AssignmentScheduleItem, DateRange } from '../../api/Api';
 import AssignmentSchedule, { AssignmentScheduleProps } from '../../components/AssignmentSchedule';
 import { getAssignments } from '../../modules/assignments/actions';
 import AssignmentScheduleCard from '../../components/AssignmentScheduleCard';
 import { visibleTime, selectedAssignmentIds, allScheduledAssignments } from '../../modules/assignmentSchedule/selectors';
+import moment from 'moment';
 
 interface FutureAssignmentProps extends Partial<AssignmentScheduleProps> {
     sideBarWidth?: number;
@@ -21,7 +22,7 @@ interface FutureAssignmentProps extends Partial<AssignmentScheduleProps> {
 }
 
 interface FutureAssignmentDispatchProps {
-    fetchAssignments: () => void;
+    fetchAssignments: (dateRange: DateRange) => void;
     selectCard: (id: IdType) => void;
     unselectCard: (id: IdType) => void;
 }
@@ -33,16 +34,36 @@ interface FutureAssignmentStateProps {
     selectedAssignmentIds: IdType[];
 }
 
-class FutureAssignment extends React.Component<FutureAssignmentProps
-    & FutureAssignmentStateProps
-    & FutureAssignmentDispatchProps> {
+type CompositeProps = FutureAssignmentProps & FutureAssignmentStateProps & FutureAssignmentDispatchProps;
+class FutureAssignment extends React.Component<CompositeProps> {
 
     componentWillMount() {
         const {
             fetchAssignments,
+            visibleTimeStart: startDate,
+            visibleTimeEnd: endDate,
         } = this.props;
 
-        fetchAssignments();
+        const dateRange = { startDate, endDate };
+        /* tslint:disable:no-unused-expression */
+        fetchAssignments && fetchAssignments(dateRange);
+    }
+
+    componentWillReceiveProps(nextProps: CompositeProps) {
+        const {
+            visibleTimeStart: prevStartDate,
+            visibleTimeEnd: prevEndDate
+        } = this.props;
+        const {
+            visibleTimeStart: nextStartDate,
+            visibleTimeEnd: nextEndDate,
+            fetchAssignments
+        } = nextProps;
+
+        if (!moment(prevStartDate).isSame(moment(nextStartDate)) || !moment(prevEndDate).isSame(moment(nextEndDate))) {
+            const dateRange = { startDate: nextStartDate, endDate: nextEndDate };
+            fetchAssignments && fetchAssignments(dateRange);
+        }
     }
 
     private isAssignmentSelected(assignmentId: IdType): boolean {

@@ -38,7 +38,7 @@ class ImportDefaultDutiesForm extends React.PureComponent<InjectedFormProps<Impo
             <div className="import-default-duties-form" >
                 <Form {...this.props}>
                     <Field
-                        label="Import Default Duties"
+                        label="Import Assignments"
                         name="shouldImportDefaultDuties"
                         component={
                             (p) => (
@@ -48,7 +48,7 @@ class ImportDefaultDutiesForm extends React.PureComponent<InjectedFormProps<Impo
                         fieldToolTip={
                             <HelpPopover
                                 // tslint:disable-next-line:max-line-length
-                                helpText={'Creates duties based on default duties within the Duty Roster setup'}
+                                helpText={'Creates duties based on assignments listed in the Duty Roster Set-up'}
                             />
                         }
                     />
@@ -63,7 +63,7 @@ class ImportDefaultDutiesForm extends React.PureComponent<InjectedFormProps<Impo
                         fieldToolTip={
                             <HelpPopover
                                 // tslint:disable-next-line:max-line-length
-                                helpText={'Automatically assign Sheriff\'s to Duties based today\'s schedule.'}
+                                helpText={'Automatically assign sheriffs to duties based on today\'s schedule'}
                             />
                         }
                     />
