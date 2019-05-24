@@ -50,7 +50,7 @@ class AssignmentTemplateList
 
 const mapStateToProps = (state: RootState) => {
   return {
-    assignments: allAssignments(state),
+    assignments: allAssignments(state).filter(a => !a.endDateTime),
     loading: isLoadingAssignments(state)
   };
 };
