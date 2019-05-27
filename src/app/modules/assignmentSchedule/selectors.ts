@@ -17,9 +17,9 @@ export const allScheduledAssignments = createSelector(
     (map = {}, visibleTime): AssignmentScheduleItem[] => {
         let assignmentList: AssignmentScheduleItem[] = [];
         mapToArray(map).filter(item =>
-            moment(item.startDateTime).startOf('day').diff(moment(visibleTime.visibleTimeStart).startOf('day'), 'days') == 0  &&
-            moment(item.endDateTime).startOf('day').diff(moment(visibleTime.visibleTimeEnd).startOf('day').add(1, "day"), 'days') == 0
-        ).forEach((item, assignmentIndex) => { 
+            moment(item.startDateTime).utc().diff(moment(visibleTime.visibleTimeStart).utc(), 'days') == 0  &&
+            moment(item.endDateTime).utc().diff(moment(visibleTime.visibleTimeEnd).utc().add(1, "day"), 'days') == 0
+        ).forEach((item, assignmentIndex) => {
             item.dutyRecurrences!.forEach(recurrence => {
                 let startTime = moment(recurrence.startTime, 'HH:mm');
                 let endTime = moment(recurrence.endTime, 'HH:mm');
