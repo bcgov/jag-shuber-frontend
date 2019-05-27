@@ -22,7 +22,7 @@ export interface AssignmentEditModalStatePros {
     assignmentTitle?: string;
 }
 export interface AssignmentEditModalDispatchProps {
-    deleteAssignment: (id: IdType) => void;
+    deleteAssignment: (id: IdType[]) => void;
 }
 
 class AssignmentEditModal extends React.PureComponent<
@@ -64,7 +64,7 @@ class AssignmentEditModal extends React.PureComponent<
                         allowDelete && <ConfirmationModal
                             key="confirmationModal"
                             onConfirm={() => {
-                                deleteAssignment(assignmentId);
+                                deleteAssignment([assignmentId]);
                                 handleClose();
                             }}
                             actionBtnLabel="Delete"
