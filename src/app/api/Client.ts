@@ -163,11 +163,8 @@ export default class Client implements API {
         return updated as Assignment;
     }
 
-    async deleteAssignment(assignmentId: IdType): Promise<void> {
-        if (assignmentId === undefined) {
-            return;
-        }
-        await this._client.ExpireAssignment(assignmentId);
+    async deleteAssignment(assignmentIds: IdType[]): Promise<void> {
+        await Promise.all(assignmentIds.map(id => this._client.ExpireAssignment(id)));
     }
 
     async getAssignmentDuties(startDate: DateType = moment(), endDate?: DateType): Promise<AssignmentDuty[]> {

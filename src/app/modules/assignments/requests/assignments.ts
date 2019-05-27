@@ -12,7 +12,7 @@ import {
 import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRequest';
 import CreateEntityRequest from '../../../infrastructure/Requests/CreateEntityRequest';
 import UpdateEntityRequest from '../../../infrastructure/Requests/UpdateEntityRequest';
-import DeleteEntityRequest from '../../../infrastructure/Requests/DeleteEntityRequest';
+//import DeleteEntityRequest from '../../../infrastructure/Requests/DeleteEntityRequest';
 import RequestAction from '../../../infrastructure/Requests/RequestActionBase';
 import toTitleCase from '../../../infrastructure/toTitleCase';
 
@@ -81,23 +81,49 @@ class UpdateAssignmentRequest extends UpdateEntityRequest<Assignment, Assignment
 export const updateAssignmentRequest = new UpdateAssignmentRequest();
 
 // Assignment Delete
-class DeleteAssignmentRequest extends DeleteEntityRequest<Assignment, AssignmentModuleState> {
+// class DeleteAssignmentRequest extends DeleteEntityRequest<Assignment, AssignmentModuleState> {
+//     constructor() {
+//         super({ 
+//             namespace: STATE_KEY, 
+//             actionName: 'deleteAssignment',
+//             toasts: {
+//                 success: 'Assignment deleted',
+//                 // tslint:disable-next-line:max-line-length
+//                 error: (err) => `Problem encountered while deleting the assignment: ${err ? err.toString() : 'Unknown Error'}`
+//             } 
+//         }, 
+//         assignmentMapRequest);
+//     }
+
+//     public async doWork(assignmentIdToDelete: IdType, { api }: ThunkExtra): Promise<IdType> {
+//         await api.deleteAssignment(assignmentIdToDelete);
+//         return assignmentIdToDelete;
+//     }
+// }
+
+// export const deleteAssignmentRequest = new DeleteAssignmentRequest();
+
+class DeleteAssignmentRequest extends RequestAction<IdType[], IdType[], AssignmentModuleState> {
+
     constructor() {
-        super({ 
-            namespace: STATE_KEY, 
+        super({
+            namespace: STATE_KEY,
             actionName: 'deleteAssignment',
             toasts: {
-                success: 'Assignment deleted',
-                // tslint:disable-next-line:max-line-length
-                error: (err) => `Problem encountered while deleting the assignment: ${err ? err.toString() : 'Unknown Error'}`
-            } 
-        }, 
-        assignmentMapRequest);
+                success: (ids) => `${ids.length} assignment(s) deleted`,
+                error: (err) => `Problem encountered while deleting assignment(s): ${err ? err.toString() : 'Unknown Error'}`
+            }
+        });
+    }
+    public async doWork(request: IdType[], { api }: ThunkExtra): Promise<IdType[]> {
+        await api.deleteAssignment(request);
+        return request;
     }
 
-    public async doWork(assignmentIdToDelete: IdType, { api }: ThunkExtra): Promise<IdType> {
-        await api.deleteAssignment(assignmentIdToDelete);
-        return assignmentIdToDelete;
+    setRequestData(moduleState: AssignmentModuleState, assignmentIds: IdType[]) {
+        const newMap = { ...assignmentMapRequest.getRequestData(moduleState) };
+        assignmentIds.forEach(id => delete newMap[id]);
+        return assignmentMapRequest.setRequestData(moduleState, newMap);
     }
 }
 
