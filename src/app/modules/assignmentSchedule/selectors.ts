@@ -18,8 +18,12 @@ export const allScheduledAssignments = createSelector(
         let assignmentList: AssignmentScheduleItem[] = [];
         mapToArray(map).filter(item =>
             moment(item.startDateTime).utc().diff(moment(visibleTime.visibleTimeStart).utc(), 'days') == 0  &&
-            moment(item.endDateTime).utc().diff(moment(visibleTime.visibleTimeEnd).utc().add(1, "day"), 'days') == 0
+            moment(item.endDateTime).utc().diff(moment(visibleTime.visibleTimeEnd).utc(), 'days') == 0            
         ).forEach((item, assignmentIndex) => {
+
+            console.log(item.startDateTime);
+            //console.log(moment(item.startDateTime).toISOString());
+
             item.dutyRecurrences!.forEach(recurrence => {
                 let startTime = moment(recurrence.startTime, 'HH:mm');
                 let endTime = moment(recurrence.endTime, 'HH:mm');
