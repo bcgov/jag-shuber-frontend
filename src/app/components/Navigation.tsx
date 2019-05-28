@@ -2,13 +2,13 @@ import React from 'react';
 import {
     Nav,
     Navbar,
-    NavbarBrand,
-    NavDropdown
+    NavbarBrand
 } from 'react-bootstrap';
 import NavigationLink from './NavigationLink';
 import LocationSelector from '../containers/LocationSelector';
 import bcLogo from '../assets/images/bc-logo-transparent.png';
 import bcLogoDark from '../assets/images/bc-logo-transparent-dark.png';
+import NavigationDropDown from './NavigationDropDown';
 
 export interface NavigationProps {
 
@@ -45,6 +45,7 @@ export default class Navigation extends React.Component<NavigationProps, any> {
             label: 'Add Assignment'
         }
     }
+
     render() {
         return (
             <div id="header-main" >
@@ -59,17 +60,17 @@ export default class Navigation extends React.Component<NavigationProps, any> {
                         <NavbarBrand color="#003366">
                             Sheriff Scheduling System
                         </NavbarBrand>
-                    </Navbar.Header>
+                    </Navbar.Header>                    
                     <Nav bsStyle="tabs">
-                        <NavDropdown title="Duty Roster" id="duty_roster_dropdown">
+                        <NavigationDropDown title="Duty Roster" id="duty_roster_dropdown">
                             <NavigationLink exactMatch={true} {...Navigation.Routes.dutyRoster.timeline} />
                             <NavigationLink {...Navigation.Routes.dutyRoster.setup} />
-                        </NavDropdown>
+                        </NavigationDropDown>
                         <NavigationLink {...Navigation.Routes.assignment} />
-                        <NavDropdown title="Shift Schedule" id="schedule_dropdown">
+                        <NavigationDropDown title="Shift Schedule" id="schedule_dropdown">
                             <NavigationLink {...Navigation.Routes.schedule.manage} />
                             <NavigationLink {...Navigation.Routes.schedule.distribute} />
-                        </NavDropdown>
+                        </NavigationDropDown>
                         <NavigationLink {...Navigation.Routes.team} />
                     </Nav>
                     <Nav pullRight={true} style={{ paddingTop: 13, paddingRight: 15 }}>
