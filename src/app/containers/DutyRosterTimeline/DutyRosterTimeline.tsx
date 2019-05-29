@@ -24,6 +24,7 @@ import {
     DateType,
     Shift,
     SheriffUnassignedRange,
+    DaysOfWeek,
 } from '../../api/Api';
 import SheriffDutyBarList from '../../components/SheriffDutyBarList/SheriffDutyBarList';
 import ConnectedSheriffDutyBar from '../SheriffDutyBar';
@@ -304,13 +305,20 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
             },
             {});
 
+        // filter assignment groups by the current day
+        const groups = assignments.filter(a => 
+            !a.dutyRecurrences || // if the assignment has no recurrence display it always
+            !a.endDateTime || // if its a default assignment display it always
+            assignmentDuties.some(ad => ad.assignmentId == a.id && moment(ad.startDateTime).isSame(moment(visibleTimeStart), "day") ) || // if the assignment has duties display it always
+            a.dutyRecurrences.some(dr => 
+                DaysOfWeek.getWeekdayNumbers(dr.daysBitmap).indexOf(moment(visibleTimeStart).weekday()) >= 0))
         const unassignedTime = this.getUnassignedTimeRanges();
         return (
             <div className="duty-roster-timeline">
                 <AssignmentTimeline
                     allowChangeTime={false}
                     items={assignmentDuties}
-                    groups={assignments}
+                    groups={groups}
                     sidebarWidth={sidebarWidth}
                     visibleTimeStart={moment(visibleTimeStart).valueOf()}
                     visibleTimeEnd={moment(visibleTimeEnd).valueOf()}
