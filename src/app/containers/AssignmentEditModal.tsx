@@ -57,7 +57,7 @@ class AssignmentEditModal extends React.PureComponent<
                         </Button>}
                     body={({ handleClose }) => {
                         return (
-                            <AssignmentEditForm id={assignmentId} onSubmitSuccess={handleClose} />
+                            <AssignmentEditForm assignments={[]} id={assignmentId} onSubmitSuccess={handleClose} />
                         );
                     }}
                     footerComponent={({ handleClose }) => ([

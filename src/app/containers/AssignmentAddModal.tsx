@@ -35,6 +35,7 @@ export default class AssignmentAddModal extends React.Component<AssignmentAddMod
                         </DropdownButton>}
                     body={({ handleClose, workSectionId }: any) => (
                         <AssignmentTemplateCreateForm
+                            assignments={[]}
                             allowDelete={true}
                             allowEdit={true}
                             onSubmitSuccess={handleClose}

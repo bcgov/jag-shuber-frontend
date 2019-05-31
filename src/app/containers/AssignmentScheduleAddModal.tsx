@@ -6,13 +6,14 @@ import { connect } from 'react-redux';
 import { IModalInjectedProps, connectModal } from 'redux-modal';
 import { ConnectedShowModalButton } from './ConnectedShowModalButton';
 import { show as showModal, hide as hideModal } from 'redux-modal';
-import { WorkSectionCode, DateType } from '../api';
+import { WorkSectionCode, DateType, Assignment } from '../api';
 import AssignmentTemplateCreateForm from './AssignmentTemplateCreateForm';
 
 export interface AssignmentScheduleAddModalProps {
     workSectionId: WorkSectionCode;
     startDateTime: DateType;
     endDateTime: DateType;
+    assignments: Assignment[];
 }
 
 type CompositeProps = AssignmentScheduleAddModalProps & IModalInjectedProps;
@@ -23,7 +24,8 @@ class AssignmentScheduleAddModal extends React.Component<CompositeProps> {
             handleHide,
             workSectionId,
             startDateTime,
-            endDateTime
+            endDateTime,
+            assignments
         } = this.props;
         return (
             <Modal
@@ -37,12 +39,13 @@ class AssignmentScheduleAddModal extends React.Component<CompositeProps> {
                 <Modal.Header closeButton={true}>Add Assignment</Modal.Header>
                 <Modal.Body>
                     <AssignmentTemplateCreateForm
-                            startDateTime={startDateTime}
-                            endDateTime={endDateTime}
-                            allowDelete={false}
-                            allowEdit={false}
-                            onSubmitSuccess={handleHide}
-                            workSectionId={workSectionId}
+                        assignments={assignments}
+                        startDateTime={startDateTime}
+                        endDateTime={endDateTime}
+                        allowDelete={false}
+                        allowEdit={false}
+                        onSubmitSuccess={handleHide}
+                        workSectionId={workSectionId}
                     />
                 </Modal.Body>
                 <Modal.Footer>
@@ -72,6 +75,6 @@ export default class extends connectModal(modalConfig)(
         <ConnectedShowModalButton modalName={modalConfig.name} modalProps={props} />
     )
 
-    static ShowAction = (workSectionId: WorkSectionCode, startDateTime: DateType, endDateTime: DateType) => showModal(modalConfig.name, {workSectionId, startDateTime, endDateTime});
+    static ShowAction = (props: AssignmentScheduleAddModalProps) => showModal(modalConfig.name, props);
     static HideAction = () => hideModal(modalConfig.name);
 }

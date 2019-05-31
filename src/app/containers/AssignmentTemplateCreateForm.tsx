@@ -14,6 +14,11 @@ const formConfig: ConfigProps<any, AssignmentFormProps> = {
     validate: (values) => AssignmentForm.validateForm(values),
     onSubmit: async (values, dispatch, props) => {
         try {
+            if (AssignmentForm.duplicateCheck(values, props.assignments))
+            {
+                throw new Error("Assignment cannot be added. This assignment already exists in Duty Roster Set-Up or in the Current Week.");
+            }
+
             const newAssignment = AssignmentForm.parseAssignmentFromValues(values);
             newAssignment.endDateTime = props.endDateTime;
             if (props.startDateTime) {

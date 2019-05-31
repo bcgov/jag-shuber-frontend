@@ -34,7 +34,7 @@ import { getWorkSectionColour, isCourtAssignment } from '../api/utils';
 import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 import { ConfirmationModal } from './ConfirmationModal';
 import SelectorField from './FormElements/SelectorField';
-import { COURT_ASSIGNMENT_ROOM, COURT_ASSIGNMENT_ROLE, DateType } from '../api/Api';
+import { COURT_ASSIGNMENT_ROOM, COURT_ASSIGNMENT_ROLE, DateType, CourtAssignment, JailAssignment, EscortAssignment, OtherAssignment } from '../api/Api';
 
 export class OtherFields extends React.PureComponent {
     render() {
@@ -150,6 +150,7 @@ export interface AssignmentFormProps {
     allowEdit?: boolean;
     startDateTime?: DateType;
     endDateTime?: DateType;
+    assignments: Assignment[];
 }
 
 interface AssignmentFormData {
@@ -217,6 +218,51 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
         };
     }
 
+    static duplicateCheck(values: any, assignments: Assignment[]) {
+        const { 
+            jailRoleCode,
+            courtAssignmentId,
+            escortRunId,
+            otherAssignCode,
+            workSectionId,
+            id
+        } = values;
+
+        const courtAssignment = CourtSecurityFields.courtAssignmentIdToAssignmentValue(courtAssignmentId);
+        const isCourtroomAssignment = CourtSecurityFields.isCourtAssignmentIdCourtroom(courtAssignmentId);
+        const courtroomId = (isCourtroomAssignment ? courtAssignment : undefined);
+        const courtRoleId = (!isCourtroomAssignment ? courtAssignment : undefined);
+
+        let assignment: Assignment | undefined;
+        let workSectionAssignments = assignments!.filter(a => a.workSectionId == workSectionId && a.id !== id); 
+        switch (workSectionId)
+        {
+            case 'COURTS':
+            {
+                assignment = workSectionAssignments.find((a) => (a as CourtAssignment).courtRoleId == courtRoleId && (a as CourtAssignment).courtroomId == courtroomId);
+                assignment = assignment || { courtroomId, courtRoleId, workSectionId: 'COURTS' } as CourtAssignment;
+                break;
+            }
+            case 'JAIL':
+            {
+                assignment = workSectionAssignments.find((a) => (a as JailAssignment).jailRoleCode == jailRoleCode);
+                assignment = assignment || { jailRoleCode, workSectionId: 'JAIL' } as JailAssignment;
+                break;
+            }
+            case 'ESCORTS':
+            {
+                assignment = workSectionAssignments.find((a) => (a as EscortAssignment).escortRunId == escortRunId);
+                assignment = assignment || { escortRunId, workSectionId: 'ESCORTS' } as EscortAssignment;
+                break;
+            }
+            default:
+            {
+                assignment = workSectionAssignments.find((a) => (a as OtherAssignment).otherAssignCode == otherAssignCode);
+                assignment = assignment || { otherAssignCode, workSectionId: 'OTHER' } as OtherAssignment;
+            }
+        }
+        return !!assignment.id;
+    }
     static validateForm(values: any) {
         const errors: any = {};
         const { dutyRecurrences = [] }: { dutyRecurrences: DutyRecurrence[] } = values;
@@ -234,6 +280,7 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
                 errors.dutyRecurrences = recurrenceArrayErrors;
             }
         }
+
 
         return errors;
     }
