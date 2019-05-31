@@ -6,11 +6,12 @@ import { connect } from 'react-redux';
 import { IModalInjectedProps, connectModal } from 'redux-modal';
 import { ConnectedShowModalButton } from './ConnectedShowModalButton';
 import { show as showModal, hide as hideModal } from 'redux-modal';
-import { IdType } from '../api';
+import { IdType, Assignment } from '../api';
 import AssignmentEditForm from './AssignmentEditForm';
 
 export interface AssignmentScheduleEditModalProps {
     assignmentId: IdType;
+    assignments: Assignment[];
 }
 
 type CompositeProps = AssignmentScheduleEditModalProps & IModalInjectedProps;
@@ -20,6 +21,7 @@ class AssignmentScheduleEditModal extends React.Component<CompositeProps> {
             show,
             handleHide,
             assignmentId,
+            assignments
         } = this.props;
         return (
             <Modal
@@ -35,6 +37,7 @@ class AssignmentScheduleEditModal extends React.Component<CompositeProps> {
                     <AssignmentEditForm 
                         allowEdit={false}
                         allowDelete={false} 
+                        assignments={assignments}
                         id={assignmentId} 
                         onSubmitSuccess={handleHide} />
                 </Modal.Body>
@@ -65,6 +68,6 @@ export default class extends connectModal(modalConfig)(
         <ConnectedShowModalButton modalName={modalConfig.name} modalProps={props} />
     )
 
-    static ShowAction = (assignmentId: IdType) => showModal(modalConfig.name, {assignmentId});
+    static ShowAction = (props: AssignmentScheduleEditModalProps) => showModal(modalConfig.name, props);
     static HideAction = () => hideModal(modalConfig.name);
 }

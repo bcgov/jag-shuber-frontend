@@ -13,8 +13,7 @@ import {
     clearSelectedAssignments,
     selectAssignments
 } from '../modules/assignmentSchedule/actions';
-import ScheduleShiftMultiEditForm from './ScheduleShiftMultiEditForm';
-import { IdType, WorkSectionCode, AssignmentScheduleItem, DateType } from '../api/Api';
+import { IdType, WorkSectionCode, AssignmentScheduleItem, DateType, Assignment } from '../api/Api';
 import DateRangeControls from '../components/DateRangeControls';
 import { ConfirmationModal } from '../components/ConfirmationModal';
 import { WORK_SECTIONS } from '../api';
@@ -23,6 +22,8 @@ import AssignmentScheduleAddModal from './AssignmentScheduleAddModal';
 import { selectedAssignmentIds, visibleTime } from '../modules/assignmentSchedule/selectors';
 import { allScheduledAssignments } from '../modules/assignmentSchedule/selectors';
 import AssignmentScheduleEditModal from './AssignmentScheduleEditModal';
+import AssignmentEditForm from './AssignmentEditForm';
+import { allAssignments } from '../modules/assignments/selectors';
 
 interface AssignmentControlsStateProps {
     visibleTimeStart: any;
@@ -36,12 +37,13 @@ interface AssignmentControlsProps {
     setSelectedAssignments?: (ids: IdType[]) => void;
     selectedAssignments?: IdType[];
     assignments?: AssignmentScheduleItem[];
+    allAssignments?: Assignment[];
 }
 
 interface AssignmentDistpatchProps {
     updateVisibleTime: (startTime: any, endTime: any) => void;
-    showAddModal: (workSectionId: WorkSectionCode, startDateTime: any, endDateTime: any) => void;
-    showEditModal: (id: IdType) => void;
+    showAddModal: (workSectionId: WorkSectionCode, startDateTime: any, endDateTime: any, assigmnets: Assignment[]) => void;
+    showEditModal: (id: IdType, assignments: Assignment[]) => void;
 }
 
 class AssignmentControls extends React.PureComponent<
@@ -64,7 +66,8 @@ class AssignmentControls extends React.PureComponent<
             clear,
             deleteAssignment,
             selectedAssignments = [],
-            setSelectedAssignments
+            setSelectedAssignments,
+            allAssignments = []
         } = this.props;
 
         const areAssignmentsSelected = selectedAssignments.length > 0;
@@ -135,7 +138,7 @@ class AssignmentControls extends React.PureComponent<
                                     return (
                                         <MenuItem
                                             key={k}
-                                            onSelect={() => showAddModal(k as WorkSectionCode, visibleTimeStart, visibleTimeEnd)}
+                                            onSelect={() => showAddModal(k as WorkSectionCode, visibleTimeStart, visibleTimeEnd, allAssignments)}
                                         >
                                             {WORK_SECTIONS[k]}
                                         </MenuItem>
@@ -143,7 +146,7 @@ class AssignmentControls extends React.PureComponent<
                                 })
 
                             }
-                            <MenuItem key={'NA'} onSelect={() => showAddModal('NA' as WorkSectionCode, visibleTimeStart, visibleTimeEnd)}>
+                            <MenuItem key={'NA'} onSelect={() => showAddModal('NA' as WorkSectionCode, visibleTimeStart, visibleTimeEnd, allAssignments)}>
                                 Not Applicable
                             </MenuItem>
                         </Dropdown.Menu>
@@ -156,7 +159,7 @@ class AssignmentControls extends React.PureComponent<
                             borderColor: areAssignmentsSelected ? '#327AB7' : 'grey',
                             color: 'white'
                         }}
-                        onClick={() => showEditModal(selectedAssignments[0])}
+                        onClick={() => showEditModal(selectedAssignments[0], allAssignments)}
                         disabled={!areAssignmentsSelected}
                     >
                         <Glyphicon glyph="pencil" />
@@ -192,18 +195,19 @@ const mapStateToProps = (state: RootState) => {
     return {
         ...currentVisibleTime,
         selectedAssignments: selectedAssignmentIds(state),
-        assignments: allScheduledAssignments(state)
+        assignments: allScheduledAssignments(state),
+        allAssignments: allAssignments(state)
     };
 };
 
 const mapDispatchToProps = {
     updateVisibleTime: setVisibleTime,
-    showAddModal: (workSectionId: WorkSectionCode, startDateTime: DateType, endDateTime: DateType) => AssignmentScheduleAddModal.ShowAction(workSectionId, startDateTime, endDateTime),
-    submit: ScheduleShiftMultiEditForm.submitAction,
+    showAddModal: (workSectionId: WorkSectionCode, startDateTime: DateType, endDateTime: DateType, assignments: Assignment[]) => AssignmentScheduleAddModal.ShowAction({workSectionId, startDateTime, endDateTime, assignments}),
+    submit: AssignmentEditForm.submitAction,
     clear: clearSelectedAssignments,
     deleteAssignment: deleteAssignment,
     setSelectedAssignments: selectAssignments,
-    showEditModal: (id: IdType) => AssignmentScheduleEditModal.ShowAction(id)
+    showEditModal: (id: IdType, assignments: Assignment[]) => AssignmentScheduleEditModal.ShowAction({assignmentId: id, assignments})
 };
 
 // tslint:disable-next-line:max-line-length

@@ -1,7 +1,9 @@
 import React from 'react';
 import {
     reduxForm,
-    ConfigProps
+    ConfigProps,
+    submit,
+    SubmissionError
 } from 'redux-form';
 import {
     default as AssignmentForm,
@@ -25,8 +27,16 @@ const formConfig: ConfigProps<any, AssignmentFormProps> = {
     form: 'EditAssignment',
     validate: (values) => AssignmentForm.validateForm(values),
     onSubmit: (values, dispatch, props) => {
-        const updatedAssignment = AssignmentForm.parseAssignmentFromValues(values);
-        dispatch(editAssignment(updatedAssignment));
+        try {
+            if (AssignmentForm.duplicateCheck(values, props.assignments))
+            {
+                throw new Error("Assignment cannot be added. <br /> This assignment already exists in Duty Roster Set-Up or in the Current Week.");
+            }
+            const updatedAssignment = AssignmentForm.parseAssignmentFromValues(values);
+            dispatch(editAssignment(updatedAssignment));
+        } catch (e) {
+            throw new SubmissionError({ _error: e.message });
+        }
     }
 };
 
@@ -58,4 +68,9 @@ export default class AssignmentEditForm extends connect<any, {}, AssignmentEditF
     static SubmitButton = (props: Partial<SubmitButtonProps>) => (
         <FormSubmitButton {...props} formName={formConfig.form} />
     )
+
+    static submitAction() {
+        return submit(formConfig.form);
+    }
+    
 }
