@@ -35,8 +35,8 @@ class CourtAssignmentList extends React.PureComponent<
             <SelectorWithOptGroup
                 {...restProps}
                 data={[
-                    { optGroupLabel: 'Roles', options: rolesSelectorValues },
-                    { optGroupLabel: 'Courtrooms', options: courtroomSelectorValues }
+                    { optGroupLabel: 'Courtrooms', options: courtroomSelectorValues },
+                    { optGroupLabel: 'Roles', options: rolesSelectorValues }
                 ]}
             />
         );

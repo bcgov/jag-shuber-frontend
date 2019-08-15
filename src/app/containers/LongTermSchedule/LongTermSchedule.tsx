@@ -32,13 +32,16 @@ import {
     selectShift as selectShiftAction,
     unselectShift as unselectShiftAction
 } from '../../modules/schedule/actions';
-import { sheriffLoanMap } from '../../modules/sheriffs/selectors';
-import { MapType } from '../../api/Api';
+import { sheriffLoanMap, sheriffs } from '../../modules/sheriffs/selectors';
+import { MapType, WorkSection, Sheriff, Assignment } from '../../api/Api';
 import PartialLeavePopover from '../../components/PartialLeavePopover';
+import { allAssignments } from '../../modules/assignments/selectors';
 
 interface LongTermScheduleProps extends Partial<ShiftScheduleProps> {
     sideBarWidth?: number;
     allowTimeDrag?: boolean;
+    sheriffs?: Sheriff[];
+    assignments?: Assignment[];
 }
 
 interface LongTermScheduleDispatchProps {
@@ -121,6 +124,18 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
         }
     }
 
+    private shiftCompareString(shift: Shift) {
+        const {
+            sheriffs = [],
+            assignments = []
+        } = this.props;
+        const sheriff = sheriffs.find(s => s.id == shift.sheriffId);
+        const assignment = assignments.find(a => a.id == shift.assignmentId);
+        return (        
+            `${WorkSection.getWorkSectionSortCode(shift.workSectionId)}:${assignment ? assignment.title : 'z'}:${shift.startDateTime}${sheriff ? sheriff.lastName : 'z'}`
+        );
+    }
+    
     render() {
         const {
             shifts = [],
@@ -129,10 +144,11 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
             visibleTimeEnd,
         } = this.props;
 
+        
         return (
             <div className="scheduling-timeline">
                 <ShiftSchedule
-                    shifts={shifts}
+                    shifts={shifts.sort((a, b) => this.shiftCompareString(a).localeCompare(this.shiftCompareString(b)))}
                     visibleTimeEnd={visibleTimeEnd}
                     visibleTimeStart={visibleTimeStart}
                     itemRenderer={(shift) => {
@@ -187,6 +203,8 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
 const mapStateToProps = (state: RootState, props: LongTermScheduleProps) => {
     const currentVisibleTime = visibleTime(state);
     return {
+        sheriffs: sheriffs(state),
+        assignments: allAssignments(state),
         shifts: allShifts(state),
         fullDayLeaves: getFullDayLeaves(state),
         partialDayLeaves: getPartialDayLeaves(state),

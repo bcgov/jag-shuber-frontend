@@ -7,7 +7,8 @@ import * as courtRoleRequests from './requests/courtRoles';
 import {
     Assignment,
     AssignmentDuty,
-    IdType
+    IdType,
+    WorkSection
 } from '../../api/Api';
 import {
     isCourtAssignment,
@@ -20,6 +21,14 @@ import * as jailRoleRequests from './requests/jailRoles';
 import * as runRequests from './requests/runs';
 import mapToArray from '../../infrastructure/mapToArray';
 import { CodeSelector } from '../../infrastructure/CodeSelector';
+
+function assignmentCompareString(assignment: Assignment) {
+    // We are just using the native string sorting algorithm, the hacky 'z' at the end of this
+    // just pushes unassigned shifts below assigned ones
+    return (        
+        `${WorkSection.getWorkSectionSortCode(assignment.workSectionId)}:${assignment.title}`
+    );
+}
 
 // Assignments
 export const allAssignments = createSelector(
@@ -46,7 +55,7 @@ export const allAssignments = createSelector(
                 }
                 return a;
             })
-            .sort((a, b) => `${a.workSectionId}:${a.title}`.localeCompare(`${b.workSectionId}:${b.title}`));
+            .sort((a, b) => assignmentCompareString(a).localeCompare(assignmentCompareString(b)));
     });
 export const isLoadingAssignments = assignmentRequests.assignmentMapRequest.getIsBusy;
 export const assignmentsError = assignmentRequests.assignmentMapRequest.getError;
@@ -98,7 +107,7 @@ export const allEffectiveCourtRoles = courtRoleSelector.effective;
 // Courtrooms
 export const allCourtrooms = createSelector(
     courtroomRequests.courtroomMapRequest.getData,
-    (courtrooms) => mapToArray(courtrooms).sort((a, b) => a.name.localeCompare(b.name))
+    (courtrooms) => mapToArray(courtrooms).sort((a, b) => a.code.localeCompare(b.code))
 );
 
 // Jail Roles
