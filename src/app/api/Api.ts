@@ -106,6 +106,23 @@ export namespace Leave {
     }
 }
 
+export namespace WorkSection {
+    export function getWorkSectionSortCode(workSectionId?: WorkSectionCode): string {
+        switch(workSectionId) {
+            case 'COURTS':
+                return '0';
+            case 'JAIL':
+                return '1';
+            case 'ESCORTS':
+                return '2';
+            case 'OTHER':
+                return '3';
+            default:
+                return '4';
+        }
+    }    
+}
+
 export const BLANK_SHERIFF: Sheriff = {
     id: '00000000-0000-0000-0000-000000000000',
     firstName: '',

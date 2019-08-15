@@ -3,7 +3,7 @@ import { RootState } from '../../store';
 import { createSelector } from 'reselect';
 import * as shiftRequests from './requests';
 import {
-    IdType, Shift, DateType
+    IdType, Shift, DateType, WorkSection
 } from '../../api/Api';
 import mapToArray from '../../infrastructure/mapToArray';
 import arrayToMap from '../../infrastructure/arrayToMap';
@@ -11,8 +11,8 @@ import arrayToMap from '../../infrastructure/arrayToMap';
 function shiftCompareString(shift: Shift) {
     // We are just using the native string sorting algorithm, the hacky 'z' at the end of this
     // just pushes unassigned shifts below assigned ones
-    return (
-        `${shift.workSectionId}:${shift.assignmentId}:${shift.startDateTime}${shift.sheriffId ? '' : 'z'}`
+    return (        
+        `${WorkSection.getWorkSectionSortCode(shift.workSectionId)}:${shift.assignmentId}:${shift.startDateTime}${shift.sheriffId ? '' : 'z'}`
     );
 }
 

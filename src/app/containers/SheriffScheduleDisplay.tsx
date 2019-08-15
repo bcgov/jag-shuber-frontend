@@ -79,9 +79,10 @@ class SheriffScheduleDisplay extends React.Component<SheriffScheduleDisplayProps
 }
 
 const mapStateToProps = (state: RootState) => {
+    const sheriffsData = sheriffs(state);
     return {
         shifts: allShifts(state),
-        sheriffs: sheriffs(state),
+        sheriffs: sheriffsData,
         weekStart: publishViewVisibleWeek(state),
         includeWorkSection: isShowWorkSections(state),
         sheriffLoanMap: sheriffLoanMap(state)

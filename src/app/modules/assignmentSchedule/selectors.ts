@@ -1,9 +1,17 @@
 import { RootState } from '../../store';
-import { IdType, AssignmentScheduleItem, DaysOfWeek } from '../../api/Api';
+import { IdType, AssignmentScheduleItem, DaysOfWeek, WorkSection } from '../../api/Api';
 import * as assignmentRequests from '../assignments/requests/assignments';
 import { createSelector } from 'reselect';
 import mapToArray from '../../infrastructure/mapToArray';
 import moment from 'moment';
+
+function shiftCompareString(assignmentItem: AssignmentScheduleItem) {
+    // We are just using the native string sorting algorithm, the hacky 'z' at the end of this
+    // just pushes unassigned shifts below assigned ones
+    return (
+        `${WorkSection.getWorkSectionSortCode(assignmentItem.workSectionId)}:${assignmentItem.assignmentId}`
+    );
+}
 
 export const visibleTime = (state: RootState): { visibleTimeStart: any, visibleTimeEnd: any } => {
     const { visibleTimeStart, visibleTimeEnd } = state.assignmentSchedule;
@@ -21,12 +29,10 @@ export const allScheduledAssignments = createSelector(
             moment(item.endDateTime).utc().diff(moment(visibleTime.visibleTimeEnd).utc(), 'days') == 0            
         ).forEach((item, assignmentIndex) => {
 
-            console.log(item.startDateTime);
-            //console.log(moment(item.startDateTime).toISOString());
-
             item.dutyRecurrences!.forEach(recurrence => {
                 let startTime = moment(recurrence.startTime, 'HH:mm');
                 let endTime = moment(recurrence.endTime, 'HH:mm');
+                // Add multiple assignment records based on the weekdays selected for each assignment
                 DaysOfWeek.getWeekdayNumbers(recurrence.daysBitmap).forEach((day, dayIndex) => {
                     for(let numSheriffs = 1; numSheriffs <= recurrence.sheriffsRequired; numSheriffs++) {
                         assignmentList.push({
@@ -41,7 +47,7 @@ export const allScheduledAssignments = createSelector(
                 })
             })
         })
-        return assignmentList;
+        return assignmentList.sort((a, b) => shiftCompareString(a).localeCompare(shiftCompareString(b)));
     });
 
 export const isSelected = (id: IdType) => (state: RootState): boolean => {
