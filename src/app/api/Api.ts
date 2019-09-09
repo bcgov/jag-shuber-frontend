@@ -267,6 +267,11 @@ export interface Location {
     regionId: string;
 }
 
+export interface Group {
+    id: IdType;
+    name: string;
+}
+
 export interface Region {
     id: number;
     name: string;
