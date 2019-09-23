@@ -5,19 +5,19 @@ import {
     TimelineComponentProps
 } from './Timeline/Timeline';
 import {
-    BLANK_LOCATION,
-    Location,
-    AssignmentScheduleItem
+    AssignmentScheduleItem,
+    Group,
+    WorkSection
 } from '../api/Api';
 import { ensureMoment } from '../infrastructure/momentUtils';
 import { ReactCalendarTimelineItem } from 'react-calendar-timeline';
 import AssignmentScheduleCard from './AssignmentScheduleCard';
 
-interface AssignmentScheduleTimelineProps extends TimelineComponentProps<AssignmentScheduleItem, Location> {
+interface AssignmentScheduleTimelineProps extends TimelineComponentProps<AssignmentScheduleItem, Group> {
 
 }
 
-class AssignmentScheduleTimeline extends Timeline<AssignmentScheduleItem, Location> {
+class AssignmentScheduleTimeline extends Timeline<AssignmentScheduleItem, Group> {
     static defaultProps: Partial<AssignmentScheduleTimelineProps> = {
         sideBarHeaderTitle: '',
         itemRenderer: (item) => (
@@ -28,14 +28,14 @@ class AssignmentScheduleTimeline extends Timeline<AssignmentScheduleItem, Locati
         mapItem: AssignmentScheduleTimeline.mapItem,
     };
 
-    public static mapItem(assignment: AssignmentScheduleItem, groups: Location[]) {
+    public static mapItem(assignment: AssignmentScheduleItem, groups: Group[]) {
         const { startDateTime, endDateTime } = assignment;
         const startTime = ensureMoment(startDateTime);
         const endTime = ensureMoment(endDateTime);
         return {
             ...assignment,
             title: `${startTime.format('HH:mm')} - ${endTime.format('HH:mm')}`,
-            group: assignment.locationId,
+            group: getAssignmentGroupId(assignment),
             start_time: startTime,
             end_time: endTime,
             className: 'drop-shadow-hover',
@@ -56,6 +56,10 @@ export interface AssignmentScheduleProps {
     itemRenderer?: (item: ReactCalendarTimelineItem & AssignmentScheduleItem) => React.ReactNode;
 }
 
+function getAssignmentGroupId(s: AssignmentScheduleItem) {
+    return `${WorkSection.getWorkSectionSortCode(s.workSectionId)}:${s.assignmentId}`;
+}
+
 export default class AssignmentSchedule extends React.PureComponent<AssignmentScheduleProps> {
     render() {
         const {
@@ -70,14 +74,22 @@ export default class AssignmentSchedule extends React.PureComponent<AssignmentSc
             allowTimeChange = false
         } = this.props;
         
+        const groups: Group[] = [];
+        assignments.forEach(s => { 
+            const id = getAssignmentGroupId(s);
+            // Unique groups only
+            if (!groups.find(g => g.id == id)) {
+                groups.push({ id, name: '' });
+            }
+        });
+
         return (
             <AssignmentScheduleTimeline
                 allowChangeTime={allowTimeChange}
-                groups={[BLANK_LOCATION]}
+                groups={groups}
                 items={assignments}
                 mapItem={(item, groupList) => {
                     let assignment = AssignmentScheduleTimeline.mapItem(item, groupList);
-                    assignment.group = BLANK_LOCATION.id;
                     return assignment;
                 }}
                 sidebarWidth={0}
