@@ -56,7 +56,7 @@ export interface ShiftScheduleProps {
 }
 
 function getShiftGroupId(s: Shift) {
-    return `${WorkSection.getWorkSectionSortCode(s.workSectionId)}:${s.assignmentId}:${s.sheriffId}`;
+    return `${WorkSection.getWorkSectionSortCode(s.workSectionId)}:${s.assignmentId}`;
 }
 
 export default class ShiftSchedule extends React.PureComponent<ShiftScheduleProps> {
