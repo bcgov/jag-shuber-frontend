@@ -105,11 +105,11 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
         // Work around for react-calendar-timeline issue 411
         // Miss alignment of headers when scrollbar is visible
         let timeline = document.getElementsByClassName('react-calendar-timeline')[0];
-        if (timeline.scrollHeight > timeline.clientHeight) {
-            // resize timeline component with correct width if scrollbar is visible
-            let header = document.getElementsByClassName('rct-header')[0];
-            header.parentElement!.style.width = `${header.parentElement!.clientWidth - 20}px`;
-        }
+        let header = document.getElementsByClassName('rct-header')[0];
+        let scroll = document.getElementsByClassName('rct-scroll')[0];
+        // resize timeline component with correct width if scrollbar is visible
+        (scroll as HTMLElement).style.width = `${timeline.clientWidth - 200}px`;
+        header.parentElement!.style.width = `${header.parentElement!.parentElement!.clientWidth - 200}px`;
     }
 
     componentWillReceiveProps(nextProps: CompositeProps) {
@@ -123,6 +123,8 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
             fetchAssignmentDuties,
             fetchAssignments
         } = nextProps;
+
+        window.dispatchEvent(new Event('resize'));
 
         if (!moment(prevStartDate).isSame(moment(nextStartDate)) || !moment(prevEndDate).isSame(moment(nextEndDate))) {
             const dateRange = { startDate: nextStartDate, endDate: nextEndDate };
