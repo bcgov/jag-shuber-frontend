@@ -37,8 +37,14 @@ export const allScheduledAssignments = createSelector(
                     for(let numSheriffs = 1; numSheriffs <= recurrence.sheriffsRequired; numSheriffs++) {
                         assignmentList.push({
                             assignmentId: item.id,
-                            startDateTime: moment(visibleTime.visibleTimeStart).set("weekday", day).set('hour', startTime.get("hour")),
-                            endDateTime: moment(visibleTime.visibleTimeStart).set("weekday", day).set('hour', endTime.get("hour")),
+                            startDateTime: moment(visibleTime.visibleTimeStart)
+                                .set("weekday", day)
+                                .set('hour', startTime.get("hour"))
+                                .set('minute', startTime.get("minute")),
+                            endDateTime: moment(visibleTime.visibleTimeStart)
+                                .set("weekday", day)
+                                .set('hour', endTime.get("hour"))
+                                .set('minute', endTime.get("minute")),
                             id: `${item.id}_${assignmentIndex}_${dayIndex}_${numSheriffs}`,
                             locationId: item.locationId,
                             workSectionId: item.workSectionId
