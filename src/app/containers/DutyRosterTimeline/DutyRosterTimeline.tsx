@@ -147,13 +147,13 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
 
         const visibleStartMoment = moment(visibleTimeStart);
         const shiftsFound = sheriffsOnShift
-        .filter(shift => shift.sheriffId == sheriffToAssign)
-        .filter(shift => visibleStartMoment.isSame(moment(shift.startDateTime), 'day'))
-        .filter(shift => {
-            const shiftRange = { startTime: shift.startDateTime, endTime: shift.endDateTime } as TimeRange;
-            const dutyRange = { startTime: sheriffDuty.startDateTime, endTime: sheriffDuty.endDateTime } as TimeRange;
-            return isTimeWithin(shiftRange.startTime, dutyRange) || isTimeWithin(shiftRange.endTime, dutyRange);
-        });
+            .filter(shift => shift.sheriffId == sheriffToAssign)
+            .filter(shift => visibleStartMoment.isSame(moment(shift.startDateTime), 'day'))
+            .filter(shift => {
+                const shiftRange = { startTime: shift.startDateTime, endTime: shift.endDateTime } as TimeRange;
+                const dutyRange = { startTime: sheriffDuty.startDateTime, endTime: sheriffDuty.endDateTime } as TimeRange;
+                return isTimeWithin(shiftRange.startTime, dutyRange, "[)") || isTimeWithin(shiftRange.endTime, dutyRange, "(]");
+            });
 
         return shiftsFound.length == 0;
     }
