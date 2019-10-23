@@ -152,7 +152,7 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
             .filter(shift => {
                 const shiftRange = { startTime: shift.startDateTime, endTime: shift.endDateTime } as TimeRange;
                 const dutyRange = { startTime: sheriffDuty.startDateTime, endTime: sheriffDuty.endDateTime } as TimeRange;
-                return isTimeWithin(shiftRange.startTime, dutyRange, "[)") || isTimeWithin(shiftRange.endTime, dutyRange, "(]");
+                return isTimeWithin(dutyRange.startTime, shiftRange, "[)") && isTimeWithin(dutyRange.endTime, shiftRange, "(]");
             });
 
         return shiftsFound.length == 0;
