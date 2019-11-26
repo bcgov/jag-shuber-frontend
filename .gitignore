@@ -55,6 +55,10 @@ package-lock.json
 *.sql
 *.sqlite
 
+# IDE generated files #
+#######################
+.idea
+
 # OS generated files #
 ######################
 .DS_Store
