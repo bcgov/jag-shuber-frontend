@@ -43,7 +43,29 @@ export default class Navigation extends React.Component<NavigationProps, any> {
         assignment: {
             path: '/assignments/manage/add',
             label: 'Add Assignment'
-        }
+        },
+        admin: {
+            path: '/admin',
+            label: 'Administration',
+            children: {
+                users: {
+                    path: '/admin/users/manage',
+                    label: 'User Management'
+                },
+                roles: {
+                    path: '/users/manage',
+                    label: 'Roles & Permissions'
+                },
+                codes: {
+                    path: '/codes/manage',
+                    label: 'Code Types'
+                },
+                audit: {
+                    path: '/audit',
+                    label: 'Audit Tables'
+                }
+            }
+        },
     }
 
     render() {
@@ -60,7 +82,7 @@ export default class Navigation extends React.Component<NavigationProps, any> {
                         <NavbarBrand color="#003366">
                             Sheriff Scheduling System
                         </NavbarBrand>
-                    </Navbar.Header>                    
+                    </Navbar.Header>
                     <Nav bsStyle="tabs">
                         <NavigationDropDown title="Duty Roster" id="duty_roster_dropdown">
                             <NavigationLink exactMatch={true} {...Navigation.Routes.dutyRoster.timeline} />
@@ -72,6 +94,12 @@ export default class Navigation extends React.Component<NavigationProps, any> {
                             <NavigationLink {...Navigation.Routes.schedule.distribute} />
                         </NavigationDropDown>
                         <NavigationLink {...Navigation.Routes.team} />
+                        <NavigationDropDown title={Navigation.Routes.admin.label} id="admin_dropdown">
+                            <NavigationLink {...Navigation.Routes.admin.children.users} />
+                            <NavigationLink {...Navigation.Routes.admin.children.roles} />
+                            <NavigationLink {...Navigation.Routes.admin.children.codes} />
+                            <NavigationLink {...Navigation.Routes.admin.children.audit} />
+                        </NavigationDropDown>
                     </Nav>
                     <Nav pullRight={true} style={{ paddingTop: 13, paddingRight: 15 }}>
                         <LocationSelector.Current />
