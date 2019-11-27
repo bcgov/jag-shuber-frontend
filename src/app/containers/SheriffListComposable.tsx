@@ -55,7 +55,7 @@ class SheriffListComposable extends React.Component<CompositeProps> {
       );
     }*/
 
-    const displayAs: string = 'LIST';
+    const displayAs: string = 'GRID';
 
     // TODO: Something wrong with @types/react? Can't use fragment for some reason...
     /*return (

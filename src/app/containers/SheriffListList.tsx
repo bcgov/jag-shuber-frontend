@@ -9,9 +9,11 @@ import {
   sheriffsForCurrentLocation,
   sheriffListLoading
 } from '../modules/sheriffs/selectors';
-import SheriffCard from '../components/SheriffCard/SheriffCard';
+// import SheriffCard from '../components/SheriffCard/SheriffCard';
+import SheriffListCard from '../components/SheriffListCard/SheriffListCard';
 import SheriffProfileModal from './SheriffProfileModal';
 import Loading from '../components/Loading';
+import { ListGroup } from 'react-bootstrap';
 
 export interface SheriffListProps {
   sheriffs?: Sheriff[];
@@ -22,7 +24,7 @@ export interface SheriffListProps {
 }
 
 export interface SheriffListStateProps {
-  
+
 }
 
 interface SheriffListDispatchProps {
@@ -52,17 +54,19 @@ class SheriffList extends React.Component<CompositeProps> {
     }
 
     return (
-      <div style={{ display: 'flex', flexFlow: 'row wrap', justifyContent: 'center' }}>
+      <div style={{ display: 'flex', flexFlow: 'column wrap', justifyContent: 'center' }}>
         {sheriffs.map(sheriff => (
           <div
             key={sheriff.badgeNo}
           >
+            Test
             {SheriffRenderer && <SheriffRenderer {...sheriff} />}
             {!SheriffRenderer &&
-              <SheriffCard
-                sheriff={sheriff}
-                onClick={() => showSheriffProfileModal(sheriff.id)}
-              />
+              <ListGroup>
+                <SheriffListCard sheriff={sheriff} onClick={() => showSheriffProfileModal(sheriff.id)}>
+                  {/*<div style={{ paddingLeft: 25 }}><ScheduleSummary sheriffId={s.id} /></div>*/}
+                </SheriffListCard>
+              </ListGroup>
             }
           </div>
         ))}
