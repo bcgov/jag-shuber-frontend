@@ -17,9 +17,11 @@ import {
     getSheriffFullDayPersonalLeaves,
     getSheriffPartialPersonalLeaves
 } from '../../modules/leaves/selectors';
+
 import LeavesDisplay from '../../components/LeavesDisplay';
 import * as Validators from '../../infrastructure/Validators';
 import RolesFieldTable from './RolesFieldTable';
+
 import { toTimeString } from 'jag-shuber-api';
 
 export interface SheriffProfilePluginRolesProps {

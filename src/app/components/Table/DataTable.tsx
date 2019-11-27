@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IdType } from '../../api/Api';
+import { IdType } from '../../api';
 import { RootState } from '../../store';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
