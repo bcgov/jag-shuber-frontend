@@ -35,7 +35,7 @@ class SheriffProfileModal extends React.PureComponent<CompositeProps> {
 
     render() {
         const {
-            // sheriff, 
+            // sheriff,
             show,
             handleHide,
             isEditing = false,
@@ -47,6 +47,7 @@ class SheriffProfileModal extends React.PureComponent<CompositeProps> {
             <Modal
                 show={show}
                 onHide={handleHide}
+                // TODO: Accept a prop for dialogClassName...
                 dialogClassName="modal-medium"
                 style={{
                     maxSize: '70%'
