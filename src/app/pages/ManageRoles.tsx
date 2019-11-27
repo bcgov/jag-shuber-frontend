@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Glyphicon, Well } from 'react-bootstrap';
 
-import { IdType } from '../api/Api';
+import { IdType } from '../api';
 import Page from '../components/Page/Page';
 // import { DataTableProps } from '../components/Table/DataTable';
 
