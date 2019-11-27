@@ -24,12 +24,15 @@ import RolesFieldTable from './RolesFieldTable';
 export interface AdminRolesProps extends DataTableProps {}
 
 export interface AdminRolesDisplayProps extends DataTableProps {
-    data: any[];
+
 }
 
 class AdminRolesDisplay extends React.PureComponent<AdminRolesDisplayProps, any> {
     render() {
-        const { data = [{ id: 1 }, { id: 2 }, { id: 3 }] } = this.props;
+        // const { data = [] } = this.props;
+
+        // TODO: Rip out dummy data
+        const testData = [{ id: 1 }, { id: 2 }, { id: 3 }];
         return (
             <div>
                 {/*<h3>Roles</h3>*/}
@@ -40,12 +43,12 @@ class AdminRolesDisplay extends React.PureComponent<AdminRolesDisplayProps, any>
                             <th className="text-left">Description</th>
                             <th className="text-left">Start Date</th>
                             <th className="text-left">End Date</th>
-                            <th className="text-left">Type</th>
+                            <th className="text-left">Status</th>
                             <th />
                         </tr>
                     </thead>
                     <tbody>
-                        {data.map(r => {
+                        {testData.map(r => {
                             return (
                                 <tr key={r.id}>
                                     <td>Test Role</td>
@@ -86,10 +89,10 @@ export default class AdminRolesGrid extends DataTableBase<AdminRolesProps> {
     )
 
     // TODO: Figure out why Fragments aren't working...
-    DisplayComponent = ({ data = {}}: DataTableProps<AdminRolesProps>) => (
+    DisplayComponent = (props: DataTableProps<AdminRolesDisplayProps>) => (
         <div>
             <Alert>No roles exist</Alert>
-            <AdminRolesDisplay objectId={'abcd-1234-abcd-1234'} data={[]} />
+            <AdminRolesDisplay {...props} />
         </div>
     )
 
