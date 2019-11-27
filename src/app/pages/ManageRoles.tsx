@@ -3,10 +3,10 @@ import { Button, Glyphicon, Well } from 'react-bootstrap';
 
 import { IdType } from '../api/Api';
 import Page from '../components/Page/Page';
-import { DataTableProps } from '../components/Table/DataTable';
+// import { DataTableProps } from '../components/Table/DataTable';
 
 // import SheriffList from '../containers/SheriffList';
-import AdminRolesGrid from '../containers/AdminRolesGrid/AdminRolesGrid';
+import AdminRolesGrid, { AdminRolesDisplayProps } from '../containers/AdminRolesGrid/AdminRolesGrid';
 // TODO: Probably should get rid of this
 // import SheriffProfileCreateModal from '../containers/SheriffProfileCreateModal';
 
@@ -14,9 +14,11 @@ class ManageRoles extends React.PureComponent {
     renderDataTable(): any {
         const dataTable = new AdminRolesGrid();
         const roleId: IdType = 'asdf-1234';
-        const data: any = [];
+        // const data: any = [];
+        // TODO: Replace with real data
+        const data: any[] = [{ id: 1 }, { id: 2 }, { id: 3 }];
 
-        const tableProps: DataTableProps = { objectId: roleId, data };
+        const tableProps: AdminRolesDisplayProps = { objectId: roleId, data: data };
 
         return dataTable.renderDisplay(tableProps);
     }
