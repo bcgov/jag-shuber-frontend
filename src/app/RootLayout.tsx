@@ -9,36 +9,51 @@ import {
   DragDropContext
 } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
-import Navigation from './components/Navigation';
-import DutyRoster from './pages/DutyRoster';
-import ManageSheriffs from './pages/ManageSheriffs';
-import DefaultAssignments from './pages/DefaultAssignments';
-import Scheduling from './pages/Scheduling';
-import AssignmentDutyEditModal from './containers/AssignmentDutyEditModal';
-import LocationSelector from './containers/LocationSelector';
+
 import { Well, Alert, Button } from 'react-bootstrap';
-import SheriffProfileModal from './containers/SheriffProfileModal';
-import ScheduleShiftCopyModal from './containers/ScheduleShiftCopyModal';
-import ScheduleShiftAddModal from './containers/ScheduleShiftAddModal';
-import AssignmentSheriffDutyReassignmentModal from './containers/AssignmentSheriffDutyReassignmentModal';
-import PublishSchedule from './pages/PublishSchedule/PublishSchedule';
-import Footer from './components/Footer/Footer';
+
+// Import generic infrastructure constructs and modules
+import resolveAppUrl from './infrastructure/resolveAppUrl';
+import CustomDragLayer from './infrastructure/DragDrop/CustomDragLayer';
 import {
   isLocationSet as isCurrentLocationSet,
   isLoggedIn as isUserLoggedIn,
   isLoadingToken as isLoadingUserToken,
   loadingTokenError
 } from './modules/user/selectors';
-import ToastManager from './components/ToastManager/ToastManager';
-import ConnectedConfirmationModal from './containers/ConfirmationModal';
-import SheriffProfileCreateModal from './containers/SheriffProfileCreateModal';
-import resolveAppUrl from './infrastructure/resolveAppUrl';
-import CustomDragLayer from './infrastructure/DragDrop/CustomDragLayer';
-import ScheduleShiftMultiEditModal from './containers/ScheduleMultiShiftEditModal';
-import DutyRosterToolsModal from './containers/DutyRosterToolsModal';
+
+// Import core layout components
+import Navigation from './components/Navigation';
+
+// Import pages
+import AuditPage from './pages/Audit';
 import AssignmentPage from './pages/Assignments';
+import DefaultAssignmentsPage from './pages/DefaultAssignments';
+import DutyRosterPage from './pages/DutyRoster';
+import ManageCodesPage from './pages/ManageCodes';
+import ManageRolesPage from './pages/ManageRoles';
+import ManageSheriffsPage from './pages/ManageSheriffs';
+import ManageUsersPage from './pages/ManageUsers';
+import SchedulingPage from './pages/Scheduling';
+import PublishSchedulePage from './pages/PublishSchedule/PublishSchedule';
+
+// Import container components
+import ToastManager from './components/ToastManager/ToastManager';
+import LocationSelector from './containers/LocationSelector';
+import Footer from './components/Footer/Footer';
+
+// Import app-level modal components
+import ConnectedConfirmationModal from './containers/ConfirmationModal';
 import AssignmentScheduleAddModal from './containers/AssignmentScheduleAddModal';
 import AssignmentScheduleEditModal from './containers/AssignmentScheduleEditModal';
+import AssignmentDutyEditModal from './containers/AssignmentDutyEditModal';
+import AssignmentSheriffDutyReassignmentModal from './containers/AssignmentSheriffDutyReassignmentModal';
+import DutyRosterToolsModal from './containers/DutyRosterToolsModal';
+import ScheduleShiftCopyModal from './containers/ScheduleShiftCopyModal';
+import ScheduleShiftAddModal from './containers/ScheduleShiftAddModal';
+import ScheduleShiftMultiEditModal from './containers/ScheduleMultiShiftEditModal';
+import SheriffProfileModal from './containers/SheriffProfileModal';
+import SheriffProfileCreateModal from './containers/SheriffProfileCreateModal';
 
 export interface LayoutStateProps {
   isLocationSet?: boolean;
@@ -49,6 +64,7 @@ export interface LayoutStateProps {
 
 export interface LayoutDispatchProps {
 }
+
 class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
 
   componentWillReceiveProps(nextProps: LayoutStateProps) {
@@ -109,12 +125,16 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
 
           {isLocationSet && (
             <div className="mainArea">
-              <Route exact={true} path={Navigation.Routes.dutyRoster.timeline.path} component={DutyRoster} />
-              <Route path={Navigation.Routes.schedule.manage.path} component={Scheduling} />
-              <Route path={Navigation.Routes.team.path} component={ManageSheriffs} />
-              <Route path={Navigation.Routes.dutyRoster.setup.path} component={DefaultAssignments} />
+              <Route exact={true} path={Navigation.Routes.dutyRoster.timeline.path} component={DutyRosterPage} />
+              <Route path={Navigation.Routes.schedule.manage.path} component={SchedulingPage} />
+              <Route path={Navigation.Routes.team.path} component={ManageSheriffsPage} />
+              <Route path={Navigation.Routes.admin.children.audit.path} component={AuditPage} />
+              <Route path={Navigation.Routes.admin.children.codes.path} component={ManageCodesPage} />
+              <Route path={Navigation.Routes.admin.children.roles.path} component={ManageRolesPage} />
+              <Route path={Navigation.Routes.admin.children.users.path} component={ManageUsersPage} />
+              <Route path={Navigation.Routes.dutyRoster.setup.path} component={DefaultAssignmentsPage} />
               <Route path={Navigation.Routes.assignment.path} component={AssignmentPage} />
-              <Route path={Navigation.Routes.schedule.distribute.path} component={PublishSchedule} />
+              <Route path={Navigation.Routes.schedule.distribute.path} component={PublishSchedulePage} />
               <DutyRosterToolsModal />
               <AssignmentDutyEditModal />
               <SheriffProfileModal />
@@ -125,7 +145,7 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
               <AssignmentScheduleEditModal />
               <ConnectedConfirmationModal />
               <AssignmentSheriffDutyReassignmentModal />
-              <ScheduleShiftMultiEditModal /> 
+              <ScheduleShiftMultiEditModal />
             </div>
           )}
           <div className="footerArea">

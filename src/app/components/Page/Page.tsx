@@ -8,7 +8,6 @@ export interface PageProps {
     toolbar?: React.ReactNode;
 }
 
-
 export interface PageToolbarProps {
     style?: React.CSSProperties;
     left?: React.ReactNode;

@@ -1,10 +1,10 @@
 import React from 'react';
-import SheriffList from '../containers/SheriffList';
+// import SheriffList from '../containers/SheriffList';
 import { Well } from 'react-bootstrap';
 import Page from '../components/Page/Page';
 import SheriffProfileCreateModal from '../containers/SheriffProfileCreateModal';
 
-class ManageSheriffs extends React.PureComponent {
+class Audit extends React.PureComponent {
     render() {
         return (
             <Page
@@ -30,11 +30,11 @@ class ManageSheriffs extends React.PureComponent {
                         margin: '0 auto'
                     }}
                 >
-                    <SheriffList />
+                    {/*<SheriffList />*/}
                 </Well>
             </Page>
         );
     }
 }
 
-export default ManageSheriffs;
+export default Audit;

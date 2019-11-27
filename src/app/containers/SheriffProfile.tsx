@@ -11,14 +11,21 @@ import {
     FormErrors,
     reset
 } from 'redux-form';
+
 import { connect, Dispatch } from 'react-redux';
-import SheriffProfileComponent, { SheriffProfileProps } from '../components/SheriffProfile/SheriffProfile';
-import { RootState } from '../store';
-import SheriffProfilePluginIdentification from './SheriffProfilePluginIdentification';
-import SheriffProfilePluginHeader from './SheriffProfilePluginHeader/SheriffProfilePluginHeader';
-import SheriffProfilePluginLocation from './SheriffProfilePluginLocation';
+
+import { Alert } from 'react-bootstrap';
+import { toast } from '../components/ToastManager/ToastManager';
+import { RequestActionConfig } from '../infrastructure/Requests/RequestActionBase';
 import { default as FormSubmitButton, SubmitButtonProps } from '../components/FormElements/SubmitButton';
+
+import { currentLocation } from '../modules/user/selectors';
+import toTitleCase from '../infrastructure/toTitleCase';
+
+import { RootState } from '../store';
+
 import { Sheriff } from '../api';
+
 import {
     getSheriff,
     selectedSheriffProfileSection,
@@ -30,14 +37,17 @@ import {
     selectSheriffProfileSection,
     setSheriffProfilePluginSubmitErrors,
 } from '../modules/sheriffs/actions';
+
+import SheriffProfileComponent, { SheriffProfileProps } from '../components/SheriffProfile/SheriffProfile';
+import { SheriffProfilePlugin } from '../components/SheriffProfile/SheriffProfilePlugin';
+
+// Import Sheriff Profile plugins
+import SheriffProfilePluginIdentification from './SheriffProfilePluginIdentification';
+import SheriffProfilePluginHeader from './SheriffProfilePluginHeader/SheriffProfilePluginHeader';
+import SheriffProfilePluginLocation from './SheriffProfilePluginLocation';
 import SheriffProfilePluginLeaves from './SheriffProfilePluginLeaves/SheriffProfilePluginLeaves';
 import SheriffProfilePluginTraining from './SheriffProfilePluginLeaves/SheriffProfilePluginTraining';
-import { SheriffProfilePlugin } from '../components/SheriffProfile/SheriffProfilePlugin';
-import { toast } from '../components/ToastManager/ToastManager';
-import { RequestActionConfig } from '../infrastructure/Requests/RequestActionBase';
-import { Alert } from 'react-bootstrap';
-import { currentLocation } from '../modules/user/selectors';
-import toTitleCase from '../infrastructure/toTitleCase';
+import SheriffProfilePluginRoles from './SheriffProfilePluginRoles/SheriffProfilePluginRoles';
 
 async function submitPlugins(
     sheriffId: string,
@@ -194,7 +204,6 @@ class SheriffProfileErrorDisplay extends React.PureComponent<{ pluginErrors: { [
 }
 
 class SheriffProfileContainer extends React.PureComponent<SheriffProfileContainerProps> {
-
     componentWillMount() {
         const { initialize } = this.props;
         if (initialize) {
@@ -270,12 +279,14 @@ export default class extends
         }
     )(SheriffProfileContainer as any) {
     static defaultProps: Partial<SheriffProfileProps & { children?: React.ReactNode }> = {
+        // TODO: Why isn't this being lazy loaded?
         plugins: [
             new SheriffProfilePluginHeader(),
             new SheriffProfilePluginIdentification(),
             new SheriffProfilePluginLocation(),
             new SheriffProfilePluginLeaves(),
-            new SheriffProfilePluginTraining()
+            new SheriffProfilePluginTraining(),
+            new SheriffProfilePluginRoles()
         ]
     };
     static SubmitButton = (props: Partial<SubmitButtonProps>) => (

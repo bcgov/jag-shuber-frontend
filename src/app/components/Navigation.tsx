@@ -45,15 +45,15 @@ export default class Navigation extends React.Component<NavigationProps, any> {
             label: 'Add Assignment'
         },
         admin: {
-            path: '/admin',
+            path: '#',
             label: 'Administration',
             children: {
                 users: {
-                    path: '/admin/users/manage',
+                    path: '/users/manage',
                     label: 'User Management'
                 },
                 roles: {
-                    path: '/users/manage',
+                    path: '/roles/manage',
                     label: 'Roles & Permissions'
                 },
                 codes: {
