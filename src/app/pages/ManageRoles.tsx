@@ -20,7 +20,9 @@ class ManageRoles extends React.PureComponent {
 
         const tableProps: AdminRolesDisplayProps = { objectId: roleId, data: data };
 
+        // TODO: Get this working!
         return dataTable.renderDisplay(tableProps);
+        // return dataTable.renderFormFields(tableProps);
     }
 
     render() {

@@ -32,7 +32,7 @@ class AdminRolesDisplay extends React.PureComponent<AdminRolesDisplayProps, any>
         // const { data = [] } = this.props;
 
         // TODO: Rip out dummy data
-        const testData = [{ id: 1 }, { id: 2 }, { id: 3 }];
+        const testData = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }];
         return (
             <div>
                 {/*<h3>Roles</h3>*/}
