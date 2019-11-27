@@ -47,13 +47,12 @@ export default class SheriffProfilePluginRoles extends SheriffProfileSectionPlug
             />
         </div>
     )
-    DisplayComponent = (
-        { data = { fullDay: [], partialDay: [] } }: SheriffProfilePluginProps<SheriffProfilePluginRolesProps>) => (
 
-            data && (data.fullDay.length > 0 || data.partialDay.length > 0)
-                ? <LeavesDisplay partialDays={data.partialDay} fullDays={data.fullDay} />
-                : <Alert> No user roles have been assigned </Alert>
-        )
+    DisplayComponent = ({ data = { fullDay: [], partialDay: [] } }: SheriffProfilePluginProps<SheriffProfilePluginRolesProps>) => (
+        data && (data.fullDay.length > 0 || data.partialDay.length > 0)
+            ? <LeavesDisplay partialDays={data.partialDay} fullDays={data.fullDay} />
+            : <Alert> No user roles have been assigned </Alert>
+    )
 
     validate(values: SheriffProfilePluginRolesProps = { fullDay: [], partialDay: [] }): FormErrors | undefined {
         let fullDayErrors: any = [];

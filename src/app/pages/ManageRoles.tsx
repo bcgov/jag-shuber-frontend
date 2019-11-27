@@ -1,10 +1,26 @@
 import React from 'react';
-// import SheriffList from '../containers/SheriffList';
 import { Well } from 'react-bootstrap';
+
+import { IdType } from '../api/Api';
 import Page from '../components/Page/Page';
+import { DataTableProps } from '../components/Table/DataTable';
+
+// import SheriffList from '../containers/SheriffList';
+import AdminRolesGrid from '../containers/AdminRolesGrid/AdminRolesGrid';
+// TODO: Probably should get rid of this
 import SheriffProfileCreateModal from '../containers/SheriffProfileCreateModal';
 
 class ManageRoles extends React.PureComponent {
+    renderDataTable(): any {
+        const dataTable = new AdminRolesGrid();
+        const roleId: IdType = 'asdf-1234';
+        const data: any = [];
+
+        const tableProps: DataTableProps = { objectId: roleId, data };
+
+        return dataTable.renderDisplay(tableProps);
+    }
+
     render() {
         return (
             <Page
@@ -30,7 +46,7 @@ class ManageRoles extends React.PureComponent {
                         margin: '0 auto'
                     }}
                 >
-                    {/*<SheriffList />*/}
+                    {this.renderDataTable()}
                 </Well>
             </Page>
         );
