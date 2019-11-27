@@ -1,5 +1,5 @@
 import React from 'react';
-import { Well } from 'react-bootstrap';
+import { Button, Glyphicon, Well } from 'react-bootstrap';
 
 import { IdType } from '../api/Api';
 import Page from '../components/Page/Page';
@@ -8,7 +8,7 @@ import { DataTableProps } from '../components/Table/DataTable';
 // import SheriffList from '../containers/SheriffList';
 import AdminRolesGrid from '../containers/AdminRolesGrid/AdminRolesGrid';
 // TODO: Probably should get rid of this
-import SheriffProfileCreateModal from '../containers/SheriffProfileCreateModal';
+// import SheriffProfileCreateModal from '../containers/SheriffProfileCreateModal';
 
 class ManageRoles extends React.PureComponent {
     renderDataTable(): any {
@@ -28,7 +28,10 @@ class ManageRoles extends React.PureComponent {
                     <Page.Toolbar
                         right={(
                             <div style={{ marginTop: 3 }}>
-                                <SheriffProfileCreateModal.ShowButton />
+                                {/*<SheriffProfileCreateModal.ShowButton />*/}
+                                <Button className="action-button" onClick={() => { return undefined; }}>
+                                    <Glyphicon glyph="plus" /> Add a Role
+                                </Button>
                             </div>
                         )}
                     />
