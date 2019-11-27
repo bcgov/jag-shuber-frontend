@@ -25,9 +25,9 @@ export interface RolesFieldTableProps {
 }
 
 export default class RolesFieldTable extends React.Component<RolesFieldTableProps> {
-    // Moved out into own def
     static CancelColumn = CellTypes.Cancel;
     static LeaveSubCodeColumn = CellTypes.LeaveSubCode;
+    static RoleCodeColumn = CellTypes.RoleCode;
     static DateColumn = CellTypes.Date;
     static TimeColumn = CellTypes.Time;
 

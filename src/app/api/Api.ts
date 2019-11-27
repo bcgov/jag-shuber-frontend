@@ -120,7 +120,7 @@ export namespace WorkSection {
             default:
                 return '4';
         }
-    }    
+    }
 }
 
 export const BLANK_SHERIFF: Sheriff = {
@@ -162,6 +162,7 @@ export interface SheriffProfile {
     sheriff: Sheriff;
     leaves?: Leave[];
 }
+
 export interface Sheriff {
     id: IdType;
     firstName: string;
@@ -194,7 +195,7 @@ export interface BaseAssignment {
     locationId: IdType;
     workSectionId: WorkSectionCode;
     dutyRecurrences?: DutyRecurrence[];
-    startDateTime: DateType; 
+    startDateTime: DateType;
     endDateTime?: DateType;
 }
 

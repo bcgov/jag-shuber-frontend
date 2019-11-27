@@ -39,10 +39,10 @@ export default class SheriffProfilePluginRoles extends SheriffProfileSectionPlug
                 fieldName={this.formFieldNames.fullDay}
                 title={<h3>Assigned Roles</h3>}
                 columns={[
+                    RolesFieldTable.RoleCodeColumn(),
                     RolesFieldTable.DateColumn('Start Date', 'startDate'),
                     RolesFieldTable.DateColumn('End Date', 'endDate'),
-                    RolesFieldTable.LeaveSubCodeColumn(true),
-                    RolesFieldTable.CancelColumn
+                    RolesFieldTable.CancelColumn()
                 ]}
             />
         </div>
