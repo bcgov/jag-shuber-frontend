@@ -17,17 +17,17 @@ import {
     // DataTableSectionPlugin
 } from '../../components/Table/DataTable';
 
-import RolesFieldTable from './RolesFieldTable';
+import CodeTypesFieldTable from './CodeTypesFieldTable';
 
 // import { fromTimeString } from 'jag-shuber-api';
 
-export interface AdminRolesProps extends DataTableProps {}
+export interface AdminCodeTypesProps extends DataTableProps {}
 
-export interface AdminRolesDisplayProps extends DataTableProps {
+export interface AdminCodeTypesDisplayProps extends DataTableProps {
 
 }
 
-class AdminRolesDisplay extends React.PureComponent<AdminRolesDisplayProps, any> {
+class AdminCodeTypesDisplay extends React.PureComponent<AdminCodeTypesDisplayProps, any> {
     render() {
         // const { data = [] } = this.props;
 
@@ -35,11 +35,12 @@ class AdminRolesDisplay extends React.PureComponent<AdminRolesDisplayProps, any>
         const testData = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }];
         return (
             <div>
-                {/*<h3>Roles</h3>*/}
+                {/*<h3>Code Types</h3>*/}
                 <Table responsive={true} striped={true} >
                     <thead>
                         <tr>
-                            <th className="text-left">Role Name</th>
+                            <th className="text-left">Display Name</th>
+                            <th className="text-left">Code</th>
                             <th className="text-left">Description</th>
                             <th className="text-left">Start Date</th>
                             <th className="text-left">End Date</th>
@@ -51,7 +52,8 @@ class AdminRolesDisplay extends React.PureComponent<AdminRolesDisplayProps, any>
                         {testData.map(r => {
                             return (
                                 <tr key={r.id}>
-                                    <td>Test Role</td>
+                                    <td>Random Code Type</td>
+                                    <td>RNDM_CODE</td>
                                     <td>Ipsum Lorem Dolor</td>
                                     <td>{new Date().toLocaleDateString()}</td>
                                     <td>{new Date().toLocaleDateString()}</td>
@@ -69,44 +71,44 @@ class AdminRolesDisplay extends React.PureComponent<AdminRolesDisplayProps, any>
     }
 }
 
-export default class AdminRolesGrid extends DataTableBase<AdminRolesProps> {
-    name = 'roles';
-    formFieldNames = { default: 'roles'};
-    title: string = 'User Roles';
-    FormComponent = (props: DataTableProps<AdminRolesProps>) => (
+export default class AdminCodeTypesGrid extends DataTableBase<AdminCodeTypesProps> {
+    name = 'codeTypes';
+    formFieldNames = { default: 'codeTypes'};
+    title: string = 'Code Types';
+    FormComponent = (props: DataTableProps<AdminCodeTypesProps>) => (
         <div>
-            <RolesFieldTable
+            <CodeTypesFieldTable
                 fieldName={this.formFieldNames.default}
-                title={<h3>Assigned Roles</h3>}
+                title={<h3>Code Types</h3>}
                 columns={[
-                    RolesFieldTable.RoleCodeColumn(),
-                    RolesFieldTable.DateColumn('Start Date', 'startDate'),
-                    RolesFieldTable.DateColumn('End Date', 'endDate'),
-                    RolesFieldTable.CancelColumn()
+                    CodeTypesFieldTable.RoleCodeColumn(),
+                    CodeTypesFieldTable.DateColumn('Start Date', 'startDate'),
+                    CodeTypesFieldTable.DateColumn('End Date', 'endDate'),
+                    CodeTypesFieldTable.CancelColumn()
                 ]}
             />
         </div>
     )
 
     // TODO: Figure out why Fragments aren't working...
-    DisplayComponent = (props: DataTableProps<AdminRolesDisplayProps>) => (
+    DisplayComponent = (props: DataTableProps<AdminCodeTypesDisplayProps>) => (
         <div>
-            <Alert>No roles exist</Alert>
-            <AdminRolesDisplay {...props} />
+            <Alert>No code types exist</Alert>
+            <AdminCodeTypesDisplay {...props} />
         </div>
     )
 
-    validate(values: AdminRolesProps = {}): FormErrors | undefined {
+    validate(values: AdminCodeTypesProps = {}): FormErrors | undefined {
         return undefined;
     }
 
-    // TODO: Not sure if this should be roleId or what, I'm not there yet...
-    fetchData(roleId: IdType, dispatch: Dispatch<{}>) {
-        // TODO: Implement getRoles
-        // dispatch(getRoles());
+    // TODO: Not sure if this should be codeTypeId or what, I'm not there yet...
+    fetchData(codeTypeId: IdType, dispatch: Dispatch<{}>) {
+        // TODO: Implement getCodeTypes
+        // dispatch(getCodeTypes());
     }
 
-    getData(roleId: IdType, state: RootState) {
+    getData(codeTypeId: IdType, state: RootState) {
         return {
         };
     }
