@@ -26,6 +26,7 @@ export type LeaveSubCodeMap = MapType<LeaveSubCode>;
 export type LeaveCancelCodeMap = MapType<LeaveCancelCode>;
 export type CourtRoleMap = MapType<CourtRole>;
 export type GenderCodeMap = MapType<GenderCode>;
+export type RoleMap = MapType<Role>;
 
 export const WORK_SECTIONS: StringMap = {
     COURTS: 'Courts',
@@ -108,7 +109,7 @@ export namespace Leave {
 
 export namespace WorkSection {
     export function getWorkSectionSortCode(workSectionId?: WorkSectionCode): string {
-        switch(workSectionId) {
+        switch (workSectionId) {
             case 'COURTS':
                 return '0';
             case 'JAIL':
@@ -369,6 +370,128 @@ export interface AssignmentScheduleItem {
     workSectionId: WorkSectionCode;
 }
 
+// Users, roles & permissions
+// TODO: What fields should be required?
+export interface User {
+    id?: IdType;
+    userId?: string;
+    displayName?: string; // Display name for the user
+    type?: string; // This isn't in the database table TODO: deprecate?
+    defaultLocationId?: string; // Set a default location for the user
+    systemAccountInd?: string; // Is the user a system user
+    sheriffId?: string; // If the user is a sheriff, this needs to be populated
+    createdBy?: string;
+    updatedBy?: string;
+    createdDtm?: string;
+    updatedDtm?: string;
+    revisionCount?: number;
+}
+
+// TODO: What fields should be required?
+export interface Role {
+    id: IdType;
+    roleId?: string;
+    roleName?: string; // Human-friendly role name
+    roleCode?: string; // Code type for the role
+    systemCodeInd?: string; // Is the code type a SYSTEM code
+    description?: string; // Role description
+    createdBy?: string;
+    updatedBy?: string;
+    createdDtm?: string;
+    updatedDtm?: string;
+    revisionCount?: number;
+}
+// TODO: What fields should be required?
+export interface UserRole {
+    id?: IdType;
+    userId?: string;
+    roleId?: string;
+    effectiveDate?: string; // See expiryDate...
+    expiryDate?: string; // Roles don't inherently expire, but a user's role assignment can
+    locationId?: string; // If defined, the user role is only valid for a particular location
+    createdBy?: string;
+    updatedBy?: string;
+    createdDtm?: string;
+    updatedDtm?: string;
+    revisionCount?: number;
+}
+
+// TODO: What fields should be required?
+export interface ApiScope {
+    id?: IdType;
+    apiScopeId?: string;
+    scopeName?: string; // Human-friendly scope name
+    scopeCode?: string; // Code type for the scope
+    systemScopeInd?: string; // Is the scope required by the SYSTEM
+    description?: string; // Scope description
+    createdBy?: string;
+    updatedBy?: string;
+    createdDtm?: string;
+    updatedDtm?: string;
+    revisionCount?: number;
+}
+
+export interface FrontendScope {
+    id?: IdType;
+    frontendScopeId?: string;
+    scopeName?: string; // Human-friendly scope name
+    scopeCode?: string; // Code type for the scope
+    systemScopeInd?: string; // Is the scope required by the SYSTEM
+    description?: string; // Scope description
+    createdBy?: string;
+    updatedBy?: string;
+    createdDtm?: string;
+    updatedDtm?: string;
+    revisionCount?: number;
+}
+
+// TODO: What fields should be required?
+export interface RoleApiScope {
+    id?: IdType;
+    roleApiScopeId?: string;
+    roleId?: string;
+    rolePermissions: Array<RolePermission | undefined>;
+    createdBy?: string;
+    updatedBy?: string;
+    createdDtm?: string;
+    updatedDtm?: string;
+    revisionCount?: number;
+}
+
+// TODO: What fields should be required?
+export interface RoleFrontendScope {
+    id?: IdType;
+    roleFrontendScopeId?: string;
+    roleId?: string;
+    rolePermissions: Array<RolePermission | undefined>;
+    createdBy?: string;
+    updatedBy?: string;
+    createdDtm?: string;
+    updatedDtm?: string;
+    revisionCount?: number;
+}
+
+type RoleScope = RoleApiScope | RoleFrontendScope;
+
+/**
+ * Scoped access to API routes.
+ */
+// TODO: What fields should be required?
+export interface RolePermission {
+    id?: IdType;
+    rolePermissionId?: string;
+    roleId?: string;
+    roleScopeString: string; // TODO: frontend | api ?
+    roleScope: RoleScope; // TODO: frontend | api ?
+    displayName?: string;
+    description?: string;
+    createdBy?: string;
+    updatedBy?: string;
+    createdDtm?: string;
+    updatedDtm?: string;
+    revisionCount?: number;
+}
+
 export interface API {
 
     // Sheriffs
@@ -424,6 +547,12 @@ export interface API {
     getGenderCodes(): Promise<GenderCode[]>;
 
     getLocations(): Promise<Location[]>;
+
+    // Users, roles & permissions
+    getRole(): Promise<Role>;
+    createRole(newRole: Partial<Role>): Promise<Role>;
+    updateRole(updatedRole: Role): Promise<Role>;
+    getRoles(): Promise<Role[]>;
 
     getToken(): Promise<string>;
     logout(): Promise<void>;

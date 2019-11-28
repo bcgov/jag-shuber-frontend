@@ -29,6 +29,14 @@ export {
     AlternateAssignment,
     AlternateAssignmentMap,
     SheriffUnassignedRange,
+    User,
+    Role,
+    UserRole,
+    ApiScope,
+    FrontendScope,
+    RoleApiScope,
+    RoleFrontendScope,
+    RolePermission,
     WORK_SECTIONS
 } from './Api';
 
