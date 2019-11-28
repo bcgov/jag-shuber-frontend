@@ -1,10 +1,30 @@
 import React from 'react';
-// import SheriffList from '../containers/SheriffList';
-import { Well } from 'react-bootstrap';
-import Page from '../components/Page/Page';
-import SheriffProfileCreateModal from '../containers/SheriffProfileCreateModal';
+import { Button, Glyphicon, Well } from 'react-bootstrap';
 
-class ManageCodes extends React.PureComponent {
+import { IdType } from '../api';
+import Page from '../components/Page/Page';
+// import { DataTableProps } from '../components/Table/DataTable';
+
+// import SheriffList from '../containers/SheriffList';
+import AdminCodeTypesGrid, { AdminCodeTypesDisplayProps } from '../containers/AdminCodeTypesGrid/AdminCodeTypesGrid';
+// TODO: Probably should get rid of this
+// import SheriffProfileCreateModal from '../containers/SheriffProfileCreateModal';
+
+class ManageCodeTypes extends React.PureComponent {
+    renderDataTable(): any {
+        const dataTable = new AdminCodeTypesGrid();
+        const roleId: IdType = 'asdf-1234';
+        // const data: any = [];
+        // TODO: Replace with real data
+        const data: any[] = [{ id: 1 }, { id: 2 }, { id: 3 }];
+
+        const tableProps: AdminCodeTypesDisplayProps = { objectId: roleId, data: data };
+
+        // TODO: Get this working!
+        return dataTable.renderDisplay(tableProps);
+        // return dataTable.renderFormFields(tableProps);
+    }
+
     render() {
         return (
             <Page
@@ -12,7 +32,10 @@ class ManageCodes extends React.PureComponent {
                     <Page.Toolbar
                         right={(
                             <div style={{ marginTop: 3 }}>
-                                <SheriffProfileCreateModal.ShowButton />
+                                {/*<SheriffProfileCreateModal.ShowButton />*/}
+                                <Button className="action-button" onClick={() => { return undefined; }}>
+                                    <Glyphicon glyph="plus" /> Add a Role
+                                </Button>
                             </div>
                         )}
                     />
@@ -30,11 +53,11 @@ class ManageCodes extends React.PureComponent {
                         margin: '0 auto'
                     }}
                 >
-                    {/*<SheriffList />*/}
+                    {this.renderDataTable()}
                 </Well>
             </Page>
         );
     }
 }
 
-export default ManageCodes;
+export default ManageCodeTypes;
