@@ -30,6 +30,7 @@ import { RootState } from '../store';
 
 // TODO: Remove this, temporarily hardcoding in plugins
 import AdminRolesGridPlugin from './AdminRolesGrid/AdminRolesGrid';
+import AdminCodeTypesGridPlugin from './AdminCodeTypesGrid/AdminCodeTypesGrid';
 
 // import {
 //     getRole,
@@ -323,8 +324,7 @@ export default class extends
         ]*/
         plugins: [
             new AdminRolesGridPlugin(),
-            new AdminRolesGridPlugin(),
-            new AdminRolesGridPlugin()
+            new AdminCodeTypesGridPlugin()
         ]
     };
     static SubmitButton = (props: Partial<SubmitButtonProps>) => (
