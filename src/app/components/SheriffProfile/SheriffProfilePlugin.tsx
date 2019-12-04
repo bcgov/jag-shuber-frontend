@@ -14,7 +14,7 @@ export interface SheriffProfilePlugin<T = any> {
      * validation and maintaining state of sheriff profile
      * with respects to plugins
      * @type {string}
-     * @memberof SheriffProfilePlugin
+     * @memberof AdminFormPlugin
      */
     name: string;
     renderDisplay(props: SheriffProfilePluginProps<T>): React.ReactNode;
@@ -29,19 +29,19 @@ export interface SheriffProfilePlugin<T = any> {
 export abstract class SheriffProfilePluginBase<T = any> implements SheriffProfilePlugin<T> {
     /**
      * This property is used for namespacing the form data,
-     * validation and maintaining state of sheriff profile 
+     * validation and maintaining state of sheriff profile
      * with respects to plugins
      * @type {string}
-     * @memberof SheriffProfilePlugin
+     * @memberof AdminFormPlugin
      */
     abstract name: string;
 
     /**
      * The formFieldNames are used to enhance to experience
-     * when submitting / saving the profile.  These fields 
+     * when submitting / saving the profile.  These fields
      * should be the names of fields used by this plugin
-     * to allow automatic determination of errors that 
-     * exist within specific plugins (i.e. to highlight tabs 
+     * to allow automatic determination of errors that
+     * exist within specific plugins (i.e. to highlight tabs
      * with errors etc.)
      *
      * @abstract

@@ -36,6 +36,8 @@ export abstract class DataTableBase<T = any> implements DataTable<T> {
      */
     abstract name: string;
 
+    abstract get title(): string;
+
     /**
      * The formFieldNames are used to enhance to experience
      * when submitting / saving the profile.  These fields

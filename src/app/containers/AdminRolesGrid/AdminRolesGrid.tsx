@@ -75,6 +75,7 @@ export default class AdminRolesGrid extends DataTableBase<AdminRolesProps> {
     title: string = 'User Roles';
     FormComponent = (props: DataTableProps<AdminRolesProps>) => (
         <div>
+            <h4>This is edit mode</h4>
             <RolesFieldTable
                 fieldName={this.formFieldNames.default}
                 title={<h3>Assigned Roles</h3>}
