@@ -72,16 +72,18 @@ class AdminRolesDisplay extends React.PureComponent<AdminRolesDisplayProps, any>
 export default class AdminRolesGrid extends DataTableBase<AdminRolesProps> {
     name = 'roles';
     formFieldNames = { default: 'roles'};
-    title: string = 'User Roles';
+    title: string = 'Manage Roles';
     FormComponent = (props: DataTableProps<AdminRolesProps>) => (
         <div>
             <RolesFieldTable
                 fieldName={this.formFieldNames.default}
-                title={<h3>Assigned Roles</h3>}
+                title={''} // Leave this blank
                 columns={[
-                    RolesFieldTable.RoleCodeColumn(),
+                    RolesFieldTable.RoleCodeColumn('Role Name'),
+                    RolesFieldTable.TextFieldColumn('Description'),
                     RolesFieldTable.DateColumn('Start Date', 'startDate'),
                     RolesFieldTable.DateColumn('End Date', 'endDate'),
+                    RolesFieldTable.RoleCodeColumn('Status'),
                     RolesFieldTable.CancelColumn()
                 ]}
             />
@@ -91,7 +93,7 @@ export default class AdminRolesGrid extends DataTableBase<AdminRolesProps> {
     // TODO: Figure out why Fragments aren't working...
     DisplayComponent = (props: DataTableProps<AdminRolesDisplayProps>) => (
         <div>
-            <Alert>No roles exist</Alert>
+            {/*<Alert>No roles exist</Alert>*/}
             <AdminRolesDisplay {...props} />
         </div>
     )
