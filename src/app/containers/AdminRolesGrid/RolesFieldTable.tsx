@@ -38,9 +38,9 @@ export default class RolesFieldTable extends React.Component<RolesFieldTableProp
             columns = []
         } = this.props;
 
-        return (<div>This would be the table</div>);
+        // return (<div>This would be the table</div>);
 
-        /*return (
+        return (
             <FieldArray<Partial<Leave>>
                 name={fieldName}
                 component={({ fields }) => (
@@ -95,7 +95,7 @@ export default class RolesFieldTable extends React.Component<RolesFieldTableProp
                     </div>
                 )}
             />
-        );*/
+        );
     }
 
 }
