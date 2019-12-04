@@ -17,30 +17,33 @@ import {
 import { connect } from 'react-redux';
 
 import { Alert } from 'react-bootstrap';
-import { toast } from '../../components/ToastManager/ToastManager';
-import { RequestActionConfig } from '../../infrastructure/Requests/RequestActionBase';
-import { default as FormSubmitButton, SubmitButtonProps } from '../../components/FormElements/SubmitButton';
+// import { toast } from '../../components/ToastManager/ToastManager';
+// import { RequestActionConfig } from '../../infrastructure/Requests/RequestActionBase';
+import { default as FormSubmitButton, SubmitButtonProps } from '../components/FormElements/SubmitButton';
 
-import { currentLocation } from '../../modules/user/selectors';
-import toTitleCase from '../../infrastructure/toTitleCase';
+// import { currentLocation } from '../../modules/user/selectors';
+// import toTitleCase from '../../infrastructure/toTitleCase';
 
-import { RootState } from '../../store';
+import { RootState } from '../store';
 
-import { Role } from '../../api';
+// import { Role } from '../../api';
 
-import {
-    getRole,
+// TODO: Remove this, temporarily hardcoding in plugins
+import AdminRolesGridPlugin from './AdminRolesGrid/AdminRolesGrid';
+
+// import {
+//     getRole,
     // selectedRoleProfileSection,
     // getRoleProfilePluginErrors
-} from '../../modules/roles/selectors';
-import {
-    updateRole,
-    createRole,
+// } from '../../modules/roles/selectors';
+// import {
+//     updateRole,
+//     createRole,
     // selectRoleProfileSection,
     // setRoleProfilePluginSubmitErrors,
-} from '../../modules/roles/actions';
+// } from '../../modules/roles/actions';
 
-import AdminRolesComponent, { AdminRolesProps } from './AdminRolesGrid';
+import AdminFormComponent, { AdminFormProps } from '../components/AdminForm/AdminForm';
 
 /*async function submitPlugins(
     roleId: string,
@@ -111,8 +114,8 @@ function collectPluginErrors(state: any, formName: string, plugins: RoleProfileP
     };
 }*/
 
-const formConfig: ConfigProps<any, AdminRolesProps> = {
-    form: 'AdminRoles',
+const formConfig: ConfigProps<{}, AdminFormProps> = {
+    form: 'AdminForm',
     enableReinitialize: true,
     /* validate: (values: any, { plugins = [] }) => {
         const validationErrors = plugins.reduce((errors, plugin) => {
@@ -125,12 +128,12 @@ const formConfig: ConfigProps<any, AdminRolesProps> = {
         }, {} as FormErrors);
         return {...validationErrors};
     }, */
-    validate: (values: any) => {
+    validate: (values: {}) => {
         return {};
     },
     // tslint:disable-next-line:no-empty
     onSubmit: async () => {},
-    /*onSubmit: async (values: any, dispatch, { roleId, plugins = [] }: AdminRolesProps) => {
+    /*onSubmit: async (values: any, dispatch, { roleId, plugins = [] }: AdminFormProps) => {
         const { role }: { role: Partial<Role> } = values;
         let roleEntityId: string;
         const profileUpdateConfig: RequestActionConfig<Role> = {
@@ -164,25 +167,29 @@ const formConfig: ConfigProps<any, AdminRolesProps> = {
 
 // Wire up the Form to redux Form
 // @ts-ignore
-const AdminRolesForm = reduxForm<any, AdminRolesProps>(formConfig)(AdminRolesComponent);
+const AdminForm = reduxForm<{}, AdminFormProps>(formConfig)(AdminFormComponent);
+// tslint:disable-next-line:no-console
+console.log('dumping AdminForm');
+// tslint:disable-next-line:no-console
+console.log(AdminForm);
 
-interface AdminRolesContainerStateProps {
+interface AdminFormContainerStateProps {
     pluginsWithErrors: { [key: string]: boolean };
     pluginErrors: { [key: string]: Error | string };
     selectedSection?: string;
 }
 
-interface AdminRolesContainerDispatchProps {
+interface AdminFormContainerDispatchProps {
     initialize: () => void;
     onSelectSection: (sectionName: string) => void;
 }
 
-type AdminRolesContainerProps = AdminRolesProps &
-    InjectedFormProps<any, AdminRolesProps>
-    & AdminRolesContainerStateProps
-    & AdminRolesContainerDispatchProps;
+type AdminFormContainerProps = AdminFormProps &
+    InjectedFormProps<{}, AdminFormProps>
+    & AdminFormContainerStateProps
+    & AdminFormContainerDispatchProps;
 
-class AdminRolesErrorDisplay extends React.PureComponent<{ pluginErrors: { [key: string]: Error | string } }>{
+class AdminFormErrorDisplay extends React.PureComponent<{ pluginErrors: { [key: string]: Error | string } }> {
     render() {
         const { pluginErrors } = this.props;
         const pluginsWithErrors = Object.keys(pluginErrors);
@@ -203,7 +210,7 @@ class AdminRolesErrorDisplay extends React.PureComponent<{ pluginErrors: { [key:
     }
 }
 
-class AdminRolesContainer extends React.PureComponent<AdminRolesContainerProps> {
+class AdminFormContainer extends React.PureComponent<AdminFormContainerProps> {
     componentWillMount() {
         const { initialize } = this.props;
         if (initialize) {
@@ -217,10 +224,10 @@ class AdminRolesContainer extends React.PureComponent<AdminRolesContainerProps> 
 
         return (
             <div>
-                <AdminRolesErrorDisplay pluginErrors={pluginErrors} />
+                <AdminFormErrorDisplay pluginErrors={pluginErrors} />
                 {isEditing
-                    ? <AdminRolesForm {...this.props as any} />
-                    : <AdminRolesComponent {...this.props} />}
+                    ? <AdminForm {...this.props as any} />
+                    : <AdminFormComponent {...this.props} />}
             </div>
         );
     }*/
@@ -228,23 +235,26 @@ class AdminRolesContainer extends React.PureComponent<AdminRolesContainerProps> 
         // const { isEditing = false, pluginErrors = {} } = this.props;
         const { pluginErrors = {} } = this.props;
 
+        const isEditing = true;
+
         return (
             <div>
-                <AdminRolesErrorDisplay pluginErrors={pluginErrors} />
-                {/*<AdminRolesForm {...this.props as any} />*/}
-                {/*<AdminRolesComponent {...this.props} />}*/}
+                <AdminFormErrorDisplay pluginErrors={pluginErrors} />
+                {isEditing
+                    ? <AdminForm {...this.props as {}} />
+                    : <div>#AdminFormComponent Instance</div>
+                    // : <AdminFormComponent {...this.props} />
+                    }
             </div>
         );
     }
 }
 
-export default // @ts-ignore
-class extends
-    // connect<AdminRolesContainerStateProps, AdminRolesContainerDispatchProps, AdminRolesProps,
-    connect(
+export default class extends
+    connect<AdminFormContainerStateProps, AdminFormContainerDispatchProps, AdminFormProps, RootState>(
         // (state, { roleId, plugins = [] }) => {
-        () => {
-            let initialValues: any = {};
+        (state) => {
+            let initialValues: {} = {};
             /*if (roleId) {
                 // @ts-ignore
                 initialValues = plugins
@@ -278,35 +288,44 @@ class extends
             return {
                 initialValues,
                 pluginState: { ...initialValues },
-                // selectedSection: selectedAdminRolesSection(state),
+                // selectedSection: selectedAdminFormSection(state),
                 // ...collectPluginErrors(state, formConfig.form, plugins)
+                // TODO: When we get plugins working we can use the collect function collectPluginErrors instead
+                pluginsWithErrors: {},
+                // TODO: When we get plugins working we can use the collect function collectPluginErrors instead
+                pluginErrors: {}
             };
         },
         // (dispatch, { roleId, plugins = [] }) => {
         (dispatch, {}) => {
             return {
                 initialize: () => {
-                    // dispatch(selectAdminRolesSection());
-                    // dispatch(setAdminRolesPluginSubmitErrors());
-                    // plugins.forEach(p => {
-                        // p.fetchData(roleId, dispatch);
-                    // });
+                    /*dispatch(selectAdminFormSection());
+                    dispatch(setAdminFormPluginSubmitErrors());
+                    plugins.forEach(p => {
+                        p.fetchData(roleId, dispatch);
+                    });*/
                 },
-                // onSelectSection: (sectionName) => dispatch(selectAdminRolesSection(sectionName))
+                // tslint:disable-next-line:no-empty
+                onSelectSection: () => {} // (sectionName) => dispatch(selectAdminFormSection(sectionName))
             };
         }
-    )(AdminRolesContainer as any) {
-    static defaultProps: Partial<AdminRolesProps & { children?: React.ReactNode }> = {
+    )(AdminFormContainer as any) {
+    static defaultProps: Partial<AdminFormProps & { children?: React.ReactNode }> = {
         // TODO: Why isn't this being lazy loaded?
         /*plugins: [
-            new AdminRolesPluginHeader(),
-            new AdminRolesPluginIdentification(),
-            new AdminRolesPluginLocation(),
-            new AdminRolesPluginLeaves(),
-            new AdminRolesPluginTraining(),
-            new AdminRolesPluginRoles()
+            new AdminFormPluginHeader(),
+            new AdminFormPluginIdentification(),
+            new AdminFormPluginLocation(),
+            new AdminFormPluginLeaves(),
+            new AdminFormPluginTraining(),
+            new AdminFormPluginRoles()
         ]*/
-        // plugins: []
+        plugins: [
+            new AdminRolesGridPlugin(),
+            new AdminRolesGridPlugin(),
+            new AdminRolesGridPlugin()
+        ]
     };
     static SubmitButton = (props: Partial<SubmitButtonProps>) => (
         <FormSubmitButton {...props} formName={formConfig.form} />

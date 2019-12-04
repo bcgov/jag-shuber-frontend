@@ -9,6 +9,7 @@ import Page from '../components/Page/Page';
 import AdminRolesGrid, { AdminRolesDisplayProps } from '../containers/AdminRolesGrid/AdminRolesGrid';
 // TODO: Probably should get rid of this
 // import SheriffProfileCreateModal from '../containers/SheriffProfileCreateModal';
+import AdminForm from '../containers/AdminForm';
 
 class ManageRoles extends React.PureComponent {
     renderDataTable(): any {
@@ -21,8 +22,8 @@ class ManageRoles extends React.PureComponent {
         const tableProps: AdminRolesDisplayProps = { objectId: roleId, data: data };
 
         // TODO: Get this working!
-        return dataTable.renderDisplay(tableProps);
-        // return dataTable.renderFormFields(tableProps);
+        // return dataTable.renderDisplay(tableProps);
+        return dataTable.renderFormFields(tableProps);
     }
 
     render() {
@@ -53,7 +54,9 @@ class ManageRoles extends React.PureComponent {
                         margin: '0 auto'
                     }}
                 >
-                    {this.renderDataTable()}
+                    <AdminForm
+                        // isEditing={true}
+                    />
                 </Well>
             </Page>
         );
