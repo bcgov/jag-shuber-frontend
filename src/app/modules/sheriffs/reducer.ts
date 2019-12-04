@@ -30,7 +30,7 @@ export function createReducer<State>(
     if (fn) { // the "as any" part is a bit of a shame but ignore it
       return (fn as any)(state, action.payload, action);
     } else {
-      return state || {};
+      return state || {} as State;
     }
   };
 }

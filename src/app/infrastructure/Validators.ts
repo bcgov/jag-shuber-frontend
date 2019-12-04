@@ -62,6 +62,7 @@ export const isTimeBefore = (otherDateValue: any, otherDateName: string) => {
         if (!fromTimeString(dateValue).isBefore(fromTimeString(otherDateValue))) {
             return `${VALIDATOR_MESSAGES.DATE_MUST_BE_BEFORE} ${otherDateName}`;
         }
+
         return;
     };
 };

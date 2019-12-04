@@ -33,7 +33,7 @@
     "interact.js": "^1.2.8",
     "interactjs": "^1.3.4",
     "istanbul": "^0.4.5",
-    "jag-shuber-api": "github:bcgov/jag-shuber-api",
+    "jag-shuber-api": "github:bcgov/jag-shuber-api#feature/implement-roles",
     "jest": "20.0.4",
     "map": "^1.0.1",
     "moment": "^2.22.2",
@@ -63,6 +63,7 @@
     "redux-modal": "^1.7.3",
     "redux-thunk": "^2.2.0",
     "reselect": "^3.0.1",
+    "snyk": "^1.120.0",
     "source-map-loader": "^0.2.3",
     "style-loader": "0.18.2",
     "superagent": "^3.8.3",
@@ -73,8 +74,7 @@
     "webpack-manifest-plugin": "1.2.1",
     "webpack-version-file": "^0.1.3",
     "whatwg-fetch": "2.0.3",
-    "yarn": "^1.9.4",
-    "snyk": "^1.120.0"
+    "yarn": "^1.9.4"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^3.3.10",

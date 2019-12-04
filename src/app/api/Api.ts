@@ -374,12 +374,10 @@ export interface AssignmentScheduleItem {
 // TODO: What fields should be required?
 export interface User {
     id?: IdType;
-    userId?: string;
-    displayName?: string; // Display name for the user
-    type?: string; // This isn't in the database table TODO: deprecate?
-    defaultLocationId?: string; // Set a default location for the user
-    systemAccountInd?: string; // Is the user a system user
-    sheriffId?: string; // If the user is a sheriff, this needs to be populated
+    displayName?: string;
+    defaultLocationId?: IdType;
+    systemAccountInd?: number;
+    sheriffId?: IdType;
     createdBy?: string;
     updatedBy?: string;
     createdDtm?: string;
@@ -390,11 +388,10 @@ export interface User {
 // TODO: What fields should be required?
 export interface Role {
     id: IdType;
-    roleId?: string;
-    roleName?: string; // Human-friendly role name
-    roleCode?: string; // Code type for the role
-    systemCodeInd?: string; // Is the code type a SYSTEM code
-    description?: string; // Role description
+    roleName?: string;
+    roleCode?: string;
+    systemCodeInd?: number;
+    description?: string;
     createdBy?: string;
     updatedBy?: string;
     createdDtm?: string;
@@ -404,11 +401,11 @@ export interface Role {
 // TODO: What fields should be required?
 export interface UserRole {
     id?: IdType;
-    userId?: string;
-    roleId?: string;
-    effectiveDate?: string; // See expiryDate...
-    expiryDate?: string; // Roles don't inherently expire, but a user's role assignment can
-    locationId?: string; // If defined, the user role is only valid for a particular location
+    userId?: IdType;
+    roleId?: IdType;
+    effectiveDate?: string;
+    expiryDate?: string;
+    locationId?: IdType;
     createdBy?: string;
     updatedBy?: string;
     createdDtm?: string;

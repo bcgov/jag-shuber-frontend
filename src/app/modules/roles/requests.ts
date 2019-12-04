@@ -77,7 +77,7 @@ class UpdateRoleRequest extends UpdateEntityRequest<Role, RoleModuleState> {
         );
     }
     public async doWork(role: Partial<Role>, { api }: ThunkExtra): Promise<Role> {
-        let newRole = await api.updateRole(role);
+        let newRole = await api.updateRole(role as Role);
         return newRole;
     }
 }
