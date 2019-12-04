@@ -40,6 +40,7 @@ class AdminRolesDisplay extends React.PureComponent<AdminRolesDisplayProps, any>
                     <thead>
                         <tr>
                             <th className="text-left">Role Name</th>
+                            <th className="text-left">Role Code</th>
                             <th className="text-left">Description</th>
                             <th className="text-left">Start Date</th>
                             <th className="text-left">End Date</th>
@@ -52,6 +53,7 @@ class AdminRolesDisplay extends React.PureComponent<AdminRolesDisplayProps, any>
                             return (
                                 <tr key={r.id}>
                                     <td>Test Role</td>
+                                    <td>TEST_ROLE</td>
                                     <td>Ipsum Lorem Dolor</td>
                                     <td>{new Date().toLocaleDateString()}</td>
                                     <td>{new Date().toLocaleDateString()}</td>
@@ -80,10 +82,11 @@ export default class AdminRolesGrid extends DataTableBase<AdminRolesProps> {
                 title={''} // Leave this blank
                 columns={[
                     RolesFieldTable.RoleCodeColumn('Role Name'),
+                    RolesFieldTable.TextFieldColumn('Role Code'),
                     RolesFieldTable.TextFieldColumn('Description'),
                     RolesFieldTable.DateColumn('Start Date', 'startDate'),
                     RolesFieldTable.DateColumn('End Date', 'endDate'),
-                    RolesFieldTable.RoleCodeColumn('Status'),
+                    RolesFieldTable.SelectorFieldColumn('Status'),
                     RolesFieldTable.CancelColumn()
                 ]}
             />

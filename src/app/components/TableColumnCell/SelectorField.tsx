@@ -1,0 +1,50 @@
+import * as React from 'react';
+import { Field } from 'redux-form';
+
+import { Glyphicon } from 'react-bootstrap';
+
+import * as Types from './types';
+
+import SelectorField from '../../components/FormElements/SelectorField';
+import Selector, { SelectorProps } from '../../components/FormElements/Selector';
+
+// TODO: Provide code selectors as a prop
+// import LeaveTrainingSubCodeSelector from '../../containers/LeaveTrainingSubCodeSelector';
+// import LeaveSubCodeDisplay from '../../containers/LeaveSubCodeDisplay';
+
+const SelectorFieldColumn = (label?: string): Types.TableColumnCell => {
+    label = label || 'Select Field';
+
+    return {
+        title: label,
+        FormRenderer: ({ fieldInstanceName }) => (
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+                <Field
+                    name={`${fieldInstanceName}.leaveSubCode`}
+                    component={(p) => <SelectorField
+                        {...p}
+                        showLabel={false}
+                        // TODO: Provide this via props or something so we can use custom codes...
+                        SelectorComponent={
+                            (sp) =>
+                                // TODO: Actually make this work
+                                <Selector {...sp} data={[]}/>
+                            }
+                    />}
+                    label={label}
+                >
+                </Field>
+                {/* This wrapper just adds equal spacing to the previous form group */}
+                {/* TODO: We need spacing utils */}
+                <div className="form-group" style={{ marginLeft: '0.5rem' }}>
+                    <Glyphicon glyph="info-sign" />
+                </div>
+            </div>
+        ),
+        CanceledRender: ({ leave }) => (
+            <option disabled={true} />
+        )
+    };
+};
+
+export default SelectorFieldColumn;
