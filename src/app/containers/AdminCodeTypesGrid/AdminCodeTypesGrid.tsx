@@ -74,7 +74,7 @@ class AdminCodeTypesDisplay extends React.PureComponent<AdminCodeTypesDisplayPro
 export default class AdminCodeTypesGrid extends DataTableBase<AdminCodeTypesProps> {
     name = 'codeTypes';
     formFieldNames = { default: 'codeTypes'};
-    title: string = 'Code Types';
+    title: string = 'Manage Code Types';
     FormComponent = (props: DataTableProps<AdminCodeTypesProps>) => (
         <div>
             <CodeTypesFieldTable

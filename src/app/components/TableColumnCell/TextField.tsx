@@ -5,13 +5,13 @@ import { Glyphicon } from 'react-bootstrap';
 
 import * as Types from './types';
 
-import SelectorField from '../../components/FormElements/SelectorField';
+import TextField from '../../components/FormElements/TextField';
 
 import LeaveTrainingSubCodeSelector from '../../containers/LeaveTrainingSubCodeSelector';
 import LeaveSubCodeDisplay from '../../containers/LeaveSubCodeDisplay';
 
-const RoleCodeColumn = (label?: string): Types.TableColumnCell => {
-    label = label || 'Role Name';
+const TextFieldColumn = (label?: string): Types.TableColumnCell => {
+    label = label || 'Text Field';
 
     return {
         title: label,
@@ -19,18 +19,13 @@ const RoleCodeColumn = (label?: string): Types.TableColumnCell => {
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Field
                     name={`${fieldInstanceName}.leaveSubCode`}
-                    component={(p) => <SelectorField
+                    component={(p) => <TextField
                         {...p}
                         showLabel={false}
                         // TODO: Provide this via props or something so we can use custom codes...
-                        SelectorComponent={
-                            (sp) =>
-                                <LeaveTrainingSubCodeSelector {...sp} />
-                            }
                     />}
                     label={label}
-                >
-                </Field>
+                />
                 {/* This wrapper just adds equal spacing to the previous form group */}
                 {/* TODO: We need spacing utils */}
                 <div className="form-group" style={{ marginLeft: '0.5rem' }}>
@@ -38,10 +33,8 @@ const RoleCodeColumn = (label?: string): Types.TableColumnCell => {
                 </div>
             </div>
         ),
-        CanceledRender: ({ leave }) => (
-            <LeaveSubCodeDisplay subCode={leave.leaveSubCode} />
-        )
+        CanceledRender: ({ leave }) => (<div>TextField Cancelled Display</div>)
     };
 };
 
-export default RoleCodeColumn;
+export default TextFieldColumn;
