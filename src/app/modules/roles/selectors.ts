@@ -5,22 +5,23 @@ import {
     RoleMap,
     IdType,
     LEAVE_CODE_PERSONAL,
-    LEAVE_CODE_TRAINING,
+    // LEAVE_CODE_TRAINING, // TODO: Remove this
     // DateType
 } from '../../api/Api';
 import mapToArray from '../../infrastructure/mapToArray';
-import arrayToMap from '../../infrastructure/arrayToMap';
-import moment from 'moment';
+// import arrayToMap from '../../infrastructure/arrayToMap';
+// import moment from 'moment';
 // import { CodeSelector } from '../../infrastructure/CodeSelector';
 
 export const allRoles = createSelector(
     roleRequests.roleMapRequest.getData,
     (map) => {
-        const roleMap = mapToArray(map)
-            .filter(l => moment(l.startDate).isSameOrAfter(moment().subtract(1, 'year'), 'day'));
-        return roleMap
-            .sort((a, b) => `${moment(a.startDate).toISOString()}`
-            .localeCompare(`${moment(b.startDate).toISOString()}`));
+        const roleMap = mapToArray(map);
+            // TODO: Roles aren't filtered by date...
+            // .filter(l => moment(l.startDate).isSameOrAfter(moment().subtract(1, 'year'), 'day'));
+        return roleMap;
+            // .sort((a, b) => `${moment(a.startDate).toISOString()}`
+            // .localeCompare(`${moment(b.startDate).toISOString()}`));
     }
 );
 
@@ -41,7 +42,7 @@ export const getRole = (id?: IdType) => (state: RootState) => {
 
 export const getSheriffRoles = (sheriffId?: IdType) => (state: RootState) => {
     if (state && sheriffId != null) {
-        return allRoles(state).filter(l => l.sheriffId === sheriffId);
+        return allRoles(state); // .filter(l => l.sheriffId === sheriffId);
     }
     return [];
 };
@@ -61,18 +62,22 @@ export const getFullDayRoles = (state: RootState) => {
 };*/
 
 // Role Sub Codes
-export const allRolesCodeMap = createSelector(
+export const allRolesCodeMap = () => { return []; }
+/* export const allRolesCodeMap = createSelector(
+    // TODO: Fix me!!!
     roleRequests.roleTypeMapRequest.getData,
     (roleTypes) => {
         const allCodes = roleTypes[LEAVE_CODE_PERSONAL].concat(roleTypes[LEAVE_CODE_TRAINING]);
         return arrayToMap(allCodes, lt => lt.subCode);
     }
-);
+);*/
 
-export const getAllPersonalRoleCodes = createSelector(
+export const getAllPersonalRoleCodes = () => { return []; }
+/* export const getAllPersonalRoleCodes = createSelector(
+    // TODO: Fix me!!!
     roleRequests.roleTypeMapRequest.getData,
     (roleTypes) => {
         return roleTypes[LEAVE_CODE_PERSONAL].sort((a, b) => `${a.description}`
             .localeCompare(`${b.description}`)) || [];
     }
-);
+); */

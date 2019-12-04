@@ -28,7 +28,10 @@ import {
     LeaveCancelCode,
     CourtRole,
     GenderCode,
-    SheriffDutyReassignmentDetails
+    SheriffDutyReassignmentDetails,
+    User,
+    Role,
+    UserRole
 } from './Api';
 import { SubmissionError } from 'redux-form';
 
@@ -167,9 +170,11 @@ export default class Client implements API {
         await Promise.all(assignmentIds.map(id => this._client.ExpireAssignment(id)));
     }
 
+    // TODO: getAssignmentDuties broke, not sure why!!!
     async getAssignmentDuties(startDate: DateType = moment(), endDate?: DateType): Promise<AssignmentDuty[]> {
-        let duties: AssignmentDuty[] = (await this._client.GetDuties() as any);
-        return duties;
+        // let duties: AssignmentDuty[] = (await this._client.GetDuties() as any);
+        // return duties;
+        return Promise.resolve([] as AssignmentDuty[]);
     }
 
     async createAssignmentDuty(duty: Partial<AssignmentDuty>): Promise<AssignmentDuty> {
@@ -407,6 +412,38 @@ export default class Client implements API {
         return list as GenderCode[];
     }
 
+    async getUsers(): Promise<User[]> {
+        const list = await this._client.GetUsers();
+        return list as Role[];
+    }
+
+    async getRoles(): Promise<Role[]> {
+        const list = await this._client.GetRoles();
+        return list as Role[];
+    }
+
+    // Dummy methods for roles
+    async getRole(): Promise<Role> {
+        return {} as Role;
+    }
+
+    async createRole(): Promise<Role> {
+        return {} as Role;
+    }
+
+    async updateRole(): Promise<Role> {
+        return {} as Role;
+    }
+
+    async deleteRole(): Promise<Role> {
+        return {} as Role;
+    }
+    // End dummy methods for roles
+
+    async getUserRoles(): Promise<UserRole[]> {
+        const list = await this._client.GetUserRoles();
+        return list as UserRole[];
+    }
 
     getToken(): Promise<string> {
         return this._client.GetToken();

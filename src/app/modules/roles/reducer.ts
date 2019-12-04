@@ -12,8 +12,9 @@ export {
 const nestedReducer = new NestedReducer([
   // Roles
   roleRequests.roleMapRequest.reducer,
-  roleRequests.roleTypeMapRequest.reducer,
-  roleRequests.roleCancelCodeMapRequest.reducer,
+  // TODO: I don't think I need these anymore
+  // roleRequests.roleTypeMapRequest.reducer,
+  // roleRequests.roleCancelCodeMapRequest.reducer,
   roleRequests.createOrUpdateRolesRequest.reducer
 ]);
 

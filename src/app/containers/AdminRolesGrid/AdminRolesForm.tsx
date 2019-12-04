@@ -12,7 +12,9 @@ import {
     reset
 } from 'redux-form';
 
-import { connect, Dispatch } from 'react-redux';
+// TODO: Rewire dispatches
+// import { connect, Dispatch } from 'react-redux';
+import { connect } from 'react-redux';
 
 import { Alert } from 'react-bootstrap';
 import { toast } from '../../components/ToastManager/ToastManager';
@@ -112,7 +114,7 @@ function collectPluginErrors(state: any, formName: string, plugins: RoleProfileP
 const formConfig: ConfigProps<any, AdminRolesProps> = {
     form: 'AdminRoles',
     enableReinitialize: true,
-    validate: (values: any, { plugins = [] }) => {
+    /* validate: (values: any, { plugins = [] }) => {
         const validationErrors = plugins.reduce((errors, plugin) => {
             const pluginValues = values[plugin.name];
             const pluginErrors = plugin.validate(pluginValues);
@@ -122,8 +124,13 @@ const formConfig: ConfigProps<any, AdminRolesProps> = {
             return errors;
         }, {} as FormErrors);
         return {...validationErrors};
+    }, */
+    validate: (values: any) => {
+        return {};
     },
-    onSubmit: async (values: any, dispatch, { roleId, plugins = [] }: AdminRolesProps) => {
+    // tslint:disable-next-line:no-empty
+    onSubmit: async () => {},
+    /*onSubmit: async (values: any, dispatch, { roleId, plugins = [] }: AdminRolesProps) => {
         const { role }: { role: Partial<Role> } = values;
         let roleEntityId: string;
         const profileUpdateConfig: RequestActionConfig<Role> = {
@@ -152,10 +159,11 @@ const formConfig: ConfigProps<any, AdminRolesProps> = {
 
         const roleName = toTitleCase(`${role.firstName} ${role.lastName}`)
         toast.success(`${roleName}'s profile ${actionMessage}`);
-    }
+    }*/
 };
 
 // Wire up the Form to redux Form
+// @ts-ignore
 const AdminRolesForm = reduxForm<any, AdminRolesProps>(formConfig)(AdminRolesComponent);
 
 interface AdminRolesContainerStateProps {
@@ -203,8 +211,9 @@ class AdminRolesContainer extends React.PureComponent<AdminRolesContainerProps> 
         }
     }
 
-    render() {
-        const { isEditing, pluginErrors = {} } = this.props;
+    // TODO: Re-enable this one when working
+    /*render() {
+        const { isEditing = false, pluginErrors = {} } = this.props;
 
         return (
             <div>
@@ -214,14 +223,30 @@ class AdminRolesContainer extends React.PureComponent<AdminRolesContainerProps> 
                     : <AdminRolesComponent {...this.props} />}
             </div>
         );
+    }*/
+    render() {
+        // const { isEditing = false, pluginErrors = {} } = this.props;
+        const { pluginErrors = {} } = this.props;
+
+        return (
+            <div>
+                <AdminRolesErrorDisplay pluginErrors={pluginErrors} />
+                {/*<AdminRolesForm {...this.props as any} />*/}
+                {/*<AdminRolesComponent {...this.props} />}*/}
+            </div>
+        );
     }
 }
 
-export default class extends
-    connect<AdminRolesContainerStateProps, AdminRolesContainerDispatchProps, AdminRolesProps, RootState>(
-        (state, { roleId, plugins = [] }) => {
+export default // @ts-ignore
+class extends
+    // connect<AdminRolesContainerStateProps, AdminRolesContainerDispatchProps, AdminRolesProps,
+    connect(
+        // (state, { roleId, plugins = [] }) => {
+        () => {
             let initialValues: any = {};
-            if (roleId) {
+            /*if (roleId) {
+                // @ts-ignore
                 initialValues = plugins
                     .map(p => {
                         const data = p.getData(roleId, state);
@@ -248,7 +273,7 @@ export default class extends
                     currentLocationId: contextLocation
                 };
                 initialValues.role = { ...initialRole };
-            }
+            }*/
 
             return {
                 initialValues,
@@ -257,7 +282,8 @@ export default class extends
                 // ...collectPluginErrors(state, formConfig.form, plugins)
             };
         },
-        (dispatch, { roleId, plugins = [] }) => {
+        // (dispatch, { roleId, plugins = [] }) => {
+        (dispatch, {}) => {
             return {
                 initialize: () => {
                     // dispatch(selectAdminRolesSection());
@@ -280,7 +306,7 @@ export default class extends
             new AdminRolesPluginTraining(),
             new AdminRolesPluginRoles()
         ]*/
-        plugins: []
+        // plugins: []
     };
     static SubmitButton = (props: Partial<SubmitButtonProps>) => (
         <FormSubmitButton {...props} formName={formConfig.form} />
