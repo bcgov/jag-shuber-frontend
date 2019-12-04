@@ -55,7 +55,7 @@ class ManageRoles extends React.PureComponent {
                     }}
                 >
                     <AdminForm
-                        // isEditing={true}
+                        isEditing={true}
                     />
                 </Well>
             </Page>
