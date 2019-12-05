@@ -10,8 +10,10 @@ import TextArea from '../../components/FormElements/TextArea';
 import LeaveTrainingSubCodeSelector from '../../containers/LeaveTrainingSubCodeSelector';
 import LeaveSubCodeDisplay from '../../containers/LeaveSubCodeDisplay';
 
-const TextAreaColumn = (label?: string): Types.TableColumnCell => {
+const TextAreaColumn = (label?: string, options?: Types.FieldColumnOptions): Types.TableColumnCell => {
     label = label || 'Text Area';
+
+    const displayInfo = (options && options.displayInfo) ? options.displayInfo : false;
 
     return {
         title: label,
@@ -29,9 +31,11 @@ const TextAreaColumn = (label?: string): Types.TableColumnCell => {
                 />
                 {/* This wrapper just adds equal spacing to the previous form group */}
                 {/* TODO: We need spacing utils */}
-                <div className="form-group" style={{ marginLeft: '0.5rem' }}>
-                    <Glyphicon glyph="info-sign" />
-                </div>
+                {displayInfo && (
+                    <div className="form-group" style={{ marginLeft: '0.5rem' }}>
+                        <Glyphicon glyph="info-sign" />
+                    </div>
+                )}
             </div>
         ),
         CanceledRender: ({ leave }) => (<div>TextField Cancelled Display</div>)

@@ -7,7 +7,6 @@ import { Leave } from '../../api';
 import { Table, FormGroup, Button, Glyphicon, Well } from 'react-bootstrap';
 
 import * as CellTypes from '../../components/TableColumnCell';
-import CancelColumn from '../../components/TableColumnCell/Cancel';
 
 export interface ColumnRendererProps {
     index: number;
@@ -23,21 +22,19 @@ export interface DetailComponentProps {}
 export const EmptyDetailRow: React.SFC<DetailComponentProps> = () => (<div />);
 
 // TODO: This is the same as LeavesFieldTableProps... make it generic?
-export interface RolesFieldTableProps {
+export interface ScopesFieldTableProps {
     title: React.ReactNode;
     fieldName: string;
     columns: CellTypes.Types.TableColumnCell[];
-    displayHeaderActions?: boolean;
     expandable?: boolean;
-    expandedRows?: Set<number>;
+    expandedRows?: any[];
     rowComponent: React.SFC<DetailComponentProps>; // Not sure if this is the appropriate type
 }
 
-export default class RolesFieldTable extends React.Component<RolesFieldTableProps> {
+export default class ScopesFieldTable extends React.Component<ScopesFieldTableProps> {
     static defaultProps = {
-        displayHeaderActions: false,
-        expandable: false,
-        // expandedRows: false,
+       expandable: false,
+       expandedRows: false,
         // TODO: What is up with default props?
        rowComponent: <div />
     };
@@ -49,45 +46,17 @@ export default class RolesFieldTable extends React.Component<RolesFieldTableProp
     static TimeColumn = CellTypes.Time;
     static RoleCodeColumn = CellTypes.RoleCode;
     static LeaveSubCodeColumn = CellTypes.LeaveSubCode;
-    static ButtonColumn = CellTypes.Button;
     static CancelColumn = CellTypes.Cancel;
-    static ActionsColumn = CellTypes.Actions;
-
-    state = {
-        expandedRows: new Set()
-    };
-
-    constructor(props: RolesFieldTableProps) {
-        super(props);
-    }
-
-    onExpandRowClicked(rowIdx: number) {
-        const { expandedRows } = this.state;
-
-        if (!expandedRows.has(rowIdx)) {
-            expandedRows.add(rowIdx);
-        } else {
-            expandedRows.delete(rowIdx);
-        }
-
-        this.setState({
-            expandedRows: expandedRows
-        });
-    }
 
     render() {
         const {
             fieldName,
             title,
             columns = [],
-            displayHeaderActions = false,
             expandable = false,
+            expandedRows = [],
             rowComponent,
         } = this.props;
-
-        const {
-            expandedRows
-        } = this.state;
 
         // return (<div>This would be the table</div>);
 
@@ -102,21 +71,10 @@ export default class RolesFieldTable extends React.Component<RolesFieldTableProp
                         <Table striped={true} >
                             <thead>
                                 <tr>
-                                    {expandable && (<th />)}
+                                    <th></th>
                                     {columns.map((col, colIndex) => (
                                         <th className="text-left" key={colIndex}>{col.title}</th>
                                     ))}
-                                    <th
-                                        style={{
-                                            width: '100px'
-                                        }}
-                                    >
-                                        {displayHeaderActions && (
-                                        <Button onClick={() => fields.push({} as any)} style={{ float: 'right' }}>
-                                            <Glyphicon glyph="plus" /> Create Role
-                                        </Button>
-                                        )}
-                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -132,15 +90,10 @@ export default class RolesFieldTable extends React.Component<RolesFieldTableProp
                                                     <FormGroup>
                                                         <Button
                                                             bsStyle="link"
-                                                            onClick={() => this.onExpandRowClicked(index)}
+                                                            onClick={() => fields.remove(index)}
                                                             style={{ color: '#666666' }}
                                                         >
-                                                            {expandedRows && !expandedRows.has(index) && (
                                                             <Glyphicon glyph="triangle-right" />
-                                                            )}
-                                                            {expandedRows && expandedRows.has(index) && (
-                                                            <Glyphicon glyph="triangle-bottom" />
-                                                            )}
                                                         </Button>
                                                     </FormGroup>
                                                 </td>
@@ -163,30 +116,11 @@ export default class RolesFieldTable extends React.Component<RolesFieldTableProp
                                                             );
                                                         })
                                                 }
-                                                {(() => {
-                                                    const actionsColumn = CellTypes.Actions();
-
-                                                    const Column = cancelDate != undefined
-                                                        ? actionsColumn.CanceledRender
-                                                        : actionsColumn.FormRenderer;
-
-                                                    return (
-                                                        <td style={{ display: 'flex' }}>
-                                                            <Column
-                                                                leave={currentLeave}
-                                                                fieldInstanceName={fieldInstanceName}
-                                                                fields={fields}
-                                                                index={index}
-                                                            />
-                                                        </td>
-                                                    );
-                                                })()}
                                             </tr>
-                                            {expandable && expandedRows && expandedRows.has(index) && (
+                                            {expandable && expandedRows.indexOf(index + 1) > -1 && (
                                             <tr key={index * 2}>
                                                 <td>{/* Nest the table for sub-rows */}</td>
-                                                {/* tslint:disable-next-line:max-line-length */}
-                                                <td style={{ margin: '0', padding: '0' }} colSpan={expandable ? columns.length + 1 : columns.length}>
+                                                <td colSpan={expandable ? columns.length : columns.length - 1}>
                                                     <RowComponent />
                                                 </td>
                                             </tr>
@@ -195,6 +129,16 @@ export default class RolesFieldTable extends React.Component<RolesFieldTableProp
                                     );
                                 })}
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colSpan={expandable ? columns.length : columns.length - 1}></td>
+                                    <td colSpan={1}>
+                                        <Button onClick={() => fields.push({} as any)}>
+                                            <Glyphicon glyph="plus" /> Create New Role
+                                        </Button>
+                                    </td>
+                                </tr>
+                            </tfoot>
                         </Table>
                     </div>
                 )}

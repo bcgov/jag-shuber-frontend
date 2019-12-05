@@ -9,7 +9,8 @@ import './AdminForm.css';
 export interface AdminFormProps {
     sheriffId?: IdType;
     isEditing?: boolean;
-    plugins?: DataTableBase<any>[];
+    plugins?: DataTableBase[];
+    text?: string;
     pluginsWithErrors?: { [key: string]: boolean };
     selectedSection?: string;
     onSelectSection?: (sectionName: string) => void;

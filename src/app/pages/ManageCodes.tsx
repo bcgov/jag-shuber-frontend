@@ -9,8 +9,22 @@ import Page from '../components/Page/Page';
 import AdminCodeTypesGrid, { AdminCodeTypesDisplayProps } from '../containers/AdminCodeTypesGrid/AdminCodeTypesGrid';
 // TODO: Probably should get rid of this
 // import SheriffProfileCreateModal from '../containers/SheriffProfileCreateModal';
+import AdminForm from '../containers/AdminForm';
+import { AdminFormProps } from '../components/AdminForm/AdminForm';
 
-class ManageCodeTypes extends React.PureComponent {
+export interface ManageCodeTypesProps {}
+
+class ManageCodeTypes extends React.PureComponent<AdminFormProps> {
+    state = {
+      isEditing: false
+    };
+
+    constructor(props: AdminFormProps) {
+        super(props);
+
+        this.toggleEditMode = this.toggleEditMode.bind(this);
+    }
+
     renderDataTable(): any {
         const dataTable = new AdminCodeTypesGrid();
         const roleId: IdType = 'asdf-1234';
@@ -21,11 +35,20 @@ class ManageCodeTypes extends React.PureComponent {
         const tableProps: AdminCodeTypesDisplayProps = { objectId: roleId, data: data };
 
         // TODO: Get this working!
-        return dataTable.renderDisplay(tableProps);
-        // return dataTable.renderFormFields(tableProps);
+        // return dataTable.renderDisplay(tableProps);
+        return dataTable.renderFormFields(tableProps);
+    }
+
+    // TODO: What is the name of the function elsewhere?
+    toggleEditMode() {
+        this.setState({
+            isEditing: !this.state.isEditing
+        });
     }
 
     render() {
+        const { isEditing } = this.state;
+
         return (
             <Page
                 toolbar={
@@ -33,8 +56,8 @@ class ManageCodeTypes extends React.PureComponent {
                         right={(
                             <div style={{ marginTop: 3 }}>
                                 {/*<SheriffProfileCreateModal.ShowButton />*/}
-                                <Button className="action-button" onClick={() => { return undefined; }}>
-                                    <Glyphicon glyph="plus" /> Add a Role
+                                <Button className="action-button" onClick={this.toggleEditMode}>
+                                    <Glyphicon glyph="edit" /> Edit Code Types
                                 </Button>
                             </div>
                         )}
@@ -53,7 +76,9 @@ class ManageCodeTypes extends React.PureComponent {
                         margin: '0 auto'
                     }}
                 >
-                    {this.renderDataTable()}
+                    <AdminForm
+                        isEditing={isEditing}
+                    />
                 </Well>
             </Page>
         );
