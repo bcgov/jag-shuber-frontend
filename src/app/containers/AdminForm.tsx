@@ -29,7 +29,7 @@ import { RootState } from '../store';
 // import { Role } from '../../api';
 
 // TODO: Remove this, temporarily hardcoding in plugins
-import AdminRolesGridPlugin from './AdminRolesGrid/AdminRolesGrid';
+import AdminRolesGridPlugin, { AdminRolesProps } from './AdminRolesGrid/AdminRolesGrid';
 import AdminCodeTypesGridPlugin from './AdminCodeTypesGrid/AdminCodeTypesGrid';
 
 // import {
@@ -44,6 +44,7 @@ import AdminCodeTypesGridPlugin from './AdminCodeTypesGrid/AdminCodeTypesGrid';
     // setRoleProfilePluginSubmitErrors,
 // } from '../../modules/roles/actions';
 
+import { DataTableBase } from '../components/Table/DataTable';
 import AdminFormComponent, { AdminFormProps } from '../components/AdminForm/AdminForm';
 
 /*async function submitPlugins(
@@ -185,10 +186,15 @@ interface AdminFormContainerDispatchProps {
     onSelectSection: (sectionName: string) => void;
 }
 
+interface AdminFormContainerPluginProps {
+    plugins?: any[];
+}
+
 type AdminFormContainerProps = AdminFormProps &
     InjectedFormProps<{}, AdminFormProps>
     & AdminFormContainerStateProps
-    & AdminFormContainerDispatchProps;
+    & AdminFormContainerDispatchProps
+    & AdminFormContainerPluginProps;
 
 class AdminFormErrorDisplay extends React.PureComponent<{ pluginErrors: { [key: string]: Error | string } }> {
     render() {
@@ -234,18 +240,15 @@ class AdminFormContainer extends React.PureComponent<AdminFormContainerProps> {
     }*/
     render() {
         // const { isEditing = false, pluginErrors = {} } = this.props;
-        const { pluginErrors = {} } = this.props;
-
-        const isEditing = true;
+        const { isEditing, pluginErrors = {} } = this.props;
 
         return (
             <div>
                 <AdminFormErrorDisplay pluginErrors={pluginErrors} />
                 {isEditing
                     ? <AdminForm {...this.props as {}} />
-                    : <div>#AdminFormComponent Instance</div>
-                    // : <AdminFormComponent {...this.props} />
-                    }
+                    : <AdminFormComponent {...this.props} />
+                }
             </div>
         );
     }
@@ -253,8 +256,8 @@ class AdminFormContainer extends React.PureComponent<AdminFormContainerProps> {
 
 export default class extends
     connect<AdminFormContainerStateProps, AdminFormContainerDispatchProps, AdminFormProps, RootState>(
-        // (state, { roleId, plugins = [] }) => {
-        (state) => {
+        // TODO: Type this?
+        (state, { plugins }) => {
             let initialValues: {} = {};
             /*if (roleId) {
                 // @ts-ignore
@@ -310,26 +313,20 @@ export default class extends
                 // tslint:disable-next-line:no-empty
                 onSelectSection: () => {} // (sectionName) => dispatch(selectAdminFormSection(sectionName))
             };
-        }
-    )(AdminFormContainer as any) {
-    static defaultProps: Partial<AdminFormProps & { children?: React.ReactNode }> = {
-        // TODO: Why isn't this being lazy loaded?
-        /*plugins: [
-            new AdminFormPluginHeader(),
-            new AdminFormPluginIdentification(),
-            new AdminFormPluginLocation(),
-            new AdminFormPluginLeaves(),
-            new AdminFormPluginTraining(),
-            new AdminFormPluginRoles()
-        ]*/
-        plugins: [
-            new AdminRolesGridPlugin(),
-            new AdminCodeTypesGridPlugin()
-        ]
-    };
-    static SubmitButton = (props: Partial<SubmitButtonProps>) => (
-        <FormSubmitButton {...props} formName={formConfig.form} />
-    )
+        },
+        /*(stateProps, dispatchProps, ownProps) => {
+            console.log(stateProps);
+            console.log(dispatchProps);
+            console.log(ownProps);
 
-    static resetAction = () => reset(formConfig.form);
-}
+            return {};
+        }*/
+    )(AdminFormContainer as any) {
+        static defaultProps: Partial<AdminFormProps & { children?: React.ReactNode }> = {
+            plugins: []
+        };
+
+        static SubmitButton = (props: Partial<SubmitButtonProps>) => (
+            <FormSubmitButton {...props} formName={formConfig.form} />
+        )
+    }

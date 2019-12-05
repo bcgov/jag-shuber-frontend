@@ -12,8 +12,10 @@ import Selector, { SelectorProps } from '../../components/FormElements/Selector'
 // import LeaveTrainingSubCodeSelector from '../../containers/LeaveTrainingSubCodeSelector';
 // import LeaveSubCodeDisplay from '../../containers/LeaveSubCodeDisplay';
 
-const SelectorFieldColumn = (label?: string): Types.TableColumnCell => {
+const SelectorFieldColumn = (label?: string, options?: Types.FieldColumnOptions): Types.TableColumnCell => {
     label = label || 'Select Field';
+
+    const displayInfo = (options && options.displayInfo) ? options.displayInfo : false;
 
     return {
         title: label,
@@ -35,10 +37,12 @@ const SelectorFieldColumn = (label?: string): Types.TableColumnCell => {
                 >
                 </Field>
                 {/* This wrapper just adds equal spacing to the previous form group */}
-                {/* TODO: We need spacing utils */}
-                <div className="form-group" style={{ marginLeft: '0.5rem' }}>
-                    <Glyphicon glyph="info-sign" />
-                </div>
+                {/* TODO: Where are the spacing utils? */}
+                {displayInfo && (
+                    <div className="form-group" style={{ marginLeft: '0.5rem' }}>
+                        <Glyphicon glyph="info-sign" />
+                    </div>
+                )}
             </div>
         ),
         CanceledRender: ({ leave }) => (

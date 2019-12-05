@@ -17,7 +17,7 @@ import {
     // DataTableSectionPlugin
 } from '../../components/Table/DataTable';
 
-import RolesFieldTable from './RolesFieldTable';
+import RolesFieldTable, { DetailComponentProps, EmptyDetailRow } from './RolesFieldTable';
 
 // import { fromTimeString } from 'jag-shuber-api';
 
@@ -42,8 +42,7 @@ class AdminRolesDisplay extends React.PureComponent<AdminRolesDisplayProps, any>
                             <th className="text-left">Role Name</th>
                             <th className="text-left">Role Code</th>
                             <th className="text-left">Description</th>
-                            <th className="text-left">Start Date</th>
-                            <th className="text-left">End Date</th>
+                            <th className="text-left">Date Created</th>
                             <th className="text-left">Status</th>
                             <th />
                         </tr>
@@ -55,7 +54,6 @@ class AdminRolesDisplay extends React.PureComponent<AdminRolesDisplayProps, any>
                                     <td>Test Role</td>
                                     <td>TEST_ROLE</td>
                                     <td>Ipsum Lorem Dolor</td>
-                                    <td>{new Date().toLocaleDateString()}</td>
                                     <td>{new Date().toLocaleDateString()}</td>
                                     <td>
                                         Active
@@ -75,20 +73,50 @@ export default class AdminRolesGrid extends DataTableBase<AdminRolesProps> {
     name = 'roles';
     formFieldNames = { default: 'roles'};
     title: string = 'Manage Roles';
+    DetailComponent: React.SFC<DetailComponentProps> = () => (
+        <>
+            <RolesFieldTable
+                fieldName={this.formFieldNames.default}
+                title={''} // Leave this blank
+                columns={[
+                    RolesFieldTable.TextFieldColumn('Plugin Name'),
+                    RolesFieldTable.TextFieldColumn('Code'),
+                    RolesFieldTable.TextFieldColumn('Description'),
+                    RolesFieldTable.ButtonColumn('Edit Permissions', 'list'),
+                ]}
+                rowComponent={EmptyDetailRow}
+            />
+            <RolesFieldTable
+                fieldName={this.formFieldNames.default}
+                title={''} // Leave this blank
+                columns={[
+                    RolesFieldTable.TextFieldColumn('API Route'),
+                    RolesFieldTable.TextFieldColumn('Code'),
+                    RolesFieldTable.TextFieldColumn('Description'),
+                    RolesFieldTable.ButtonColumn('Edit Permissions', 'list'),
+                ]}
+                rowComponent={EmptyDetailRow}
+            />
+        </>
+    )
+
     FormComponent = (props: DataTableProps<AdminRolesProps>) => (
         <div>
             <RolesFieldTable
                 fieldName={this.formFieldNames.default}
                 title={''} // Leave this blank
                 columns={[
-                    RolesFieldTable.RoleCodeColumn('Role Name'),
+                    RolesFieldTable.TextFieldColumn('Role Name'),
                     RolesFieldTable.TextFieldColumn('Role Code'),
                     RolesFieldTable.TextFieldColumn('Description'),
-                    RolesFieldTable.DateColumn('Start Date', 'startDate'),
-                    RolesFieldTable.DateColumn('End Date', 'endDate'),
+                    // RolesFieldTable.DateColumn('Date Created', 'createdDtm'),
                     RolesFieldTable.SelectorFieldColumn('Status'),
-                    RolesFieldTable.CancelColumn()
+
                 ]}
+                expandable={true}
+                // expandedRows={[1, 2]}
+                rowComponent={this.DetailComponent}
+                displayHeaderActions={true}
             />
         </div>
     )

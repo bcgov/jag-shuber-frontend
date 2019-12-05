@@ -1,2 +1,2 @@
-import TableColumnCell from './TableColumnCell';
-export { TableColumnCell };
+import TableColumnCell, { FieldColumnOptions } from './TableColumnCell';
+export { TableColumnCell, FieldColumnOptions };

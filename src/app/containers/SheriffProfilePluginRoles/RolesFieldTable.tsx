@@ -8,15 +8,6 @@ import { Table, Button, Glyphicon } from 'react-bootstrap';
 
 import * as CellTypes from '../../components/TableColumnCell';
 
-export interface ColumnRendererProps {
-    index: number;
-    fields: FieldsProps<Partial<Leave>>;
-    leave: Partial<Leave>;
-    fieldInstanceName: string;
-}
-
-export type ColumnRenderer = React.ComponentType<ColumnRendererProps>;
-
 // TODO: This is the same as LeavesFieldTableProps... make it generic?
 export interface RolesFieldTableProps {
     title: React.ReactNode;

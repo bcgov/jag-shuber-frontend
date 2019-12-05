@@ -11,6 +11,11 @@ import AdminRolesGrid, { AdminRolesDisplayProps } from '../containers/AdminRoles
 // import SheriffProfileCreateModal from '../containers/SheriffProfileCreateModal';
 import AdminForm from '../containers/AdminForm';
 import { AdminFormProps } from '../components/AdminForm/AdminForm';
+import { DataTableBase } from '../components/Table/DataTable';
+
+// Import plugins
+import AdminRolesGridPlugin from '../containers/AdminRolesGrid/AdminRolesGrid';
+import AdminCodeTypesGridPlugin from '../containers/AdminCodeTypesGrid/AdminCodeTypesGrid';
 
 export interface ManageRolesProps {}
 
@@ -25,19 +30,19 @@ class ManageRoles extends React.PureComponent<AdminFormProps> {
         this.toggleEditMode = this.toggleEditMode.bind(this);
     }
 
-    renderDataTable(): any {
+    /*renderDataTable(): {} {
         const dataTable = new AdminRolesGrid();
         const roleId: IdType = 'asdf-1234';
         // const data: any = [];
         // TODO: Replace with real data
-        const data: any[] = [{ id: 1 }, { id: 2 }, { id: 3 }];
+        const data: {}[] = [{ id: 1 }, { id: 2 }, { id: 3 }];
 
         const tableProps: AdminRolesDisplayProps = { objectId: roleId, data: data };
 
         // TODO: Get this working!
         // return dataTable.renderDisplay(tableProps);
         return dataTable.renderFormFields(tableProps);
-    }
+    }*/
 
     // TODO: What is the name of the function elsewhere?
     toggleEditMode() {
@@ -77,6 +82,11 @@ class ManageRoles extends React.PureComponent<AdminFormProps> {
                     }}
                 >
                     <AdminForm
+                        key={Math.random()}
+                        plugins={[
+                            new AdminRolesGridPlugin(),
+                            new AdminCodeTypesGridPlugin()
+                        ]}
                         isEditing={isEditing}
                     />
                 </Well>
