@@ -27,21 +27,21 @@ const ActionsColumn = (): Types.TableColumnCell => {
                         <Button
                             bsStyle="link"
                             onClick={() => fields.remove(index)}
-                            style={{ color: '#666666' }}
+                            style={{ color: '#003366' }}
                         >
                             <Glyphicon glyph="edit" />
                         </Button>
                         <Button
                             bsStyle="link"
-                            onClick={() => fields.remove(index)}
-                            style={{ color: '#666666' }}
+                            // onClick={() => fields.remove(index)}
+                            style={{ color: 'limegreen' }}
                         >
                             <Glyphicon glyph="ok" />
                         </Button>
                         <Button
                             bsStyle="link"
                             onClick={() => fields.remove(index)}
-                            style={{ color: '#666666' }}
+                            style={{ color: 'darkred' }}
                         >
                             <Glyphicon glyph="remove" />
                         </Button>

@@ -61,9 +61,9 @@ class ManageRoles extends React.PureComponent<AdminFormProps> {
                         right={(
                             <div style={{ marginTop: 3 }}>
                                 {/*<SheriffProfileCreateModal.ShowButton />*/}
-                                <Button className="action-button" onClick={this.toggleEditMode}>
+                                {/*<Button className="action-button" onClick={this.toggleEditMode}>
                                     <Glyphicon glyph="edit" /> Edit Roles
-                                </Button>
+                                </Button>*/}
                             </div>
                         )}
                     />

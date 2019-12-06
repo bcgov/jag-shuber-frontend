@@ -21,7 +21,9 @@ const ButtonColumn = (label?: string, icon?: string, options?: Types.FieldColumn
 
             return (
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Button onClick={handleClick}>
+                    <Button
+                        bsClass="btn btn-default action-button"
+                        onClick={handleClick}>
                         {icon && (
                             <><Glyphicon glyph={icon} /> {label}</>
                         )}
