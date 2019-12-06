@@ -31,26 +31,33 @@ export default class AdminRolePermissionsModal extends React.Component<AdminRole
                     title={title}
                     body={({ handleClose, workSectionId }: any) => (
                         <>
-                            <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <Field
-                                    name={`component`}
-                                    component={(p) => <SelectorField
-                                        {...p}
-                                        showLabel={true}
-                                        // TODO: Provide this via props or something so we can use custom codes...
-                                        SelectorComponent={
-                                            (sp) =>
-                                                // TODO: Actually make this work
-                                                <Selector {...sp} data={[]}/>
-                                            }
-                                    />}
-                                    label={'Choose Scope (Component / API)'}
-                                >
-                                </Field>
-                                {/* This wrapper just adds equal spacing to the previous form group */}
-                                {/* TODO: Where are the spacing utils? */}
-                                <div className="form-group" style={{ marginLeft: '0.5rem' }}>
-                                    <Glyphicon glyph="info-sign" />
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                <div style={{ display: 'flex', alignItems: 'center' }}>
+                                    <Field
+                                        name={`component`}
+                                        component={(p) => <SelectorField
+                                            {...p}
+                                            showLabel={true}
+                                            // TODO: Provide this via props or something so we can use custom codes...
+                                            SelectorComponent={
+                                                (sp) =>
+                                                    // TODO: Actually make this work
+                                                    <Selector {...sp} data={[]}/>
+                                                }
+                                        />}
+                                        label={'Choose Scope (Component / API)'}
+                                    >
+                                    </Field>
+                                    {/* This wrapper just adds equal spacing to the previous form group */}
+                                    {/* TODO: Where are the spacing utils? */}
+                                    <div className="form-group" style={{ marginLeft: '0.5rem' }}>
+                                        <Glyphicon glyph="info-sign" />
+                                    </div>
+                                </div>
+                                <div style={{ display: 'flex', alignItems: 'center' }}>
+                                    <Button>
+                                        <Glyphicon glyph="plus" /> Add Permission
+                                    </Button>`
                                 </div>
                             </div>
                             <RolesFieldTable
