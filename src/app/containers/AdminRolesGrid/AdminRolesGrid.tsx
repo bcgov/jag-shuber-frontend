@@ -19,6 +19,8 @@ import {
 
 import RolesFieldTable, { DetailComponentProps, EmptyDetailRow } from './RolesFieldTable';
 
+import AdminRolePermissionsModal from './AdminRolePermissionsModal';
+
 // import { fromTimeString } from 'jag-shuber-api';
 
 export interface AdminRolesProps extends DataTableProps {}
@@ -73,32 +75,35 @@ export default class AdminRolesGrid extends DataTableBase<AdminRolesProps> {
     name = 'roles';
     formFieldNames = { default: 'roles'};
     title: string = 'Manage Roles';
-    DetailComponent: React.SFC<DetailComponentProps> = () => (
-        <>
-            <RolesFieldTable
-                fieldName={this.formFieldNames.default}
-                title={''} // Leave this blank
-                columns={[
-                    RolesFieldTable.TextFieldColumn('Plugin Name'),
-                    RolesFieldTable.TextFieldColumn('Code'),
-                    RolesFieldTable.TextFieldColumn('Description'),
-                    RolesFieldTable.ButtonColumn('Edit Permissions', 'list'),
-                ]}
-                rowComponent={EmptyDetailRow}
-            />
-            <RolesFieldTable
-                fieldName={this.formFieldNames.default}
-                title={''} // Leave this blank
-                columns={[
-                    RolesFieldTable.TextFieldColumn('API Route'),
-                    RolesFieldTable.TextFieldColumn('Code'),
-                    RolesFieldTable.TextFieldColumn('Description'),
-                    RolesFieldTable.ButtonColumn('Edit Permissions', 'list'),
-                ]}
-                rowComponent={EmptyDetailRow}
-            />
-        </>
-    )
+    DetailComponent: React.SFC<DetailComponentProps> = () => {
+        return (
+            <>
+                <RolesFieldTable
+                    fieldName={this.formFieldNames.default}
+                    title={''} // Leave this blank
+                    columns={[
+                        RolesFieldTable.SelectorFieldColumn('Component', { displayInfo: true, disabled: true }),
+                        RolesFieldTable.TextFieldColumn('Code', { displayInfo: true, disabled: true }),
+                        RolesFieldTable.TextFieldColumn('Description', { displayInfo: true, disabled: true }),
+                        RolesFieldTable.ButtonColumn('Edit Permissions', 'list', { displayInfo: true }),
+                    ]}
+                    rowComponent={EmptyDetailRow}
+                />
+                <RolesFieldTable
+                    fieldName={this.formFieldNames.default}
+                    title={''} // Leave this blank
+                    columns={[
+                        RolesFieldTable.SelectorFieldColumn('API Route', { displayInfo: true, disabled: true }),
+                        RolesFieldTable.TextFieldColumn('Code', { displayInfo: true, disabled: true }),
+                        RolesFieldTable.TextFieldColumn('Description', { displayInfo: true, disabled: true }),
+                        RolesFieldTable.ButtonColumn('Edit Permissions', 'list', { displayInfo: true }),
+                    ]}
+                    rowComponent={EmptyDetailRow}
+                />
+                <AdminRolePermissionsModal isOpen={true} />
+            </>
+        );
+    }
 
     FormComponent = (props: DataTableProps<AdminRolesProps>) => (
         <div>
@@ -106,11 +111,11 @@ export default class AdminRolesGrid extends DataTableBase<AdminRolesProps> {
                 fieldName={this.formFieldNames.default}
                 title={''} // Leave this blank
                 columns={[
-                    RolesFieldTable.TextFieldColumn('Role Name'),
-                    RolesFieldTable.TextFieldColumn('Role Code'),
-                    RolesFieldTable.TextFieldColumn('Description'),
+                    RolesFieldTable.TextFieldColumn('Role Name', { displayInfo: true }),
+                    RolesFieldTable.TextFieldColumn('Role Code', { displayInfo: true }),
+                    RolesFieldTable.TextFieldColumn('Description', { displayInfo: true }),
                     // RolesFieldTable.DateColumn('Date Created', 'createdDtm'),
-                    RolesFieldTable.SelectorFieldColumn('Status'),
+                    RolesFieldTable.SelectorFieldColumn('Status', { displayInfo: true }),
 
                 ]}
                 expandable={true}

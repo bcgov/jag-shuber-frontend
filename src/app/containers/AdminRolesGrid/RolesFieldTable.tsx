@@ -45,6 +45,7 @@ export default class RolesFieldTable extends React.Component<RolesFieldTableProp
     static TextFieldColumn = CellTypes.TextField;
     static TextAreaColumn = CellTypes.TextArea;
     static SelectorFieldColumn = CellTypes.SelectorField;
+    static CheckboxColumn = CellTypes.Checkbox;
     static DateColumn = CellTypes.Date;
     static TimeColumn = CellTypes.Time;
     static RoleCodeColumn = CellTypes.RoleCode;

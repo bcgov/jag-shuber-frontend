@@ -16,6 +16,7 @@ const SelectorFieldColumn = (label?: string, options?: Types.FieldColumnOptions)
     label = label || 'Select Field';
 
     const displayInfo = (options && options.displayInfo) ? options.displayInfo : false;
+    const disabled = (options && options.disabled) ? options.disabled : false;
 
     return {
         title: label,
@@ -26,11 +27,12 @@ const SelectorFieldColumn = (label?: string, options?: Types.FieldColumnOptions)
                     component={(p) => <SelectorField
                         {...p}
                         showLabel={false}
+                        disabled={disabled}
                         // TODO: Provide this via props or something so we can use custom codes...
                         SelectorComponent={
                             (sp) =>
                                 // TODO: Actually make this work
-                                <Selector {...sp} data={[]}/>
+                                <Selector {...sp} label={label} data={[]}/>
                             }
                     />}
                     label={label}
