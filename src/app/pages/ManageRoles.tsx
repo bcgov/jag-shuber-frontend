@@ -21,7 +21,7 @@ export interface ManageRolesProps {}
 
 class ManageRoles extends React.PureComponent<AdminFormProps> {
     state = {
-      isEditing: false
+      isEditing: true
     };
 
     constructor(props: AdminFormProps) {
