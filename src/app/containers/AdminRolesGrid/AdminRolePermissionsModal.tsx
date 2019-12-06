@@ -25,6 +25,7 @@ export default class AdminRolePermissionsModal extends React.Component<AdminRole
         return (
             <div>
                 <ModalWrapper
+                    styleClassName="modal-wrapper-medium"
                     showButton={() => null}
                     isOpen={isOpen}
                     title={title}
