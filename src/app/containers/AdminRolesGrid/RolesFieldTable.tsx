@@ -29,6 +29,7 @@ export interface RolesFieldTableProps {
     fieldName: string;
     columns: CellTypes.Types.TableColumnCell[];
     displayHeaderActions?: boolean;
+    displayActionsColumn?: boolean;
     expandable?: boolean;
     expandedRows?: Set<number>;
     rowComponent: React.SFC<DetailComponentProps>; // Not sure if this is the appropriate type
@@ -37,6 +38,7 @@ export interface RolesFieldTableProps {
 export default class RolesFieldTable extends React.Component<RolesFieldTableProps> {
     static defaultProps = {
         displayHeaderActions: false,
+        displayActionsColumn: true,
         expandable: false,
         // expandedRows: false,
         // TODO: What is up with default props?
@@ -94,6 +96,7 @@ export default class RolesFieldTable extends React.Component<RolesFieldTableProp
             title,
             columns = [],
             displayHeaderActions = false,
+            displayActionsColumn = true,
             expandable = false,
             rowComponent,
         } = this.props;
@@ -121,6 +124,8 @@ export default class RolesFieldTable extends React.Component<RolesFieldTableProp
                                     {columns.map((col, colIndex) => (
                                         <th className="text-left" key={colIndex}>{col.title}</th>
                                     ))}
+
+                                    {displayActionsColumn && (
                                     <th
                                         style={{
                                             width: '100px'
@@ -132,6 +137,7 @@ export default class RolesFieldTable extends React.Component<RolesFieldTableProp
                                         </Button>
                                         )}
                                     </th>
+                                    )}
                                 </tr>
                             </thead>
                             <tbody>
@@ -180,7 +186,7 @@ export default class RolesFieldTable extends React.Component<RolesFieldTableProp
                                                             );
                                                         })
                                                 }
-                                                {(() => {
+                                                {displayActionsColumn && (() => {
                                                     const actionsColumn = CellTypes.Actions();
 
                                                     const Column = cancelDate != undefined
