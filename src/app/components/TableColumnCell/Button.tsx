@@ -4,24 +4,35 @@ import { Button, Glyphicon } from 'react-bootstrap';
 
 import * as Types from './types';
 
-const ButtonColumn = (label?: string, icon?: string, options?: Types.FieldColumnOptions): Types.TableColumnCell => {
+const ButtonColumn = (label?: string, icon?: string, options?: Types.FieldColumnOptions, onButtonClicked?: any): Types.TableColumnCell => {
     label = label || 'Button';
+
+    // @ts-ignore
+
 
     return {
         title: '',
-        FormRenderer: ({ fieldInstanceName }) => (
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Button>
-                    {icon && (
-                        <><Glyphicon glyph={icon} /> {label}</>
-                    )}
+        FormRenderer: ({ fieldInstanceName, callbackContext }) => {
+            const handleClick = (onButtonClicked)
+                ? (ev: React.SyntheticEvent<any>) => {
+                    onButtonClicked(ev, callbackContext);
+                }
+                : () => {};
 
-                    {!icon && (
-                        <>{label}</>
-                    )}
-                </Button>
-            </div>
-        ),
+            return (
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <Button onClick={handleClick}>
+                        {icon && (
+                            <><Glyphicon glyph={icon} /> {label}</>
+                        )}
+
+                        {!icon && (
+                            <>{label}</>
+                        )}
+                    </Button>
+                </div>
+            );
+        },
         CanceledRender: ({ leave }) => (
             <div />
         )

@@ -8,6 +8,7 @@ import { Table, FormGroup, Button, Glyphicon, Well } from 'react-bootstrap';
 
 import * as CellTypes from '../../components/TableColumnCell';
 import CancelColumn from '../../components/TableColumnCell/Cancel';
+import AdminRolePermissionsModal from './AdminRolePermissionsModal';
 
 export interface ColumnRendererProps {
     index: number;
@@ -55,7 +56,9 @@ export default class RolesFieldTable extends React.Component<RolesFieldTableProp
     static ActionsColumn = CellTypes.Actions;
 
     state = {
-        expandedRows: new Set()
+        expandedRows: new Set(),
+        activeRoleScopeId: null,
+        isPermissionsModalOpen: false
     };
 
     constructor(props: RolesFieldTableProps) {
@@ -76,7 +79,16 @@ export default class RolesFieldTable extends React.Component<RolesFieldTableProp
         });
     }
 
+    setActiveRoleScope(id: any) {
+        this.setState({
+            activeRoleScopeId: id
+        });
+    }
+
+    // @ts-ignore
     render() {
+        const componentInstance = this;
+
         const {
             fieldName,
             title,
@@ -87,7 +99,9 @@ export default class RolesFieldTable extends React.Component<RolesFieldTableProp
         } = this.props;
 
         const {
-            expandedRows
+            expandedRows,
+            isPermissionsModalOpen,
+            activeRoleScopeId
         } = this.state;
 
         // return (<div>This would be the table</div>);
@@ -152,6 +166,7 @@ export default class RolesFieldTable extends React.Component<RolesFieldTableProp
                                                             const Column = cancelDate != undefined
                                                                 ? col.CanceledRender
                                                                 : col.FormRenderer;
+
                                                             return (
                                                                 <td key={colIndex}>
                                                                     <Column
@@ -159,6 +174,7 @@ export default class RolesFieldTable extends React.Component<RolesFieldTableProp
                                                                         fieldInstanceName={fieldInstanceName}
                                                                         fields={fields}
                                                                         index={index}
+                                                                        callbackContext={componentInstance}
                                                                     />
                                                                 </td>
                                                             );
@@ -178,6 +194,7 @@ export default class RolesFieldTable extends React.Component<RolesFieldTableProp
                                                                 fieldInstanceName={fieldInstanceName}
                                                                 fields={fields}
                                                                 index={index}
+                                                                callbackContext={componentInstance}
                                                             />
                                                         </td>
                                                     );
@@ -197,6 +214,7 @@ export default class RolesFieldTable extends React.Component<RolesFieldTableProp
                                 })}
                             </tbody>
                         </Table>
+                        <AdminRolePermissionsModal isOpen={(activeRoleScopeId !== null)} />
                     </div>
                 )}
             />

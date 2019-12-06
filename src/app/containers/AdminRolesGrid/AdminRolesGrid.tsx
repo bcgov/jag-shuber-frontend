@@ -76,6 +76,10 @@ export default class AdminRolesGrid extends DataTableBase<AdminRolesProps> {
     formFieldNames = { default: 'roles'};
     title: string = 'Manage Roles';
     DetailComponent: React.SFC<DetailComponentProps> = () => {
+        const onButtonClicked = (ev: React.SyntheticEvent<any>, context: any) => {
+            context.setActiveRoleScope(Math.random());
+        };
+
         return (
             <>
                 <RolesFieldTable
@@ -85,7 +89,7 @@ export default class AdminRolesGrid extends DataTableBase<AdminRolesProps> {
                         RolesFieldTable.SelectorFieldColumn('Component', { displayInfo: true, disabled: true }),
                         RolesFieldTable.TextFieldColumn('Code', { displayInfo: true, disabled: true }),
                         RolesFieldTable.TextFieldColumn('Description', { displayInfo: true, disabled: true }),
-                        RolesFieldTable.ButtonColumn('Edit Permissions', 'list', { displayInfo: true }),
+                        RolesFieldTable.ButtonColumn('Edit Permissions', 'list', { displayInfo: true }, onButtonClicked)
                     ]}
                     rowComponent={EmptyDetailRow}
                 />
@@ -96,11 +100,11 @@ export default class AdminRolesGrid extends DataTableBase<AdminRolesProps> {
                         RolesFieldTable.SelectorFieldColumn('API Route', { displayInfo: true, disabled: true }),
                         RolesFieldTable.TextFieldColumn('Code', { displayInfo: true, disabled: true }),
                         RolesFieldTable.TextFieldColumn('Description', { displayInfo: true, disabled: true }),
-                        RolesFieldTable.ButtonColumn('Edit Permissions', 'list', { displayInfo: true }),
+                        RolesFieldTable.ButtonColumn('Edit Permissions', 'list', { displayInfo: true }, onButtonClicked),
                     ]}
                     rowComponent={EmptyDetailRow}
                 />
-                <AdminRolePermissionsModal isOpen={true} />
+
             </>
         );
     }

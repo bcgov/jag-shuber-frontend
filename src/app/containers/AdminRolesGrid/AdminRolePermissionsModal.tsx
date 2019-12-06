@@ -18,6 +18,7 @@ export interface AdminRolePermissionsModalProps {
 }
 
 export default class AdminRolePermissionsModal extends React.Component<AdminRolePermissionsModalProps>{
+    // @ts-ignore
     render() {
         const { isDefaultTemplate = false, isOpen } = this.props;
         const title = `Edit ${isDefaultTemplate === true ? 'Default ' : ''}Scope Permissions`;
