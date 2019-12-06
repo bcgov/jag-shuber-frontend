@@ -56,6 +56,7 @@ export default class AdminRolePermissionsModal extends React.Component<AdminRole
                             <RolesFieldTable
                                 fieldName={'roles'}
                                 title={''} // Leave this blank
+                                displayActionsColumn={false}
                                 columns={[
                                     RolesFieldTable.TextFieldColumn('Permission Name'),
                                     RolesFieldTable.TextFieldColumn('Code'),
@@ -67,7 +68,7 @@ export default class AdminRolePermissionsModal extends React.Component<AdminRole
                         </>
                     )}
                     footerComponent={
-                        <Button>
+                        <Button bsStyle={`success`}>
                             Save
                         </Button>
                     }
