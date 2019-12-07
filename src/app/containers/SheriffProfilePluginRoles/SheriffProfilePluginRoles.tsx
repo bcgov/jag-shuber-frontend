@@ -20,7 +20,7 @@ import {
 
 import LeavesDisplay from '../../components/LeavesDisplay';
 import * as Validators from '../../infrastructure/Validators';
-import RolesFieldTable from './RolesFieldTable';
+import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
 
 import { toTimeString } from 'jag-shuber-api';
 
@@ -37,15 +37,16 @@ export default class SheriffProfilePluginRoles extends SheriffProfileSectionPlug
     title: string = 'User Roles';
     FormComponent = (props: SheriffProfilePluginProps<SheriffProfilePluginRolesProps>) => (
         <div>
-            <RolesFieldTable
+            <DataTable
                 fieldName={this.formFieldNames.fullDay}
                 title={<h3>Assigned Roles</h3>}
                 columns={[
-                    RolesFieldTable.RoleCodeColumn(),
-                    RolesFieldTable.DateColumn('Start Date', 'startDate'),
-                    RolesFieldTable.DateColumn('End Date', 'endDate'),
-                    RolesFieldTable.CancelColumn()
+                    DataTable.RoleCodeColumn(),
+                    DataTable.DateColumn('Start Date', 'startDate'),
+                    DataTable.DateColumn('End Date', 'endDate'),
+                    DataTable.CancelColumn()
                 ]}
+                rowComponent={EmptyDetailRow}
             />
         </div>
     )

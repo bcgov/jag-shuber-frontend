@@ -24,27 +24,38 @@ const ActionsColumn = (): Types.TableColumnCell => {
             !id ?
                 (
                     <>
-                        <Button
-                            bsStyle="link"
-                            onClick={() => fields.remove(index)}
-                            style={{ color: '#003366' }}
-                        >
-                            <Glyphicon glyph="edit" />
-                        </Button>
-                        <Button
-                            bsStyle="link"
-                            // onClick={() => fields.remove(index)}
-                            style={{ color: 'limegreen' }}
-                        >
-                            <Glyphicon glyph="ok" />
-                        </Button>
-                        <Button
-                            bsStyle="link"
-                            onClick={() => fields.remove(index)}
-                            style={{ color: 'darkred' }}
-                        >
-                            <Glyphicon glyph="remove" />
-                        </Button>
+                        <>
+                            <Button
+                                bsStyle="link"
+                                // onClick={() => fields.remove(index)}
+                                style={{ color: '#003366' }}
+                            >
+                                <Glyphicon glyph="edit" />
+                            </Button>
+                            <Button
+                                bsStyle="link"
+                                // onClick={() => fields.remove(index)}
+                                style={{ color: '#003366' }}
+                            >
+                                <Glyphicon glyph="trash" />
+                            </Button>
+                        </>
+                        <>
+                            <Button
+                                bsStyle="link"
+                                // onClick={() => fields.remove(index)}
+                                style={{ color: 'limegreen' }}
+                            >
+                                <Glyphicon glyph="ok" />
+                            </Button>
+                            <Button
+                                bsStyle="link"
+                                onClick={() => fields.remove(index)}
+                                style={{ color: 'darkred' }}
+                            >
+                                <Glyphicon glyph="remove" />
+                            </Button>
+                        </>
                     </>
                 )
                 :

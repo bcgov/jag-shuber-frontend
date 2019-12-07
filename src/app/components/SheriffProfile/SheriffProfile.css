@@ -3,12 +3,12 @@
     padding-top:10px;
 }
 
-/* Active Tab Content Pane, table */
+/* Active Tab Content Pane, Table */
 .sheriff-profile .tab-content>.active table {
     margin-top:0px;
 }
 
-/* Active Tab Content Pane, table */
+/* Active Tab Content Pane, Table */
 .sheriff-profile .tab-content>.active table tr:first-of-type>td,
 .sheriff-profile .tab-content>.active table tr:first-of-type>td
 {
@@ -34,9 +34,9 @@
     border-left-width:1px;
 }
 
-/* Active Tab */ 
+/* Active Tab */
 .sheriff-profile .nav-tabs>li.active>a,
-.sheriff-profile .nav-tabs>li.active>a:focus, 
+.sheriff-profile .nav-tabs>li.active>a:focus,
 .sheriff-profile .nav-tabs>li.active>a:hover{
     color:#222;
     /*border-color:#999;
