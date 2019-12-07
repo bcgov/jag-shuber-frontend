@@ -1,131 +1,230 @@
-import * as React from 'react';
-import { IdType } from '../../api';
-import { RootState } from '../../store';
-import { Dispatch } from 'redux';
-import { FormErrors } from 'redux-form';
+import React from 'react';
+import {
+    FieldArray, FieldsProps
+} from 'redux-form';
 
-export interface DataTableProps<T = any> {
-    objectId?: IdType;
-    data?: T;
-}
-export interface DataTable<T = any> {
-    /**
-     * This property is used for namespacing the form data,
-     * validation and maintaining state of sheriff profile
-     * with respects to plugins
-     * @type {string}
-     * @memberof Table
-     */
-    name: string;
-    renderDisplay(props: DataTableProps<T>): React.ReactNode;
-    renderFormFields(props: DataTableProps<T>): React.ReactNode;
-    hasErrors(errors: any): boolean;
-    onSubmit(objectId: IdType | undefined, formValues: any, dispatch: Dispatch<any>): Promise<any | void>;
-    fetchData(objectId: IdType | undefined, dispatch: Dispatch<any>): void;
-    getData(objectId: IdType | undefined, state: RootState): T | undefined;
-    validate(values: T): FormErrors<T> | undefined;
+import { Leave } from '../../api';
+import { Table, FormGroup, Button, Glyphicon, Well } from 'react-bootstrap';
+
+import * as CellTypes from '../../components/TableColumnCell';
+import CancelColumn from '../../components/TableColumnCell/Cancel';
+import AdminRolePermissionsModal from '../../containers/AdminRolesGrid/AdminRolePermissionsModal';
+
+export interface ColumnRendererProps {
+    index: number;
+    fields: FieldsProps<Partial<Leave>>;
+    leave: Partial<Leave>;
+    fieldInstanceName: string;
 }
 
-export abstract class DataTableBase<T = any> implements DataTable<T> {
-    /**
-     * This property is used for namespacing the form data,
-     * validation and maintaining state of sheriff profile
-     * with respects to plugins
-     * @type {string}
-     * @memberof Table
-     */
-    abstract name: string;
+export type ColumnRenderer = React.ComponentType<ColumnRendererProps>;
 
-    abstract get title(): string;
+export interface DetailComponentProps {}
 
-    /**
-     * The formFieldNames are used to enhance to experience
-     * when submitting / saving the profile.  These fields
-     * should be the names of fields used by this plugin
-     * to allow automatic determination of errors that
-     * exist within specific plugins (i.e. to highlight tabs
-     * with errors etc.)
-     *
-     * @abstract
-     * @type {{ [key: string]: string }}
-     * @memberof DataTableBase
-     */
-    abstract formFieldNames: { [key: string]: string };
-    DisplayComponent?: React.ReactType<DataTableProps<T>>;
-    FormComponent?: React.ReactType<DataTableProps<T>>;
+export const EmptyDetailRow: React.SFC<DetailComponentProps> = () => (<div />);
 
-    protected getDataFromFormValues(formValues: any): T {
-        return formValues[this.name] as T;
+// TODO: This is the same as LeavesFieldTableProps... make it generic?
+export interface DataTableProps {
+    title: React.ReactNode;
+    fieldName: string;
+    columns: CellTypes.Types.TableColumnCell[];
+    displayHeaderActions?: boolean;
+    displayActionsColumn?: boolean;
+    expandable?: boolean;
+    expandedRows?: Set<number>;
+    rowComponent: React.SFC<DetailComponentProps>; // Not sure if this is the appropriate type
+}
+
+export default class DataTable extends React.Component<DataTableProps> {
+    static defaultProps = {
+        displayHeaderActions: false,
+        displayActionsColumn: true,
+        expandable: false,
+        // expandedRows: false,
+        // TODO: What is up with default props?
+       rowComponent: <div />
+    };
+
+    static TextFieldColumn = CellTypes.TextField;
+    static TextAreaColumn = CellTypes.TextArea;
+    static SelectorFieldColumn = CellTypes.SelectorField;
+    static CheckboxColumn = CellTypes.Checkbox;
+    static DateColumn = CellTypes.Date;
+    static TimeColumn = CellTypes.Time;
+    static RoleCodeColumn = CellTypes.RoleCode;
+    static LeaveSubCodeColumn = CellTypes.LeaveSubCode;
+    static ButtonColumn = CellTypes.Button;
+    static CancelColumn = CellTypes.Cancel;
+    static ActionsColumn = CellTypes.Actions;
+
+    state = {
+        expandedRows: new Set(),
+        activeRoleScopeId: null,
+        isPermissionsModalOpen: false
+    };
+
+    constructor(props: DataTableProps) {
+        super(props);
     }
 
-    containsPropertyPath(errors: Object = {}, propertyPath: string = '') {
-        const propertyNames = propertyPath.split('.');
-        let propertyError = errors;
-        if (propertyNames.length === 0) {
-            return false;
-        }
-        // Assume there is an error until proven innocent
-        let containsPath = true;
-        for (let i = 0; i < propertyNames.length; i++) {
-            const propertyName = propertyNames[i];
-            if (!propertyError.hasOwnProperty(propertyName)) {
-                containsPath = false;
-                break;
-            }
+    onExpandRowClicked(rowIdx: number) {
+        const { expandedRows } = this.state;
 
-            propertyError = propertyError[propertyName];
+        if (!expandedRows.has(rowIdx)) {
+            expandedRows.add(rowIdx);
+        } else {
+            expandedRows.delete(rowIdx);
         }
-        // we've traversed the whole property string finding each piece, there is an error
-        return containsPath;
+
+        this.setState({
+            expandedRows: expandedRows
+        });
     }
 
-    renderDisplay(props: DataTableProps<T>): React.ReactNode {
-        const { DisplayComponent } = this;
+    setActiveRoleScope(id: any) {
+        this.setState({
+            activeRoleScopeId: id
+        });
+    }
+
+    // @ts-ignore
+    render() {
+        const componentInstance = this;
+
+        const {
+            fieldName,
+            title,
+            columns = [],
+            displayHeaderActions = false,
+            displayActionsColumn = true,
+            expandable = false,
+            rowComponent,
+        } = this.props;
+
+        const {
+            expandedRows,
+            isPermissionsModalOpen,
+            activeRoleScopeId
+        } = this.state;
+
+        // return (<div>This would be the Table</div>);
+
+        const RowComponent = rowComponent;
+
         return (
-            DisplayComponent
-                ? <DisplayComponent key={this.name} {...props} />
-                : (
+            <FieldArray<Partial<Leave>>
+                name={fieldName}
+                component={({ fields }) => (
                     <div>
-                        DataTable: DisplayComponent not set
+                        {title}
+                        <Table striped={true} >
+                            <thead>
+                                <tr>
+                                    {expandable && (<th />)}
+                                    {columns.map((col, colIndex) => (
+                                        <th className="text-left" key={colIndex}>{col.title}</th>
+                                    ))}
+
+                                    {displayActionsColumn && (
+                                    <th
+                                        style={{
+                                            width: '100px'
+                                        }}
+                                    >
+                                        {displayHeaderActions && (
+                                        <Button onClick={() => fields.push({} as any)} style={{ float: 'right' }}>
+                                            <Glyphicon glyph="plus" /> Create Role
+                                        </Button>
+                                        )}
+                                    </th>
+                                    )}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {fields.map((fieldInstanceName, index) => {
+                                    const currentLeave: Partial<Leave> = fields.get(index);
+                                    const { cancelDate = undefined } = currentLeave || {};
+                                    // @ts-ignore
+                                    return (
+                                        <>
+                                            <tr key={index}>
+                                                {expandable && (
+                                                <td>
+                                                    <FormGroup>
+                                                        <Button
+                                                            bsStyle="link"
+                                                            onClick={() => this.onExpandRowClicked(index)}
+                                                            style={{ color: '#666666' }}
+                                                        >
+                                                            {expandedRows && !expandedRows.has(index) && (
+                                                            <Glyphicon glyph="triangle-right" />
+                                                            )}
+                                                            {expandedRows && expandedRows.has(index) && (
+                                                            <Glyphicon glyph="triangle-bottom" />
+                                                            )}
+                                                        </Button>
+                                                    </FormGroup>
+                                                </td>
+                                                )}
+                                                {
+                                                    columns
+                                                        .map((col, colIndex) => {
+                                                            const Column = cancelDate != undefined
+                                                                ? col.CanceledRender
+                                                                : col.FormRenderer;
+
+                                                            return (
+                                                                <td key={colIndex}>
+                                                                    <Column
+                                                                        leave={currentLeave}
+                                                                        fieldInstanceName={fieldInstanceName}
+                                                                        fields={fields}
+                                                                        index={index}
+                                                                        callbackContext={componentInstance}
+                                                                    />
+                                                                </td>
+                                                            );
+                                                        })
+                                                }
+                                                {displayActionsColumn && (() => {
+                                                    const actionsColumn = CellTypes.Actions();
+
+                                                    const Column = cancelDate != undefined
+                                                        ? actionsColumn.CanceledRender
+                                                        : actionsColumn.FormRenderer;
+
+                                                    return (
+                                                        <td style={{ display: 'flex' }}>
+                                                            <Column
+                                                                leave={currentLeave}
+                                                                fieldInstanceName={fieldInstanceName}
+                                                                fields={fields}
+                                                                index={index}
+                                                                callbackContext={componentInstance}
+                                                            />
+                                                        </td>
+                                                    );
+                                                })()}
+                                            </tr>
+                                            {expandable && expandedRows && expandedRows.has(index) && (
+                                            <tr key={index * 2}>
+                                                <td>{/* Nest the Table for sub-rows */}</td>
+                                                {/* tslint:disable-next-line:max-line-length */}
+                                                <td style={{ margin: '0', padding: '0' }} colSpan={expandable ? columns.length + 1 : columns.length}>
+                                                    <RowComponent />
+                                                </td>
+                                            </tr>
+                                            )}
+                                        </>
+                                    );
+                                })}
+                            </tbody>
+                        </Table>
+                        <AdminRolePermissionsModal isOpen={(activeRoleScopeId !== null)} />
                     </div>
-                )
+                )}
+            />
         );
     }
 
-    renderFormFields(props: DataTableProps<T>): React.ReactNode {
-        const { FormComponent } = this;
-        return (
-            FormComponent && <FormComponent key={this.name} {...props} />
-        );
-    }
-
-    async onSubmit(objectId: IdType | undefined, formValues: any, dispatch: Dispatch<any>): Promise<any | void> {
-        // does nothing
-    }
-
-    hasErrors(errors: any) {
-        // Traverse first nodes of error object checking for errors on each
-        return Object.keys(errors).some(eKey => (
-            Object.keys(this.formFieldNames).some(key => (
-                this.containsPropertyPath(errors[eKey], this.formFieldNames[key])
-            ))
-        ));
-    }
-
-    fetchData(objectId: IdType | undefined, dispatch: Dispatch<any>) {
-        // does nothing
-    }
-
-    getData(objectId: IdType | undefined, state: RootState): T | undefined {
-        // Does nothing
-        return undefined;
-    }
-
-    validate(values: T): FormErrors<T> | undefined {
-        return undefined;
-    }
-}
-
-export abstract class DataTableSectionPlugin<T = any> extends DataTableBase<T> {
-    abstract get title(): string;
 }

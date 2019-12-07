@@ -3,7 +3,7 @@ import { Button, Glyphicon, Well } from 'react-bootstrap';
 
 import { IdType } from '../api';
 import Page from '../components/Page/Page';
-// import { DataTableProps } from '../components/Table/DataTable';
+// import { FormContainerProps } from '../components/Form/FormContainer';
 
 // import SheriffList from '../containers/SheriffList';
 import AdminRolesGrid, { AdminRolesDisplayProps } from '../containers/AdminRolesGrid/AdminRolesGrid';
@@ -11,7 +11,7 @@ import AdminRolesGrid, { AdminRolesDisplayProps } from '../containers/AdminRoles
 // import SheriffProfileCreateModal from '../containers/SheriffProfileCreateModal';
 import AdminForm from '../containers/AdminForm';
 import { AdminFormProps } from '../components/AdminForm/AdminForm';
-import { DataTableBase } from '../components/Table/DataTable';
+import { FormContainerBase } from '../components/Form/FormContainer';
 
 // Import plugins
 import AdminRolesGridPlugin from '../containers/AdminRolesGrid/AdminRolesGrid';
@@ -30,7 +30,7 @@ class ManageRoles extends React.PureComponent<AdminFormProps> {
         this.toggleEditMode = this.toggleEditMode.bind(this);
     }
 
-    /*renderDataTable(): {} {
+    /*renderFormContainer(): {} {
         const dataTable = new AdminRolesGrid();
         const roleId: IdType = 'asdf-1234';
         // const data: any = [];

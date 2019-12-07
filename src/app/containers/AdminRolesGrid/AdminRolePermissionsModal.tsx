@@ -7,7 +7,7 @@ import {
 } from 'react-bootstrap';
 import { WORK_SECTIONS } from '../../api';
 import ModalWrapper from '../ModalWrapper/ModalWrapper';
-import RolesFieldTable, { EmptyDetailRow } from './RolesFieldTable';
+import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
 
 import SelectorField from '../../components/FormElements/SelectorField';
 import Selector from '../../components/FormElements/Selector';
@@ -60,15 +60,15 @@ export default class AdminRolePermissionsModal extends React.Component<AdminRole
                                     </Button>`
                                 </div>
                             </div>
-                            <RolesFieldTable
+                            <DataTable
                                 fieldName={'roles'}
                                 title={''} // Leave this blank
                                 displayActionsColumn={false}
                                 columns={[
-                                    RolesFieldTable.TextFieldColumn('Permission Name'),
-                                    RolesFieldTable.TextFieldColumn('Code'),
-                                    RolesFieldTable.TextAreaColumn('Description'),
-                                    RolesFieldTable.CheckboxColumn('Has Permission'), // TODO: Use a checkbox
+                                    DataTable.TextFieldColumn('Permission Name'),
+                                    DataTable.TextFieldColumn('Code'),
+                                    DataTable.TextAreaColumn('Description'),
+                                    DataTable.CheckboxColumn('Has Permission'), // TODO: Use a checkbox
                                 ]}
                                 rowComponent={EmptyDetailRow}
                             />

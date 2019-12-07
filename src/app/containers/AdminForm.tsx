@@ -44,7 +44,7 @@ import AdminCodeTypesGridPlugin from './AdminCodeTypesGrid/AdminCodeTypesGrid';
     // setRoleProfilePluginSubmitErrors,
 // } from '../../modules/roles/actions';
 
-import { DataTableBase } from '../components/Table/DataTable';
+import { FormContainerBase } from '../components/Form/FormContainer';
 import AdminFormComponent, { AdminFormProps } from '../components/AdminForm/AdminForm';
 
 /*async function submitPlugins(

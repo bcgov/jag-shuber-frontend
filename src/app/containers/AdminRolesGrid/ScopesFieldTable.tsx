@@ -58,7 +58,7 @@ export default class ScopesFieldTable extends React.Component<ScopesFieldTablePr
             rowComponent,
         } = this.props;
 
-        // return (<div>This would be the table</div>);
+        // return (<div>This would be the Table</div>);
 
         const RowComponent = rowComponent;
 
@@ -119,7 +119,7 @@ export default class ScopesFieldTable extends React.Component<ScopesFieldTablePr
                                             </tr>
                                             {expandable && expandedRows.indexOf(index + 1) > -1 && (
                                             <tr key={index * 2}>
-                                                <td>{/* Nest the table for sub-rows */}</td>
+                                                <td>{/* Nest the Table for sub-rows */}</td>
                                                 <td colSpan={expandable ? columns.length : columns.length - 1}>
                                                     <RowComponent />
                                                 </td>

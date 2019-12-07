@@ -1,6 +1,6 @@
 import React from 'react';
 import { IdType } from '../../api';
-import { DataTable, DataTableProps, DataTableBase } from '../../components/Table/DataTable';
+import { FormContainer, FormContainerProps, FormContainerBase } from '../Form/FormContainer';
 import { InjectedFormProps } from 'redux-form';
 import { Tab, Row, Col, Nav, NavItem, Glyphicon } from 'react-bootstrap';
 import Form from '../FormElements/Form';
@@ -9,7 +9,7 @@ import './AdminForm.css';
 export interface AdminFormProps {
     sheriffId?: IdType;
     isEditing?: boolean;
-    plugins?: DataTableBase[];
+    plugins?: FormContainerBase[];
     text?: string;
     pluginsWithErrors?: { [key: string]: boolean };
     selectedSection?: string;
@@ -50,9 +50,9 @@ export default class AdminForm extends React.Component<InjectedFormProps<any, Ad
         return true;
     }
 
-    renderPlugin(plugin: DataTable) {
+    renderPlugin(plugin: FormContainer) {
         const { sheriffId, initialValues = {}, isEditing = false } = this.props;
-        const pluginProps: DataTableProps = {
+        const pluginProps: FormContainerProps = {
             // sheriffId,
             data: initialValues[plugin.name]
         };
@@ -67,9 +67,9 @@ export default class AdminForm extends React.Component<InjectedFormProps<any, Ad
             pluginsWithErrors = {},
         } = this.props;
         let { selectedSection } = this.props;
-        const nonSectionPlugins = plugins.filter(p => !(p instanceof DataTableBase));
+        const nonSectionPlugins = plugins.filter(p => !(p instanceof FormContainerBase));
         // tslint:disable-next-line:max-line-length
-        const sectionPlugins = plugins.filter(p => p instanceof DataTableBase) as DataTableBase<any>[];
+        const sectionPlugins = plugins.filter(p => p instanceof FormContainerBase) as FormContainerBase<any>[];
         selectedSection = selectedSection ? selectedSection : sectionPlugins[0] ? sectionPlugins[0].name : ''; // No selected key
         return (
             <div>

@@ -3,7 +3,7 @@ import { Button, Glyphicon, Well } from 'react-bootstrap';
 
 import { IdType } from '../api';
 import Page from '../components/Page/Page';
-// import { DataTableProps } from '../components/Table/DataTable';
+// import { FormContainerProps } from '../components/Form/FormContainer';
 
 // import SheriffList from '../containers/SheriffList';
 import AdminCodeTypesGrid, { AdminCodeTypesDisplayProps } from '../containers/AdminCodeTypesGrid/AdminCodeTypesGrid';
@@ -25,7 +25,7 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps> {
         this.toggleEditMode = this.toggleEditMode.bind(this);
     }
 
-    renderDataTable(): any {
+    renderFormContainer(): any {
         const dataTable = new AdminCodeTypesGrid();
         const roleId: IdType = 'asdf-1234';
         // const data: any = [];

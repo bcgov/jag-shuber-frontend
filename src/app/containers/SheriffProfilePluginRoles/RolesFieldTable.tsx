@@ -9,13 +9,13 @@ import { Table, Button, Glyphicon } from 'react-bootstrap';
 import * as CellTypes from '../../components/TableColumnCell';
 
 // TODO: This is the same as LeavesFieldTableProps... make it generic?
-export interface RolesFieldTableProps {
+export interface DataTableProps {
     title: React.ReactNode;
     fieldName: string;
     columns: CellTypes.Types.TableColumnCell[];
 }
 
-export default class RolesFieldTable extends React.Component<RolesFieldTableProps> {
+export default class DataTable extends React.Component<DataTableProps> {
     static CancelColumn = CellTypes.Cancel;
     static LeaveSubCodeColumn = CellTypes.LeaveSubCode;
     static RoleCodeColumn = CellTypes.RoleCode;

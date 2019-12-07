@@ -12,18 +12,18 @@ import { RootState } from '../../store';
 import { IdType } from '../../api';
 
 import {
-    DataTableBase,
-    DataTableProps,
-    // DataTableSectionPlugin
-} from '../../components/Table/DataTable';
+    FormContainerBase,
+    FormContainerProps,
+    // FormContainerSectionPlugin
+} from '../../components/Form/FormContainer';
 
 import CodeTypesFieldTable from './CodeTypesFieldTable';
 
 // import { fromTimeString } from 'jag-shuber-api';
 
-export interface AdminCodeTypesProps extends DataTableProps {}
+export interface AdminCodeTypesProps extends FormContainerProps {}
 
-export interface AdminCodeTypesDisplayProps extends DataTableProps {
+export interface AdminCodeTypesDisplayProps extends FormContainerProps {
 
 }
 
@@ -71,11 +71,11 @@ class AdminCodeTypesDisplay extends React.PureComponent<AdminCodeTypesDisplayPro
     }
 }
 
-export default class AdminCodeTypesGrid extends DataTableBase<AdminCodeTypesProps> {
+export default class AdminCodeTypesGrid extends FormContainerBase<AdminCodeTypesProps> {
     name = 'codeTypes';
     formFieldNames = { default: 'codeTypes'};
     title: string = 'Manage Code Types';
-    FormComponent = (props: DataTableProps<AdminCodeTypesProps>) => (
+    FormComponent = (props: FormContainerProps<AdminCodeTypesProps>) => (
         <div>
             <CodeTypesFieldTable
                 fieldName={this.formFieldNames.default}
@@ -91,7 +91,7 @@ export default class AdminCodeTypesGrid extends DataTableBase<AdminCodeTypesProp
     )
 
     // TODO: Figure out why Fragments aren't working...
-    DisplayComponent = (props: DataTableProps<AdminCodeTypesDisplayProps>) => (
+    DisplayComponent = (props: FormContainerProps<AdminCodeTypesDisplayProps>) => (
         <div>
             <Alert>No code types exist</Alert>
             <AdminCodeTypesDisplay {...props} />
@@ -113,7 +113,7 @@ export default class AdminCodeTypesGrid extends DataTableBase<AdminCodeTypesProp
         };
     }
 
-    getDataFromFormValues(formValues: {}): DataTableProps {
+    getDataFromFormValues(formValues: {}): FormContainerProps {
         return super.getDataFromFormValues(formValues) || {
         };
     }
