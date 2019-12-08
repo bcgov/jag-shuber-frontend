@@ -97,14 +97,13 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                     fieldName={this.formFieldNames.default}
                     title={''} // Leave this blank
                     columns={[
-                        DataTable.SelectorFieldColumn('API Route', { displayInfo: true, disabled: true }),
+                        DataTable.SelectorFieldColumn('API Role', { displayInfo: true, disabled: true }),
                         DataTable.TextFieldColumn('Code', { displayInfo: true, disabled: true }),
                         DataTable.TextFieldColumn('Description', { displayInfo: true, disabled: true }),
-                        DataTable.ButtonColumn('Edit Permissions', 'list', { displayInfo: true }, onButtonClicked),
+                        DataTable.ButtonColumn('View Role', 'eye-open', { displayInfo: true }, onButtonClicked),
                     ]}
                     rowComponent={EmptyDetailRow}
                 />
-
             </>
         );
     }
