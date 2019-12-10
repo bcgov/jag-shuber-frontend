@@ -27,6 +27,7 @@ export const EmptyDetailRow: React.SFC<DetailComponentProps> = () => (<div />);
 // TODO: This is the same as LeavesFieldTableProps... make it generic?
 export interface DataTableProps {
     title: React.ReactNode;
+    buttonLabel?: React.ReactNode; // TODO... a hash of values maybe :)
     fieldName: string;
     columns: CellTypes.Types.TableColumnCell[];
     displayHeaderActions?: boolean;
@@ -44,8 +45,9 @@ export default class DataTable extends React.Component<DataTableProps> {
         expandable: false,
         // expandedRows: false,
         // TODO: What is up with default props?
-       rowComponent: <div />,
-       modalComponent: <div />
+        rowComponent: <div />,
+        modalComponent: <div />,
+        buttonLabel: 'Create'
     };
 
     static TextFieldColumn = CellTypes.TextField;
@@ -97,6 +99,7 @@ export default class DataTable extends React.Component<DataTableProps> {
         const {
             fieldName,
             title,
+            buttonLabel,
             columns = [],
             displayHeaderActions = false,
             displayActionsColumn = true,
@@ -142,7 +145,7 @@ export default class DataTable extends React.Component<DataTableProps> {
                                         >
                                             {displayHeaderActions && (
                                                 <Button onClick={() => fields.push({} as any)} style={{ float: 'right' }}>
-                                                    <Glyphicon glyph="plus" /> Create Role
+                                                    <Glyphicon glyph="plus" /> {buttonLabel}
                                                 </Button>
                                             )}
                                         </th>
