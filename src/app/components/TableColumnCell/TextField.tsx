@@ -14,7 +14,7 @@ const TextFieldColumn = (label?: string, options?: Types.FieldColumnOptions): Ty
     label = label || '';
 
     const displayInfo = (options && options.displayInfo) ? options.displayInfo : false;
-    const fieldName = (options && options.fieldName) ? options.fieldName : 'roleName';
+    const fieldName = (options && options.fieldName) ? options.fieldName : 'textField';
 
     return {
         title: label,

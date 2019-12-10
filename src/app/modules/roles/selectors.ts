@@ -65,6 +65,51 @@ export const getAllApiScopes = (state: RootState) => {
     return undefined;
 };
 
+export const getRoleFrontendScopes = createSelector(
+    roleFrontendScopeRequests.roleFrontendScopeMapRequest.getData,
+    (map) => {
+        const dataMap = mapToArray(map);
+        return dataMap;
+    }
+);
+
+export const getAllRoleFrontendScopes = (state: RootState) => {
+    if (state) {
+        return getRoleFrontendScopes(state);
+    }
+    return undefined;
+};
+
+export const getRoleApiScopes = createSelector(
+    roleApiScopeRequests.roleApiScopeMapRequest.getData,
+    (map) => {
+        const dataMap = mapToArray(map);
+        return dataMap;
+    }
+);
+
+export const getAllRoleApiScopes = (state: RootState) => {
+    if (state) {
+        return getRoleApiScopes(state);
+    }
+    return undefined;
+};
+
+export const getRolePermissions = createSelector(
+    rolePermissionRequests.rolePermissionMapRequest.getData,
+    (map) => {
+        const dataMap = mapToArray(map);
+        return dataMap;
+    }
+);
+
+export const getAllRolePermissions = (state: RootState) => {
+    if (state) {
+        return getRolePermissions(state);
+    }
+    return undefined;
+};
+
 export const getRole = (id?: IdType) => (state: RootState) => {
     if (state && id != null) {
         const map: RoleMap = roleRequests.roleMapRequest.getData(state);

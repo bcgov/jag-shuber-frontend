@@ -17,13 +17,14 @@ const SelectorFieldColumn = (label?: string, options?: Types.FieldColumnOptions)
 
     const displayInfo = (options && options.displayInfo) ? options.displayInfo : false;
     const disabled = (options && options.disabled) ? options.disabled : false;
+    const fieldName = (options && options.fieldName) ? options.fieldName : 'selectorField';
 
     return {
         title: label,
         FormRenderer: ({ fieldInstanceName }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Field
-                    name={`${fieldInstanceName}.leaveSubCode`}
+                    name={`${fieldInstanceName}.${fieldName}`}
                     component={(p) => <SelectorField
                         {...p}
                         showLabel={false}

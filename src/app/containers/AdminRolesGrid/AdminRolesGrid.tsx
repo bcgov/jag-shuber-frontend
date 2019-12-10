@@ -28,9 +28,12 @@ import {
 import { RootState } from '../../store';
 
 import {
+    getAllRoles,
     getAllApiScopes,
     getAllFrontendScopes,
-    getAllRoles
+    getAllRoleApiScopes,
+    getAllRoleFrontendScopes,
+    getAllRolePermissions
 } from '../../modules/roles/selectors';
 
 import { IdType } from '../../api';
@@ -191,14 +194,20 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
     }
 
     getData(roleId: IdType, state: RootState) {
-        const data = getAllRoles(state) || undefined;
+        // TODO: Depending on component state, some of these calls will need to be filtered!
         const roles = getAllRoles(state) || undefined;
         const frontendScopes = getAllFrontendScopes(state) || undefined;
         const apiScopes = getAllApiScopes(state) || undefined;
+        const roleFrontendScopes = getAllRoleFrontendScopes(state) || undefined;
+        const roleApiScopes = getAllRoleApiScopes(state) || undefined;
+        const rolePermissions = getAllRolePermissions(state) || undefined;
         return {
             roles,
             frontendScopes,
-            apiScopes
+            apiScopes,
+            roleFrontendScopes,
+            roleApiScopes,
+            rolePermissions
         };
     }
 
