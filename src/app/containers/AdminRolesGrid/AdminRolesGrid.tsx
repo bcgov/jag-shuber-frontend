@@ -123,6 +123,8 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                 <DataTable
                     fieldName={this.formFieldNames.roleFrontendScopes}
                     title={''} // Leave this blank
+                    buttonLabel={'Add Component'}
+                    displayHeaderActions={true}
                     columns={[
                         DataTable.SelectorFieldColumn('Component', { fieldName: 'component', selectorComponent: FrontendScopeSelector, displayInfo: true, disabled: true }),
                         DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, disabled: true }),
@@ -135,6 +137,8 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                 <DataTable
                     fieldName={this.formFieldNames.roleApiScopes}
                     title={''} // Leave this blank
+                    buttonLabel={'Add API Route'}
+                    displayHeaderActions={true}
                     columns={[
                         DataTable.SelectorFieldColumn('API Role', { fieldName: 'apiRoute', selectorComponent: ApiScopeSelector, displayInfo: true, disabled: true }),
                         DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, disabled: true }),
@@ -156,6 +160,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                 <DataTable
                     fieldName={this.formFieldNames.roles}
                     title={''} // Leave this blank
+                    buttonLabel={'Add New Role'}
                     columns={[
                         DataTable.TextFieldColumn('Role Name', { fieldName: 'roleName', displayInfo: true }),
                         DataTable.TextFieldColumn('Role Code', { fieldName: 'roleCode', displayInfo: true }),
