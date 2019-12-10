@@ -103,7 +103,10 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
     formFieldNames = {
         roles: 'roles.roles',
         apiScopes: 'roles.apiScopes',
-        frontendScopes: 'roles.frontendScopes'
+        frontendScopes: 'roles.frontendScopes',
+        roleApiScopes: 'roles.roleApiScopes',
+        roleFrontendScopes: 'roles.roleFrontendScopes',
+        rolePermissions: 'roles.rolePermissions'
     };
     title: string = 'Manage Roles';
     DetailComponent: React.SFC<DetailComponentProps> = () => {
@@ -114,7 +117,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
         return (
             <>
                 <DataTable
-                    fieldName={this.formFieldNames.frontendScopes}
+                    fieldName={this.formFieldNames.roleFrontendScopes}
                     title={''} // Leave this blank
                     columns={[
                         DataTable.SelectorFieldColumn('Component', { fieldName: 'component', displayInfo: true, disabled: true }),
@@ -126,7 +129,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                     modalComponent={AdminRolePermissionsModal}
                 />
                 <DataTable
-                    fieldName={this.formFieldNames.apiScopes}
+                    fieldName={this.formFieldNames.roleApiScopes}
                     title={''} // Leave this blank
                     columns={[
                         DataTable.SelectorFieldColumn('API Role', { fieldName: 'apiRoute', displayInfo: true, disabled: true }),
@@ -142,8 +145,8 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
     }
 
     FormComponent = (props: FormContainerProps<AdminRolesProps>) => {
-        console.log('dumping adminrolesgrid props');
-        console.log(props);
+        // console.log('dumping adminrolesgrid props');
+        // console.log(props);
         return (
             <div>
                 <DataTable

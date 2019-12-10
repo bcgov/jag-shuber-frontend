@@ -166,9 +166,9 @@ const formConfig: ConfigProps<{}, AdminFormProps> = {
 // @ts-ignore
 const AdminForm = reduxForm<{}, AdminFormProps>(formConfig)(AdminFormComponent);
 // tslint:disable-next-line:no-console
-console.log('dumping AdminForm');
+// console.log('dumping AdminForm');
 // tslint:disable-next-line:no-console
-console.log(AdminForm);
+// console.log(AdminForm);
 
 interface AdminFormContainerStateProps {
     pluginsWithErrors: { [key: string]: boolean };
@@ -274,8 +274,8 @@ export default class extends
                     {}
                 );
 
-            console.log('adminformcontainer init val');
-            console.log(initialValues);
+            // console.log('adminformcontainer init val');
+            // console.log(initialValues);
 
             /*if (roleId) {
                 // @ts-ignore

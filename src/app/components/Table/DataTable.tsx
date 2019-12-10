@@ -120,9 +120,9 @@ export default class DataTable extends React.Component<DataTableProps> {
             <FieldArray<Partial<any>>
                 name={fieldName}
                 component={(props) => {
-                    console.log('dumping datatable fields');
+                    // console.log('dumping datatable fields');
                     const { fields } = props;
-                    console.log(props.fields.getAll());
+                    // console.log(props.fields.getAll());
                     return (
                         <div>
                             {title}
@@ -151,8 +151,8 @@ export default class DataTable extends React.Component<DataTableProps> {
                                 </thead>
                                 <tbody>
                                 {fields.map((fieldInstanceName, index) => {
-                                    console.log('dumping field');
-                                    console.log(fieldInstanceName);
+                                    // console.log('dumping field');
+                                    // console.log(fieldInstanceName);
 
                                     const currentLeave: Partial<any> = fields.get(index);
                                     const { cancelDate = undefined } = currentLeave || {};
