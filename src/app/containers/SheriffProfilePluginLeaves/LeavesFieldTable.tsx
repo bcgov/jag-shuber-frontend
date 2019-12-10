@@ -70,7 +70,7 @@ export default class LeavesFieldTable extends React.Component<LeavesFieldTablePr
                         showLabel={false}
                         SelectorComponent={
                             (sp) =>
-                                isPersonal 
+                                isPersonal
                                 ? <LeavePersonalSubCodeSelector {...sp} />
                                 : <LeaveTrainingSubCodeSelector {...sp} />
                             }

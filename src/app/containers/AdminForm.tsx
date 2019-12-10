@@ -253,7 +253,7 @@ export default class extends
     connect<AdminFormContainerStateProps, AdminFormContainerDispatchProps, AdminFormProps, RootState>(
         // TODO: Type this?
         (state, { plugins }) => {
-            let initialValues: {} = {};
+            let initialValues: any = {};
 
             // @ts-ignore
             initialValues = plugins
@@ -267,15 +267,15 @@ export default class extends
                     return undefined;
                 })
                 .filter(s => s != undefined)
-                /*.reduce(
+                .reduce(
                     (initValues, val) => {
                         return { ...initValues, ...val };
                     },
-                    {
-                        // user: getUser(state)
-                    }
-                );*/
+                    {}
+                );
 
+            console.log('adminformcontainer init val');
+            console.log(initialValues);
 
             /*if (roleId) {
                 // @ts-ignore
@@ -317,8 +317,8 @@ export default class extends
                 pluginErrors: {}
             };
 
-            console.log('dumping adminform props');
-            console.log(newProps);
+            // console.log('dumping adminform props');
+            // console.log(newProps);
 
             return newProps;
         },

@@ -52,6 +52,7 @@ export default class AdminForm extends React.Component<InjectedFormProps<any, Ad
 
     renderPlugin(plugin: FormContainer) {
         const { initialValues = {}, isEditing = false } = this.props;
+
         const pluginProps: FormContainerProps = {
             // sheriffId,
             data: initialValues[plugin.name]

@@ -91,7 +91,11 @@ class AdminRolesDisplay extends React.PureComponent<AdminRolesDisplayProps, any>
 
 export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
     name = 'roles';
-    formFieldNames = { default: 'roles.data'};
+    formFieldNames = {
+        roles: 'roles.data',
+        apiScopes: 'apiScopes',
+        frontendScopes: 'frontendScopes'
+    };
     title: string = 'Manage Roles';
     DetailComponent: React.SFC<DetailComponentProps> = () => {
         const onButtonClicked = (ev: React.SyntheticEvent<any>, context: any) => {
@@ -101,7 +105,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
         return (
             <>
                 <DataTable
-                    fieldName={this.formFieldNames.default}
+                    fieldName={this.formFieldNames.frontendScopes}
                     title={''} // Leave this blank
                     columns={[
                         DataTable.SelectorFieldColumn('Component', { displayInfo: true, disabled: true }),
@@ -113,7 +117,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                     modalComponent={AdminRolePermissionsModal}
                 />
                 <DataTable
-                    fieldName={this.formFieldNames.default}
+                    fieldName={this.formFieldNames.apiScopes}
                     title={''} // Leave this blank
                     columns={[
                         DataTable.SelectorFieldColumn('API Role', { displayInfo: true, disabled: true }),
@@ -134,7 +138,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
         return (
             <div>
                 <DataTable
-                    fieldName={this.formFieldNames.default}
+                    fieldName={this.formFieldNames.roles}
                     title={''} // Leave this blank
                     columns={[
                         DataTable.TextFieldColumn('Role Name', { displayInfo: true }),
@@ -181,7 +185,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
     }
 
     getData(roleId: IdType, state: RootState) {
-        const data = getAllRoles(state);
+        const data = getAllRoles(state) || undefined;
         return { data };
     }
 

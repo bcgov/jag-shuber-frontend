@@ -20,7 +20,7 @@ const TextFieldColumn = (label?: string, options?: Types.FieldColumnOptions): Ty
         FormRenderer: ({ fieldInstanceName }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Field
-                    name={`${fieldInstanceName}.leaveSubCode`}
+                    name={`${fieldInstanceName}.textField`}
                     component={(p) => <TextField
                         {...p}
                         showLabel={false}
