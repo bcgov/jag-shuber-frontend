@@ -105,7 +105,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
         return (
             <>
                 <DataTable
-                    fieldName={this.formFieldNames.frontendScopes}
+                    fieldName={this.formFieldNames.roles}
                     title={''} // Leave this blank
                     columns={[
                         DataTable.SelectorFieldColumn('Component', { displayInfo: true, disabled: true }),
@@ -117,7 +117,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                     modalComponent={AdminRolePermissionsModal}
                 />
                 <DataTable
-                    fieldName={this.formFieldNames.apiScopes}
+                    fieldName={this.formFieldNames.roles}
                     title={''} // Leave this blank
                     columns={[
                         DataTable.SelectorFieldColumn('API Role', { displayInfo: true, disabled: true }),
