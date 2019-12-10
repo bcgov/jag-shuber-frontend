@@ -20,7 +20,8 @@ const TextFieldColumn = (label?: string, options?: Types.FieldColumnOptions): Ty
         FormRenderer: ({ fieldInstanceName }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Field
-                    name={`${fieldInstanceName}.textField`}
+                    // TODO: Pass in field name as prop or whatever
+                    name={`${fieldInstanceName}.roleName`}
                     component={(p) => <TextField
                         {...p}
                         showLabel={false}
