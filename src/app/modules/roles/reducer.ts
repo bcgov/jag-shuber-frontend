@@ -1,4 +1,11 @@
-import * as roleRequests from './requests';
+import * as roleRequests from './requests/roles';
+import * as apiScopeRequests from './requests/apiScopes';
+import * as frontendScopeRequests from './requests/frontendScopes';
+import * as roleApiScopeRequests from './requests/roleApiScopes';
+import * as roleFrontendScopeRequests from './requests/roleFrontendScopes';
+import * as rolePermissionRequests from './requests/rolePermissions';
+import * as userRoleRequests from './requests/userRoles';
+
 import { ReducersMapObject } from 'redux';
 import NestedReducer from '../../infrastructure/NestedReducer';
 import { STATE_KEY } from './common';
@@ -12,9 +19,12 @@ export {
 const nestedReducer = new NestedReducer([
   // Roles
   roleRequests.roleMapRequest.reducer,
-  // TODO: I don't think I need these anymore
-  // roleRequests.roleTypeMapRequest.reducer,
-  // roleRequests.roleCancelCodeMapRequest.reducer,
+  apiScopeRequests.apiScopeMapRequest.reducer,
+  frontendScopeRequests.frontendScopeMapRequest.reducer,
+  roleApiScopeRequests.roleApiScopeMapRequest.reducer,
+  roleFrontendScopeRequests.roleFrontendScopeMapRequest.reducer,
+  rolePermissionRequests.rolePermissionMapRequest.reducer,
+  userRoleRequests.userRoleMapRequest.reducer,
   roleRequests.createOrUpdateRolesRequest.reducer
 ]);
 

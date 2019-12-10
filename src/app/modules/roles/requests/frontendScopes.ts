@@ -21,7 +21,7 @@ class FrontendScopeMapRequest extends GetEntityMapRequest<void, FrontendScope, R
     constructor(config?: RequestConfig<MapType<FrontendScope>>) {
         super({
             namespace: STATE_KEY,
-            actionName: 'roleMap',
+            actionName: 'frontendScopeMap',
             ...config
         });
     }

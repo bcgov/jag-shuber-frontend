@@ -1,6 +1,13 @@
 import { RootState } from '../../store';
 import { createSelector } from 'reselect';
-import * as roleRequests from './requests';
+import * as roleRequests from './requests/roles';
+import * as apiScopeRequests from './requests/apiScopes';
+import * as frontendScopeRequests from './requests/frontendScopes';
+import * as roleApiScopeRequests from './requests/roleApiScopes';
+import * as roleFrontendScopeRequests from './requests/roleFrontendScopes';
+import * as rolePermissionRequests from './requests/rolePermissions';
+import * as userRoleRequests from './requests/userRoles';
+
 import {
     RoleMap,
     IdType,

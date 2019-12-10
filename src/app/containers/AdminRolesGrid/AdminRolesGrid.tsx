@@ -17,6 +17,14 @@ import {
     getRolePermissions
 } from '../../modules/roles/actions';
 
+// TODO: These don't necessarily belong here, but I might as well code them up at the same time
+import {
+    getUserRoles
+} from '../../modules/roles/actions';
+import {
+    // getUsers
+} from '../../modules/user/actions';
+
 import { RootState } from '../../store';
 import { IdType } from '../../api';
 
@@ -158,6 +166,9 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
         dispatch(getRoleFrontendScopes());
         dispatch(getRoleApiScopes());
         dispatch(getRolePermissions());
+        // TODO: These might not belong here, but I might as well code them up at the same time
+        // dispatch(getUsers());
+        dispatch(getUserRoles());
     }
 
     getData(roleId: IdType, state: RootState) {

@@ -5,8 +5,8 @@ import {
     RoleModuleState
 } from '../common';
 import {
-    ApiScopeMap,
-    ApiScope,
+    UserRoleMap,
+    UserRole,
     MapType
 } from '../../../api/Api';
 import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRequest';
@@ -17,29 +17,29 @@ import UpdateEntityRequest from '../../../infrastructure/Requests/UpdateEntityRe
 // import toTitleCase from '../../infrastructure/toTitleCase';
 
 // Get the Map
-class ApiScopeMapRequest extends GetEntityMapRequest<void, ApiScope, RoleModuleState> {
-    constructor(config?: RequestConfig<MapType<ApiScope>>) {
+class UserRoleMapRequest extends GetEntityMapRequest<void, UserRole, RoleModuleState> {
+    constructor(config?: RequestConfig<MapType<UserRole>>) {
         super({
             namespace: STATE_KEY,
-            actionName: 'apiScopeMap',
+            actionName: 'userRoleMap',
             ...config
         });
     }
-    public async doWork(request: void, { api }: ThunkExtra): Promise<ApiScopeMap> {
-        let data = await api.getApiScopes();
-        return arrayToMap(data, t => t.id);
+    public async doWork(request: void, { api }: ThunkExtra): Promise<UserRoleMap> {
+        let roles = await api.getUserRoles();
+        return arrayToMap(roles, t => t.id);
     }
 }
 
-export const apiScopeMapRequest = new ApiScopeMapRequest();
+export const userRoleMapRequest = new UserRoleMapRequest();
 
-// Create ApiScope
-class CreateApiScopeRequest extends CreateEntityRequest<ApiScope, RoleModuleState> {
+// Create UserRole
+class CreateUserRoleRequest extends CreateEntityRequest<UserRole, RoleModuleState> {
     constructor() {
         super(
             {
                 namespace: STATE_KEY,
-                actionName: 'createApiScope',
+                actionName: 'createUserRole',
                 toasts: {
                     success: (s) => (
                         `Success`
@@ -49,61 +49,61 @@ class CreateApiScopeRequest extends CreateEntityRequest<ApiScope, RoleModuleStat
                     )
                 }
             },
-            apiScopeMapRequest
+            userRoleMapRequest
         );
     }
-    public async doWork(role: Partial<ApiScope>, { api }: ThunkExtra): Promise<ApiScope> {
-        let newApiScope = await api.createApiScope(role as ApiScope);
-        return newApiScope;
+    public async doWork(role: Partial<UserRole>, { api }: ThunkExtra): Promise<UserRole> {
+        let newUserRole = await api.createUserRole(role as UserRole);
+        return newUserRole;
     }
 }
 
-export const createApiScopeRequest = new CreateApiScopeRequest();
+export const createUserRoleRequest = new CreateUserRoleRequest();
 
-// ApiScope Edit
-class UpdateApiScopeRequest extends UpdateEntityRequest<ApiScope, RoleModuleState> {
+// UserRole Edit
+class UpdateUserRoleRequest extends UpdateEntityRequest<UserRole, RoleModuleState> {
     constructor() {
         super(
             {
                 namespace: STATE_KEY,
-                actionName: 'updateApiScope',
+                actionName: 'updateUserRole',
                 toasts: {
                     success: (s) => `Success`,
                     // tslint:disable-next-line:max-line-length
                     error: (err) => `Problem encountered while updating role: ${err ? err.toString() : 'Unknown Error'}`
                 }
             },
-            apiScopeMapRequest
+            userRoleMapRequest
         );
     }
-    public async doWork(role: Partial<ApiScope>, { api }: ThunkExtra): Promise<ApiScope> {
-        let newApiScope = await api.updateApiScope(role as ApiScope);
-        return newApiScope;
+    public async doWork(role: Partial<UserRole>, { api }: ThunkExtra): Promise<UserRole> {
+        let newUserRole = await api.updateUserRole(role as UserRole);
+        return newUserRole;
     }
 }
 
-export const updateApiScopeRequest = new UpdateApiScopeRequest();
+export const updateUserRoleRequest = new UpdateUserRoleRequest();
 
-class CreateOrUpdateApiScopeRequest extends CreateOrUpdateEntitiesRequest<ApiScope, RoleModuleState>{
-    createEntity(entity: Partial<ApiScope>, { api }: ThunkExtra): Promise<ApiScope> {
-        return api.createApiScope(entity);
+class CreateOrUpdateUserRolesRequest extends CreateOrUpdateEntitiesRequest<UserRole, RoleModuleState>{
+    createEntity(entity: Partial<UserRole>, { api }: ThunkExtra): Promise<UserRole> {
+        return api.createUserRole(entity);
     }
-    updateEntity(entity: Partial<ApiScope>, { api }: ThunkExtra): Promise<ApiScope> {
-        return api.updateApiScope(entity as ApiScope);
+    updateEntity(entity: Partial<UserRole>, { api }: ThunkExtra): Promise<UserRole> {
+        return api.updateUserRole(entity as UserRole);
     }
-    constructor(config?: RequestConfig<ApiScope[]>) {
+    constructor(config?: RequestConfig<UserRole[]>) {
         super(
             {
                 namespace: STATE_KEY,
-                actionName: 'createOrUpdateApiScope',
+                actionName: 'createOrUpdateUserRoles',
                 toasts: {
                     error: (err: any) => `Couldn't create/update roles: ${err.message}`
                 },
                 ...config
             },
-            apiScopeMapRequest
+            userRoleMapRequest
         );
     }
 }
 
-export const createOrUpdateApiScopeRequest = new CreateOrUpdateApiScopeRequest();
+export const createOrUpdateUserRolesRequest = new CreateOrUpdateUserRolesRequest();

@@ -21,7 +21,7 @@ class RoleApiScopeMapRequest extends GetEntityMapRequest<void, RoleApiScope, Rol
     constructor(config?: RequestConfig<MapType<RoleApiScope>>) {
         super({
             namespace: STATE_KEY,
-            actionName: 'roleMap',
+            actionName: 'roleApiScopeMap',
             ...config
         });
     }
