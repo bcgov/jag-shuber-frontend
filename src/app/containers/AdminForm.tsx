@@ -28,10 +28,6 @@ import { RootState } from '../store';
 
 // import { Role } from '../../api';
 
-// TODO: Remove this, temporarily hardcoding in plugins
-import AdminRolesGridPlugin, { AdminRolesProps } from './AdminRolesGrid/AdminRolesGrid';
-import AdminCodeTypesGridPlugin from './AdminCodeTypesGrid/AdminCodeTypesGrid';
-
 // import {
 //     getRole,
     // selectedRoleProfileSection,
@@ -44,7 +40,6 @@ import AdminCodeTypesGridPlugin from './AdminCodeTypesGrid/AdminCodeTypesGrid';
     // setRoleProfilePluginSubmitErrors,
 // } from '../../modules/roles/actions';
 
-import { FormContainerBase } from '../components/Form/FormContainer';
 import AdminFormComponent, { AdminFormProps } from '../components/AdminForm/AdminForm';
 
 /*async function submitPlugins(
@@ -259,6 +254,28 @@ export default class extends
         // TODO: Type this?
         (state, { plugins }) => {
             let initialValues: {} = {};
+
+            // @ts-ignore
+            initialValues = plugins
+                .map(p => {
+                    const data = p.getData('whatever', state);
+                    if (data != undefined) {
+                        const pluginState = {};
+                        pluginState[p.name] = data;
+                        return pluginState;
+                    }
+                    return undefined;
+                })
+                .filter(s => s != undefined)
+                /*.reduce(
+                    (initValues, val) => {
+                        return { ...initValues, ...val };
+                    },
+                    {
+                        role: getRole(roleId)(state)
+                    }
+                );*/
+
             /*if (roleId) {
                 // @ts-ignore
                 initialValues = plugins
@@ -280,14 +297,13 @@ export default class extends
                             role: getRole(roleId)(state)
                         }
                     );
-            } else {
-                const contextLocation = currentLocation(state);
-                const initialRole: Partial<Role> = {
-                    homeLocationId: contextLocation,
-                    currentLocationId: contextLocation
-                };
-                initialValues.role = { ...initialRole };
-            }*/
+            } else {*/
+            // const contextLocation = currentLocation(state);
+            /*const initialRole: Partial<Role> = {
+                homeLocationId: contextLocation,
+                currentLocationId: contextLocation
+            };
+            initialValues.role = { ...initialRole };*/
 
             return {
                 initialValues,
@@ -301,14 +317,15 @@ export default class extends
             };
         },
         // (dispatch, { roleId, plugins = [] }) => {
-        (dispatch, {}) => {
+        (dispatch, { plugins = [] }) => {
             return {
                 initialize: () => {
-                    /*dispatch(selectAdminFormSection());
-                    dispatch(setAdminFormPluginSubmitErrors());
+                    // dispatch(selectAdminFormSection());
+                    // dispatch(setAdminFormPluginSubmitErrors());
                     plugins.forEach(p => {
-                        p.fetchData(roleId, dispatch);
-                    });*/
+                        p.fetchData(undefined, dispatch);
+                        // p.fetchData(roleId, dispatch);
+                    });
                 },
                 // tslint:disable-next-line:no-empty
                 onSelectSection: () => {} // (sectionName) => dispatch(selectAdminFormSection(sectionName))

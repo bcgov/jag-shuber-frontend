@@ -2,7 +2,7 @@ import RequestAction, { RequestConfig } from './RequestActionBase';
 import FormRequestAction from './FormRequestAction';
 import { ThunkExtra, RootState } from '../../store';
 
-export default abstract class CreateOrUpdateEntityRequest<TEntity extends { id: string }, TModuleState>
+export default abstract class CreateOrUpdateEntityRequest<TEntity extends { id?: any }, TModuleState>
     extends FormRequestAction<Partial<TEntity>, TEntity, TModuleState> {
 
     constructor(config: RequestConfig<TEntity>,

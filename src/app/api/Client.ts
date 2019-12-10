@@ -31,6 +31,11 @@ import {
     SheriffDutyReassignmentDetails,
     User,
     Role,
+    RolePermission,
+    FrontendScope,
+    ApiScope,
+    RoleFrontendScope,
+    RoleApiScope,
     UserRole
 } from './Api';
 import { SubmissionError } from 'redux-form';
@@ -417,12 +422,12 @@ export default class Client implements API {
         return list as Role[];
     }
 
+    // Methods for roles
     async getRoles(): Promise<Role[]> {
         const list = await this._client.GetRoles();
         return list as Role[];
     }
 
-    // Dummy methods for roles
     async getRole(): Promise<Role> {
         return {} as Role;
     }
@@ -438,7 +443,112 @@ export default class Client implements API {
     async deleteRole(): Promise<Role> {
         return {} as Role;
     }
-    // End dummy methods for roles
+
+    async getRolePermissions(): Promise<RolePermission[]> {
+        const list = await this._client.GetRolePermissions();
+        return list as RolePermission[];
+    }
+
+    async getRolePermission(): Promise<RolePermission> {
+        return {} as RolePermission;
+    }
+
+    async createRolePermission(): Promise<RolePermission> {
+        return {} as RolePermission;
+    }
+
+    async updateRolePermission(): Promise<RolePermission> {
+        return {} as RolePermission;
+    }
+
+    async deleteRolePermission(): Promise<RolePermission> {
+        return {} as RolePermission;
+    }
+
+    async getFrontendScopes(): Promise<FrontendScope[]> {
+        const list = await this._client.GetFrontendScopes();
+        return list as FrontendScope[];
+    }
+
+    async getFrontendScope(): Promise<FrontendScope> {
+        return {} as FrontendScope;
+    }
+
+    async createFrontendScope(): Promise<FrontendScope> {
+        return {} as FrontendScope;
+    }
+
+    async updateFrontendScope(): Promise<FrontendScope> {
+        return {} as FrontendScope;
+    }
+
+    async deleteFrontendScope(): Promise<FrontendScope> {
+        return {} as FrontendScope;
+    }
+
+    async getApiScopes(): Promise<ApiScope[]> {
+        const list = await this._client.GetApiScopes();
+        return list as ApiScope[];
+    }
+
+    async getApiScope(): Promise<ApiScope> {
+        return {} as ApiScope;
+    }
+
+    async createApiScope(): Promise<ApiScope> {
+        return {} as ApiScope;
+    }
+
+    async updateApiScope(): Promise<ApiScope> {
+        return {} as ApiScope;
+    }
+
+    async deleteApiScope(): Promise<ApiScope> {
+        return {} as ApiScope;
+    }
+
+    async getRoleFrontendScopes(): Promise<RoleFrontendScope[]> {
+        const list = await this._client.GetRoleFrontendScopes();
+        return list as RoleFrontendScope[];
+    }
+
+    async getRoleFrontendScope(): Promise<RoleFrontendScope> {
+        return {} as RoleFrontendScope;
+    }
+
+    async createRoleFrontendScope(): Promise<RoleFrontendScope> {
+        return {} as RoleFrontendScope;
+    }
+
+    async updateRoleFrontendScope(): Promise<RoleFrontendScope> {
+        return {} as RoleFrontendScope;
+    }
+
+    async deleteRoleFrontendScope(): Promise<RoleFrontendScope> {
+        return {} as RoleFrontendScope;
+    }
+
+    async getRoleApiScopes(): Promise<RoleApiScope[]> {
+        const list = await this._client.GetRoleApiScopes();
+        return list as RoleApiScope[];
+    }
+
+    async getRoleApiScope(): Promise<RoleApiScope> {
+        return {} as RoleApiScope;
+    }
+
+    async createRoleApiScope(): Promise<RoleApiScope> {
+        return {} as RoleApiScope;
+    }
+
+    async updateRoleApiScope(): Promise<RoleApiScope> {
+        return {} as RoleApiScope;
+    }
+
+    async deleteRoleApiScope(): Promise<RoleApiScope> {
+        return {} as RoleApiScope;
+    }
+    // END! Methods for roles
 
     async getUserRoles(): Promise<UserRole[]> {
         const list = await this._client.GetUserRoles();

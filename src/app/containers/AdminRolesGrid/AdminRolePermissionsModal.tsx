@@ -71,6 +71,7 @@ export default class AdminRolePermissionsModal extends React.Component<AdminRole
                                     DataTable.CheckboxColumn('Has Permission'), // TODO: Use a checkbox
                                 ]}
                                 rowComponent={EmptyDetailRow}
+                                modalComponent={EmptyDetailRow}
                             />
                         </>
                     )}
