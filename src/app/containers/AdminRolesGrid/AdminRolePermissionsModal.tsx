@@ -10,7 +10,7 @@ import ModalWrapper from '../ModalWrapper/ModalWrapper';
 import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
 
 import SelectorField from '../../components/FormElements/SelectorField';
-import Selector from '../../components/FormElements/Selector';
+import FrontendScopeSelector from './FrontendScopeSelector';
 
 export interface AdminRolePermissionsModalProps {
     isOpen?: boolean;
@@ -42,7 +42,7 @@ export default class AdminRolePermissionsModal extends React.Component<AdminRole
                                             SelectorComponent={
                                                 (sp) =>
                                                     // TODO: Actually make this work
-                                                    <Selector {...sp} data={[]}/>
+                                                    <FrontendScopeSelector {...sp} />
                                                 }
                                         />}
                                         label={'Choose Scope (Component / API)'}
