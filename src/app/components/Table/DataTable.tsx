@@ -3,7 +3,9 @@ import {
     FieldArray, FieldsProps
 } from 'redux-form';
 
-import { Leave } from '../../api';
+// TODO: This has to be generic!
+import { Role } from '../../api';
+
 import { Table, FormGroup, Button, Glyphicon } from 'react-bootstrap';
 
 import * as CellTypes from '../../components/TableColumnCell';
@@ -117,11 +119,15 @@ export default class DataTable extends React.Component<DataTableProps> {
         return (
             <FieldArray<Partial<any>>
                 name={fieldName}
-                component={({ fields }) => (
-                    <div>
-                        {title}
-                        <Table striped={true} >
-                            <thead>
+                component={(props) => {
+                    console.log('dumping datatable fields');
+                    const { fields } = props;
+                    console.log(props.fields.getAll());
+                    return (
+                        <div>
+                            {title}
+                            <Table striped={true} >
+                                <thead>
                                 <tr>
                                     {expandable && (<th />)}
                                     {columns.map((col, colIndex) => (
@@ -129,21 +135,21 @@ export default class DataTable extends React.Component<DataTableProps> {
                                     ))}
 
                                     {displayActionsColumn && (
-                                    <th
-                                        style={{
-                                            width: '100px'
-                                        }}
-                                    >
-                                        {displayHeaderActions && (
-                                        <Button onClick={() => fields.push({} as any)} style={{ float: 'right' }}>
-                                            <Glyphicon glyph="plus" /> Create Role
-                                        </Button>
-                                        )}
-                                    </th>
+                                        <th
+                                            style={{
+                                                width: '100px'
+                                            }}
+                                        >
+                                            {displayHeaderActions && (
+                                                <Button onClick={() => fields.push({} as any)} style={{ float: 'right' }}>
+                                                    <Glyphicon glyph="plus" /> Create Role
+                                                </Button>
+                                            )}
+                                        </th>
                                     )}
                                 </tr>
-                            </thead>
-                            <tbody>
+                                </thead>
+                                <tbody>
                                 {fields.map((fieldInstanceName, index) => {
                                     console.log('dumping field');
                                     console.log(fieldInstanceName);
@@ -155,22 +161,22 @@ export default class DataTable extends React.Component<DataTableProps> {
                                         <>
                                             <tr key={index}>
                                                 {expandable && (
-                                                <td>
-                                                    <FormGroup>
-                                                        <Button
-                                                            bsStyle="link"
-                                                            onClick={() => this.onExpandRowClicked(index)}
-                                                            style={{ color: '#666666' }}
-                                                        >
-                                                            {expandedRows && !expandedRows.has(index) && (
-                                                            <Glyphicon glyph="triangle-right" />
-                                                            )}
-                                                            {expandedRows && expandedRows.has(index) && (
-                                                            <Glyphicon glyph="triangle-bottom" />
-                                                            )}
-                                                        </Button>
-                                                    </FormGroup>
-                                                </td>
+                                                    <td>
+                                                        <FormGroup>
+                                                            <Button
+                                                                bsStyle="link"
+                                                                onClick={() => this.onExpandRowClicked(index)}
+                                                                style={{ color: '#666666' }}
+                                                            >
+                                                                {expandedRows && !expandedRows.has(index) && (
+                                                                    <Glyphicon glyph="triangle-right" />
+                                                                )}
+                                                                {expandedRows && expandedRows.has(index) && (
+                                                                    <Glyphicon glyph="triangle-bottom" />
+                                                                )}
+                                                            </Button>
+                                                        </FormGroup>
+                                                    </td>
                                                 )}
                                                 {
                                                     columns
@@ -213,23 +219,24 @@ export default class DataTable extends React.Component<DataTableProps> {
                                                 })()}
                                             </tr>
                                             {expandable && expandedRows && expandedRows.has(index) && (
-                                            <tr key={index * 2}>
-                                                <td>{/* Nest the Table for sub-rows */}</td>
-                                                {/* tslint:disable-next-line:max-line-length */}
-                                                <td style={{ margin: '0', padding: '0' }} colSpan={expandable ? columns.length + 1 : columns.length}>
-                                                    <RowComponent />
-                                                </td>
-                                            </tr>
+                                                <tr key={index * 2}>
+                                                    <td>{/* Nest the Table for sub-rows */}</td>
+                                                    {/* tslint:disable-next-line:max-line-length */}
+                                                    <td style={{ margin: '0', padding: '0' }} colSpan={expandable ? columns.length + 1 : columns.length}>
+                                                        <RowComponent />
+                                                    </td>
+                                                </tr>
                                             )}
                                         </>
                                     );
                                 })}
-                            </tbody>
-                        </Table>
-                        {/* TODO: This has to be moved out */}
-                        <ModalComponent isOpen={(activeRowId !== null)} />
-                    </div>
-                )}
+                                </tbody>
+                            </Table>
+                            {/* TODO: This has to be moved out */}
+                            <ModalComponent isOpen={(activeRowId !== null)} />
+                        </div>
+                    )
+                }}
             />
         );
     }
