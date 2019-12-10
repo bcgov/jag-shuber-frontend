@@ -21,7 +21,7 @@ class RolePermissionsMapRequest extends GetEntityMapRequest<void, RolePermission
     constructor(config?: RequestConfig<MapType<RolePermission>>) {
         super({
             namespace: STATE_KEY,
-            actionName: 'roleMap',
+            actionName: 'rolePermissionMap',
             ...config
         });
     }

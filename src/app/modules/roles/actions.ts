@@ -4,6 +4,7 @@ import * as apiScopeRequests from './requests/apiScopes';
 import * as roleFrontendScopeRequests from './requests/roleFrontendScopes';
 import * as roleApiScopeRequests from './requests/roleApiScopes';
 import * as rolePermissionRequests from './requests/rolePermissions';
+import * as userRoleRequests from './requests/userRoles';
 
 export const getRoles = roleRequests.roleMapRequest.actionCreator;
 export const createRole = roleRequests.createRoleRequest.actionCreator;
@@ -34,3 +35,8 @@ export const getRolePermissions = rolePermissionRequests.rolePermissionMapReques
 export const createRolePermission = rolePermissionRequests.createRolePermissionRequest.actionCreator;
 export const updateRolePermission = rolePermissionRequests.updateRolePermissionRequest.actionCreator;
 // export const deleteRolePermission = rolePermissionRequests.deleteRolePermissionRequest.actionCreator;
+
+export const getUserRoles = userRoleRequests.userRoleMapRequest.actionCreator;
+export const createUserRole = userRoleRequests.createUserRoleRequest.actionCreator;
+export const updateUserRole = userRoleRequests.updateUserRoleRequest.actionCreator;
+export const createOrUpdateUserRoles = userRoleRequests.createOrUpdateUserRolesRequest.actionCreator;

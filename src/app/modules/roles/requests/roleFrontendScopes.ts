@@ -21,7 +21,7 @@ class RoleFrontendScopeMapRequest extends GetEntityMapRequest<void, RoleFrontend
     constructor(config?: RequestConfig<MapType<RoleFrontendScope>>) {
         super({
             namespace: STATE_KEY,
-            actionName: 'roleMap',
+            actionName: 'roleFrontendScopeMap',
             ...config
         });
     }

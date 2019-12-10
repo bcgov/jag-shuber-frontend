@@ -32,6 +32,7 @@ export type RoleFrontendScopeMap = MapType<RoleFrontendScope>;
 export type RoleApiScopeMap = MapType<RoleApiScope>;
 export type FrontendScopeMap = MapType<FrontendScope>;
 export type ApiScopeMap = MapType<ApiScope>;
+export type UserRoleMap = MapType<UserRole>;
 
 export const WORK_SECTIONS: StringMap = {
     COURTS: 'Courts',
@@ -580,6 +581,11 @@ export interface API {
     createRoleApiScope(newRoleApiScope: Partial<RoleApiScope>): Promise<RoleApiScope>;
     updateRoleApiScope(updatedRoleApiScope: RoleApiScope): Promise<RoleApiScope>;
     getRoleApiScopes(): Promise<RoleApiScope[]>;
+
+    getUserRole(): Promise<UserRole>;
+    createUserRole(newUserRole: Partial<UserRole>): Promise<UserRole>;
+    updateUserRole(updatedUserRole: UserRole): Promise<UserRole>;
+    getUserRoles(): Promise<UserRole[]>;
 
     getToken(): Promise<string>;
     logout(): Promise<void>;

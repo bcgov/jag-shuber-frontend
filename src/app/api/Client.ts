@@ -548,12 +548,28 @@ export default class Client implements API {
     async deleteRoleApiScope(): Promise<RoleApiScope> {
         return {} as RoleApiScope;
     }
-    // END! Methods for roles
 
     async getUserRoles(): Promise<UserRole[]> {
         const list = await this._client.GetUserRoles();
-        return list as UserRole[];
+        return list as RoleApiScope[];
     }
+
+    async getUserRole(): Promise<UserRole> {
+        return {} as UserRole;
+    }
+
+    async createUserRole(): Promise<UserRole> {
+        return {} as UserRole;
+    }
+
+    async updateUserRole(): Promise<UserRole> {
+        return {} as UserRole;
+    }
+
+    async deleteUserRole(): Promise<UserRole> {
+        return {} as UserRole;
+    }
+    // END! Methods for roles
 
     getToken(): Promise<string> {
         return this._client.GetToken();
