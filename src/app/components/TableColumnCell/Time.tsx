@@ -7,6 +7,7 @@ import TimePickerDropDownField from '../../components/FormElements/TimePickerDro
 
 import { fromTimeString, toTimeString } from 'jag-shuber-api';
 
+// TODO: This column doesn't have options?
 const TimeColumn = (label: string, nullTimeLabel: string, fieldName: string): Types.TableColumnCell => {
     return {
         title: label,

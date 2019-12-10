@@ -61,7 +61,7 @@ export default class AdminRolePermissionsModal extends React.Component<AdminRole
                                 </div>
                             </div>
                             <DataTable
-                                fieldName={'roles.data'}
+                                fieldName={'roles.rolePermissions'}
                                 title={''} // Leave this blank
                                 displayActionsColumn={false}
                                 columns={[

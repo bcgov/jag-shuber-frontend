@@ -14,13 +14,14 @@ const TextAreaColumn = (label?: string, options?: Types.FieldColumnOptions): Typ
     label = label || 'Text Area';
 
     const displayInfo = (options && options.displayInfo) ? options.displayInfo : false;
+    const fieldName = (options && options.fieldName) ? options.fieldName : 'textAreaField';
 
     return {
         title: label,
         FormRenderer: ({ fieldInstanceName }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Field
-                    name={`${fieldInstanceName}.leaveSubCode`}
+                    name={`${fieldInstanceName}.${fieldName}`}
                     rows="1" // TODO: Ability to set number of rows and cols
                     component={(p) => <TextArea
                         {...p}
