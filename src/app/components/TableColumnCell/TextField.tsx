@@ -14,6 +14,7 @@ const TextFieldColumn = (label?: string, options?: Types.FieldColumnOptions): Ty
     label = label || '';
 
     const displayInfo = (options && options.displayInfo) ? options.displayInfo : false;
+    const fieldName = (options && options.fieldName) ? options.fieldName : 'roleName';
 
     return {
         title: label,
@@ -21,7 +22,7 @@ const TextFieldColumn = (label?: string, options?: Types.FieldColumnOptions): Ty
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Field
                     // TODO: Pass in field name as prop or whatever
-                    name={`${fieldInstanceName}.roleName`}
+                    name={`${fieldInstanceName}.${fieldName}`}
                     component={(p) => <TextField
                         {...p}
                         showLabel={false}

@@ -141,9 +141,9 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                     fieldName={this.formFieldNames.roles}
                     title={''} // Leave this blank
                     columns={[
-                        DataTable.TextFieldColumn('Role Name', { displayInfo: true }),
-                        DataTable.TextFieldColumn('Role Code', { displayInfo: true }),
-                        DataTable.TextFieldColumn('Description', { displayInfo: true }),
+                        DataTable.TextFieldColumn('Role Name', { fieldName: 'roleName', displayInfo: true }),
+                        DataTable.TextFieldColumn('Role Code', { fieldName: 'roleCode', displayInfo: true }),
+                        DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: true }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
                         DataTable.SelectorFieldColumn('Status', { displayInfo: true }),
 
