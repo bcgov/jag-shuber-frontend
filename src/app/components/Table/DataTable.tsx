@@ -205,8 +205,10 @@ export default class DataTable extends React.Component<DataTableProps> {
                                                         ? actionsColumn.CanceledRender
                                                         : actionsColumn.FormRenderer;
 
+                                                    // TODO: Make this use a class
+                                                    // Flex align end to make sure buttons are right-aligned
                                                     return (
-                                                        <td style={{ display: 'flex' }}>
+                                                        <td style={{ display: 'flex', justifyContent: 'flex-end' }}>
                                                             <Column
                                                                 model={currentLeave}
                                                                 fieldInstanceName={fieldInstanceName}
