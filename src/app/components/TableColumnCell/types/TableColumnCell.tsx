@@ -22,4 +22,5 @@ export default interface TableColumnCell {
 export interface FieldColumnOptions {
     displayInfo: boolean;
     disabled?: boolean;
+    fieldName?: string;
 }
