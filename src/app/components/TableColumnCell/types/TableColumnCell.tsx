@@ -4,8 +4,8 @@ import { Leave } from '../../../api';
 
 export interface ColumnRendererProps {
     index: number;
-    fields: FieldsProps<Partial<Leave>>;
-    leave: Partial<Leave>;
+    fields: FieldsProps<Partial<any>>;
+    model: Partial<any>;
     fieldInstanceName: string;
     callbackContext?: any; // TODO: Type this better...
 }

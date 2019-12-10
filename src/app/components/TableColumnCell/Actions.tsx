@@ -5,13 +5,14 @@ import * as Types from './types';
 import { FieldsProps } from 'redux-form';
 import { Leave } from '../../api';
 
-import LeaveCancelledPopover from '../../components/LeaveCancelledPopover';
-import CancelLeaveButton from '../../containers/CancelLeaveButton';
+// TODO: Move these into generics!
+import CancelledPopover from '../../components/CancelledPopover';
+import CancelButton from '../../containers/CancelButton';
 
 export interface ColumnRendererProps {
     index: number;
     fields: FieldsProps<Partial<Leave>>;
-    leave: Partial<Leave>;
+    model: Partial<any>;
     fieldInstanceName: string;
 }
 
@@ -20,7 +21,7 @@ export type ColumnRenderer = React.ComponentType<ColumnRendererProps>;
 const ActionsColumn = (): Types.TableColumnCell => {
     return {
         title: '',
-        FormRenderer: ({ fields, index, leave: { id } }) => (
+        FormRenderer: ({ fields, index, model: { id } }) => (
             !id ?
                 (
                     <>
@@ -59,10 +60,10 @@ const ActionsColumn = (): Types.TableColumnCell => {
                     </>
                 )
                 :
-                <CancelLeaveButton leaveId={id} />
+                <CancelButton modelId={id} />
         ),
-        CanceledRender: ({ leave }) => (
-            <LeaveCancelledPopover leave={leave} />
+        CanceledRender: ({ model }) => (
+            <CancelledPopover model={model} />
         )
     };
 };

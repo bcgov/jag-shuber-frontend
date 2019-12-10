@@ -3,13 +3,13 @@ import { Button, Glyphicon } from 'react-bootstrap';
 
 import * as Types from './types';
 
-import CancelLeaveButton from '../../containers/CancelLeaveButton';
-import LeaveCancelledPopover from '../../components/LeaveCancelledPopover';
+import CancelButton from '../../containers/CancelButton';
+import CancelledPopover from '../../components/CancelledPopover';
 
 const CancelColumn = (): Types.TableColumnCell => {
     return {
         title: '',
-        FormRenderer: ({ fields, index, leave: { id } }) => (
+        FormRenderer: ({ fields, index, model: { id } }) => (
             !id ?
                 (
                     <Button
@@ -21,10 +21,10 @@ const CancelColumn = (): Types.TableColumnCell => {
                     </Button>
                 )
                 :
-                <CancelLeaveButton leaveId={id} />
+                <CancelButton modelId={id} />
         ),
-        CanceledRender: ({ leave }) => (
-            <LeaveCancelledPopover leave={leave} />
+        CanceledRender: ({ model }) => (
+            <CancelledPopover model={model} />
         )
     };
 };

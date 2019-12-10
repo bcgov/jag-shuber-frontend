@@ -47,7 +47,7 @@ const SelectorFieldColumn = (label?: string, options?: Types.FieldColumnOptions)
                 )}
             </div>
         ),
-        CanceledRender: ({ leave }) => (
+        CanceledRender: ({ model }) => (
             <option disabled={true} />
         )
     };

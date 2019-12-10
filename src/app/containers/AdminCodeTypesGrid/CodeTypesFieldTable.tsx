@@ -67,7 +67,7 @@ export default class CodeTypesFieldTable extends React.Component<CodeTypesFieldT
                                                         return (
                                                             <td key={colIndex}>
                                                                 <Column
-                                                                    leave={currentLeave}
+                                                                    model={currentLeave}
                                                                     fieldInstanceName={fieldInstanceName}
                                                                     fields={fields}
                                                                     index={index}

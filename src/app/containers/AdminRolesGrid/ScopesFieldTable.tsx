@@ -107,7 +107,7 @@ export default class ScopesFieldTable extends React.Component<ScopesFieldTablePr
                                                             return (
                                                                 <td key={colIndex}>
                                                                     <Column
-                                                                        leave={currentLeave}
+                                                                        model={currentLeave}
                                                                         fieldInstanceName={fieldInstanceName}
                                                                         fields={fields}
                                                                         index={index}

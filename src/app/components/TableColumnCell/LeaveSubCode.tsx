@@ -28,8 +28,8 @@ const LeaveSubCodeColumn = (isPersonal: boolean): Types.TableColumnCell => {
                 label="Type"
             />
         ),
-        CanceledRender: ({ leave }) => (
-            <LeaveSubCodeDisplay subCode={leave.leaveSubCode} />
+        CanceledRender: ({ model }) => (
+            <LeaveSubCodeDisplay subCode={model.leaveSubCode} />
         )
     };
 };

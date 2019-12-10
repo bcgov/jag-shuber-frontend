@@ -57,12 +57,13 @@ export default class DataTable extends React.Component<DataTableProps> {
                                                             : col.FormRenderer;
                                                         return (
                                                             <td key={colIndex}>
-                                                                <Column
+                                                                {/* TODO: Fix me! This needs to be converted to use new model prop? */}
+                                                                {/*<Column
                                                                     leave={currentLeave}
                                                                     fieldInstanceName={fieldInstanceName}
                                                                     fields={fields}
                                                                     index={index}
-                                                                />
+                                                                />*/}
                                                             </td>
                                                         );
                                                     })

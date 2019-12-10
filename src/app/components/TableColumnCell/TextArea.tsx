@@ -38,7 +38,7 @@ const TextAreaColumn = (label?: string, options?: Types.FieldColumnOptions): Typ
                 )}
             </div>
         ),
-        CanceledRender: ({ leave }) => (<div>TextField Cancelled Display</div>)
+        CanceledRender: ({ model }) => (<div>TextField Cancelled Display</div>)
     };
 };
 
