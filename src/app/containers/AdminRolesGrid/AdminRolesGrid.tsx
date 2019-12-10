@@ -28,6 +28,8 @@ import {
 import { RootState } from '../../store';
 
 import {
+    getAllApiScopes,
+    getAllFrontendScopes,
     getAllRoles
 } from '../../modules/roles/selectors';
 
@@ -41,7 +43,11 @@ import {
 import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../components/Table/DataTable';
 import AdminRolePermissionsModal from '../../containers/AdminRolesGrid/AdminRolePermissionsModal';
 
-export interface AdminRolesProps extends FormContainerProps {}
+export interface AdminRolesProps extends FormContainerProps {
+    roles?: any[],
+    frontendScopes?: any[],
+    apiScopes?: any[]
+}
 
 export interface AdminRolesDisplayProps extends FormContainerProps {
 
@@ -92,9 +98,9 @@ class AdminRolesDisplay extends React.PureComponent<AdminRolesDisplayProps, any>
 export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
     name = 'roles';
     formFieldNames = {
-        roles: 'roles.data',
-        apiScopes: 'apiScopes',
-        frontendScopes: 'frontendScopes'
+        roles: 'roles.roles',
+        apiScopes: 'roles.apiScopes',
+        frontendScopes: 'roles.frontendScopes'
     };
     title: string = 'Manage Roles';
     DetailComponent: React.SFC<DetailComponentProps> = () => {
@@ -105,7 +111,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
         return (
             <>
                 <DataTable
-                    fieldName={this.formFieldNames.roles}
+                    fieldName={this.formFieldNames.frontendScopes}
                     title={''} // Leave this blank
                     columns={[
                         DataTable.SelectorFieldColumn('Component', { fieldName: 'component', displayInfo: true, disabled: true }),
@@ -117,7 +123,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                     modalComponent={AdminRolePermissionsModal}
                 />
                 <DataTable
-                    fieldName={this.formFieldNames.roles}
+                    fieldName={this.formFieldNames.apiScopes}
                     title={''} // Leave this blank
                     columns={[
                         DataTable.SelectorFieldColumn('API Role', { fieldName: 'apiRoute', displayInfo: true, disabled: true }),
@@ -186,7 +192,14 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
 
     getData(roleId: IdType, state: RootState) {
         const data = getAllRoles(state) || undefined;
-        return { data };
+        const roles = getAllRoles(state) || undefined;
+        const frontendScopes = getAllFrontendScopes(state) || undefined;
+        const apiScopes = getAllApiScopes(state) || undefined;
+        return {
+            roles,
+            frontendScopes,
+            apiScopes
+        };
     }
 
     getDataFromFormValues(formValues: {}): FormContainerProps {
