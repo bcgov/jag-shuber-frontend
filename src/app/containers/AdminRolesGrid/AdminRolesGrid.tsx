@@ -46,6 +46,10 @@ import {
 import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../components/Table/DataTable';
 import AdminRolePermissionsModal from '../../containers/AdminRolesGrid/AdminRolePermissionsModal';
 
+import RoleSelector from './RoleSelector';
+import FrontendScopeSelector from './FrontendScopeSelector';
+import ApiScopeSelector from './ApiScopeSelector';
+
 export interface AdminRolesProps extends FormContainerProps {
     roles?: any[],
     frontendScopes?: any[],
@@ -120,7 +124,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                     fieldName={this.formFieldNames.roleFrontendScopes}
                     title={''} // Leave this blank
                     columns={[
-                        DataTable.SelectorFieldColumn('Component', { fieldName: 'component', displayInfo: true, disabled: true }),
+                        DataTable.SelectorFieldColumn('Component', { fieldName: 'component', selectorComponent: FrontendScopeSelector, displayInfo: true, disabled: true }),
                         DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, disabled: true }),
                         DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: true, disabled: true }),
                         DataTable.ButtonColumn('Edit Permissions', 'list', { displayInfo: true }, onButtonClicked)
@@ -132,7 +136,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                     fieldName={this.formFieldNames.roleApiScopes}
                     title={''} // Leave this blank
                     columns={[
-                        DataTable.SelectorFieldColumn('API Role', { fieldName: 'apiRoute', displayInfo: true, disabled: true }),
+                        DataTable.SelectorFieldColumn('API Role', { fieldName: 'apiRoute', selectorComponent: ApiScopeSelector, displayInfo: true, disabled: true }),
                         DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, disabled: true }),
                         DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: true, disabled: true }),
                         DataTable.ButtonColumn('View Role', 'eye-open', { displayInfo: true }, onButtonClicked),

@@ -23,4 +23,5 @@ export interface FieldColumnOptions {
     displayInfo: boolean;
     disabled?: boolean;
     fieldName?: string;
+    selectorComponent?: React.ReactType<any>;
 }
