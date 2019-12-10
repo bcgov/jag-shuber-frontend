@@ -20,7 +20,7 @@ import mapToArray from '../../infrastructure/mapToArray';
 // import moment from 'moment';
 // import { CodeSelector } from '../../infrastructure/CodeSelector';
 
-export const allRoles = createSelector(
+export const getRoles = createSelector(
     roleRequests.roleMapRequest.getData,
     (map) => {
         const roleMap = mapToArray(map);
@@ -32,9 +32,10 @@ export const allRoles = createSelector(
     }
 );
 
-export const getAllPersonaRoles = (state: RootState) => {
+export const getAllRoles = (state: RootState) => {
     if (state) {
-        return allRoles(state).filter(l => l.roleCode === LEAVE_CODE_PERSONAL);
+        return getRoles(state);
+        // return getRoles(state).filter(l => l.roleCode === LEAVE_CODE_PERSONAL);
     }
     return undefined;
 };
@@ -49,28 +50,28 @@ export const getRole = (id?: IdType) => (state: RootState) => {
 
 export const getSheriffRoles = (sheriffId?: IdType) => (state: RootState) => {
     if (state && sheriffId != null) {
-        return allRoles(state); // .filter(l => l.sheriffId === sheriffId);
+        return getRoles(state); // .filter(l => l.sheriffId === sheriffId);
     }
     return [];
 };
 
 /*export const getPartialDayRoles = (state: RootState) => {
     if (state != null) {
-        return allRoles(state).filter(l => l.isPartial);
+        return getRoles(state).filter(l => l.isPartial);
     }
     return [];
 };
 
 export const getFullDayRoles = (state: RootState) => {
     if (state != null) {
-        return allRoles(state).filter(l => !l.isPartial);
+        return getRoles(state).filter(l => !l.isPartial);
     }
     return [];
 };*/
 
 // Role Sub Codes
-export const allRolesCodeMap = () => { return []; }
-/* export const allRolesCodeMap = createSelector(
+export const getRolesCodeMap = () => { return []; }
+/* export const getRolesCodeMap = createSelector(
     // TODO: Fix me!!!
     roleRequests.roleTypeMapRequest.getData,
     (roleTypes) => {

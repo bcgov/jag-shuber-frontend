@@ -26,6 +26,11 @@ import {
 } from '../../modules/user/actions';
 
 import { RootState } from '../../store';
+
+import {
+    getAllRoles
+} from '../../modules/roles/selectors';
+
 import { IdType } from '../../api';
 
 import {
@@ -44,7 +49,7 @@ export interface AdminRolesDisplayProps extends FormContainerProps {
 
 class AdminRolesDisplay extends React.PureComponent<AdminRolesDisplayProps, any> {
     render() {
-        // const { data = [] } = this.props;
+        const { data = [] } = this.props;
 
         // TODO: Rip out dummy data
         const testData = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }];
@@ -86,7 +91,7 @@ class AdminRolesDisplay extends React.PureComponent<AdminRolesDisplayProps, any>
 
 export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
     name = 'roles';
-    formFieldNames = { default: 'roles'};
+    formFieldNames = { default: 'roles.data'};
     title: string = 'Manage Roles';
     DetailComponent: React.SFC<DetailComponentProps> = () => {
         const onButtonClicked = (ev: React.SyntheticEvent<any>, context: any) => {
@@ -123,27 +128,31 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
         );
     }
 
-    FormComponent = (props: FormContainerProps<AdminRolesProps>) => (
-        <div>
-            <DataTable
-                fieldName={this.formFieldNames.default}
-                title={''} // Leave this blank
-                columns={[
-                    DataTable.TextFieldColumn('Role Name', { displayInfo: true }),
-                    DataTable.TextFieldColumn('Role Code', { displayInfo: true }),
-                    DataTable.TextFieldColumn('Description', { displayInfo: true }),
-                    // DataTable.DateColumn('Date Created', 'createdDtm'),
-                    DataTable.SelectorFieldColumn('Status', { displayInfo: true }),
+    FormComponent = (props: FormContainerProps<AdminRolesProps>) => {
+        console.log('dumping adminrolesgrid props');
+        console.log(props);
+        return (
+            <div>
+                <DataTable
+                    fieldName={this.formFieldNames.default}
+                    title={''} // Leave this blank
+                    columns={[
+                        DataTable.TextFieldColumn('Role Name', { displayInfo: true }),
+                        DataTable.TextFieldColumn('Role Code', { displayInfo: true }),
+                        DataTable.TextFieldColumn('Description', { displayInfo: true }),
+                        // DataTable.DateColumn('Date Created', 'createdDtm'),
+                        DataTable.SelectorFieldColumn('Status', { displayInfo: true }),
 
-                ]}
-                expandable={true}
-                // expandedRows={[1, 2]}
-                rowComponent={this.DetailComponent}
-                modalComponent={EmptyDetailRow}
-                displayHeaderActions={true}
-            />
-        </div>
-    )
+                    ]}
+                    expandable={true}
+                    // expandedRows={[1, 2]}
+                    rowComponent={this.DetailComponent}
+                    modalComponent={EmptyDetailRow}
+                    displayHeaderActions={true}
+                />
+            </div>
+        );
+    }
 
     // TODO: Figure out why Fragments aren't working...
     DisplayComponent = (props: FormContainerProps<AdminRolesDisplayProps>) => (
@@ -172,8 +181,8 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
     }
 
     getData(roleId: IdType, state: RootState) {
-        return {
-        };
+        const data = getAllRoles(state);
+        return { data };
     }
 
     getDataFromFormValues(formValues: {}): FormContainerProps {

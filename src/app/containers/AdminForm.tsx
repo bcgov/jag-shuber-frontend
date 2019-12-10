@@ -28,11 +28,11 @@ import { RootState } from '../store';
 
 // import { Role } from '../../api';
 
-// import {
-//     getRole,
+import {
+     getRoles,
     // selectedRoleProfileSection,
     // getRoleProfilePluginErrors
-// } from '../../modules/roles/selectors';
+} from '../modules/roles/selectors';
 // import {
 //     updateRole,
 //     createRole,
@@ -258,7 +258,7 @@ export default class extends
             // @ts-ignore
             initialValues = plugins
                 .map(p => {
-                    const data = p.getData('whatever', state);
+                    const data = p.getData('data', state);
                     if (data != undefined) {
                         const pluginState = {};
                         pluginState[p.name] = data;
@@ -272,9 +272,10 @@ export default class extends
                         return { ...initValues, ...val };
                     },
                     {
-                        role: getRole(roleId)(state)
+                        // user: getUser(state)
                     }
                 );*/
+
 
             /*if (roleId) {
                 // @ts-ignore
@@ -305,7 +306,7 @@ export default class extends
             };
             initialValues.role = { ...initialRole };*/
 
-            return {
+            const newProps = {
                 initialValues,
                 pluginState: { ...initialValues },
                 // selectedSection: selectedAdminFormSection(state),
@@ -315,6 +316,11 @@ export default class extends
                 // TODO: When we get plugins working we can use the collect function collectPluginErrors instead
                 pluginErrors: {}
             };
+
+            console.log('dumping adminform props');
+            console.log(newProps);
+
+            return newProps;
         },
         // (dispatch, { roleId, plugins = [] }) => {
         (dispatch, { plugins = [] }) => {
