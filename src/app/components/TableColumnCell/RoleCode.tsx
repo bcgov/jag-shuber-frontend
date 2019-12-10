@@ -38,8 +38,8 @@ const RoleCodeColumn = (label?: string): Types.TableColumnCell => {
                 </div>
             </div>
         ),
-        CanceledRender: ({ leave }) => (
-            <LeaveSubCodeDisplay subCode={leave.leaveSubCode} />
+        CanceledRender: ({ model }) => (
+            <LeaveSubCodeDisplay subCode={model.leaveSubCode} />
         )
     };
 };

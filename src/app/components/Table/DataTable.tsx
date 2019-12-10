@@ -13,7 +13,7 @@ import * as CellTypes from '../../components/TableColumnCell';
 export interface ColumnRendererProps {
     index: number;
     fields: FieldsProps<Partial<any>>;
-    leave: Partial<any>;
+    model: Partial<any>;
     fieldInstanceName: string;
 }
 
@@ -188,7 +188,7 @@ export default class DataTable extends React.Component<DataTableProps> {
                                                             return (
                                                                 <td key={colIndex}>
                                                                     <Column
-                                                                        leave={currentLeave}
+                                                                        model={currentLeave}
                                                                         fieldInstanceName={fieldInstanceName}
                                                                         fields={fields}
                                                                         index={index}
@@ -208,7 +208,7 @@ export default class DataTable extends React.Component<DataTableProps> {
                                                     return (
                                                         <td style={{ display: 'flex' }}>
                                                             <Column
-                                                                leave={currentLeave}
+                                                                model={currentLeave}
                                                                 fieldInstanceName={fieldInstanceName}
                                                                 fields={fields}
                                                                 index={index}

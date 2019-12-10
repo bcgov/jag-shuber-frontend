@@ -35,7 +35,7 @@ const ButtonColumn = (label?: string, icon?: string, options?: Types.FieldColumn
                 </div>
             );
         },
-        CanceledRender: ({ leave }) => (
+        CanceledRender: ({ model }) => (
             <div />
         )
     };

@@ -16,9 +16,9 @@ const DateColumn = (label: string, fieldName: string): Types.TableColumnCell => 
                 label={label}
             />
         ),
-        CanceledRender: ({ leave }) => (
+        CanceledRender: ({ model }) => (
             <span>
-                {moment(leave[fieldName]).format('MMM D, YYYY')}
+                {moment(model[fieldName]).format('MMM D, YYYY')}
             </span>
         )
     };

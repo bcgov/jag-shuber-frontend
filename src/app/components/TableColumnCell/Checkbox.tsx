@@ -34,7 +34,7 @@ const CheckboxColumn = (label?: string, options?: Types.FieldColumnOptions): Typ
                 )}
             </div>
         ),
-        CanceledRender: ({ leave }) => (<div>CheckboxField Cancelled Display</div>)
+        CanceledRender: ({ model }) => (<div>CheckboxField Cancelled Display</div>)
     };
 };
 

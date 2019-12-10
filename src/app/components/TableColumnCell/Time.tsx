@@ -29,9 +29,9 @@ const TimeColumn = (label: string, nullTimeLabel: string, fieldName: string): Ty
                 normalize={(val) => toTimeString(val)}
             />
         ),
-        CanceledRender: ({ leave }) => (
+        CanceledRender: ({ model }) => (
             <span>
-                {fromTimeString(leave[fieldName]).format('HH:mm')}
+                {fromTimeString(model[fieldName]).format('HH:mm')}
             </span>
         )
     };
