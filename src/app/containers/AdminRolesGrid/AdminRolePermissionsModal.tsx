@@ -65,9 +65,9 @@ export default class AdminRolePermissionsModal extends React.Component<AdminRole
                                 title={''} // Leave this blank
                                 displayActionsColumn={false}
                                 columns={[
-                                    DataTable.TextFieldColumn('Permission Name'),
-                                    DataTable.TextFieldColumn('Code'),
-                                    DataTable.TextAreaColumn('Description'),
+                                    DataTable.TextFieldColumn('Permission Name', { fieldName: 'displayName', displayInfo: true }),
+                                    DataTable.TextFieldColumn('Code', { fieldName: 'displayName', displayInfo: true }),
+                                    DataTable.TextAreaColumn('Description', { fieldName: 'description', displayInfo: true }),
                                     DataTable.CheckboxColumn('Has Permission'), // TODO: Use a checkbox
                                 ]}
                                 rowComponent={EmptyDetailRow}

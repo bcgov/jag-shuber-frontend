@@ -108,9 +108,9 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                     fieldName={this.formFieldNames.roles}
                     title={''} // Leave this blank
                     columns={[
-                        DataTable.SelectorFieldColumn('Component', { displayInfo: true, disabled: true }),
-                        DataTable.TextFieldColumn('Code', { displayInfo: true, disabled: true }),
-                        DataTable.TextFieldColumn('Description', { displayInfo: true, disabled: true }),
+                        DataTable.SelectorFieldColumn('Component', { fieldName: 'component', displayInfo: true, disabled: true }),
+                        DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, disabled: true }),
+                        DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: true, disabled: true }),
                         DataTable.ButtonColumn('Edit Permissions', 'list', { displayInfo: true }, onButtonClicked)
                     ]}
                     rowComponent={EmptyDetailRow}
@@ -120,9 +120,9 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                     fieldName={this.formFieldNames.roles}
                     title={''} // Leave this blank
                     columns={[
-                        DataTable.SelectorFieldColumn('API Role', { displayInfo: true, disabled: true }),
-                        DataTable.TextFieldColumn('Code', { displayInfo: true, disabled: true }),
-                        DataTable.TextFieldColumn('Description', { displayInfo: true, disabled: true }),
+                        DataTable.SelectorFieldColumn('API Role', { fieldName: 'apiRoute', displayInfo: true, disabled: true }),
+                        DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, disabled: true }),
+                        DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: true, disabled: true }),
                         DataTable.ButtonColumn('View Role', 'eye-open', { displayInfo: true }, onButtonClicked),
                     ]}
                     rowComponent={EmptyDetailRow}
