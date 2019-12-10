@@ -4,22 +4,21 @@ import {
 } from 'redux-form';
 
 import { Leave } from '../../api';
-import { Table, FormGroup, Button, Glyphicon, Well } from 'react-bootstrap';
+import { Table, FormGroup, Button, Glyphicon } from 'react-bootstrap';
 
 import * as CellTypes from '../../components/TableColumnCell';
-import CancelColumn from '../../components/TableColumnCell/Cancel';
-import AdminRolePermissionsModal from '../../containers/AdminRolesGrid/AdminRolePermissionsModal';
 
 export interface ColumnRendererProps {
     index: number;
-    fields: FieldsProps<Partial<Leave>>;
-    leave: Partial<Leave>;
+    fields: FieldsProps<Partial<any>>;
+    leave: Partial<any>;
     fieldInstanceName: string;
 }
 
 export type ColumnRenderer = React.ComponentType<ColumnRendererProps>;
 
 export interface DetailComponentProps {}
+export interface ModalComponentProps {}
 
 export const EmptyDetailRow: React.SFC<DetailComponentProps> = () => (<div />);
 
@@ -32,7 +31,8 @@ export interface DataTableProps {
     displayActionsColumn?: boolean;
     expandable?: boolean;
     expandedRows?: Set<number>;
-    rowComponent: React.SFC<DetailComponentProps>; // Not sure if this is the appropriate type
+    rowComponent: React.ReactType<DetailComponentProps>; // Not sure if this is the appropriate type
+    modalComponent: React.ReactType<ModalComponentProps>; // Not sure if this is the appropriate type
 }
 
 export default class DataTable extends React.Component<DataTableProps> {
@@ -42,7 +42,8 @@ export default class DataTable extends React.Component<DataTableProps> {
         expandable: false,
         // expandedRows: false,
         // TODO: What is up with default props?
-       rowComponent: <div />
+       rowComponent: <div />,
+       modalComponent: <div />
     };
 
     static TextFieldColumn = CellTypes.TextField;
@@ -59,8 +60,8 @@ export default class DataTable extends React.Component<DataTableProps> {
 
     state = {
         expandedRows: new Set(),
-        activeRoleScopeId: null,
-        isPermissionsModalOpen: false
+        activeRowId: null,
+        isModalOpen: false
     };
 
     constructor(props: DataTableProps) {
@@ -83,7 +84,7 @@ export default class DataTable extends React.Component<DataTableProps> {
 
     setActiveRoleScope(id: any) {
         this.setState({
-            activeRoleScopeId: id
+            activeRowId: id
         });
     }
 
@@ -99,20 +100,22 @@ export default class DataTable extends React.Component<DataTableProps> {
             displayActionsColumn = true,
             expandable = false,
             rowComponent,
+            modalComponent
         } = this.props;
 
         const {
             expandedRows,
-            isPermissionsModalOpen,
-            activeRoleScopeId
+            isModalOpen,
+            activeRowId
         } = this.state;
 
         // return (<div>This would be the Table</div>);
 
         const RowComponent = rowComponent;
+        const ModalComponent = modalComponent;
 
         return (
-            <FieldArray<Partial<Leave>>
+            <FieldArray<Partial<any>>
                 name={fieldName}
                 component={({ fields }) => (
                     <div>
@@ -142,7 +145,7 @@ export default class DataTable extends React.Component<DataTableProps> {
                             </thead>
                             <tbody>
                                 {fields.map((fieldInstanceName, index) => {
-                                    const currentLeave: Partial<Leave> = fields.get(index);
+                                    const currentLeave: Partial<any> = fields.get(index);
                                     const { cancelDate = undefined } = currentLeave || {};
                                     // @ts-ignore
                                     return (
@@ -220,7 +223,8 @@ export default class DataTable extends React.Component<DataTableProps> {
                                 })}
                             </tbody>
                         </Table>
-                        <AdminRolePermissionsModal isOpen={(activeRoleScopeId !== null)} />
+                        {/* TODO: This has to be moved out */}
+                        <ModalComponent isOpen={(activeRowId !== null)} />
                     </div>
                 )}
             />

@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    Alert, Table
+    Table
 } from 'react-bootstrap';
 import {
     FormErrors
@@ -8,20 +8,25 @@ import {
 
 import { Dispatch } from 'redux';
 
+import {
+    getRoles,
+    getFrontendScopes,
+    getApiScopes,
+    getRoleFrontendScopes,
+    getRoleApiScopes,
+    getRolePermissions
+} from '../../modules/roles/actions';
+
 import { RootState } from '../../store';
 import { IdType } from '../../api';
 
 import {
     FormContainerBase,
     FormContainerProps,
-    // FormContainerSectionPlugin
 } from '../../components/Form/FormContainer';
 
 import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../components/Table/DataTable';
-
-import AdminRolePermissionsModal from './AdminRolePermissionsModal';
-
-// import { fromTimeString } from 'jag-shuber-api';
+import AdminRolePermissionsModal from '../../containers/AdminRolesGrid/AdminRolePermissionsModal';
 
 export interface AdminRolesProps extends FormContainerProps {}
 
@@ -92,6 +97,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                         DataTable.ButtonColumn('Edit Permissions', 'list', { displayInfo: true }, onButtonClicked)
                     ]}
                     rowComponent={EmptyDetailRow}
+                    modalComponent={AdminRolePermissionsModal}
                 />
                 <DataTable
                     fieldName={this.formFieldNames.default}
@@ -103,6 +109,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                         DataTable.ButtonColumn('View Role', 'eye-open', { displayInfo: true }, onButtonClicked),
                     ]}
                     rowComponent={EmptyDetailRow}
+                    modalComponent={AdminRolePermissionsModal}
                 />
             </>
         );
@@ -124,6 +131,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                 expandable={true}
                 // expandedRows={[1, 2]}
                 rowComponent={this.DetailComponent}
+                modalComponent={EmptyDetailRow}
                 displayHeaderActions={true}
             />
         </div>
@@ -143,8 +151,13 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
 
     // TODO: Not sure if this should be roleId or what, I'm not there yet...
     fetchData(roleId: IdType, dispatch: Dispatch<{}>) {
-        // TODO: Implement getRoles
-        // dispatch(getRoles());
+        dispatch(getRoles()); // This data needs to always be available for select lists
+        dispatch(getFrontendScopes()); // This data needs to always be available for select lists
+        dispatch(getApiScopes()); // This data needs to always be available for select lists
+        // TODO: Only load these if we're expanding the grid...
+        dispatch(getRoleFrontendScopes());
+        dispatch(getRoleApiScopes());
+        dispatch(getRolePermissions());
     }
 
     getData(roleId: IdType, state: RootState) {

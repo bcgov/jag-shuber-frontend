@@ -9,6 +9,7 @@ import { default as dutyRosterReducer, DutyRosterState } from './modules/dutyRos
 import { reducer as formReducer } from 'redux-form';
 import { default as scheduleReducer, ScheduleState } from './modules/schedule/reducer';
 import { UserState, registerReducer as registerUserReducer } from './modules/user/reducer';
+import { RoleModuleState, registerReducer as registerRolesReducer } from './modules/roles/reducer';
 import { LeaveModuleState, registerReducer as registerLeavesReducer } from './modules/leaves/reducer';
 
 import { registerReducer as registerSystemReducer, SystemModuleState } from './modules/system/reducer';
@@ -31,6 +32,7 @@ export interface RootState {
     schedule: ScheduleState;
     user: UserState;
     leaves: LeaveModuleState;
+    roles: RoleModuleState;
     system: SystemModuleState;
 }
 
@@ -45,7 +47,10 @@ const reducers = {
 registerSheriffReducer(reducers);
 registerShiftReducer(reducers);
 registerAssignmentReducer(reducers);
+
 registerUserReducer(reducers);
+registerRolesReducer(reducers);
+
 registerLeavesReducer(reducers);
 registerSystemReducer(reducers);
 

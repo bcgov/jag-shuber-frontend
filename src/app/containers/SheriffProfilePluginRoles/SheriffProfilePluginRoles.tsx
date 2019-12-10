@@ -47,6 +47,7 @@ export default class SheriffProfilePluginRoles extends SheriffProfileSectionPlug
                     DataTable.CancelColumn()
                 ]}
                 rowComponent={EmptyDetailRow}
+                modalComponent={EmptyDetailRow}
             />
         </div>
     )

@@ -27,6 +27,11 @@ export type LeaveCancelCodeMap = MapType<LeaveCancelCode>;
 export type CourtRoleMap = MapType<CourtRole>;
 export type GenderCodeMap = MapType<GenderCode>;
 export type RoleMap = MapType<Role>;
+export type RolePermissionMap = MapType<RolePermission>;
+export type RoleFrontendScopeMap = MapType<RoleFrontendScope>;
+export type RoleApiScopeMap = MapType<RoleApiScope>;
+export type FrontendScopeMap = MapType<FrontendScope>;
+export type ApiScopeMap = MapType<ApiScope>;
 
 export const WORK_SECTIONS: StringMap = {
     COURTS: 'Courts',
@@ -550,6 +555,31 @@ export interface API {
     createRole(newRole: Partial<Role>): Promise<Role>;
     updateRole(updatedRole: Role): Promise<Role>;
     getRoles(): Promise<Role[]>;
+
+    getRolePermission(): Promise<RolePermission>;
+    createRolePermission(newRolePermission: Partial<RolePermission>): Promise<RolePermission>;
+    updateRolePermission(updatedRolePermission: RolePermission): Promise<RolePermission>;
+    getRolePermissions(): Promise<RolePermission[]>;
+
+    getFrontendScope(): Promise<FrontendScope>;
+    createFrontendScope(newFrontendScope: Partial<FrontendScope>): Promise<FrontendScope>;
+    updateFrontendScope(updatedFrontendScope: FrontendScope): Promise<FrontendScope>;
+    getFrontendScopes(): Promise<FrontendScope[]>;
+
+    getApiScope(): Promise<ApiScope>;
+    createApiScope(newApiScope: Partial<ApiScope>): Promise<ApiScope>;
+    updateApiScope(updatedApiScope: ApiScope): Promise<ApiScope>;
+    getApiScopes(): Promise<ApiScope[]>;
+
+    getRoleFrontendScope(): Promise<RoleFrontendScope>;
+    createRoleFrontendScope(newRoleFrontendScope: Partial<RoleFrontendScope>): Promise<RoleFrontendScope>;
+    updateRoleFrontendScope(updatedRoleFrontendScope: RoleFrontendScope): Promise<RoleFrontendScope>;
+    getRoleFrontendScopes(): Promise<RoleFrontendScope[]>;
+
+    getRoleApiScope(): Promise<RoleApiScope>;
+    createRoleApiScope(newRoleApiScope: Partial<RoleApiScope>): Promise<RoleApiScope>;
+    updateRoleApiScope(updatedRoleApiScope: RoleApiScope): Promise<RoleApiScope>;
+    getRoleApiScopes(): Promise<RoleApiScope[]>;
 
     getToken(): Promise<string>;
     logout(): Promise<void>;

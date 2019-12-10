@@ -6,7 +6,7 @@ import { Glyphicon } from 'react-bootstrap';
 import * as Types from './types';
 
 import SelectorField from '../../components/FormElements/SelectorField';
-import Selector, { SelectorProps } from '../../components/FormElements/Selector';
+import Selector from '../../components/FormElements/Selector';
 
 // TODO: Provide code selectors as a prop
 // import LeaveTrainingSubCodeSelector from '../../containers/LeaveTrainingSubCodeSelector';
