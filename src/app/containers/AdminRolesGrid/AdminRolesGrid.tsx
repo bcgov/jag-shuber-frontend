@@ -131,7 +131,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                     buttonLabel={'Add Component to Role'}
                     displayHeaderActions={true}
                     columns={[
-                        DataTable.SelectorFieldColumn('Component', { fieldName: 'id', selectorComponent: FrontendScopeSelector, displayInfo: true, disabled: true }),
+                        DataTable.SelectorFieldColumn('Component', { fieldName: 'scopeId', selectorComponent: FrontendScopeSelector, displayInfo: true, disabled: true }),
                         DataTable.MappedTextColumn('Code', { fieldName: 'scopeId', selectorComponent: FrontendScopeCodeDisplay, displayInfo: false }),
                         DataTable.StaticTextColumn('Description', { fieldName: 'description', displayInfo: false }),
                         DataTable.ButtonColumn('Edit Permissions', 'list', { displayInfo: true }, onButtonClicked)
@@ -145,7 +145,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                     buttonLabel={'Add API Access to Role'}
                     displayHeaderActions={true}
                     columns={[
-                        DataTable.SelectorFieldColumn('API Route', { fieldName: 'id', selectorComponent: ApiScopeSelector, displayInfo: true, disabled: true }),
+                        DataTable.SelectorFieldColumn('API Route', { fieldName: 'scopeId', selectorComponent: ApiScopeSelector, displayInfo: true, disabled: true }),
                         DataTable.MappedTextColumn('Code', { fieldName: 'scopeId', selectorComponent: ApiScopeCodeDisplay, displayInfo: false }),
                         DataTable.StaticTextColumn('Description', { fieldName: 'description', displayInfo: false }),
                         DataTable.ButtonColumn('Edit Access', 'eye-open', { displayInfo: true }, onButtonClicked),

@@ -10,6 +10,7 @@ import { getAllFrontendScopes } from '../../modules/roles/selectors';
 
 interface FrontendScopeDisplayStateProps {
     frontendScopes?: FrontendScope[];
+    input?: any;
 }
 
 class FrontendScopeDisplay extends React.PureComponent<
@@ -18,13 +19,27 @@ class FrontendScopeDisplay extends React.PureComponent<
     render() {
         const {
             frontendScopes = [],
-            ...restProps
+            input
         } = this.props;
-        const values = frontendScopes.map(frontendScope => ({ key: frontendScope.id as string, value: frontendScope.scopeName as string }));
-        if (values.length < 1) return null;
-        return (
-            <h6 className="table-cell-text">{values[0].value}</h6>
-        );
+
+        const value = (input && input.value) ? input.value : null;
+
+        if (value) {
+            const values = frontendScopes.map(scope => ({
+                key: scope.id as string,
+                value: scope.scopeName as string
+            }));
+
+            const match = values.find((item) => item.key === value);
+
+            if (match) {
+                return (
+                    <h6 className="table-cell-text">{match.value}</h6>
+                );
+            }
+        }
+
+        return <h6>Not Specified</h6>;
     }
 }
 
