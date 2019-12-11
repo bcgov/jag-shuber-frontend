@@ -30,6 +30,7 @@ import {
 import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
 
 import FrontendScopeSelector from './FrontendScopeSelector';
+import AdminRolePermissionsModal from './AdminRolePermissionsModal';
 
 export interface AdminFrontendScopesProps extends FormContainerProps {
     frontendScopes?: any[];
@@ -89,6 +90,13 @@ export default class AdminFrontendScopesGrid extends FormContainerBase<AdminFron
     title: string = 'Register Components';
 
     FormComponent = (props: FormContainerProps<AdminFrontendScopesProps>) => {
+        const onButtonClicked = (ev: React.SyntheticEvent<any>, context: any) => {
+            // TODO: Check on this!
+            // Executes in DataTable's context
+            context.setActiveRoleScope(Math.random());
+            console.log('clicked permissions button');
+        };
+
         return (
             <div>
                 <DataTable
@@ -99,10 +107,11 @@ export default class AdminFrontendScopesGrid extends FormContainerBase<AdminFron
                     columns={[
                         DataTable.TextFieldColumn('Component', { fieldName: 'scopeName', displayInfo: true, disabled: true }),
                         DataTable.TextFieldColumn('Code', { fieldName: 'scopeCode', displayInfo: true, disabled: true }),
-                        DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: true, disabled: true })
+                        DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: true, disabled: true }),
+                        DataTable.ButtonColumn('Define Permissions', 'list', { displayInfo: true }, onButtonClicked)
                     ]}
                     rowComponent={EmptyDetailRow}
-                    modalComponent={EmptyDetailRow}
+                    modalComponent={AdminRolePermissionsModal}
                 />
             </div>
         );
