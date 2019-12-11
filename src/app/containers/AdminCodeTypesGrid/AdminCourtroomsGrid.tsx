@@ -24,16 +24,17 @@ import {
 } from '../../components/Form/FormContainer';
 
 import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../components/Table/DataTable';
+import { AdminCourtroomsProps } from './AdminCourtroomsGrid';
 
-export interface AdminTrainingTypesProps extends FormContainerProps {
-    roles?: any[]
+export interface AdminCourtroomsProps extends FormContainerProps {
+    roles?: any[];
 }
 
-export interface AdminTrainingTypesDisplayProps extends FormContainerProps {
+export interface AdminCourtroomsDisplayProps extends FormContainerProps {
 
 }
 
-class AdminTrainingTypesDisplay extends React.PureComponent<AdminTrainingTypesDisplayProps, any> {
+class AdminCourtroomsDisplay extends React.PureComponent<AdminCourtroomsDisplayProps, any> {
     render() {
         const { data = [] } = this.props;
         return (
@@ -42,23 +43,23 @@ class AdminTrainingTypesDisplay extends React.PureComponent<AdminTrainingTypesDi
     }
 }
 
-export default class AdminTrainingTypesGrid extends FormContainerBase<AdminTrainingTypesProps> {
-    name = 'admin-training-types-grid';
+export default class AdminCourtroomsGrid extends FormContainerBase<AdminCourtroomsProps> {
+    name = 'admin-courtrooms-grid';
     reduxFormKey = 'roles';
     formFieldNames = {
         default: 'roles.roles'
     };
-    title: string = ' Training Types';
+    title: string = ' Courtrooms';
 
-    FormComponent = (props: FormContainerProps<AdminTrainingTypesProps>) => {
+    FormComponent = (props: FormContainerProps<AdminCourtroomsProps>) => {
         return (
             <div>
                 <DataTable
                     fieldName={this.formFieldNames.default}
                     title={''} // Leave this blank
-                    buttonLabel={'Add Training Type'}
+                    buttonLabel={'Add Courtroom'}
                     columns={[
-                        DataTable.TextFieldColumn('Training Type', { fieldName: 'default', displayInfo: true }),
+                        DataTable.TextFieldColumn('Courtroom', { fieldName: 'default', displayInfo: true }),
                         DataTable.TextFieldColumn('Code', { fieldName: 'default', displayInfo: true }),
                         DataTable.TextFieldColumn('Description', { fieldName: 'default', displayInfo: true }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
@@ -76,14 +77,14 @@ export default class AdminTrainingTypesGrid extends FormContainerBase<AdminTrain
     }
 
     // TODO: Figure out why Fragments aren't working...
-    DisplayComponent = (props: FormContainerProps<AdminTrainingTypesDisplayProps>) => (
+    DisplayComponent = (props: FormContainerProps<AdminCourtroomsDisplayProps>) => (
         <div>
-            {/*<Alert>No types exist</Alert>*/}
-            <AdminTrainingTypesDisplay {...props} />
+            {/*<Alert>No roles exist</Alert>*/}
+            <AdminCourtroomsDisplay {...props} />
         </div>
     )
 
-    validate(values: AdminTrainingTypesProps = {}): FormErrors | undefined {
+    validate(values: AdminCourtroomsProps = {}): FormErrors | undefined {
         return undefined;
     }
 
