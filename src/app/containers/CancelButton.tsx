@@ -52,7 +52,7 @@ class CancelButton extends React.PureComponent<CancelButtonCompositProps> {
                     confirmBtnLabel: 'OK',
                     RenderComponent: ({ onValueChanged, value }) => (
                         <div>
-                            <h3>Select a Reason for Cancelling Leave</h3>
+                            <h3>Select a Reason for Cancelling this Action</h3>
                             <LeaveCancelReasonSelector
                                 label="Cancel Reason"
                                 value={value}

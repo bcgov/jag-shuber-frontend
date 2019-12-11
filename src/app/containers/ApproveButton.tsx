@@ -52,7 +52,7 @@ class ApproveButton extends React.PureComponent<ApproveButtonCompositProps> {
                     confirmBtnLabel: 'OK',
                     RenderComponent: ({ onValueChanged, value }) => (
                         <div>
-                            <h3>Select a Reason for Approveling Leave</h3>
+                            <h3>Select a Reason to Approve this Action</h3>
                             <LeaveApproveReasonSelector
                                 label="Approve Reason"
                                 value={value}
