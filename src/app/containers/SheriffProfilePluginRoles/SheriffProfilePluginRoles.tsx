@@ -43,8 +43,7 @@ export default class SheriffProfilePluginRoles extends SheriffProfileSectionPlug
                 columns={[
                     DataTable.RoleCodeColumn(),
                     DataTable.DateColumn('Start Date', 'startDate'),
-                    DataTable.DateColumn('End Date', 'endDate'),
-                    DataTable.CancelColumn()
+                    DataTable.DateColumn('End Date', 'endDate')
                 ]}
                 rowComponent={EmptyDetailRow}
                 modalComponent={EmptyDetailRow}
