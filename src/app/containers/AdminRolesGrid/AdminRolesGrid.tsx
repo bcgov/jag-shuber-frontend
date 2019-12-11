@@ -148,7 +148,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                         DataTable.SelectorFieldColumn('API Route', { fieldName: 'id', selectorComponent: ApiScopeSelector, displayInfo: true, disabled: true }),
                         DataTable.MappedTextColumn('Code', { fieldName: 'scopeId', selectorComponent: ApiScopeCodeDisplay, displayInfo: false }),
                         DataTable.StaticTextColumn('Description', { fieldName: 'description', displayInfo: false }),
-                        DataTable.ButtonColumn('View Role', 'eye-open', { displayInfo: true }, onButtonClicked),
+                        DataTable.ButtonColumn('Edit Access', 'eye-open', { displayInfo: true }, onButtonClicked),
                     ]}
                     rowComponent={EmptyDetailRow}
                     modalComponent={AdminRolePermissionsModal}

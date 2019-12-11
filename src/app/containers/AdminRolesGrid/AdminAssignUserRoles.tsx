@@ -116,7 +116,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
             <DataTable
                 fieldName={this.formFieldNames.roles}
                 title={''} // Leave this blank
-                buttonLabel={'Add New Role'}
+                buttonLabel={'Assign New Role'}
                 columns={[
                     DataTable.SelectorFieldColumn('Role Name', { fieldName: 'id', selectorComponent: RoleSelector, displayInfo: true }),
                     DataTable.StaticTextColumn('Role Code', { fieldName: 'roleCode', displayInfo: false }),
@@ -140,7 +140,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                 <DataTable
                     fieldName={this.formFieldNames.roles}
                     title={''} // Leave this blank
-                    buttonLabel={'Assign Roles to User'}
+                    buttonLabel={'Add New User'}
                     columns={[
                         DataTable.SelectorFieldColumn('User Name', { fieldName: 'roleName', displayInfo: true }),
                         DataTable.StaticTextColumn('Description', { fieldName: 'description', displayInfo: false }),
