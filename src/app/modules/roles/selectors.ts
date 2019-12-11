@@ -120,11 +120,11 @@ export const getRole = (id?: IdType) => (state: RootState) => {
 };
 
 export const selectedAdminRolesSection = (state: RootState) => {
-    const { sheriffs: { selectedProfileSection = undefined } = {} } = state;
+    const { roles: { selectedProfileSection = undefined } = {} } = state;
     return selectedProfileSection;
 };
 
 export const getAdminRolesPluginErrors = (state: RootState) => {
-    const { sheriffs: { pluginSubmitErrors = {} } = {} } = state;
+    const { roles: { pluginSubmitErrors = {} } = {} } = state;
     return pluginSubmitErrors as ErrorMap;
 };
