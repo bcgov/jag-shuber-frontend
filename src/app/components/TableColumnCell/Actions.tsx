@@ -7,6 +7,7 @@ import { Leave } from '../../api';
 
 // TODO: Move these into generics!
 import CancelledPopover from '../../components/CancelledPopover';
+import ApproveButton from '../../containers/ApproveButton';
 import CancelButton from '../../containers/CancelButton';
 
 export interface ColumnRendererProps {
@@ -25,42 +26,17 @@ const ActionsColumn = (): Types.TableColumnCell => {
             !id ?
                 (
                     <>
-                        <>
-                            <Button
-                                bsStyle="link"
-                                // onClick={() => fields.remove(index)}
-                                style={{ color: '#003366' }}
-                            >
-                                <Glyphicon glyph="edit" />
-                            </Button>
-                            <Button
-                                bsStyle="link"
-                                // onClick={() => fields.remove(index)}
-                                style={{ color: '#003366' }}
-                            >
-                                <Glyphicon glyph="trash" />
-                            </Button>
-                        </>
-                        <>
-                            <Button
-                                bsStyle="link"
-                                // onClick={() => fields.remove(index)}
-                                style={{ color: 'limegreen' }}
-                            >
-                                <Glyphicon glyph="ok" />
-                            </Button>
-                            <Button
-                                bsStyle="link"
-                                onClick={() => fields.remove(index)}
-                                style={{ color: 'darkred' }}
-                            >
-                                <Glyphicon glyph="remove" />
-                            </Button>
-                        </>
+                        <Button bsStyle="primary">
+                            <Glyphicon glyph="edit" />
+                        </Button>
+                        &nbsp;
+                        <Button onClick={() => fields.remove(index)}>
+                            <Glyphicon glyph="trash" />
+                        </Button>
                     </>
                 )
                 :
-                <CancelButton modelId={id} />
+                <><ApproveButton modelId={id} />&nbsp;<CancelButton modelId={id} /></>
         ),
         CanceledRender: ({ model }) => (
             <CancelledPopover model={model} />
