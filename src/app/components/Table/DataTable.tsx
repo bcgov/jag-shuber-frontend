@@ -88,6 +88,7 @@ export default class DataTable extends React.Component<DataTableProps> {
         });
     }
 
+    // TODO: We have to get this out of here, it's not generic!
     setActiveRoleScope(id: any) {
         this.setState({
             activeRowId: id
