@@ -58,7 +58,7 @@ export default class Navigation extends React.Component<NavigationProps, any> {
                 },
                 codes: {
                     path: '/codes/manage',
-                    label: 'Code Types'
+                    label: 'Configure Lists'
                 },
                 audit: {
                     path: '/audit',

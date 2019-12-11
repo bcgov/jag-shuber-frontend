@@ -5,6 +5,7 @@ import Page from '../components/Page/Page';
 
 import AdminForm from '../containers/AdminForm';
 import { AdminFormProps } from '../components/AdminForm/AdminForm';
+import AdminCourtroomsPlugin from '../containers/AdminCodeTypesGrid/AdminCourtroomsGrid';
 import AdminLeaveTypesPlugin from '../containers/AdminCodeTypesGrid/AdminLeaveTypesGrid';
 import AdminTrainingTypesPlugin from '../containers/AdminCodeTypesGrid/AdminTrainingTypesGrid';
 
@@ -56,6 +57,7 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps> {
                     <AdminForm
                         key={'admin-code-types-grid'}
                         plugins={[
+                            new AdminCourtroomsPlugin(),
                             new AdminLeaveTypesPlugin(),
                             new AdminTrainingTypesPlugin()
                         ]}
