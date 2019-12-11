@@ -42,8 +42,6 @@ import {
 import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../components/Table/DataTable';
 
 import RoleSelector from './RoleSelector';
-import FrontendScopeSelector from './FrontendScopeSelector';
-import ApiScopeSelector from './ApiScopeSelector';
 
 export interface AdminAssignUserRolesProps extends FormContainerProps {
     roles?: any[],
@@ -120,16 +118,14 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                 title={''} // Leave this blank
                 buttonLabel={'Add New Role'}
                 columns={[
-                    DataTable.TextFieldColumn('Role Name', { fieldName: 'roleName', displayInfo: true }),
-                    DataTable.TextFieldColumn('Role Code', { fieldName: 'roleCode', displayInfo: true }),
-                    DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: true }),
+                    DataTable.SelectorFieldColumn('Role Name', { fieldName: 'id', selectorComponent: RoleSelector, displayInfo: true }),
+                    DataTable.StaticTextColumn('Role Code', { fieldName: 'roleCode', displayInfo: false }),
+                    DataTable.StaticTextColumn('Description', { fieldName: 'description', displayInfo: false }),
                     // DataTable.DateColumn('Date Created', 'createdDtm'),
                     DataTable.SelectorFieldColumn('Status', { displayInfo: true }),
-
                 ]}
-                expandable={true}
-                // expandedRows={[1, 2]}
-                rowComponent={this.DetailComponent}
+                expandable={false}
+                rowComponent={EmptyDetailRow}
                 modalComponent={EmptyDetailRow}
                 displayHeaderActions={true}
             />
@@ -146,10 +142,10 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                     title={''} // Leave this blank
                     buttonLabel={'Assign Roles to User'}
                     columns={[
-                        DataTable.TextFieldColumn('User Name', { fieldName: 'roleName', displayInfo: true }),
-                        DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: true }),
+                        DataTable.SelectorFieldColumn('User Name', { fieldName: 'roleName', displayInfo: true }),
+                        DataTable.StaticTextColumn('Description', { fieldName: 'description', displayInfo: false }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
-                        DataTable.SelectorFieldColumn('Status', { displayInfo: true }),
+                        DataTable.StaticTextColumn('Status', { displayInfo: false }),
 
                     ]}
                     expandable={true}

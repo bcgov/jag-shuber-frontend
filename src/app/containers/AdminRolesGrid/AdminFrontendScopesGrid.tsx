@@ -97,8 +97,8 @@ export default class AdminFrontendScopesGrid extends FormContainerBase<AdminFron
                     buttonLabel={'Add Component'}
                     displayHeaderActions={true}
                     columns={[
-                        DataTable.SelectorFieldColumn('Component', { fieldName: 'id', selectorComponent: FrontendScopeSelector, displayInfo: true, disabled: true }),
-                        DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, disabled: true }),
+                        DataTable.TextFieldColumn('Component', { fieldName: 'scopeName', displayInfo: true, disabled: true }),
+                        DataTable.TextFieldColumn('Code', { fieldName: 'scopeCode', displayInfo: true, disabled: true }),
                         DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: true, disabled: true })
                     ]}
                     rowComponent={EmptyDetailRow}

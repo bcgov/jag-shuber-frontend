@@ -50,6 +50,8 @@ export default class DataTable extends React.Component<DataTableProps> {
         buttonLabel: 'Create'
     };
 
+    static MappedTextColumn = CellTypes.MappedText;
+    static StaticTextColumn = CellTypes.StaticText;
     static TextFieldColumn = CellTypes.TextField;
     static TextAreaColumn = CellTypes.TextArea;
     static SelectorFieldColumn = CellTypes.SelectorField;
