@@ -1,4 +1,6 @@
 import * as Types from './types';
+import StaticText from './StaticText';
+import MappedText from './MappedText';
 import TextField from './TextField';
 import TextArea from './TextArea';
 import SelectorField from './SelectorField';
@@ -10,4 +12,4 @@ import Actions from './Actions';
 import Button from './Button';
 import LeaveSubCode from './LeaveSubCode';
 import RoleCode from './RoleCode';
-export { Types, TextField, TextArea, SelectorField, Checkbox, Date, Time, Cancel, Actions, Button, LeaveSubCode, RoleCode };
+export { Types, StaticText, MappedText, TextField, TextArea, SelectorField, Checkbox, Date, Time, Cancel, Actions, Button, LeaveSubCode, RoleCode };
