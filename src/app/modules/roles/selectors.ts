@@ -16,6 +16,7 @@ import {
     // DateType
 } from '../../api/Api';
 import mapToArray from '../../infrastructure/mapToArray';
+import { ErrorMap } from '../sheriffs/common';
 // import arrayToMap from '../../infrastructure/arrayToMap';
 // import moment from 'moment';
 // import { CodeSelector } from '../../infrastructure/CodeSelector';
@@ -116,4 +117,14 @@ export const getRole = (id?: IdType) => (state: RootState) => {
         return map[id];
     }
     return undefined;
+};
+
+export const selectedAdminRolesSection = (state: RootState) => {
+    const { sheriffs: { selectedProfileSection = undefined } = {} } = state;
+    return selectedProfileSection;
+};
+
+export const getAdminRolesPluginErrors = (state: RootState) => {
+    const { sheriffs: { pluginSubmitErrors = {} } = {} } = state;
+    return pluginSubmitErrors as ErrorMap;
 };

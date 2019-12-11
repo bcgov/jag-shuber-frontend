@@ -72,7 +72,8 @@ class AdminCodeTypesDisplay extends React.PureComponent<AdminCodeTypesDisplayPro
 }
 
 export default class AdminCodeTypesGrid extends FormContainerBase<AdminCodeTypesProps> {
-    name = 'codeTypes';
+    name = 'admin-code-types-grid';
+    reduxFormKey = 'codeTypes';
     formFieldNames = { default: 'codeTypes'};
     title: string = 'Manage Code Types';
     FormComponent = (props: FormContainerProps<AdminCodeTypesProps>) => (

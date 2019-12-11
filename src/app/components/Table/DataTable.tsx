@@ -119,6 +119,9 @@ export default class DataTable extends React.Component<DataTableProps> {
         const RowComponent = rowComponent;
         const ModalComponent = modalComponent;
 
+        console.log('dumping fieldName');
+        console.log(fieldName);
+
         return (
             <FieldArray<Partial<any>>
                 name={fieldName}

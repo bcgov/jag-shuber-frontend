@@ -9,13 +9,18 @@ import {
 import { Dispatch } from 'redux';
 
 import {
-    getApiScopes
+    getApiScopes, getFrontendScopes, getRoleApiScopes, getRoleFrontendScopes, getRolePermissions, getRoles, getUserRoles
 } from '../../modules/roles/actions';
 
 import { RootState } from '../../store';
 
 import {
-    getAllApiScopes
+    getAllApiScopes,
+    getAllFrontendScopes,
+    getAllRoleApiScopes,
+    getAllRoleFrontendScopes,
+    getAllRolePermissions,
+    getAllRoles
 } from '../../modules/roles/selectors';
 
 import { IdType } from '../../api';
@@ -80,7 +85,8 @@ class AdminApiScopesDisplay extends React.PureComponent<AdminApiScopesDisplayPro
 }
 
 export default class AdminApiScopesGrid extends FormContainerBase<AdminApiScopesProps> {
-    name = 'roles';
+    name = 'admin-api-scopes-grid';
+    reduxFormKey = 'roles';
     formFieldNames = {
         apiScopes: 'roles.apiScopes'
     };
@@ -120,13 +126,33 @@ export default class AdminApiScopesGrid extends FormContainerBase<AdminApiScopes
 
     // TODO: Not sure if this should be roleId or what, I'm not there yet...
     fetchData(roleId: IdType, dispatch: Dispatch<{}>) {
+        dispatch(getRoles()); // This data needs to always be available for select lists
+        dispatch(getFrontendScopes()); // This data needs to always be available for select lists
         dispatch(getApiScopes()); // This data needs to always be available for select lists
+        // TODO: Only load these if we're expanding the grid...
+        dispatch(getRoleFrontendScopes());
+        dispatch(getRoleApiScopes());
+        dispatch(getRolePermissions());
+        // TODO: These might not belong here, but I might as well code them up at the same time
+        // dispatch(getUsers());
+        dispatch(getUserRoles());
     }
 
     getData(roleId: IdType, state: RootState) {
+        // TODO: Depending on component state, some of these calls will need to be filtered!
+        const roles = getAllRoles(state) || undefined;
+        const frontendScopes = getAllFrontendScopes(state) || undefined;
         const apiScopes = getAllApiScopes(state) || undefined;
+        const roleFrontendScopes = getAllRoleFrontendScopes(state) || undefined;
+        const roleApiScopes = getAllRoleApiScopes(state) || undefined;
+        const rolePermissions = getAllRolePermissions(state) || undefined;
         return {
-            apiScopes
+            roles,
+            frontendScopes,
+            apiScopes,
+            roleFrontendScopes,
+            roleApiScopes,
+            rolePermissions
         };
     }
 

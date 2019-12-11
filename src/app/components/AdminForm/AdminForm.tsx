@@ -7,7 +7,7 @@ import Form from '../FormElements/Form';
 import './AdminForm.css';
 
 export interface AdminFormProps {
-    sheriffId?: IdType;
+    sheriffId?: IdType; // TODO: This doesn't need to be in here any more... only in user roles
     isEditing?: boolean;
     plugins?: FormContainerBase[];
     text?: string;
@@ -55,7 +55,7 @@ export default class AdminForm extends React.Component<InjectedFormProps<any, Ad
 
         const pluginProps: FormContainerProps = {
             // sheriffId,
-            data: initialValues[plugin.name]
+            data: initialValues[plugin.reduxFormKey]
         };
         return isEditing
             ? plugin.renderFormFields(pluginProps)
@@ -76,7 +76,7 @@ export default class AdminForm extends React.Component<InjectedFormProps<any, Ad
             <div>
                 {nonSectionPlugins.map((p) => this.renderPlugin(p))}
                 <Tab.Container
-                    id="profile-sections"
+                    id="profile-sections" // TODO: Change this ID!
                     onSelect={(key: any) => this.handleSelectSection(key)}
                     activeKey={selectedSection}
                 >

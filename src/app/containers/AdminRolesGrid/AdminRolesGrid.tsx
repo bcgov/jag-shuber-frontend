@@ -103,7 +103,8 @@ class AdminRolesDisplay extends React.PureComponent<AdminRolesDisplayProps, any>
 }
 
 export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
-    name = 'roles';
+    name = 'admin-roles-grid';
+    reduxFormKey = 'roles';
     formFieldNames = {
         roles: 'roles.roles',
         apiScopes: 'roles.apiScopes',
@@ -112,7 +113,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
         roleFrontendScopes: 'roles.roleFrontendScopes',
         rolePermissions: 'roles.rolePermissions'
     };
-    title: string = 'Manage Roles';
+    title: string = 'Roles & Permissions';
     DetailComponent: React.SFC<DetailComponentProps> = () => {
         const onButtonClicked = (ev: React.SyntheticEvent<any>, context: any) => {
             context.setActiveRoleScope(Math.random());
@@ -123,7 +124,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                 <DataTable
                     fieldName={this.formFieldNames.roleFrontendScopes}
                     title={''} // Leave this blank
-                    buttonLabel={'Add Component'}
+                    buttonLabel={'Add Component to Role'}
                     displayHeaderActions={true}
                     columns={[
                         DataTable.SelectorFieldColumn('Component', { fieldName: 'id', selectorComponent: FrontendScopeSelector, displayInfo: true, disabled: true }),
@@ -137,7 +138,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                 <DataTable
                     fieldName={this.formFieldNames.roleApiScopes}
                     title={''} // Leave this blank
-                    buttonLabel={'Add API Route'}
+                    buttonLabel={'Add API Route to Role'}
                     displayHeaderActions={true}
                     columns={[
                         DataTable.SelectorFieldColumn('API Role', { fieldName: 'id', selectorComponent: ApiScopeSelector, displayInfo: true, disabled: true }),

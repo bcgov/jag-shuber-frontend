@@ -10,13 +10,17 @@ export interface FormContainerProps<T = any> {
 }
 export interface FormContainer<T = any> {
     /**
-     * This property is used for namespacing the form data,
-     * validation and maintaining state of sheriff profile
-     * with respects to plugins
+     * A unique plugin name, no spaces please eg. /[A-Za-z0-9_-]+/
      * @type {string}
      * @memberof Form
      */
     name: string;
+    /**
+     * The form key, used by redux-form, to bind the form instance to redux data slices
+     * @type {string}
+     * @memberof Form
+     */
+    reduxFormKey: string;
     renderDisplay(props: FormContainerProps<T>): React.ReactNode;
     renderFormFields(props: FormContainerProps<T>): React.ReactNode;
     hasErrors(errors: any): boolean;
@@ -28,13 +32,17 @@ export interface FormContainer<T = any> {
 
 export abstract class FormContainerBase<T = any> implements FormContainer<T> {
     /**
-     * This property is used for namespacing the form data,
-     * validation and maintaining state of sheriff profile
-     * with respects to plugins
+     * A unique plugin name, no spaces please eg. /[A-Za-z0-9_-]+/
      * @type {string}
      * @memberof Form
      */
     abstract name: string;
+    /**
+     * The form key, used by redux-form, to bind the form instance to redux data slices
+     * @type {string}
+     * @memberof Form
+     */
+    abstract reduxFormKey: string;
 
     abstract get title(): string;
 
@@ -55,7 +63,7 @@ export abstract class FormContainerBase<T = any> implements FormContainer<T> {
     FormComponent?: React.ReactType<FormContainerProps<T>>;
 
     protected getDataFromFormValues(formValues: any): T {
-        return formValues[this.name] as T;
+        return formValues[this.reduxFormKey] as T;
     }
 
     containsPropertyPath(errors: Object = {}, propertyPath: string = '') {
@@ -95,7 +103,7 @@ export abstract class FormContainerBase<T = any> implements FormContainer<T> {
     renderFormFields(props: FormContainerProps<T>): React.ReactNode {
         const { FormComponent } = this;
         return (
-            FormComponent && <FormComponent key={this.name} {...props} />
+            FormComponent && <FormComponent key={this.reduxFormKey} {...props} />
         );
     }
 
