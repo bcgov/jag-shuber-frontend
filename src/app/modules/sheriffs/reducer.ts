@@ -1,4 +1,5 @@
 import * as sheriffRequests from './requests';
+
 import { ReducersMapObject } from 'redux';
 import NestedReducer from '../../infrastructure/NestedReducer';
 import { STATE_KEY, SheriffModuleState } from './common';

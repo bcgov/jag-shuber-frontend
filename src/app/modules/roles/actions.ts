@@ -5,6 +5,8 @@ import * as roleFrontendScopeRequests from './requests/roleFrontendScopes';
 import * as roleApiScopeRequests from './requests/roleApiScopes';
 import * as rolePermissionRequests from './requests/rolePermissions';
 import * as userRoleRequests from './requests/userRoles';
+import { ErrorMap } from '../sheriffs/common';
+import { Action } from 'redux';
 
 export const getRoles = roleRequests.roleMapRequest.actionCreator;
 export const createRole = roleRequests.createRoleRequest.actionCreator;
@@ -40,3 +42,35 @@ export const getUserRoles = userRoleRequests.userRoleMapRequest.actionCreator;
 export const createUserRole = userRoleRequests.createUserRoleRequest.actionCreator;
 export const updateUserRole = userRoleRequests.updateUserRoleRequest.actionCreator;
 export const createOrUpdateUserRoles = userRoleRequests.createOrUpdateUserRolesRequest.actionCreator;
+
+// TODO: Basically duped in sheriffs/actions, make something generic
+type IActionMap = {
+    'ADMIN_ROLES_SELECT_SECTION': string | undefined;
+    'ADMIN_ROLES_SET_PLUGIN_SUBMIT_ERRORS': ErrorMap | undefined;
+};
+
+export type IActionType = keyof IActionMap;
+
+export type IActionPayload<K extends IActionType> = IActionMap[K];
+
+interface IActionObject<K extends IActionType> extends Action {
+    type: K;
+    payload: IActionPayload<K>;
+}
+
+export type IAction = {
+    [P in IActionType]: IActionObject<P>
+}[IActionType];
+
+function actionCreator<Type extends IActionType>(type: Type) {
+    return (payload: IActionPayload<Type>): IActionObject<Type> =>
+        ({ type: type, payload: payload });
+}
+
+export const selectAdminRolesSection = (sectionName?: string) => (
+    actionCreator('ADMIN_ROLES_SELECT_SECTION')(sectionName)
+);
+
+export const setAdminRolesPluginSubmitErrors = (errors?: ErrorMap) => (
+    actionCreator('ADMIN_ROLES_SET_PLUGIN_SUBMIT_ERRORS')(errors)
+);

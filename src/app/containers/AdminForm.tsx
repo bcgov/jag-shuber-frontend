@@ -26,19 +26,14 @@ import { default as FormSubmitButton, SubmitButtonProps } from '../components/Fo
 
 import { RootState } from '../store';
 
-// import { Role } from '../../api';
-
 import {
-     getRoles,
-    // selectedRoleProfileSection,
-    // getRoleProfilePluginErrors
+    selectedAdminRolesSection as selectedAdminFormSection,
+    getAdminRolesPluginErrors as getAdminFormPluginErrors
 } from '../modules/roles/selectors';
-// import {
-//     updateRole,
-//     createRole,
-    // selectRoleProfileSection,
-    // setRoleProfilePluginSubmitErrors,
-// } from '../../modules/roles/actions';
+import {
+    selectAdminRolesSection as selectAdminFormSection,
+    setAdminRolesPluginSubmitErrors as setAdminFormPluginSubmitErrors,
+} from '../modules/roles/actions'; // TODO: This is not generic!
 
 import AdminFormComponent, { AdminFormProps } from '../components/AdminForm/AdminForm';
 
@@ -165,10 +160,6 @@ const formConfig: ConfigProps<{}, AdminFormProps> = {
 // Wire up the Form to redux Form
 // @ts-ignore
 const AdminForm = reduxForm<{}, AdminFormProps>(formConfig)(AdminFormComponent);
-// tslint:disable-next-line:no-console
-// console.log('dumping AdminForm');
-// tslint:disable-next-line:no-console
-// console.log(AdminForm);
 
 interface AdminFormContainerStateProps {
     pluginsWithErrors: { [key: string]: boolean };
@@ -261,7 +252,7 @@ export default class extends
                     const data = p.getData('data', state);
                     if (data != undefined) {
                         const pluginState = {};
-                        pluginState[p.name] = data;
+                        pluginState[p.reduxFormKey] = data;
                         return pluginState;
                     }
                     return undefined;
@@ -274,42 +265,10 @@ export default class extends
                     {}
                 );
 
-            // console.log('adminformcontainer init val');
-            // console.log(initialValues);
-
-            /*if (roleId) {
-                // @ts-ignore
-                initialValues = plugins
-                    .map(p => {
-                        const data = p.getData(roleId, state);
-                        if (data != undefined) {
-                            const pluginState = {};
-                            pluginState[p.name] = data;
-                            return pluginState;
-                        }
-                        return undefined;
-                    })
-                    .filter(s => s != undefined)
-                    .reduce(
-                        (initValues, val) => {
-                            return { ...initValues, ...val };
-                        },
-                        {
-                            role: getRole(roleId)(state)
-                        }
-                    );
-            } else {*/
-            // const contextLocation = currentLocation(state);
-            /*const initialRole: Partial<Role> = {
-                homeLocationId: contextLocation,
-                currentLocationId: contextLocation
-            };
-            initialValues.role = { ...initialRole };*/
-
             const newProps = {
                 initialValues,
                 pluginState: { ...initialValues },
-                // selectedSection: selectedAdminFormSection(state),
+                selectedSection: selectedAdminFormSection(state),
                 // ...collectPluginErrors(state, formConfig.form, plugins)
                 // TODO: When we get plugins working we can use the collect function collectPluginErrors instead
                 pluginsWithErrors: {},
@@ -317,33 +276,22 @@ export default class extends
                 pluginErrors: {}
             };
 
-            // console.log('dumping adminform props');
-            // console.log(newProps);
-
             return newProps;
         },
         // (dispatch, { roleId, plugins = [] }) => {
         (dispatch, { plugins = [] }) => {
             return {
                 initialize: () => {
-                    // dispatch(selectAdminFormSection());
-                    // dispatch(setAdminFormPluginSubmitErrors());
+                    dispatch(selectAdminFormSection());
+                    dispatch(setAdminFormPluginSubmitErrors());
                     plugins.forEach(p => {
                         p.fetchData(undefined, dispatch);
                         // p.fetchData(roleId, dispatch);
                     });
                 },
-                // tslint:disable-next-line:no-empty
-                onSelectSection: () => {} // (sectionName) => dispatch(selectAdminFormSection(sectionName))
+                onSelectSection: (sectionName) => dispatch(selectAdminFormSection(sectionName))
             };
-        },
-        /*(stateProps, dispatchProps, ownProps) => {
-            console.log(stateProps);
-            console.log(dispatchProps);
-            console.log(ownProps);
-
-            return {};
-        }*/
+        }
     )(AdminFormContainer as any) {
         static defaultProps: Partial<AdminFormProps & { children?: React.ReactNode }> = {
             plugins: []

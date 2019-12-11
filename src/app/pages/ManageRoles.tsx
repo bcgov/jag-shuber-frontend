@@ -63,11 +63,11 @@ class ManageRoles extends React.PureComponent<AdminFormProps> {
                     }}
                 >
                     <AdminForm
-                        key={Math.random()}
+                        key={'admin-roles-grid'}
                         plugins={[
-                            new AdminApiScopesGridPlugin(),
+                            new AdminRolesGridPlugin(),
                             new AdminFrontendScopesGridPlugin(),
-                            new AdminRolesGridPlugin()
+                            new AdminApiScopesGridPlugin()
                         ]}
                         isEditing={isEditing}
                     />

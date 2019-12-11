@@ -7,6 +7,7 @@ export const updateSheriff = sheriffRequests.updateSheriffRequest.actionCreator;
 export const createSheriff = sheriffRequests.createSheriffRequest.actionCreator;
 export const getSheriffRankCodes = sheriffRequests.sheriffRankCodeMapRequest.actionCreator;
 
+// TODO: Basically duped in roles/actions, make something generic
 type IActionMap = {
     'SHERIFF_PROFILE_SELECT_SECTION': string | undefined;
     'SHERIFF_PROFILE_SET_PLUGIN_SUBMIT_ERRORS': ErrorMap | undefined;
