@@ -23,6 +23,9 @@ import * as Validators from '../../infrastructure/Validators';
 import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
 
 import { toTimeString } from 'jag-shuber-api';
+import RoleSelector from '../AdminRolesGrid/RoleSelector';
+import { getAllRoles } from '../../modules/roles/selectors';
+import { getRoles } from '../../modules/roles/actions';
 
 export interface SheriffProfilePluginRolesProps {
     partialDay: Leave[];
@@ -41,7 +44,7 @@ export default class SheriffProfilePluginRoles extends SheriffProfileSectionPlug
                 fieldName={this.formFieldNames.fullDay}
                 title={<h3>Assigned Roles</h3>}
                 columns={[
-                    DataTable.RoleCodeColumn(),
+                    DataTable.SelectorFieldColumn('Role Name', { fieldName: 'id', selectorComponent: RoleSelector, displayInfo: true, disabled: true }),
                     DataTable.DateColumn('Start Date', 'startDate'),
                     DataTable.DateColumn('End Date', 'endDate')
                 ]}
@@ -103,10 +106,12 @@ export default class SheriffProfilePluginRoles extends SheriffProfileSectionPlug
 
     fetchData(sheriffId: IdType, dispatch: Dispatch<any>) {
         dispatch(getLeaves());
+        dispatch(getRoles()); // This data needs to always be available for select lists
     }
 
     getData(sheriffId: IdType, state: RootState) {
         return {
+            roles: getAllRoles(state),
             partialDay: getSheriffPartialPersonalLeaves(sheriffId)(state),
             fullDay: getSheriffFullDayPersonalLeaves(sheriffId)(state)
         };
