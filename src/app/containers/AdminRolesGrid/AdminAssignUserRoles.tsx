@@ -9,18 +9,27 @@ import {
 import { Dispatch } from 'redux';
 
 import {
-    getApiScopes, getFrontendScopes, getRoleApiScopes, getRoleFrontendScopes, getRolePermissions, getRoles, getUserRoles
+    getRoles,
+    getFrontendScopes,
+    getApiScopes,
+    getRoleFrontendScopes,
+    getRoleApiScopes,
+    getRolePermissions
 } from '../../modules/roles/actions';
+
+import {
+    // getUsers
+} from '../../modules/user/actions';
 
 import { RootState } from '../../store';
 
 import {
+    getAllRoles,
     getAllApiScopes,
     getAllFrontendScopes,
     getAllRoleApiScopes,
     getAllRoleFrontendScopes,
-    getAllRolePermissions,
-    getAllRoles
+    getAllRolePermissions
 } from '../../modules/roles/selectors';
 
 import { IdType } from '../../api';
@@ -30,20 +39,23 @@ import {
     FormContainerProps,
 } from '../../components/Form/FormContainer';
 
-import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
+import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../components/Table/DataTable';
 
+import RoleSelector from './RoleSelector';
+import FrontendScopeSelector from './FrontendScopeSelector';
 import ApiScopeSelector from './ApiScopeSelector';
-import AdminRolePermissionsModal from './AdminRolePermissionsModal';
 
-export interface AdminApiScopesProps extends FormContainerProps {
-    apiScopes?: any[];
+export interface AdminAssignUserRolesProps extends FormContainerProps {
+    roles?: any[],
+    frontendScopes?: any[],
+    apiScopes?: any[]
 }
 
-export interface AdminApiScopesDisplayProps extends FormContainerProps {
+export interface AdminAssignUserRolesDisplayProps extends FormContainerProps {
 
 }
 
-class AdminApiScopesDisplay extends React.PureComponent<AdminApiScopesDisplayProps, any> {
+class AdminAssignUserRolesDisplay extends React.PureComponent<AdminAssignUserRolesDisplayProps, any> {
     render() {
         const { data = [] } = this.props;
 
@@ -51,6 +63,7 @@ class AdminApiScopesDisplay extends React.PureComponent<AdminApiScopesDisplayPro
         const testData = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }];
         return (
             <div>
+                {/*<h3>Roles</h3>*/}
                 <Table responsive={true} striped={true} >
                     <thead>
                         <tr>
@@ -84,43 +97,80 @@ class AdminApiScopesDisplay extends React.PureComponent<AdminApiScopesDisplayPro
     }
 }
 
-export default class AdminApiScopesGrid extends FormContainerBase<AdminApiScopesProps> {
-    name = 'admin-api-scopes-grid';
+export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignUserRolesProps> {
+    name = 'admin-assign-user-roles';
     reduxFormKey = 'roles';
     formFieldNames = {
-        apiScopes: 'roles.apiScopes'
+        roles: 'roles.roles',
+        apiScopes: 'roles.apiScopes',
+        frontendScopes: 'roles.frontendScopes',
+        roleApiScopes: 'roles.roleApiScopes',
+        roleFrontendScopes: 'roles.roleFrontendScopes',
+        rolePermissions: 'roles.rolePermissions'
     };
-    title: string = 'Register API Routes';
+    title: string = 'Assign User Roles';
+    DetailComponent: React.SFC<DetailComponentProps> = () => {
+        const onButtonClicked = (ev: React.SyntheticEvent<any>, context: any) => {
+            context.setActiveRoleScope(Math.random());
+        };
 
-    FormComponent = (props: FormContainerProps<AdminApiScopesProps>) => {
+        return (
+            <DataTable
+                fieldName={this.formFieldNames.roles}
+                title={''} // Leave this blank
+                buttonLabel={'Add New Role'}
+                columns={[
+                    DataTable.TextFieldColumn('Role Name', { fieldName: 'roleName', displayInfo: true }),
+                    DataTable.TextFieldColumn('Role Code', { fieldName: 'roleCode', displayInfo: true }),
+                    DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: true }),
+                    // DataTable.DateColumn('Date Created', 'createdDtm'),
+                    DataTable.SelectorFieldColumn('Status', { displayInfo: true }),
+
+                ]}
+                expandable={true}
+                // expandedRows={[1, 2]}
+                rowComponent={this.DetailComponent}
+                modalComponent={EmptyDetailRow}
+                displayHeaderActions={true}
+            />
+        );
+    }
+
+    FormComponent = (props: FormContainerProps<AdminAssignUserRolesProps>) => {
+        // console.log('dumping adminrolesgrid props');
+        // console.log(props);
         return (
             <div>
                 <DataTable
-                    fieldName={this.formFieldNames.apiScopes}
+                    fieldName={this.formFieldNames.roles}
                     title={''} // Leave this blank
-                    buttonLabel={'Add API Endpoint'}
-                    displayHeaderActions={true}
+                    buttonLabel={'Assign Roles to User'}
                     columns={[
-                        DataTable.SelectorFieldColumn('API Role', { fieldName: 'id', selectorComponent: ApiScopeSelector, displayInfo: true, disabled: true }),
-                        DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, disabled: true }),
-                        DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: true, disabled: true })
+                        DataTable.TextFieldColumn('User Name', { fieldName: 'roleName', displayInfo: true }),
+                        DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: true }),
+                        // DataTable.DateColumn('Date Created', 'createdDtm'),
+                        DataTable.SelectorFieldColumn('Status', { displayInfo: true }),
+
                     ]}
-                    rowComponent={EmptyDetailRow}
+                    expandable={true}
+                    // expandedRows={[1, 2]}
+                    rowComponent={this.DetailComponent}
                     modalComponent={EmptyDetailRow}
+                    displayHeaderActions={true}
                 />
             </div>
         );
     }
 
     // TODO: Figure out why Fragments aren't working...
-    DisplayComponent = (props: FormContainerProps<AdminApiScopesDisplayProps>) => (
+    DisplayComponent = (props: FormContainerProps<AdminAssignUserRolesDisplayProps>) => (
         <div>
             {/*<Alert>No roles exist</Alert>*/}
-            <AdminApiScopesDisplay {...props} />
+            <AdminAssignUserRolesDisplay {...props} />
         </div>
     )
 
-    validate(values: AdminApiScopesProps = {}): FormErrors | undefined {
+    validate(values: AdminAssignUserRolesProps = {}): FormErrors | undefined {
         return undefined;
     }
 
@@ -135,7 +185,7 @@ export default class AdminApiScopesGrid extends FormContainerBase<AdminApiScopes
         dispatch(getRolePermissions());
         // TODO: These might not belong here, but I might as well code them up at the same time
         // dispatch(getUsers());
-        dispatch(getUserRoles());
+        // dispatch(getRoles());
     }
 
     getData(roleId: IdType, state: RootState) {
