@@ -49,8 +49,10 @@ import AdminRolePermissionsModal from '../../containers/AdminRolesGrid/AdminRole
 import RoleSelector from './RoleSelector';
 import FrontendScopeDisplay from './FrontendScopeDisplay';
 import FrontendScopeCodeDisplay from './FrontendScopeCodeDisplay';
+import FrontendScopeDescriptionDisplay from './FrontendScopeDescriptionDisplay';
 import ApiScopeDisplay from './ApiScopeDisplay';
 import ApiScopeCodeDisplay from './ApiScopeCodeDisplay';
+import ApiScopeDescriptionDisplay from './ApiScopeDescriptionDisplay';
 import FrontendScopeSelector from './FrontendScopeSelector';
 import ApiScopeSelector from './ApiScopeSelector';
 
@@ -133,7 +135,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                     columns={[
                         DataTable.SelectorFieldColumn('Component', { fieldName: 'scopeId', selectorComponent: FrontendScopeSelector, displayInfo: true, disabled: true }),
                         DataTable.MappedTextColumn('Code', { fieldName: 'scopeId', selectorComponent: FrontendScopeCodeDisplay, displayInfo: false }),
-                        DataTable.StaticTextColumn('Description', { fieldName: 'description', displayInfo: false }),
+                        DataTable.MappedTextColumn('Description', { fieldName: 'scopeId', selectorComponent: FrontendScopeDescriptionDisplay, displayInfo: false }),
                         DataTable.ButtonColumn('Edit Permissions', 'list', { displayInfo: true }, onButtonClicked)
                     ]}
                     rowComponent={EmptyDetailRow}
@@ -147,7 +149,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                     columns={[
                         DataTable.SelectorFieldColumn('API Route', { fieldName: 'scopeId', selectorComponent: ApiScopeSelector, displayInfo: true, disabled: true }),
                         DataTable.MappedTextColumn('Code', { fieldName: 'scopeId', selectorComponent: ApiScopeCodeDisplay, displayInfo: false }),
-                        DataTable.StaticTextColumn('Description', { fieldName: 'description', displayInfo: false }),
+                        DataTable.MappedTextColumn('Description', { fieldName: 'scopeId', selectorComponent: ApiScopeDescriptionDisplay, displayInfo: false }),
                         DataTable.ButtonColumn('Edit Access', 'eye-open', { displayInfo: true }, onButtonClicked),
                     ]}
                     rowComponent={EmptyDetailRow}
