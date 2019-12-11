@@ -10,6 +10,7 @@ import { getAllApiScopes } from '../../modules/roles/selectors';
 
 interface ApiScopeDisplayStateProps {
     apiScopes?: ApiScope[];
+    input?: any;
 }
 
 class ApiScopeDisplay extends React.PureComponent<
@@ -18,13 +19,27 @@ class ApiScopeDisplay extends React.PureComponent<
     render() {
         const {
             apiScopes = [],
-            ...restProps
+            input
         } = this.props;
-        const values = apiScopes.map(apiScope => ({ key: apiScope.id as string, value: apiScope.scopeName as string }));
-        if (values.length < 1) return null;
-        return (
-            <h6 className="table-cell-text">{values[0].value}</h6>
-        );
+
+        const value = (input && input.value) ? input.value : null;
+
+        if (value) {
+            const values = apiScopes.map(scope => ({
+                key: scope.id as string,
+                value: scope.scopeName as string
+            }));
+
+            const match = values.find((item) => item.key === value);
+
+            if (match) {
+                return (
+                    <h6 className="table-cell-text">{match.value}</h6>
+                );
+            }
+        }
+
+        return <h6>Not Specified</h6>;
     }
 }
 
