@@ -1,22 +1,18 @@
 import React from 'react';
-import { Button, Glyphicon, Well } from 'react-bootstrap';
+import { Well } from 'react-bootstrap';
 
-import { IdType } from '../api';
 import Page from '../components/Page/Page';
-// import { FormContainerProps } from '../components/Form/FormContainer';
 
-// import SheriffList from '../containers/SheriffList';
-import AdminCodeTypesGrid, { AdminCodeTypesDisplayProps } from '../containers/AdminCodeTypesGrid/AdminCodeTypesGrid';
-// TODO: Probably should get rid of this
-// import SheriffProfileCreateModal from '../containers/SheriffProfileCreateModal';
 import AdminForm from '../containers/AdminForm';
 import { AdminFormProps } from '../components/AdminForm/AdminForm';
+import AdminLeaveTypesPlugin from '../containers/AdminCodeTypesGrid/AdminLeaveTypesGrid';
+import AdminTrainingTypesPlugin from '../containers/AdminCodeTypesGrid/AdminTrainingTypesGrid';
 
 export interface ManageCodeTypesProps {}
 
 class ManageCodeTypes extends React.PureComponent<AdminFormProps> {
     state = {
-      isEditing: false
+      isEditing: true
     };
 
     constructor(props: AdminFormProps) {
@@ -25,21 +21,6 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps> {
         this.toggleEditMode = this.toggleEditMode.bind(this);
     }
 
-    renderFormContainer(): any {
-        const dataTable = new AdminCodeTypesGrid();
-        const roleId: IdType = 'asdf-1234';
-        // const data: any = [];
-        // TODO: Replace with real data
-        const data: any[] = [{ id: 1 }, { id: 2 }, { id: 3 }];
-
-        const tableProps: AdminCodeTypesDisplayProps = { objectId: roleId, data: data };
-
-        // TODO: Get this working!
-        // return dataTable.renderDisplay(tableProps);
-        return dataTable.renderFormFields(tableProps);
-    }
-
-    // TODO: What is the name of the function elsewhere?
     toggleEditMode() {
         this.setState({
             isEditing: !this.state.isEditing
@@ -55,10 +36,6 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps> {
                     <Page.Toolbar
                         right={(
                             <div style={{ marginTop: 3 }}>
-                                {/*<SheriffProfileCreateModal.ShowButton />*/}
-                                <Button className="action-button" onClick={this.toggleEditMode}>
-                                    <Glyphicon glyph="edit" /> Edit Code Types
-                                </Button>
                             </div>
                         )}
                     />
@@ -77,6 +54,11 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps> {
                     }}
                 >
                     <AdminForm
+                        key={'admin-code-types-grid'}
+                        plugins={[
+                            new AdminLeaveTypesPlugin(),
+                            new AdminTrainingTypesPlugin()
+                        ]}
                         isEditing={isEditing}
                     />
                 </Well>

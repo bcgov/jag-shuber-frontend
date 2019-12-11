@@ -25,7 +25,6 @@ class ManageRoles extends React.PureComponent<AdminFormProps> {
         this.toggleEditMode = this.toggleEditMode.bind(this);
     }
 
-    // TODO: What is the name of the function elsewhere?
     toggleEditMode() {
         this.setState({
             isEditing: !this.state.isEditing
@@ -41,10 +40,6 @@ class ManageRoles extends React.PureComponent<AdminFormProps> {
                     <Page.Toolbar
                         right={(
                             <div style={{ marginTop: 3 }}>
-                                {/*<SheriffProfileCreateModal.ShowButton />*/}
-                                {/*<Button className="action-button" onClick={this.toggleEditMode}>
-                                    <Glyphicon glyph="edit" /> Edit Roles
-                                </Button>*/}
                             </div>
                         )}
                     />
