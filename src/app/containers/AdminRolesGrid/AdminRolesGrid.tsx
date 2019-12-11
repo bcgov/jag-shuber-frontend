@@ -113,7 +113,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
         roleFrontendScopes: 'roles.roleFrontendScopes',
         rolePermissions: 'roles.rolePermissions'
     };
-    title: string = 'Roles & Permissions';
+    title: string = ' Manage Roles & Permissions';
     DetailComponent: React.SFC<DetailComponentProps> = () => {
         const onButtonClicked = (ev: React.SyntheticEvent<any>, context: any) => {
             context.setActiveRoleScope(Math.random());
@@ -138,7 +138,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                 <DataTable
                     fieldName={this.formFieldNames.roleApiScopes}
                     title={''} // Leave this blank
-                    buttonLabel={'Add API Route to Role'}
+                    buttonLabel={'Add API Access to Role'}
                     displayHeaderActions={true}
                     columns={[
                         DataTable.SelectorFieldColumn('API Role', { fieldName: 'id', selectorComponent: ApiScopeSelector, displayInfo: true, disabled: true }),
