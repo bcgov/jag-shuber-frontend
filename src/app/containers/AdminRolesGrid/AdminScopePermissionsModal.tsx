@@ -46,7 +46,7 @@ export default class AdminScopePermissionsModal extends React.Component<AdminSco
                                                     <FrontendScopeSelector {...sp} value={parentModelId} />
                                                 }
                                         />}
-                                        label={'Choose Scope (Component / API)'}
+                                        label={'Choose Component'}
                                     >
                                     </Field>
                                     {/* This wrapper just adds equal spacing to the previous form group */}

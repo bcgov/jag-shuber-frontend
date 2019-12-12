@@ -233,7 +233,7 @@ export default class DataTable extends React.Component<DataTableProps> {
                                                     );
                                                 })()}
                                                 {/* TODO: This has to be moved out */}
-                                                <ModalComponent isOpen={(activeRowId === fieldModel.id)} {...modalProps} parentModel={fieldModel} parentModelId={fieldModel.id} />
+                                                <ModalComponent isOpen={activeRowId && (activeRowId === fieldModel.id)} {...modalProps} parentModel={fieldModel} parentModelId={fieldModel.id} />
                                             </tr>
                                             {expandable && expandedRows && expandedRows.has(index) && (
                                                 <tr key={index * 2}>
