@@ -38,6 +38,14 @@ import {
     getAllRolePermissions
 } from '../../modules/roles/selectors';
 
+import {
+    getLocations
+} from '../../modules/system/action'; // TODO: Naming not consistent here!
+
+import {
+    getAllLocations
+} from '../../modules/system/selectors';
+
 import { RootState } from '../../store';
 
 import { IdType } from '../../api';
@@ -50,6 +58,8 @@ import {
 import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../components/Table/DataTable';
 
 import RoleSelector from './RoleSelector';
+
+import LocationDisplay from './LocationDisplay';
 
 // TODO: Fix this interface!
 export interface AdminAssignUserRolesProps extends FormContainerProps {
@@ -153,7 +163,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                         DataTable.StaticTextColumn('First Name', { fieldName: 'firstName', displayInfo: false }),
                         DataTable.StaticTextColumn('Last Name', { fieldName: 'lastName', displayInfo: false }),
                         DataTable.StaticTextColumn('Badge No.', { fieldName: 'badgeNo', displayInfo: false }),
-                        DataTable.StaticTextColumn('Location', { fieldName: 'homeLocationId', displayInfo: false }),
+                        DataTable.MappedTextColumn('Location', { fieldName: 'homeLocationId', selectorComponent: LocationDisplay, displayInfo: false }),
                         DataTable.StaticTextColumn('Rank', { fieldName: 'rankCode', displayInfo: false }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
                         DataTable.SelectorFieldColumn('Status', { displayInfo: true }),
@@ -184,6 +194,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
 
     // TODO: Not sure if this should be roleId or what, I'm not there yet...
     fetchData(roleId: IdType, dispatch: Dispatch<{}>) {
+        dispatch(getLocations()); // This data needs to always be available for select lists
         dispatch(getSheriffs()); // This data needs to always be available for select lists
         dispatch(getRoles()); // This data needs to always be available for select lists
         dispatch(getFrontendScopes()); // This data needs to always be available for select lists
@@ -199,6 +210,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
 
     getData(roleId: IdType, state: RootState) {
         // TODO: Depending on component state, some of these calls will need to be filtered!
+        const locations = getAllLocations(state) || undefined;
         const users = getAllSheriffs(state) || undefined;
         const roles = getAllRoles(state) || undefined;
         const frontendScopes = getAllFrontendScopes(state) || undefined;
@@ -208,6 +220,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
         const rolePermissions = getAllRolePermissions(state) || undefined;
 
         return {
+            locations,
             users,
             roles,
             frontendScopes,
