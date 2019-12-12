@@ -15,12 +15,13 @@ import FrontendScopeSelector from './FrontendScopeSelector';
 export interface AdminScopePermissionsModalProps {
     isOpen?: boolean;
     isDefaultTemplate?: boolean;
+    parentModelId?: any;
 }
 
 export default class AdminScopePermissionsModal extends React.Component<AdminScopePermissionsModalProps>{
     // @ts-ignore
     render() {
-        const { isDefaultTemplate = false, isOpen } = this.props;
+        const { isDefaultTemplate = false, isOpen, parentModelId } = this.props;
         const title = `Define ${isDefaultTemplate === true ? 'Default ' : ''}Component Permissions`; // TODO: Auto switch text between 'Component' and 'API'
         return (
             <div>
@@ -42,7 +43,7 @@ export default class AdminScopePermissionsModal extends React.Component<AdminSco
                                             SelectorComponent={
                                                 (sp) =>
                                                     // TODO: Actually make this work
-                                                    <FrontendScopeSelector {...sp} />
+                                                    <FrontendScopeSelector {...sp} value={parentModelId} />
                                                 }
                                         />}
                                         label={'Choose Scope (Component / API)'}

@@ -15,14 +15,20 @@ import FrontendScopeSelector from './FrontendScopeSelector';
 export interface AdminRoleScopeAccessModalProps {
     isOpen?: boolean;
     isDefaultTemplate?: boolean;
+    roleId?: any;
+    parentModel?: any;
     parentModelId?: any;
 }
 
 export default class AdminRoleScopeAccessModal extends React.Component<AdminRoleScopeAccessModalProps>{
     // @ts-ignore
     render() {
-        const { isDefaultTemplate = false, isOpen, parentModelId } = this.props;
+        const { isDefaultTemplate = false, isOpen, roleId, parentModel, parentModelId } = this.props;
         const title = `Edit ${isDefaultTemplate === true ? 'Default ' : ''}Component Access`;
+
+        console.log('dump RoleScopeAccessModel parentModel');
+        console.log(parentModel);
+
         return (
             <div>
                 <ModalWrapper
@@ -44,7 +50,7 @@ export default class AdminRoleScopeAccessModal extends React.Component<AdminRole
                                             SelectorComponent={
                                                 (sp) =>
                                                     // TODO: Actually make this work
-                                                    <FrontendScopeSelector {...sp} />
+                                                    <FrontendScopeSelector {...sp} value={parentModelId} />
                                                 }
                                         />}
                                         label={'Choose Scope (Component / API)'}
@@ -65,12 +71,12 @@ export default class AdminRoleScopeAccessModal extends React.Component<AdminRole
                             </div>
                             {parentModelId && (
                             <DataTable
-                                fieldName={`roles.rolePermissionsGrouped['${parentModelId}']`}
+                                fieldName={`roles.rolePermissionsGrouped['${roleId}']`}
                                 title={''} // Leave this blank
                                 displayActionsColumn={false}
                                 columns={[
                                     DataTable.StaticTextColumn('Permission', { fieldName: 'displayName', displayInfo: false }),
-                                    DataTable.StaticTextColumn('Code', { fieldName: 'displayName', displayInfo: false }),
+                                    // DataTable.StaticTextColumn('Code', { fieldName: 'displayName', displayInfo: false }),
                                     DataTable.StaticTextColumn('Description', { fieldName: 'description', displayInfo: false }),
                                     DataTable.CheckboxColumn('Grant Access'), // TODO: Use a checkbox
                                 ]}
