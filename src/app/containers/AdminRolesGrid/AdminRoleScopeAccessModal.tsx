@@ -50,7 +50,7 @@ export default class AdminRoleScopeAccessModal extends React.Component<AdminRole
                                             SelectorComponent={
                                                 (sp) =>
                                                     // TODO: Actually make this work
-                                                    <FrontendScopeSelector {...sp} value={parentModelId} />
+                                                    <FrontendScopeSelector {...sp} value={parentModel.scopeId} />
                                                 }
                                         />}
                                         label={'Choose Scope (Component / API)'}
