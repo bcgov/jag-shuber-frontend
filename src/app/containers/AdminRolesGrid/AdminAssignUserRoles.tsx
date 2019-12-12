@@ -108,8 +108,8 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
     };
     title: string = 'Assign User Roles';
     DetailComponent: React.SFC<DetailComponentProps> = () => {
-        const onButtonClicked = (ev: React.SyntheticEvent<any>, context: any) => {
-            context.setActiveRow(Math.random());
+        const onButtonClicked = (ev: React.SyntheticEvent<any>, context: any, model: any) => {
+            context.setActiveRow(model.id);
         };
 
         return (
