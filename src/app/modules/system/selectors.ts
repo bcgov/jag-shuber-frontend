@@ -32,6 +32,13 @@ export const getLocationById = (id?: IdType) => (state: RootState) => {
     return id && map ? map[id] : undefined;
 };
 
+export const getAllLocations = (state: RootState) => {
+    if (state) {
+        return allLocations(state);
+    }
+    return undefined;
+}
+
 export const selectedLocation = (id: IdType) => (state: RootState) => {
     const { locationMap } = state.system;
     return locationMap ? locationMap[id] : '';
