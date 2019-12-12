@@ -36,7 +36,7 @@ const ActionsColumn = (): Types.TableColumnCell => {
                             <Glyphicon glyph="edit" />
                         </Button>*/}
                         &nbsp;
-                        <Button onClick={() => fields.remove(index)}>
+                        <Button bsStyle={'danger'} onClick={() => fields.remove(index)}>
                             <Glyphicon glyph="trash" />
                         </Button>
                     </>
