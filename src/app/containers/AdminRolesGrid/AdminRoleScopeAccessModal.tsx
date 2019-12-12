@@ -26,9 +26,6 @@ export default class AdminRoleScopeAccessModal extends React.Component<AdminRole
         const { isDefaultTemplate = false, isOpen, roleId, parentModel, parentModelId } = this.props;
         const title = `Edit ${isDefaultTemplate === true ? 'Default ' : ''}Component Access`;
 
-        console.log('dump RoleScopeAccessModel parentModel');
-        console.log(parentModel);
-
         return (
             <div>
                 <ModalWrapper
