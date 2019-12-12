@@ -136,10 +136,10 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
     };
     title: string = ' Manage Roles & Access';
     DetailComponent: React.SFC<DetailComponentProps> = ({ parentModelId }) => {
-        const onButtonClicked = (ev: React.SyntheticEvent<{}>, context: any) => {
+        const onButtonClicked = (ev: React.SyntheticEvent<{}>, context: any, model: any) => {
             // TODO: Check on this!
             // Executes in DataTable's context
-            context.setActiveRoleScope(Math.random());
+            context.setActiveRow(model.id);
         };
 
         return (

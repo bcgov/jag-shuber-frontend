@@ -98,7 +98,7 @@ export default class AdminFrontendScopesGrid extends FormContainerBase<AdminFron
         const onButtonClicked = (ev: React.SyntheticEvent<any>, context: any) => {
             // TODO: Check on this!
             // Executes in DataTable's context
-            context.setActiveRoleScope(Math.random());
+            context.setActiveRow(Math.random());
         };
 
         return (
