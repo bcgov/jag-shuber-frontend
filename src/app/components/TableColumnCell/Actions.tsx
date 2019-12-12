@@ -31,9 +31,10 @@ const ActionsColumn = (): Types.TableColumnCell => {
                 :
                 (
                     <>
-                        <Button bsStyle="primary">
+                        {/* TODO: 1 - compose buttons instead of having them all in here... 2 - we don't need an edit button, in most cases we just approve or decline changes if the record is dirty */}
+                        {/*<Button bsStyle="primary">
                             <Glyphicon glyph="edit" />
-                        </Button>
+                        </Button>*/}
                         &nbsp;
                         <Button onClick={() => fields.remove(index)}>
                             <Glyphicon glyph="trash" />
