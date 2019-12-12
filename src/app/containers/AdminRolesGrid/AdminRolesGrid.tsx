@@ -157,7 +157,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                     ]}
                     rowComponent={EmptyDetailRow}
                     // TODO: Maybe there's a more elegant way to pass the props to the component... provide a component instance instead?
-                    modalProps={{ parentModelId: parentModelId }}
+                    modalProps={{ roleId: parentModelId }}
                     modalComponent={AdminRoleScopeAccessModal}
                 />
                 <DataTable

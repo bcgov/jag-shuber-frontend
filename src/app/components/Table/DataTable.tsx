@@ -20,6 +20,7 @@ export interface ColumnRendererProps {
 export type ColumnRenderer = React.ComponentType<ColumnRendererProps>;
 
 export interface DetailComponentProps {
+    parentModel?: any;
     parentModelId?: any;
 }
 
@@ -39,9 +40,9 @@ export interface DataTableProps {
     expandedRows?: Set<number>;
     // TODO: Rename as detailComponent
     rowComponent: React.ReactType<DetailComponentProps>;
-    modalProps?: DetailComponentProps;
+    modalProps?: any;
     modalComponent: React.ReactType<ModalComponentProps>;
-    filter?: Function; // TODO: Filter fields using this function? Not implemented, but could be useful in some cases
+    filterRows?: Function;
 }
 
 export default class DataTable extends React.Component<DataTableProps> {
@@ -55,7 +56,7 @@ export default class DataTable extends React.Component<DataTableProps> {
         modalProps: {},
         modalComponent: <div />,
         buttonLabel: 'Create',
-        filter: () => true // TODO: Filter fields using this function? Not implemented, but could be useful in some cases
+        filterRows: () => true
     };
 
     static MappedTextColumn = CellTypes.MappedText;
@@ -118,7 +119,7 @@ export default class DataTable extends React.Component<DataTableProps> {
             rowComponent,
             modalProps,
             modalComponent,
-            filter,
+            filterRows,
         } = this.props;
 
         const {
@@ -232,6 +233,8 @@ export default class DataTable extends React.Component<DataTableProps> {
                                                         </td>
                                                     );
                                                 })()}
+                                                {/* TODO: This has to be moved out */}
+                                                <ModalComponent isOpen={(activeRowId !== null)} {...modalProps} parentModel={fieldModel} parentModelId={fieldModel.id} />
                                             </tr>
                                             {expandable && expandedRows && expandedRows.has(index) && (
                                                 <tr key={index * 2}>
@@ -239,7 +242,7 @@ export default class DataTable extends React.Component<DataTableProps> {
                                                     {/* tslint:disable-next-line:max-line-length */}
                                                     <td style={{ margin: '0', padding: '0' }} colSpan={expandable ? columns.length + 1 : columns.length}>
                                                         {/* TODO: How to ensure fieldModel has an ID? Probably not a real concern... just double check later */}
-                                                        <RowComponent parentModelId={fieldModel.id} />
+                                                        <RowComponent parentModel={fieldModel} parentModelId={fieldModel.id} />
                                                     </td>
                                                 </tr>
                                             )}
@@ -248,8 +251,6 @@ export default class DataTable extends React.Component<DataTableProps> {
                                 })}
                                 </tbody>
                             </Table>
-                            {/* TODO: This has to be moved out */}
-                            <ModalComponent isOpen={(activeRowId !== null)} {...modalProps} />
                         </div>
                     )
                 }}
