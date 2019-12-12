@@ -33,6 +33,7 @@ import {
     getAllFrontendScopes,
     getAllRoleApiScopes,
     getRoleApiScopesById,
+    getRoleApiScopesGroupedByRoleId,
     getAllRoleFrontendScopes,
     getRoleFrontendScopesById,
     getRoleFrontendScopesGroupedByRoleId,
@@ -124,6 +125,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
         apiScopes: 'roles.apiScopes',
         frontendScopes: 'roles.frontendScopes',
         roleApiScopes: 'roles.roleApiScopes',
+        roleApiScopesGrouped: 'roles.roleApiScopesGrouped',
         roleFrontendScopes: 'roles.roleFrontendScopes',
         roleFrontendScopesGrouped: 'roles.roleFrontendScopesGrouped',
         rolePermissions: 'roles.rolePermissions'
@@ -153,7 +155,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                     modalComponent={AdminRoleScopeAccessModal}
                 />
                 <DataTable
-                    fieldName={this.formFieldNames.roleApiScopes}
+                    fieldName={`${this.formFieldNames.roleApiScopesGrouped}['${parentModelId}']`}
                     title={''} // Leave this blank
                     buttonLabel={'Add API Access to Role'}
                     displayHeaderActions={true}
@@ -228,6 +230,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
         const roleFrontendScopes = getAllRoleFrontendScopes(state) || undefined;
         const roleFrontendScopesGrouped = getRoleFrontendScopesGroupedByRoleId(state) || undefined;
         const roleApiScopes = getAllRoleApiScopes(state) || undefined;
+        const roleApiScopesGrouped = getRoleApiScopesGroupedByRoleId(state) || undefined;
         const rolePermissions = getAllRolePermissions(state) || undefined;
 
         /*if (roleFrontendScopesGrouped && Object.keys(roleFrontendScopesGrouped).length > 0) {
@@ -241,6 +244,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
             roleFrontendScopes,
             roleFrontendScopesGrouped,
             roleApiScopes,
+            roleApiScopesGrouped,
             rolePermissions
         };
     }

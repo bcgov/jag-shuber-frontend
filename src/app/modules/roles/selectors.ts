@@ -92,7 +92,7 @@ export const getAllRoleFrontendScopes = (state: RootState) => {
 
 export const getRoleFrontendScopesById = (id?: IdType) => (state: RootState) => {
     if (state && id !== null) {
-        return getRoleFrontendScopes(state).filter(item => item.roleId === id);
+        return getRoleFrontendScopes(state).filter(i => i.roleId === id);
     }
     return undefined;
 };
@@ -135,9 +135,30 @@ export const getAllRoleApiScopes = (state: RootState) => {
 
 export const getRoleApiScopesById = (id?: IdType) => (state: RootState) => {
    if (state && id !== null) {
-       return getRoleApiScopes(state).filter(item => item.id === id);
+       return getRoleApiScopes(state).filter(i => i.id === id);
    }
    return undefined;
+};
+
+export const getRoleApiScopesGroupedByRoleId = (state: RootState) => {
+    if (state) {
+        const map: MapType<any> = {};
+        return getRoleApiScopes(state).reduce((acc, cur, idx) => {
+            if (cur && cur.roleId) {
+                if (acc[cur.roleId] === undefined) {
+                    acc[cur.roleId] = [];
+                }
+
+                // @ts-ignore
+                if (!(acc[cur.roleId].find(i => i.id === cur.id))) {
+                    acc[cur.roleId].push(cur);
+                }
+            }
+
+            return acc;
+        }, map);
+    }
+    return undefined;
 };
 
 export const getRolePermissions = createSelector(
