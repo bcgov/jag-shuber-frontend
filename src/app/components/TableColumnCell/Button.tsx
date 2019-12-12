@@ -12,10 +12,10 @@ const ButtonColumn = (label?: string, icon?: string, options?: Types.FieldColumn
 
     return {
         title: '',
-        FormRenderer: ({ fieldInstanceName, callbackContext }) => {
+        FormRenderer: ({ fieldInstanceName, model, callbackContext }) => {
             const handleClick = (onButtonClicked)
                 ? (ev: React.SyntheticEvent<any>) => {
-                    onButtonClicked(ev, callbackContext);
+                    onButtonClicked(ev, callbackContext, model);
                 }
                 : () => {};
 

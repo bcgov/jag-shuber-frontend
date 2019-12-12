@@ -97,8 +97,7 @@ export default class DataTable extends React.Component<DataTableProps> {
         });
     }
 
-    // TODO: We have to get this out of here somehow, it's not generic!
-    setActiveRoleScope(id: any) {
+    setActiveRow(id: any) {
         this.setState({
             activeRowId: id
         });
@@ -234,7 +233,7 @@ export default class DataTable extends React.Component<DataTableProps> {
                                                     );
                                                 })()}
                                                 {/* TODO: This has to be moved out */}
-                                                <ModalComponent isOpen={(activeRowId !== null)} {...modalProps} parentModel={fieldModel} parentModelId={fieldModel.id} />
+                                                <ModalComponent isOpen={(activeRowId === fieldModel.id)} {...modalProps} parentModel={fieldModel} parentModelId={fieldModel.id} />
                                             </tr>
                                             {expandable && expandedRows && expandedRows.has(index) && (
                                                 <tr key={index * 2}>
