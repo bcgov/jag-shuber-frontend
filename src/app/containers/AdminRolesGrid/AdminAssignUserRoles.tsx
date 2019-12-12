@@ -163,7 +163,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                     // expandedRows={[1, 2]}
                     rowComponent={this.DetailComponent}
                     modalComponent={EmptyDetailRow}
-                    displayHeaderActions={true}
+                    displayHeaderActions={false}
                 />
             </div>
         );
