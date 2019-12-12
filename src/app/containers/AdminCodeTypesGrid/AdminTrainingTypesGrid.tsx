@@ -16,6 +16,10 @@ import {
     getAllRoles
 } from '../../modules/roles/selectors';
 
+/*import {
+    getUser
+} from '../../modules/user/selectors';*/
+
 import { IdType } from '../../api';
 
 import {
@@ -26,7 +30,7 @@ import {
 import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../components/Table/DataTable';
 
 export interface AdminTrainingTypesProps extends FormContainerProps {
-    roles?: any[]
+    roles?: any[];
 }
 
 export interface AdminTrainingTypesDisplayProps extends FormContainerProps {

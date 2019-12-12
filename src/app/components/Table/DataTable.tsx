@@ -19,7 +19,10 @@ export interface ColumnRendererProps {
 
 export type ColumnRenderer = React.ComponentType<ColumnRendererProps>;
 
-export interface DetailComponentProps {}
+export interface DetailComponentProps {
+    parentModelId: any;
+}
+
 export interface ModalComponentProps {}
 
 export const EmptyDetailRow: React.SFC<DetailComponentProps> = () => (<div />);
@@ -36,6 +39,7 @@ export interface DataTableProps {
     expandedRows?: Set<number>;
     rowComponent: React.ReactType<DetailComponentProps>; // Not sure if this is the appropriate type
     modalComponent: React.ReactType<ModalComponentProps>; // Not sure if this is the appropriate type
+    filter?: Function; // TODO: Filter fields using this function? Not implemented, but could be useful in some cases
 }
 
 export default class DataTable extends React.Component<DataTableProps> {
@@ -47,7 +51,8 @@ export default class DataTable extends React.Component<DataTableProps> {
         // TODO: What is up with default props?
         rowComponent: <div />,
         modalComponent: <div />,
-        buttonLabel: 'Create'
+        buttonLabel: 'Create',
+        filter: () => true
     };
 
     static MappedTextColumn = CellTypes.MappedText;
@@ -88,7 +93,7 @@ export default class DataTable extends React.Component<DataTableProps> {
         });
     }
 
-    // TODO: We have to get this out of here, it's not generic!
+    // TODO: We have to get this out of here somehow, it's not generic!
     setActiveRoleScope(id: any) {
         this.setState({
             activeRowId: id
@@ -108,7 +113,8 @@ export default class DataTable extends React.Component<DataTableProps> {
             displayActionsColumn = true,
             expandable = false,
             rowComponent,
-            modalComponent
+            modalComponent,
+            filter,
         } = this.props;
 
         const {
@@ -119,6 +125,7 @@ export default class DataTable extends React.Component<DataTableProps> {
 
         // return (<div>This would be the Table</div>);
 
+        // TODO: Rename as detail component, cause that's what this really is...
         const RowComponent = rowComponent;
         const ModalComponent = modalComponent;
 
@@ -129,6 +136,7 @@ export default class DataTable extends React.Component<DataTableProps> {
                     // console.log('dumping datatable fields');
                     const { fields } = props;
                     // console.log(props.fields.getAll());
+
                     return (
                         <div>
                             {title}
@@ -160,8 +168,8 @@ export default class DataTable extends React.Component<DataTableProps> {
                                     // console.log('dumping field');
                                     // console.log(fieldInstanceName);
 
-                                    const currentLeave: Partial<any> = fields.get(index);
-                                    const { cancelDate = undefined } = currentLeave || {};
+                                    const fieldModel: Partial<any> = fields.get(index);
+                                    const { cancelDate = undefined } = fieldModel || {};
 
                                     return (
                                         <>
@@ -194,7 +202,7 @@ export default class DataTable extends React.Component<DataTableProps> {
                                                             return (
                                                                 <td key={colIndex}>
                                                                     <Column
-                                                                        model={currentLeave}
+                                                                        model={fieldModel}
                                                                         fieldInstanceName={fieldInstanceName}
                                                                         fields={fields}
                                                                         index={index}
@@ -216,7 +224,7 @@ export default class DataTable extends React.Component<DataTableProps> {
                                                     return (
                                                         <td style={{ display: 'flex', justifyContent: 'flex-end' }}>
                                                             <Column
-                                                                model={currentLeave}
+                                                                model={fieldModel}
                                                                 fieldInstanceName={fieldInstanceName}
                                                                 fields={fields}
                                                                 index={index}
@@ -231,7 +239,8 @@ export default class DataTable extends React.Component<DataTableProps> {
                                                     <td>{/* Nest the Table for sub-rows */}</td>
                                                     {/* tslint:disable-next-line:max-line-length */}
                                                     <td style={{ margin: '0', padding: '0' }} colSpan={expandable ? columns.length + 1 : columns.length}>
-                                                        <RowComponent />
+                                                        {/* TODO: How to ensure fieldModel has an ID? Probably not a real concern... just double check later */}
+                                                        <RowComponent parentModelId={fieldModel.id} />
                                                     </td>
                                                 </tr>
                                             )}
