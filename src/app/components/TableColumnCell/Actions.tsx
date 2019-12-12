@@ -25,6 +25,11 @@ const ActionsColumn = (): Types.TableColumnCell => {
         FormRenderer: ({ fields, index, model: { id } }) => (
             !id ?
                 (
+                    <><ApproveButton modelId={id} />&nbsp;<CancelButton modelId={id} /></>
+
+                )
+                :
+                (
                     <>
                         <Button bsStyle="primary">
                             <Glyphicon glyph="edit" />
@@ -35,8 +40,7 @@ const ActionsColumn = (): Types.TableColumnCell => {
                         </Button>
                     </>
                 )
-                :
-                <><ApproveButton modelId={id} />&nbsp;<CancelButton modelId={id} /></>
+
         ),
         CanceledRender: ({ model }) => (
             <CancelledPopover model={model} />
