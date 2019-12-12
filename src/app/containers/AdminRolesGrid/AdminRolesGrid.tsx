@@ -38,7 +38,8 @@ import {
     getRoleFrontendScopesById,
     getRoleFrontendScopesGroupedByRoleId,
     getAllRolePermissions,
-    getRolePermissionsById
+    getRolePermissionsById,
+    getRolePermissionsGroupedByRoleId
 } from '../../modules/roles/selectors';
 
 import { IdType } from '../../api';
@@ -68,7 +69,9 @@ export interface AdminRolesProps extends FormContainerProps {
     roleFrontendScopes?: {}[];
     roleFrontendScopesGrouped?: {};
     roleApiScopes?: {}[];
+    roleApiScopesGrouped?: {};
     rolePermissions?: {}[];
+    rolePermissionsGrouped?: {};
 }
 
 export interface AdminRolesDisplayProps extends FormContainerProps {
@@ -128,7 +131,8 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
         roleApiScopesGrouped: 'roles.roleApiScopesGrouped',
         roleFrontendScopes: 'roles.roleFrontendScopes',
         roleFrontendScopesGrouped: 'roles.roleFrontendScopesGrouped',
-        rolePermissions: 'roles.rolePermissions'
+        rolePermissions: 'roles.rolePermissions',
+        rolePermissionsGrouped: 'roles.rolePermissions'
     };
     title: string = ' Manage Roles & Access';
     DetailComponent: React.SFC<DetailComponentProps> = ({ parentModelId }) => {
@@ -152,6 +156,8 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                         DataTable.ButtonColumn('Edit Access', 'list', { displayInfo: true }, onButtonClicked)
                     ]}
                     rowComponent={EmptyDetailRow}
+                    // TODO: Maybe there's a more elegant way to pass the props to the component... provide a component instance instead?
+                    modalProps={{ parentModelId: parentModelId }}
                     modalComponent={AdminRoleScopeAccessModal}
                 />
                 <DataTable
@@ -232,6 +238,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
         const roleApiScopes = getAllRoleApiScopes(state) || undefined;
         const roleApiScopesGrouped = getRoleApiScopesGroupedByRoleId(state) || undefined;
         const rolePermissions = getAllRolePermissions(state) || undefined;
+        const rolePermissionsGrouped = getRolePermissionsGroupedByRoleId(state) || undefined;
 
         /*if (roleFrontendScopesGrouped && Object.keys(roleFrontendScopesGrouped).length > 0) {
             debugger;
@@ -245,7 +252,8 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
             roleFrontendScopesGrouped,
             roleApiScopes,
             roleApiScopesGrouped,
-            rolePermissions
+            rolePermissions,
+            rolePermissionsGrouped
         };
     }
 

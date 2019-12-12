@@ -183,6 +183,27 @@ export const getRolePermissionsById = (id?: IdType) => (state: RootState) => {
     return undefined;
 };
 
+export const getRolePermissionsGroupedByRoleId = (state: RootState) => {
+    if (state) {
+        const map: MapType<any> = {};
+        return getRolePermissions(state).reduce((acc, cur, idx) => {
+            if (cur && cur.roleId) {
+                if (acc[cur.roleId] === undefined) {
+                    acc[cur.roleId] = [];
+                }
+
+                // @ts-ignore
+                if (!(acc[cur.roleId].find(i => i.id === cur.id))) {
+                    acc[cur.roleId].push(cur);
+                }
+            }
+
+            return acc;
+        }, map);
+    }
+    return undefined;
+};
+
 export const selectedAdminRolesSection = (state: RootState) => {
     const { roles: { selectedProfileSection = undefined } = {} } = state;
     return selectedProfileSection;
