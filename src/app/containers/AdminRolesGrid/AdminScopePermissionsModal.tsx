@@ -54,21 +54,21 @@ export default class AdminScopePermissionsModal extends React.Component<AdminSco
                                         <Glyphicon glyph="info-sign" />
                                     </div>
                                 </div>
-                                <div style={{ display: 'flex', alignItems: 'center' }}>
+                                {/*<div style={{ display: 'flex', alignItems: 'center' }}>
                                     <Button>
                                         <Glyphicon glyph="plus" /> Add Permission
                                     </Button>`
-                                </div>
+                                </div>*/}
                             </div>
                             <DataTable
                                 fieldName={'roles.rolePermissions'}
                                 title={''} // Leave this blank
-                                displayActionsColumn={false}
+                                displayHeaderActions={true}
+                                displayActionsColumn={true}
                                 columns={[
                                     DataTable.TextFieldColumn('Permission Name', { fieldName: 'displayName', displayInfo: true }),
                                     DataTable.TextFieldColumn('Code', { fieldName: 'displayName', displayInfo: true }),
-                                    DataTable.TextAreaColumn('Description', { fieldName: 'description', displayInfo: true }),
-                                    DataTable.CheckboxColumn('Has Permission'), // TODO: Use a checkbox
+                                    DataTable.TextAreaColumn('Description', { fieldName: 'description', displayInfo: true })
                                 ]}
                                 rowComponent={EmptyDetailRow}
                                 modalComponent={EmptyDetailRow}

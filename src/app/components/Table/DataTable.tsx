@@ -20,7 +20,7 @@ export interface ColumnRendererProps {
 export type ColumnRenderer = React.ComponentType<ColumnRendererProps>;
 
 export interface DetailComponentProps {
-    parentModelId: any;
+    parentModelId?: any;
 }
 
 export interface ModalComponentProps {}
@@ -37,8 +37,10 @@ export interface DataTableProps {
     displayActionsColumn?: boolean;
     expandable?: boolean;
     expandedRows?: Set<number>;
-    rowComponent: React.ReactType<DetailComponentProps>; // Not sure if this is the appropriate type
-    modalComponent: React.ReactType<ModalComponentProps>; // Not sure if this is the appropriate type
+    // TODO: Rename as detailComponent
+    rowComponent: React.ReactType<DetailComponentProps>;
+    modalProps?: DetailComponentProps;
+    modalComponent: React.ReactType<ModalComponentProps>;
     filter?: Function; // TODO: Filter fields using this function? Not implemented, but could be useful in some cases
 }
 
@@ -50,9 +52,10 @@ export default class DataTable extends React.Component<DataTableProps> {
         // expandedRows: false,
         // TODO: What is up with default props?
         rowComponent: <div />,
+        modalProps: {},
         modalComponent: <div />,
         buttonLabel: 'Create',
-        filter: () => true
+        filter: () => true // TODO: Filter fields using this function? Not implemented, but could be useful in some cases
     };
 
     static MappedTextColumn = CellTypes.MappedText;
@@ -113,6 +116,7 @@ export default class DataTable extends React.Component<DataTableProps> {
             displayActionsColumn = true,
             expandable = false,
             rowComponent,
+            modalProps,
             modalComponent,
             filter,
         } = this.props;
@@ -245,7 +249,7 @@ export default class DataTable extends React.Component<DataTableProps> {
                                 </tbody>
                             </Table>
                             {/* TODO: This has to be moved out */}
-                            <ModalComponent isOpen={(activeRowId !== null)} />
+                            <ModalComponent isOpen={(activeRowId !== null)} {...modalProps} />
                         </div>
                     )
                 }}

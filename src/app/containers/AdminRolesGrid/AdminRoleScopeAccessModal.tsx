@@ -15,12 +15,13 @@ import FrontendScopeSelector from './FrontendScopeSelector';
 export interface AdminRoleScopeAccessModalProps {
     isOpen?: boolean;
     isDefaultTemplate?: boolean;
+    parentModelId?: any;
 }
 
 export default class AdminRoleScopeAccessModal extends React.Component<AdminRoleScopeAccessModalProps>{
     // @ts-ignore
     render() {
-        const { isDefaultTemplate = false, isOpen } = this.props;
+        const { isDefaultTemplate = false, isOpen, parentModelId } = this.props;
         const title = `Edit ${isDefaultTemplate === true ? 'Default ' : ''}Component Access`;
         return (
             <div>
@@ -62,8 +63,9 @@ export default class AdminRoleScopeAccessModal extends React.Component<AdminRole
                                     </Button>`
                                 </div>*/}
                             </div>
+                            {parentModelId && (
                             <DataTable
-                                fieldName={'roles.rolePermissions'}
+                                fieldName={`roles.rolePermissionsGrouped['${parentModelId}']`}
                                 title={''} // Leave this blank
                                 displayActionsColumn={false}
                                 columns={[
@@ -75,6 +77,7 @@ export default class AdminRoleScopeAccessModal extends React.Component<AdminRole
                                 rowComponent={EmptyDetailRow}
                                 modalComponent={EmptyDetailRow}
                             />
+                            )}
                         </>
                     )}
                     footerComponent={
