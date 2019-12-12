@@ -95,10 +95,10 @@ export default class AdminFrontendScopesGrid extends FormContainerBase<AdminFron
     title: string = 'Register Components';
 
     FormComponent = (props: FormContainerProps<AdminFrontendScopesProps>) => {
-        const onButtonClicked = (ev: React.SyntheticEvent<any>, context: any) => {
+        const onButtonClicked = (ev: React.SyntheticEvent<any>, context: any, model: any) => {
             // TODO: Check on this!
             // Executes in DataTable's context
-            context.setActiveRow(Math.random());
+            context.setActiveRow(model.id);
         };
 
         return (
