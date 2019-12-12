@@ -36,9 +36,15 @@ export const sheriffsForCurrentLocation = createSelector(
     }
 );
 
+export const getAllSheriffs = (state: RootState) => {
+  if (state) {
+    return sheriffs(state);
+  }
+  return undefined;
+};
+
 export const getSheriff = (id?: IdType) => (state: RootState) => {
-    // tslint:disable-next-line:triple-equals
-    if (state && id != undefined) {
+    if (state && id !== undefined) {
         const map = requests.sheriffMapRequest.getData(state) || {};
         return map[id];
     }
@@ -55,8 +61,8 @@ export function getSheriffHomeLocation(sheriffId: IdType) {
 export function getSheriffCurrentLocation(sheriffId: IdType) {
     return (state: RootState) => {
         const { currentLocationId, homeLocationId } = getSheriff(sheriffId)(state) as Sheriff;
-        return currentLocationId == undefined ? 
-            getLocationById(homeLocationId)(state) : 
+        return currentLocationId == undefined ?
+            getLocationById(homeLocationId)(state) :
             getLocationById(currentLocationId)(state);
     };
 }
@@ -122,7 +128,7 @@ export function getSheriffLoanStatus(sheriffId: string) {
 }
 
 /**
- * Selector returns whether or not the given sheriffId belongs to a sheriff who 
+ * Selector returns whether or not the given sheriffId belongs to a sheriff who
  * is loaned out
  *
  * @param {string} sheriffId the sheriff Id to check
@@ -136,7 +142,7 @@ export function isSheriffLoanedOut(sheriffId: string) {
 }
 
 /**
- * Selector returns whether or not the given sheriffId belongs to a sheriff who 
+ * Selector returns whether or not the given sheriffId belongs to a sheriff who
  * is loaned In
  *
  * @param {string} sheriffId the sheriff Id to check

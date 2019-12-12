@@ -9,6 +9,18 @@ import {
 import { Dispatch } from 'redux';
 
 import {
+    // getUsers
+} from '../../modules/user/actions';
+
+import {
+    getSheriffList as getSheriffs
+} from '../../modules/sheriffs/actions';
+
+import {
+    getAllSheriffs
+} from '../../modules/sheriffs/selectors';
+
+import {
     getRoles,
     getFrontendScopes,
     getApiScopes,
@@ -18,12 +30,6 @@ import {
 } from '../../modules/roles/actions';
 
 import {
-    // getUsers
-} from '../../modules/user/actions';
-
-import { RootState } from '../../store';
-
-import {
     getAllRoles,
     getAllApiScopes,
     getAllFrontendScopes,
@@ -31,6 +37,8 @@ import {
     getAllRoleFrontendScopes,
     getAllRolePermissions
 } from '../../modules/roles/selectors';
+
+import { RootState } from '../../store';
 
 import { IdType } from '../../api';
 
@@ -43,6 +51,7 @@ import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../component
 
 import RoleSelector from './RoleSelector';
 
+// TODO: Fix this interface!
 export interface AdminAssignUserRolesProps extends FormContainerProps {
     roles?: any[],
     frontendScopes?: any[],
@@ -99,6 +108,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
     name = 'admin-assign-user-roles';
     reduxFormKey = 'roles';
     formFieldNames = {
+        users: 'roles.users',
         roles: 'roles.roles',
         apiScopes: 'roles.apiScopes',
         frontendScopes: 'roles.frontendScopes',
@@ -136,14 +146,17 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
         return (
             <div>
                 <DataTable
-                    fieldName={this.formFieldNames.roles}
+                    fieldName={this.formFieldNames.users}
                     title={''} // Leave this blank
                     buttonLabel={'Add New User'}
                     columns={[
-                        DataTable.SelectorFieldColumn('User Name', { fieldName: 'roleName', displayInfo: true }),
-                        DataTable.StaticTextColumn('Description', { fieldName: 'description', displayInfo: false }),
+                        DataTable.StaticTextColumn('First Name', { fieldName: 'firstName', displayInfo: false }),
+                        DataTable.StaticTextColumn('Last Name', { fieldName: 'lastName', displayInfo: false }),
+                        DataTable.StaticTextColumn('Badge No.', { fieldName: 'badgeNo', displayInfo: false }),
+                        DataTable.StaticTextColumn('Location', { fieldName: 'homeLocationId', displayInfo: false }),
+                        DataTable.StaticTextColumn('Rank', { fieldName: 'rankCode', displayInfo: false }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
-                        DataTable.StaticTextColumn('Status', { displayInfo: false }),
+                        DataTable.SelectorFieldColumn('Status', { displayInfo: true }),
 
                     ]}
                     expandable={true}
@@ -170,6 +183,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
 
     // TODO: Not sure if this should be roleId or what, I'm not there yet...
     fetchData(roleId: IdType, dispatch: Dispatch<{}>) {
+        dispatch(getSheriffs()); // This data needs to always be available for select lists
         dispatch(getRoles()); // This data needs to always be available for select lists
         dispatch(getFrontendScopes()); // This data needs to always be available for select lists
         dispatch(getApiScopes()); // This data needs to always be available for select lists
@@ -184,13 +198,16 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
 
     getData(roleId: IdType, state: RootState) {
         // TODO: Depending on component state, some of these calls will need to be filtered!
+        const users = getAllSheriffs(state) || undefined;
         const roles = getAllRoles(state) || undefined;
         const frontendScopes = getAllFrontendScopes(state) || undefined;
         const apiScopes = getAllApiScopes(state) || undefined;
         const roleFrontendScopes = getAllRoleFrontendScopes(state) || undefined;
         const roleApiScopes = getAllRoleApiScopes(state) || undefined;
         const rolePermissions = getAllRolePermissions(state) || undefined;
+
         return {
+            users,
             roles,
             frontendScopes,
             apiScopes,
