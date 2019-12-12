@@ -48,7 +48,7 @@ import {
 } from '../../components/Form/FormContainer';
 
 import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../components/Table/DataTable';
-import AdminRolePermissionsModal from '../../containers/AdminRolesGrid/AdminRolePermissionsModal';
+import AdminRoleScopeAccessModal from '../../containers/AdminRolesGrid/AdminRoleScopeAccessModal';
 
 import RoleSelector from './RoleSelector';
 import FrontendScopeDisplay from './FrontendScopeDisplay';
@@ -128,7 +128,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
         roleFrontendScopesGrouped: 'roles.roleFrontendScopesGrouped',
         rolePermissions: 'roles.rolePermissions'
     };
-    title: string = ' Manage Roles & Permissions';
+    title: string = ' Manage Roles & Access';
     DetailComponent: React.SFC<DetailComponentProps> = ({ parentModelId }) => {
         const onButtonClicked = (ev: React.SyntheticEvent<{}>, context: any) => {
             // TODO: Check on this!
@@ -147,10 +147,10 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                         DataTable.SelectorFieldColumn('Component to Access', { fieldName: 'scopeId', selectorComponent: FrontendScopeSelector, displayInfo: true, disabled: true }),
                         DataTable.MappedTextColumn('Code', { fieldName: 'scopeId', selectorComponent: FrontendScopeCodeDisplay, displayInfo: false }),
                         DataTable.MappedTextColumn('Description', { fieldName: 'scopeId', selectorComponent: FrontendScopeDescriptionDisplay, displayInfo: false }),
-                        DataTable.ButtonColumn('Edit Permissions', 'list', { displayInfo: true }, onButtonClicked)
+                        DataTable.ButtonColumn('Edit Access', 'list', { displayInfo: true }, onButtonClicked)
                     ]}
                     rowComponent={EmptyDetailRow}
-                    modalComponent={AdminRolePermissionsModal}
+                    modalComponent={AdminRoleScopeAccessModal}
                 />
                 <DataTable
                     fieldName={this.formFieldNames.roleApiScopes}
@@ -164,15 +164,13 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                         DataTable.ButtonColumn('Edit Access', 'eye-open', { displayInfo: true }, onButtonClicked),
                     ]}
                     rowComponent={EmptyDetailRow}
-                    modalComponent={AdminRolePermissionsModal}
+                    modalComponent={AdminRoleScopeAccessModal}
                 />
             </>
         );
     }
 
     FormComponent = (props: FormContainerProps<AdminRolesProps>) => {
-        // console.log('dumping adminrolesgrid props');
-        // console.log(props);
         return (
             <div>
                 <DataTable
