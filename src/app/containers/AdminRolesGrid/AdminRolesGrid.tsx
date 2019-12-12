@@ -32,8 +32,12 @@ import {
     getAllApiScopes,
     getAllFrontendScopes,
     getAllRoleApiScopes,
+    getRoleApiScopesById,
     getAllRoleFrontendScopes,
-    getAllRolePermissions
+    getRoleFrontendScopesById,
+    getRoleFrontendScopesGroupedByRoleId,
+    getAllRolePermissions,
+    getRolePermissionsById
 } from '../../modules/roles/selectors';
 
 import { IdType } from '../../api';
@@ -57,16 +61,20 @@ import FrontendScopeSelector from './FrontendScopeSelector';
 import ApiScopeSelector from './ApiScopeSelector';
 
 export interface AdminRolesProps extends FormContainerProps {
-    roles?: any[],
-    frontendScopes?: any[],
-    apiScopes?: any[]
+    roles?: {}[];
+    frontendScopes?: {}[];
+    apiScopes?: {}[];
+    roleFrontendScopes?: {}[];
+    roleFrontendScopesGrouped?: {};
+    roleApiScopes?: {}[];
+    rolePermissions?: {}[];
 }
 
 export interface AdminRolesDisplayProps extends FormContainerProps {
 
 }
 
-class AdminRolesDisplay extends React.PureComponent<AdminRolesDisplayProps, any> {
+class AdminRolesDisplay extends React.PureComponent<AdminRolesDisplayProps, {}> {
     render() {
         const { data = [] } = this.props;
 
@@ -117,11 +125,12 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
         frontendScopes: 'roles.frontendScopes',
         roleApiScopes: 'roles.roleApiScopes',
         roleFrontendScopes: 'roles.roleFrontendScopes',
+        roleFrontendScopesGrouped: 'roles.roleFrontendScopesGrouped',
         rolePermissions: 'roles.rolePermissions'
     };
     title: string = ' Manage Roles & Permissions';
-    DetailComponent: React.SFC<DetailComponentProps> = () => {
-        const onButtonClicked = (ev: React.SyntheticEvent<any>, context: any) => {
+    DetailComponent: React.SFC<DetailComponentProps> = ({ parentModelId }) => {
+        const onButtonClicked = (ev: React.SyntheticEvent<{}>, context: any) => {
             // TODO: Check on this!
             // Executes in DataTable's context
             context.setActiveRoleScope(Math.random());
@@ -130,7 +139,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
         return (
             <>
                 <DataTable
-                    fieldName={this.formFieldNames.roleFrontendScopes}
+                    fieldName={`${this.formFieldNames.roleFrontendScopesGrouped}['${parentModelId}']`}
                     title={''} // Leave this blank
                     buttonLabel={'Add Component to Role'}
                     displayHeaderActions={true}
@@ -215,25 +224,30 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
     }
 
     getData(roleId: IdType, state: RootState) {
-        // TODO: Depending on component state, some of these calls will need to be filtered!
         const roles = getAllRoles(state) || undefined;
         const frontendScopes = getAllFrontendScopes(state) || undefined;
         const apiScopes = getAllApiScopes(state) || undefined;
         const roleFrontendScopes = getAllRoleFrontendScopes(state) || undefined;
+        const roleFrontendScopesGrouped = getRoleFrontendScopesGroupedByRoleId(state) || undefined;
         const roleApiScopes = getAllRoleApiScopes(state) || undefined;
         const rolePermissions = getAllRolePermissions(state) || undefined;
+
+        /*if (roleFrontendScopesGrouped && Object.keys(roleFrontendScopesGrouped).length > 0) {
+            debugger;
+        }*/
+
         return {
             roles,
             frontendScopes,
             apiScopes,
             roleFrontendScopes,
+            roleFrontendScopesGrouped,
             roleApiScopes,
             rolePermissions
         };
     }
 
     getDataFromFormValues(formValues: {}): FormContainerProps {
-        return super.getDataFromFormValues(formValues) || {
-        };
+        return super.getDataFromFormValues(formValues) || {};
     }
 }

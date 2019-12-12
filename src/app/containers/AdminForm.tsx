@@ -17,6 +17,9 @@ import {
 import { connect } from 'react-redux';
 
 import { Alert } from 'react-bootstrap';
+
+import merge from 'deepmerge';
+
 // import { toast } from '../../components/ToastManager/ToastManager';
 // import { RequestActionConfig } from '../../infrastructure/Requests/RequestActionBase';
 import { default as FormSubmitButton, SubmitButtonProps } from '../components/FormElements/SubmitButton';
@@ -240,6 +243,22 @@ class AdminFormContainer extends React.PureComponent<AdminFormContainerProps> {
     }
 }
 
+// @ts-ignore
+const combineMerge = (target, source, options) => {
+    const destination = target.slice();
+
+    source.forEach((item: any, index: number) => {
+        if (typeof destination[index] === 'undefined') {
+            destination[index] = options.cloneUnlessOtherwiseSpecified(item, options);
+        } else if (options.isMergeableObject(item)) {
+            destination[index] = merge(target[index], item, options);
+        } else if (target.indexOf(item) === -1) {
+            destination.push(item);
+        }
+    });
+    return destination;
+};
+
 export default class extends
     connect<AdminFormContainerStateProps, AdminFormContainerDispatchProps, AdminFormProps, RootState>(
         // TODO: Type this?
@@ -260,7 +279,10 @@ export default class extends
                 .filter(s => s != undefined)
                 .reduce(
                     (initValues, val) => {
-                        return { ...initValues, ...val };
+                        // Use deepmerge, we can end up overwriting data when merging objects
+                        // if we use Object.assign or object spread syntax
+                        return merge(initValues, val, { arrayMerge: combineMerge });
+                        // return { ...initValues, ...val };
                     },
                     {}
                 );
@@ -275,6 +297,9 @@ export default class extends
                 // TODO: When we get plugins working we can use the collect function collectPluginErrors instead
                 pluginErrors: {}
             };
+
+            console.log('dump new props');
+            console.log(newProps);
 
             return newProps;
         },

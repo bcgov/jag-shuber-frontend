@@ -9,6 +9,7 @@ import * as rolePermissionRequests from './requests/rolePermissions';
 import * as userRoleRequests from './requests/userRoles';
 
 import {
+    MapType,
     RoleMap,
     IdType,
     LEAVE_CODE_PERSONAL,
@@ -32,6 +33,14 @@ export const getRoles = createSelector(
 export const getAllRoles = (state: RootState) => {
     if (state) {
         return getRoles(state);
+    }
+    return undefined;
+};
+
+export const getRole = (id?: IdType) => (state: RootState) => {
+    if (state && id != null) {
+        const map: RoleMap = roleRequests.roleMapRequest.getData(state);
+        return map[id];
     }
     return undefined;
 };
@@ -81,6 +90,34 @@ export const getAllRoleFrontendScopes = (state: RootState) => {
     return undefined;
 };
 
+export const getRoleFrontendScopesById = (id?: IdType) => (state: RootState) => {
+    if (state && id !== null) {
+        return getRoleFrontendScopes(state).filter(item => item.roleId === id);
+    }
+    return undefined;
+};
+
+export const getRoleFrontendScopesGroupedByRoleId = (state: RootState) => {
+    if (state) {
+        const map: MapType<any> = {};
+        return getRoleFrontendScopes(state).reduce((acc, cur, idx) => {
+            if (cur && cur.roleId) {
+                if (acc[cur.roleId] === undefined) {
+                    acc[cur.roleId] = [];
+                }
+
+                // @ts-ignore
+                if (!(acc[cur.roleId].find(i => i.id === cur.id))) {
+                    acc[cur.roleId].push(cur);
+                }
+            }
+
+            return acc;
+        }, map);
+    }
+    return undefined;
+};
+
 export const getRoleApiScopes = createSelector(
     roleApiScopeRequests.roleApiScopeMapRequest.getData,
     (map) => {
@@ -94,6 +131,13 @@ export const getAllRoleApiScopes = (state: RootState) => {
         return getRoleApiScopes(state);
     }
     return undefined;
+};
+
+export const getRoleApiScopesById = (id?: IdType) => (state: RootState) => {
+   if (state && id !== null) {
+       return getRoleApiScopes(state).filter(item => item.id === id);
+   }
+   return undefined;
 };
 
 export const getRolePermissions = createSelector(
@@ -111,10 +155,9 @@ export const getAllRolePermissions = (state: RootState) => {
     return undefined;
 };
 
-export const getRole = (id?: IdType) => (state: RootState) => {
-    if (state && id != null) {
-        const map: RoleMap = roleRequests.roleMapRequest.getData(state);
-        return map[id];
+export const getRolePermissionsById = (id?: IdType) => (state: RootState) => {
+    if (state) {
+        return getRolePermissions(state).filter(item => item.id === id);
     }
     return undefined;
 };
