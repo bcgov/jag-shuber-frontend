@@ -249,8 +249,6 @@ export default class extends
                             sheriff: getSheriff(sheriffId)(state)
                         }
                     );
-                console.log('sheriffprofile init val');
-                console.log(initialValues);
             } else {
                 const contextLocation = currentLocation(state);
                 const initialSheriff: Partial<Sheriff> = {

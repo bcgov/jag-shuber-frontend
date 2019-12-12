@@ -32,8 +32,8 @@ import {
 
 import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
 
-import ApiScopeSelector from './ApiScopeSelector';
-import AdminRolePermissionsModal from './AdminRolePermissionsModal';
+// import ApiScopeSelector from './ApiScopeSelector';
+// import AdminScopePermissionsModal from './AdminScopePermissionsModal';
 
 export interface AdminApiScopesProps extends FormContainerProps {
     apiScopes?: any[];

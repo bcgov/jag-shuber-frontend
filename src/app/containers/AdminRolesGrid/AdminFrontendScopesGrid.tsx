@@ -35,7 +35,7 @@ import {
 import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
 
 import FrontendScopeSelector from './FrontendScopeSelector';
-import AdminRolePermissionsModal from './AdminRolePermissionsModal';
+import AdminScopePermissionsModal from './AdminScopePermissionsModal';
 
 export interface AdminFrontendScopesProps extends FormContainerProps {
     frontendScopes?: any[];
@@ -99,7 +99,6 @@ export default class AdminFrontendScopesGrid extends FormContainerBase<AdminFron
             // TODO: Check on this!
             // Executes in DataTable's context
             context.setActiveRoleScope(Math.random());
-            console.log('clicked permissions button');
         };
 
         return (
@@ -116,7 +115,7 @@ export default class AdminFrontendScopesGrid extends FormContainerBase<AdminFron
                         DataTable.ButtonColumn('Define Permissions', 'list', { displayInfo: true }, onButtonClicked)
                     ]}
                     rowComponent={EmptyDetailRow}
-                    modalComponent={AdminRolePermissionsModal}
+                    modalComponent={AdminScopePermissionsModal}
                 />
             </div>
         );

@@ -287,7 +287,7 @@ export default class extends
                     {}
                 );
 
-            const newProps = {
+            return {
                 initialValues,
                 pluginState: { ...initialValues },
                 selectedSection: selectedAdminFormSection(state),
@@ -297,11 +297,6 @@ export default class extends
                 // TODO: When we get plugins working we can use the collect function collectPluginErrors instead
                 pluginErrors: {}
             };
-
-            console.log('dump new props');
-            console.log(newProps);
-
-            return newProps;
         },
         // (dispatch, { roleId, plugins = [] }) => {
         (dispatch, { plugins = [] }) => {

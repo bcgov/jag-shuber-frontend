@@ -12,20 +12,21 @@ import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
 import SelectorField from '../../components/FormElements/SelectorField';
 import FrontendScopeSelector from './FrontendScopeSelector';
 
-export interface AdminRolePermissionsModalProps {
+export interface AdminRoleScopeAccessModalProps {
     isOpen?: boolean;
     isDefaultTemplate?: boolean;
 }
 
-export default class AdminRolePermissionsModal extends React.Component<AdminRolePermissionsModalProps>{
+export default class AdminRoleScopeAccessModal extends React.Component<AdminRoleScopeAccessModalProps>{
     // @ts-ignore
     render() {
         const { isDefaultTemplate = false, isOpen } = this.props;
-        const title = `Edit ${isDefaultTemplate === true ? 'Default ' : ''}Scope Permissions`;
+        const title = `Edit ${isDefaultTemplate === true ? 'Default ' : ''}Component Access`;
         return (
             <div>
                 <ModalWrapper
-                    styleClassName="modal-wrapper-medium"
+                    // TODO: Are these modal sizes responsive?
+                    styleClassName="modal-wrapper-small"
                     showButton={() => null}
                     isOpen={isOpen}
                     title={title}
@@ -54,21 +55,22 @@ export default class AdminRolePermissionsModal extends React.Component<AdminRole
                                         <Glyphicon glyph="info-sign" />
                                     </div>
                                 </div>
-                                <div style={{ display: 'flex', alignItems: 'center' }}>
+                                {/* TODO: Delete? This shouldn't be needed here */}
+                                {/*<div style={{ display: 'flex', alignItems: 'center' }}>
                                     <Button>
                                         <Glyphicon glyph="plus" /> Add Permission
                                     </Button>`
-                                </div>
+                                </div>*/}
                             </div>
                             <DataTable
                                 fieldName={'roles.rolePermissions'}
                                 title={''} // Leave this blank
                                 displayActionsColumn={false}
                                 columns={[
-                                    DataTable.TextFieldColumn('Permission Name', { fieldName: 'displayName', displayInfo: true }),
-                                    DataTable.TextFieldColumn('Code', { fieldName: 'displayName', displayInfo: true }),
-                                    DataTable.TextAreaColumn('Description', { fieldName: 'description', displayInfo: true }),
-                                    DataTable.CheckboxColumn('Has Permission'), // TODO: Use a checkbox
+                                    DataTable.StaticTextColumn('Permission', { fieldName: 'displayName', displayInfo: false }),
+                                    DataTable.StaticTextColumn('Code', { fieldName: 'displayName', displayInfo: false }),
+                                    DataTable.StaticTextColumn('Description', { fieldName: 'description', displayInfo: false }),
+                                    DataTable.CheckboxColumn('Assigned'), // TODO: Use a checkbox
                                 ]}
                                 rowComponent={EmptyDetailRow}
                                 modalComponent={EmptyDetailRow}

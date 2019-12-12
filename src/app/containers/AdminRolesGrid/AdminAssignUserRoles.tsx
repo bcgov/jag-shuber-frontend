@@ -133,8 +133,6 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
     }
 
     FormComponent = (props: FormContainerProps<AdminAssignUserRolesProps>) => {
-        // console.log('dumping adminrolesgrid props');
-        // console.log(props);
         return (
             <div>
                 <DataTable
