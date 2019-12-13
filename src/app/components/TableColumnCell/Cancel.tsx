@@ -6,9 +6,12 @@ import * as Types from './types';
 import CancelButton from '../../containers/CancelButton';
 import CancelledPopover from '../../components/CancelledPopover';
 
-const CancelColumn = (): Types.TableColumnCell => {
+const CancelColumn = (options?: Types.FieldColumnOptions): Types.TableColumnCell => {
+    const colStyle = (options && options.colStyle) ? options.colStyle : {};
+
     return {
         title: '',
+        colStyle: colStyle,
         FormRenderer: ({ fields, index, model: { id } }) => (
             !id ?
                 (

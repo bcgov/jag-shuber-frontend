@@ -51,7 +51,7 @@ class ManageRoles extends React.PureComponent<AdminFormProps> {
                         backgroundColor: 'white',
                         flexDirection: 'column',
                         flex: '1 1',
-                        maxWidth: '80%',
+                        maxWidth: '100%',
                         minWidth: 800,
                         height: 'max-content',
                         margin: '0 auto'

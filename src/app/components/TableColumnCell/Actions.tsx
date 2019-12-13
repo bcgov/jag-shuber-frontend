@@ -19,9 +19,12 @@ export interface ColumnRendererProps {
 
 export type ColumnRenderer = React.ComponentType<ColumnRendererProps>;
 
-const ActionsColumn = (): Types.TableColumnCell => {
+const ActionsColumn = (options?: Types.FieldColumnOptions): Types.TableColumnCell => {
+    const colStyle = (options && options.colStyle) ? options.colStyle : {};
+
     return {
         title: '',
+        colStyle: colStyle,
         FormRenderer: ({ fields, index, model: { id } }) => (
             !id ?
                 (

@@ -13,11 +13,13 @@ import LeaveSubCodeDisplay from '../../containers/LeaveSubCodeDisplay';
 const TextFieldColumn = (label?: string, options?: Types.FieldColumnOptions): Types.TableColumnCell => {
     label = label || '';
 
-    const displayInfo = (options && options.displayInfo) ? options.displayInfo : false;
     const fieldName = (options && options.fieldName) ? options.fieldName : 'textField';
+    const displayInfo = (options && options.displayInfo) ? options.displayInfo : false;
+    const colStyle = (options && options.colStyle) ? options.colStyle : {};
 
     return {
         title: label,
+        colStyle: colStyle,
         FormRenderer: ({ fieldInstanceName }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Field

@@ -14,6 +14,7 @@ export type ColumnRenderer = React.ComponentType<ColumnRendererProps>;
 
 export default interface TableColumnCell {
     title: React.ReactNode;
+    colStyle?: any;
     FormRenderer: ColumnRenderer;
     CanceledRender: ColumnRenderer;
 
@@ -23,5 +24,6 @@ export interface FieldColumnOptions {
     displayInfo: boolean;
     disabled?: boolean;
     fieldName?: string;
+    colStyle?: any;
     selectorComponent?: React.ReactType<any>;
 }
