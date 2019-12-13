@@ -10,11 +10,14 @@ import SelectorField from '../../components/FormElements/SelectorField';
 import LeaveTrainingSubCodeSelector from '../../containers/LeaveTrainingSubCodeSelector';
 import LeaveSubCodeDisplay from '../../containers/LeaveSubCodeDisplay';
 
-const RoleCodeColumn = (label?: string): Types.TableColumnCell => {
+const RoleCodeColumn = (label?: string, options?: Types.FieldColumnOptions): Types.TableColumnCell => {
     label = label || 'Role Name';
+
+    const colStyle = (options && options.colStyle) ? options.colStyle : {};
 
     return {
         title: label,
+        colStyle: colStyle,
         FormRenderer: ({ fieldInstanceName }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Field

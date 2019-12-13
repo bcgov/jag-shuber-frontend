@@ -11,13 +11,15 @@ import Selector from '../../components/FormElements/Selector';
 const SelectorFieldColumn = (label?: string, options?: Types.FieldColumnOptions): Types.TableColumnCell => {
     label = label || 'Select Field';
 
-    const displayInfo = (options && options.displayInfo) ? options.displayInfo : false;
-    const disabled = (options && options.disabled) ? options.disabled : false;
     const fieldName = (options && options.fieldName) ? options.fieldName : 'selectorField';
+    const displayInfo = (options && options.displayInfo) ? options.displayInfo : false;
+    const disabled = (options && options.disabled) ? options.disabled : false; // TODO: Merge disabled and atttributes?
+    const colStyle = (options && options.colStyle) ? options.colStyle : {};
     const SelectorComponent = (options && options.selectorComponent) ? options.selectorComponent : Selector;
 
     return {
         title: label,
+        colStyle: colStyle,
         FormRenderer: ({ fieldInstanceName }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Field

@@ -10,12 +10,14 @@ import Selector from '../../components/FormElements/Selector';
 const MappedTextColumn = (label?: string, options?: Types.FieldColumnOptions): Types.TableColumnCell => {
     label = label || 'Select Field';
 
-    const displayInfo = (options && options.displayInfo) ? options.displayInfo : false;
     const fieldName = (options && options.fieldName) ? options.fieldName : 'selectorField';
+    const displayInfo = (options && options.displayInfo) ? options.displayInfo : false;
+    const colStyle = (options && options.colStyle) ? options.colStyle : {};
     const DisplayComponent = (options && options.selectorComponent) ? options.selectorComponent : Selector;
 
     return {
         title: label,
+        colStyle: colStyle,
         FormRenderer: ({ fieldInstanceName }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Field

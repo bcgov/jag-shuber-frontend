@@ -7,11 +7,11 @@ import * as Types from './types';
 const ButtonColumn = (label?: string, icon?: string, options?: Types.FieldColumnOptions, onButtonClicked?: any): Types.TableColumnCell => {
     label = label || 'Button';
 
-    // @ts-ignore
-
+    const colStyle = (options && options.colStyle) ? options.colStyle : {};
 
     return {
         title: '',
+        colStyle: colStyle,
         FormRenderer: ({ fieldInstanceName, model, callbackContext }) => {
             const handleClick = (onButtonClicked)
                 ? (ev: React.SyntheticEvent<any>) => {

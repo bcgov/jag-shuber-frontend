@@ -11,9 +11,11 @@ const CheckboxColumn = (label?: string, options?: Types.FieldColumnOptions): Typ
     label = label || '';
 
     const displayInfo = (options && options.displayInfo) ? options.displayInfo : false;
+    const colStyle = (options && options.colStyle) ? options.colStyle : {};
 
     return {
         title: label,
+        colStyle: colStyle,
         FormRenderer: ({ fieldInstanceName }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Field

@@ -9,9 +9,12 @@ import LeavePersonalSubCodeSelector from '../../containers/LeavePersonalSubCodeS
 import LeaveTrainingSubCodeSelector from '../../containers/LeaveTrainingSubCodeSelector';
 import LeaveSubCodeDisplay from '../../containers/LeaveSubCodeDisplay';
 
-const LeaveSubCodeColumn = (isPersonal: boolean): Types.TableColumnCell => {
+const LeaveSubCodeColumn = (isPersonal: boolean, options?: Types.FieldColumnOptions): Types.TableColumnCell => {
+    const colStyle = (options && options.colStyle) ? options.colStyle : {};
+
     return {
         title: 'Type',
+        colStyle: colStyle,
         FormRenderer: ({ fieldInstanceName }) => (
             <Field
                 name={`${fieldInstanceName}.leaveSubCode`}
