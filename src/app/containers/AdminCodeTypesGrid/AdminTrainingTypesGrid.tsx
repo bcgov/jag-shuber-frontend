@@ -6,19 +6,15 @@ import {
 
 import { Dispatch } from 'redux';
 
-import {
-    getRoles
-} from '../../modules/roles/actions';
-
 import { RootState } from '../../store';
 
 import {
-    getAllRoles
-} from '../../modules/roles/selectors';
+    getLeaveSubCodes
+} from '../../modules/leaves/actions';
 
-/*import {
-    getUser
-} from '../../modules/user/selectors';*/
+import {
+    allLeavesSubCodeMap as getAllLeaveSubCodes
+} from '../../modules/leaves/selectors';
 
 import { IdType } from '../../api';
 
@@ -28,9 +24,10 @@ import {
 } from '../../components/Form/FormContainer';
 
 import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../components/Table/DataTable';
+import { AdminTrainingTypesProps } from './AdminTrainingTypesGrid';
 
 export interface AdminTrainingTypesProps extends FormContainerProps {
-    roles?: any[];
+    leaveTypes?: any[];
 }
 
 export interface AdminTrainingTypesDisplayProps extends FormContainerProps {
@@ -48,11 +45,11 @@ class AdminTrainingTypesDisplay extends React.PureComponent<AdminTrainingTypesDi
 
 export default class AdminTrainingTypesGrid extends FormContainerBase<AdminTrainingTypesProps> {
     name = 'admin-training-types-grid';
-    reduxFormKey = 'roles';
+    reduxFormKey = 'leaves';
     formFieldNames = {
-        default: 'roles.roles'
+        default: 'leaves.leaveTypes'
     };
-    title: string = ' Training Types';
+    title: string = ' Training Leave Types';
 
     FormComponent = (props: FormContainerProps<AdminTrainingTypesProps>) => {
         return (
@@ -60,13 +57,13 @@ export default class AdminTrainingTypesGrid extends FormContainerBase<AdminTrain
                 <DataTable
                     fieldName={this.formFieldNames.default}
                     title={''} // Leave this blank
-                    buttonLabel={'Add Training Type'}
+                    buttonLabel={'Add Leave Type'}
                     columns={[
-                        DataTable.TextFieldColumn('Training Type', { fieldName: 'default', displayInfo: true }),
-                        DataTable.TextFieldColumn('Code', { fieldName: 'default', displayInfo: true }),
-                        DataTable.TextFieldColumn('Description', { fieldName: 'default', displayInfo: true }),
+                        // DataTable.TextFieldColumn('Leave Type', { fieldName: 'code', displayInfo: true }),
+                        DataTable.TextFieldColumn('Training Leave Sub Code', { fieldName: 'subCode', displayInfo: true }),
+                        DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: true }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
-                        DataTable.SelectorFieldColumn('Status', { displayInfo: true }),
+                        // DataTable.SelectorFieldColumn('Status', { displayInfo: true }),
 
                     ]}
                     expandable={false}
@@ -82,7 +79,7 @@ export default class AdminTrainingTypesGrid extends FormContainerBase<AdminTrain
     // TODO: Figure out why Fragments aren't working...
     DisplayComponent = (props: FormContainerProps<AdminTrainingTypesDisplayProps>) => (
         <div>
-            {/*<Alert>No types exist</Alert>*/}
+            {/*<Alert>No leaves exist</Alert>*/}
             <AdminTrainingTypesDisplay {...props} />
         </div>
     )
@@ -93,15 +90,20 @@ export default class AdminTrainingTypesGrid extends FormContainerBase<AdminTrain
 
     // TODO: Not sure if this should be typeId or what, I'm not there yet...
     fetchData(typeId: IdType, dispatch: Dispatch<{}>) {
-        dispatch(getRoles()); // This data needs to always be available for select lists
+        dispatch(getLeaveSubCodes()); // This data needs to always be available for select lists
     }
 
     getData(typeId: IdType, state: RootState) {
         // TODO: Depending on component state, some of these calls will need to be filtered!
-        const roles = getAllRoles(state) || undefined;
+        const leaveTypes = getAllLeaveSubCodes(state) || undefined;
+
+        const leaveTypesArray: any[] = [];
+        // TODO: Maybe this should go in the selector or something instead? Not sure...
+
+        Object.keys(leaveTypes).forEach(t => leaveTypesArray.push(leaveTypes[t]));
 
         return {
-            roles
+            leaveTypes: leaveTypesArray
         };
     }
 

@@ -7,14 +7,14 @@ import {
 import { Dispatch } from 'redux';
 
 import {
-    getRoles
-} from '../../modules/roles/actions';
-
-import { RootState } from '../../store';
+    getCourtrooms
+} from '../../modules/assignments/actions';
 
 import {
-    getAllRoles
-} from '../../modules/roles/selectors';
+    getAllCourtrooms
+} from '../../modules/assignments/selectors';
+
+import { RootState } from '../../store';
 
 import { IdType } from '../../api';
 
@@ -27,7 +27,7 @@ import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../component
 import { AdminCourtroomsProps } from './AdminCourtroomsGrid';
 
 export interface AdminCourtroomsProps extends FormContainerProps {
-    roles?: any[];
+    courtrooms?: any[];
 }
 
 export interface AdminCourtroomsDisplayProps extends FormContainerProps {
@@ -45,9 +45,9 @@ class AdminCourtroomsDisplay extends React.PureComponent<AdminCourtroomsDisplayP
 
 export default class AdminCourtroomsGrid extends FormContainerBase<AdminCourtroomsProps> {
     name = 'admin-courtrooms-grid';
-    reduxFormKey = 'roles';
+    reduxFormKey = 'assignments';
     formFieldNames = {
-        default: 'roles.roles'
+        default: 'assignments.courtrooms'
     };
     title: string = ' Courtrooms';
 
@@ -90,15 +90,15 @@ export default class AdminCourtroomsGrid extends FormContainerBase<AdminCourtroo
 
     // TODO: Not sure if this should be typeId or what, I'm not there yet...
     fetchData(typeId: IdType, dispatch: Dispatch<{}>) {
-        dispatch(getRoles()); // This data needs to always be available for select lists
+        dispatch(getCourtrooms()); // This data needs to always be available for select lists
     }
 
     getData(typeId: IdType, state: RootState) {
         // TODO: Depending on component state, some of these calls will need to be filtered!
-        const roles = getAllRoles(state) || undefined;
+        const courtrooms = getAllCourtrooms(state) || undefined;
 
         return {
-            roles
+            courtrooms
         };
     }
 

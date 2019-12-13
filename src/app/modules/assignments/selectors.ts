@@ -25,7 +25,7 @@ import { CodeSelector } from '../../infrastructure/CodeSelector';
 function assignmentCompareString(assignment: Assignment) {
     // We are just using the native string sorting algorithm, the hacky 'z' at the end of this
     // just pushes unassigned shifts below assigned ones
-    return (        
+    return (
         `${WorkSection.getWorkSectionSortCode(assignment.workSectionId)}:${assignment.title}`
     );
 }
@@ -42,8 +42,8 @@ export const allAssignments = createSelector(
         return mapToArray(map)
             .map(a => {
                 if (isCourtAssignment(a)) {
-                    a.title = a.courtroomId 
-                        ? (courtRooms[a.courtroomId] ? courtRooms[a.courtroomId].code : 'Courtroom Not Found') 
+                    a.title = a.courtroomId
+                        ? (courtRooms[a.courtroomId] ? courtRooms[a.courtroomId].code : 'Courtroom Not Found')
                         : (a.courtRoleId && courtRoles[a.courtRoleId] ? courtRoles[a.courtRoleId].description : 'Court Role Not Found');
                 } else if (isJailAssignment(a)) {
                     a.title = jailRoles[a.jailRoleCode] ? jailRoles[a.jailRoleCode].description : 'Jail Role Not Found';
@@ -109,6 +109,13 @@ export const allCourtrooms = createSelector(
     courtroomRequests.courtroomMapRequest.getData,
     (courtrooms) => mapToArray(courtrooms).sort((a, b) => a.code.localeCompare(b.code))
 );
+
+export const getAllCourtrooms = (state: RootState) => {
+    if (state) {
+        return allCourtrooms(state);
+    }
+    return undefined;
+};
 
 // Jail Roles
 const jailRoleSelector = new CodeSelector(
