@@ -6,15 +6,15 @@ import {
 
 import { Dispatch } from 'redux';
 
-import {
-    getRoles
-} from '../../modules/roles/actions';
-
 import { RootState } from '../../store';
 
 import {
-    getAllRoles
-} from '../../modules/roles/selectors';
+    getLeaveSubCodes
+} from '../../modules/leaves/actions';
+
+import {
+    allLeavesSubCodeMap as getAllLeaveSubCodes
+} from '../../modules/leaves/selectors';
 
 import { IdType } from '../../api';
 
@@ -27,7 +27,7 @@ import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../component
 import { AdminLeaveTypesProps } from './AdminLeaveTypesGrid';
 
 export interface AdminLeaveTypesProps extends FormContainerProps {
-    roles?: any[];
+    leaveTypes?: any[];
 }
 
 export interface AdminLeaveTypesDisplayProps extends FormContainerProps {
@@ -45,11 +45,11 @@ class AdminLeaveTypesDisplay extends React.PureComponent<AdminLeaveTypesDisplayP
 
 export default class AdminLeaveTypesGrid extends FormContainerBase<AdminLeaveTypesProps> {
     name = 'admin-leave-types-grid';
-    reduxFormKey = 'roles';
+    reduxFormKey = 'leaves';
     formFieldNames = {
-        default: 'roles.roles'
+        default: 'leaves.leaveTypes'
     };
-    title: string = ' Leave Types';
+    title: string = ' Personal Leave Types';
 
     FormComponent = (props: FormContainerProps<AdminLeaveTypesProps>) => {
         return (
@@ -59,11 +59,11 @@ export default class AdminLeaveTypesGrid extends FormContainerBase<AdminLeaveTyp
                     title={''} // Leave this blank
                     buttonLabel={'Add Leave Type'}
                     columns={[
-                        DataTable.TextFieldColumn('Leave Type', { fieldName: 'default', displayInfo: true }),
-                        DataTable.TextFieldColumn('Code', { fieldName: 'default', displayInfo: true }),
-                        DataTable.TextFieldColumn('Description', { fieldName: 'default', displayInfo: true }),
+                        // DataTable.TextFieldColumn('Leave Type', { fieldName: 'code', displayInfo: true }),
+                        DataTable.TextFieldColumn('Personal Leave Sub Code', { fieldName: 'subCode', displayInfo: true }),
+                        DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: true }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
-                        DataTable.SelectorFieldColumn('Status', { displayInfo: true }),
+                        // DataTable.SelectorFieldColumn('Status', { displayInfo: true }),
 
                     ]}
                     expandable={false}
@@ -79,7 +79,7 @@ export default class AdminLeaveTypesGrid extends FormContainerBase<AdminLeaveTyp
     // TODO: Figure out why Fragments aren't working...
     DisplayComponent = (props: FormContainerProps<AdminLeaveTypesDisplayProps>) => (
         <div>
-            {/*<Alert>No roles exist</Alert>*/}
+            {/*<Alert>No leaves exist</Alert>*/}
             <AdminLeaveTypesDisplay {...props} />
         </div>
     )
@@ -90,15 +90,20 @@ export default class AdminLeaveTypesGrid extends FormContainerBase<AdminLeaveTyp
 
     // TODO: Not sure if this should be typeId or what, I'm not there yet...
     fetchData(typeId: IdType, dispatch: Dispatch<{}>) {
-        dispatch(getRoles()); // This data needs to always be available for select lists
+        dispatch(getLeaveSubCodes()); // This data needs to always be available for select lists
     }
 
     getData(typeId: IdType, state: RootState) {
         // TODO: Depending on component state, some of these calls will need to be filtered!
-        const roles = getAllRoles(state) || undefined;
+        const leaveTypes = getAllLeaveSubCodes(state) || undefined;
+
+        const leaveTypesArray: any[] = [];
+        // TODO: Maybe this should go in the selector or something instead? Not sure...
+
+        Object.keys(leaveTypes).forEach(t => leaveTypesArray.push(leaveTypes[t]));
 
         return {
-            roles
+            leaveTypes: leaveTypesArray
         };
     }
 

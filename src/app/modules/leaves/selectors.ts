@@ -27,7 +27,7 @@ export const allLeaves = createSelector(
     }
 );
 
-export const getAllPersonaLeaves = (state: RootState) => {
+export const getAllPersonalLeaves = (state: RootState) => {
     if (state) {
         return allLeaves(state).filter(l => l.leaveCode === LEAVE_CODE_PERSONAL);
     }

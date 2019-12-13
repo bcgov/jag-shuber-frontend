@@ -57,9 +57,9 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps> {
                     <AdminForm
                         key={'admin-code-types-grid'}
                         plugins={[
-                            new AdminCourtroomsPlugin(),
                             new AdminLeaveTypesPlugin(),
-                            new AdminTrainingTypesPlugin()
+                            new AdminTrainingTypesPlugin(),
+                            new AdminCourtroomsPlugin()
                         ]}
                         isEditing={isEditing}
                     />
