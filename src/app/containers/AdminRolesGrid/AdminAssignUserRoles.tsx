@@ -166,7 +166,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                         DataTable.MappedTextColumn('Location', { fieldName: 'homeLocationId', selectorComponent: LocationDisplay, displayInfo: false }),
                         DataTable.StaticTextColumn('Rank', { fieldName: 'rankCode', displayInfo: false }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
-                        DataTable.SelectorFieldColumn('Status', { displayInfo: true }),
+                        // DataTable.SelectorFieldColumn('Status', { displayInfo: true }), // No point really in setting the status here
 
                     ]}
                     expandable={true}
