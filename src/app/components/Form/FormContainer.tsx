@@ -24,7 +24,8 @@ export interface FormContainer<T = any> {
     renderDisplay(props: FormContainerProps<T>): React.ReactNode;
     renderFormFields(props: FormContainerProps<T>): React.ReactNode;
     hasErrors(errors: any): boolean;
-    onSubmit(objectId: IdType | undefined, formValues: any, dispatch: Dispatch<any>): Promise<any | void>;
+    // onSubmit(objectId: IdType | undefined, formValues: any, dispatch: Dispatch<any>): Promise<any | void>;
+    onSubmit(formValues: any, dispatch: Dispatch<any>): Promise<any | void>;
     fetchData(objectId: IdType | undefined, dispatch: Dispatch<any>): void;
     getData(objectId: IdType | undefined, state: RootState): T | undefined;
     validate(values: T): FormErrors<T> | undefined;
@@ -107,7 +108,8 @@ export abstract class FormContainerBase<T = any> implements FormContainer<T> {
         );
     }
 
-    async onSubmit(objectId: IdType | undefined, formValues: any, dispatch: Dispatch<any>): Promise<any | void> {
+    // async onSubmit(objectId: IdType | undefined, formValues: any, dispatch: Dispatch<any>): Promise<any | void> {
+    async onSubmit(formValues: any, dispatch: Dispatch<any>): Promise<any | void> {
         // does nothing
     }
 
