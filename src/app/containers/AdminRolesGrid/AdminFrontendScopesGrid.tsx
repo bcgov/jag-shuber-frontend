@@ -144,13 +144,13 @@ export default class AdminFrontendScopesGrid extends FormContainerBase<AdminFron
         };
     }
 
-    getDataFromFormValues(formValues: {}): FormContainerProps {
+    getDataFromFormValues(formValues: {}, initialValues: {}): FormContainerProps {
         return super.getDataFromFormValues(formValues) || {
         };
     }
 
     async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any[]> {
-        const data: any = this.getDataFromFormValues(formValues);
+        const data: any = this.getDataFromFormValues(formValues, initialValues);
 
         const scopes: Partial<FrontendScope>[] = data.frontendScopes.map((s: FrontendScope) => ({
             ...s,
