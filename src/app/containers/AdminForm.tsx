@@ -2,30 +2,28 @@ import React from 'react';
 import {
     reduxForm,
     ConfigProps,
-    // getFormSyncErrors,
-    // getFormAsyncErrors,
-    // getFormSubmitErrors,
-    // hasSubmitFailed,
+    getFormSyncErrors,
+    getFormAsyncErrors,
+    getFormSubmitErrors,
+    hasSubmitFailed,
     InjectedFormProps,
-    // SubmissionError,
+    SubmissionError,
     FormErrors,
     reset
 } from 'redux-form';
 
 // TODO: Rewire dispatches
-// import { connect, Dispatch } from 'react-redux';
-import { connect } from 'react-redux';
+import { connect, Dispatch } from 'react-redux';
 
 import { Alert } from 'react-bootstrap';
 
 import merge from 'deepmerge';
 
-// import { toast } from '../../components/ToastManager/ToastManager';
-// import { RequestActionConfig } from '../../infrastructure/Requests/RequestActionBase';
+import { toast } from '../components/ToastManager/ToastManager';
+import { RequestActionConfig } from '../infrastructure/Requests/RequestActionBase';
 import { default as FormSubmitButton, SubmitButtonProps } from '../components/FormElements/SubmitButton';
 
 // import { currentLocation } from '../../modules/user/selectors';
-// import toTitleCase from '../../infrastructure/toTitleCase';
 
 import { RootState } from '../store';
 
@@ -39,47 +37,45 @@ import {
 } from '../modules/roles/actions'; // TODO: This is not generic!
 
 import AdminFormComponent, { AdminFormProps } from '../components/AdminForm/AdminForm';
+import { FormContainerBase } from '../components/Form/FormContainer';
 
-/*async function submitPlugins(
-    roleId: string,
+async function submitPlugins(
     values: any,
     dispatch: Dispatch<any>,
-    plugins: RoleProfilePlugin<any>[] = []
+    plugins: FormContainerBase<any>[] = []
 ) {
-    if (roleId) {
-        // try creating resources catching errors so that we can throw a submission error at the end
-        const pluginErrors: FormErrors = {};
-        await Promise.all(plugins.map(async p => {
-            try {
-                await p.onSubmit(roleId, values, dispatch);
-            } catch (e) {
-                pluginErrors[p.name] = e;
-            }
-        }));
-
-        const pluginsWithErrors = Object.keys(pluginErrors);
-        if (pluginsWithErrors.length > 0) {
-            const formErrors: FormErrors = {};
-            const pluginErrorMessages: { [key: string]: string } = {};
-            pluginsWithErrors.map(pluginName => {
-                const err = pluginErrors[pluginName];
-                if (err instanceof SubmissionError) {
-                    const { errors: { _error = undefined, ...restErrors } = {} } = err;
-                    if (_error) {
-                        pluginErrorMessages[pluginName] = _error;
-                    }
-                    Object.keys(restErrors).forEach(fieldKey => {
-                        formErrors[fieldKey] = restErrors[fieldKey];
-                    });
-                }
-            });
-            dispatch(setRoleProfilePluginSubmitErrors(pluginErrorMessages));
-            throw new SubmissionError({ ...formErrors });
+    // try creating resources catching errors so that we can throw a submission error at the end
+    const pluginErrors: FormErrors = {};
+    await Promise.all(plugins.map(async p => {
+        try {
+            await p.onSubmit(values, dispatch);
+        } catch (e) {
+            pluginErrors[p.name] = e;
         }
+    }));
+
+    const pluginsWithErrors = Object.keys(pluginErrors);
+    if (pluginsWithErrors.length > 0) {
+        const formErrors: FormErrors = {};
+        const pluginErrorMessages: { [key: string]: string } = {};
+        pluginsWithErrors.map(pluginName => {
+            const err = pluginErrors[pluginName];
+            if (err instanceof SubmissionError) {
+                const { errors: { _error = undefined, ...restErrors } = {} } = err;
+                if (_error) {
+                    pluginErrorMessages[pluginName] = _error;
+                }
+                Object.keys(restErrors).forEach(fieldKey => {
+                    formErrors[fieldKey] = restErrors[fieldKey];
+                });
+            }
+        });
+        dispatch(setAdminFormPluginSubmitErrors(pluginErrorMessages));
+        throw new SubmissionError({ ...formErrors });
     }
 }
 
-function collectPluginErrors(state: any, formName: string, plugins: RoleProfilePlugin<any>[] = []) {
+function collectPluginErrors(state: any, formName: string, plugins: FormContainerBase<any>[] = []) {
     const includeErrors = hasSubmitFailed(formName)(state);
     if (!includeErrors) {
         return {
@@ -87,7 +83,7 @@ function collectPluginErrors(state: any, formName: string, plugins: RoleProfileP
             pluginErrors: {}
         };
     }
-    const pluginErrors = includeErrors ? getRoleProfilePluginErrors(state) : {};
+    const pluginErrors = includeErrors ? getAdminFormPluginErrors(state) : {};
     const errors = includeErrors ?
         {
             syncErrors: getFormSyncErrors(formName)(state),
@@ -107,12 +103,12 @@ function collectPluginErrors(state: any, formName: string, plugins: RoleProfileP
         pluginsWithErrors,
         pluginErrors
     };
-}*/
+}
 
 const formConfig: ConfigProps<{}, AdminFormProps> = {
     form: 'AdminForm',
     enableReinitialize: true,
-    /* validate: (values: any, { plugins = [] }) => {
+    validate: (values: any, { plugins = [] }) => {
         const validationErrors = plugins.reduce((errors, plugin) => {
             const pluginValues = values[plugin.name];
             const pluginErrors = plugin.validate(pluginValues);
@@ -122,42 +118,24 @@ const formConfig: ConfigProps<{}, AdminFormProps> = {
             return errors;
         }, {} as FormErrors);
         return {...validationErrors};
-    }, */
-    validate: (values: {}) => {
-        return {};
     },
-    // tslint:disable-next-line:no-empty
-    onSubmit: async () => {},
-    /*onSubmit: async (values: any, dispatch, { roleId, plugins = [] }: AdminFormProps) => {
-        const { role }: { role: Partial<Role> } = values;
-        let roleEntityId: string;
-        const profileUpdateConfig: RequestActionConfig<Role> = {
+    onSubmit: async (values: any, dispatch, { plugins = [] }: AdminFormProps) => {
+        const profileUpdateConfig: RequestActionConfig<any> = {
             toasts: {
-                error: (e) => `Error occured while creating/updating Role: ${e}`
+                error: (e) => `Error occured while creating/updating: ${e}`
             }
         };
         let actionMessage = '';
-        if (role.id) {
-            const updatedRole = await dispatch(updateRole(role, profileUpdateConfig));
-            roleEntityId = updatedRole.id;
-            actionMessage = 'updated';
-        } else {
-            const createdRole = await dispatch(createRole(role, profileUpdateConfig));
-            roleEntityId = createdRole.id;
-            actionMessage = 'created';
-        }
 
         try {
-            // TODO: Do we still need plugin functionality, I don't think so
-            // await submitPlugins(roleEntityId, values, dispatch, plugins);
+            await submitPlugins(values, dispatch, plugins);
         } catch (e) {
-            toast.warn('An issue occured with one of the sections');
+            toast.warn('An issue occurred with one of the sections');
             throw e;
         }
 
-        const roleName = toTitleCase(`${role.firstName} ${role.lastName}`)
-        toast.success(`${roleName}'s profile ${actionMessage}`);
-    }*/
+        toast.success(`${actionMessage}`);
+    }
 };
 
 // Wire up the Form to redux Form
@@ -214,21 +192,7 @@ class AdminFormContainer extends React.PureComponent<AdminFormContainerProps> {
         }
     }
 
-    // TODO: Re-enable this one when working
-    /*render() {
-        const { isEditing = false, pluginErrors = {} } = this.props;
-
-        return (
-            <div>
-                <AdminFormErrorDisplay pluginErrors={pluginErrors} />
-                {isEditing
-                    ? <AdminForm {...this.props as any} />
-                    : <AdminFormComponent {...this.props} />}
-            </div>
-        );
-    }*/
     render() {
-        // const { isEditing = false, pluginErrors = {} } = this.props;
         const { isEditing, pluginErrors = {} } = this.props;
 
         return (
@@ -289,22 +253,17 @@ export default class extends
                 initialValues,
                 pluginState: { ...initialValues },
                 selectedSection: selectedAdminFormSection(state),
-                // ...collectPluginErrors(state, formConfig.form, plugins)
-                // TODO: When we get plugins working we can use the collect function collectPluginErrors instead
-                pluginsWithErrors: {},
-                // TODO: When we get plugins working we can use the collect function collectPluginErrors instead
-                pluginErrors: {}
+                ...collectPluginErrors(state, formConfig.form, plugins)
             };
         },
-        // (dispatch, { roleId, plugins = [] }) => {
         (dispatch, { plugins = [] }) => {
             return {
                 initialize: () => {
                     dispatch(selectAdminFormSection());
                     dispatch(setAdminFormPluginSubmitErrors());
                     plugins.forEach(p => {
+                        // TODO: Get rid of this first param, unless we're implementing location specific roles...
                         p.fetchData(undefined, dispatch);
-                        // p.fetchData(roleId, dispatch);
                     });
                 },
                 onSelectSection: (sectionName) => dispatch(selectAdminFormSection(sectionName))
