@@ -120,7 +120,7 @@ const formConfig: ConfigProps<{}, AdminFormProps> = {
         return {...validationErrors};
     },
     onSubmit: async (values: any, dispatch, { plugins = [] }: AdminFormProps) => {
-        const profileUpdateConfig: RequestActionConfig<any> = {
+        const requestConfig: RequestActionConfig<any> = {
             toasts: {
                 error: (e) => `Error occured while creating/updating: ${e}`
             }
@@ -141,6 +141,10 @@ const formConfig: ConfigProps<{}, AdminFormProps> = {
 // Wire up the Form to redux Form
 // @ts-ignore
 const AdminForm = reduxForm<{}, AdminFormProps>(formConfig)(AdminFormComponent);
+
+const AdminFormSubmitButton = (props: Partial<SubmitButtonProps>) => (
+    <FormSubmitButton {...props} formName={formConfig.form} />
+)
 
 interface AdminFormContainerStateProps {
     pluginsWithErrors: { [key: string]: boolean };
@@ -274,7 +278,5 @@ export default class extends
             plugins: []
         };
 
-        static SubmitButton = (props: Partial<SubmitButtonProps>) => (
-            <FormSubmitButton {...props} formName={formConfig.form} />
-        )
+        static SubmitButton = AdminFormSubmitButton;
     }

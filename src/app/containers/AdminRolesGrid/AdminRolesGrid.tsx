@@ -9,6 +9,14 @@ import {
 import { Dispatch } from 'redux';
 
 import {
+    Role,
+    FrontendScope,
+    ApiScope,
+    RoleFrontendScope,
+    RoleApiScope
+} from '../../api';
+
+import {
     getRoles,
     getFrontendScopes,
     getFrontendScopePermissions,
@@ -18,10 +26,11 @@ import {
     getRolePermissions
 } from '../../modules/roles/actions';
 
-// TODO: These don't necessarily belong here, but I might as well code them up at the same time
 import {
-    getUserRoles
+    getUserRoles,
+    createOrUpdateRoles
 } from '../../modules/roles/actions';
+
 import {
     // getUsers
 } from '../../modules/user/actions';
@@ -125,6 +134,10 @@ class AdminRolesDisplay extends React.PureComponent<AdminRolesDisplayProps, {}> 
     }
 }
 
+class RolesDataTable extends DataTable<Role> {}
+class RoleFrontendScopesDataTable extends DataTable<RoleFrontendScope> {}
+class RoleApiScopesDataTable extends DataTable<RoleApiScope> {}
+
 export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
     name = 'admin-roles-grid';
     reduxFormKey = 'roles';
@@ -149,7 +162,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
 
         return (
             <>
-                <DataTable
+                <RoleFrontendScopesDataTable
                     fieldName={`${this.formFieldNames.roleFrontendScopesGrouped}['${parentModelId}']`}
                     title={''} // Leave this blank
                     buttonLabel={'Add Component to Role'}
@@ -165,7 +178,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                     modalProps={{ roleId: parentModelId }}
                     modalComponent={AdminRoleScopeAccessModal}
                 />
-                <DataTable
+                <RoleApiScopesDataTable
                     fieldName={`${this.formFieldNames.roleApiScopesGrouped}['${parentModelId}']`}
                     title={''} // Leave this blank
                     buttonLabel={'Add API Access to Role'}
@@ -186,7 +199,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
     FormComponent = (props: FormContainerProps<AdminRolesProps>) => {
         return (
             <div>
-                <DataTable
+                <RolesDataTable
                     fieldName={this.formFieldNames.roles}
                     title={''} // Leave this blank
                     buttonLabel={'Add New Role'}
@@ -267,5 +280,23 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
 
     getDataFromFormValues(formValues: {}): FormContainerProps {
         return super.getDataFromFormValues(formValues) || {};
+    }
+
+    async onSubmit(formValues: any, dispatch: Dispatch<any>): Promise<any[]> {
+        const data: any = this.getDataFromFormValues(formValues);
+
+        const roles: Partial<Role>[] = data.roles.map((r: Role) => ({
+            ...r,
+            systemCodeInd: 0, // TODO: Ability to set this - we haven't implemented system codes yet but it will be needed
+            // TODO: Need a way to set this stuff... createdBy, updated by fields should really be set in the backend using the current user
+            // We're just going to set the fields here temporarily to quickly check if things are working in the meantime...
+            createdBy: 'DEV - FRONTEND',
+            updatedBy: 'DEV - FRONTEND',
+            createdDtm: new Date().toISOString(),
+            updatedDtm: new Date().toISOString(),
+            revisionCount: 0 // TODO: Is there entity versioning anywhere in this project???
+        }));
+
+        return await dispatch(createOrUpdateRoles(roles, { toasts: {} }));
     }
 }

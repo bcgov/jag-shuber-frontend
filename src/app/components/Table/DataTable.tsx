@@ -45,7 +45,7 @@ export interface DataTableProps {
     filterRows?: Function;
 }
 
-export default class DataTable extends React.Component<DataTableProps> {
+export default class DataTable<T> extends React.Component<DataTableProps> {
     static defaultProps = {
         displayHeaderActions: false,
         displayActionsColumn: true,

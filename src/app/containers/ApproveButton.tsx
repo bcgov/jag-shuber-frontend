@@ -23,8 +23,8 @@ interface ApproveButtonDispatchProps {
     approveLeave: (model: Leave) => void;
 }
 
-type ApproveButtonCompositProps = ApproveButtonProps & ApproveButtonDispatchProps & ApproveButtonStateProps;
-class ApproveButton extends React.PureComponent<ApproveButtonCompositProps> {
+type ApproveButtonCompositeProps = ApproveButtonProps & ApproveButtonDispatchProps & ApproveButtonStateProps;
+class ApproveButton extends React.PureComponent<ApproveButtonCompositeProps> {
 
     async handleApprove(approveReason?: string) {
         const {
