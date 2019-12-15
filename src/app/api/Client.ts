@@ -433,16 +433,22 @@ export default class Client implements API {
         return {} as Role;
     }
 
-    async createRole(): Promise<Role> {
-        return {} as Role;
+    async createRole(role: Partial<Role>): Promise<Role> {
+        return await this._client.CreateRole(role) as Role;
     }
 
-    async updateRole(): Promise<Role> {
-        return {} as Role;
+    async updateRole(role: Partial<Role>): Promise<Role> {
+        const { id } = role;
+        if (!id) {
+            throw 'No Id included in role to update';
+        }
+        return await this._client.UpdateRole(id, role as any) as Role;
     }
 
-    async deleteRole(): Promise<Role> {
-        return {} as Role;
+    // TODO: Add expireRole? or expireUserRole?
+
+    async deleteRole(roleId: string): Promise<void> {
+        return await this._client.DeleteRole(roleId);
     }
 
     async getRolePermissions(): Promise<RolePermission[]> {
@@ -454,12 +460,16 @@ export default class Client implements API {
         return {} as RolePermission;
     }
 
-    async createRolePermission(): Promise<RolePermission> {
-        return {} as RolePermission;
+    async createRolePermission(rolePermission: Partial<RolePermission>): Promise<RolePermission> {
+        return await this._client.CreateRolePermission(rolePermission) as RolePermission;
     }
 
-    async updateRolePermission(): Promise<RolePermission> {
-        return {} as RolePermission;
+    async updateRolePermission(rolePermission: Partial<RolePermission>): Promise<RolePermission> {
+        const { id } = rolePermission;
+        if (!id) {
+            throw 'No Id included in the rolePermission to update';
+        }
+        return await this._client.UpdateRolePermission(id, rolePermission) as RolePermission;
     }
 
     async deleteRolePermission(): Promise<RolePermission> {

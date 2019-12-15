@@ -8,6 +8,7 @@ import { Leave } from '../../api';
 // TODO: Move these into generics!
 import CancelledPopover from '../../components/CancelledPopover';
 import ApproveButton from '../../containers/ApproveButton';
+import SaveButton from '../../containers/SaveButton';
 import CancelButton from '../../containers/CancelButton';
 
 export interface ColumnRendererProps {
@@ -25,10 +26,11 @@ const ActionsColumn = (options?: Types.FieldColumnOptions): Types.TableColumnCel
     return {
         title: '',
         colStyle: colStyle,
-        FormRenderer: ({ fields, index, model: { id } }) => (
-            !id ?
+        // TODO: Don't hardcode in the formName! This is just in here while I work on some save related stuff...
+        FormRenderer: ({ fields, index, model: model }) => (
+            !model.id ?
                 (
-                    <><ApproveButton modelId={id} />&nbsp;<CancelButton modelId={id} /></>
+                    <><SaveButton formName={'AdminForm'} modelId={model.id} model={model} />&nbsp;<CancelButton modelId={model.id} /></>
 
                 )
                 :
