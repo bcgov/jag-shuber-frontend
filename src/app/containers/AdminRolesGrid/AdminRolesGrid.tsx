@@ -323,8 +323,8 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
 
         return Promise.all([
             dispatch(createOrUpdateRoles(roles, { toasts: {} })),
-            // dispatch(createOrUpdateRoleFrontendScopes(roleFrontendScopes, { toasts: {} })),
-            // dispatch(createOrUpdateRoleApiScopes(roleApiScopes, { toasts: {} }))
+            dispatch(createOrUpdateRoleFrontendScopes(roleFrontendScopes, { toasts: {} })),
+            dispatch(createOrUpdateRoleApiScopes(roleApiScopes, { toasts: {} }))
         ]);
     }
 }
