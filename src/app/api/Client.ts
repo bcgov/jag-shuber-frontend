@@ -33,6 +33,7 @@ import {
     Role,
     RolePermission,
     FrontendScope,
+    FrontendScopePermission,
     ApiScope,
     RoleFrontendScope,
     RoleApiScope,
@@ -484,6 +485,27 @@ export default class Client implements API {
 
     async deleteFrontendScope(): Promise<FrontendScope> {
         return {} as FrontendScope;
+    }
+
+    async getFrontendScopePermissions(): Promise<FrontendScopePermission[]> {
+        const list = await this._client.GetFrontendScopePermissions();
+        return list as FrontendScopePermission[];
+    }
+
+    async getFrontendScopePermission(): Promise<FrontendScopePermission> {
+        return {} as FrontendScopePermission;
+    }
+
+    async createFrontendScopePermission(): Promise<FrontendScopePermission> {
+        return {} as FrontendScopePermission;
+    }
+
+    async updateFrontendScopePermission(): Promise<FrontendScopePermission> {
+        return {} as FrontendScopePermission;
+    }
+
+    async deleteFrontendScopePermission(): Promise<FrontendScopePermission> {
+        return {} as FrontendScopePermission;
     }
 
     async getApiScopes(): Promise<ApiScope[]> {

@@ -15,14 +15,19 @@ import FrontendScopeSelector from './FrontendScopeSelector';
 export interface AdminScopePermissionsModalProps {
     isOpen?: boolean;
     isDefaultTemplate?: boolean;
+    parentModel?: any;
     parentModelId?: any;
 }
 
 export default class AdminScopePermissionsModal extends React.Component<AdminScopePermissionsModalProps>{
     // @ts-ignore
     render() {
-        const { isDefaultTemplate = false, isOpen, parentModelId } = this.props;
+        const { isDefaultTemplate = false, isOpen, parentModel, parentModelId } = this.props;
         const title = `Define ${isDefaultTemplate === true ? 'Default ' : ''}Component Permissions`; // TODO: Auto switch text between 'Component' and 'API'
+
+        // console.log('role scope permissions parentModel');
+        // console.log(parentModel);
+
         return (
             <div>
                 <ModalWrapper
@@ -43,7 +48,7 @@ export default class AdminScopePermissionsModal extends React.Component<AdminSco
                                             SelectorComponent={
                                                 (sp) =>
                                                     // TODO: Actually make this work
-                                                    <FrontendScopeSelector {...sp} value={parentModelId} />
+                                                    <FrontendScopeSelector {...sp} value={parentModel.id} />
                                                 }
                                         />}
                                         label={'Choose Component'}
@@ -62,7 +67,7 @@ export default class AdminScopePermissionsModal extends React.Component<AdminSco
                                 </div>*/}
                             </div>
                             <DataTable
-                                fieldName={'roles.rolePermissions'}
+                                fieldName={`roles.frontendScopePermissionsGrouped['${parentModel.id}']`}
                                 title={''} // Leave this blank
                                 displayHeaderActions={true}
                                 displayActionsColumn={true}

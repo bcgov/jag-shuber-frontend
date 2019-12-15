@@ -31,6 +31,7 @@ export type RolePermissionMap = MapType<RolePermission>;
 export type RoleFrontendScopeMap = MapType<RoleFrontendScope>;
 export type RoleApiScopeMap = MapType<RoleApiScope>;
 export type FrontendScopeMap = MapType<FrontendScope>;
+export type FrontendScopePermissionMap = MapType<FrontendScopePermission>;
 export type ApiScopeMap = MapType<ApiScope>;
 export type UserRoleMap = MapType<UserRole>;
 
@@ -448,7 +449,19 @@ export interface FrontendScope {
     revisionCount?: number;
 }
 
-// TODO: What fields should be required?
+export interface FrontendScopePermission {
+    id?: IdType;
+    frontendScopeId?: string;
+    permissionCode?: string;
+    displayName?: string;
+    description?: string;
+    createdBy?: string;
+    updatedBy?: string;
+    createdDtm?: string;
+    updatedDtm?: string;
+    revisionCount?: number;
+}
+
 export interface RoleApiScope {
     id?: IdType;
     roleApiScopeId?: string;
@@ -566,6 +579,11 @@ export interface API {
     createFrontendScope(newFrontendScope: Partial<FrontendScope>): Promise<FrontendScope>;
     updateFrontendScope(updatedFrontendScope: FrontendScope): Promise<FrontendScope>;
     getFrontendScopes(): Promise<FrontendScope[]>;
+
+    getFrontendScopePermission(): Promise<FrontendScopePermission>;
+    createFrontendScopePermission(newFrontendScopePermission: Partial<FrontendScopePermission>): Promise<FrontendScopePermission>;
+    updateFrontendScopePermission(updatedFrontendScopePermission: FrontendScopePermission): Promise<FrontendScopePermission>;
+    getFrontendScopePermissions(): Promise<FrontendScopePermission[]>;
 
     getApiScope(): Promise<ApiScope>;
     createApiScope(newApiScope: Partial<ApiScope>): Promise<ApiScope>;

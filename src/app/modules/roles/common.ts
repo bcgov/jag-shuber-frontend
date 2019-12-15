@@ -5,6 +5,7 @@ import {
     RoleFrontendScope,
     RoleApiScope,
     FrontendScope,
+    FrontendScopePermission,
     ApiScope,
     UserRole,
     MapType
@@ -18,6 +19,7 @@ export interface RoleModuleState {
     roleFrontendScopeMap?: RequestActionState<MapType<RoleFrontendScope>>;
     roleApiScopeMap?: RequestActionState<MapType<RoleApiScope>>;
     frontendScopeMap?: RequestActionState<MapType<FrontendScope>>;
+    frontendScopePermissionMap?: RequestActionState<MapType<FrontendScopePermission>>;
     apiScopeMap?: RequestActionState<MapType<ApiScope>>;
     userRoleMap?: RequestActionState<MapType<UserRole>>;
     selectedProfileSection?: string;

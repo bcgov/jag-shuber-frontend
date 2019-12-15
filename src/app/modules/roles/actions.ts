@@ -1,5 +1,6 @@
 import * as roleRequests from './requests/roles';
 import * as frontendScopeRequests from './requests/frontendScopes';
+import * as frontendScopePermissionRequests from './requests/frontendScopePermissions';
 import * as apiScopeRequests from './requests/apiScopes';
 import * as roleFrontendScopeRequests from './requests/roleFrontendScopes';
 import * as roleApiScopeRequests from './requests/roleApiScopes';
@@ -27,6 +28,11 @@ export const getFrontendScopes = frontendScopeRequests.frontendScopeMapRequest.a
 export const createFrontendScope = frontendScopeRequests.createFrontendScopeRequest.actionCreator;
 export const updateFrontendScope = frontendScopeRequests.updateFrontendScopeRequest.actionCreator;
 // export const deleteFrontendScope = frontendScopeRequests.deleteFrontendScopeRequest.actionCreator;
+
+export const getFrontendScopePermissions = frontendScopePermissionRequests.frontendScopePermissionMapRequest.actionCreator;
+export const createFrontendScopePermission = frontendScopePermissionRequests.createFrontendScopePermissionRequest.actionCreator;
+export const updateFrontendScopePermission = frontendScopePermissionRequests.updateFrontendScopePermissionRequest.actionCreator;
+// export const deleteFrontendScopePermission = frontendScopePermissionRequests.deleteFrontendScopePermissionRequest.actionCreator;
 
 export const getApiScopes = apiScopeRequests.apiScopeMapRequest.actionCreator;
 export const createApiScope = apiScopeRequests.createApiScopeRequest.actionCreator;

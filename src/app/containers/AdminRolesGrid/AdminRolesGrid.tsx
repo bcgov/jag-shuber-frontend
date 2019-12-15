@@ -11,6 +11,7 @@ import { Dispatch } from 'redux';
 import {
     getRoles,
     getFrontendScopes,
+    getFrontendScopePermissions,
     getApiScopes,
     getRoleFrontendScopes,
     getRoleApiScopes,
@@ -31,6 +32,8 @@ import {
     getAllRoles,
     getAllApiScopes,
     getAllFrontendScopes,
+    getAllFrontendScopePermissions,
+    getFrontendScopePermissionsGroupedByScopeId,
     getAllRoleApiScopes,
     getRoleApiScopesById,
     getRoleApiScopesGroupedByRoleId,
@@ -65,6 +68,8 @@ import ApiScopeSelector from './ApiScopeSelector';
 export interface AdminRolesProps extends FormContainerProps {
     roles?: {}[];
     frontendScopes?: {}[];
+    frontendScopePermissions?: {}[];
+    frontendScopePermissionsGrouped?: {};
     apiScopes?: {}[];
     roleFrontendScopes?: {}[];
     roleFrontendScopesGrouped?: {};
@@ -219,19 +224,19 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
     fetchData(roleId: IdType, dispatch: Dispatch<{}>) {
         dispatch(getRoles()); // This data needs to always be available for select lists
         dispatch(getFrontendScopes()); // This data needs to always be available for select lists
+        dispatch(getFrontendScopePermissions()); // This data needs to always be available for select lists
         dispatch(getApiScopes()); // This data needs to always be available for select lists
         // TODO: Only load these if we're expanding the grid...
         dispatch(getRoleFrontendScopes());
         dispatch(getRoleApiScopes());
         dispatch(getRolePermissions());
-        // TODO: These might not belong here, but I might as well code them up at the same time
-        // dispatch(getUsers());
-        dispatch(getUserRoles());
     }
 
     getData(roleId: IdType, state: RootState) {
         const roles = getAllRoles(state) || undefined;
         const frontendScopes = getAllFrontendScopes(state) || undefined;
+        const frontendScopePermissions = getAllFrontendScopePermissions(state) || undefined;
+        const frontendScopePermissionsGrouped = getFrontendScopePermissionsGroupedByScopeId(state) || undefined;
         const apiScopes = getAllApiScopes(state) || undefined;
         const roleFrontendScopes = getAllRoleFrontendScopes(state) || undefined;
         const roleFrontendScopesGrouped = getRoleFrontendScopesGroupedByRoleId(state) || undefined;
@@ -240,13 +245,16 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
         const rolePermissions = getAllRolePermissions(state) || undefined;
         const rolePermissionsGrouped = getRolePermissionsGroupedByRoleId(state) || undefined;
 
-        /*if (roleFrontendScopesGrouped && Object.keys(roleFrontendScopesGrouped).length > 0) {
-            debugger;
-        }*/
+        if (frontendScopePermissionsGrouped && Object.keys(frontendScopePermissionsGrouped).length > 0) {
+            // console.log('dumping grouped scope permissions');
+            // console.log(frontendScopePermissionsGrouped);
+        }
 
         return {
             roles,
             frontendScopes,
+            frontendScopePermissions,
+            frontendScopePermissionsGrouped,
             apiScopes,
             roleFrontendScopes,
             roleFrontendScopesGrouped,

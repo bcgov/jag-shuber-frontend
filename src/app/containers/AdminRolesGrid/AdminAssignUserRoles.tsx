@@ -21,21 +21,11 @@ import {
 } from '../../modules/sheriffs/selectors';
 
 import {
-    getRoles,
-    getFrontendScopes,
-    getApiScopes,
-    getRoleFrontendScopes,
-    getRoleApiScopes,
-    getRolePermissions
+    getRoles
 } from '../../modules/roles/actions';
 
 import {
-    getAllRoles,
-    getAllApiScopes,
-    getAllFrontendScopes,
-    getAllRoleApiScopes,
-    getAllRoleFrontendScopes,
-    getAllRolePermissions
+    getAllRoles
 } from '../../modules/roles/selectors';
 
 import {
@@ -63,9 +53,7 @@ import LocationDisplay from './LocationDisplay';
 
 // TODO: Fix this interface!
 export interface AdminAssignUserRolesProps extends FormContainerProps {
-    roles?: any[],
-    frontendScopes?: any[],
-    apiScopes?: any[]
+    roles?: any[]
 }
 
 export interface AdminAssignUserRolesDisplayProps extends FormContainerProps {
@@ -119,12 +107,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
     reduxFormKey = 'roles';
     formFieldNames = {
         users: 'roles.users',
-        roles: 'roles.roles',
-        apiScopes: 'roles.apiScopes',
-        frontendScopes: 'roles.frontendScopes',
-        roleApiScopes: 'roles.roleApiScopes',
-        roleFrontendScopes: 'roles.roleFrontendScopes',
-        rolePermissions: 'roles.rolePermissions'
+        roles: 'roles.roles'
     };
     title: string = 'Assign User Roles';
     DetailComponent: React.SFC<DetailComponentProps> = () => {
@@ -197,15 +180,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
         dispatch(getLocations()); // This data needs to always be available for select lists
         dispatch(getSheriffs()); // This data needs to always be available for select lists
         dispatch(getRoles()); // This data needs to always be available for select lists
-        dispatch(getFrontendScopes()); // This data needs to always be available for select lists
-        dispatch(getApiScopes()); // This data needs to always be available for select lists
-        // TODO: Only load these if we're expanding the grid...
-        dispatch(getRoleFrontendScopes());
-        dispatch(getRoleApiScopes());
-        dispatch(getRolePermissions());
-        // TODO: These might not belong here, but I might as well code them up at the same time
         // dispatch(getUsers());
-        // dispatch(getRoles());
     }
 
     getData(roleId: IdType, state: RootState) {
@@ -213,21 +188,11 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
         const locations = getAllLocations(state) || undefined;
         const users = getAllSheriffs(state) || undefined;
         const roles = getAllRoles(state) || undefined;
-        const frontendScopes = getAllFrontendScopes(state) || undefined;
-        const apiScopes = getAllApiScopes(state) || undefined;
-        const roleFrontendScopes = getAllRoleFrontendScopes(state) || undefined;
-        const roleApiScopes = getAllRoleApiScopes(state) || undefined;
-        const rolePermissions = getAllRolePermissions(state) || undefined;
 
         return {
             locations,
             users,
-            roles,
-            frontendScopes,
-            apiScopes,
-            roleFrontendScopes,
-            roleApiScopes,
-            rolePermissions
+            roles
         };
     }
 

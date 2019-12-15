@@ -1,6 +1,7 @@
 import * as roleRequests from './requests/roles';
 import * as apiScopeRequests from './requests/apiScopes';
 import * as frontendScopeRequests from './requests/frontendScopes';
+import * as frontendScopePermissionRequests from './requests/frontendScopePermissions';
 import * as roleApiScopeRequests from './requests/roleApiScopes';
 import * as roleFrontendScopeRequests from './requests/roleFrontendScopes';
 import * as rolePermissionRequests from './requests/rolePermissions';
@@ -56,6 +57,7 @@ const nestedReducer = new NestedReducer([
   roleRequests.roleMapRequest.reducer,
   apiScopeRequests.apiScopeMapRequest.reducer,
   frontendScopeRequests.frontendScopeMapRequest.reducer,
+  frontendScopePermissionRequests.frontendScopePermissionMapRequest.reducer,
   roleApiScopeRequests.roleApiScopeMapRequest.reducer,
   roleFrontendScopeRequests.roleFrontendScopeMapRequest.reducer,
   rolePermissionRequests.rolePermissionMapRequest.reducer,

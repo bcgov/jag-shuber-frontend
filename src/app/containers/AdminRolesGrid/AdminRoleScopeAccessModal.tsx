@@ -68,7 +68,7 @@ export default class AdminRoleScopeAccessModal extends React.Component<AdminRole
                             </div>
                             {parentModelId && (
                             <DataTable
-                                fieldName={`roles.rolePermissionsGrouped['${roleId}']`}
+                                fieldName={`roles.frontendScopePermissionsGrouped['${parentModel.scopeId}']`}
                                 title={''} // Leave this blank
                                 displayActionsColumn={false}
                                 columns={[
