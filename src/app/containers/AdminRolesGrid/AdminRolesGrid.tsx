@@ -299,7 +299,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
             revisionCount: 0 // TODO: Is there entity versioning anywhere in this project???
         }));
 
-        /*const roleFrontendScopes: Partial<RoleFrontendScope>[] = data.roleFrontendScopes.map((rs: RoleFrontendScope) => ({
+        const roleFrontendScopes: Partial<RoleFrontendScope>[] = data.roleFrontendScopes.map((rs: RoleFrontendScope) => ({
             ...rs,
             // TODO: Need a way to set this stuff... createdBy, updated by fields should really be set in the backend using the current user
             // We're just going to set the fields here temporarily to quickly check if things are working in the meantime...
@@ -319,7 +319,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
             createdDtm: new Date().toISOString(),
             updatedDtm: new Date().toISOString(),
             revisionCount: 0 // TODO: Is there entity versioning anywhere in this project???
-        }));*/
+        }));
 
         return Promise.all([
             dispatch(createOrUpdateRoles(roles, { toasts: {} })),
