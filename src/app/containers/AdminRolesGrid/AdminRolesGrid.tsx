@@ -173,6 +173,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                     title={''} // Leave this blank
                     buttonLabel={'Add Component to Role'}
                     displayHeaderActions={true}
+                    displayHeaderSave={false}
                     columns={[
                         DataTable.SelectorFieldColumn('Component to Access', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: FrontendScopeSelector, displayInfo: true, disabled: true }),
                         DataTable.MappedTextColumn('Code', { fieldName: 'scopeId', colStyle: { width: '200px' }, selectorComponent: FrontendScopeCodeDisplay, displayInfo: false }),
@@ -189,6 +190,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                     title={''} // Leave this blank
                     buttonLabel={'Add API Access to Role'}
                     displayHeaderActions={true}
+                    displayHeaderSave={false}
                     columns={[
                         DataTable.SelectorFieldColumn('API Route to Access', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: ApiScopeSelector, displayInfo: true, disabled: true }),
                         DataTable.MappedTextColumn('Code', { fieldName: 'scopeId', colStyle: { width: '200px' }, selectorComponent: ApiScopeCodeDisplay, displayInfo: false }),

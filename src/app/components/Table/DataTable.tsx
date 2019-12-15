@@ -37,6 +37,7 @@ export interface DataTableProps {
     fieldName: string;
     columns: CellTypes.Types.TableColumnCell[];
     displayHeaderActions?: boolean;
+    displayHeaderSave?: boolean;
     displayActionsColumn?: boolean;
     expandable?: boolean;
     expandedRows?: Set<number>;
@@ -50,6 +51,7 @@ export interface DataTableProps {
 export default class DataTable<T> extends React.Component<DataTableProps> {
     static defaultProps = {
         displayHeaderActions: false,
+        displayHeaderSave: true,
         displayActionsColumn: true,
         expandable: false,
         // expandedRows: false,
@@ -115,6 +117,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
             buttonLabel,
             columns = [],
             displayHeaderActions = false,
+            displayHeaderSave = true,
             displayActionsColumn = true,
             expandable = false,
             rowComponent,
@@ -160,7 +163,9 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                         >
                                             {displayHeaderActions && (
                                                 <>
+                                                    {displayHeaderSave && (
                                                     <HeaderSaveButton formName={'AdminForm'} />
+                                                    )}
                                                     <Button onClick={() => fields.push({} as any)} style={{ float: 'right' }}>
                                                         <Glyphicon glyph="plus" /> {buttonLabel}
                                                     </Button>
