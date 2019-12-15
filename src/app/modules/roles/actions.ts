@@ -12,6 +12,7 @@ import { Action } from 'redux';
 export const getRoles = roleRequests.roleMapRequest.actionCreator;
 export const createRole = roleRequests.createRoleRequest.actionCreator;
 export const updateRole = roleRequests.updateRoleRequest.actionCreator;
+export const deleteRole = roleRequests.deleteRoleRequest.actionCreator;
 export const createOrUpdateRoles = roleRequests.createOrUpdateRolesRequest.actionCreator;
 
 export const getRoleFrontendScopes = roleFrontendScopeRequests.roleFrontendScopeMapRequest.actionCreator;

@@ -27,20 +27,32 @@ const ActionsColumn = (options?: Types.FieldColumnOptions): Types.TableColumnCel
         title: '',
         colStyle: colStyle,
         // TODO: Don't hardcode in the formName! This is just in here while I work on some save related stuff...
-        FormRenderer: ({ fields, index, model: model }) => (
+        FormRenderer: ({ fields, index, model }) => (
             !model.id ?
                 (
-                    <><SaveButton formName={'AdminForm'} modelId={model.id} model={model} />&nbsp;<CancelButton modelId={model.id} /></>
+                    <>
+                        {/*
+                        <SaveButton formName={'AdminForm'} modelId={model.id} model={model} />
+                        &nbsp;
+                        <CancelButton modelId={model.id} />
+                        */}
+                        <Button bsStyle={'danger'} onClick={() => fields.remove(index)}>
+                            <Glyphicon glyph="trash" />
+                        </Button>
+                    </>
 
                 )
                 :
                 (
                     <>
-                        {/* TODO: 1 - compose buttons instead of having them all in here... 2 - we don't need an edit button, in most cases we just approve or decline changes if the record is dirty */}
+                        {/* TODO:
+                        1 - compose buttons instead of having them all in here...
+                        2 - we don't need an edit button in most cases, functionality not implemented yet
+                        */}
                         {/*<Button bsStyle="primary">
                             <Glyphicon glyph="edit" />
-                        </Button>*/}
-                        &nbsp;
+                        </Button>
+                        &nbsp;*/}
                         <Button bsStyle={'danger'} onClick={() => fields.remove(index)}>
                             <Glyphicon glyph="trash" />
                         </Button>

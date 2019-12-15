@@ -7,13 +7,14 @@ import {
 import {
     RoleMap,
     Role,
-    MapType
+    MapType, IdType
 } from '../../../api/Api';
 import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRequest';
 import { RequestConfig } from '../../../infrastructure/Requests/RequestActionBase';
 import CreateOrUpdateEntitiesRequest from '../../../infrastructure/Requests/CreateOrUpdateEntitiesRequest';
 import CreateEntityRequest from '../../../infrastructure/Requests/CreateEntityRequest';
 import UpdateEntityRequest from '../../../infrastructure/Requests/UpdateEntityRequest';
+import DeleteEntityRequest from '../../../infrastructure/Requests/DeleteEntityRequest';
 // import toTitleCase from '../../infrastructure/toTitleCase';
 
 // Get the Map
@@ -84,6 +85,29 @@ class UpdateRoleRequest extends UpdateEntityRequest<Role, RoleModuleState> {
 
 export const updateRoleRequest = new UpdateRoleRequest();
 
+class DeleteRoleRequest extends DeleteEntityRequest<Role, RoleModuleState> {
+    constructor() {
+        super(
+            {
+                namespace: STATE_KEY,
+                actionName: 'deleteRole',
+                toasts: {
+                    success: (s) => `Success`,
+                    // tslint:disable-next-line:max-line-length
+                    error: (err) => `Problem encountered while updating role: ${err ? err.toString() : 'Unknown Error'}`
+                }
+            },
+            roleMapRequest
+        );
+    }
+    public async doWork(request: IdType, { api }: ThunkExtra): Promise<IdType> {
+        await api.deleteRole(request);
+        return request;
+    }
+}
+
+export const deleteRoleRequest = new DeleteRoleRequest();
+
 class CreateOrUpdateRolesRequest extends CreateOrUpdateEntitiesRequest<Role, RoleModuleState>{
     createEntity(entity: Partial<Role>, { api }: ThunkExtra): Promise<Role> {
         return api.createRole(entity);
@@ -91,6 +115,9 @@ class CreateOrUpdateRolesRequest extends CreateOrUpdateEntitiesRequest<Role, Rol
     updateEntity(entity: Partial<Role>, { api }: ThunkExtra): Promise<Role> {
         return api.updateRole(entity as Role);
     }
+    /*deleteEntity(entity: Partial<Role>, { api }: ThunkExtra): Promise<void> {
+        return api.deleteRole(entity.id as string);
+    }*/
     constructor(config?: RequestConfig<Role[]>) {
         super(
             {

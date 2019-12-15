@@ -162,6 +162,10 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
             context.setActiveRow(model.id);
         };
 
+        // If parentModelId is not supplied, the parent component is in a 'new' state, and its data has not been saved
+        // Don't render the detail component
+        if (!parentModelId) return null;
+
         return (
             <>
                 <RoleFrontendScopesDataTable
