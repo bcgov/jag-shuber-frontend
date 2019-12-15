@@ -63,7 +63,7 @@ export abstract class FormContainerBase<T = any> implements FormContainer<T> {
     FormComponent?: React.ReactType<FormContainerProps<T>>;
 
     protected getDataFromFormValues(formValues: any): T {
-        return formValues[this.reduxFormKey] as T;
+        return formValues[this.name][this.reduxFormKey] as T;
     }
 
     containsPropertyPath(errors: Object = {}, propertyPath: string = '') {
@@ -103,7 +103,7 @@ export abstract class FormContainerBase<T = any> implements FormContainer<T> {
     renderFormFields(props: FormContainerProps<T>): React.ReactNode {
         const { FormComponent } = this;
         return (
-            FormComponent && <FormComponent key={this.reduxFormKey} {...props} />
+            FormComponent && <FormComponent key={this.name} {...props} />
         );
     }
 

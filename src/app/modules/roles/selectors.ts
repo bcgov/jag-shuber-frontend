@@ -3,6 +3,7 @@ import { createSelector } from 'reselect';
 import * as roleRequests from './requests/roles';
 import * as apiScopeRequests from './requests/apiScopes';
 import * as frontendScopeRequests from './requests/frontendScopes';
+import * as frontendScopePermissionRequests from './requests/frontendScopePermissions';
 import * as roleApiScopeRequests from './requests/roleApiScopes';
 import * as roleFrontendScopeRequests from './requests/roleFrontendScopes';
 import * as rolePermissionRequests from './requests/rolePermissions';
@@ -59,6 +60,42 @@ export const getAllFrontendScopes = (state: RootState) => {
     }
     return undefined;
 };
+
+export const getFrontendScopePermissions = createSelector(
+    frontendScopePermissionRequests.frontendScopePermissionMapRequest.getData,
+    (map) => {
+        const dataMap = mapToArray(map);
+        return dataMap;
+    }
+);
+
+export const getAllFrontendScopePermissions = (state: RootState) => {
+    if (state) {
+        return getFrontendScopePermissions(state);
+    }
+    return undefined;
+};
+
+export const getFrontendScopePermissionsGroupedByScopeId = (state: RootState) => {
+    if (state) {
+        const map: MapType<any> = {};
+        return getFrontendScopePermissions(state).reduce((acc, cur, idx) => {
+            if (cur && cur.frontendScopeId) {
+                if (acc[cur.frontendScopeId] === undefined) {
+                    acc[cur.frontendScopeId] = [];
+                }
+
+                // @ts-ignore
+                if (!(acc[cur.frontendScopeId].find(i => i.id === cur.id))) {
+                    acc[cur.frontendScopeId].push(cur);
+                }
+            }
+
+            return acc;
+        }, map);
+    }
+    return undefined;
+}
 
 export const getApiScopes = createSelector(
     apiScopeRequests.apiScopeMapRequest.getData,

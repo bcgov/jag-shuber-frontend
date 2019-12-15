@@ -9,20 +9,13 @@ import {
 import { Dispatch } from 'redux';
 
 import {
-    getApiScopes,
-    getFrontendScopes, getRoleApiScopes, getRoleFrontendScopes, getRolePermissions, getRoles, getUserRoles
+    getFrontendScopes
 } from '../../modules/roles/actions';
 
 import { RootState } from '../../store';
 
 import {
-    getAllApiScopes,
-    getAllFrontendScopes,
-    getAllRoleApiScopes,
-    getAllRoleFrontendScopes,
-    getAllRolePermissions,
-    getAllRoles,
-    getRoleFrontendScopesGroupedByRoleId
+    getAllFrontendScopes
 } from '../../modules/roles/selectors';
 
 import { IdType } from '../../api';
@@ -135,35 +128,14 @@ export default class AdminFrontendScopesGrid extends FormContainerBase<AdminFron
 
     // TODO: Not sure if this should be roleId or what, I'm not there yet...
     fetchData(roleId: IdType, dispatch: Dispatch<{}>) {
-        dispatch(getRoles()); // This data needs to always be available for select lists
         dispatch(getFrontendScopes()); // This data needs to always be available for select lists
-        dispatch(getApiScopes()); // This data needs to always be available for select lists
-        // TODO: Only load these if we're expanding the grid...
-        dispatch(getRoleFrontendScopes());
-        dispatch(getRoleApiScopes());
-        dispatch(getRolePermissions());
-        // TODO: These might not belong here, but I might as well code them up at the same time
-        // dispatch(getUsers());
-        dispatch(getUserRoles());
     }
 
     getData(roleId: IdType, state: RootState) {
-        const roles = getAllRoles(state) || undefined;
         const frontendScopes = getAllFrontendScopes(state) || undefined;
-        const apiScopes = getAllApiScopes(state) || undefined;
-        const roleFrontendScopes = getAllRoleFrontendScopes(state) || undefined;
-        const roleFrontendScopesGrouped = getRoleFrontendScopesGroupedByRoleId(state) || undefined;
-        const roleApiScopes = getAllRoleApiScopes(state) || undefined;
-        const rolePermissions = getAllRolePermissions(state) || undefined;
 
         return {
-            roles,
-            frontendScopes,
-            apiScopes,
-            roleFrontendScopes,
-            roleFrontendScopesGrouped,
-            roleApiScopes,
-            rolePermissions
+            frontendScopes
         };
     }
 

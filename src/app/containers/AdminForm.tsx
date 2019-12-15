@@ -268,6 +268,7 @@ export default class extends
             // @ts-ignore
             initialValues = plugins
                 .map(p => {
+                    // TODO: Get rid of 'data' param if it isn't necessary...
                     const data = p.getData('data', state);
                     if (data != undefined) {
                         const pluginState = {};
@@ -279,10 +280,7 @@ export default class extends
                 .filter(s => s != undefined)
                 .reduce(
                     (initValues, val) => {
-                        // Use deepmerge, we can end up overwriting data when merging objects
-                        // if we use Object.assign or object spread syntax
                         return merge(initValues, val, { arrayMerge: combineMerge });
-                        // return { ...initValues, ...val };
                     },
                     {}
                 );

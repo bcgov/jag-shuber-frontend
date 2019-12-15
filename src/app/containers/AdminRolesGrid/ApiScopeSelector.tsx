@@ -21,6 +21,7 @@ class ApiScopeSelector extends React.PureComponent<
             ...restProps
         } = this.props;
         const selectorValues = apiScopes.map(apiScope => ({ key: apiScope.id as string, value: apiScope.scopeName as string }));
+        // console.log(selectorValues);
         return (
             <Selector {...restProps} data={selectorValues} />
         );
