@@ -17,31 +17,37 @@ export const createOrUpdateRoles = roleRequests.createOrUpdateRolesRequest.actio
 export const getRoleFrontendScopes = roleFrontendScopeRequests.roleFrontendScopeMapRequest.actionCreator;
 export const createRoleFrontendScope = roleFrontendScopeRequests.createRoleFrontendScopeRequest.actionCreator;
 export const updateRoleFrontendScope = roleFrontendScopeRequests.updateRoleFrontendScopeRequest.actionCreator;
+export const createOrUpdateRoleFrontendScopes = roleFrontendScopeRequests.createOrUpdateRoleFrontendScopeRequest.actionCreator;
 // export const deleteRoleFrontendScope = roleFrontendScopeRequests.deleteRoleFrontendScopeRequest.actionCreator;
 
 export const getRoleApiScopes = roleApiScopeRequests.roleApiScopeMapRequest.actionCreator;
 export const createRoleApiScope = roleApiScopeRequests.createRoleApiScopeRequest.actionCreator;
 export const updateRoleApiScope = roleApiScopeRequests.updateRoleApiScopeRequest.actionCreator;
+export const createOrUpdateRoleApiScopes = roleApiScopeRequests.createOrUpdateRoleApiScopeRequest.actionCreator;
 // export const deleteRoleApiScope = roleApiScopeRequests.deleteRoleApiScopeRequest.actionCreator;
 
 export const getFrontendScopes = frontendScopeRequests.frontendScopeMapRequest.actionCreator;
 export const createFrontendScope = frontendScopeRequests.createFrontendScopeRequest.actionCreator;
 export const updateFrontendScope = frontendScopeRequests.updateFrontendScopeRequest.actionCreator;
+export const createOrUpdateFrontendScopes = frontendScopeRequests.createOrUpdateFrontendScopeRequest.actionCreator;
 // export const deleteFrontendScope = frontendScopeRequests.deleteFrontendScopeRequest.actionCreator;
 
 export const getFrontendScopePermissions = frontendScopePermissionRequests.frontendScopePermissionMapRequest.actionCreator;
 export const createFrontendScopePermission = frontendScopePermissionRequests.createFrontendScopePermissionRequest.actionCreator;
 export const updateFrontendScopePermission = frontendScopePermissionRequests.updateFrontendScopePermissionRequest.actionCreator;
+export const createOrUpdateFrontendScopePermissions = frontendScopePermissionRequests.createOrUpdateFrontendScopePermissionRequest.actionCreator;
 // export const deleteFrontendScopePermission = frontendScopePermissionRequests.deleteFrontendScopePermissionRequest.actionCreator;
 
 export const getApiScopes = apiScopeRequests.apiScopeMapRequest.actionCreator;
 export const createApiScope = apiScopeRequests.createApiScopeRequest.actionCreator;
 export const updateApiScope = apiScopeRequests.updateApiScopeRequest.actionCreator;
+export const createOrUpdateApiScopes = apiScopeRequests.createOrUpdateApiScopeRequest.actionCreator;
 // export const deleteApiScope = apiScopeRequests.deleteApiScopeRequest.actionCreator;
 
 export const getRolePermissions = rolePermissionRequests.rolePermissionMapRequest.actionCreator;
 export const createRolePermission = rolePermissionRequests.createRolePermissionRequest.actionCreator;
 export const updateRolePermission = rolePermissionRequests.updateRolePermissionRequest.actionCreator;
+export const createOrUpdateRolePermission = rolePermissionRequests.createOrUpdateRolePermissionRequest.actionCreator;
 // export const deleteRolePermission = rolePermissionRequests.deleteRolePermissionRequest.actionCreator;
 
 export const getUserRoles = userRoleRequests.userRoleMapRequest.actionCreator;

@@ -2,6 +2,7 @@ import React from 'react';
 import {
     reduxForm,
     ConfigProps,
+    getFormInitialValues,
     getFormSyncErrors,
     getFormAsyncErrors,
     getFormSubmitErrors,
@@ -41,14 +42,16 @@ import { FormContainerBase } from '../components/Form/FormContainer';
 
 async function submitPlugins(
     values: any,
+    initialValues: any,
     dispatch: Dispatch<any>,
     plugins: FormContainerBase<any>[] = []
 ) {
-    // try creating resources catching errors so that we can throw a submission error at the end
+    // Try creating resources catching errors so that we can throw a submission error at the end
     const pluginErrors: FormErrors = {};
+
     await Promise.all(plugins.map(async p => {
         try {
-            await p.onSubmit(values, dispatch);
+            await p.onSubmit(values, initialValues, dispatch);
         } catch (e) {
             pluginErrors[p.name] = e;
         }
@@ -119,7 +122,8 @@ const formConfig: ConfigProps<{}, AdminFormProps> = {
         }, {} as FormErrors);
         return {...validationErrors};
     },
-    onSubmit: async (values: any, dispatch, { plugins = [] }: AdminFormProps) => {
+    onSubmit: async (values: any, dispatch, props: AdminFormProps) => {
+        const { plugins = [], initialValues } = props;
         const requestConfig: RequestActionConfig<any> = {
             toasts: {
                 error: (e) => `Error occured while creating/updating: ${e}`
@@ -128,7 +132,9 @@ const formConfig: ConfigProps<{}, AdminFormProps> = {
         let actionMessage = '';
 
         try {
-            await submitPlugins(values, dispatch, plugins);
+            // Filter out unchanged values so we're not making unnecessary requests
+            // https://github.com/redux-form/redux-form/issues/701
+            await submitPlugins(values, initialValues, dispatch, plugins);
         } catch (e) {
             toast.warn('An issue occurred with one of the sections');
             throw e;
