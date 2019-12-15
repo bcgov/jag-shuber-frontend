@@ -485,12 +485,16 @@ export default class Client implements API {
         return {} as FrontendScope;
     }
 
-    async createFrontendScope(): Promise<FrontendScope> {
-        return {} as FrontendScope;
+    async createFrontendScope(frontendScope: Partial<FrontendScope>): Promise<FrontendScope> {
+        return this._client.CreateFrontendScope(frontendScope) as FrontendScope;
     }
 
-    async updateFrontendScope(): Promise<FrontendScope> {
-        return {} as FrontendScope;
+    async updateFrontendScope(frontendScope: Partial<FrontendScope>): Promise<FrontendScope> {
+        const { id } = frontendScope;
+        if (!id) {
+            throw 'No Id included in the frontendScope to update';
+        }
+        return this._client.UpdateFrontendScope(id, frontendScope) as FrontendScope;
     }
 
     async deleteFrontendScope(): Promise<FrontendScope> {
@@ -506,12 +510,16 @@ export default class Client implements API {
         return {} as FrontendScopePermission;
     }
 
-    async createFrontendScopePermission(): Promise<FrontendScopePermission> {
-        return {} as FrontendScopePermission;
+    async createFrontendScopePermission(permission: FrontendScopePermission): Promise<FrontendScopePermission> {
+        return this._client.CreateFrontendScopePermission(permission) as FrontendScopePermission;
     }
 
-    async updateFrontendScopePermission(): Promise<FrontendScopePermission> {
-        return {} as FrontendScopePermission;
+    async updateFrontendScopePermission(permission: FrontendScopePermission): Promise<FrontendScopePermission> {
+        const { id } = permission;
+        if (!id) {
+            throw 'No Id included in the frontendScopePermission to update';
+        }
+        return this._client.UpdateFrontendScopePermission(id, permission) as FrontendScopePermission;
     }
 
     async deleteFrontendScopePermission(): Promise<FrontendScopePermission> {
@@ -527,12 +535,16 @@ export default class Client implements API {
         return {} as ApiScope;
     }
 
-    async createApiScope(): Promise<ApiScope> {
-        return {} as ApiScope;
+    async createApiScope(apiScope: Partial<ApiScope>): Promise<ApiScope> {
+        return this._client.CreateApiScope(apiScope) as ApiScope;
     }
 
-    async updateApiScope(): Promise<ApiScope> {
-        return {} as ApiScope;
+    async updateApiScope(apiScope: Partial<ApiScope>): Promise<ApiScope> {
+        const { id } = apiScope;
+        if (!id) {
+            throw 'No Id included in the apiScope to update';
+        }
+        return this._client.UpdateApiScope(id, apiScope) as ApiScope;
     }
 
     async deleteApiScope(): Promise<ApiScope> {
@@ -548,12 +560,16 @@ export default class Client implements API {
         return {} as RoleFrontendScope;
     }
 
-    async createRoleFrontendScope(): Promise<RoleFrontendScope> {
-        return {} as RoleFrontendScope;
+    async createRoleFrontendScope(roleScope: Partial<RoleFrontendScope>): Promise<RoleFrontendScope> {
+        return await this._client.CreateRoleFrontendScope(roleScope) as RoleFrontendScope;
     }
 
-    async updateRoleFrontendScope(): Promise<RoleFrontendScope> {
-        return {} as RoleFrontendScope;
+    async updateRoleFrontendScope(roleScope: Partial<RoleFrontendScope>): Promise<RoleFrontendScope> {
+        const { id } = roleScope;
+        if (!id) {
+            throw 'No Id included in the roleFrontendScope to update';
+        }
+        return await this._client.UpdateRoleFrontendScope(id, roleScope) as RoleFrontendScope;
     }
 
     async deleteRoleFrontendScope(): Promise<RoleFrontendScope> {
@@ -569,12 +585,16 @@ export default class Client implements API {
         return {} as RoleApiScope;
     }
 
-    async createRoleApiScope(): Promise<RoleApiScope> {
-        return {} as RoleApiScope;
+    async createRoleApiScope(roleScope: Partial<RoleApiScope>): Promise<RoleApiScope> {
+        return await this._client.CreateRoleApiScope(roleScope) as RoleApiScope;
     }
 
-    async updateRoleApiScope(): Promise<RoleApiScope> {
-        return {} as RoleApiScope;
+    async updateRoleApiScope(roleScope: Partial<RoleApiScope>): Promise<RoleApiScope> {
+        const { id } = roleScope;
+        if (!id) {
+            throw 'No Id included in the roleFrontendScope to update';
+        }
+        return await this._client.UpdateRoleFrontendScope(id, roleScope) as RoleApiScope;
     }
 
     async deleteRoleApiScope(): Promise<RoleApiScope> {

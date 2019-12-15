@@ -28,7 +28,9 @@ import {
 
 import {
     getUserRoles,
-    createOrUpdateRoles
+    createOrUpdateRoles,
+    createOrUpdateRoleFrontendScopes,
+    createOrUpdateRoleApiScopes
 } from '../../modules/roles/actions';
 
 import {
@@ -278,12 +280,12 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
         };
     }
 
-    getDataFromFormValues(formValues: {}): FormContainerProps {
+    getDataFromFormValues(formValues: {}, initialValues: {}): FormContainerProps {
         return super.getDataFromFormValues(formValues) || {};
     }
 
-    async onSubmit(formValues: any, dispatch: Dispatch<any>): Promise<any[]> {
-        const data: any = this.getDataFromFormValues(formValues);
+    async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any[]> {
+        const data: any = this.getDataFromFormValues(formValues, initialValues) || {};
 
         const roles: Partial<Role>[] = data.roles.map((r: Role) => ({
             ...r,
@@ -297,6 +299,32 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
             revisionCount: 0 // TODO: Is there entity versioning anywhere in this project???
         }));
 
-        return await dispatch(createOrUpdateRoles(roles, { toasts: {} }));
+        /*const roleFrontendScopes: Partial<RoleFrontendScope>[] = data.roleFrontendScopes.map((rs: RoleFrontendScope) => ({
+            ...rs,
+            // TODO: Need a way to set this stuff... createdBy, updated by fields should really be set in the backend using the current user
+            // We're just going to set the fields here temporarily to quickly check if things are working in the meantime...
+            createdBy: 'DEV - FRONTEND',
+            updatedBy: 'DEV - FRONTEND',
+            createdDtm: new Date().toISOString(),
+            updatedDtm: new Date().toISOString(),
+            revisionCount: 0 // TODO: Is there entity versioning anywhere in this project???
+        }));
+
+        const roleApiScopes: Partial<RoleApiScope>[] = data.roleApiScopes.map((rs: RoleApiScope) => ({
+            ...rs,
+            // TODO: Need a way to set this stuff... createdBy, updated by fields should really be set in the backend using the current user
+            // We're just going to set the fields here temporarily to quickly check if things are working in the meantime...
+            createdBy: 'DEV - FRONTEND',
+            updatedBy: 'DEV - FRONTEND',
+            createdDtm: new Date().toISOString(),
+            updatedDtm: new Date().toISOString(),
+            revisionCount: 0 // TODO: Is there entity versioning anywhere in this project???
+        }));*/
+
+        return Promise.all([
+            dispatch(createOrUpdateRoles(roles, { toasts: {} })),
+            // dispatch(createOrUpdateRoleFrontendScopes(roleFrontendScopes, { toasts: {} })),
+            // dispatch(createOrUpdateRoleApiScopes(roleApiScopes, { toasts: {} }))
+        ]);
     }
 }

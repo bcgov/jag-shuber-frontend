@@ -3,6 +3,7 @@ import { IdType } from '../../api';
 import { RootState } from '../../store';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
+import { detailedDiff } from 'deep-object-diff';
 
 export interface FormContainerProps<T = any> {
     objectId?: IdType;
@@ -25,7 +26,7 @@ export interface FormContainer<T = any> {
     renderFormFields(props: FormContainerProps<T>): React.ReactNode;
     hasErrors(errors: any): boolean;
     // onSubmit(objectId: IdType | undefined, formValues: any, dispatch: Dispatch<any>): Promise<any | void>;
-    onSubmit(formValues: any, dispatch: Dispatch<any>): Promise<any | void>;
+    onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any | void>;
     fetchData(objectId: IdType | undefined, dispatch: Dispatch<any>): void;
     getData(objectId: IdType | undefined, state: RootState): T | undefined;
     validate(values: T): FormErrors<T> | undefined;
@@ -63,8 +64,31 @@ export abstract class FormContainerBase<T = any> implements FormContainer<T> {
     DisplayComponent?: React.ReactType<FormContainerProps<T>>;
     FormComponent?: React.ReactType<FormContainerProps<T>>;
 
-    protected getDataFromFormValues(formValues: any): T {
-        return formValues[this.reduxFormKey] as T;
+    protected getDataFromFormValues(formValues: any, initialValues?: any): T {
+        if (!initialValues) return formValues[this.reduxFormKey] as T;
+
+        const initial = initialValues[this.reduxFormKey];
+        const values = formValues[this.reduxFormKey];
+
+        const data: any = {};
+
+        const formKeys = Object.keys(this.formFieldNames);
+        // detailedDiff will return a diff object with added, deleted, and updated keys
+        // https://www.npmjs.com/package/deep-object-diff
+        const diffKeys = ['added', 'deleted', 'updated'];
+        formKeys.forEach(key => {
+            let isDirty = false;
+            const diff = detailedDiff(initial[key], values[key]);
+            diffKeys.forEach(diffKey => {
+                if (Object.keys(diff[diffKey]).length > 0) isDirty = true;
+            });
+
+            if (isDirty) {
+                data[key] = values[key];
+            }
+        });
+
+        return data as T;
     }
 
     containsPropertyPath(errors: Object = {}, propertyPath: string = '') {
@@ -109,7 +133,7 @@ export abstract class FormContainerBase<T = any> implements FormContainer<T> {
     }
 
     // async onSubmit(objectId: IdType | undefined, formValues: any, dispatch: Dispatch<any>): Promise<any | void> {
-    async onSubmit(formValues: any, dispatch: Dispatch<any>): Promise<any | void> {
+    async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any | void> {
         // does nothing
     }
 

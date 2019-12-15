@@ -31,8 +31,6 @@ class SaveButton extends React.PureComponent<SaveButtonProps>{
         const { formName, model, submit, children = 'Save', style = {}, ...rest } = this.props;
         const { bsStyle = 'success' } = rest;
 
-        console.log('dump save button model');
-        console.log(model);
         return (
             <Button
                 bsStyle="success"

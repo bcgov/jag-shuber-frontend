@@ -9,6 +9,11 @@ import {
 import { Dispatch } from 'redux';
 
 import {
+    FrontendScope
+} from '../../api';
+
+import {
+    createOrUpdateFrontendScopes,
     getFrontendScopes
 } from '../../modules/roles/actions';
 
@@ -18,7 +23,7 @@ import {
     getAllFrontendScopes
 } from '../../modules/roles/selectors';
 
-import { IdType } from '../../api';
+import { IdType, Role } from '../../api';
 
 import {
     FormContainerBase,
@@ -142,5 +147,24 @@ export default class AdminFrontendScopesGrid extends FormContainerBase<AdminFron
     getDataFromFormValues(formValues: {}): FormContainerProps {
         return super.getDataFromFormValues(formValues) || {
         };
+    }
+
+    async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any[]> {
+        const data: any = this.getDataFromFormValues(formValues);
+
+        const scopes: Partial<FrontendScope>[] = data.frontendScopes.map((s: FrontendScope) => ({
+            ...s,
+            // TODO: In some places there's a systemCodeInd which is a number... maybe a good idea to use the same type?
+            systemScopeInd: false, // TODO: Ability to set this - we haven't implemented system codes yet but it will be needed
+            // TODO: Need a way to set this stuff... createdBy, updated by fields should really be set in the backend using the current user
+            // We're just going to set the fields here temporarily to quickly check if things are working in the meantime...
+            createdBy: 'DEV - FRONTEND',
+            updatedBy: 'DEV - FRONTEND',
+            createdDtm: new Date().toISOString(),
+            updatedDtm: new Date().toISOString(),
+            revisionCount: 0 // TODO: Is there entity versioning anywhere in this project???
+        }));
+
+        return await dispatch(createOrUpdateFrontendScopes(scopes, { toasts: {} }));
     }
 }
