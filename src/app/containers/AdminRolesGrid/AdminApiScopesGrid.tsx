@@ -133,13 +133,13 @@ export default class AdminApiScopesGrid extends FormContainerBase<AdminApiScopes
         };
     }
 
-    getDataFromFormValues(formValues: {}): FormContainerProps {
+    getDataFromFormValues(formValues: {}, initialValues: {}): FormContainerProps {
         return super.getDataFromFormValues(formValues) || {
         };
     }
 
     async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any[]> {
-        const data: any = this.getDataFromFormValues(formValues);
+        const data: any = this.getDataFromFormValues(formValues, initialValues);
 
         const scopes: Partial<ApiScope>[] = data.apiScopes.map((s: ApiScope) => ({
             ...s,
