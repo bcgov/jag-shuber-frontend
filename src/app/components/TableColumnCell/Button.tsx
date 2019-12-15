@@ -19,7 +19,11 @@ const ButtonColumn = (label?: string, icon?: string, options?: Types.FieldColumn
                 }
                 : () => {};
 
-            return (
+            return !model.id ? (
+                <div style={{ display: 'flex', alignItems: 'center' }} />
+            )
+            :
+            (
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                     <Button
                         bsClass="btn btn-default action-button"

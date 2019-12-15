@@ -6,9 +6,11 @@ import {
 // TODO: This has to be generic!
 import { Role } from '../../api';
 
-import { Table, FormGroup, Button, Glyphicon } from 'react-bootstrap';
+import { Table, FormGroup, Button, Glyphicon, Well } from 'react-bootstrap';
 
 import * as CellTypes from '../../components/TableColumnCell';
+// TODO: Move this into a common location with AdminForm
+import HeaderSaveButton from '../../containers/AdminRolesGrid/HeaderSaveButton';
 
 export interface ColumnRendererProps {
     index: number;
@@ -153,22 +155,30 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                     {displayActionsColumn && (
                                         <th
                                             style={{
-                                                width: '100px'
+                                                width: '300px'
                                             }}
                                         >
                                             {displayHeaderActions && (
-                                                <Button onClick={() => fields.push({} as any)} style={{ float: 'right' }}>
-                                                    <Glyphicon glyph="plus" /> {buttonLabel}
-                                                </Button>
+                                                <>
+                                                    <HeaderSaveButton formName={'AdminForm'} />
+                                                    <Button onClick={() => fields.push({} as any)} style={{ float: 'right' }}>
+                                                        <Glyphicon glyph="plus" /> {buttonLabel}
+                                                    </Button>
+                                                </>
                                             )}
                                         </th>
                                     )}
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {fields.map((fieldInstanceName, index) => {
+                                {fields.length === 0 && (
+                                    <tr>
+                                        <td colSpan={expandable ? columns.length + 2 : columns.length + 1}><Well style={{ textAlign: 'center' }}>No records found.</Well></td>
+                                    </tr>
+                                )}
+                                {fields.length > 0 && fields.map((fieldInstanceName, index) => {
                                     const fieldModel: Partial<any> = fields.get(index);
-                                    const { cancelDate = undefined } = fieldModel || {};
+                                    const { id = null, cancelDate = undefined } = fieldModel || {};
 
                                     return (
                                         <>
@@ -181,10 +191,10 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                                                 onClick={() => this.onExpandRowClicked(index)}
                                                                 style={{ color: '#666666' }}
                                                             >
-                                                                {expandedRows && !expandedRows.has(index) && (
+                                                                {id && expandedRows && !expandedRows.has(index) && (
                                                                     <Glyphicon glyph="triangle-right" />
                                                                 )}
-                                                                {expandedRows && expandedRows.has(index) && (
+                                                                {id && expandedRows && expandedRows.has(index) && (
                                                                     <Glyphicon glyph="triangle-bottom" />
                                                                 )}
                                                             </Button>

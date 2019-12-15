@@ -568,6 +568,7 @@ export interface API {
     getRole(): Promise<Role>;
     createRole(newRole: Partial<Role>): Promise<Role>;
     updateRole(updatedRole: Role): Promise<Role>;
+    deleteRole(roleId: IdType): Promise<void>;
     getRoles(): Promise<Role[]>;
 
     getRolePermission(): Promise<RolePermission>;
