@@ -570,6 +570,7 @@ export interface API {
     updateRole(updatedRole: Role): Promise<Role>;
     deleteRole(roleId: IdType): Promise<void>;
     getRoles(): Promise<Role[]>;
+    deleteRoles(ids: IdType[]): Promise<void>;
 
     getRolePermission(): Promise<RolePermission>;
     createRolePermission(newRolePermission: Partial<RolePermission>): Promise<RolePermission>;

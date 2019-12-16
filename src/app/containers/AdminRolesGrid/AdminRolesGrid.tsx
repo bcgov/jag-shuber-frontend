@@ -28,6 +28,7 @@ import {
     createOrUpdateRoles,
     createOrUpdateRoleFrontendScopes,
     createOrUpdateRoleApiScopes,
+    deleteRoles,
     deleteRoleFrontendScopes,
     deleteRoleApiScopes
 } from '../../modules/roles/actions';
@@ -296,27 +297,38 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
         return super.getDataFromFormValues(formValues, initialValues) || {};
     }
 
-    async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any[]> {
-        const data: any = this.getDataFromFormValues(formValues, initialValues) || {};
+    mapDeletesFromDiff(diff: any, initValues: any) {
+        console.log('mapped deletes');
+        console.log(diff);
+        const values = initValues[this.reduxFormKey];
+        const formKeys = Object.keys(this.formFieldNames);
+        const deletedIds = Object.keys(diff);
 
-        const mapDeletesFromDiff = (key: any, diff: any, initValues: any) => {
-            console.log('mapped deletes');
-            console.log(diff);
-            const values = initValues.roles[key];
-
-            const deletedIds = Object.keys(diff).reduce((acc, cur, idx) => {
+        formKeys.forEach(key => {
+            deletedIds.reduce((acc, cur, idx) => {
                 const removeIdxs = Object.keys(diff[cur]);
                 const removeIds = values[cur]
                     .filter((val: any, idx: number) => (removeIdxs.indexOf(idx.toString())))
                     .map((val: any) => val.id);
 
                 return acc[key].concat(removeIds);
-            }, { roleFrontendScopesGrouped: [] });
+            }, {
+                roles: [],
+                roleFrontendScopesGrouped: [],
+                roleApiScopesGrouped: []
+            });
+        });
 
-            return deletedIds;
-        };
+        return deletedIds;
+    };
 
-        const dataToDelete: any = this.getDataToDeleteFromFormValues(mapDeletesFromDiff)(formValues, initialValues) || {};
+    async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any[]> {
+        const data: any = this.getDataFromFormValues(formValues, initialValues) || {};
+
+        // TODO: This isn't working, mapDeletesFromDiff is good for getting roleFrontendScopes out of its group but won't work for roles
+        const dataToDelete: any = this.getDataToDeleteFromFormValues(this.mapDeletesFromDiff)(formValues, initialValues) || {};
+
+        const deletedRoles: IdType[] = dataToDelete.roles as IdType[];
 
         const roles: Partial<Role>[] = (data.roles) ? data.roles.map((r: Role) => ({
             ...r,
@@ -365,6 +377,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
             : [];
 
         return Promise.all([
+            dispatch(deleteRoles(deletedRoles, { toasts: {} })),
             dispatch(createOrUpdateRoles(roles, { toasts: {} })),
             dispatch(deleteRoleFrontendScopes(deletedRoleFrontendScopes, { toasts: {} })),
             dispatch(deleteRoleApiScopes(deletedRoleApiScopes, { toasts: {} })),

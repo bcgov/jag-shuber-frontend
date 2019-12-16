@@ -14,6 +14,7 @@ export const createRole = roleRequests.createRoleRequest.actionCreator;
 export const updateRole = roleRequests.updateRoleRequest.actionCreator;
 export const deleteRole = roleRequests.deleteRoleRequest.actionCreator;
 export const createOrUpdateRoles = roleRequests.createOrUpdateRolesRequest.actionCreator;
+export const deleteRoles = roleRequests.deleteRolesRequest.actionCreator;
 
 export const getRoleFrontendScopes = roleFrontendScopeRequests.roleFrontendScopeMapRequest.actionCreator;
 export const createRoleFrontendScope = roleFrontendScopeRequests.createRoleFrontendScopeRequest.actionCreator;

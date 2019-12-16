@@ -99,15 +99,10 @@ export abstract class FormContainerBase<T = any> implements FormContainer<T> {
 
         let data: any = {};
 
-        const formKeys = Object.keys(this.formFieldNames);
-        // deletedDiff will return a diff object only deleted indexes
-        // https://www.npmjs.com/package/deep-object-diff
-        formKeys.forEach(key => {
-            const diff = deletedDiff(initial[key], values[key]);
-            if (Object.keys(diff).length > 0) {
-                data[key] = mapDeletesFromDiff(key, diff, initialValues);
-            }
-        });
+        const diff = deletedDiff(initial, values);
+        if (Object.keys(diff).length > 0) {
+            data = mapDeletesFromDiff(diff, initialValues);
+        }
 
         return data;
     }
