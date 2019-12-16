@@ -3,7 +3,7 @@ import { IdType } from '../../api';
 import { RootState } from '../../store';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
-import { detailedDiff } from 'deep-object-diff';
+import { deletedDiff, detailedDiff } from 'deep-object-diff';
 
 export interface FormContainerProps<T = any> {
     objectId?: IdType;
@@ -64,8 +64,8 @@ export abstract class FormContainerBase<T = any> implements FormContainer<T> {
     DisplayComponent?: React.ReactType<FormContainerProps<T>>;
     FormComponent?: React.ReactType<FormContainerProps<T>>;
 
-    protected getDataFromFormValues(formValues: any, initialValues?: any): T {
-        if (!initialValues) return formValues[this.reduxFormKey] as T;
+    protected getDataFromFormValues(formValues: any, initialValues?: any) {
+        if (!initialValues) return formValues[this.reduxFormKey];
 
         const initial = initialValues[this.reduxFormKey];
         const values = formValues[this.reduxFormKey];
@@ -88,7 +88,28 @@ export abstract class FormContainerBase<T = any> implements FormContainer<T> {
             }
         });
 
-        return data as T;
+        return data;
+    }
+
+    protected getDataToDeleteFromFormValues = (mapDeletesFromDiff: Function) => (formValues: any, initialValues?: any) => {
+        if (!initialValues) return formValues[this.reduxFormKey];
+
+        const initial = initialValues[this.reduxFormKey];
+        const values = formValues[this.reduxFormKey];
+
+        let data: any = {};
+
+        const formKeys = Object.keys(this.formFieldNames);
+        // deletedDiff will return a diff object only deleted indexes
+        // https://www.npmjs.com/package/deep-object-diff
+        formKeys.forEach(key => {
+            const diff = deletedDiff(initial[key], values[key]);
+            if (Object.keys(diff).length > 0) {
+                data[key] = mapDeletesFromDiff(key, diff, initialValues);
+            }
+        });
+
+        return data;
     }
 
     containsPropertyPath(errors: Object = {}, propertyPath: string = '') {

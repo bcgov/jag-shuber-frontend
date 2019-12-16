@@ -23,14 +23,13 @@ import {
     getApiScopes,
     getRoleFrontendScopes,
     getRoleApiScopes,
-    getRolePermissions
-} from '../../modules/roles/actions';
-
-import {
+    getRolePermissions,
     getUserRoles,
     createOrUpdateRoles,
     createOrUpdateRoleFrontendScopes,
-    createOrUpdateRoleApiScopes
+    createOrUpdateRoleApiScopes,
+    deleteRoleFrontendScopes,
+    deleteRoleApiScopes
 } from '../../modules/roles/actions';
 
 import {
@@ -300,6 +299,25 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
     async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any[]> {
         const data: any = this.getDataFromFormValues(formValues, initialValues) || {};
 
+        const mapDeletesFromDiff = (key: any, diff: any, initValues: any) => {
+            console.log('mapped deletes');
+            console.log(diff);
+            const values = initValues.roles[key];
+
+            const deletedIds = Object.keys(diff).reduce((acc, cur, idx) => {
+                const removeIdxs = Object.keys(diff[cur]);
+                const removeIds = values[cur]
+                    .filter((val: any, idx: number) => (removeIdxs.indexOf(idx.toString())))
+                    .map((val: any) => val.id);
+
+                return acc[key].concat(removeIds);
+            }, { roleFrontendScopesGrouped: [] });
+
+            return deletedIds;
+        };
+
+        const dataToDelete: any = this.getDataToDeleteFromFormValues(mapDeletesFromDiff)(formValues, initialValues) || {};
+
         const roles: Partial<Role>[] = (data.roles) ? data.roles.map((r: Role) => ({
             ...r,
             systemCodeInd: 0, // TODO: Ability to set this - we haven't implemented system codes yet but it will be needed
@@ -311,6 +329,8 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
             updatedDtm: new Date().toISOString(),
             revisionCount: 0 // TODO: Is there entity versioning anywhere in this project???
         })) : [];
+
+        const deletedRoleFrontendScopes: IdType[] = dataToDelete.roleFrontendScopesGrouped as IdType[];
 
         const roleFrontendScopes: Partial<RoleFrontendScope>[] = (data.roleFrontendScopesGrouped)
             ? Object.keys(data.roleFrontendScopesGrouped)
@@ -326,6 +346,8 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                     revisionCount: 0
                 }))
             : [];
+
+        const deletedRoleApiScopes: IdType[] = dataToDelete.roleApiScopesGrouped as IdType[];
 
         const roleApiScopes: Partial<RoleApiScope>[] = (data.roleApiScopesGrouped)
             ? Object.keys(data.roleApiScopesGrouped)
@@ -344,6 +366,8 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
 
         return Promise.all([
             dispatch(createOrUpdateRoles(roles, { toasts: {} })),
+            dispatch(deleteRoleFrontendScopes(deletedRoleFrontendScopes, { toasts: {} })),
+            dispatch(deleteRoleApiScopes(deletedRoleApiScopes, { toasts: {} })),
             dispatch(createOrUpdateRoleFrontendScopes(roleFrontendScopes, { toasts: {} })),
             dispatch(createOrUpdateRoleApiScopes(roleApiScopes, { toasts: {} }))
         ]);
