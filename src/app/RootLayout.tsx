@@ -31,6 +31,8 @@ import AssignmentPage from './pages/Assignments';
 import DefaultAssignmentsPage from './pages/DefaultAssignments';
 import DutyRosterPage from './pages/DutyRoster';
 import ManageCodesPage from './pages/ManageCodes';
+import ManageComponentsPage from './pages/ManageComponents';
+import ManageApisPage from './pages/ManageApis';
 import ManageRolesPage from './pages/ManageRoles';
 import ManageSheriffsPage from './pages/ManageSheriffs';
 import ManageUsersPage from './pages/ManageUsers';
@@ -127,14 +129,16 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
             <div className="mainArea">
               <Route exact={true} path={Navigation.Routes.dutyRoster.timeline.path} component={DutyRosterPage} />
               <Route path={Navigation.Routes.schedule.manage.path} component={SchedulingPage} />
-              <Route path={Navigation.Routes.team.path} component={ManageSheriffsPage} />
-              <Route path={Navigation.Routes.admin.children.audit.path} component={AuditPage} />
-              <Route path={Navigation.Routes.admin.children.codes.path} component={ManageCodesPage} />
-              <Route path={Navigation.Routes.admin.children.roles.path} component={ManageRolesPage} />
-              <Route path={Navigation.Routes.admin.children.users.path} component={ManageUsersPage} />
+              <Route path={Navigation.Routes.schedule.distribute.path} component={PublishSchedulePage} />
               <Route path={Navigation.Routes.dutyRoster.setup.path} component={DefaultAssignmentsPage} />
               <Route path={Navigation.Routes.assignment.path} component={AssignmentPage} />
-              <Route path={Navigation.Routes.schedule.distribute.path} component={PublishSchedulePage} />
+              <Route path={Navigation.Routes.team.path} component={ManageSheriffsPage} />
+              <Route path={Navigation.Routes.admin.children.audit.path} component={AuditPage} />
+              <Route path={Navigation.Routes.admin.children.roles.path} component={ManageRolesPage} />
+              <Route path={Navigation.Routes.admin.children.users.path} component={ManageUsersPage} />
+              <Route path={Navigation.Routes.system.children.codes.path} component={ManageCodesPage} />
+              <Route path={Navigation.Routes.system.children.components.path} component={ManageComponentsPage} />
+              <Route path={Navigation.Routes.system.children.apis.path} component={ManageApisPage} />
               <DutyRosterToolsModal />
               <AssignmentDutyEditModal />
               <SheriffProfileModal />

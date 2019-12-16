@@ -50,19 +50,33 @@ export default class Navigation extends React.Component<NavigationProps, any> {
             children: {
                 users: {
                     path: '/users/manage',
-                    label: 'User Management'
+                    label: 'Manage Users'
                 },
                 roles: {
                     path: '/roles/manage',
-                    label: 'Roles & Permissions'
-                },
-                codes: {
-                    path: '/codes/manage',
-                    label: 'Configure Lists'
+                    label: 'Roles & Access'
                 },
                 audit: {
                     path: '/audit',
                     label: 'Audit Tables'
+                }
+            }
+        },
+        system: {
+            path: '#',
+            label: 'System',
+            children: {
+                codes: {
+                    path: '/codes/manage',
+                    label: 'Configure Lists'
+                },
+                components: {
+                    path: '/components/manage',
+                    label: 'Manage Components'
+                },
+                apis: {
+                    path: '/apis/manage',
+                    label: 'Manage APIs'
                 }
             }
         },
@@ -97,8 +111,12 @@ export default class Navigation extends React.Component<NavigationProps, any> {
                         <NavigationDropDown title={Navigation.Routes.admin.label} id="admin_dropdown">
                             <NavigationLink {...Navigation.Routes.admin.children.users} />
                             <NavigationLink {...Navigation.Routes.admin.children.roles} />
-                            <NavigationLink {...Navigation.Routes.admin.children.codes} />
                             <NavigationLink {...Navigation.Routes.admin.children.audit} />
+                        </NavigationDropDown>
+                        <NavigationDropDown title={Navigation.Routes.system.label} id="system_dropdown">
+                            <NavigationLink {...Navigation.Routes.system.children.codes} />
+                            <NavigationLink {...Navigation.Routes.system.children.components} />
+                            <NavigationLink {...Navigation.Routes.system.children.apis} />
                         </NavigationDropDown>
                     </Nav>
                     <Nav pullRight={true} style={{ paddingTop: 13, paddingRight: 15 }}>
