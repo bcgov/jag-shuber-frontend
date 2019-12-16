@@ -451,6 +451,18 @@ export default class Client implements API {
         return await this._client.DeleteRole(roleId);
     }
 
+    /**
+     * TODO: We need a proper endpoint to deal with this this loop isn't gonna do it...
+     * @param ids
+     */
+    async deleteRoles(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.DeleteRole(id));
+        }
+
+        return Promise.resolve();
+    }
+
     async getRolePermissions(): Promise<RolePermission[]> {
         const list = await this._client.GetRolePermissions();
         return list as RolePermission[];
@@ -576,8 +588,16 @@ export default class Client implements API {
         return {} as RoleFrontendScope;
     }
 
+    /**
+     * TODO: We need a proper endpoint to deal with this this loop isn't gonna do it...
+     * @param ids
+     */
     async deleteRoleFrontendScopes(ids: IdType[]): Promise<void> {
-        return;
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.DeleteRoleFrontendScope(id));
+        }
+
+        return Promise.resolve();
     }
 
     async getRoleApiScopes(): Promise<RoleApiScope[]> {
@@ -605,8 +625,16 @@ export default class Client implements API {
         return {} as RoleApiScope;
     }
 
+    /**
+     * TODO: We need a proper endpoint to deal with this this loop isn't gonna do it...
+     * @param ids
+     */
     async deleteRoleApiScopes(ids: IdType[]): Promise<void> {
-        return;
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.DeleteRoleApiScope(id));
+        }
+
+        return Promise.resolve();
     }
 
     async getUserRoles(): Promise<UserRole[]> {

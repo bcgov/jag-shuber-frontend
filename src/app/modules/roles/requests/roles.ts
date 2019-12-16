@@ -10,11 +10,12 @@ import {
     MapType, IdType
 } from '../../../api/Api';
 import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRequest';
-import { RequestConfig } from '../../../infrastructure/Requests/RequestActionBase';
+import RequestAction, { RequestConfig } from '../../../infrastructure/Requests/RequestActionBase';
 import CreateOrUpdateEntitiesRequest from '../../../infrastructure/Requests/CreateOrUpdateEntitiesRequest';
 import CreateEntityRequest from '../../../infrastructure/Requests/CreateEntityRequest';
 import UpdateEntityRequest from '../../../infrastructure/Requests/UpdateEntityRequest';
 import DeleteEntityRequest from '../../../infrastructure/Requests/DeleteEntityRequest';
+import { roleFrontendScopeMapRequest } from './roleFrontendScopes';
 // import toTitleCase from '../../infrastructure/toTitleCase';
 
 // Get the Map
@@ -134,3 +135,29 @@ class CreateOrUpdateRolesRequest extends CreateOrUpdateEntitiesRequest<Role, Rol
 }
 
 export const createOrUpdateRolesRequest = new CreateOrUpdateRolesRequest();
+
+class DeleteRolesRequest extends RequestAction<IdType[], IdType[], RoleModuleState> {
+    constructor() {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'deleteRoles',
+            toasts: {
+                success: (ids) => `${ids.length} role scopes(s) deleted`,
+                error: (err) => `Problem encountered while deleting role scopes: ${err ? err.toString() : 'Unknown Error'}`
+            }
+        });
+    }
+    public async doWork(request: IdType[], { api }: ThunkExtra): Promise<IdType[]> {
+        await api.deleteRoles(request);
+        return request;
+    }
+
+    // TODO: How does this all work?
+    setRequestData(moduleState: RoleModuleState, roleScopeIds: IdType[]) {
+        const newMap = { ...roleFrontendScopeMapRequest.getRequestData(moduleState) };
+        roleScopeIds.forEach(id => delete newMap[id]);
+        return roleFrontendScopeMapRequest.setRequestData(moduleState, newMap);
+    }
+}
+
+export const deleteRolesRequest = new DeleteRolesRequest();
