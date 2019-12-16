@@ -595,11 +595,15 @@ export interface API {
     createRoleFrontendScope(newRoleFrontendScope: Partial<RoleFrontendScope>): Promise<RoleFrontendScope>;
     updateRoleFrontendScope(updatedRoleFrontendScope: RoleFrontendScope): Promise<RoleFrontendScope>;
     getRoleFrontendScopes(): Promise<RoleFrontendScope[]>;
+    deleteRoleFrontendScope(roleFrontendScopeIds: IdType): Promise<RoleFrontendScope>;
+    deleteRoleFrontendScopes(roleFrontendScopeIds: IdType[]): Promise<void>;
 
     getRoleApiScope(): Promise<RoleApiScope>;
     createRoleApiScope(newRoleApiScope: Partial<RoleApiScope>): Promise<RoleApiScope>;
     updateRoleApiScope(updatedRoleApiScope: RoleApiScope): Promise<RoleApiScope>;
     getRoleApiScopes(): Promise<RoleApiScope[]>;
+    deleteRoleApiScope(roleApiScopeId: IdType): Promise<RoleApiScope>;
+    deleteRoleApiScopes(roleApiScopeIds: IdType[]): Promise<void>;
 
     getUserRole(): Promise<UserRole>;
     createUserRole(newUserRole: Partial<UserRole>): Promise<UserRole>;

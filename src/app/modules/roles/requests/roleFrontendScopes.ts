@@ -7,13 +7,15 @@ import {
 import {
     RoleFrontendScopeMap,
     RoleFrontendScope,
-    MapType
+    MapType, IdType
 } from '../../../api/Api';
 import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRequest';
-import { RequestConfig } from '../../../infrastructure/Requests/RequestActionBase';
+import RequestAction, { RequestConfig } from '../../../infrastructure/Requests/RequestActionBase';
 import CreateOrUpdateEntitiesRequest from '../../../infrastructure/Requests/CreateOrUpdateEntitiesRequest';
 import CreateEntityRequest from '../../../infrastructure/Requests/CreateEntityRequest';
 import UpdateEntityRequest from '../../../infrastructure/Requests/UpdateEntityRequest';
+import { ShiftModuleState } from '../../shifts/common';
+import { shiftMapRequest } from '../../shifts/requests';
 // import toTitleCase from '../../infrastructure/toTitleCase';
 
 // Get the Map
@@ -107,3 +109,22 @@ class CreateOrUpdateRoleFrontendScopeRequest extends CreateOrUpdateEntitiesReque
 }
 
 export const createOrUpdateRoleFrontendScopeRequest = new CreateOrUpdateRoleFrontendScopeRequest();
+
+class DeleteRoleFrontendScopesRequest extends RequestAction<IdType[], IdType[], RoleModuleState> {
+    constructor() {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'deleteRoleFrontendScopes',
+            toasts: {
+                success: (ids) => `${ids.length} role scopes(s) deleted`,
+                error: (err) => `Problem encountered while deleting role scopes: ${err ? err.toString() : 'Unknown Error'}`
+            }
+        });
+    }
+    public async doWork(request: IdType[], { api }: ThunkExtra): Promise<IdType[]> {
+        await api.deleteRoleFrontendScopes(request);
+        return request;
+    }
+}
+
+export const deleteRoleFrontendScopesRequest = new DeleteRoleFrontendScopesRequest();

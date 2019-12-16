@@ -576,6 +576,10 @@ export default class Client implements API {
         return {} as RoleFrontendScope;
     }
 
+    async deleteRoleFrontendScopes(ids: IdType[]): Promise<void> {
+        return;
+    }
+
     async getRoleApiScopes(): Promise<RoleApiScope[]> {
         const list = await this._client.GetRoleApiScopes();
         return list as RoleApiScope[];
@@ -599,6 +603,10 @@ export default class Client implements API {
 
     async deleteRoleApiScope(): Promise<RoleApiScope> {
         return {} as RoleApiScope;
+    }
+
+    async deleteRoleApiScopes(ids: IdType[]): Promise<void> {
+        return;
     }
 
     async getUserRoles(): Promise<UserRole[]> {

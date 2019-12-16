@@ -20,12 +20,14 @@ export const createRoleFrontendScope = roleFrontendScopeRequests.createRoleFront
 export const updateRoleFrontendScope = roleFrontendScopeRequests.updateRoleFrontendScopeRequest.actionCreator;
 export const createOrUpdateRoleFrontendScopes = roleFrontendScopeRequests.createOrUpdateRoleFrontendScopeRequest.actionCreator;
 // export const deleteRoleFrontendScope = roleFrontendScopeRequests.deleteRoleFrontendScopeRequest.actionCreator;
+export const deleteRoleFrontendScopes = roleFrontendScopeRequests.deleteRoleFrontendScopesRequest.actionCreator;
 
 export const getRoleApiScopes = roleApiScopeRequests.roleApiScopeMapRequest.actionCreator;
 export const createRoleApiScope = roleApiScopeRequests.createRoleApiScopeRequest.actionCreator;
 export const updateRoleApiScope = roleApiScopeRequests.updateRoleApiScopeRequest.actionCreator;
 export const createOrUpdateRoleApiScopes = roleApiScopeRequests.createOrUpdateRoleApiScopeRequest.actionCreator;
 // export const deleteRoleApiScope = roleApiScopeRequests.deleteRoleApiScopeRequest.actionCreator;
+export const deleteRoleApiScopes = roleApiScopeRequests.deleteRoleApiScopesRequest.actionCreator;
 
 export const getFrontendScopes = frontendScopeRequests.frontendScopeMapRequest.actionCreator;
 export const createFrontendScope = frontendScopeRequests.createFrontendScopeRequest.actionCreator;
