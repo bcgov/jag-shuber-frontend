@@ -297,38 +297,74 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
         return super.getDataFromFormValues(formValues, initialValues) || {};
     }
 
-    mapDeletesFromDiff(diff: any, initValues: any) {
+    mapDeletesFromFormValues(map: any) {
         console.log('mapped deletes');
-        console.log(diff);
-        const values = initValues[this.reduxFormKey];
-        const formKeys = Object.keys(this.formFieldNames);
-        const deletedIds = Object.keys(diff);
 
-        formKeys.forEach(key => {
-            deletedIds.reduce((acc, cur, idx) => {
-                const removeIdxs = Object.keys(diff[cur]);
-                const removeIds = values[cur]
-                    .filter((val: any, idx: number) => (removeIdxs.indexOf(idx.toString())))
+        const deletedRoleIds: IdType[] = [];
+        const deletedRoleFrontendScopeIds: IdType[] = [];
+        const deletedRoleApiScopeIds: IdType[] = [];
+
+        // TODO: This isn't going to work...
+        if (map.roles) {
+            const initialValues = map.roles.initialValues;
+            const existingIds = map.roles.values.map((val: any) => val.id);
+
+            const removeRoleIds = initialValues
+                .filter((val: any) => (existingIds.indexOf(val.id) === -1))
+                .map((val: any) => val.id);
+
+            deletedRoleIds.push(...removeRoleIds);
+        }
+
+        if (map.roleFrontendScopesGrouped) {
+            const initialValues = map.roleFrontendScopesGrouped.initialValues;
+
+            const removeRoleFrontendScopeIds = Object.keys(initialValues).reduce((acc: any, cur: any) => {
+                const initValues = map.roleFrontendScopesGrouped.initialValues[cur];
+                const existingIds = map.roleFrontendScopesGrouped.values[cur].map((val: any) => val.id);
+
+                const removeIds = initValues
+                    .filter((val: any) => (existingIds.indexOf(val.id) === -1))
                     .map((val: any) => val.id);
 
-                return acc[key].concat(removeIds);
-            }, {
-                roles: [],
-                roleFrontendScopesGrouped: [],
-                roleApiScopesGrouped: []
-            });
-        });
+                return acc.concat(removeIds);
+            }, []);
 
-        return deletedIds;
-    };
+            deletedRoleFrontendScopeIds.push(...removeRoleFrontendScopeIds);
+        }
+
+        if (map.roleApiScopesGrouped) {
+            const initialValues = map.roleApiScopesGrouped.initialValues;
+
+            const removeRoleApiScopeIds = Object.keys(initialValues).reduce((acc: any, cur: any) => {
+                const initValues = map.roleApiScopesGrouped.initialValues[cur];
+                const existingIds = map.roleApiScopesGrouped.values[cur].map((val: any) => val.id);
+
+                const removeIds = initValues
+                    .filter((val: any) => (existingIds.indexOf(val.id) === -1))
+                    .map((val: any) => val.id);
+
+                return acc.concat(removeIds);
+            }, []);
+
+            deletedRoleApiScopeIds.push(...removeRoleApiScopeIds);
+        }
+
+        return {
+            roles: deletedRoleIds,
+            roleFrontendScopes: deletedRoleFrontendScopeIds,
+            roleApiScopes: deletedRoleApiScopeIds
+        };
+    }
 
     async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any[]> {
         const data: any = this.getDataFromFormValues(formValues, initialValues) || {};
+        const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
 
-        // TODO: This isn't working, mapDeletesFromDiff is good for getting roleFrontendScopes out of its group but won't work for roles
-        const dataToDelete: any = this.getDataToDeleteFromFormValues(this.mapDeletesFromDiff)(formValues, initialValues) || {};
-
+        // Delete records before saving new ones!
         const deletedRoles: IdType[] = dataToDelete.roles as IdType[];
+        const deletedRoleFrontendScopes: IdType[] = dataToDelete.roleFrontendScopes as IdType[];
+        const deletedRoleApiScopes: IdType[] = dataToDelete.roleApiScopes as IdType[];
 
         const roles: Partial<Role>[] = (data.roles) ? data.roles.map((r: Role) => ({
             ...r,
@@ -341,8 +377,6 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
             updatedDtm: new Date().toISOString(),
             revisionCount: 0 // TODO: Is there entity versioning anywhere in this project???
         })) : [];
-
-        const deletedRoleFrontendScopes: IdType[] = dataToDelete.roleFrontendScopesGrouped as IdType[];
 
         const roleFrontendScopes: Partial<RoleFrontendScope>[] = (data.roleFrontendScopesGrouped)
             ? Object.keys(data.roleFrontendScopesGrouped)
@@ -358,8 +392,6 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                     revisionCount: 0
                 }))
             : [];
-
-        const deletedRoleApiScopes: IdType[] = dataToDelete.roleApiScopesGrouped as IdType[];
 
         const roleApiScopes: Partial<RoleApiScope>[] = (data.roleApiScopesGrouped)
             ? Object.keys(data.roleApiScopesGrouped)

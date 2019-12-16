@@ -83,28 +83,34 @@ export abstract class FormContainerBase<T = any> implements FormContainer<T> {
                 if (Object.keys(diff[diffKey]).length > 0) isDirty = true;
             });
 
-            if (isDirty) {
-                data[key] = values[key];
-            }
+            if (isDirty) data[key] = values[key];
         });
 
         return data;
     }
 
-    protected getDataToDeleteFromFormValues = (mapDeletesFromDiff: Function) => (formValues: any, initialValues?: any) => {
+    protected mapDeletesFromFormValues(map: {}) {
+        return {};
+    }
+
+    protected getDataToDeleteFromFormValues(formValues: any, initialValues?: any) {
         if (!initialValues) return formValues[this.reduxFormKey];
 
         const initial = initialValues[this.reduxFormKey];
         const values = formValues[this.reduxFormKey];
 
-        let data: any = {};
+        let map: any = {};
 
-        const diff = deletedDiff(initial, values);
-        if (Object.keys(diff).length > 0) {
-            data = mapDeletesFromDiff(diff, initialValues);
-        }
+        const formKeys = Object.keys(this.formFieldNames);
+        formKeys.forEach(key => {
+            let isDirty = false;
+            const diff = deletedDiff(initial[key], values[key]);
+            if (Object.keys(diff).length > 0) isDirty = true;
 
-        return data;
+            if (isDirty) map[key] = { initialValues: initial[key], values: values[key] };
+        });
+
+        return this.mapDeletesFromFormValues(map);
     }
 
     containsPropertyPath(errors: Object = {}, propertyPath: string = '') {
