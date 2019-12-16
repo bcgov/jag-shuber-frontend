@@ -181,6 +181,9 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                         DataTable.ButtonColumn('Edit Access', 'list', { displayInfo: true }, onButtonClicked)
                     ]}
                     rowComponent={EmptyDetailRow}
+                    initialValue={{
+                        roleId: parentModelId
+                    }}
                     // TODO: Maybe there's a more elegant way to pass the props to the component... provide a component instance instead?
                     modalProps={{ roleId: parentModelId }}
                     modalComponent={AdminRoleScopeAccessModal}
@@ -198,6 +201,10 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                         DataTable.ButtonColumn('Edit Access', 'eye-open', { displayInfo: true }, onButtonClicked),
                     ]}
                     rowComponent={EmptyDetailRow}
+                    initialValue={{
+                        roleId: parentModelId
+                    }}
+                    modalProps={{ roleId: parentModelId }}
                     modalComponent={AdminRoleScopeAccessModal}
                 />
             </>
@@ -305,27 +312,35 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
             revisionCount: 0 // TODO: Is there entity versioning anywhere in this project???
         })) : [];
 
-        const roleFrontendScopes: Partial<RoleFrontendScope>[] = (data.roleFrontendScopes) ? data.roleFrontendScopes.map((rs: RoleFrontendScope) => ({
-            ...rs,
-            // TODO: Need a way to set this stuff... createdBy, updated by fields should really be set in the backend using the current user
-            // We're just going to set the fields here temporarily to quickly check if things are working in the meantime...
-            createdBy: 'DEV - FRONTEND',
-            updatedBy: 'DEV - FRONTEND',
-            createdDtm: new Date().toISOString(),
-            updatedDtm: new Date().toISOString(),
-            revisionCount: 0 // TODO: Is there entity versioning anywhere in this project???
-        })) : [];
+        const roleFrontendScopes: Partial<RoleFrontendScope>[] = (data.roleFrontendScopesGrouped)
+            ? Object.keys(data.roleFrontendScopesGrouped)
+                .reduce((acc, cur, idx) => {
+                    return acc.concat(data.roleFrontendScopesGrouped[cur]);
+                }, [])
+                .map((rs: RoleFrontendScope) => ({
+                    ...rs,
+                    createdBy: 'DEV - FRONTEND',
+                    updatedBy: 'DEV - FRONTEND',
+                    createdDtm: new Date().toISOString(),
+                    updatedDtm: new Date().toISOString(),
+                    revisionCount: 0
+                }))
+            : [];
 
-        const roleApiScopes: Partial<RoleApiScope>[] = (data.roleApiScopes) ? data.roleApiScopes.map((rs: RoleApiScope) => ({
-            ...rs,
-            // TODO: Need a way to set this stuff... createdBy, updated by fields should really be set in the backend using the current user
-            // We're just going to set the fields here temporarily to quickly check if things are working in the meantime...
-            createdBy: 'DEV - FRONTEND',
-            updatedBy: 'DEV - FRONTEND',
-            createdDtm: new Date().toISOString(),
-            updatedDtm: new Date().toISOString(),
-            revisionCount: 0 // TODO: Is there entity versioning anywhere in this project???
-        })) : [];
+        const roleApiScopes: Partial<RoleApiScope>[] = (data.roleApiScopesGrouped)
+            ? Object.keys(data.roleApiScopesGrouped)
+                .reduce((acc, cur, idx) => {
+                    return acc.concat(data.roleApiScopesGrouped[cur]);
+                }, [])
+                .map((rs: RoleFrontendScope) => ({
+                    ...rs,
+                    createdBy: 'DEV - FRONTEND',
+                    updatedBy: 'DEV - FRONTEND',
+                    createdDtm: new Date().toISOString(),
+                    updatedDtm: new Date().toISOString(),
+                    revisionCount: 0
+                }))
+            : [];
 
         return Promise.all([
             dispatch(createOrUpdateRoles(roles, { toasts: {} })),

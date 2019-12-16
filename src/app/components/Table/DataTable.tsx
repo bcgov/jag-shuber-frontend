@@ -45,6 +45,7 @@ export interface DataTableProps {
     rowComponent: React.ReactType<DetailComponentProps>;
     modalProps?: any;
     modalComponent: React.ReactType<ModalComponentProps>;
+    initialValue?: any;
     filterRows?: Function;
 }
 
@@ -60,6 +61,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
         modalProps: {},
         modalComponent: <div />,
         buttonLabel: 'Create',
+        initialValue: {},
         filterRows: () => true
     };
 
@@ -123,6 +125,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
             rowComponent,
             modalProps,
             modalComponent,
+            initialValue,
             filterRows,
         } = this.props;
 
@@ -139,7 +142,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
         const ModalComponent = modalComponent;
 
         return (
-            <FieldArray<Partial<any>>
+            <FieldArray<Partial<any & T>>
                 name={fieldName}
                 component={(props) => {
                     const { fields } = props;
@@ -166,7 +169,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                                     {displayHeaderSave && (
                                                     <HeaderSaveButton formName={'AdminForm'} />
                                                     )}
-                                                    <Button onClick={() => fields.push({} as any)} style={{ float: 'right' }}>
+                                                    <Button onClick={() => fields.push(initialValue as T)} style={{ float: 'right' }}>
                                                         <Glyphicon glyph="plus" /> {buttonLabel}
                                                     </Button>
                                                 </>
@@ -182,7 +185,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                     </tr>
                                 )}
                                 {fields.length > 0 && fields.map((fieldInstanceName, index) => {
-                                    const fieldModel: Partial<any> = fields.get(index);
+                                    const fieldModel: Partial<any & T> = fields.get(index);
                                     const { id = null, cancelDate = undefined } = fieldModel || {};
 
                                     return (
