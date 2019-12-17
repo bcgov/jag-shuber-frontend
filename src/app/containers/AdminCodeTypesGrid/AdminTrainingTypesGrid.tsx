@@ -61,7 +61,7 @@ export default class AdminTrainingTypesGrid extends FormContainerBase<AdminTrain
                     columns={[
                         // DataTable.TextFieldColumn('Leave Type', { fieldName: 'code', displayInfo: true }),
                         DataTable.TextFieldColumn('Training Leave Sub Code', { fieldName: 'subCode', colStyle: { width: '200px' }, displayInfo: true }),
-                        DataTable.TextAreaColumn('Description', { fieldName: 'description', colStyle: { width: '300px' }, displayInfo: true }),
+                        DataTable.TextFieldColumn('Description', { fieldName: 'description', colStyle: { width: '300px' }, displayInfo: true }),
                         DataTable.DateColumn('Effective Date', 'effectiveDate', { colStyle: { width: '175px'}, displayInfo: true }),
                         DataTable.DateColumn('Expiry Date', 'expiryDate', { colStyle: { width: '175px' }, displayInfo: true }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
