@@ -14,10 +14,12 @@ const RoleCodeColumn = (label?: string, options?: Types.FieldColumnOptions): Typ
     label = label || 'Role Name';
 
     const colStyle = (options && options.colStyle) ? options.colStyle : {};
+    const filterable = (options && options.filterable) ? options.filterable : false;
 
     return {
         title: label,
         colStyle: colStyle,
+        filterable: filterable,
         FormRenderer: ({ fieldInstanceName }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Field

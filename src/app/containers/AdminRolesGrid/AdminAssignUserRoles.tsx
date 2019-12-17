@@ -148,17 +148,18 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                     title={''} // Leave this blank
                     buttonLabel={'Add User'}
                     columns={[
-                        DataTable.StaticTextColumn('Full Name', { fieldName: 'firstName', colStyle: { width: '150px' }, displayInfo: false }),
+                        DataTable.StaticTextColumn('Full Name', { fieldName: 'firstName', colStyle: { width: '150px' }, displayInfo: false, filterable: true }),
                         DataTable.StaticTextColumn('', { fieldName: 'lastName', colStyle: { width: '150px' }, displayInfo: false }),
                         DataTable.StaticTextColumn('Badge No.', { fieldName: 'badgeNo', colStyle: { width: '175px' }, displayInfo: false }),
-                        DataTable.StaticTextColumn('Rank', { fieldName: 'rankCode', colStyle: { width: '175px' }, displayInfo: false }),
-                        DataTable.StaticTextColumn('Gender', { fieldName: 'genderCode', colStyle: { width: '175px' }, displayInfo: false }),
-                        DataTable.MappedTextColumn('Home Location', { fieldName: 'homeLocationId', colStyle: { width: '225px' }, selectorComponent: LocationDisplay, displayInfo: false }),
-                        DataTable.MappedTextColumn('Current Location', { fieldName: 'currentLocationId', colStyle: { width: '225px' }, selectorComponent: LocationDisplay, displayInfo: false }),
+                        DataTable.StaticTextColumn('Rank', { fieldName: 'rankCode', colStyle: { width: '175px' }, displayInfo: false, filterable: true }),
+                        DataTable.StaticTextColumn('Gender', { fieldName: 'genderCode', colStyle: { width: '175px' }, displayInfo: false, filterable: true }),
+                        DataTable.MappedTextColumn('Home Location', { fieldName: 'homeLocationId', colStyle: { width: '225px' }, selectorComponent: LocationDisplay, displayInfo: false, filterable: true }),
+                        DataTable.MappedTextColumn('Current Location', { fieldName: 'currentLocationId', colStyle: { width: '225px' }, selectorComponent: LocationDisplay, displayInfo: false, filterable: true }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
                         // DataTable.SelectorFieldColumn('Status', { displayInfo: true }), // No point really in setting the status here
 
                     ]}
+                    filterable={true}
                     expandable={true}
                     // expandedRows={[1, 2]}
                     rowComponent={this.DetailComponent}

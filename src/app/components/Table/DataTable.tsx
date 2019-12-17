@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+    Field,
     FieldArray, FieldsProps
 } from 'redux-form';
 
@@ -11,6 +12,7 @@ import { Table, FormGroup, Button, Glyphicon, Well } from 'react-bootstrap';
 import * as CellTypes from '../../components/TableColumnCell';
 // TODO: Move this into a common location with AdminForm
 import HeaderSaveButton from '../../containers/AdminRolesGrid/HeaderSaveButton';
+import TextField from '../FormElements/TextField';
 
 export interface ColumnRendererProps {
     index: number;
@@ -46,6 +48,7 @@ export interface DataTableProps {
     modalProps?: any;
     modalComponent: React.ReactType<ModalComponentProps>;
     initialValue?: any;
+    filterable?: boolean;
     filterRows?: Function;
 }
 
@@ -62,6 +65,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
         modalComponent: <div />,
         buttonLabel: 'Create',
         initialValue: {},
+        filterable: false,
         filterRows: () => true
     };
 
@@ -126,6 +130,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
             modalProps,
             modalComponent,
             initialValue,
+            filterable,
             filterRows,
         } = this.props;
 
@@ -152,31 +157,59 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                             {title}
                             <Table striped={true} style={{ tableLayout: 'fixed', width: '100%' }}>
                                 <thead>
-                                <tr>
-                                    {expandable && (<th style={{ width: '60px' }} />)}
-                                    {columns.map((col, colIndex) => (
-                                        <th className="text-left" key={colIndex} style={col.colStyle}>{col.title}</th>
-                                    ))}
+                                    <tr>
+                                        {expandable && (<th style={{ width: '60px' }} />)}
+                                        {columns.map((col, colIndex) => (
+                                            <th className="text-left" key={colIndex} style={col.colStyle}>{col.title}</th>
+                                        ))}
 
-                                    {displayActionsColumn && (
-                                        <th
-                                            style={{
-                                                width: '250px'
-                                            }}
-                                        >
-                                            {displayHeaderActions && (
-                                                <>
-                                                    {displayHeaderSave && (
-                                                    <HeaderSaveButton formName={'AdminForm'} />
-                                                    )}
-                                                    <Button onClick={() => fields.push(initialValue as T)} style={{ float: 'right' }}>
-                                                        <Glyphicon glyph="plus" /> {buttonLabel}
-                                                    </Button>
-                                                </>
-                                            )}
-                                        </th>
+                                        {displayActionsColumn && (
+                                            <th
+                                                style={{
+                                                    width: '250px'
+                                                }}
+                                            >
+                                                {displayHeaderActions && (
+                                                    <>
+                                                        {displayHeaderSave && (
+                                                        <HeaderSaveButton formName={'AdminForm'} />
+                                                        )}
+                                                        <Button onClick={() => fields.push(initialValue as T)} style={{ float: 'right' }}>
+                                                            <Glyphicon glyph="plus" /> {buttonLabel}
+                                                        </Button>
+                                                    </>
+                                                )}
+                                            </th>
+                                        )}
+                                    </tr>
+                                    {filterable && (
+                                    <tr>
+                                        {expandable && (<th style={{ width: '60px' }} />)}
+                                        {columns.map((col, colIndex) => (
+                                            <th className="text-left" key={colIndex} style={col.colStyle}>
+                                                {col.filterable && (
+                                                    <Field
+                                                        // TODO: Wire this up, just hack in a quick randomizer to make sure filters aren't all linked to each other for the demo
+                                                        name={`fieldName_${Math.random().toString()}`}
+                                                        component={(p) => <TextField
+                                                            {...p}
+                                                            showLabel={false}
+                                                        />}
+                                                        label={(col.title) ? col.title.toString() : ''}
+                                                    />
+                                                )}
+                                            </th>
+                                        ))}
+
+                                        {displayActionsColumn && (
+                                            <th
+                                                style={{
+                                                    width: '250px'
+                                                }}
+                                            />
+                                        )}
+                                    </tr>
                                     )}
-                                </tr>
                                 </thead>
                                 <tbody>
                                 {fields.length === 0 && (

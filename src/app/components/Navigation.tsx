@@ -2,7 +2,8 @@ import React from 'react';
 import {
     Nav,
     Navbar,
-    NavbarBrand
+    NavbarBrand,
+    Badge, Glyphicon
 } from 'react-bootstrap';
 import NavigationLink from './NavigationLink';
 import LocationSelector from '../containers/LocationSelector';
@@ -54,6 +55,10 @@ export default class Navigation extends React.Component<NavigationProps, any> {
                 }
             }
         },
+        courtrooms: {
+            path: '/courtrooms/manage',
+            label: 'Courtrooms'
+        },
         system: {
             path: '#',
             label: 'System Settings',
@@ -103,14 +108,15 @@ export default class Navigation extends React.Component<NavigationProps, any> {
                             <NavigationLink {...Navigation.Routes.schedule.manage} />
                             <NavigationLink {...Navigation.Routes.schedule.distribute} />
                         </NavigationDropDown>
+                        <NavigationLink {...Navigation.Routes.courtrooms}>&nbsp;<small><Glyphicon glyph="star" /></small></NavigationLink>
                         <NavigationDropDown title={Navigation.Routes.team.label} id="admin_dropdown">
                             <NavigationLink {...Navigation.Routes.team.children.users} />
-                            <NavigationLink {...Navigation.Routes.team.children.roles} />
+                            <NavigationLink {...Navigation.Routes.team.children.roles}>&nbsp;<small><Glyphicon glyph="star" /></small></NavigationLink>
                         </NavigationDropDown>
                         <NavigationDropDown title={Navigation.Routes.system.label} id="system_dropdown">
-                            <NavigationLink {...Navigation.Routes.system.children.codes} />
-                            <NavigationLink {...Navigation.Routes.system.children.components} />
-                            <NavigationLink {...Navigation.Routes.system.children.apis} />
+                            <NavigationLink {...Navigation.Routes.system.children.codes}>&nbsp;<small><Glyphicon glyph="star" /></small></NavigationLink>
+                            <NavigationLink {...Navigation.Routes.system.children.components}>&nbsp;<small><Glyphicon glyph="star" /></small></NavigationLink>
+                            <NavigationLink {...Navigation.Routes.system.children.apis}>&nbsp;<small><Glyphicon glyph="star" /></small></NavigationLink>
                         </NavigationDropDown>
                         <NavigationLink {...Navigation.Routes.audit} />
                     </Nav>

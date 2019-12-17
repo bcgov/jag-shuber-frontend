@@ -8,10 +8,12 @@ import DateField from '../../components/FormElements/DateField';
 
 const DateColumn = (label: string, fieldName: string, options?: Types.FieldColumnOptions): Types.TableColumnCell => {
     const colStyle = (options && options.colStyle) ? options.colStyle : {};
+    const filterable = (options && options.filterable) ? options.filterable : false;
 
     return {
         title: label,
         colStyle: colStyle,
+        filterable: filterable,
         FormRenderer: ({ fieldInstanceName }) => (
             <Field
                 name={`${fieldInstanceName}.${fieldName}`}
