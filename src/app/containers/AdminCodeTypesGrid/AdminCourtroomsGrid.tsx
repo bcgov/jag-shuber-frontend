@@ -60,7 +60,7 @@ export default class AdminCourtroomsGrid extends FormContainerBase<AdminCourtroo
                     buttonLabel={'Add Courtroom'}
                     columns={[
                         DataTable.SelectorFieldColumn('Location', { fieldName: 'locationId', displayInfo: true, filterable: true }),
-                        DataTable.TextFieldColumn('Courtroom Name', { fieldName: 'name', displayInfo: true, filterable: true }),
+                        DataTable.TextFieldColumn('Courtroom', { fieldName: 'name', displayInfo: true, filterable: true }),
                         DataTable.TextFieldColumn(' Courtroom Code', { fieldName: 'code', displayInfo: true, filterable: false }),
                         DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: true }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
