@@ -280,7 +280,6 @@ export default class extends
         }
     )(SheriffProfileContainer as any) {
     static defaultProps: Partial<SheriffProfileProps & { children?: React.ReactNode }> = {
-        // TODO: Why isn't this being lazy loaded?
         plugins: [
             new SheriffProfilePluginHeader(),
             new SheriffProfilePluginIdentification(),

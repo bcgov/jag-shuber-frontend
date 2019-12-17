@@ -176,7 +176,7 @@ export default class Client implements API {
         await Promise.all(assignmentIds.map(id => this._client.ExpireAssignment(id)));
     }
 
-    // TODO: getAssignmentDuties broke, not sure why!!!
+    // TODO: getAssignmentDuties broke before, not sure why!!! Is this still an issue?
     async getAssignmentDuties(startDate: DateType = moment(), endDate?: DateType): Promise<AssignmentDuty[]> {
         // let duties: AssignmentDuty[] = (await this._client.GetDuties() as any);
         // return duties;

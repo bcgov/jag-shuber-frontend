@@ -1,5 +1,4 @@
 import React from 'react';
-// TODO: Why can't I use fragments?
 // import { connect } from 'react-redux';
 import {
   Sheriff, // IdType
@@ -57,7 +56,7 @@ class SheriffListComposable extends React.Component<CompositeProps> {
 
     const displayAs: string = 'GRID';
 
-    // TODO: Something wrong with @types/react? Can't use fragment for some reason...
+    // TODO: We can use fragments now!
     /*return (
       <Fragment>
         {displayAs === 'LIST' && (

@@ -1,3 +1,4 @@
+// TODO: Do we even need this anymore now that we've made DataTable and FormContainer?
 import * as React from 'react';
 import {
     FieldArray, FieldsProps
@@ -8,7 +9,6 @@ import { Table, Button, Glyphicon } from 'react-bootstrap';
 
 import * as CellTypes from '../../components/TableColumnCell';
 
-// TODO: This is the same as LeavesFieldTableProps... make it generic?
 export interface DataTableProps {
     title: React.ReactNode;
     fieldName: string;

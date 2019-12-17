@@ -54,7 +54,7 @@ import GenderCodeDisplay from '../GenderCodeDisplay';
 
 // TODO: Fix this interface!
 export interface AdminAssignUserRolesProps extends FormContainerProps {
-    roles?: any[]
+    roles?: any[];
 }
 
 export interface AdminAssignUserRolesDisplayProps extends FormContainerProps {
@@ -148,6 +148,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                     fieldName={this.formFieldNames.users}
                     title={''} // Leave this blank
                     buttonLabel={'Add User'}
+                    actions={[]} // TODO: Finish adding configurable actions
                     columns={[
                         DataTable.StaticTextColumn('First Name', { fieldName: 'firstName', colStyle: { width: '175px' }, displayInfo: false, filterable: true }),
                         DataTable.StaticTextColumn('Last Name', { fieldName: 'lastName', colStyle: { width: '175px' }, displayInfo: false, filterable: true }),
@@ -172,7 +173,6 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
         );
     }
 
-    // TODO: Figure out why Fragments aren't working...
     DisplayComponent = (props: FormContainerProps<AdminAssignUserRolesDisplayProps>) => (
         <div>
             {/*<Alert>No roles exist</Alert>*/}
@@ -184,7 +184,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
         return undefined;
     }
 
-    // TODO: Not sure if this should be roleId or what, I'm not there yet...
+    // TODO: Remove roleId from abstract
     fetchData(roleId: IdType, dispatch: Dispatch<{}>) {
         dispatch(getLocations()); // This data needs to always be available for select lists
         dispatch(getSheriffs()); // This data needs to always be available for select lists
@@ -193,7 +193,6 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
     }
 
     getData(roleId: IdType, state: RootState) {
-        // TODO: Depending on component state, some of these calls will need to be filtered!
         const locations = getAllLocations(state) || undefined;
         const users = getAllSheriffs(state) || undefined;
         const roles = getAllRoles(state) || undefined;
