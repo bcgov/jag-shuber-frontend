@@ -36,8 +36,12 @@ const ActionsColumn = (options?: Types.FieldColumnOptions): Types.TableColumnCel
                         &nbsp;
                         <CancelButton modelId={model.id} />
                         */}
+                        <Button bsStyle={'default'} onClick={() => {}}>
+                            <Glyphicon glyph="ban-circle" />
+                        </Button>
+                        &nbsp;
                         <Button bsStyle={'danger'} onClick={() => fields.remove(index)}>
-                            <Glyphicon glyph="trash" /> Delete
+                            <Glyphicon glyph="trash" />
                         </Button>
                     </>
 
