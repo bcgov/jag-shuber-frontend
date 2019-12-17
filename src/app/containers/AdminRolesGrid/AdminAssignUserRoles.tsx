@@ -50,6 +50,7 @@ import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../component
 import RoleSelector from './RoleSelector';
 
 import LocationDisplay from './LocationDisplay';
+import GenderCodeDisplay from '../GenderCodeDisplay';
 
 // TODO: Fix this interface!
 export interface AdminAssignUserRolesProps extends FormContainerProps {
@@ -121,7 +122,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                 title={''} // Leave this blank
                 buttonLabel={'Assign New Role'}
                 columns={[
-                    DataTable.SelectorFieldColumn('User Role', { fieldName: 'id', colStyle: { width: '350px' }, selectorComponent: RoleSelector, displayInfo: true }),
+                    DataTable.SelectorFieldColumn('User Role', { fieldName: 'id', colStyle: { width: '325px' }, selectorComponent: RoleSelector, displayInfo: true }),
                     // DataTable.StaticTextColumn('Description', { fieldName: 'description', colStyle: { width: '350px' }, displayInfo: false }),
                     // DataTable.StaticTextColumn('Role Code', { fieldName: 'roleCode', colStyle: { width: '180px' }, displayInfo: false }),
                     DataTable.DateColumn('Effective Date', 'effectiveDate', { colStyle: { width: '150px'}, displayInfo: true }),
@@ -152,7 +153,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                         DataTable.StaticTextColumn('Last Name', { fieldName: 'lastName', colStyle: { width: '175px' }, displayInfo: false, filterable: true }),
                         DataTable.StaticTextColumn('Badge No.', { fieldName: 'badgeNo', colStyle: { width: '175px' }, displayInfo: false, filterable: true }),
                         DataTable.StaticTextColumn('Rank', { fieldName: 'rankCode', colStyle: { width: '175px' }, displayInfo: false, filterable: true }),
-                        DataTable.StaticTextColumn('Gender', { fieldName: 'genderCode', colStyle: { width: '175px' }, displayInfo: false, filterable: true }),
+                        DataTable.MappedTextColumn('Gender', { fieldName: 'genderCode', colStyle: { width: '175px' }, selectorComponent: GenderCodeDisplay, displayInfo: false, filterable: true }),
                         DataTable.MappedTextColumn('Home Location', { fieldName: 'homeLocationId', colStyle: { width: '225px' }, selectorComponent: LocationDisplay, displayInfo: false, filterable: true }),
                         DataTable.MappedTextColumn('Current Location', { fieldName: 'currentLocationId', colStyle: { width: '250px' }, selectorComponent: LocationDisplay, displayInfo: false, filterable: true }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
