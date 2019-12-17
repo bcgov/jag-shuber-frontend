@@ -121,13 +121,13 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                 title={''} // Leave this blank
                 buttonLabel={'Assign New Role'}
                 columns={[
-                    DataTable.SelectorFieldColumn('User Role', { fieldName: 'id', colStyle: { width: '300px' }, selectorComponent: RoleSelector, displayInfo: true }),
-                    DataTable.StaticTextColumn('Role Code', { fieldName: 'roleCode', colStyle: { width: '180px' }, displayInfo: false }),
-                    DataTable.StaticTextColumn('Description', { fieldName: 'description', colStyle: { width: '225px' }, displayInfo: false }),
+                    DataTable.SelectorFieldColumn('User Role', { fieldName: 'id', colStyle: { width: '325px' }, selectorComponent: RoleSelector, displayInfo: true }),
+                    // DataTable.StaticTextColumn('Role Code', { fieldName: 'roleCode', colStyle: { width: '180px' }, displayInfo: false }),
+                    DataTable.StaticTextColumn('Description', { fieldName: 'description', colStyle: { width: '350px' }, displayInfo: false }),
                     // DataTable.DateColumn('Date Created', 'createdDtm'),
-                    DataTable.DateColumn('Effective Date', 'effectiveDate', { colStyle: { width: '230px'}, displayInfo: true }),
-                    DataTable.DateColumn('Expiry Date', 'expiryDate', { colStyle: { width: '230px'}, displayInfo: true }),
-                    DataTable.SelectorFieldColumn('Status', { colStyle: { width: '150px'}, displayInfo: true }),
+                    DataTable.SelectorFieldColumn('Status', { colStyle: { width: '175px' }, displayInfo: true }),
+                    DataTable.DateColumn('Effective Date', 'effectiveDate', { colStyle: { width: '225px'}, displayInfo: true }),
+                    DataTable.DateColumn('Expiry Date', 'expiryDate', { colStyle: { width: '225px'}, displayInfo: true }),
                 ]}
                 expandable={false}
                 rowComponent={EmptyDetailRow}
@@ -149,10 +149,10 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                         DataTable.StaticTextColumn('Full Name', { fieldName: 'firstName', colStyle: { width: '150px' }, displayInfo: false }),
                         DataTable.StaticTextColumn('', { fieldName: 'lastName', colStyle: { width: '150px' }, displayInfo: false }),
                         DataTable.StaticTextColumn('Badge No.', { fieldName: 'badgeNo', colStyle: { width: '175px' }, displayInfo: false }),
-                        DataTable.StaticTextColumn('Rank', { fieldName: 'rankCode', colStyle: { width: '225px' }, displayInfo: false }),
+                        DataTable.StaticTextColumn('Rank', { fieldName: 'rankCode', colStyle: { width: '175px' }, displayInfo: false }),
+                        DataTable.StaticTextColumn('Gender', { fieldName: 'genderCode', colStyle: { width: '175px' }, displayInfo: false }),
                         DataTable.MappedTextColumn('Home Location', { fieldName: 'homeLocationId', colStyle: { width: '225px' }, selectorComponent: LocationDisplay, displayInfo: false }),
                         DataTable.MappedTextColumn('Current Location', { fieldName: 'currentLocationId', colStyle: { width: '225px' }, selectorComponent: LocationDisplay, displayInfo: false }),
-                        DataTable.StaticTextColumn('Gender', { fieldName: 'genderCode', displayInfo: false }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
                         // DataTable.SelectorFieldColumn('Status', { displayInfo: true }), // No point really in setting the status here
 
