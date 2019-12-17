@@ -16,7 +16,7 @@ import {
     allLeavesSubCodeMap as getAllLeaveSubCodes
 } from '../../modules/leaves/selectors';
 
-import { IdType } from '../../api';
+import { IdType, LeaveSubCode } from '../../api';
 
 import {
     FormContainerBase,
@@ -109,8 +109,24 @@ export default class AdminTrainingTypesGrid extends FormContainerBase<AdminTrain
         };
     }
 
-    getDataFromFormValues(formValues: {}): FormContainerProps {
+    getDataFromFormValues(formValues: {}, initialValues: {}): FormContainerProps {
         return super.getDataFromFormValues(formValues) || {
         };
+    }
+
+    async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any[]> {
+        const data: any = this.getDataFromFormValues(formValues, initialValues);
+
+        const leaveTypes: Partial<LeaveSubCode>[] = data.leaveTypes.map((c: LeaveSubCode) => ({
+            ...c,
+            createdBy: 'DEV - FRONTEND',
+            updatedBy: 'DEV - FRONTEND',
+            createdDtm: new Date().toISOString(),
+            updatedDtm: new Date().toISOString()
+        }));
+
+        console.log('dumping AdminTrainingTypes grid data');
+        console.log(leaveTypes);
+        return Promise.resolve([]); // await dispatch(createOrUpdateLeaveSubCodes(leaveTypes, { toasts: {} }));
     }
 }
