@@ -288,19 +288,18 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                                         </td>
                                                     );
                                                 })()}
-                                                {/* TODO: This has to be moved out */}
-                                                <ModalComponent isOpen={activeRowId && (activeRowId === fieldModel.id)} {...modalProps} parentModel={fieldModel} parentModelId={fieldModel.id} />
                                             </tr>
                                             {expandable && expandedRows && expandedRows.has(index) && (
-                                                <tr key={index * 2}>
-                                                    <td>{/* Nest the Table for sub-rows */}</td>
-                                                    {/* tslint:disable-next-line:max-line-length */}
-                                                    <td style={{ margin: '0', padding: '0' }} colSpan={expandable ? columns.length + 1 : columns.length}>
-                                                        {/* TODO: How to ensure fieldModel has an ID? Probably not a real concern... just double check later */}
-                                                        <RowComponent parentModel={fieldModel} parentModelId={fieldModel.id} />
-                                                    </td>
-                                                </tr>
+                                            <tr key={index * 2}>
+                                                <td>{/* Nest the Table for sub-rows */}</td>
+                                                {/* tslint:disable-next-line:max-line-length */}
+                                                <td style={{ margin: '0', padding: '0' }} colSpan={expandable ? columns.length + 1 : columns.length}>
+                                                    {/* TODO: How to ensure fieldModel has an ID? Probably not a real concern... just double check later */}
+                                                    <RowComponent parentModel={fieldModel} parentModelId={fieldModel.id} />
+                                                </td>
+                                            </tr>
                                             )}
+                                            <ModalComponent isOpen={activeRowId && (activeRowId === fieldModel.id)} {...modalProps} parentModel={fieldModel} parentModelId={fieldModel.id} />
                                         </>
                                     );
                                 })}
