@@ -197,7 +197,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                     displayHeaderActions={true}
                     displayHeaderSave={false}
                     columns={[
-                        DataTable.SelectorFieldColumn('API Route to Access', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: ApiScopeSelector, displayInfo: true, disabled: true }),
+                        DataTable.SelectorFieldColumn('API Route to Access', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: ApiScopeSelector, displayInfo: true }),
                         DataTable.MappedTextColumn('Code', { fieldName: 'scopeId', colStyle: { width: '250px' }, selectorComponent: ApiScopeCodeDisplay, displayInfo: false }),
                         DataTable.MappedTextColumn('Description', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: ApiScopeDescriptionDisplay, displayInfo: false }),
                         DataTable.StaticTextColumn('Assigned By', { fieldName: 'createdBy', colStyle: { width: '200px' }, displayInfo: false }),
@@ -223,15 +223,16 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                     title={''} // Leave this blank
                     buttonLabel={'Add Role'}
                     columns={[
-                        DataTable.TextFieldColumn('Role Name', { fieldName: 'roleName', colStyle: { width: '300px' }, displayInfo: true }),
-                        DataTable.TextFieldColumn('Role Code', { fieldName: 'roleCode', colStyle: { width: '250px' }, displayInfo: true }),
+                        DataTable.TextFieldColumn('Role Name', { fieldName: 'roleName', colStyle: { width: '300px' }, displayInfo: true, filterable: true }),
+                        DataTable.TextFieldColumn('Role Code', { fieldName: 'roleCode', colStyle: { width: '250px' }, displayInfo: true, filterable: true }),
                         DataTable.TextFieldColumn('Description', { fieldName: 'description', colStyle: { width: '300px' }, displayInfo: true }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
                         DataTable.StaticTextColumn('Created By', { fieldName: 'createdBy', colStyle: { width: '200px' }, displayInfo: false }),
                         DataTable.StaticTextColumn('Date Created', { fieldName: 'createdDtm', colStyle: { width: '200px' }, displayInfo: false }),
-                        DataTable.SelectorFieldColumn('Status', { displayInfo: true }),
+                        DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
 
                     ]}
+                    filterable={true}
                     expandable={true}
                     // expandedRows={[1, 2]}
                     rowComponent={this.DetailComponent}
