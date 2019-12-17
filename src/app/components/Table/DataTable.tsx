@@ -153,7 +153,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                             <Table striped={true} >
                                 <thead>
                                 <tr>
-                                    {expandable && (<th style={{ width: '115px' }} />)}
+                                    {expandable && (<th style={{ width: '60px' }} />)}
                                     {columns.map((col, colIndex) => (
                                         <th className="text-left" key={colIndex} style={col.colStyle}>{col.title}</th>
                                     ))}
