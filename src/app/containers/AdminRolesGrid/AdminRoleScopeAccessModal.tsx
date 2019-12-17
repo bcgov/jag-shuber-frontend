@@ -1,11 +1,10 @@
-import * as React from 'react';
+import React from 'react';
 import { Field } from 'redux-form';
 import {
     Button,
-    DropdownButton, Glyphicon,
-    MenuItem
+    Glyphicon
 } from 'react-bootstrap';
-import { WORK_SECTIONS } from '../../api';
+
 import ModalWrapper from '../ModalWrapper/ModalWrapper';
 import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
 
@@ -21,6 +20,18 @@ export interface AdminRoleScopeAccessModalProps {
 }
 
 export default class AdminRoleScopeAccessModal extends React.Component<AdminRoleScopeAccessModalProps>{
+    private modalWrapper?: any;
+
+    constructor(props: AdminRoleScopeAccessModalProps) {
+        super(props);
+    }
+
+    handleClose = (e: React.SyntheticEvent<any>) => {
+        e.preventDefault();
+        e.stopPropagation();
+        return (this.modalWrapper) ? this.modalWrapper.handleClose() : undefined;
+    }
+
     // @ts-ignore
     render() {
         const { isDefaultTemplate = false, isOpen, roleId, parentModel, parentModelId } = this.props;
@@ -29,12 +40,12 @@ export default class AdminRoleScopeAccessModal extends React.Component<AdminRole
         return (
             <div>
                 <ModalWrapper
-                    // TODO: Are these modal sizes responsive?
+                    ref={(wrapper) => this.modalWrapper = wrapper}
                     styleClassName="modal-wrapper-medium"
                     showButton={() => null}
                     isOpen={isOpen}
                     title={title}
-                    body={({ handleClose, workSectionId }: any) => (
+                    body={({ handleClose }: any) => (
                         <>
                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                 <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -79,9 +90,15 @@ export default class AdminRoleScopeAccessModal extends React.Component<AdminRole
                         </>
                     )}
                     footerComponent={
-                        <Button bsStyle={`success`}>
-                            Save
-                        </Button>
+                        <>
+                            <Button bsStyle={`default`} onClick={this.handleClose}>
+                                <Glyphicon glyph="ban-circle" /> Cancel
+                            </Button>
+                            &nbsp;
+                            <Button bsStyle={`success`} onClick={this.handleClose}>
+                                <Glyphicon glyph="ok" /> OK
+                            </Button>
+                        </>
                     }
                 />
             </div>

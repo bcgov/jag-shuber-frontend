@@ -1,11 +1,9 @@
-import * as React from 'react';
+import React from 'react';
 import { Field } from 'redux-form';
 import {
     Button,
-    DropdownButton, Glyphicon,
-    MenuItem
+    Glyphicon
 } from 'react-bootstrap';
-import { WORK_SECTIONS } from '../../api';
 import ModalWrapper from '../ModalWrapper/ModalWrapper';
 import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
 
@@ -19,23 +17,33 @@ export interface AdminScopePermissionsModalProps {
     parentModelId?: any;
 }
 
-export default class AdminScopePermissionsModal extends React.Component<AdminScopePermissionsModalProps>{
+export default class AdminScopePermissionsModal extends React.Component<AdminScopePermissionsModalProps> {
+    private modalWrapper?: any;
+
+    constructor(props: AdminScopePermissionsModalProps) {
+        super(props);
+    }
+
+    handleClose = (e: React.SyntheticEvent<any>) => {
+        e.preventDefault();
+        e.stopPropagation();
+        return (this.modalWrapper) ? this.modalWrapper.handleClose() : undefined;
+    }
+
     // @ts-ignore
     render() {
-        const { isDefaultTemplate = false, isOpen, parentModel, parentModelId } = this.props;
+        const { isDefaultTemplate = false, isOpen, parentModel } = this.props;
         const title = `Define ${isDefaultTemplate === true ? 'Default ' : ''}Component Permissions`; // TODO: Auto switch text between 'Component' and 'API'
-
-        // console.log('role scope permissions parentModel');
-        // console.log(parentModel);
 
         return (
             <div>
                 <ModalWrapper
+                    ref={(wrapper) => this.modalWrapper = wrapper}
                     styleClassName="modal-wrapper-medium"
                     showButton={() => null}
                     isOpen={isOpen}
                     title={title}
-                    body={({ handleClose, workSectionId }: any) => (
+                    body={({ handleClose }: any) => (
                         <>
                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                 <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -82,9 +90,15 @@ export default class AdminScopePermissionsModal extends React.Component<AdminSco
                         </>
                     )}
                     footerComponent={
-                        <Button bsStyle={`success`}>
-                            Save
-                        </Button>
+                        <>
+                            <Button bsStyle={`default`}>
+                                <Glyphicon glyph="ban-circle" onClick={this.handleClose} /> Cancel
+                            </Button>
+                            &nbsp;
+                            <Button bsStyle={`success`}>
+                                <Glyphicon glyph="ok" onClick={this.handleClose} /> OK
+                            </Button>
+                        </>
                     }
                 />
             </div>

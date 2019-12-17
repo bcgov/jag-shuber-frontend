@@ -50,6 +50,9 @@ export default class SheriffProfilePluginRoles extends SheriffProfileSectionPlug
                 ]}
                 rowComponent={EmptyDetailRow}
                 modalComponent={EmptyDetailRow}
+                displayHeaderActions={true}
+                displayActionsColumn={true}
+                displayHeaderSave={false}
             />
         </div>
     )
