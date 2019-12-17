@@ -150,7 +150,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                     return (
                         <div>
                             {title}
-                            <Table striped={true} >
+                            <Table striped={true} style={{ tableLayout: 'fixed', width: '100%' }}>
                                 <thead>
                                 <tr>
                                     {expandable && (<th style={{ width: '60px' }} />)}

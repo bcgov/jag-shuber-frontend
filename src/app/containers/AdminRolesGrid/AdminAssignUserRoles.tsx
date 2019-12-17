@@ -121,13 +121,15 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                 title={''} // Leave this blank
                 buttonLabel={'Assign New Role'}
                 columns={[
-                    DataTable.SelectorFieldColumn('User Role', { fieldName: 'id', colStyle: { width: '325px' }, selectorComponent: RoleSelector, displayInfo: true }),
+                    DataTable.SelectorFieldColumn('User Role', { fieldName: 'id', colStyle: { width: '300px' }, selectorComponent: RoleSelector, displayInfo: true }),
+                    // DataTable.StaticTextColumn('Description', { fieldName: 'description', colStyle: { width: '350px' }, displayInfo: false }),
                     // DataTable.StaticTextColumn('Role Code', { fieldName: 'roleCode', colStyle: { width: '180px' }, displayInfo: false }),
-                    DataTable.StaticTextColumn('Description', { fieldName: 'description', colStyle: { width: '350px' }, displayInfo: false }),
+                    DataTable.DateColumn('Effective Date', 'effectiveDate', { colStyle: { width: '150px'}, displayInfo: true }),
                     // DataTable.DateColumn('Date Created', 'createdDtm'),
+                    DataTable.DateColumn('Expiry Date', 'expiryDate', { colStyle: { width: '150px'}, displayInfo: true }),
                     DataTable.SelectorFieldColumn('Status', { colStyle: { width: '175px' }, displayInfo: true }),
-                    DataTable.DateColumn('Effective Date', 'effectiveDate', { colStyle: { width: '225px'}, displayInfo: true }),
-                    DataTable.DateColumn('Expiry Date', 'expiryDate', { colStyle: { width: '225px'}, displayInfo: true }),
+                    DataTable.StaticTextColumn('Assigned By', { fieldName: 'createdBy', colStyle: { width: '200px' }, displayInfo: false }),
+                    DataTable.StaticTextColumn('Assigned On', { fieldName: 'createdDtm', colStyle: { width: '200px' }, displayInfo: false }),
                 ]}
                 expandable={false}
                 rowComponent={EmptyDetailRow}
