@@ -37,7 +37,7 @@ const ActionsColumn = (options?: Types.FieldColumnOptions): Types.TableColumnCel
                         <CancelButton modelId={model.id} />
                         */}
                         <Button bsStyle={'danger'} onClick={() => fields.remove(index)}>
-                            <Glyphicon glyph="trash" />
+                            <Glyphicon glyph="trash" /> Delete
                         </Button>
                     </>
 
@@ -45,6 +45,10 @@ const ActionsColumn = (options?: Types.FieldColumnOptions): Types.TableColumnCel
                 :
                 (
                     <>
+                        <Button bsStyle="warning">
+                            <Glyphicon glyph="time" /> Expire
+                        </Button>
+                        &nbsp;
                         {/* TODO:
                         1 - compose buttons instead of having them all in here...
                         2 - we don't need an edit button in most cases, functionality not implemented yet
@@ -54,7 +58,7 @@ const ActionsColumn = (options?: Types.FieldColumnOptions): Types.TableColumnCel
                         </Button>
                         &nbsp;*/}
                         <Button bsStyle={'danger'} onClick={() => fields.remove(index)}>
-                            <Glyphicon glyph="trash" />
+                            <Glyphicon glyph="trash" /> Delete
                         </Button>
                     </>
                 )

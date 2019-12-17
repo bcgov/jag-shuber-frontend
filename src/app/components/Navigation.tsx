@@ -36,17 +36,13 @@ export default class Navigation extends React.Component<NavigationProps, any> {
                 label: 'Distribute Schedule'
             }
         },
-        team: {
-            path: '/sheriffs/manage',
-            label: 'My Team'
-        },
         assignment: {
             path: '/assignments/manage/add',
             label: 'Add Assignment'
         },
-        admin: {
-            path: '#',
-            label: 'Administration',
+        team: {
+            path: '/sheriffs/manage',
+            label: 'Manage Team', // TODO: Switch between 'Manage' and 'My' prefix depending on the role...
             children: {
                 users: {
                     path: '/users/manage',
@@ -55,16 +51,12 @@ export default class Navigation extends React.Component<NavigationProps, any> {
                 roles: {
                     path: '/roles/manage',
                     label: 'Roles & Access'
-                },
-                audit: {
-                    path: '/audit',
-                    label: 'Audit Tables'
                 }
             }
         },
         system: {
             path: '#',
-            label: 'System',
+            label: 'System Settings',
             children: {
                 codes: {
                     path: '/codes/manage',
@@ -80,6 +72,10 @@ export default class Navigation extends React.Component<NavigationProps, any> {
                 }
             }
         },
+        audit: {
+            path: '/audit',
+            label: 'Audit Records'
+        }
     }
 
     render() {
@@ -107,17 +103,16 @@ export default class Navigation extends React.Component<NavigationProps, any> {
                             <NavigationLink {...Navigation.Routes.schedule.manage} />
                             <NavigationLink {...Navigation.Routes.schedule.distribute} />
                         </NavigationDropDown>
-                        <NavigationLink {...Navigation.Routes.team} />
-                        <NavigationDropDown title={Navigation.Routes.admin.label} id="admin_dropdown">
-                            <NavigationLink {...Navigation.Routes.admin.children.users} />
-                            <NavigationLink {...Navigation.Routes.admin.children.roles} />
-                            <NavigationLink {...Navigation.Routes.admin.children.audit} />
+                        <NavigationDropDown title={Navigation.Routes.team.label} id="admin_dropdown">
+                            <NavigationLink {...Navigation.Routes.team.children.users} />
+                            <NavigationLink {...Navigation.Routes.team.children.roles} />
                         </NavigationDropDown>
                         <NavigationDropDown title={Navigation.Routes.system.label} id="system_dropdown">
                             <NavigationLink {...Navigation.Routes.system.children.codes} />
                             <NavigationLink {...Navigation.Routes.system.children.components} />
                             <NavigationLink {...Navigation.Routes.system.children.apis} />
                         </NavigationDropDown>
+                        <NavigationLink {...Navigation.Routes.audit} />
                     </Nav>
                     <Nav pullRight={true} style={{ paddingTop: 13, paddingRight: 15 }}>
                         <LocationSelector.Current />

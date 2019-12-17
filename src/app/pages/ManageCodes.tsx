@@ -32,26 +32,18 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps> {
         const { isEditing } = this.state;
 
         return (
-            <Page
-                toolbar={
-                    <Page.Toolbar
-                        right={(
-                            <div style={{ marginTop: 3 }}>
-                            </div>
-                        )}
-                    />
-                }
-            >
+            <Page>
                 <Well
                     style={{
                         display: 'flex',
                         backgroundColor: 'white',
                         flexDirection: 'column',
                         flex: '1 1',
-                        maxWidth: '80%',
+                        maxWidth: '85%',
                         minWidth: 800,
                         height: 'max-content',
-                        margin: '0 auto'
+                        margin: '0 auto',
+                        borderRadius: 0
                     }}
                 >
                     <AdminForm

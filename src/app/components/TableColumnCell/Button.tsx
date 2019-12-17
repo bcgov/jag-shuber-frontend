@@ -26,7 +26,7 @@ const ButtonColumn = (label?: string, icon?: string, options?: Types.FieldColumn
             (
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                     <Button
-                        bsClass="btn btn-default action-button"
+                        bsClass="btn btn-info"
                         onClick={handleClick}>
                         {icon && (
                             <><Glyphicon glyph={icon} /> {label}</>
