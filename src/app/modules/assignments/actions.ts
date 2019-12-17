@@ -20,10 +20,14 @@ export const editAssignment = assignmentRequests.updateAssignmentRequest.actionC
 export const deleteAssignment = assignmentRequests.deleteAssignmentRequest.actionCreator;
 export const deleteDutyRecurrence = assignmentRequests.deleteAssignmentDutyRecurrenceRequest.actionCreator;
 
-export const getAlternateAssignmentTypes = 
+export const getAlternateAssignmentTypes =
     alternateAssignmentTypeRequests.alternateAssignmentTypeMapRequest.actionCreator;
+
 export const getCourtRoles = courtRoleRequest.courtRoleMapRequest.actionCreator;
 export const getCourtrooms = courtroomRequests.courtroomMapRequest.actionCreator;
+export const createOrUpdateCourtrooms = courtroomRequests.createOrUpdateCourtroomsRequest.actionCreator;
+export const deleteCourtrooms = courtroomRequests.deleteCourtroomsRequest.actionCreator;
+
 export const getJailRoles = jailRoleRequests.jailRoleMapRequest.actionCreator;
 export const getRuns = runRequests.runMapRequest.actionCreator;
 
@@ -42,7 +46,7 @@ export const deleteSheriffDuty = assignmentDutyRequests.deleteSheriffDutyRequest
 export const reassignSheriffDuty = assignmentDutyRequests.reassignSheriffDutyRequest.actionCreator;
 
 export type SheriffDutyLink = { sheriffId: IdType, dutyId: IdType, sheriffDutyId: IdType };
-export const linkAssignment: ThunkAction<SheriffDutyLink, AssignmentDuty | undefined> = ({ sheriffId, dutyId, sheriffDutyId }: SheriffDutyLink) => async (dispatch, getState, extra) => 
+export const linkAssignment: ThunkAction<SheriffDutyLink, AssignmentDuty | undefined> = ({ sheriffId, dutyId, sheriffDutyId }: SheriffDutyLink) => async (dispatch, getState, extra) =>
 {
     const state = getState();
     const duty = getAssignmentDuty(dutyId)(state);
@@ -75,7 +79,7 @@ const setAssignmentBasedOnShift = (sheriffShifts: Shift[], sheriffDuty: SheriffD
     }
     // TODO: how to properly filter the filter we should select?
     const shift = sheriffShifts[0];
-    if (shift) 
+    if (shift)
     {
         const shiftRange = { startTime: shift.startDateTime, endTime: shift.endDateTime } as TimeRange;
         const dutyRange = { startTime: sheriffDuty.startDateTime, endTime: sheriffDuty.endDateTime } as TimeRange;
@@ -85,9 +89,9 @@ const setAssignmentBasedOnShift = (sheriffShifts: Shift[], sheriffDuty: SheriffD
             if (shift.startDateTime > duty.startDateTime)
             {
                 // Check if the minimum required amount of sheriffs is match
-                // const sheriffDuties = duty.sheriffDuties.filter(sd => 
-                //     sd.id != sheriffDuty.id && 
-                //     doTimeRangesOverlap({ startTime: moment(sd.startDateTime), endTime: moment(sd.endDateTime)}, 
+                // const sheriffDuties = duty.sheriffDuties.filter(sd =>
+                //     sd.id != sheriffDuty.id &&
+                //     doTimeRangesOverlap({ startTime: moment(sd.startDateTime), endTime: moment(sd.endDateTime)},
                 //         { startTime: moment(sheriffDuty.startDateTime), endTime: moment(shift.endDateTime) }));
                 // if (sheriffDuties.length < (duty.sheriffsRequired | 1))
                 // {
@@ -95,13 +99,13 @@ const setAssignmentBasedOnShift = (sheriffShifts: Shift[], sheriffDuty: SheriffD
                 //}
                 sheriffDuty.startDateTime = shift.startDateTime;
             }
-            
+
             // if shift ends before the duty then create an assignment for the remaining time
             if (shift.endDateTime < duty.endDateTime)
             {
-                // const sheriffDuties = duty.sheriffDuties.filter(sd => 
-                //     sd.id != sheriffDuty.id && 
-                //     doTimeRangesOverlap({ startTime: moment(sd.startDateTime), endTime: moment(sd.endDateTime)}, 
+                // const sheriffDuties = duty.sheriffDuties.filter(sd =>
+                //     sd.id != sheriffDuty.id &&
+                //     doTimeRangesOverlap({ startTime: moment(sd.startDateTime), endTime: moment(sd.endDateTime)},
                 //         { startTime: moment(shift.endDateTime), endTime: moment(sheriffDuty.endDateTime) }));
                 // if (sheriffDuties.length < (duty.sheriffsRequired | 1))
                 // {
@@ -111,16 +115,16 @@ const setAssignmentBasedOnShift = (sheriffShifts: Shift[], sheriffDuty: SheriffD
             }
         }
     }
-    
+
     return;
-};    
+};
 
 export const linkSheriff: ThunkAction<AssignmentDuty, void> = (duty: AssignmentDuty) => async (dispatch, getState, extra) => {
     const state = getState();
     const { sheriffDuties = [] } = duty;
     const originalDuty = getAssignmentDuty(duty.id)(state);
     sheriffDuties.forEach((sheriffDuty) => {
-        if (sheriffDuty.sheriffId == undefined) { 
+        if (sheriffDuty.sheriffId == undefined) {
             return;
         }
         const shifts = getSheriffShiftsForDate(duty.startDateTime, sheriffDuty.sheriffId)(state);

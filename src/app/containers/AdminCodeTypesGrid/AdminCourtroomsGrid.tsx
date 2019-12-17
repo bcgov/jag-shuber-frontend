@@ -7,7 +7,9 @@ import {
 import { Dispatch } from 'redux';
 
 import {
-    getCourtrooms
+    getCourtrooms,
+    createOrUpdateCourtrooms,
+    deleteCourtrooms
 } from '../../modules/assignments/actions';
 
 import {
@@ -49,7 +51,7 @@ export default class AdminCourtroomsGrid extends FormContainerBase<AdminCourtroo
     name = 'admin-courtrooms-grid';
     reduxFormKey = 'assignments';
     formFieldNames = {
-        default: 'assignments.courtrooms'
+        courtrooms: 'assignments.courtrooms'
     };
     title: string = ' Courtrooms';
 
@@ -57,7 +59,7 @@ export default class AdminCourtroomsGrid extends FormContainerBase<AdminCourtroo
         return (
             <div>
                 <DataTable
-                    fieldName={this.formFieldNames.default}
+                    fieldName={this.formFieldNames.courtrooms}
                     title={''} // Leave this blank
                     buttonLabel={'Add Courtroom'}
                     columns={[
@@ -111,8 +113,32 @@ export default class AdminCourtroomsGrid extends FormContainerBase<AdminCourtroo
         };
     }
 
+    mapDeletesFromFormValues(map: any) {
+        const deletedCourtroomIds: IdType[] = [];
+
+        // TODO: This isn't going to work...
+        if (map.courtrooms) {
+            const initialValues = map.courtrooms.initialValues;
+            const existingIds = map.courtrooms.values.map((val: any) => val.id);
+
+            const removeCourtroomIds = initialValues
+                .filter((val: any) => (existingIds.indexOf(val.id) === -1))
+                .map((val: any) => val.id);
+
+            deletedCourtroomIds.push(...removeCourtroomIds);
+        }
+
+        return {
+            courtrooms: deletedCourtroomIds
+        };
+    }
+
     async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any[]> {
         const data: any = this.getDataFromFormValues(formValues, initialValues);
+        const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
+
+        // Delete records before saving new ones!
+        const deletedCourtrooms: IdType[] = dataToDelete.courtrooms as IdType[];
 
         const courtrooms: Partial<Courtroom>[] = data.courtrooms.map((c: Courtroom) => ({
             ...c,
@@ -122,8 +148,9 @@ export default class AdminCourtroomsGrid extends FormContainerBase<AdminCourtroo
             updatedDtm: new Date().toISOString()
         }));
 
-        console.log('dumping AdminCourtrooms grid data');
-        console.log(courtrooms);
-        return Promise.resolve([]); // await dispatch(createOrUpdateCourtrooms(courtrooms, { toasts: {} }));
+        return Promise.all([
+            dispatch(deleteCourtrooms(deletedCourtrooms, { toasts: {} })),
+            dispatch(createOrUpdateCourtrooms(courtrooms, { toasts: {} }))
+        ]);
     }
 }
