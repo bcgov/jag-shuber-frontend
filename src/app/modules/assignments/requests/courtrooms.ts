@@ -43,9 +43,9 @@ class CreateOrUpdateCourtroomsRequest extends CreateOrUpdateEntitiesRequest<Cour
         super(
             {
                 namespace: STATE_KEY,
-                actionName: 'createorUpdateCourtrooms',
+                actionName: 'createOrUpdateCourtrooms',
                 toasts: {
-                    error: (err: any) => `Couldn't create/update roles: ${err.message}`
+                    error: (err: any) => `Couldn't create/update courtrooms: ${err.message}`
                 },
                 ...config
             },
@@ -62,8 +62,8 @@ class DeleteCourtroomsRequest extends RequestAction<IdType[], IdType[], Assignme
             namespace: STATE_KEY,
             actionName: 'deleteCourtrooms',
             toasts: {
-                success: (ids) => `${ids.length} Courtroom scopes(s) deleted`,
-                error: (err) => `Problem encountered while deleting Courtroom scopes: ${err ? err.toString() : 'Unknown Error'}`
+                success: (ids) => `${ids.length} Courtroom(s) deleted`,
+                error: (err) => `Problem encountered while deleting Courtroom: ${err ? err.toString() : 'Unknown Error'}`
             }
         });
     }

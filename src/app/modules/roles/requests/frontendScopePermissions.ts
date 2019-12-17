@@ -45,7 +45,7 @@ class CreateFrontendScopePermissionRequest extends CreateEntityRequest<FrontendS
                         `Success`
                     ),
                     error: (err) => (
-                        `Problem encountered while adding new role: ${err ? err.toString() : 'Unknown Error'}`
+                        `Problem encountered while adding new scope permissions: ${err ? err.toString() : 'Unknown Error'}`
                     )
                 }
             },
@@ -70,7 +70,7 @@ class UpdateFrontendScopePermissionRequest extends UpdateEntityRequest<FrontendS
                 toasts: {
                     success: (s) => `Success`,
                     // tslint:disable-next-line:max-line-length
-                    error: (err) => `Problem encountered while updating role: ${err ? err.toString() : 'Unknown Error'}`
+                    error: (err) => `Problem encountered while updating scope permissions: ${err ? err.toString() : 'Unknown Error'}`
                 }
             },
             frontendScopePermissionMapRequest
@@ -97,7 +97,7 @@ class CreateOrUpdateFrontendScopePermissionRequest extends CreateOrUpdateEntitie
                 namespace: STATE_KEY,
                 actionName: 'createOrUpdateFrontendScopePermission',
                 toasts: {
-                    error: (err: any) => `Couldn't create/update roles: ${err.message}`
+                    error: (err: any) => `Couldn't create/update scope permissions: ${err.message}`
                 },
                 ...config
             },

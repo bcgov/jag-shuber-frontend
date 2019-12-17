@@ -537,8 +537,16 @@ export default class Client implements API {
         return this._client.UpdateFrontendScope(id, frontendScope) as FrontendScope;
     }
 
-    async deleteFrontendScope(): Promise<FrontendScope> {
-        return {} as FrontendScope;
+    async deleteFrontendScope(frontendScopeId: IdType): Promise<void> {
+        return this._client.DeleteFrontendScope(frontendScopeId);
+    }
+
+    async deleteFrontendScopes(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.DeleteFrontendScope(id));
+        }
+
+        return Promise.resolve();
     }
 
     async getFrontendScopePermissions(): Promise<FrontendScopePermission[]> {
@@ -587,8 +595,16 @@ export default class Client implements API {
         return this._client.UpdateApiScope(id, apiScope) as ApiScope;
     }
 
-    async deleteApiScope(): Promise<ApiScope> {
-        return {} as ApiScope;
+    async deleteApiScope(frontendScopeId: IdType): Promise<void> {
+        return this._client.DeleteApiScope(frontendScopeId);
+    }
+
+    async deleteApiScopes(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.DeleteApiScope(id));
+        }
+
+        return Promise.resolve();
     }
 
     async getRoleFrontendScopes(): Promise<RoleFrontendScope[]> {

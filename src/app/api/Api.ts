@@ -587,6 +587,8 @@ export interface API {
     createFrontendScope(newFrontendScope: Partial<FrontendScope>): Promise<FrontendScope>;
     updateFrontendScope(updatedFrontendScope: FrontendScope): Promise<FrontendScope>;
     getFrontendScopes(): Promise<FrontendScope[]>;
+    deleteFrontendScope(frontendScopeId: IdType): Promise<void>;
+    deleteFrontendScopes(frontendScopeIds: IdType[]): Promise<void>;
 
     getFrontendScopePermission(): Promise<FrontendScopePermission>;
     createFrontendScopePermission(newFrontendScopePermission: Partial<FrontendScopePermission>): Promise<FrontendScopePermission>;
@@ -597,6 +599,8 @@ export interface API {
     createApiScope(newApiScope: Partial<ApiScope>): Promise<ApiScope>;
     updateApiScope(updatedApiScope: ApiScope): Promise<ApiScope>;
     getApiScopes(): Promise<ApiScope[]>;
+    deleteApiScope(apiScopeId: IdType): Promise<void>;
+    deleteApiScopes(apiScopeIds: IdType[]): Promise<void>;
 
     getRoleFrontendScope(): Promise<RoleFrontendScope>;
     createRoleFrontendScope(newRoleFrontendScope: Partial<RoleFrontendScope>): Promise<RoleFrontendScope>;
