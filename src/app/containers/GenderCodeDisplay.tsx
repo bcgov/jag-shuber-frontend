@@ -21,7 +21,7 @@ class GenderCodeDisplay extends React.PureComponent<
         const { genderCode } = this.props;
         const displayValue = genderCode ? genderCode.description : '-';
         return (
-            displayValue
+            <span className="table-cell-text">{displayValue}</span>
         );
     }
 }
