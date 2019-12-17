@@ -11,10 +11,12 @@ import LeaveSubCodeDisplay from '../../containers/LeaveSubCodeDisplay';
 
 const LeaveSubCodeColumn = (isPersonal: boolean, options?: Types.FieldColumnOptions): Types.TableColumnCell => {
     const colStyle = (options && options.colStyle) ? options.colStyle : {};
+    const filterable = (options && options.filterable) ? options.filterable : false;
 
     return {
         title: 'Type',
         colStyle: colStyle,
+        filterable: filterable,
         FormRenderer: ({ fieldInstanceName }) => (
             <Field
                 name={`${fieldInstanceName}.leaveSubCode`}

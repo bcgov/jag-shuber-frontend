@@ -59,14 +59,15 @@ export default class AdminCourtroomsGrid extends FormContainerBase<AdminCourtroo
                     title={''} // Leave this blank
                     buttonLabel={'Add Courtroom'}
                     columns={[
-                        DataTable.SelectorFieldColumn('Location', { fieldName: 'locationId', displayInfo: true }),
-                        DataTable.TextFieldColumn('Courtroom Name', { fieldName: 'name', displayInfo: true }),
-                        DataTable.TextFieldColumn(' Courtroom Code', { fieldName: 'code', displayInfo: true }),
+                        DataTable.SelectorFieldColumn('Location', { fieldName: 'locationId', displayInfo: true, filterable: true }),
+                        DataTable.TextFieldColumn('Courtroom Name', { fieldName: 'name', displayInfo: true, filterable: true }),
+                        DataTable.TextFieldColumn(' Courtroom Code', { fieldName: 'code', displayInfo: true, filterable: false }),
                         DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: true }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
-                        DataTable.SelectorFieldColumn('Status', { displayInfo: true }),
+                        DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
 
                     ]}
+                    filterable={true}
                     expandable={false}
                     // expandedRows={[1, 2]}
                     rowComponent={EmptyDetailRow}

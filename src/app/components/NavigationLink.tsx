@@ -25,7 +25,7 @@ class NavigationLink extends React.Component<NavigationLinkProps, {}> {
     }
 
     render() {
-        const { path, exactMatch = false, label } = this.props;
+        const { path, exactMatch = false, label, children } = this.props;
 
         return (
             <Route
@@ -42,6 +42,7 @@ class NavigationLink extends React.Component<NavigationLinkProps, {}> {
                                     onClick={(e) => this.handleClick(e)}
                                 >
                                     {label}
+                                    {children}
                                 </Link>}
                         />
                     );

@@ -16,10 +16,12 @@ const TextAreaColumn = (label?: string, options?: Types.FieldColumnOptions): Typ
     const fieldName = (options && options.fieldName) ? options.fieldName : 'textAreaField';
     const displayInfo = (options && options.displayInfo) ? options.displayInfo : false;
     const colStyle = (options && options.colStyle) ? options.colStyle : {};
+    const filterable = (options && options.filterable) ? options.filterable : false;
 
     return {
         title: label,
         colStyle: colStyle,
+        filterable: filterable,
         FormRenderer: ({ fieldInstanceName }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Field

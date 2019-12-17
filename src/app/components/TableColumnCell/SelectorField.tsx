@@ -15,11 +15,13 @@ const SelectorFieldColumn = (label?: string, options?: Types.FieldColumnOptions)
     const displayInfo = (options && options.displayInfo) ? options.displayInfo : false;
     const disabled = (options && options.disabled) ? options.disabled : false; // TODO: Merge disabled and atttributes?
     const colStyle = (options && options.colStyle) ? options.colStyle : {};
+    const filterable = (options && options.filterable) ? options.filterable : false;
     const SelectorComponent = (options && options.selectorComponent) ? options.selectorComponent : Selector;
 
     return {
         title: label,
         colStyle: colStyle,
+        filterable: filterable,
         FormRenderer: ({ fieldInstanceName }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Field

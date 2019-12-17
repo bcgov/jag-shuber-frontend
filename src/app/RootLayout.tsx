@@ -30,6 +30,7 @@ import AuditPage from './pages/Audit';
 import AssignmentPage from './pages/Assignments';
 import DefaultAssignmentsPage from './pages/DefaultAssignments';
 import DutyRosterPage from './pages/DutyRoster';
+import ManageCourtroomsPage from './pages/ManageCourtrooms';
 import ManageCodesPage from './pages/ManageCodes';
 import ManageComponentsPage from './pages/ManageComponents';
 import ManageApisPage from './pages/ManageApis';
@@ -133,6 +134,7 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
               <Route path={Navigation.Routes.schedule.distribute.path} component={PublishSchedulePage} />
               <Route path={Navigation.Routes.dutyRoster.setup.path} component={DefaultAssignmentsPage} />
               <Route path={Navigation.Routes.assignment.path} component={AssignmentPage} />
+              <Route path={Navigation.Routes.courtrooms.path} component={ManageCourtroomsPage} />
               <Route path={Navigation.Routes.team.path} component={ManageSheriffsPage} />
               <Route path={Navigation.Routes.team.children.roles.path} component={ManageRolesPage} />
               <Route path={Navigation.Routes.team.children.users.path} component={ManageUsersPage} />
