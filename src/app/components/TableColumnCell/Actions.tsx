@@ -46,7 +46,7 @@ const ActionsColumn = (options?: Types.FieldColumnOptions): Types.TableColumnCel
                 (
                     <>
                         <Button bsStyle="warning">
-                            <Glyphicon glyph="time" /> Expire
+                            <Glyphicon glyph="time" />
                         </Button>
                         &nbsp;
                         {/* TODO:
@@ -58,7 +58,7 @@ const ActionsColumn = (options?: Types.FieldColumnOptions): Types.TableColumnCel
                         </Button>
                         &nbsp;*/}
                         <Button bsStyle={'danger'} onClick={() => fields.remove(index)}>
-                            <Glyphicon glyph="trash" /> Delete
+                            <Glyphicon glyph="trash" />
                         </Button>
                     </>
                 )
