@@ -71,6 +71,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
 
     static MappedTextColumn = CellTypes.MappedText;
     static StaticTextColumn = CellTypes.StaticText;
+    static StaticDateColumn = CellTypes.StaticDate;
     static TextFieldColumn = CellTypes.TextField;
     static TextAreaColumn = CellTypes.TextArea;
     static SelectorFieldColumn = CellTypes.SelectorField;
