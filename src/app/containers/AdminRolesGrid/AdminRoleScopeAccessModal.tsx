@@ -59,12 +59,6 @@ export default class AdminRoleScopeAccessModal extends React.Component<AdminRole
                                         <Glyphicon glyph="info-sign" />
                                     </div>
                                 </div>
-                                {/* TODO: Delete? This shouldn't be needed here */}
-                                {/*<div style={{ display: 'flex', alignItems: 'center' }}>
-                                    <Button>
-                                        <Glyphicon glyph="plus" /> Add Permission
-                                    </Button>`
-                                </div>*/}
                             </div>
                             {parentModelId && (
                             <DataTable

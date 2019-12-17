@@ -378,7 +378,6 @@ export interface AssignmentScheduleItem {
 }
 
 // Users, roles & permissions
-// TODO: What fields should be required?
 export interface User {
     id?: IdType;
     displayName?: string;
@@ -392,7 +391,6 @@ export interface User {
     revisionCount?: number;
 }
 
-// TODO: What fields should be required?
 export interface Role {
     id: IdType;
     roleName?: string;
@@ -405,7 +403,7 @@ export interface Role {
     updatedDtm?: string;
     revisionCount?: number;
 }
-// TODO: What fields should be required?
+
 export interface UserRole {
     id?: IdType;
     userId?: IdType;
@@ -420,7 +418,6 @@ export interface UserRole {
     revisionCount?: number;
 }
 
-// TODO: What fields should be required?
 export interface ApiScope {
     id?: IdType;
     apiScopeId?: string;
@@ -474,7 +471,6 @@ export interface RoleApiScope {
     revisionCount?: number;
 }
 
-// TODO: What fields should be required?
 export interface RoleFrontendScope {
     id?: IdType;
     roleFrontendScopeId?: string;
@@ -492,7 +488,6 @@ type RoleScope = RoleApiScope | RoleFrontendScope;
 /**
  * Scoped access to API routes.
  */
-// TODO: What fields should be required?
 export interface RolePermission {
     id?: IdType;
     rolePermissionId?: string;

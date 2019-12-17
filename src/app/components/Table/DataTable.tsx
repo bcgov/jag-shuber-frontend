@@ -37,6 +37,7 @@ export interface DataTableProps {
     title: React.ReactNode;
     buttonLabel?: React.ReactNode; // TODO... a hash of values maybe :)
     fieldName: string;
+    actions?: CellTypes.Types.TableColumnCell[];
     columns: CellTypes.Types.TableColumnCell[];
     displayHeaderActions?: boolean;
     displayHeaderSave?: boolean;
@@ -275,7 +276,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                                         ? actionsColumn.CanceledRender
                                                         : actionsColumn.FormRenderer;
 
-                                                    // TODO: Make this use a class
+                                                    // TODO: Make this use a class?
                                                     // Flex align end to make sure buttons are right-aligned
                                                     return (
                                                         <td style={{ display: 'flex', justifyContent: 'flex-end' }}>
@@ -295,7 +296,6 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                                 <td>{/* Nest the Table for sub-rows */}</td>
                                                 {/* tslint:disable-next-line:max-line-length */}
                                                 <td style={{ margin: '0', padding: '0' }} colSpan={expandable ? columns.length + 1 : columns.length}>
-                                                    {/* TODO: How to ensure fieldModel has an ID? Probably not a real concern... just double check later */}
                                                     <RowComponent parentModel={fieldModel} parentModelId={fieldModel.id} />
                                                 </td>
                                             </tr>

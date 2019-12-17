@@ -12,10 +12,7 @@ import * as userRoleRequests from './requests/userRoles';
 import {
     MapType,
     RoleMap,
-    IdType,
-    LEAVE_CODE_PERSONAL,
-    // LEAVE_CODE_TRAINING, // TODO: Remove this
-    // DateType
+    IdType
 } from '../../api/Api';
 import mapToArray from '../../infrastructure/mapToArray';
 import { ErrorMap } from '../sheriffs/common';

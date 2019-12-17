@@ -25,7 +25,6 @@ class CourtroomMapRequest extends GetEntityMapRequest<void, Courtroom, Assignmen
     }
 
     // TODO: Maybe courtrooms and courtRoles should be pulled out into RootState?
-
 }
 
 export const courtroomMapRequest = new CourtroomMapRequest();
@@ -72,7 +71,6 @@ class DeleteCourtroomsRequest extends RequestAction<IdType[], IdType[], Assignme
         return request;
     }
 
-    // TODO: How does this all work?
     setRequestData(moduleState: AssignmentModuleState, courtroomIds: IdType[]) {
         const newMap = { ...courtroomMapRequest.getRequestData(moduleState) };
         courtroomIds.forEach(id => delete newMap[id]);

@@ -186,7 +186,6 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                     initialValue={{
                         roleId: parentModelId
                     }}
-                    // TODO: Maybe there's a more elegant way to pass the props to the component... provide a component instance instead?
                     modalProps={{ roleId: parentModelId }}
                     modalComponent={AdminRoleScopeAccessModal}
                 />
@@ -243,7 +242,6 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
         );
     }
 
-    // TODO: Figure out why Fragments aren't working...
     DisplayComponent = (props: FormContainerProps<AdminRolesDisplayProps>) => (
         <div>
             {/*<Alert>No roles exist</Alert>*/}
@@ -255,7 +253,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
         return undefined;
     }
 
-    // TODO: Not sure if this should be roleId or what, I'm not there yet...
+    // TODO: Remove roleId from abstract class?
     fetchData(roleId: IdType, dispatch: Dispatch<{}>) {
         dispatch(getRoles()); // This data needs to always be available for select lists
         dispatch(getFrontendScopes()); // This data needs to always be available for select lists

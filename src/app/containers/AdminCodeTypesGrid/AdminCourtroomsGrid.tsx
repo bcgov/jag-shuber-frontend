@@ -82,7 +82,6 @@ export default class AdminCourtroomsGrid extends FormContainerBase<AdminCourtroo
         );
     }
 
-    // TODO: Figure out why Fragments aren't working...
     DisplayComponent = (props: FormContainerProps<AdminCourtroomsDisplayProps>) => (
         <div>
             {/*<Alert>No roles exist</Alert>*/}
@@ -94,13 +93,12 @@ export default class AdminCourtroomsGrid extends FormContainerBase<AdminCourtroo
         return undefined;
     }
 
-    // TODO: Not sure if this should be typeId or what, I'm not there yet...
+    // TODO: Remove typeId from abstract
     fetchData(typeId: IdType, dispatch: Dispatch<{}>) {
         dispatch(getCourtrooms()); // This data needs to always be available for select lists
     }
 
     getData(typeId: IdType, state: RootState) {
-        // TODO: Depending on component state, some of these calls will need to be filtered!
         const courtrooms = getAllCourtrooms(state) || undefined;
 
         return {
@@ -116,7 +114,6 @@ export default class AdminCourtroomsGrid extends FormContainerBase<AdminCourtroo
     mapDeletesFromFormValues(map: any) {
         const deletedCourtroomIds: IdType[] = [];
 
-        // TODO: This isn't going to work...
         if (map.courtrooms) {
             const initialValues = map.courtrooms.initialValues;
             const existingIds = map.courtrooms.values.map((val: any) => val.id);

@@ -78,7 +78,6 @@ export default class AdminTrainingTypesGrid extends FormContainerBase<AdminTrain
         );
     }
 
-    // TODO: Figure out why Fragments aren't working...
     DisplayComponent = (props: FormContainerProps<AdminTrainingTypesDisplayProps>) => (
         <div>
             {/*<Alert>No leaves exist</Alert>*/}
@@ -90,7 +89,7 @@ export default class AdminTrainingTypesGrid extends FormContainerBase<AdminTrain
         return undefined;
     }
 
-    // TODO: Not sure if this should be typeId or what, I'm not there yet...
+    // TODO: Remove typeId from abstract?
     fetchData(typeId: IdType, dispatch: Dispatch<{}>) {
         dispatch(getLeaveSubCodes()); // This data needs to always be available for select lists
     }
