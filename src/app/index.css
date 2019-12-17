@@ -180,3 +180,12 @@ body {
   font-weight: normal;
 }
 
+/* Filter icons */
+th .glyphicon-filter {
+    position: relative;
+    left: -23px;
+    top: 2px;
+    color: grey;
+    cursor: pointer;
+}
+

@@ -198,6 +198,9 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                                             />}
                                                             label={(col.title) ? col.title.toString() : ''}
                                                         />
+                                                        <div className="form-group" style={{ marginLeft: '0.5rem' }}>
+                                                            <Glyphicon glyph="filter" />{/* TODO: Change this to 'ban' icon if filter is set */}
+                                                        </div>
                                                     </div>
                                                 )}
                                             </th>

@@ -121,7 +121,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                 title={''} // Leave this blank
                 buttonLabel={'Assign New Role'}
                 columns={[
-                    DataTable.SelectorFieldColumn('User Role', { fieldName: 'id', colStyle: { width: '300px' }, selectorComponent: RoleSelector, displayInfo: true }),
+                    DataTable.SelectorFieldColumn('User Role', { fieldName: 'id', colStyle: { width: '350px' }, selectorComponent: RoleSelector, displayInfo: true }),
                     // DataTable.StaticTextColumn('Description', { fieldName: 'description', colStyle: { width: '350px' }, displayInfo: false }),
                     // DataTable.StaticTextColumn('Role Code', { fieldName: 'roleCode', colStyle: { width: '180px' }, displayInfo: false }),
                     DataTable.DateColumn('Effective Date', 'effectiveDate', { colStyle: { width: '150px'}, displayInfo: true }),
@@ -148,13 +148,13 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                     title={''} // Leave this blank
                     buttonLabel={'Add User'}
                     columns={[
-                        DataTable.StaticTextColumn('Full Name', { fieldName: 'firstName', colStyle: { width: '150px' }, displayInfo: false, filterable: true }),
-                        DataTable.StaticTextColumn('', { fieldName: 'lastName', colStyle: { width: '150px' }, displayInfo: false }),
-                        DataTable.StaticTextColumn('Badge No.', { fieldName: 'badgeNo', colStyle: { width: '175px' }, displayInfo: false }),
+                        DataTable.StaticTextColumn('First Name', { fieldName: 'firstName', colStyle: { width: '175px' }, displayInfo: false, filterable: true }),
+                        DataTable.StaticTextColumn('Last Name', { fieldName: 'lastName', colStyle: { width: '175px' }, displayInfo: false, filterable: true }),
+                        DataTable.StaticTextColumn('Badge No.', { fieldName: 'badgeNo', colStyle: { width: '175px' }, displayInfo: false, filterable: true }),
                         DataTable.StaticTextColumn('Rank', { fieldName: 'rankCode', colStyle: { width: '175px' }, displayInfo: false, filterable: true }),
                         DataTable.StaticTextColumn('Gender', { fieldName: 'genderCode', colStyle: { width: '175px' }, displayInfo: false, filterable: true }),
                         DataTable.MappedTextColumn('Home Location', { fieldName: 'homeLocationId', colStyle: { width: '225px' }, selectorComponent: LocationDisplay, displayInfo: false, filterable: true }),
-                        DataTable.MappedTextColumn('Current Location', { fieldName: 'currentLocationId', colStyle: { width: '225px' }, selectorComponent: LocationDisplay, displayInfo: false, filterable: true }),
+                        DataTable.MappedTextColumn('Current Location', { fieldName: 'currentLocationId', colStyle: { width: '250px' }, selectorComponent: LocationDisplay, displayInfo: false, filterable: true }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
                         // DataTable.SelectorFieldColumn('Status', { displayInfo: true }), // No point really in setting the status here
 
