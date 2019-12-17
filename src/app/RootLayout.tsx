@@ -35,6 +35,7 @@ import ManageCodesPage from './pages/ManageCodes';
 import ManageComponentsPage from './pages/ManageComponents';
 import ManageApisPage from './pages/ManageApis';
 import ManageRolesPage from './pages/ManageRoles';
+import ManageUserRolesPage from './pages/ManageUserRoles';
 import ManageSheriffsPage from './pages/ManageSheriffs';
 import ManageUsersPage from './pages/ManageUsers';
 import SchedulingPage from './pages/Scheduling';
@@ -138,6 +139,7 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
               <Route path={Navigation.Routes.team.path} component={ManageSheriffsPage} />
               <Route path={Navigation.Routes.team.children.roles.path} component={ManageRolesPage} />
               <Route path={Navigation.Routes.team.children.users.path} component={ManageUsersPage} />
+              <Route path={Navigation.Routes.team.children.userRoles.path} component={ManageUserRolesPage} />
               <Route path={Navigation.Routes.system.children.codes.path} component={ManageCodesPage} />
               <Route path={Navigation.Routes.system.children.components.path} component={ManageComponentsPage} />
               <Route path={Navigation.Routes.audit.path} component={AuditPage} />

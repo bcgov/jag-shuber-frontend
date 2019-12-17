@@ -7,11 +7,11 @@ import AdminForm from '../containers/AdminForm';
 import { AdminFormProps } from '../components/AdminForm/AdminForm';
 
 // Import plugins
-import AdminRolesGridPlugin from '../containers/AdminRolesGrid/AdminRolesGrid';
+import AdminAssignUserRolesPlugin from '../containers/AdminRolesGrid/AdminAssignUserRoles';
 
-export interface ManageRolesProps {}
+export interface ManageUserRolesProps {}
 
-class ManageRoles extends React.PureComponent<AdminFormProps> {
+class ManageUserRoles extends React.PureComponent<AdminFormProps> {
     state = {
       isEditing: true
     };
@@ -49,7 +49,7 @@ class ManageRoles extends React.PureComponent<AdminFormProps> {
                     <AdminForm
                         key={'admin-roles-grid'}
                         plugins={[
-                            new AdminRolesGridPlugin()
+                            new AdminAssignUserRolesPlugin(),
                         ]}
                         isEditing={isEditing}
                     />
@@ -59,4 +59,4 @@ class ManageRoles extends React.PureComponent<AdminFormProps> {
     }
 }
 
-export default ManageRoles;
+export default ManageUserRoles;

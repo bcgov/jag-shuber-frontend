@@ -51,7 +51,11 @@ export default class Navigation extends React.Component<NavigationProps, any> {
                 },
                 roles: {
                     path: '/roles/manage',
-                    label: 'Roles & Access'
+                    label: 'Define Roles & Access'
+                },
+                userRoles: {
+                    path: '/roles/assign',
+                    label: 'Assign User Roles'
                 }
             }
         },
@@ -112,6 +116,7 @@ export default class Navigation extends React.Component<NavigationProps, any> {
                         <NavigationDropDown title={Navigation.Routes.team.label} id="admin_dropdown">
                             <NavigationLink {...Navigation.Routes.team.children.users} />
                             <NavigationLink {...Navigation.Routes.team.children.roles}>&nbsp;<small><Glyphicon glyph="star" /></small></NavigationLink>
+                            <NavigationLink {...Navigation.Routes.team.children.userRoles}>&nbsp;<small><Glyphicon glyph="star" /></small></NavigationLink>
                         </NavigationDropDown>
                         <NavigationDropDown title={Navigation.Routes.system.label} id="system_dropdown">
                             <NavigationLink {...Navigation.Routes.system.children.codes}>&nbsp;<small><Glyphicon glyph="star" /></small></NavigationLink>

@@ -176,7 +176,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                     displayHeaderSave={false}
                     columns={[
                         DataTable.SelectorFieldColumn('Component to Access', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: FrontendScopeSelector, displayInfo: true, disabled: true }),
-                        DataTable.MappedTextColumn('Code', { fieldName: 'scopeId', colStyle: { width: '250px' }, selectorComponent: FrontendScopeCodeDisplay, displayInfo: false }),
+                        DataTable.MappedTextColumn('Code', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: FrontendScopeCodeDisplay, displayInfo: false }),
                         DataTable.MappedTextColumn('Description', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: FrontendScopeDescriptionDisplay, displayInfo: false }),
                         DataTable.StaticTextColumn('Assigned By', { fieldName: 'createdBy', colStyle: { width: '200px' }, displayInfo: false }),
                         DataTable.StaticTextColumn('Date Assigned', { fieldName: 'createdDtm', colStyle: { width: '200px' }, displayInfo: false }),
@@ -198,7 +198,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                     displayHeaderSave={false}
                     columns={[
                         DataTable.SelectorFieldColumn('API Route to Access', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: ApiScopeSelector, displayInfo: true }),
-                        DataTable.MappedTextColumn('Code', { fieldName: 'scopeId', colStyle: { width: '250px' }, selectorComponent: ApiScopeCodeDisplay, displayInfo: false }),
+                        DataTable.MappedTextColumn('Code', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: ApiScopeCodeDisplay, displayInfo: false }),
                         DataTable.MappedTextColumn('Description', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: ApiScopeDescriptionDisplay, displayInfo: false }),
                         DataTable.StaticTextColumn('Assigned By', { fieldName: 'createdBy', colStyle: { width: '200px' }, displayInfo: false }),
                         DataTable.StaticTextColumn('Date Assigned', { fieldName: 'createdDtm', colStyle: { width: '200px' }, displayInfo: false }),
