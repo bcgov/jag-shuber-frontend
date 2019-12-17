@@ -9,8 +9,9 @@ import {
 import { Dispatch } from 'redux';
 
 import {
+    getApiScopes,
     createOrUpdateApiScopes,
-    getApiScopes
+    deleteApiScopes
 } from '../../modules/roles/actions';
 
 import { RootState } from '../../store';
@@ -138,8 +139,32 @@ export default class AdminApiScopesGrid extends FormContainerBase<AdminApiScopes
         };
     }
 
+    mapDeletesFromFormValues(map: any) {
+        const deletedApiScopeIds: IdType[] = [];
+
+        // TODO: This isn't going to work...
+        if (map.apiScopes) {
+            const initialValues = map.apiScopes.initialValues;
+            const existingIds = map.apiScopes.values.map((val: any) => val.id);
+
+            const removeApiScopeIds = initialValues
+                .filter((val: any) => (existingIds.indexOf(val.id) === -1))
+                .map((val: any) => val.id);
+
+            deletedApiScopeIds.push(...removeApiScopeIds);
+        }
+
+        return {
+            apiScopes: deletedApiScopeIds
+        };
+    }
+
     async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any[]> {
         const data: any = this.getDataFromFormValues(formValues, initialValues);
+        const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
+
+        // Delete records before saving new ones!
+        const deletedScopes: IdType[] = dataToDelete.apiScopes as IdType[];
 
         const scopes: Partial<ApiScope>[] = data.apiScopes.map((s: ApiScope) => ({
             ...s,
@@ -154,6 +179,9 @@ export default class AdminApiScopesGrid extends FormContainerBase<AdminApiScopes
             revisionCount: 0 // TODO: Is there entity versioning anywhere in this project???
         }));
 
-        return await dispatch(createOrUpdateApiScopes(scopes, { toasts: {} }));
+        return Promise.all([
+            dispatch(deleteApiScopes(deletedScopes, { toasts: {} })),
+            dispatch(createOrUpdateApiScopes(scopes, { toasts: {} }))
+        ]);
     }
 }

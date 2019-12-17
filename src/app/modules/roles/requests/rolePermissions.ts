@@ -45,7 +45,7 @@ class CreateRolePermissionRequest extends CreateEntityRequest<RolePermission, Ro
                         `Success`
                     ),
                     error: (err) => (
-                        `Problem encountered while adding new role: ${err ? err.toString() : 'Unknown Error'}`
+                        `Problem encountered while adding new role permissions: ${err ? err.toString() : 'Unknown Error'}`
                     )
                 }
             },
@@ -70,7 +70,7 @@ class UpdateRolePermissionsRequest extends UpdateEntityRequest<RolePermission, R
                 toasts: {
                     success: (s) => `Success`,
                     // tslint:disable-next-line:max-line-length
-                    error: (err) => `Problem encountered while updating role: ${err ? err.toString() : 'Unknown Error'}`
+                    error: (err) => `Problem encountered while updating role permissions: ${err ? err.toString() : 'Unknown Error'}`
                 }
             },
             rolePermissionMapRequest
@@ -97,7 +97,7 @@ class CreateOrUpdateRolePermissionsRequest extends CreateOrUpdateEntitiesRequest
                 namespace: STATE_KEY,
                 actionName: 'createOrUpdateRolePermissions',
                 toasts: {
-                    error: (err: any) => `Couldn't create/update roles: ${err.message}`
+                    error: (err: any) => `Couldn't create/update role permissions: ${err.message}`
                 },
                 ...config
             },

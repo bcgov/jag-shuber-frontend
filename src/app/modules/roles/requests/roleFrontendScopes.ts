@@ -49,7 +49,7 @@ class CreateRoleFrontendScopeRequest extends CreateEntityRequest<RoleFrontendSco
                         `Success`
                     ),
                     error: (err) => (
-                        `Problem encountered while adding new role: ${err ? err.toString() : 'Unknown Error'}`
+                        `Problem encountered while adding new role scope: ${err ? err.toString() : 'Unknown Error'}`
                     )
                 }
             },
@@ -74,7 +74,7 @@ class UpdateRoleFrontendScopeRequest extends UpdateEntityRequest<RoleFrontendSco
                 toasts: {
                     success: (s) => `Success`,
                     // tslint:disable-next-line:max-line-length
-                    error: (err) => `Problem encountered while updating role: ${err ? err.toString() : 'Unknown Error'}`
+                    error: (err) => `Problem encountered while updating role scope: ${err ? err.toString() : 'Unknown Error'}`
                 }
             },
             roleFrontendScopeMapRequest
@@ -101,7 +101,7 @@ class CreateOrUpdateRoleFrontendScopeRequest extends CreateOrUpdateEntitiesReque
                 namespace: STATE_KEY,
                 actionName: 'createOrUpdateRoleFrontendScope',
                 toasts: {
-                    error: (err: any) => `Couldn't create/update roles: ${err.message}`
+                    error: (err: any) => `Couldn't create/update role scopes: ${err.message}`
                 },
                 ...config
             },

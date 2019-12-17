@@ -7,13 +7,14 @@ import {
 import {
     ApiScopeMap,
     ApiScope,
-    MapType
+    MapType, IdType
 } from '../../../api/Api';
 import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRequest';
-import { RequestConfig } from '../../../infrastructure/Requests/RequestActionBase';
+import RequestAction, { RequestConfig } from '../../../infrastructure/Requests/RequestActionBase';
 import CreateOrUpdateEntitiesRequest from '../../../infrastructure/Requests/CreateOrUpdateEntitiesRequest';
 import CreateEntityRequest from '../../../infrastructure/Requests/CreateEntityRequest';
 import UpdateEntityRequest from '../../../infrastructure/Requests/UpdateEntityRequest';
+import { frontendScopeMapRequest } from './frontendScopes';
 // import toTitleCase from '../../infrastructure/toTitleCase';
 
 // Get the Map
@@ -45,7 +46,7 @@ class CreateApiScopeRequest extends CreateEntityRequest<ApiScope, RoleModuleStat
                         `Success`
                     ),
                     error: (err) => (
-                        `Problem encountered while adding new role: ${err ? err.toString() : 'Unknown Error'}`
+                        `Problem encountered while adding new role scope: ${err ? err.toString() : 'Unknown Error'}`
                     )
                 }
             },
@@ -70,7 +71,7 @@ class UpdateApiScopeRequest extends UpdateEntityRequest<ApiScope, RoleModuleStat
                 toasts: {
                     success: (s) => `Success`,
                     // tslint:disable-next-line:max-line-length
-                    error: (err) => `Problem encountered while updating role: ${err ? err.toString() : 'Unknown Error'}`
+                    error: (err) => `Problem encountered while updating scope: ${err ? err.toString() : 'Unknown Error'}`
                 }
             },
             apiScopeMapRequest
@@ -97,7 +98,7 @@ class CreateOrUpdateApiScopeRequest extends CreateOrUpdateEntitiesRequest<ApiSco
                 namespace: STATE_KEY,
                 actionName: 'createOrUpdateApiScope',
                 toasts: {
-                    error: (err: any) => `Couldn't create/update roles: ${err.message}`
+                    error: (err: any) => `Couldn't create/update scopes: ${err.message}`
                 },
                 ...config
             },
@@ -107,3 +108,29 @@ class CreateOrUpdateApiScopeRequest extends CreateOrUpdateEntitiesRequest<ApiSco
 }
 
 export const createOrUpdateApiScopeRequest = new CreateOrUpdateApiScopeRequest();
+
+class DeleteApiScopesRequest extends RequestAction<IdType[], IdType[], RoleModuleState> {
+    constructor() {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'deleteApiScopes',
+            toasts: {
+                success: (ids) => `${ids.length} scopes(s) deleted`,
+                error: (err) => `Problem encountered while deleting scopes: ${err ? err.toString() : 'Unknown Error'}`
+            }
+        });
+    }
+    public async doWork(request: IdType[], { api }: ThunkExtra): Promise<IdType[]> {
+        await api.deleteApiScopes(request);
+        return request;
+    }
+
+    // TODO: How does this all work?
+    setRequestData(moduleState: RoleModuleState, courtroomIds: IdType[]) {
+        const newMap = { ...frontendScopeMapRequest.getRequestData(moduleState) };
+        courtroomIds.forEach(id => delete newMap[id]);
+        return frontendScopeMapRequest.setRequestData(moduleState, newMap);
+    }
+}
+
+export const deleteApiScopesRequest = new DeleteApiScopesRequest();
