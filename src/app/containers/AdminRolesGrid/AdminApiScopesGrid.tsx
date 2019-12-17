@@ -94,7 +94,7 @@ export default class AdminApiScopesGrid extends FormContainerBase<AdminApiScopes
                 <DataTable
                     fieldName={this.formFieldNames.apiScopes}
                     title={''} // Leave this blank
-                    buttonLabel={'Add API Endpoint'}
+                    buttonLabel={'Add Endpoint'}
                     displayHeaderActions={true}
                     columns={[
                         DataTable.TextFieldColumn('API Endpoint', { fieldName: 'scopeName', displayInfo: true, disabled: true }),
