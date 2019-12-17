@@ -38,7 +38,7 @@ body {
   position:absolute;
   width:120px;
   z-index: 100;
-  margin:5px 15px;  
+  margin:5px 15px;
 }
 
 #header-main .logo img{
@@ -65,7 +65,7 @@ body {
 
   .navbar{
     margin-left:150px;
-    margin-right:5px; 
+    margin-right:5px;
   }
 }
 
@@ -103,7 +103,7 @@ body {
 }
 
 .unselectable{
-  -webkit-user-select: none; /* Safari */        
+  -webkit-user-select: none; /* Safari */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE10+/Edge */
   user-select: none; /* Standard */
@@ -151,7 +151,7 @@ body {
 
 .toolbar-calendar-control {
   text-align: center;
-  display: flex; 
+  display: flex;
   background-color: #327AB7;
   margin-top: 10px;
 }
@@ -161,11 +161,22 @@ body {
   margin-right: 3px;
 }
 
-.warning-message { 
+.warning-message {
   color: #e67e00;
   font-size: 16px;
   padding: 10px;
   background-color: #ffe8cc;
   border-radius: 5px;
+}
+
+/* TODO: Move this somewhere appropriate */
+.form-group {
+  width: 100%;
+}
+
+/* TODO: For some reason table header columns bold the text and set the width of inputs differently */
+.form-control {
+  width: auto;
+  font-weight: normal;
 }
 

@@ -188,15 +188,17 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                         {columns.map((col, colIndex) => (
                                             <th className="text-left" key={colIndex} style={col.colStyle}>
                                                 {col.filterable && (
-                                                    <Field
-                                                        // TODO: Wire this up, just hack in a quick randomizer to make sure filters aren't all linked to each other for the demo
-                                                        name={`fieldName_${Math.random().toString()}`}
-                                                        component={(p) => <TextField
-                                                            {...p}
-                                                            showLabel={false}
-                                                        />}
-                                                        label={(col.title) ? col.title.toString() : ''}
-                                                    />
+                                                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                                                        <Field
+                                                            // TODO: Wire this up, just hack in a quick randomizer to make sure filters aren't all linked to each other for the demo
+                                                            name={`fieldName_${Math.random().toString()}`}
+                                                            component={(p) => <TextField
+                                                                {...p}
+                                                                showLabel={false}
+                                                            />}
+                                                            label={(col.title) ? col.title.toString() : ''}
+                                                        />
+                                                    </div>
                                                 )}
                                             </th>
                                         ))}
