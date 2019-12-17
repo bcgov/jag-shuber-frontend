@@ -161,7 +161,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                     {displayActionsColumn && (
                                         <th
                                             style={{
-                                                width: '300px'
+                                                width: '220px'
                                             }}
                                         >
                                             {displayHeaderActions && (
