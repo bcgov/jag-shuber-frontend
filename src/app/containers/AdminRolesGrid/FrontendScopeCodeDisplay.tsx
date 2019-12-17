@@ -34,12 +34,12 @@ class FrontendScopeCodeDisplay extends React.PureComponent<
 
             if (match) {
                 return (
-                    <h6 className="table-cell-text">{match.value}</h6>
+                    <span className="table-cell-text">{match.value}</span>
                 );
             }
         }
 
-        return <h6>Not Specified</h6>;
+        return <span className="table-cell-text">Not Specified</span>;
     }
 }
 

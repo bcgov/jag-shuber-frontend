@@ -22,7 +22,7 @@ const StaticTextColumn = (label?: string, options?: Types.FieldColumnOptions): T
                 <Field
                     // TODO: Pass in field name as prop or whatever
                     name={`${fieldInstanceName}.${fieldName}`}
-                    component={(p) => <h6 className="table-cell-text">{p.input.value}</h6>}
+                    component={(p) => <span className="table-cell-text">{p.input.value}</span>}
                 />
                 {/* This wrapper just adds equal spacing to the previous form group */}
                 {/* TODO: We need spacing utils */}
