@@ -25,6 +25,7 @@ import {
 
 import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../components/Table/DataTable';
 import { AdminCourtroomsProps } from './AdminCourtroomsGrid';
+import LocationSelector from '../LocationSelector';
 
 export interface AdminCourtroomsProps extends FormContainerProps {
     courtrooms?: any[];
@@ -59,10 +60,10 @@ export default class AdminCourtroomsGrid extends FormContainerBase<AdminCourtroo
                     title={''} // Leave this blank
                     buttonLabel={'Add Courtroom'}
                     columns={[
-                        DataTable.SelectorFieldColumn('Location', { fieldName: 'locationId', displayInfo: true, filterable: true }),
-                        DataTable.TextFieldColumn('Courtroom', { fieldName: 'name', displayInfo: true, filterable: true }),
+                        DataTable.SelectorFieldColumn('Location', { fieldName: 'locationId', selectorComponent: LocationSelector, displayInfo: false, filterable: true }),
+                        DataTable.TextFieldColumn('Courtroom', { fieldName: 'name', displayInfo: false, filterable: true }),
                         DataTable.TextFieldColumn(' Courtroom Code', { fieldName: 'code', displayInfo: true, filterable: false }),
-                        DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: true }),
+                        DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
                         DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
 

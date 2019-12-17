@@ -30,7 +30,7 @@ export default class AdminRoleScopeAccessModal extends React.Component<AdminRole
             <div>
                 <ModalWrapper
                     // TODO: Are these modal sizes responsive?
-                    styleClassName="modal-wrapper-small"
+                    styleClassName="modal-wrapper-medium"
                     showButton={() => null}
                     isOpen={isOpen}
                     title={title}
@@ -70,6 +70,7 @@ export default class AdminRoleScopeAccessModal extends React.Component<AdminRole
                             <DataTable
                                 fieldName={`roles.frontendScopePermissionsGrouped['${parentModel.scopeId}']`}
                                 title={''} // Leave this blank
+                                displayHeaderActions={false}
                                 displayActionsColumn={false}
                                 columns={[
                                     DataTable.StaticTextColumn('Permission', { fieldName: 'displayName', displayInfo: false }),

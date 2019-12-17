@@ -92,7 +92,7 @@ export default class Navigation extends React.Component<NavigationProps, any> {
                 </span>
 
 
-                <Navbar staticTop={true} fluid={true} style={{ borderRadius: 4 }}>
+                <Navbar staticTop={true} fluid={true} style={{ borderRadius: 4, maxWidth: '84.5%' }}>
                     <Navbar.Header color="#003366">
                         <NavbarBrand color="#003366">
                             Sheriff Scheduling System
