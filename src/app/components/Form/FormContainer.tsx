@@ -101,6 +101,8 @@ export abstract class FormContainerBase<T = any> implements FormContainer<T> {
 
         let map: any = {};
 
+        // TODO: Use value, instead of key - redux-form is bound using the value
+        // We can check the path using containsPropertyPath which is on this class
         const formKeys = Object.keys(this.formFieldNames);
         formKeys.forEach(key => {
             let isDirty = false;

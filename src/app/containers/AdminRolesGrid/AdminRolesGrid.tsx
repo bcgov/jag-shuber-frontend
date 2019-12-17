@@ -305,13 +305,10 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
     }
 
     mapDeletesFromFormValues(map: any) {
-        console.log('mapped deletes');
-
         const deletedRoleIds: IdType[] = [];
         const deletedRoleFrontendScopeIds: IdType[] = [];
         const deletedRoleApiScopeIds: IdType[] = [];
 
-        // TODO: This isn't going to work...
         if (map.roles) {
             const initialValues = map.roles.initialValues;
             const existingIds = map.roles.values.map((val: any) => val.id);

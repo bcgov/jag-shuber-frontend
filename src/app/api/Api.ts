@@ -554,7 +554,13 @@ export interface API {
     getLeaveSubCodes(): Promise<LeaveSubCode[]>;
     getLeaveCancelCodes(): Promise<LeaveCancelCode[]>;
 
+    // Courtrooms
     getCourtrooms(): Promise<Courtroom[]>;
+    createCourtroom(newCourtroom: Partial<Courtroom>): Promise<Courtroom>;
+    updateCourtroom(updatedCourtroom: Partial<Courtroom>): Promise<Courtroom>;
+    deleteCourtroom(courtroomId: IdType): Promise<void>;
+    deleteCourtrooms(courtroomIds: IdType[]): Promise<void>;
+
     getEscortRuns(): Promise<EscortRun[]>;
     getJailRoles(): Promise<JailRole[]>;
     getAlternateAssignmentTypes(): Promise<AlternateAssignment[]>;
@@ -596,14 +602,14 @@ export interface API {
     createRoleFrontendScope(newRoleFrontendScope: Partial<RoleFrontendScope>): Promise<RoleFrontendScope>;
     updateRoleFrontendScope(updatedRoleFrontendScope: RoleFrontendScope): Promise<RoleFrontendScope>;
     getRoleFrontendScopes(): Promise<RoleFrontendScope[]>;
-    deleteRoleFrontendScope(roleFrontendScopeIds: IdType): Promise<RoleFrontendScope>;
+    deleteRoleFrontendScope(roleFrontendScopeIds: IdType): Promise<void>;
     deleteRoleFrontendScopes(roleFrontendScopeIds: IdType[]): Promise<void>;
 
     getRoleApiScope(): Promise<RoleApiScope>;
     createRoleApiScope(newRoleApiScope: Partial<RoleApiScope>): Promise<RoleApiScope>;
     updateRoleApiScope(updatedRoleApiScope: RoleApiScope): Promise<RoleApiScope>;
     getRoleApiScopes(): Promise<RoleApiScope[]>;
-    deleteRoleApiScope(roleApiScopeId: IdType): Promise<RoleApiScope>;
+    deleteRoleApiScope(roleApiScopeId: IdType): Promise<void>;
     deleteRoleApiScopes(roleApiScopeIds: IdType[]): Promise<void>;
 
     getUserRole(): Promise<UserRole>;

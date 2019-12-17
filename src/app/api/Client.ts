@@ -388,6 +388,34 @@ export default class Client implements API {
         return list as Courtroom[];
     }
 
+    async createCourtroom(courtroom: Partial<Courtroom>): Promise<Courtroom> {
+        return await this._client.CreateCourtroom(courtroom) as Courtroom;
+    }
+
+    async updateCourtroom(courtroom: Partial<Courtroom>): Promise<Courtroom> {
+        const { id } = courtroom;
+        if (!id) {
+            throw 'No Id included in the courtroom to update';
+        }
+        return await this._client.UpdateCourtroom(id, courtroom) as Courtroom;
+    }
+
+    async deleteCourtroom(courtroomId: string): Promise<void> {
+        return await this._client.DeleteCourtroom(courtroomId);
+    }
+
+    /**
+     * TODO: We need a proper endpoint to deal with this this loop isn't gonna do it...
+     * @param ids
+     */
+    async deleteCourtrooms(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.DeleteCourtroom(id));
+        }
+
+        return Promise.resolve()
+    }
+
     async getEscortRuns(): Promise<EscortRun[]> {
         const list = await this._client.GetEscortRuns(this.currentLocation);
         return list as EscortRun[];
@@ -584,8 +612,8 @@ export default class Client implements API {
         return await this._client.UpdateRoleFrontendScope(id, roleScope) as RoleFrontendScope;
     }
 
-    async deleteRoleFrontendScope(): Promise<RoleFrontendScope> {
-        return {} as RoleFrontendScope;
+    async deleteRoleFrontendScope(roleScopeId: IdType): Promise<void> {
+        return await this._client.DeleteRoleFrontendScope(roleScopeId);
     }
 
     /**
@@ -621,8 +649,8 @@ export default class Client implements API {
         return await this._client.UpdateRoleFrontendScope(id, roleScope) as RoleApiScope;
     }
 
-    async deleteRoleApiScope(): Promise<RoleApiScope> {
-        return {} as RoleApiScope;
+    async deleteRoleApiScope(roleScopeId: IdType): Promise<void> {
+        return await this._client.DeleteRoleApiScope(roleScopeId);
     }
 
     /**
