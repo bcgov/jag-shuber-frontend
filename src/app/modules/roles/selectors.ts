@@ -33,7 +33,8 @@ export const getRoles = createSelector(
 
 export const getAllRoles = (state: RootState) => {
     if (state) {
-        return getRoles(state);
+        return getRoles(state).sort((a: any, b: any) =>
+            (a.roleName < b.roleName) ? -1 : (a.roleName > b.roleName) ? 1 : 0);
     }
     return undefined;
 };
@@ -56,7 +57,8 @@ export const getFrontendScopes = createSelector(
 
 export const getAllFrontendScopes = (state: RootState) => {
     if (state) {
-        return getFrontendScopes(state);
+        return getFrontendScopes(state).sort((a: any, b: any) =>
+            (a.scopeName < b.scopeName) ? -1 : (a.scopeName > b.scopeName) ? 1 : 0);
     }
     return undefined;
 };
@@ -107,7 +109,8 @@ export const getApiScopes = createSelector(
 
 export const getAllApiScopes = (state: RootState) => {
     if (state) {
-        return getApiScopes(state);
+        return getApiScopes(state).sort((a: any, b: any) =>
+            (a.scopeName < b.scopeName) ? -1 : (a.scopeName > b.scopeName) ? 1 : 0);
     }
     return undefined;
 };
