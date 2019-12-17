@@ -121,11 +121,13 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                 title={''} // Leave this blank
                 buttonLabel={'Assign New Role'}
                 columns={[
-                    DataTable.SelectorFieldColumn('Role Name', { fieldName: 'id', selectorComponent: RoleSelector, displayInfo: true }),
-                    DataTable.StaticTextColumn('Role Code', { fieldName: 'roleCode', displayInfo: false }),
-                    DataTable.StaticTextColumn('Description', { fieldName: 'description', displayInfo: false }),
+                    DataTable.SelectorFieldColumn('Role Name', { fieldName: 'id', colStyle: { width: '325px' }, selectorComponent: RoleSelector, displayInfo: true }),
+                    DataTable.StaticTextColumn('Role Code', { fieldName: 'roleCode', colStyle: { width: '225px' }, displayInfo: false }),
+                    DataTable.StaticTextColumn('Description', { fieldName: 'description', colStyle: { width: '300px' }, displayInfo: false }),
                     // DataTable.DateColumn('Date Created', 'createdDtm'),
-                    DataTable.SelectorFieldColumn('Status', { displayInfo: true }),
+                    DataTable.DateColumn('Effective Date', 'effectiveDate', { colStyle: { width: '275px'}, displayInfo: true }),
+                    DataTable.DateColumn('Expiry Date', 'expiryDate', { colStyle: { width: '250px'}, displayInfo: true }),
+                    // DataTable.SelectorFieldColumn('Status', { displayInfo: true }),
                 ]}
                 expandable={false}
                 rowComponent={EmptyDetailRow}
@@ -143,11 +145,13 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                     title={''} // Leave this blank
                     buttonLabel={'Add User'}
                     columns={[
-                        DataTable.StaticTextColumn('First Name', { fieldName: 'firstName', displayInfo: false }),
-                        DataTable.StaticTextColumn('Last Name', { fieldName: 'lastName', displayInfo: false }),
-                        DataTable.StaticTextColumn('Badge No.', { fieldName: 'badgeNo', displayInfo: false }),
-                        DataTable.MappedTextColumn('Location', { fieldName: 'homeLocationId', selectorComponent: LocationDisplay, displayInfo: false }),
-                        DataTable.StaticTextColumn('Rank', { fieldName: 'rankCode', displayInfo: false }),
+                        DataTable.StaticTextColumn('Full Name', { fieldName: 'firstName', colStyle: { width: '150px' }, displayInfo: false }),
+                        DataTable.StaticTextColumn('', { fieldName: 'lastName', colStyle: { width: '150px' }, displayInfo: false }),
+                        DataTable.StaticTextColumn('Badge No.', { fieldName: 'badgeNo', colStyle: { width: '200px' }, displayInfo: false }),
+                        DataTable.StaticTextColumn('Rank', { fieldName: 'rankCode', colStyle: { width: '260px' }, displayInfo: false }),
+                        DataTable.MappedTextColumn('Home Location', { fieldName: 'homeLocationId', colStyle: { width: '250px' }, selectorComponent: LocationDisplay, displayInfo: false }),
+                        DataTable.MappedTextColumn('Current Location', { fieldName: 'currentLocationId', colStyle: { width: '250px' }, selectorComponent: LocationDisplay, displayInfo: false }),
+                        DataTable.StaticTextColumn('Gender', { fieldName: 'genderCode', displayInfo: false }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
                         // DataTable.SelectorFieldColumn('Status', { displayInfo: true }), // No point really in setting the status here
 
