@@ -16,7 +16,7 @@ import {
 
 import { RootState } from '../../store';
 
-import { IdType } from '../../api';
+import { Courtroom, IdType } from '../../api';
 
 import {
     FormContainerBase,
@@ -26,6 +26,7 @@ import {
 import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../components/Table/DataTable';
 import { AdminCourtroomsProps } from './AdminCourtroomsGrid';
 import LocationSelector from '../LocationSelector';
+// import { createOrUpdateCourtrooms } from '../../modules/assignments/actions';
 
 export interface AdminCourtroomsProps extends FormContainerProps {
     courtrooms?: any[];
@@ -62,7 +63,7 @@ export default class AdminCourtroomsGrid extends FormContainerBase<AdminCourtroo
                     columns={[
                         DataTable.SelectorFieldColumn('Location', { fieldName: 'locationId', selectorComponent: LocationSelector, displayInfo: false, filterable: true }),
                         DataTable.TextFieldColumn('Courtroom', { fieldName: 'name', displayInfo: false, filterable: true }),
-                        DataTable.TextFieldColumn(' Courtroom Code', { fieldName: 'code', displayInfo: true, filterable: false }),
+                        DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, filterable: true }),
                         DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
                         DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
@@ -105,8 +106,24 @@ export default class AdminCourtroomsGrid extends FormContainerBase<AdminCourtroo
         };
     }
 
-    getDataFromFormValues(formValues: {}): FormContainerProps {
+    getDataFromFormValues(formValues: {}, initialValues: {}): FormContainerProps {
         return super.getDataFromFormValues(formValues) || {
         };
+    }
+
+    async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any[]> {
+        const data: any = this.getDataFromFormValues(formValues, initialValues);
+
+        const courtrooms: Partial<Courtroom>[] = data.courtrooms.map((c: Courtroom) => ({
+            ...c,
+            createdBy: 'DEV - FRONTEND',
+            updatedBy: 'DEV - FRONTEND',
+            createdDtm: new Date().toISOString(),
+            updatedDtm: new Date().toISOString()
+        }));
+
+        console.log('dumping AdminCourtrooms grid data');
+        console.log(courtrooms);
+        return Promise.resolve([]); // await dispatch(createOrUpdateCourtrooms(courtrooms, { toasts: {} }));
     }
 }
