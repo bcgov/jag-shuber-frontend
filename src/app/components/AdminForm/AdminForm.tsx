@@ -81,6 +81,7 @@ export default class AdminForm extends React.Component<InjectedFormProps<any, Ad
                     activeKey={selectedSection}
                 >
                     <Row className="clearfix">
+                        {sectionPlugins.length > 1 && (
                         <Col sm={12}>
                             <Nav bsStyle="tabs">
                                 {
@@ -97,6 +98,7 @@ export default class AdminForm extends React.Component<InjectedFormProps<any, Ad
                                 }
                             </Nav>
                         </Col>
+                        )}
                         <Col sm={12}>
                             <Tab.Content animation={false}>
                                 {
