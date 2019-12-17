@@ -37,10 +37,11 @@ export const sheriffsForCurrentLocation = createSelector(
 );
 
 export const getAllSheriffs = (state: RootState) => {
-  if (state) {
-    return sheriffs(state);
-  }
-  return undefined;
+    if (state) {
+        return sheriffs(state).sort((a: any, b: any) =>
+            (a.lastName < b.lastName) ? -1 : (a.lastName > b.lastName) ? 1 : 0);
+    }
+    return undefined;
 };
 
 export const getSheriff = (id?: IdType) => (state: RootState) => {
