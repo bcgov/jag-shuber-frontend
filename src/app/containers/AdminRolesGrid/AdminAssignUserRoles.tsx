@@ -141,7 +141,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                 <DataTable
                     fieldName={this.formFieldNames.users}
                     title={''} // Leave this blank
-                    buttonLabel={'Add New User'}
+                    buttonLabel={'Add User'}
                     columns={[
                         DataTable.StaticTextColumn('First Name', { fieldName: 'firstName', displayInfo: false }),
                         DataTable.StaticTextColumn('Last Name', { fieldName: 'lastName', displayInfo: false }),

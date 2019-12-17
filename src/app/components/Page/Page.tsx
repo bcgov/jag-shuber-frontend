@@ -22,10 +22,11 @@ class PageToolbar extends React.PureComponent<PageToolbarProps>{
             <div
                 style={{
                     flex: 1,
-                    maxWidth: '80%',
+                    maxWidth: '85%',
                     minWidth: 800,
                     margin: '0 auto',
                     height: 46,
+                    borderRadius: 0,
                     ...style
                 }}
             >

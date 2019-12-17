@@ -26,10 +26,11 @@ class DefaultAssignments extends React.PureComponent {
                         backgroundColor: 'white',
                         flexDirection: 'column',
                         flex: '1 1',
-                        maxWidth: '80%',
+                        maxWidth: '85%',
                         minWidth: 800,
                         height: 'max-content',
-                        margin: '0 auto'
+                        margin: '0 auto',
+                        borderRadius: 0
                     }}
                 >
                     <AssignmentList />

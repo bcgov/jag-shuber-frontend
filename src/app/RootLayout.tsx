@@ -111,10 +111,11 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
               <Well
                 style={{
                   backgroundColor: 'white',
-                  maxWidth: '80%',
+                  maxWidth: '85%',
                   minWidth: 800,
                   height: '100%',
-                  margin: 'auto'
+                  margin: 'auto',
+                  borderRadius: 0
                 }}
               >
                 <div style={{ paddingTop: 10 }}>
@@ -133,11 +134,11 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
               <Route path={Navigation.Routes.dutyRoster.setup.path} component={DefaultAssignmentsPage} />
               <Route path={Navigation.Routes.assignment.path} component={AssignmentPage} />
               <Route path={Navigation.Routes.team.path} component={ManageSheriffsPage} />
-              <Route path={Navigation.Routes.admin.children.audit.path} component={AuditPage} />
-              <Route path={Navigation.Routes.admin.children.roles.path} component={ManageRolesPage} />
-              <Route path={Navigation.Routes.admin.children.users.path} component={ManageUsersPage} />
+              <Route path={Navigation.Routes.team.children.roles.path} component={ManageRolesPage} />
+              <Route path={Navigation.Routes.team.children.users.path} component={ManageUsersPage} />
               <Route path={Navigation.Routes.system.children.codes.path} component={ManageCodesPage} />
               <Route path={Navigation.Routes.system.children.components.path} component={ManageComponentsPage} />
+              <Route path={Navigation.Routes.audit.path} component={AuditPage} />
               <Route path={Navigation.Routes.system.children.apis.path} component={ManageApisPage} />
               <DutyRosterToolsModal />
               <AssignmentDutyEditModal />
