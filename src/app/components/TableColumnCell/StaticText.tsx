@@ -28,6 +28,7 @@ const StaticTextColumn = (label?: string, options?: Types.FieldColumnOptions): T
         colStyle: colStyle,
         filterable: filterable,
         filterComponent: (filterable) ? () => TextFieldColumn(label, filterComponentOptions) : undefined,
+        displayInfo,
         FormRenderer: ({ fieldInstanceName }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Field
@@ -37,11 +38,11 @@ const StaticTextColumn = (label?: string, options?: Types.FieldColumnOptions): T
                 />
                 {/* This wrapper just adds equal spacing to the previous form group */}
                 {/* TODO: We need spacing utils */}
-                {displayInfo && (
+                {/*displayInfo && (
                     <div className="form-group" style={{ marginLeft: '0.5rem' }}>
                         <Glyphicon glyph="info-sign" />
                     </div>
-                )}
+                )*/}
             </div>
         ),
         CanceledRender: ({ model }) => (<div>StaticText Cancelled Display</div>)

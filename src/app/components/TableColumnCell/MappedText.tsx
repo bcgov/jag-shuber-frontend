@@ -32,6 +32,7 @@ const MappedTextColumn = (label?: string, options?: Types.FieldColumnOptions): T
         colStyle: colStyle,
         filterable: filterable,
         filterComponent: (filterable) ? () => SelectorFieldColumn(label, filterComponentOptions) : undefined,
+        displayInfo,
         FormRenderer: ({ fieldInstanceName }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Field
@@ -44,11 +45,11 @@ const MappedTextColumn = (label?: string, options?: Types.FieldColumnOptions): T
                 </Field>
                 {/* This wrapper just adds equal spacing to the previous form group */}
                 {/* TODO: Where are the spacing utils? */}
-                {displayInfo && (
+                {/*displayInfo && (
                     <div className="form-group" style={{ marginLeft: '0.5rem' }}>
                         <Glyphicon glyph="info-sign" />
                     </div>
-                )}
+                )*/}
             </div>
         ),
         CanceledRender: ({ model }) => (

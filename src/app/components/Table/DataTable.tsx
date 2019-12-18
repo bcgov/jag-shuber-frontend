@@ -163,7 +163,9 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                     <tr>
                                         {expandable && (<th style={{ width: '60px' }} />)}
                                         {columns.map((col, colIndex) => (
-                                            <th className="text-left" key={colIndex} style={col.colStyle}>{col.title}</th>
+                                            <th className="text-left" key={colIndex} style={col.colStyle}>
+                                                {col.title}&nbsp;{col.displayInfo && (<Glyphicon glyph="info-sign" />)}
+                                            </th>
                                         ))}
 
                                         {displayActionsColumn && (
