@@ -43,7 +43,7 @@ export default class Navigation extends React.Component<NavigationProps, any> {
         },
         team: {
             path: '/sheriffs/manage',
-            label: 'Manage Team', // TODO: Switch between 'Manage' and 'My' prefix depending on the role...
+            label: 'My Team', // TODO: Switch between 'Manage' and 'My' prefix depending on the role...
             children: {
                 users: {
                     path: '/users/manage',
