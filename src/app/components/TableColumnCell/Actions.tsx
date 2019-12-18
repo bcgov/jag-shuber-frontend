@@ -7,9 +7,8 @@ import { Leave } from '../../api';
 
 // TODO: Move these into generics!
 import CancelledPopover from '../../components/CancelledPopover';
-import ApproveButton from '../../containers/ApproveButton';
-import SaveButton from '../../containers/SaveButton';
-import CancelButton from '../../containers/CancelButton';
+import RemoveRow from '../TableColumnActions/RemoveRow';
+import ExpireRow from '../TableColumnActions/ExpireRow';
 
 export interface ColumnRendererProps {
     index: number;
@@ -31,42 +30,14 @@ const ActionsColumn = (options?: Types.FieldColumnOptions): Types.TableColumnCel
             !model.id ?
                 (
                     <>
-                        {/*
-                        <SaveButton formName={'AdminForm'} modelId={model.id} model={model} />
-                        &nbsp;
-                        <CancelButton modelId={model.id} />
-                        */}
-                        {/*<Button bsStyle={'default'} onClick={() => {}}>
-                            <Glyphicon glyph="ban-circle" />
-                        </Button>
-                        &nbsp;
-                        <Button bsStyle={'danger'} onClick={() => fields.remove(index)}>
-                            <Glyphicon glyph="trash" />
-                        </Button>*/}
-                        <Button bsStyle={'danger'} onClick={() => fields.remove(index)}>
-                            <Glyphicon glyph="trash" />
-                        </Button>
+                        <RemoveRow fields={fields} index={index} model={model} />
                     </>
 
                 )
                 :
                 (
                     <>
-                        <Button bsStyle="warning">
-                            <Glyphicon glyph="time" onClick={() => fields.remove(index)} />
-                        </Button>
-                        &nbsp;
-                        {/* TODO:
-                        1 - compose buttons instead of having them all in here...
-                        2 - we don't need an edit button in most cases, functionality not implemented yet
-                        */}
-                        {/*<Button bsStyle="primary">
-                            <Glyphicon glyph="edit" />
-                        </Button>
-                        &nbsp;*/}
-                        {/*<Button bsStyle={'danger'} onClick={() => fields.remove(index)}>
-                            <Glyphicon glyph="trash" />
-                        </Button>*/}
+                        <ExpireRow fields={fields} index={index} model={model} />
                     </>
                 )
 
