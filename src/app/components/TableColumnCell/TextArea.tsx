@@ -17,6 +17,7 @@ const TextAreaColumn = (label?: string, options?: Types.FieldColumnOptions): Typ
     const fieldName = (options && options.fieldName) ? options.fieldName : 'textAreaField';
     const displayInfo = (options && options.displayInfo) ? options.displayInfo : false;
     const colStyle = (options && options.colStyle) ? options.colStyle : {};
+    const placeholder = (options && options.placeholder) ? options.placeholder : undefined;
     const filterable = (options && options.filterable) ? options.filterable : false;
 
     const filterComponentOptions = (options)
@@ -24,12 +25,13 @@ const TextAreaColumn = (label?: string, options?: Types.FieldColumnOptions): Typ
         : {} as Types.FieldColumnOptions;
 
     filterComponentOptions.displayInfo = false;
+    filterComponentOptions.placeholder = `Filter ${label}`;
 
     return {
         title: label,
         colStyle: colStyle,
         filterable: filterable,
-        filterComponent: (filterable) ? () => TextAreaColumn(undefined, filterComponentOptions) : undefined,
+        filterComponent: (filterable) ? () => TextAreaColumn(label, filterComponentOptions) : undefined,
         FormRenderer: ({ fieldInstanceName }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Field
@@ -37,6 +39,7 @@ const TextAreaColumn = (label?: string, options?: Types.FieldColumnOptions): Typ
                     rows="1" // TODO: Ability to set number of rows and cols
                     component={(p) => <TextArea
                         {...p}
+                        placeholder={placeholder}
                         showLabel={false}
                         // TODO: Provide this via props or something so we can use custom codes...
                     />}

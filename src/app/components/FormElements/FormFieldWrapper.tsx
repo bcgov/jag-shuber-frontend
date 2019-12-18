@@ -4,6 +4,7 @@ import { WrappedFieldProps } from 'redux-form';
 
 export interface FormFieldWrapperProps extends WrappedFieldProps {
     label?: string | React.ReactNode | any;
+    placeholder?: string | React.ReactNode | any;
     showLabel?: boolean;
     maxWidth?: number;
     fieldToolTip?: React.ReactNode;

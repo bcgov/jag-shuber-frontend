@@ -13,6 +13,7 @@ const StaticDateColumn = (label?: string, options?: Types.FieldColumnOptions): T
     const fieldName = (options && options.fieldName) ? options.fieldName : 'textField';
     const displayInfo = (options && options.displayInfo) ? options.displayInfo : false;
     const colStyle = (options && options.colStyle) ? options.colStyle : {};
+    const placeholder = (options && options.placeholder) ? options.placeholder : undefined;
     const filterable = (options && options.filterable) ? options.filterable : false;
 
     const filterComponentOptions = (options)
@@ -26,7 +27,7 @@ const StaticDateColumn = (label?: string, options?: Types.FieldColumnOptions): T
         colStyle: colStyle,
         filterable: filterable,
         // TODO: Finish me!
-        filterComponent: (filterable) ? () => DateColumn('', '', filterComponentOptions) : undefined,
+        filterComponent: (filterable) ? () => DateColumn('', fieldName, filterComponentOptions) : undefined,
         FormRenderer: ({ fieldInstanceName }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Field

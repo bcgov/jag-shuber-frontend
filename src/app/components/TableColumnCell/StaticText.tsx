@@ -13,6 +13,7 @@ const StaticTextColumn = (label?: string, options?: Types.FieldColumnOptions): T
     const fieldName = (options && options.fieldName) ? options.fieldName : 'textField';
     const displayInfo = (options && options.displayInfo) ? options.displayInfo : false;
     const colStyle = (options && options.colStyle) ? options.colStyle : {};
+    const placeholder = (options && options.placeholder) ? options.placeholder : undefined;
     const filterable = (options && options.filterable) ? options.filterable : false;
 
     const filterComponentOptions = (options)
@@ -20,12 +21,13 @@ const StaticTextColumn = (label?: string, options?: Types.FieldColumnOptions): T
         : {} as Types.FieldColumnOptions;
 
     filterComponentOptions.displayInfo = false;
+    filterComponentOptions.placeholder = `Filter ${label}`;
 
     return {
         title: label,
         colStyle: colStyle,
         filterable: filterable,
-        filterComponent: (filterable) ? () => TextFieldColumn(undefined, filterComponentOptions) : undefined,
+        filterComponent: (filterable) ? () => TextFieldColumn(label, filterComponentOptions) : undefined,
         FormRenderer: ({ fieldInstanceName }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Field

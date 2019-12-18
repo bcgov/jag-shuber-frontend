@@ -24,7 +24,7 @@ const CheckboxColumn = (label?: string, options?: Types.FieldColumnOptions): Typ
         title: label,
         colStyle: colStyle,
         filterable: filterable,
-        filterComponent: (filterable) ? () => CheckboxColumn(undefined, filterComponentOptions) : undefined,
+        filterComponent: (filterable) ? () => CheckboxColumn(label, filterComponentOptions) : undefined,
         FormRenderer: ({ fieldInstanceName }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Field
