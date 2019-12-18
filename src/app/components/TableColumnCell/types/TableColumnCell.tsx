@@ -16,16 +16,19 @@ export default interface TableColumnCell {
     title: React.ReactNode;
     colStyle?: any;
     filterable?: boolean;
+    filterComponent?: any; // TODO: Fix this... TableColumnCell type isn't working;
     FormRenderer: ColumnRenderer;
     CanceledRender: ColumnRenderer;
 
 }
 
 export interface FieldColumnOptions {
+    fieldName?: string;
     displayInfo: boolean;
     disabled?: boolean;
     filterable?: boolean;
-    fieldName?: string;
-    colStyle?: any;
+    filterComponent?: TableColumnCell;
     selectorComponent?: React.ReactType<any>;
+    colStyle?: any;
+
 }

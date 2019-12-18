@@ -60,14 +60,15 @@ export default class AdminLeaveTypesGrid extends FormContainerBase<AdminLeaveTyp
                     buttonLabel={'Add Leave Type'}
                     columns={[
                         // DataTable.TextFieldColumn('Leave Type', { fieldName: 'code', displayInfo: true }),
-                        DataTable.TextFieldColumn('Personal Leave Sub Code', { fieldName: 'subCode', colStyle: { width: '200px' }, displayInfo: true }),
-                        DataTable.TextFieldColumn('Description', { fieldName: 'description', colStyle: { width: '300px' }, displayInfo: true }),
+                        DataTable.TextFieldColumn('Personal Leave Sub Code', { fieldName: 'subCode', colStyle: { width: '200px' }, displayInfo: true, filterable: true }),
+                        DataTable.TextFieldColumn('Description', { fieldName: 'description', colStyle: { width: '300px' }, displayInfo: false }),
                         DataTable.DateColumn('Effective Date', 'effectiveDate', { colStyle: { width: '175px'}, displayInfo: true }),
                         DataTable.DateColumn('Expiry Date', 'expiryDate', { colStyle: { width: '175px'}, displayInfo: true }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
                         // DataTable.SelectorFieldColumn('Status', { displayInfo: true }),
 
                     ]}
+                    filterable={true}
                     expandable={false}
                     // expandedRows={[1, 2]}
                     rowComponent={EmptyDetailRow}

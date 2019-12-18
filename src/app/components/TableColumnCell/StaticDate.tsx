@@ -5,6 +5,8 @@ import { Glyphicon } from 'react-bootstrap';
 
 import * as Types from './types';
 
+import DateColumn from './Date';
+
 const StaticDateColumn = (label?: string, options?: Types.FieldColumnOptions): Types.TableColumnCell => {
     label = label || '';
 
@@ -17,6 +19,7 @@ const StaticDateColumn = (label?: string, options?: Types.FieldColumnOptions): T
         title: label,
         colStyle: colStyle,
         filterable: filterable,
+        filterComponent: DateColumn,
         FormRenderer: ({ fieldInstanceName }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Field

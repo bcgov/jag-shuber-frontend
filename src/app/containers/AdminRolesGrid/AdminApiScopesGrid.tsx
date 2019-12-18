@@ -98,10 +98,11 @@ export default class AdminApiScopesGrid extends FormContainerBase<AdminApiScopes
                     buttonLabel={'Add Endpoint'}
                     displayHeaderActions={true}
                     columns={[
-                        DataTable.TextFieldColumn('API Endpoint', { fieldName: 'scopeName', displayInfo: true, disabled: true }),
-                        DataTable.TextFieldColumn('Code', { fieldName: 'scopeCode', displayInfo: true, disabled: true }),
-                        DataTable.TextFieldColumn('Description', { fieldName: 'description', colStyle: { width: '300px' }, displayInfo: true, disabled: true })
+                        DataTable.TextFieldColumn('API Endpoint', { fieldName: 'scopeName', displayInfo: true, filterable: true }),
+                        DataTable.TextFieldColumn('Code', { fieldName: 'scopeCode', displayInfo: true, filterable: true }),
+                        DataTable.TextFieldColumn('Description', { fieldName: 'description', colStyle: { width: '300px' }, displayInfo: false })
                     ]}
+                    filterable={true}
                     rowComponent={EmptyDetailRow}
                     modalComponent={EmptyDetailRow}
                 />

@@ -188,7 +188,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                     <tr style={{ backgroundColor: '#eee' }}>
                                         {expandable && (<th style={{ width: '60px' }} />)}
                                         {columns.map((col, colIndex) => {
-                                            const Column = col.FormRenderer;
+                                            const Column = (col.filterComponent) ? col.filterComponent().FormRenderer : col.FormRenderer;
 
                                             return (
                                                 <th className="text-left" key={colIndex} style={col.colStyle}>
