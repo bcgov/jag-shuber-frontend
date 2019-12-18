@@ -16,6 +16,7 @@ export default interface TableColumnCell {
     title: React.ReactNode;
     colStyle?: any;
     filterable?: boolean;
+    displayInfo?: boolean;
     filterComponent?: Function; // TODO: Fix this... TableColumnCell type isn't working;
     FormRenderer: ColumnRenderer;
     CanceledRender: ColumnRenderer;
@@ -24,7 +25,7 @@ export default interface TableColumnCell {
 
 export interface FieldColumnOptions {
     fieldName?: string;
-    displayInfo: boolean;
+    displayInfo?: boolean;
     disabled?: boolean;
     placeholder?: string;
     filterable?: boolean;
