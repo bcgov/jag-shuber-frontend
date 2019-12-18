@@ -2,14 +2,14 @@ import * as React from 'react';
 import './Page.css';
 
 export interface PageProps {
-    style?: React.CSSProperties;
-    toolbarStyle?: React.CSSProperties;
-    contentStyle?: React.CSSProperties;
+    style?: any; // React.CSSProperties;
+    toolbarStyle?: any; // React.CSSProperties;
+    contentStyle?: any; // React.CSSProperties;
     toolbar?: React.ReactNode;
 }
 
 export interface PageToolbarProps {
-    style?: React.CSSProperties;
+    style?: any; // React.CSSProperties;
     left?: React.ReactNode;
     middle?: React.ReactNode;
     right?: React.ReactNode;

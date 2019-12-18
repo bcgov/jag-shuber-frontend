@@ -29,7 +29,6 @@ interface ImportDefaultDutiesFormData {
     shouldAutoAssignSheriffDuties: boolean;
 }
 
-
 // tslint:disable-next-line:max-line-length
 class ImportDefaultDutiesForm extends React.PureComponent<InjectedFormProps<ImportDefaultDutiesFormData>> {
 

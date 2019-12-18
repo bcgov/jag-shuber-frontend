@@ -11,7 +11,7 @@ const GenericDropTarget = dropTargetFactory<DroppableItem, void>('Sheriff');
 interface SheriffDropTargetProps {
     canDropItem?: (item: DroppableItem) => boolean;
     onDropItem: (item: DroppableItem) => void;
-    style?: React.CSSProperties;
+    style?: any; // React.CSSProperties;
     computeStyle?: (status: { isActive: boolean, isOver: boolean, canDrop: boolean }) => React.CSSProperties;
     className?: string;
     onClick?: () => void;

@@ -187,26 +187,29 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                     {filterable && (
                                     <tr style={{ backgroundColor: '#eee' }}>
                                         {expandable && (<th style={{ width: '60px' }} />)}
-                                        {columns.map((col, colIndex) => (
-                                            <th className="text-left" key={colIndex} style={col.colStyle}>
-                                                {col.filterable && (
-                                                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                                                        <Field
-                                                            // TODO: Wire this up, just hack in a quick randomizer to make sure filters aren't all linked to each other for the demo
-                                                            name={`fieldName_${Math.random().toString()}`}
-                                                            component={(p) => <TextField
-                                                                {...p}
-                                                                showLabel={false}
-                                                            />}
-                                                            label={(col.title) ? col.title.toString() : ''}
-                                                        />
-                                                        <div className="form-group" style={{ marginLeft: '0.5rem' }}>
-                                                            <Glyphicon glyph="filter" />{/* TODO: Change this to 'ban' icon if filter is set */}
+                                        {columns.map((col, colIndex) => {
+                                            const Column = col.FormRenderer;
+
+                                            return (
+                                                <th className="text-left" key={colIndex} style={col.colStyle}>
+                                                    {col.filterable && (
+                                                        <div style={{display: 'flex', alignItems: 'center'}}>
+                                                            <Column
+                                                                model={{test: 'test'}}
+                                                                fieldInstanceName={`fieldName_${Math.random().toString()}`}
+                                                                fields={fields}
+                                                                index={0}
+                                                                callbackContext={componentInstance}
+                                                            />
+                                                            <div className="form-group" style={{marginLeft: '0.5rem'}}>
+                                                                <Glyphicon glyph="filter"/>
+                                                                {/* TODO: Change this to 'ban' icon if filter is set */}
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                )}
-                                            </th>
-                                        ))}
+                                                    )}
+                                                </th>
+                                            );
+                                        })}
 
                                         {displayActionsColumn && (
                                             <th

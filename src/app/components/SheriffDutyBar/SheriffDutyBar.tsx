@@ -23,7 +23,7 @@ export interface SheriffDutyBarProps {
     onDropSheriff?: (sheriff: Sheriff, sheriffDuty: SheriffDuty) => void;
     onDropSheriffDuty?: (sourceSheriffDuty: SheriffDuty, targetSheriffDuty: SheriffDuty) => void;
     canDropSheriffDuty?: (sheriffDuty: SheriffDuty) => boolean;
-    style?: React.CSSProperties;
+    style?: any; // React.CSSProperties;
     computeStyle?: (status: { isActive: boolean, isOver: boolean, canDrop: boolean }) => React.CSSProperties;
     className?: string;
 }
