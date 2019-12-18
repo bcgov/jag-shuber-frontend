@@ -10,12 +10,18 @@ const DateColumn = (label: string, fieldName: string, options?: Types.FieldColum
     const colStyle = (options && options.colStyle) ? options.colStyle : {};
     const filterable = (options && options.filterable) ? options.filterable : false;
 
+    const filterComponentOptions = (options)
+        ? Object.create(options) as Types.FieldColumnOptions
+        : {} as Types.FieldColumnOptions;
+
+    filterComponentOptions.displayInfo = false;
+
     return {
         title: label,
         colStyle: colStyle,
         filterable: filterable,
         // TODO: Finish me!
-        filterComponent: (filterable) ? () => DateColumn('', '', { displayInfo: false, ...options }) : undefined,
+        filterComponent: (filterable) ? () => DateColumn('', '', filterComponentOptions) : undefined,
         FormRenderer: ({ fieldInstanceName }) => (
             <Field
                 name={`${fieldInstanceName}.${fieldName}`}
