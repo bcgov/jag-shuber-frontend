@@ -190,7 +190,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                         {expandable && (<th style={{ width: '60px' }} />)}
                                         {columns.map((col, colIndex) => {
                                             const Column = (col.filterComponent)
-                                                ? col.filterComponent(undefined, { displayInfo: false } as FieldColumnOptions).FormRenderer
+                                                ? col.filterComponent().FormRenderer
                                                 : col.FormRenderer;
 
                                             return (

@@ -16,7 +16,7 @@ export default interface TableColumnCell {
     title: React.ReactNode;
     colStyle?: any;
     filterable?: boolean;
-    filterComponent?: any; // TODO: Fix this... TableColumnCell type isn't working;
+    filterComponent?: Function; // TODO: Fix this... TableColumnCell type isn't working;
     FormRenderer: ColumnRenderer;
     CanceledRender: ColumnRenderer;
 

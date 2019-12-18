@@ -12,11 +12,13 @@ const CheckboxColumn = (label?: string, options?: Types.FieldColumnOptions): Typ
 
     const displayInfo = (options && options.displayInfo) ? options.displayInfo : false;
     const colStyle = (options && options.colStyle) ? options.colStyle : {};
+    const filterable = (options && options.filterable) ? options.filterable : false;
 
     return {
         title: label,
         colStyle: colStyle,
-        filterComponent: CheckboxColumn,
+        filterable: filterable,
+        filterComponent: (filterable) ? () => CheckboxColumn(undefined, options) : undefined,
         FormRenderer: ({ fieldInstanceName }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Field
