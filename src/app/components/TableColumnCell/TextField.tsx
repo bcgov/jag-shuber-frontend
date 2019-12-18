@@ -22,6 +22,7 @@ const TextFieldColumn = (label?: string, options?: Types.FieldColumnOptions): Ty
         title: label,
         colStyle: colStyle,
         filterable: filterable,
+        filterComponent: TextFieldColumn,
         FormRenderer: ({ fieldInstanceName }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Field

@@ -20,6 +20,7 @@ const RoleCodeColumn = (label?: string, options?: Types.FieldColumnOptions): Typ
         title: label,
         colStyle: colStyle,
         filterable: filterable,
+        filterComponent: RoleCodeColumn,
         FormRenderer: ({ fieldInstanceName }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Field
