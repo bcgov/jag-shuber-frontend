@@ -226,8 +226,8 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                         DataTable.TextFieldColumn('Role Code', { fieldName: 'roleCode', colStyle: { width: '300px' }, displayInfo: true, filterable: true }),
                         DataTable.TextFieldColumn('Description', { fieldName: 'description', colStyle: { width: '300px' }, displayInfo: true }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
-                        DataTable.StaticTextColumn('Created By', { fieldName: 'createdBy', colStyle: { width: '200px' }, displayInfo: false }),
-                        DataTable.StaticDateColumn('Date Created', { fieldName: 'createdDtm', colStyle: { width: '200px' }, displayInfo: false }),
+                        DataTable.StaticTextColumn('Created By', { fieldName: 'createdBy', colStyle: { width: '200px' }, displayInfo: false, filterable: true }),
+                        DataTable.StaticDateColumn('Date Created', { fieldName: 'createdDtm', colStyle: { width: '200px' }, displayInfo: false, filterable: true }),
                         DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
 
                     ]}
