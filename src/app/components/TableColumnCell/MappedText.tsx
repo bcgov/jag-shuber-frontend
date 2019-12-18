@@ -7,7 +7,7 @@ import * as Types from './types';
 
 import Selector from '../../components/FormElements/Selector';
 
-import TextFieldColumn from './TextField';
+import SelectorFieldColumn from './SelectorField';
 
 const MappedTextColumn = (label?: string, options?: Types.FieldColumnOptions): Types.TableColumnCell => {
     label = label || 'Select Field';
@@ -24,13 +24,14 @@ const MappedTextColumn = (label?: string, options?: Types.FieldColumnOptions): T
         : {} as Types.FieldColumnOptions;
 
     filterComponentOptions.displayInfo = false;
-    filterComponentOptions.placeholder = `Filter ${label}`;
+    filterComponentOptions.selectorComponent = Selector;
+    // filterComponentOptions.placeholder = `Filter ${label}`;
 
     return {
         title: label,
         colStyle: colStyle,
         filterable: filterable,
-        filterComponent: (filterable) ? () => TextFieldColumn(label, filterComponentOptions) : undefined,
+        filterComponent: (filterable) ? () => SelectorFieldColumn(label, filterComponentOptions) : undefined,
         FormRenderer: ({ fieldInstanceName }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Field
