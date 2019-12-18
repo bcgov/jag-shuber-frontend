@@ -36,10 +36,13 @@ const ActionsColumn = (options?: Types.FieldColumnOptions): Types.TableColumnCel
                         &nbsp;
                         <CancelButton modelId={model.id} />
                         */}
-                        <Button bsStyle={'default'} onClick={() => {}}>
+                        {/*<Button bsStyle={'default'} onClick={() => {}}>
                             <Glyphicon glyph="ban-circle" />
                         </Button>
                         &nbsp;
+                        <Button bsStyle={'danger'} onClick={() => fields.remove(index)}>
+                            <Glyphicon glyph="trash" />
+                        </Button>*/}
                         <Button bsStyle={'danger'} onClick={() => fields.remove(index)}>
                             <Glyphicon glyph="trash" />
                         </Button>
@@ -50,7 +53,7 @@ const ActionsColumn = (options?: Types.FieldColumnOptions): Types.TableColumnCel
                 (
                     <>
                         <Button bsStyle="warning">
-                            <Glyphicon glyph="time" />
+                            <Glyphicon glyph="time" onClick={() => fields.remove(index)} />
                         </Button>
                         &nbsp;
                         {/* TODO:
@@ -61,9 +64,9 @@ const ActionsColumn = (options?: Types.FieldColumnOptions): Types.TableColumnCel
                             <Glyphicon glyph="edit" />
                         </Button>
                         &nbsp;*/}
-                        <Button bsStyle={'danger'} onClick={() => fields.remove(index)}>
+                        {/*<Button bsStyle={'danger'} onClick={() => fields.remove(index)}>
                             <Glyphicon glyph="trash" />
-                        </Button>
+                        </Button>*/}
                     </>
                 )
 
