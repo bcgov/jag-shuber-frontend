@@ -23,7 +23,7 @@ interface SheriffLoanIconStateProps {
 interface SheriffLoanIconProps {
     sheriffId: IdType;
     showLocationName?: boolean;
-    style?: React.CSSProperties;
+    style?: any; // React.CSSProperties;
 }
 
 class SheriffLoanIcon extends React.PureComponent<

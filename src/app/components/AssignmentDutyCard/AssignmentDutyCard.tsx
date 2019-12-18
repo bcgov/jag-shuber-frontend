@@ -12,7 +12,7 @@ import AssignmentDutyInformationPanel from '../AssignmentDutyInformationPanel/As
 export interface AssignmentDutyCardProps {
     duty: AssignmentDuty;
     SheriffAssignmentRenderer?: React.ComponentType<SheriffAssignmentRendererProps>;
-    style?: React.CSSProperties;
+    style?: any; // React.CSSProperties;
     unassignedTimeRanges?: { [key: string]: SheriffUnassignedRange[] };
     onDoubleClick?: () => void;
     onClick?: () => void;

@@ -8,7 +8,7 @@ export interface AppVersionDisplayProps {
     buildDate?: boolean;
     apiVersion?: boolean;
     apiCommitHash?: boolean;
-    style?: React.CSSProperties;
+    style?: any; // React.CSSProperties;
 }
 
 export default class AppVersionDisplay extends React.PureComponent<AppVersionDisplayProps, any> {

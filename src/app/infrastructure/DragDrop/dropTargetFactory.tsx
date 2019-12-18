@@ -73,7 +73,7 @@ export default function dropTargetFactory
         connectDropTarget?: any;
         isOver?: boolean;
         canDrop?: boolean;
-        style?: React.CSSProperties;
+        style?: any; // React.CSSProperties;
         computeStyle?: (props: { isActive?: boolean, canDrop?: boolean, isOver?: boolean }) => React.CSSProperties;
         className?: string;
         onClick?: () => void;

@@ -11,11 +11,11 @@ import { getWorkSectionColour } from '../../api/utils';
 import {  } from '../../api/Api';
 
 export interface SheriffUnassignedBarProps {
-    unassignedTimeRange: SheriffUnassignedRange;        
+    unassignedTimeRange: SheriffUnassignedRange;
     sheriffDuty: SheriffDuty;
     duty: AssignmentDuty;
     dutyWorkSection?: WorkSectionCode;
-    style?: React.CSSProperties;
+    style?: any; // React.CSSProperties;
     className?: string;
 }
 

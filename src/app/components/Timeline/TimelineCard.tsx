@@ -3,7 +3,7 @@ import { ReactCalendarTimelineItemProps } from 'react-calendar-timeline';
 
 export interface TimelineCardProps extends Partial<ReactCalendarTimelineItemProps> {
     onClick?: () => void;
-    style?: React.CSSProperties;
+    style?: any; // React.CSSProperties;
 }
 
 export default class TimelineCard extends React.PureComponent<TimelineCardProps, any>{

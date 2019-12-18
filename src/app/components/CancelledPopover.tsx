@@ -7,7 +7,7 @@ import LeaveCancelReasonCodeDisplay from '../containers/LeaveCancelReasonCodeDis
 
 export interface CancelledPopoverProps {
     model: Partial<any>;
-    style?: React.CSSProperties;
+    style?: any; // React.CSSProperties;
 }
 
 export default class CancelledPopover extends React.Component<CancelledPopoverProps> {

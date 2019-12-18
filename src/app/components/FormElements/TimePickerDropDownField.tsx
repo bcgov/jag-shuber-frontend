@@ -9,7 +9,7 @@ import TimePicker from './TimePicker';
 interface TimePickerDropdownFieldProps {
     nullTimeLabel?: string;
     timeIncrement?: number;
-    style?: React.CSSProperties;
+    style?: any; // React.CSSProperties;
 }
 
 export default class TimePickerDropDownField extends

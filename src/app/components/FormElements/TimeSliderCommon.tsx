@@ -1,6 +1,6 @@
 import React from 'react';
 import Tooltip from 'rc-tooltip';
-import { TimeType } from '../../api/Api';
+import { TimeType } from '../../api';
 import Slider, { Handle, SliderProps } from 'rc-slider';
 import 'rc-tooltip/assets/bootstrap.css';
 import moment, { Moment } from 'moment';
@@ -9,7 +9,7 @@ export interface HandleWithTooltipProps {
     value: number;
     dragging: boolean;
     index: any;
-    overlayStyle?: React.CSSProperties;
+    overlayStyle?: any; // React.CSSProperties;
     overlayFormatter?: (value: number) => string;
 }
 
@@ -43,7 +43,7 @@ export class HandleWithTooltip extends React.PureComponent<HandleWithTooltipProp
 }
 
 export interface SliderMark {
-    style: React.CSSProperties;
+    style: any; // React.CSSProperties;
     label: string;
 }
 
@@ -104,9 +104,9 @@ export interface DisabledSliderSectionProps extends SliderProps {
 }
 
 /**
- * A disabled slider section that can be used to represent a portion of the slider track 
+ * A disabled slider section that can be used to represent a portion of the slider track
  * that cannot be selected
- * 
+ *
  * @export
  * @class DisabledSliderSecion
  * @extends {React.PureComponent<SliderProps>}
@@ -155,7 +155,7 @@ export interface TimeRangeProps {
     minTime: TimeType;
     maxTime: TimeType;
     timeIncrement?: number;
-    style?: React.CSSProperties;
+    style?: any; // React.CSSProperties;
 }
 
 /**

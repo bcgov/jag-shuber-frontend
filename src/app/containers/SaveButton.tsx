@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {
     Button, Glyphicon
 } from 'react-bootstrap';
@@ -14,7 +14,6 @@ export interface SaveButtonProps extends Partial<ButtonProps> {
     formName: string,
     submit?: () => void;
     onSave?: () => void;
-    style?: React.CSSProperties;
 }
 
 class SaveButton extends React.PureComponent<SaveButtonProps>{

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {
     Button
 } from 'react-bootstrap';
@@ -12,7 +12,9 @@ export interface SubmitButtonProps extends Partial<ButtonProps> {
     formName: string,
     submit?: () => void;
     onSubmit?: () => void;
-    style?: React.CSSProperties;
+    // TODO: Fix this... getting an error...
+    // Type 'React.CSSProperties | undefined' is not assignable to type 'React.CSSProperties | undefined'. Two different types with this name exist, but they are unrelated.
+    // style?: any; // React.CSSProperties;
 }
 
 class SubmitButton extends React.PureComponent<SubmitButtonProps>{

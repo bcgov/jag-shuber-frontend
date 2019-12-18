@@ -35,7 +35,7 @@ export default class AssignmentScheduleCard extends React.Component<AssignmentSc
           display: 'flex',
           flex: '1',
           flexDirection: 'column',
-          zindex: 70,
+          zIndex: 70,
           fontSize: 12,
           backgroundColor: isSelected ? cardColor : 'transparent',
           borderWidth: 3,

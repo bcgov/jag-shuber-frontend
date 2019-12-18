@@ -13,7 +13,7 @@ interface SheriffDutyDropTargetProps {
     onDropSheriff?: (item: Sheriff) => void;
     canDropSheriffDuty?: (item: SheriffDuty) => boolean;
     onDropSheriffDuty?: (item: SheriffDuty) => void;
-    style?: React.CSSProperties;
+    style?: any; // React.CSSProperties;
     computeStyle?: (status: { isActive: boolean, isOver: boolean, canDrop: boolean }) => React.CSSProperties;
     className?: string;
     onClick?: () => void;

@@ -3,7 +3,7 @@ import { Sheriff } from '../api/Api';
 
 interface SheriffDisplayProps {
     sheriff?: Sheriff;
-    style?: React.CSSProperties;
+    style?: any; // React.CSSProperties;
 }
 
 export default class SheriffDisplay extends React.PureComponent<SheriffDisplayProps & SheriffDisplayProps> {
