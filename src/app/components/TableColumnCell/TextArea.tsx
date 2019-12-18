@@ -23,7 +23,7 @@ const TextAreaColumn = (label?: string, options?: Types.FieldColumnOptions): Typ
         title: label,
         colStyle: colStyle,
         filterable: filterable,
-        filterComponent: TextAreaColumn,
+        filterComponent: (filterable) ? () => TextAreaColumn(undefined, options) : undefined,
         FormRenderer: ({ fieldInstanceName }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Field

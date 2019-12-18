@@ -19,7 +19,8 @@ const StaticDateColumn = (label?: string, options?: Types.FieldColumnOptions): T
         title: label,
         colStyle: colStyle,
         filterable: filterable,
-        filterComponent: DateColumn,
+        // TODO: Finish me!
+        filterComponent: (filterable) ? () => DateColumn('', '', options) : undefined,
         FormRenderer: ({ fieldInstanceName }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Field

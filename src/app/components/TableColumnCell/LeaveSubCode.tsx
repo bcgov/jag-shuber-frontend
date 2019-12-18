@@ -17,7 +17,7 @@ const LeaveSubCodeColumn = (isPersonal: boolean, options?: Types.FieldColumnOpti
         title: 'Type',
         colStyle: colStyle,
         filterable: filterable,
-        filterComponent: LeaveSubCodeColumn,
+        filterComponent: (filterable) ? () => LeaveSubCodeColumn(isPersonal, options) : undefined,
         FormRenderer: ({ fieldInstanceName }) => (
             <Field
                 name={`${fieldInstanceName}.leaveSubCode`}
