@@ -78,6 +78,7 @@ export default class AdminScopePermissionsModal extends React.Component<AdminSco
                                 fieldName={`roles.frontendScopePermissionsGrouped['${parentModel.id}']`}
                                 title={''} // Leave this blank
                                 displayHeaderActions={true}
+                                displayHeaderSave={false}
                                 displayActionsColumn={true}
                                 columns={[
                                     DataTable.TextFieldColumn('Permission Name', { fieldName: 'displayName', displayInfo: true }),
