@@ -6,11 +6,13 @@ import * as Types from './types';
 import TimePickerDropDownField from '../../components/FormElements/TimePickerDropDownField';
 
 import { fromTimeString, toTimeString } from 'jag-shuber-api';
+import TextFieldColumn from './TextField';
 
 // TODO: This column doesn't have options?
 const TimeColumn = (label: string, nullTimeLabel: string, fieldName: string): Types.TableColumnCell => {
     return {
         title: label,
+        filterComponent: TimeColumn,
         FormRenderer: ({ fieldInstanceName }) => (
             <Field
                 name={`${fieldInstanceName}.${fieldName}`}

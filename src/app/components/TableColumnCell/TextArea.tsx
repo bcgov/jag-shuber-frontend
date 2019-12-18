@@ -9,6 +9,7 @@ import TextArea from '../../components/FormElements/TextArea';
 
 import LeaveTrainingSubCodeSelector from '../../containers/LeaveTrainingSubCodeSelector';
 import LeaveSubCodeDisplay from '../../containers/LeaveSubCodeDisplay';
+import TextFieldColumn from './TextField';
 
 const TextAreaColumn = (label?: string, options?: Types.FieldColumnOptions): Types.TableColumnCell => {
     label = label || 'Text Area';
@@ -22,6 +23,7 @@ const TextAreaColumn = (label?: string, options?: Types.FieldColumnOptions): Typ
         title: label,
         colStyle: colStyle,
         filterable: filterable,
+        filterComponent: TextAreaColumn,
         FormRenderer: ({ fieldInstanceName }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Field

@@ -13,6 +13,7 @@ import * as CellTypes from '../../components/TableColumnCell';
 // TODO: Move this into a common location with AdminForm
 import HeaderSaveButton from '../../containers/AdminRolesGrid/HeaderSaveButton';
 import TextField from '../FormElements/TextField';
+import { FieldColumnOptions } from '../TableColumnCell/types';
 
 export interface ColumnRendererProps {
     index: number;
@@ -188,7 +189,9 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                     <tr style={{ backgroundColor: '#eee' }}>
                                         {expandable && (<th style={{ width: '60px' }} />)}
                                         {columns.map((col, colIndex) => {
-                                            const Column = (col.filterComponent) ? col.filterComponent().FormRenderer : col.FormRenderer;
+                                            const Column = (col.filterComponent)
+                                                ? col.filterComponent(undefined, { displayInfo: false } as FieldColumnOptions).FormRenderer
+                                                : col.FormRenderer;
 
                                             return (
                                                 <th className="text-left" key={colIndex} style={col.colStyle}>

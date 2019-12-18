@@ -16,6 +16,7 @@ const CheckboxColumn = (label?: string, options?: Types.FieldColumnOptions): Typ
     return {
         title: label,
         colStyle: colStyle,
+        filterComponent: CheckboxColumn,
         FormRenderer: ({ fieldInstanceName }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Field

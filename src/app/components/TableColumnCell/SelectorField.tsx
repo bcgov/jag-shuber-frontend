@@ -7,6 +7,7 @@ import * as Types from './types';
 
 import SelectorField from '../../components/FormElements/SelectorField';
 import Selector from '../../components/FormElements/Selector';
+import TextFieldColumn from './TextField';
 
 const SelectorFieldColumn = (label?: string, options?: Types.FieldColumnOptions): Types.TableColumnCell => {
     label = label || 'Select Field';
@@ -22,6 +23,7 @@ const SelectorFieldColumn = (label?: string, options?: Types.FieldColumnOptions)
         title: label,
         colStyle: colStyle,
         filterable: filterable,
+        filterComponent: SelectorFieldColumn,
         FormRenderer: ({ fieldInstanceName }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Field
