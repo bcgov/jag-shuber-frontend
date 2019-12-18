@@ -5,6 +5,8 @@ import { Glyphicon } from 'react-bootstrap';
 
 import * as Types from './types';
 
+import TextFieldColumn from './TextField';
+
 const StaticTextColumn = (label?: string, options?: Types.FieldColumnOptions): Types.TableColumnCell => {
     label = label || '';
 
@@ -17,6 +19,7 @@ const StaticTextColumn = (label?: string, options?: Types.FieldColumnOptions): T
         title: label,
         colStyle: colStyle,
         filterable: filterable,
+        filterComponent: TextFieldColumn,
         FormRenderer: ({ fieldInstanceName }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Field

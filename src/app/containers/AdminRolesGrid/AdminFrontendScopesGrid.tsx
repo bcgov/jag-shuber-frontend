@@ -108,11 +108,12 @@ export default class AdminFrontendScopesGrid extends FormContainerBase<AdminFron
                     buttonLabel={'Add Component'}
                     displayHeaderActions={true}
                     columns={[
-                        DataTable.TextFieldColumn('Component', { fieldName: 'scopeName', displayInfo: true, disabled: true }),
-                        DataTable.TextFieldColumn('Code', { fieldName: 'scopeCode', displayInfo: true, disabled: true }),
-                        DataTable.TextFieldColumn('Description', { fieldName: 'description', colStyle: { width: '300px' }, displayInfo: true, disabled: true }),
+                        DataTable.TextFieldColumn('Component', { fieldName: 'scopeName', displayInfo: true, filterable: true }),
+                        DataTable.TextFieldColumn('Code', { fieldName: 'scopeCode', displayInfo: true, filterable: true }),
+                        DataTable.TextFieldColumn('Description', { fieldName: 'description', colStyle: { width: '300px' }, displayInfo: false }),
                         DataTable.ButtonColumn('Define Permissions', 'list', { displayInfo: true }, onButtonClicked)
                     ]}
+                    filterable={true}
                     rowComponent={EmptyDetailRow}
                     modalComponent={AdminScopePermissionsModal}
                 />
