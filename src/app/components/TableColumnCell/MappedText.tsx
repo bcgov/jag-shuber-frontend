@@ -18,11 +18,17 @@ const MappedTextColumn = (label?: string, options?: Types.FieldColumnOptions): T
     const filterable = (options && options.filterable) ? options.filterable : false;
     const DisplayComponent = (options && options.selectorComponent) ? options.selectorComponent : Selector;
 
+    const filterComponentOptions = (options)
+        ? Object.create(options) as Types.FieldColumnOptions
+        : {} as Types.FieldColumnOptions;
+
+    filterComponentOptions.displayInfo = false;
+
     return {
         title: label,
         colStyle: colStyle,
         filterable: filterable,
-        filterComponent: (filterable) ? () => TextFieldColumn(undefined, options) : undefined,
+        filterComponent: (filterable) ? () => TextFieldColumn(undefined, filterComponentOptions) : undefined,
         FormRenderer: ({ fieldInstanceName }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Field

@@ -15,11 +15,17 @@ const StaticTextColumn = (label?: string, options?: Types.FieldColumnOptions): T
     const colStyle = (options && options.colStyle) ? options.colStyle : {};
     const filterable = (options && options.filterable) ? options.filterable : false;
 
+    const filterComponentOptions = (options)
+        ? Object.create(options) as Types.FieldColumnOptions
+        : {} as Types.FieldColumnOptions;
+
+    filterComponentOptions.displayInfo = false;
+
     return {
         title: label,
         colStyle: colStyle,
         filterable: filterable,
-        filterComponent: (filterable) ? () => TextFieldColumn(undefined, options) : undefined,
+        filterComponent: (filterable) ? () => TextFieldColumn(undefined, filterComponentOptions) : undefined,
         FormRenderer: ({ fieldInstanceName }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Field
