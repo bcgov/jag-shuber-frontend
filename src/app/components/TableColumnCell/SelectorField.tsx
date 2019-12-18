@@ -29,7 +29,7 @@ const SelectorFieldColumn = (label?: string, options?: Types.FieldColumnOptions)
         title: label,
         colStyle: colStyle,
         filterable: filterable,
-        filterComponent: (filterable) ? () => SelectorFieldColumn(undefined, filterComponentOptions) : undefined,
+        filterComponent: (filterable) ? () => SelectorFieldColumn(label, filterComponentOptions) : undefined,
         FormRenderer: ({ fieldInstanceName }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Field

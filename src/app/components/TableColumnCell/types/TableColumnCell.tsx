@@ -26,6 +26,7 @@ export interface FieldColumnOptions {
     fieldName?: string;
     displayInfo: boolean;
     disabled?: boolean;
+    placeholder?: string;
     filterable?: boolean;
     filterComponent?: TableColumnCell;
     selectorComponent?: React.ReactType<any>;

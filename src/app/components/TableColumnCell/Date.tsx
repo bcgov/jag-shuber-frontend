@@ -21,7 +21,7 @@ const DateColumn = (label: string, fieldName: string, options?: Types.FieldColum
         colStyle: colStyle,
         filterable: filterable,
         // TODO: Finish me!
-        filterComponent: (filterable) ? () => DateColumn('', '', filterComponentOptions) : undefined,
+        filterComponent: (filterable) ? () => DateColumn(label, fieldName, filterComponentOptions) : undefined,
         FormRenderer: ({ fieldInstanceName }) => (
             <Field
                 name={`${fieldInstanceName}.${fieldName}`}
