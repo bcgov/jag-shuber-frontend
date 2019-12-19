@@ -33,6 +33,7 @@ export type RoleApiScopeMap = MapType<RoleApiScope>;
 export type FrontendScopeMap = MapType<FrontendScope>;
 export type FrontendScopePermissionMap = MapType<FrontendScopePermission>;
 export type ApiScopeMap = MapType<ApiScope>;
+export type UserMap = MapType<User>;
 export type UserRoleMap = MapType<UserRole>;
 
 export const WORK_SECTIONS: StringMap = {
@@ -566,6 +567,18 @@ export interface API {
     getLocations(): Promise<Location[]>;
 
     // Users, roles & permissions
+    getUser(id: IdType): Promise<User>;
+    createUser(newUser: Partial<User>): Promise<User>;
+    updateUser(updatedUser: User): Promise<User>;
+    deleteUser(userId: IdType): Promise<void>;
+    getUsers(): Promise<User[]>;
+    deleteUsers(ids: IdType[]): Promise<void>;
+
+    getUserRole(): Promise<UserRole>;
+    createUserRole(newUserRole: Partial<UserRole>): Promise<UserRole>;
+    updateUserRole(updatedUserRole: UserRole): Promise<UserRole>;
+    getUserRoles(): Promise<UserRole[]>;
+
     getRole(): Promise<Role>;
     createRole(newRole: Partial<Role>): Promise<Role>;
     updateRole(updatedRole: Role): Promise<Role>;
@@ -610,11 +623,6 @@ export interface API {
     getRoleApiScopes(): Promise<RoleApiScope[]>;
     deleteRoleApiScope(roleApiScopeId: IdType): Promise<void>;
     deleteRoleApiScopes(roleApiScopeIds: IdType[]): Promise<void>;
-
-    getUserRole(): Promise<UserRole>;
-    createUserRole(newUserRole: Partial<UserRole>): Promise<UserRole>;
-    updateUserRole(updatedUserRole: UserRole): Promise<UserRole>;
-    getUserRoles(): Promise<UserRole[]>;
 
     getToken(): Promise<string>;
     logout(): Promise<void>;

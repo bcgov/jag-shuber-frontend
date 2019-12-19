@@ -9,8 +9,12 @@ import {
 import { Dispatch } from 'redux';
 
 import {
-    // getUsers
-} from '../../modules/user/actions';
+    getUsers
+} from '../../modules/users/actions';
+
+import {
+    getAllUsers
+} from '../../modules/users/selectors';
 
 import {
     getSheriffList as getSheriffs
@@ -150,13 +154,13 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                     buttonLabel={'Add User'}
                     actions={[]} // TODO: Finish adding configurable actions
                     columns={[
-                        DataTable.StaticTextColumn('First Name', { fieldName: 'firstName', colStyle: { width: '175px' }, displayInfo: false, filterable: true }),
-                        DataTable.StaticTextColumn('Last Name', { fieldName: 'lastName', colStyle: { width: '175px' }, displayInfo: false, filterable: true }),
-                        DataTable.StaticTextColumn('Badge No.', { fieldName: 'badgeNo', colStyle: { width: '175px' }, displayInfo: false, filterable: true }),
-                        DataTable.StaticTextColumn('Rank', { fieldName: 'rankCode', colStyle: { width: '175px' }, displayInfo: false, filterable: true }),
-                        DataTable.MappedTextColumn('Gender', { fieldName: 'genderCode', colStyle: { width: '175px' }, selectorComponent: GenderCodeDisplay, displayInfo: false, filterable: true }),
-                        DataTable.MappedTextColumn('Home Location', { fieldName: 'homeLocationId', colStyle: { width: '225px' }, selectorComponent: LocationDisplay, displayInfo: false, filterable: true }),
-                        DataTable.MappedTextColumn('Current Location', { fieldName: 'currentLocationId', colStyle: { width: '250px' }, selectorComponent: LocationDisplay, displayInfo: false, filterable: true }),
+                        DataTable.StaticTextColumn('Full Name', { fieldName: 'displayName', colStyle: { width: '300px' }, displayInfo: false, filterable: true }),
+                        // DataTable.StaticTextColumn('Last Name', { fieldName: 'lastName', colStyle: { width: '175px' }, displayInfo: false, filterable: true }),
+                        DataTable.StaticTextColumn('Badge No.', { fieldName: 'sheriff.badgeNo', colStyle: { width: '175px' }, displayInfo: false, filterable: true }),
+                        DataTable.StaticTextColumn('Rank', { fieldName: 'sheriff.rankCode', colStyle: { width: '175px' }, displayInfo: false, filterable: true }),
+                        DataTable.MappedTextColumn('Gender', { fieldName: 'sheriff.genderCode', colStyle: { width: '175px' }, selectorComponent: GenderCodeDisplay, displayInfo: false, filterable: true }),
+                        DataTable.MappedTextColumn('Home Location', { fieldName: 'sheriff.homeLocationId', colStyle: { width: '225px' }, selectorComponent: LocationDisplay, displayInfo: false, filterable: true }),
+                        DataTable.MappedTextColumn('Current Location', { fieldName: 'sheriff.currentLocationId', colStyle: { width: '250px' }, selectorComponent: LocationDisplay, displayInfo: false, filterable: true }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
                         // DataTable.SelectorFieldColumn('Status', { displayInfo: true }), // No point really in setting the status here
 
@@ -189,17 +193,19 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
         dispatch(getLocations()); // This data needs to always be available for select lists
         dispatch(getSheriffs()); // This data needs to always be available for select lists
         dispatch(getRoles()); // This data needs to always be available for select lists
-        // dispatch(getUsers());
+        dispatch(getUsers());
     }
 
     getData(roleId: IdType, state: RootState) {
         const locations = getAllLocations(state) || undefined;
-        const users = getAllSheriffs(state) || undefined;
+        const users = getAllUsers(state) || undefined;
+        const sheriffs = getAllSheriffs(state) || undefined;
         const roles = getAllRoles(state) || undefined;
 
         return {
             locations,
             users,
+            sheriffs,
             roles
         };
     }
