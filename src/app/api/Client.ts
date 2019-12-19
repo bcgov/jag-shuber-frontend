@@ -446,9 +446,41 @@ export default class Client implements API {
         return list as GenderCode[];
     }
 
+    // Methods for users
     async getUsers(): Promise<User[]> {
         const list = await this._client.GetUsers();
         return list as Role[];
+    }
+
+    async getUser(id: IdType): Promise<User> {
+        if (!id) {
+            throw 'No Id to request';
+        }
+        return await this._client.GetUserById(id) as User;
+    }
+
+    async createUser(user: Partial<User>): Promise<User> {
+        return await this._client.CreateUser(user) as User;
+    }
+
+    async updateUser(user: Partial<User>): Promise<User> {
+        const { id } = user;
+        if (!id) {
+            throw 'No Id to request';
+        }
+        return await this._client.GetUserById(id) as User;
+    }
+
+    async deleteUser(userId: IdType): Promise<void> {
+        return await this._client.DeleteUser(userId);
+    }
+
+    async deleteUsers(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.DeleteUser(id));
+        }
+
+        return Promise.resolve();
     }
 
     // Methods for roles
@@ -470,7 +502,7 @@ export default class Client implements API {
         if (!id) {
             throw 'No Id included in role to update';
         }
-        return await this._client.UpdateRole(id, role as any) as Role;
+        return await this._client.UpdateRole(id, role) as Role;
     }
 
     // TODO: Add expireRole? or expireUserRole?

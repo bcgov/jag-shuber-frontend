@@ -1,21 +1,27 @@
 import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
 import { default as thunk, ThunkAction as _ThunkAction } from 'redux-thunk';
+
 import { reducer as modalReducer } from 'redux-modal';
-import { default as api, API } from './api';
+import { reducer as formReducer } from 'redux-form';
+
+import { registerReducer as registerSystemReducer, SystemModuleState } from './modules/system/reducer';
+import { registerReducer as registerRolesReducer, RoleModuleState } from './modules/roles/reducer';
+import { registerReducer as registerUsersReducer, UserModuleState as UsersModuleState } from './modules/users/reducer';
 import { registerReducer as registerSheriffReducer, SheriffModuleState } from './modules/sheriffs/reducer';
 import { registerReducer as registerAssignmentReducer, AssignmentModuleState } from './modules/assignments/reducer';
 import { registerReducer as registerShiftReducer, ShiftModuleState } from './modules/shifts/reducer';
-import { default as dutyRosterReducer, DutyRosterState } from './modules/dutyRoster/reducer';
-import { reducer as formReducer } from 'redux-form';
-import { default as scheduleReducer, ScheduleState } from './modules/schedule/reducer';
-import { UserState, registerReducer as registerUserReducer } from './modules/user/reducer';
-import { RoleModuleState, registerReducer as registerRolesReducer } from './modules/roles/reducer';
-import { LeaveModuleState, registerReducer as registerLeavesReducer } from './modules/leaves/reducer';
+import { registerReducer as registerLeavesReducer, LeaveModuleState } from './modules/leaves/reducer';
 
-import { registerReducer as registerSystemReducer, SystemModuleState } from './modules/system/reducer';
-import Client from './api/Client';
-import { requestUserToken, updateUserToken } from './modules/user/actions';
+import { registerReducer as registerCurrentUserReducer, UserState as CurrentUserState } from './modules/user/reducer';
+import { default as dutyRosterReducer, DutyRosterState } from './modules/dutyRoster/reducer';
+import { default as scheduleReducer, ScheduleState } from './modules/schedule/reducer';
 import { default as assignmentScheduleReducer, AssignmentScheduleState } from './modules/assignmentSchedule/reducer';
+
+import { default as api, API } from './api';
+import Client from './api/Client';
+
+import { requestUserToken, updateUserToken } from './modules/user/actions';
+
 export interface ThunkExtra {
     api: API;
 }
@@ -30,8 +36,9 @@ export interface RootState {
     dutyRoster: DutyRosterState;
     shifts: ShiftModuleState;
     schedule: ScheduleState;
-    user: UserState;
+    user: CurrentUserState;
     leaves: LeaveModuleState;
+    users: UsersModuleState;
     roles: RoleModuleState;
     system: SystemModuleState;
 }
@@ -48,7 +55,8 @@ registerSheriffReducer(reducers);
 registerShiftReducer(reducers);
 registerAssignmentReducer(reducers);
 
-registerUserReducer(reducers);
+registerCurrentUserReducer(reducers);
+registerUsersReducer(reducers);
 registerRolesReducer(reducers);
 
 registerLeavesReducer(reducers);
