@@ -577,7 +577,9 @@ export interface API {
     getUserRole(): Promise<UserRole>;
     createUserRole(newUserRole: Partial<UserRole>): Promise<UserRole>;
     updateUserRole(updatedUserRole: UserRole): Promise<UserRole>;
+    deleteUserRole(id: IdType): Promise<void>;
     getUserRoles(): Promise<UserRole[]>;
+    deleteUserRoles(ids: IdType[]): Promise<void>;
 
     getRole(): Promise<Role>;
     createRole(newRole: Partial<Role>): Promise<Role>;

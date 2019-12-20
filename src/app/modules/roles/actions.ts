@@ -60,6 +60,7 @@ export const getUserRoles = userRoleRequests.userRoleMapRequest.actionCreator;
 export const createUserRole = userRoleRequests.createUserRoleRequest.actionCreator;
 export const updateUserRole = userRoleRequests.updateUserRoleRequest.actionCreator;
 export const createOrUpdateUserRoles = userRoleRequests.createOrUpdateUserRolesRequest.actionCreator;
+export const deleteUserRoles = userRoleRequests.deleteUserRolesRequest.actionCreator;
 
 // TODO: Basically duped in sheriffs/actions, make something generic
 type IActionMap = {

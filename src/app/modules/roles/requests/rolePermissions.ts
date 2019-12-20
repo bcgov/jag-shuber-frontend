@@ -26,8 +26,8 @@ class RolePermissionsMapRequest extends GetEntityMapRequest<void, RolePermission
         });
     }
     public async doWork(request: void, { api }: ThunkExtra): Promise<RolePermissionMap> {
-        let roles = await api.getRolePermissions();
-        return arrayToMap(roles, t => t.id);
+        let data = await api.getRolePermissions();
+        return arrayToMap(data, t => t.id);
     }
 }
 

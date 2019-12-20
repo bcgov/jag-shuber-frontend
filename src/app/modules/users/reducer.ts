@@ -13,7 +13,9 @@ export {
 const nestedReducer = new NestedReducer([
   userRequests.userMapRequest.reducer,
   userRequests.createUserRequest.reducer,
-  userRequests.updateUserRequest.reducer
+  userRequests.updateUserRequest.reducer,
+  userRequests.createOrUpdateUsersRequest.reducer,
+  // userRequests.deleteUsersRequest.reducer
 ]);
 
 const reducer = nestedReducer.reducer;

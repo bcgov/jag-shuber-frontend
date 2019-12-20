@@ -5,16 +5,15 @@ import {
     RoleModuleState
 } from '../common';
 import {
+    MapType, IdType,
     ApiScopeMap,
-    ApiScope,
-    MapType, IdType
+    ApiScope
 } from '../../../api/Api';
 import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRequest';
 import RequestAction, { RequestConfig } from '../../../infrastructure/Requests/RequestActionBase';
 import CreateOrUpdateEntitiesRequest from '../../../infrastructure/Requests/CreateOrUpdateEntitiesRequest';
 import CreateEntityRequest from '../../../infrastructure/Requests/CreateEntityRequest';
 import UpdateEntityRequest from '../../../infrastructure/Requests/UpdateEntityRequest';
-import { frontendScopeMapRequest } from './frontendScopes';
 // import toTitleCase from '../../infrastructure/toTitleCase';
 
 // Get the Map
@@ -46,7 +45,7 @@ class CreateApiScopeRequest extends CreateEntityRequest<ApiScope, RoleModuleStat
                         `Success`
                     ),
                     error: (err) => (
-                        `Problem encountered while adding new role scope: ${err ? err.toString() : 'Unknown Error'}`
+                        `Problem encountered while adding new scope: ${err ? err.toString() : 'Unknown Error'}`
                     )
                 }
             },
@@ -126,9 +125,9 @@ class DeleteApiScopesRequest extends RequestAction<IdType[], IdType[], RoleModul
     }
 
     setRequestData(moduleState: RoleModuleState, courtroomIds: IdType[]) {
-        const newMap = { ...frontendScopeMapRequest.getRequestData(moduleState) };
+        const newMap = { ...apiScopeMapRequest.getRequestData(moduleState) };
         courtroomIds.forEach(id => delete newMap[id]);
-        return frontendScopeMapRequest.setRequestData(moduleState, newMap);
+        return apiScopeMapRequest.setRequestData(moduleState, newMap);
     }
 }
 
