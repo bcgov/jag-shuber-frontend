@@ -46,14 +46,11 @@ import {
     getAllFrontendScopePermissions,
     getFrontendScopePermissionsGroupedByScopeId,
     getAllRoleApiScopes,
-    getRoleApiScopesById,
     getRoleApiScopesGroupedByRoleId,
     getAllRoleFrontendScopes,
-    getRoleFrontendScopesById,
     getRoleFrontendScopesGroupedByRoleId,
-    getAllRolePermissions,
-    getRolePermissionsById,
-    getRolePermissionsGroupedByRoleId
+    getRoleFrontendPermissionsGroupedByScopeId,
+    getRoleApiPermissionsGroupedByScopeId
 } from '../../modules/roles/selectors';
 
 import { IdType } from '../../api';
@@ -267,21 +264,19 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
 
     getData(roleId: IdType, state: RootState) {
         const roles = getAllRoles(state) || undefined;
+
         const frontendScopes = getAllFrontendScopes(state) || undefined;
         const frontendScopePermissions = getAllFrontendScopePermissions(state) || undefined;
         const frontendScopePermissionsGrouped = getFrontendScopePermissionsGroupedByScopeId(state) || undefined;
         const apiScopes = getAllApiScopes(state) || undefined;
+
         const roleFrontendScopes = getAllRoleFrontendScopes(state) || undefined;
         const roleFrontendScopesGrouped = getRoleFrontendScopesGroupedByRoleId(state) || undefined;
         const roleApiScopes = getAllRoleApiScopes(state) || undefined;
         const roleApiScopesGrouped = getRoleApiScopesGroupedByRoleId(state) || undefined;
-        const rolePermissions = getAllRolePermissions(state) || undefined;
-        const rolePermissionsGrouped = getRolePermissionsGroupedByRoleId(state) || undefined;
 
-        if (frontendScopePermissionsGrouped && Object.keys(frontendScopePermissionsGrouped).length > 0) {
-            // console.log('dumping grouped scope permissions');
-            // console.log(frontendScopePermissionsGrouped);
-        }
+        const roleFrontendPermissionsGrouped = getRoleFrontendPermissionsGroupedByScopeId(state) || undefined;
+        const roleApiPermissionsGrouped = getRoleApiPermissionsGroupedByScopeId(state) || undefined;
 
         return {
             roles,
@@ -293,8 +288,8 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
             roleFrontendScopesGrouped,
             roleApiScopes,
             roleApiScopesGrouped,
-            rolePermissions,
-            rolePermissionsGrouped
+            roleFrontendPermissionsGrouped,
+            roleApiPermissionsGrouped
         };
     }
 

@@ -484,8 +484,6 @@ export interface RoleFrontendScope {
     revisionCount?: number;
 }
 
-type RoleScope = RoleApiScope | RoleFrontendScope;
-
 /**
  * Scoped access to API routes.
  */
@@ -493,8 +491,10 @@ export interface RolePermission {
     id?: IdType;
     rolePermissionId?: string;
     roleId?: string;
-    roleScopeString: string; // TODO: frontend | api ?
-    roleScope: RoleScope; // TODO: frontend | api ?
+    roleFrontendScopeId?: string,
+    roleFrontendScope?: RoleFrontendScope,
+    roleApiScopeId?: string,
+    roleApiScope?: RoleApiScope,
     displayName?: string;
     description?: string;
     createdBy?: string;
