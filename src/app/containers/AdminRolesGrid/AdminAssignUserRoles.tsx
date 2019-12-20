@@ -144,7 +144,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                 displayHeaderActions={true}
                 displayHeaderSave={false}
                 columns={[
-                    DataTable.SelectorFieldColumn('Assigned Role', { fieldName: 'roleId', colStyle: { width: '325px' }, selectorComponent: RoleSelector, displayInfo: true }),
+                    DataTable.SelectorFieldColumn('Assigned Role', { fieldName: 'roleId', colStyle: { width: '275px' }, selectorComponent: RoleSelector, displayInfo: true }),
                     // DataTable.StaticTextColumn('Description', { fieldName: 'description', colStyle: { width: '350px' }, displayInfo: false }),
                     // DataTable.StaticTextColumn('Role Code', { fieldName: 'roleCode', colStyle: { width: '180px' }, displayInfo: false }),
                     DataTable.DateColumn('Effective Date', 'effectiveDate', { colStyle: { width: '150px'}, displayInfo: true }),
