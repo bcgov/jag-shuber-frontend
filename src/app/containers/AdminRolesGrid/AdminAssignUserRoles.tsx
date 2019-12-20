@@ -236,8 +236,42 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
         };
     }
 
-    mapDeletesFromFormValues(map: {}): {} {
-        return super.mapDeletesFromFormValues(map);
+    mapDeletesFromFormValues(map: any) {
+        const deletedUserIds: IdType[] = [];
+        const deletedUserRoleIds: IdType[] = [];
+
+        if (map.users) {
+            const initialValues = map.users.initialValues;
+            const existingIds = map.users.values.map((val: any) => val.id);
+
+            const removeUserIds = initialValues
+                .filter((val: any) => (existingIds.indexOf(val.id) === -1))
+                .map((val: any) => val.id);
+
+            deletedUserIds.push(...removeUserIds);
+        }
+
+        if (map.userRolesGrouped) {
+            const initialValues = map.userRolesGrouped.initialValues;
+
+            const removeUserRoleIds = Object.keys(initialValues).reduce((acc: any, cur: any) => {
+                const initValues = map.userRolesGrouped.initialValues[cur];
+                const existingIds = map. userRolesGrouped.values[cur].map((val: any) => val.id);
+
+                const removeIds = initValues
+                    .filter((val: any) => (existingIds.indexOf(val.id) === -1))
+                    .map((val: any) => val.id);
+
+                return acc.concat(removeIds);
+            }, []);
+
+            deletedUserRoleIds.push(...removeUserRoleIds);
+        }
+
+        return {
+            users: deletedUserIds,
+            userRoles: deletedUserRoleIds
+        };
     }
 
     getDataFromFormValues(formValues: {}, initialValues: {}): FormContainerProps {

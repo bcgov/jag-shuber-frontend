@@ -692,7 +692,7 @@ export default class Client implements API {
     async updateRoleApiScope(roleScope: Partial<RoleApiScope>): Promise<RoleApiScope> {
         const { id } = roleScope;
         if (!id) {
-            throw 'No Id included in the roleFrontendScope to update';
+            throw 'No Id included in the roleApiScope to update';
         }
         return await this._client.UpdateRoleFrontendScope(id, roleScope) as RoleApiScope;
     }
@@ -722,12 +722,16 @@ export default class Client implements API {
         return {} as UserRole;
     }
 
-    async createUserRole(): Promise<UserRole> {
-        return {} as UserRole;
+    async createUserRole(userRole: UserRole): Promise<UserRole> {
+        return await this._client.CreateUserRole(userRole) as UserRole;
     }
 
-    async updateUserRole(): Promise<UserRole> {
-        return {} as UserRole;
+    async updateUserRole(userRole: UserRole): Promise<UserRole> {
+        const { id } = userRole;
+        if (!id) {
+            throw 'No Id included in the userRole to update';
+        }
+        return await this._client.UpdateUserRole(id, userRole) as UserRole;
     }
 
     async deleteUserRole(userRoleId: IdType): Promise<void> {
@@ -735,6 +739,10 @@ export default class Client implements API {
     }
 
     async deleteUserRoles(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.DeleteUserRole(id));
+        }
+
         return Promise.resolve();
     }
     // END! Methods for roles
