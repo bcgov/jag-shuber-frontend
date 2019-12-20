@@ -1,21 +1,23 @@
 import { ThunkExtra } from '../../../store';
 import arrayToMap from '../../../infrastructure/arrayToMap';
+
 import {
     STATE_KEY,
     RoleModuleState
 } from '../common';
+
 import {
     RoleMap,
     Role,
     MapType, IdType
 } from '../../../api/Api';
+
 import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRequest';
 import RequestAction, { RequestConfig } from '../../../infrastructure/Requests/RequestActionBase';
 import CreateOrUpdateEntitiesRequest from '../../../infrastructure/Requests/CreateOrUpdateEntitiesRequest';
 import CreateEntityRequest from '../../../infrastructure/Requests/CreateEntityRequest';
 import UpdateEntityRequest from '../../../infrastructure/Requests/UpdateEntityRequest';
 import DeleteEntityRequest from '../../../infrastructure/Requests/DeleteEntityRequest';
-import { roleFrontendScopeMapRequest } from './roleFrontendScopes';
 // import toTitleCase from '../../infrastructure/toTitleCase';
 
 // Get the Map
@@ -109,16 +111,13 @@ class DeleteRoleRequest extends DeleteEntityRequest<Role, RoleModuleState> {
 
 export const deleteRoleRequest = new DeleteRoleRequest();
 
-class CreateOrUpdateRolesRequest extends CreateOrUpdateEntitiesRequest<Role, RoleModuleState>{
+class CreateOrUpdateRolesRequest extends CreateOrUpdateEntitiesRequest<Role, RoleModuleState> {
     createEntity(entity: Partial<Role>, { api }: ThunkExtra): Promise<Role> {
         return api.createRole(entity);
     }
     updateEntity(entity: Partial<Role>, { api }: ThunkExtra): Promise<Role> {
         return api.updateRole(entity as Role);
     }
-    /*deleteEntity(entity: Partial<Role>, { api }: ThunkExtra): Promise<void> {
-        return api.deleteRole(entity.id as string);
-    }*/
     constructor(config?: RequestConfig<Role[]>) {
         super(
             {
@@ -142,8 +141,8 @@ class DeleteRolesRequest extends RequestAction<IdType[], IdType[], RoleModuleSta
             namespace: STATE_KEY,
             actionName: 'deleteRoles',
             toasts: {
-                success: (ids) => `${ids.length} role scopes(s) deleted`,
-                error: (err) => `Problem encountered while deleting role scopes: ${err ? err.toString() : 'Unknown Error'}`
+                success: (ids) => `${ids.length} role(s) deleted`,
+                error: (err) => `Problem encountered while deleting roles: ${err ? err.toString() : 'Unknown Error'}`
             }
         });
     }
@@ -153,10 +152,10 @@ class DeleteRolesRequest extends RequestAction<IdType[], IdType[], RoleModuleSta
     }
 
     // TODO: How does this all work?
-    setRequestData(moduleState: RoleModuleState, roleScopeIds: IdType[]) {
-        const newMap = { ...roleFrontendScopeMapRequest.getRequestData(moduleState) };
-        roleScopeIds.forEach(id => delete newMap[id]);
-        return roleFrontendScopeMapRequest.setRequestData(moduleState, newMap);
+    setRequestData(moduleState: RoleModuleState, roleIds: IdType[]) {
+        const newMap = { ...roleMapRequest.getRequestData(moduleState) };
+        roleIds.forEach(id => delete newMap[id]);
+        return  roleMapRequest.setRequestData(moduleState, newMap);
     }
 }
 

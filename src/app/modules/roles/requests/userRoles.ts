@@ -7,13 +7,14 @@ import {
 import {
     UserRoleMap,
     UserRole,
-    MapType
+    MapType, IdType
 } from '../../../api/Api';
 import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRequest';
-import { RequestConfig } from '../../../infrastructure/Requests/RequestActionBase';
+import RequestAction, { RequestConfig } from '../../../infrastructure/Requests/RequestActionBase';
 import CreateOrUpdateEntitiesRequest from '../../../infrastructure/Requests/CreateOrUpdateEntitiesRequest';
 import CreateEntityRequest from '../../../infrastructure/Requests/CreateEntityRequest';
 import UpdateEntityRequest from '../../../infrastructure/Requests/UpdateEntityRequest';
+import { UserModuleState } from '../../users/common';
 // import toTitleCase from '../../infrastructure/toTitleCase';
 
 // Get the Map
@@ -26,8 +27,8 @@ class UserRoleMapRequest extends GetEntityMapRequest<void, UserRole, RoleModuleS
         });
     }
     public async doWork(request: void, { api }: ThunkExtra): Promise<UserRoleMap> {
-        let roles = await api.getUserRoles();
-        return arrayToMap(roles, t => t.id);
+        let data = await api.getUserRoles();
+        return arrayToMap(data, t => t.id);
     }
 }
 
@@ -107,3 +108,22 @@ class CreateOrUpdateUserRolesRequest extends CreateOrUpdateEntitiesRequest<UserR
 }
 
 export const createOrUpdateUserRolesRequest = new CreateOrUpdateUserRolesRequest();
+
+class DeleteUserRolesRequest extends RequestAction<IdType[], IdType[], RoleModuleState> {
+    constructor() {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'deleteUserRoles',
+            toasts: {
+                success: (ids) => `${ids.length} user role(s) deleted`,
+                error: (err) => `Problem encountered while deleting user roles: ${err ? err.toString() : 'Unknown Error'}`
+            }
+        });
+    }
+    public async doWork(request: IdType[], { api }: ThunkExtra): Promise<IdType[]> {
+        await api.deleteUserRoles(request);
+        return request;
+    }
+}
+
+export const deleteUserRolesRequest = new DeleteUserRolesRequest();

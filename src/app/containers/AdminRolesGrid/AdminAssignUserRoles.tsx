@@ -9,7 +9,9 @@ import {
 import { Dispatch } from 'redux';
 
 import {
-    getUsers
+    getUsers,
+    createOrUpdateUsers,
+    deleteUsers
 } from '../../modules/users/actions';
 
 import {
@@ -25,7 +27,10 @@ import {
 } from '../../modules/sheriffs/selectors';
 
 import {
-    getRoles
+    getRoles,
+    getUserRoles,
+    createOrUpdateUserRoles,
+    deleteUserRoles
 } from '../../modules/roles/actions';
 
 import {
@@ -42,7 +47,7 @@ import {
 
 import { RootState } from '../../store';
 
-import { IdType } from '../../api';
+import { User, UserRole, IdType } from '../../api';
 
 import {
     FormContainerBase,
@@ -210,8 +215,50 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
         };
     }
 
-    getDataFromFormValues(formValues: {}): FormContainerProps {
+    mapDeletesFromFormValues(map: {}): {} {
+        return super.mapDeletesFromFormValues(map);
+    }
+
+    getDataFromFormValues(formValues: {}, initialValues: {}): FormContainerProps {
         return super.getDataFromFormValues(formValues) || {
         };
+    }
+
+    async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>) {
+        const data: any = this.getDataFromFormValues(formValues, initialValues) || {};
+        const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
+
+        // Delete records before saving new ones!
+        const deletedUsers: IdType[] = dataToDelete.users as IdType[];
+        const deletedUserRoles: IdType[] = dataToDelete.userRoles as IdType[];
+
+        const users: Partial<User>[] = (data.users) ? data.users.map((u: User) => ({
+            ...u,
+            // TODO: Need a way to set this stuff... createdBy, updated by fields should really be set in the backend using the current user
+            // We're just going to set the fields here temporarily to quickly check if things are working in the meantime...
+            createdBy: 'DEV - FRONTEND',
+            updatedBy: 'DEV - FRONTEND',
+            createdDtm: new Date().toISOString(),
+            updatedDtm: new Date().toISOString(),
+            revisionCount: 0 // TODO: Is there entity versioning anywhere in this project???
+        })) : [];
+
+
+        const userRoles: Partial<UserRole>[] = (data.userRoles) ? data.userRoles.map((r: UserRole) => ({
+            ...r,
+            createdBy: 'DEV - FRONTEND',
+            updatedBy: 'DEV - FRONTEND',
+            createdDtm: new Date().toISOString(),
+            updatedDtm: new Date().toISOString(),
+            revisionCount: 0
+        })) : [];
+
+        return Promise.all([
+            dispatch(deleteUsers(deletedUsers, { toasts: {} })),
+            dispatch(deleteUserRoles(deletedUserRoles, { toasts: {} })),
+            dispatch(createOrUpdateUsers(users, { toasts: {} })),
+            dispatch(createOrUpdateUserRoles(userRoles, { toasts: {} }))
+        ]);
+
     }
 }

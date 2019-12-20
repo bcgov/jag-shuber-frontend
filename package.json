@@ -12,7 +12,7 @@
     "prepare": "patch-package",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "update-api": "yarn add github:bcgov/jag-shuber-api",
+    "update-api": "yarn remove jag-shuber-api && yarn add github:bcgov/jag-shuber-api",
     "snyk-protect": "snyk protect",
     "prepublish": "npm run snyk-protect"
   },

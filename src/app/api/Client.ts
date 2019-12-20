@@ -544,8 +544,8 @@ export default class Client implements API {
         return await this._client.UpdateRolePermission(id, rolePermission) as RolePermission;
     }
 
-    async deleteRolePermission(): Promise<RolePermission> {
-        return {} as RolePermission;
+    async deleteRolePermission(permissionId: IdType): Promise<void> {
+        return Promise.resolve();
     }
 
     async getFrontendScopes(): Promise<FrontendScope[]> {
@@ -602,8 +602,8 @@ export default class Client implements API {
         return this._client.UpdateFrontendScopePermission(id, permission) as FrontendScopePermission;
     }
 
-    async deleteFrontendScopePermission(): Promise<FrontendScopePermission> {
-        return {} as FrontendScopePermission;
+    async deleteFrontendScopePermission(permissionId: IdType): Promise<void> {
+        return Promise.resolve();
     }
 
     async getApiScopes(): Promise<ApiScope[]> {
@@ -730,8 +730,12 @@ export default class Client implements API {
         return {} as UserRole;
     }
 
-    async deleteUserRole(): Promise<UserRole> {
-        return {} as UserRole;
+    async deleteUserRole(userRoleId: IdType): Promise<void> {
+        return Promise.resolve();
+    }
+
+    async deleteUserRoles(ids: IdType[]): Promise<void> {
+        return Promise.resolve();
     }
     // END! Methods for roles
 

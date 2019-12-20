@@ -11,21 +11,10 @@ import { ErrorMap } from './common';
 import { CodeSelector } from '../../infrastructure/CodeSelector';
 import { getLocationById } from '../system/selectors';
 
-export const DEFAULT_USER_SORTER = createSelector(
-    requests.userRankCodeMapRequest.getData,
-    (rankMap) => {
-        function getSortString(s: User) {
-            // TODO: Fix sort string!
-            return 'FAKE_SORT_STRING'; // `${rankMap[s.rankCode as string].order}${s.lastName}${s.firstName}`;
-        }
-        return (a: User, b: User) => getSortString(a).localeCompare(getSortString(b));
-    });
-
 export const users = createSelector(
     requests.userMapRequest.getData,
-    DEFAULT_USER_SORTER,
-    (map, sorter) => {
-        return mapToArray(map).sort(sorter) || [];
+    (map) => {
+        return mapToArray(map) || [];
     }
 );
 
