@@ -221,6 +221,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                     fieldName={this.formFieldNames.roles}
                     title={''} // Leave this blank
                     buttonLabel={'Add Role'}
+                    displayHeaderActions={true}
                     columns={[
                         DataTable.TextFieldColumn('Role Name', { fieldName: 'roleName', colStyle: { width: '300px' }, displayInfo: true, filterable: true }),
                         DataTable.TextFieldColumn('Role Code', { fieldName: 'roleCode', colStyle: { width: '300px' }, displayInfo: true, filterable: true }),
@@ -236,7 +237,6 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                     // expandedRows={[1, 2]}
                     rowComponent={this.DetailComponent}
                     modalComponent={EmptyDetailRow}
-                    displayHeaderActions={true}
                 />
             </div>
         );
