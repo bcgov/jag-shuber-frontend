@@ -14,6 +14,7 @@ import {
     RoleMap,
     IdType
 } from '../../api/Api';
+
 import mapToArray from '../../infrastructure/mapToArray';
 import { ErrorMap } from '../sheriffs/common';
 // import arrayToMap from '../../infrastructure/arrayToMap';
@@ -40,6 +41,21 @@ export const getRole = (id?: IdType) => (state: RootState) => {
     if (state && id != null) {
         const map: RoleMap = roleRequests.roleMapRequest.getData(state);
         return map[id];
+    }
+    return undefined;
+};
+
+export const getUserRoles = createSelector(
+    userRoleRequests.userRoleMapRequest.getData,
+    (map) => {
+        const dataMap = mapToArray(map);
+        return dataMap;
+    }
+);
+
+export const getAllUserRoles = (state: RootState) => {
+    if (state) {
+        return getUserRoles(state);
     }
     return undefined;
 };

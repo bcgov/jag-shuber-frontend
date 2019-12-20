@@ -15,7 +15,7 @@ import {
 } from '../../modules/users/actions';
 
 import {
-    getAllUsers
+    getAllUsers, getUserRolesGroupedByUserId
 } from '../../modules/users/selectors';
 
 import {
@@ -34,7 +34,8 @@ import {
 } from '../../modules/roles/actions';
 
 import {
-    getAllRoles
+    getAllRoles,
+    getAllUserRoles
 } from '../../modules/roles/selectors';
 
 import {
@@ -47,7 +48,7 @@ import {
 
 import { RootState } from '../../store';
 
-import { User, UserRole, IdType } from '../../api';
+import { User, UserRole, IdType, RoleApiScope, RoleFrontendScope } from '../../api';
 
 import {
     FormContainerBase,
@@ -63,7 +64,11 @@ import GenderCodeDisplay from '../GenderCodeDisplay';
 
 // TODO: Fix this interface!
 export interface AdminAssignUserRolesProps extends FormContainerProps {
-    roles?: any[];
+    // roles?: any[];
+    locations?: {}[];
+    users?: {}[];
+    userRoles?: {}[];
+    userRolesGrouped?: {};
 }
 
 export interface AdminAssignUserRolesDisplayProps extends FormContainerProps {
@@ -117,21 +122,29 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
     reduxFormKey = 'roles';
     formFieldNames = {
         users: 'roles.users',
-        roles: 'roles.roles'
+        userRoles: 'roles.userRoles',
+        userRolesGrouped: 'roles.userRolesGrouped',
+        // roles: 'roles.roles'
     };
     title: string = 'Assign User Roles';
-    DetailComponent: React.SFC<DetailComponentProps> = () => {
+    DetailComponent: React.SFC<DetailComponentProps> = ({ parentModelId }) => {
         const onButtonClicked = (ev: React.SyntheticEvent<any>, context: any, model: any) => {
             context.setActiveRow(model.id);
         };
 
+        // If parentModelId is not supplied, the parent component is in a 'new' state, and its data has not been saved
+        // Don't render the detail component
+        if (!parentModelId) return null;
+
         return (
             <DataTable
-                fieldName={this.formFieldNames.roles}
+                fieldName={`${this.formFieldNames.userRolesGrouped}['${parentModelId}']`}
                 title={''} // Leave this blank
                 buttonLabel={'Assign New Role'}
+                displayHeaderActions={true}
+                displayHeaderSave={false}
                 columns={[
-                    DataTable.SelectorFieldColumn('User Role', { fieldName: 'id', colStyle: { width: '325px' }, selectorComponent: RoleSelector, displayInfo: true }),
+                    DataTable.SelectorFieldColumn('Assigned Role', { fieldName: 'roleId', colStyle: { width: '325px' }, selectorComponent: RoleSelector, displayInfo: true }),
                     // DataTable.StaticTextColumn('Description', { fieldName: 'description', colStyle: { width: '350px' }, displayInfo: false }),
                     // DataTable.StaticTextColumn('Role Code', { fieldName: 'roleCode', colStyle: { width: '180px' }, displayInfo: false }),
                     DataTable.DateColumn('Effective Date', 'effectiveDate', { colStyle: { width: '150px'}, displayInfo: true }),
@@ -143,9 +156,11 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                 ]}
                 expandable={false}
                 rowComponent={EmptyDetailRow}
+                initialValue={{
+                    userId: parentModelId
+                }}
+                modalProps={{ userId: parentModelId }}
                 modalComponent={EmptyDetailRow}
-                displayHeaderActions={true}
-                displayHeaderSave={false}
             />
         );
     }
@@ -158,6 +173,8 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                     title={''} // Leave this blank
                     buttonLabel={'Add User'}
                     actions={[]} // TODO: Finish adding configurable actions
+                    displayHeaderActions={true}
+                    displayActionsColumn={true}
                     columns={[
                         DataTable.StaticTextColumn('Full Name', { fieldName: 'displayName', colStyle: { width: '300px' }, displayInfo: false, filterable: true }),
                         // DataTable.StaticTextColumn('Last Name', { fieldName: 'lastName', colStyle: { width: '175px' }, displayInfo: false, filterable: true }),
@@ -175,8 +192,6 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                     // expandedRows={[1, 2]}
                     rowComponent={this.DetailComponent}
                     modalComponent={EmptyDetailRow}
-                    displayHeaderActions={true}
-                    displayActionsColumn={true}
                 />
             </div>
         );
@@ -197,21 +212,27 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
     fetchData(roleId: IdType, dispatch: Dispatch<{}>) {
         dispatch(getLocations()); // This data needs to always be available for select lists
         dispatch(getSheriffs()); // This data needs to always be available for select lists
-        dispatch(getRoles()); // This data needs to always be available for select lists
         dispatch(getUsers());
+        dispatch(getUserRoles());
+        dispatch(getRoles()); // This data needs to always be available for select lists
     }
 
+    // TODO: Get rid of roleId
     getData(roleId: IdType, state: RootState) {
         const locations = getAllLocations(state) || undefined;
         const users = getAllUsers(state) || undefined;
         const sheriffs = getAllSheriffs(state) || undefined;
         const roles = getAllRoles(state) || undefined;
+        const userRoles = getAllUserRoles(state) || undefined;
+        const userRolesGrouped = getUserRolesGroupedByUserId(state) || undefined;
 
         return {
             locations,
-            users,
             sheriffs,
-            roles
+            roles,
+            users,
+            userRoles,
+            userRolesGrouped
         };
     }
 
@@ -243,15 +264,20 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
             revisionCount: 0 // TODO: Is there entity versioning anywhere in this project???
         })) : [];
 
-
-        const userRoles: Partial<UserRole>[] = (data.userRoles) ? data.userRoles.map((r: UserRole) => ({
-            ...r,
-            createdBy: 'DEV - FRONTEND',
-            updatedBy: 'DEV - FRONTEND',
-            createdDtm: new Date().toISOString(),
-            updatedDtm: new Date().toISOString(),
-            revisionCount: 0
-        })) : [];
+        const userRoles: Partial<RoleApiScope>[] = (data.userRolesGrouped)
+            ? Object.keys(data.userRolesGrouped)
+                .reduce((acc, cur, idx) => {
+                    return acc.concat(data.userRolesGrouped[cur]);
+                }, [])
+                .map((rs: RoleFrontendScope) => ({
+                    ...rs,
+                    createdBy: 'DEV - FRONTEND',
+                    updatedBy: 'DEV - FRONTEND',
+                    createdDtm: new Date().toISOString(),
+                    updatedDtm: new Date().toISOString(),
+                    revisionCount: 0
+                }))
+            : [];
 
         return Promise.all([
             dispatch(deleteUsers(deletedUsers, { toasts: {} })),
