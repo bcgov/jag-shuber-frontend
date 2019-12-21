@@ -50,7 +50,9 @@ import {
     getAllRoleFrontendScopes,
     getRoleFrontendScopesGroupedByRoleId,
     getRoleFrontendPermissionsGroupedByScopeId,
-    getRoleApiPermissionsGroupedByScopeId
+    getRoleApiPermissionsGroupedByScopeId,
+    getRoleFrontendScopePermissionsGroupedByScopeId,
+    getRoleApiScopePermissionsGroupedByScopeId
 } from '../../modules/roles/selectors';
 
 import { IdType } from '../../api';
@@ -85,6 +87,8 @@ export interface AdminRolesProps extends FormContainerProps {
     roleApiScopesGrouped?: {};
     rolePermissions?: {}[];
     rolePermissionsGrouped?: {};
+    roleFrontendScopePermissionsGrouped?: {};
+    roleApiScopePermissionsGrouped?: {};
 }
 
 export interface AdminRolesDisplayProps extends FormContainerProps {
@@ -151,7 +155,9 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
         rolePermissions: 'roles.rolePermissions',
         rolePermissionsGrouped: 'roles.rolePermissions',
         roleApiPermissionsGrouped: 'roles.roleApiPermissionsGrouped',
-        roleFrontendPermissionsGrouped: 'roles.roleFrontendPermissionsGrouped'
+        roleFrontendPermissionsGrouped: 'roles.roleFrontendPermissionsGrouped',
+        roleApiScopePermissionsGrouped: 'roles.roleApiScopePermissionsGrouped',
+        roleFrontendScopePermissionsGrouped: 'roles.roleFrontendScopePermissionsGrouped'
     };
     title: string = ' Manage Roles & Access';
     DetailComponent: React.SFC<DetailComponentProps> = ({ parentModelId }) => {
@@ -280,6 +286,9 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
         const roleFrontendPermissionsGrouped = getRoleFrontendPermissionsGroupedByScopeId(state) || undefined;
         const roleApiPermissionsGrouped = getRoleApiPermissionsGroupedByScopeId(state) || undefined;
 
+        const roleFrontendScopePermissionsGrouped = getRoleFrontendScopePermissionsGroupedByScopeId(state) || undefined;
+        const roleApiScopePermissionsGrouped = getRoleApiScopePermissionsGroupedByScopeId(state) || undefined;
+
         return {
             roles,
             frontendScopes,
@@ -291,7 +300,9 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
             roleApiScopes,
             roleApiScopesGrouped,
             roleFrontendPermissionsGrouped,
-            roleApiPermissionsGrouped
+            roleApiPermissionsGrouped,
+            roleFrontendScopePermissionsGrouped,
+            roleApiScopePermissionsGrouped
         };
     }
 

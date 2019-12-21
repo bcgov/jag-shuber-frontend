@@ -32,6 +32,8 @@ export type RoleFrontendScopeMap = MapType<RoleFrontendScope>;
 export type RoleApiScopeMap = MapType<RoleApiScope>;
 export type FrontendScopeMap = MapType<FrontendScope>;
 export type FrontendScopePermissionMap = MapType<FrontendScopePermission>;
+export type RoleFrontendScopePermissionMap = MapType<RoleFrontendScopePermission>;
+export type RoleApiScopePermissionMap = MapType<RoleApiScopePermission>;
 export type ApiScopeMap = MapType<ApiScope>;
 export type UserMap = MapType<User>;
 export type UserRoleMap = MapType<UserRole>;
@@ -260,6 +262,7 @@ export interface SheriffDutyReassignmentDetails {
     targetSheriffDuty: SheriffDuty;
     newTargetDutyStartTime: DateType;
 }
+
 export interface DutyRecurrence {
     id?: IdType;
     assignmentId?: IdType;
@@ -460,10 +463,24 @@ export interface FrontendScopePermission {
     revisionCount?: number;
 }
 
+export interface ApiScopePermission {
+    id?: IdType;
+    apiScopeId?: string;
+    permissionCode?: string;
+    displayName?: string;
+    description?: string;
+    createdBy?: string;
+    updatedBy?: string;
+    createdDtm?: string;
+    updatedDtm?: string;
+    revisionCount?: number;
+}
+
 export interface RoleApiScope {
     id?: IdType;
     roleApiScopeId?: string;
     roleId?: string;
+    // TODO: I think we can rip rolePermissions out, we're not using it
     rolePermissions: Array<RolePermission | undefined>;
     createdBy?: string;
     updatedBy?: string;
@@ -476,6 +493,7 @@ export interface RoleFrontendScope {
     id?: IdType;
     roleFrontendScopeId?: string;
     roleId?: string;
+    // TODO: I think we can rip rolePermissions out, we're not using it
     rolePermissions: Array<RolePermission | undefined>;
     createdBy?: string;
     updatedBy?: string;
@@ -491,12 +509,11 @@ export interface RolePermission {
     id?: IdType;
     rolePermissionId?: string;
     roleId?: string;
+    frontendScopePermissionId?: string,
     roleFrontendScopeId?: string,
-    roleFrontendScope?: RoleFrontendScope,
     roleApiScopeId?: string,
-    roleApiScope?: RoleApiScope,
-    displayName?: string;
-    description?: string;
+    displayName?: string; // TODO: This should be client-side only!
+    description?: string; // TODO: This should be client-side only!
     createdBy?: string;
     updatedBy?: string;
     createdDtm?: string;
@@ -504,8 +521,20 @@ export interface RolePermission {
     revisionCount?: number;
 }
 
-export interface API {
+export interface RoleFrontendScopePermission extends RolePermission {
+    scopePermission?: FrontendScopePermission;
+    // hasPermission is not in the API entity
+    // It is only used on the client-side
+    hasPermission?: boolean;
+}
+export interface RoleApiScopePermission extends RolePermission {
+    scopePermission?: ApiScopePermission;
+    // hasPermission is not in the API entity
+    // It is only used on the client-side
+    hasPermission?: boolean;
+}
 
+export interface API {
     // Sheriffs
     getSheriffs(): Promise<Sheriff[]>;
     createSheriff(newSheriff: Sheriff): Promise<Sheriff>;
