@@ -478,8 +478,8 @@ export interface ApiScopePermission {
 
 export interface RoleApiScope {
     id?: IdType;
-    roleApiScopeId?: string;
     roleId?: string;
+    scopeId?: string;
     // TODO: I think we can rip rolePermissions out, we're not using it
     rolePermissions: Array<RolePermission | undefined>;
     createdBy?: string;
@@ -491,8 +491,8 @@ export interface RoleApiScope {
 
 export interface RoleFrontendScope {
     id?: IdType;
-    roleFrontendScopeId?: string;
     roleId?: string;
+    scopeId?: string;
     // TODO: I think we can rip rolePermissions out, we're not using it
     rolePermissions: Array<RolePermission | undefined>;
     createdBy?: string;
@@ -507,11 +507,10 @@ export interface RoleFrontendScope {
  */
 export interface RolePermission {
     id?: IdType;
-    rolePermissionId?: string;
     roleId?: string;
-    frontendScopePermissionId?: string,
-    roleFrontendScopeId?: string,
     roleApiScopeId?: string,
+    roleFrontendScopeId?: string,
+    frontendScopePermissionId?: string,
     displayName?: string; // TODO: This should be client-side only!
     description?: string; // TODO: This should be client-side only!
     createdBy?: string;
@@ -522,12 +521,16 @@ export interface RolePermission {
 }
 
 export interface RoleFrontendScopePermission extends RolePermission {
+    scope?: FrontendScope;
+    roleScope?: RoleFrontendScope;
     scopePermission?: FrontendScopePermission;
     // hasPermission is not in the API entity
     // It is only used on the client-side
     hasPermission?: boolean;
 }
 export interface RoleApiScopePermission extends RolePermission {
+    scope?: ApiScope;
+    roleScope?: RoleApiScope;
     scopePermission?: ApiScopePermission;
     // hasPermission is not in the API entity
     // It is only used on the client-side

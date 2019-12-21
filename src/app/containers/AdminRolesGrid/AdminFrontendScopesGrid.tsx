@@ -14,6 +14,7 @@ import {
 
 import {
     getFrontendScopes,
+    getFrontendScopePermissions,
     createOrUpdateFrontendScopes,
     deleteFrontendScopes
 } from '../../modules/roles/actions';
@@ -21,7 +22,9 @@ import {
 import { RootState } from '../../store';
 
 import {
-    getAllFrontendScopes
+    getAllFrontendScopePermissions,
+    getAllFrontendScopes,
+    getFrontendScopePermissionsGroupedByScopeId
 } from '../../modules/roles/selectors';
 
 import { IdType, Role } from '../../api';
@@ -38,6 +41,7 @@ import AdminScopePermissionsModal from './AdminScopePermissionsModal';
 
 export interface AdminFrontendScopesProps extends FormContainerProps {
     frontendScopes?: any[];
+    frontendScopePermissionsGrouped?: {};
 }
 
 export interface AdminFrontendScopesDisplayProps extends FormContainerProps {
@@ -136,13 +140,16 @@ export default class AdminFrontendScopesGrid extends FormContainerBase<AdminFron
     // TODO: Not sure if this should be roleId or what, I'm not there yet...
     fetchData(roleId: IdType, dispatch: Dispatch<{}>) {
         dispatch(getFrontendScopes()); // This data needs to always be available for select lists
+        dispatch(getFrontendScopePermissions()); // This data needs to always be available for select lists
     }
 
     getData(roleId: IdType, state: RootState) {
         const frontendScopes = getAllFrontendScopes(state) || undefined;
+        const frontendScopePermissionsGrouped = getFrontendScopePermissionsGroupedByScopeId(state) || undefined;
 
         return {
-            frontendScopes
+            frontendScopes,
+            frontendScopePermissionsGrouped
         };
     }
 
