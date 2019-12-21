@@ -149,7 +149,9 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
         roleFrontendScopes: 'roles.roleFrontendScopes',
         roleFrontendScopesGrouped: 'roles.roleFrontendScopesGrouped',
         rolePermissions: 'roles.rolePermissions',
-        rolePermissionsGrouped: 'roles.rolePermissions'
+        rolePermissionsGrouped: 'roles.rolePermissions',
+        roleApiPermissionsGrouped: 'roles.roleApiPermissionsGrouped',
+        roleFrontendPermissionsGrouped: 'roles.roleFrontendPermissionsGrouped'
     };
     title: string = ' Manage Roles & Access';
     DetailComponent: React.SFC<DetailComponentProps> = ({ parentModelId }) => {
