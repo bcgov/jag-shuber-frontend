@@ -43,14 +43,9 @@ import {
     getAllRoles,
     getAllApiScopes,
     getAllFrontendScopes,
-    getAllFrontendScopePermissions,
     getFrontendScopePermissionsGroupedByScopeId,
-    getAllRoleApiScopes,
     getRoleApiScopesGroupedByRoleId,
-    getAllRoleFrontendScopes,
     getRoleFrontendScopesGroupedByRoleId,
-    getRoleFrontendPermissionsGroupedByScopeId,
-    getRoleApiPermissionsGroupedByScopeId,
     getRoleFrontendScopePermissionsGroupedByScopeId,
     getRoleApiScopePermissionsGroupedByScopeId
 } from '../../modules/roles/selectors';
@@ -65,11 +60,11 @@ import {
 import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../components/Table/DataTable';
 import AdminRoleScopeAccessModal from '../../containers/AdminRolesGrid/AdminRoleScopeAccessModal';
 
-import RoleSelector from './RoleSelector';
-import FrontendScopeDisplay from './FrontendScopeDisplay';
+// import RoleSelector from './RoleSelector';
+// import FrontendScopeDisplay from './FrontendScopeDisplay';
 import FrontendScopeCodeDisplay from './FrontendScopeCodeDisplay';
 import FrontendScopeDescriptionDisplay from './FrontendScopeDescriptionDisplay';
-import ApiScopeDisplay from './ApiScopeDisplay';
+// import ApiScopeDisplay from './ApiScopeDisplay';
 import ApiScopeCodeDisplay from './ApiScopeCodeDisplay';
 import ApiScopeDescriptionDisplay from './ApiScopeDescriptionDisplay';
 import FrontendScopeSelector from './FrontendScopeSelector';
@@ -274,34 +269,23 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
         const roles = getAllRoles(state) || undefined;
 
         const frontendScopes = getAllFrontendScopes(state) || undefined;
-        const frontendScopePermissions = getAllFrontendScopePermissions(state) || undefined;
         const frontendScopePermissionsGrouped = getFrontendScopePermissionsGroupedByScopeId(state) || undefined;
         const apiScopes = getAllApiScopes(state) || undefined;
 
-        const roleFrontendScopes = getAllRoleFrontendScopes(state) || undefined;
         const roleFrontendScopesGrouped = getRoleFrontendScopesGroupedByRoleId(state) || undefined;
-        const roleApiScopes = getAllRoleApiScopes(state) || undefined;
         const roleApiScopesGrouped = getRoleApiScopesGroupedByRoleId(state) || undefined;
-
-        const roleFrontendPermissionsGrouped = getRoleFrontendPermissionsGroupedByScopeId(state) || undefined;
-        const roleApiPermissionsGrouped = getRoleApiPermissionsGroupedByScopeId(state) || undefined;
 
         const roleFrontendScopePermissionsGrouped = getRoleFrontendScopePermissionsGroupedByScopeId(state) || undefined;
         const roleApiScopePermissionsGrouped = getRoleApiScopePermissionsGroupedByScopeId(state) || undefined;
 
         return {
             roles,
-            frontendScopes,
-            frontendScopePermissions,
-            frontendScopePermissionsGrouped,
             apiScopes,
-            roleFrontendScopes,
+            frontendScopes,
+            frontendScopePermissionsGrouped,
             roleFrontendScopesGrouped,
-            roleApiScopes,
-            roleApiScopesGrouped,
-            roleFrontendPermissionsGrouped,
-            roleApiPermissionsGrouped,
             roleFrontendScopePermissionsGrouped,
+            roleApiScopesGrouped,
             roleApiScopePermissionsGrouped
         };
     }

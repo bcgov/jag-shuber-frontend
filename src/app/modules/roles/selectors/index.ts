@@ -20,12 +20,13 @@ export const groupByKey = (key: string, arr: any[]): MapType<any> => {
     const map: MapType<any> = {};
     const result = arr.reduce((acc, cur, idx) => {
         if (cur && cur[key]) {
+            // if (cur && cur[key] === '80294c81-cad7-4e58-ace1-76587d36530e') debugger;
             if (acc[cur[key]] === undefined) {
                 acc[cur[key]] = [];
             }
 
             // @ts-ignore
-            if (!(acc[cur[key]].find(i => i.id === cur.id))) {
+            if (!(acc[cur[key]].find(i => i === cur))) {
                 acc[cur[key]].push(cur);
             }
         }

@@ -4,17 +4,17 @@ import mapToArray from '../../../infrastructure/mapToArray';
 import { RootState } from '../../../store';
 import { IdType, RolePermission } from '../../../api';
 import { groupByKey } from './index';
+import * as frontendScopeSelectors from './frontendScopes';
 import * as frontendScopePermissionSelectors from './frontendScopePermissions';
+import * as roleFrontendScopeSelectors from './roleFrontendScopes';
 import {
     FrontendScopePermission,
-    RoleFrontendScopePermission ,
-    ApiScopePermission,
-    RoleApiScopePermission
+    RoleFrontendScopePermission
 } from '../../../api/Api';
 
-const groupByRole = (arr: any[]) => groupByKey('roleId', arr);
-const groupByRoleFrontendScope = (arr: any[]) => groupByKey('roleFrontendScopeId', arr);
-const groupByRoleApiScope = (arr: any[]) => groupByKey('roleApiScopeId', arr);
+const groupByRole = (arr: {}[]) => groupByKey('roleId', arr);
+const groupByRoleFrontendScope = (arr: {}[]) => groupByKey('roleFrontendScopeId', arr);
+const groupByRoleApiScope = (arr: {}[]) => groupByKey('roleApiScopeId', arr);
 
 export const getRolePermissions = createSelector(
     rolePermissionRequests.rolePermissionMapRequest.getData,
@@ -24,42 +24,60 @@ export const getRolePermissions = createSelector(
     }
 );
 
-export const getRoleFrontendPermissions = createSelector(
-   getRolePermissions,
-   (rolePermissions) => {
-       return rolePermissions.filter((i: RolePermission) => !!i.roleFrontendScopeId);
-   }
-);
-
-export const getRoleApiPermissions = createSelector(
-   getRolePermissions,
-   (rolePermissions) => {
-       return rolePermissions.filter((i: RolePermission) => !!i.roleApiScopeId);
-   }
-);
-
 export const getRoleFrontendScopePermissions = createSelector(
+    frontendScopeSelectors.getFrontendScopes,
     frontendScopePermissionSelectors.getFrontendScopePermissions,
+    roleFrontendScopeSelectors.getRoleFrontendScopes,
     getRolePermissions,
-   (scopePermissions, rolePermissions) => {
-       return scopePermissions
-           .map((i: FrontendScopePermission): RoleFrontendScopePermission  => {
-               let roleScopePermission = rolePermissions.find((p) => p.frontendScopePermissionId === i.id) as RoleFrontendScopePermission;
-               let hasPermission = false;
-               if (roleScopePermission) {
-                   hasPermission = true;
-               } else {
-                   roleScopePermission = {} as RoleFrontendScopePermission;
-               }
+    (scopes, scopePermissions, roleScopes, rolePermissions) => {
+        // For every roleFrontendScope, we need to grab the associated permissions.
+        // It's a multipart operation.
+        const result = roleScopes.reduce((arr: RoleFrontendScopePermission[], currentRoleScope) => {
+            // First we need to figure out what frontendScopes correlate to each roleFrontendScope.
+            // This part is simple, the scopeId on a roleFrontendScope correlates to the id on a frontendScope.
+            const currentScope = scopes.find(s => s.id === currentRoleScope.scopeId);
 
-               roleScopePermission.displayName = i.displayName;
-               roleScopePermission.description = i.description;
-               roleScopePermission.scopePermission = i;
-               roleScopePermission.hasPermission = hasPermission;
+            if (!currentScope) throw 'Could not find a matching scope for the current role scope!';
 
-               return roleScopePermission;
-           })
-           .filter((i: RoleFrontendScopePermission) => !!i.roleFrontendScopeId);
+            // Now we need to grab all the available permissions that belong to the scope
+            const currentScopePermissions = scopePermissions.filter(sp => sp.frontendScopeId === currentScope.id);
+
+            // Now get all the permissions that are assigned to the user for the scope, and map them into corresponding
+            // RoleFrontendScopePermission shapes.
+            const currentRoleScopePermissions = currentScopePermissions.map((i: FrontendScopePermission): RoleFrontendScopePermission  => {
+                // RolePermission doesn't have a frontendScopeId or a scopeId reference directly on it.
+                // This is by design.
+                // We basically just apply a RolePermission - if it exists - on top of a RoleFrontendScopePermission,
+                // which combines the FrontendScopePermission and RolePermission shapes, and which is also the actual
+                // model used by the UI in redux-form FormArrays.
+                let roleScopePermission = rolePermissions.find(
+                    (p) => p.frontendScopePermissionId === i.id
+                ) as RoleFrontendScopePermission;
+
+                let hasPermission = false;
+                if (roleScopePermission && roleScopePermission.id) {
+                    hasPermission = true;
+                } else {
+                    roleScopePermission = {} as RoleFrontendScopePermission;
+                }
+
+                roleScopePermission.roleId = currentRoleScope.roleId;
+                roleScopePermission.roleFrontendScopeId = currentRoleScope.id;
+                roleScopePermission.frontendScopePermissionId = i.id;
+                roleScopePermission.displayName = i.displayName;
+                roleScopePermission.description = i.description;
+                roleScopePermission.hasPermission = hasPermission;
+                roleScopePermission.scope = currentScope;
+                roleScopePermission.roleScope = currentRoleScope;
+                roleScopePermission.scopePermission = i;
+
+                return roleScopePermission;
+            });
+
+            return arr.concat(currentRoleScopePermissions);
+        }, [] as RoleFrontendScopePermission[]);
+
+        return result;
    }
 );
 
@@ -73,58 +91,20 @@ export const getRoleApiScopePermissions = createSelector(
    }
 );
 
-export const getRoleFrontendPermissionsGroupedByRole = createSelector(
-   getRoleFrontendPermissions,
-   (rolePermissions) => {
-       return groupByRole(rolePermissions);
-   }
-);
-
-export const getRoleApiPermissionsGroupedByRole = createSelector(
-   getRoleApiPermissions,
-   (rolePermissions) => {
-       return groupByRole(rolePermissions);
-   }
-);
-
 export const getRoleFrontendScopePermissionsGroupedByRole = createSelector(
    getRoleFrontendScopePermissions,
    (roleScopePermissions) => {
-       return groupByRole(roleScopePermissions);
+       const result = groupByRole(roleScopePermissions);
+       return result;
    }
 );
 
 export const getRoleApiScopePermissionsGroupedByRole = createSelector(
    getRoleApiScopePermissions,
    (roleScopePermissions) => {
-       return groupByRole(roleScopePermissions);
+       const result = groupByRole(roleScopePermissions);
+       return result;
    }
-);
-
-export const getRoleFrontendPermissionsGroupedByRoleScope = createSelector(
-    getRoleFrontendScopePermissionsGroupedByRole,
-    (rolePermissions) => {
-        const result = Object.keys(rolePermissions)
-            .reduce((acc, cur) => {
-                const permissions = acc[cur];
-                acc[cur] = groupByRoleFrontendScope(permissions);
-                return acc;
-            }, rolePermissions);
-        return result;
-    }
-);
-
-export const getRoleApiPermissionsGroupedByRoleScope = createSelector(
-    getRoleApiPermissionsGroupedByRole,
-    (rolePermissions) => {
-        const result = Object.keys(rolePermissions)
-            .reduce((acc, cur) => {
-                const permissions = acc[cur];
-                acc[cur] = groupByRoleApiScope(permissions);
-                return acc;
-            }, rolePermissions);
-        return result;
-    }
 );
 
 export const getRoleFrontendScopePermissionsGroupedByRoleScope = createSelector(
@@ -132,9 +112,8 @@ export const getRoleFrontendScopePermissionsGroupedByRoleScope = createSelector(
     (roleScopePermissions) => {
         const result = Object.keys(roleScopePermissions)
             .reduce((acc, cur) => {
-                const permissions = acc[cur];
-                // TODO: Somehow this is already grouped - probably because we populated the permission object... double check that!
-                acc[cur] = permissions; // groupByRoleFrontendScope(permissions[cur]);
+                const roleScopePermissionSet = acc[cur];
+                acc[cur] = groupByRoleFrontendScope(roleScopePermissionSet);
                 return acc;
             }, roleScopePermissions);
         return result;
@@ -150,38 +129,10 @@ export const getRoleApiScopePermissionsGroupedByRoleScope = createSelector(
                 // TODO: Somehow this is already grouped - probably because we populated the permission object... double check that!
                 acc[cur] = permissions; // groupByRoleApiScope(permissions[cur]);
                 return acc;
-            }, roleScopePermissions);
+            },      roleScopePermissions);
         return result;
     }
 );
-
-export const getAllRolePermissions = (state: RootState) => {
-    if (state) {
-        return getRolePermissions(state);
-    }
-    return undefined;
-};
-
-export const getRolePermissionsById = (id?: IdType) => (state: RootState) => {
-    if (state) {
-        return getRolePermissions(state).filter(item => item.id === id);
-    }
-    return undefined;
-};
-
-export const getRoleFrontendPermissionsGroupedByScopeId = (state: RootState) => {
-    if (state) {
-        return getRoleFrontendPermissionsGroupedByRoleScope(state);
-    }
-    return undefined;
-};
-
-export const getRoleApiPermissionsGroupedByScopeId = (state: RootState) => {
-    if (state) {
-        return getRoleApiPermissionsGroupedByRoleScope(state);
-    }
-    return undefined;
-};
 
 /**
  * Returns temporaal state used for permission assignment modal.
