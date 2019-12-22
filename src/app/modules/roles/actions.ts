@@ -53,7 +53,7 @@ export const deleteApiScopes = apiScopeRequests.deleteApiScopesRequest.actionCre
 export const getRolePermissions = rolePermissionRequests.rolePermissionMapRequest.actionCreator;
 export const createRolePermission = rolePermissionRequests.createRolePermissionRequest.actionCreator;
 export const updateRolePermission = rolePermissionRequests.updateRolePermissionRequest.actionCreator;
-export const createOrUpdateRolePermission = rolePermissionRequests.createOrUpdateRolePermissionRequest.actionCreator;
+export const createOrUpdateRolePermissions = rolePermissionRequests.createOrUpdateRolePermissionsRequest.actionCreator;
 // export const deleteRolePermission = rolePermissionRequests.deleteRolePermissionRequest.actionCreator;
 
 export const getUserRoles = userRoleRequests.userRoleMapRequest.actionCreator;

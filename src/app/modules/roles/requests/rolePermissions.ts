@@ -106,4 +106,4 @@ class CreateOrUpdateRolePermissionsRequest extends CreateOrUpdateEntitiesRequest
     }
 }
 
-export const createOrUpdateRolePermissionRequest = new CreateOrUpdateRolePermissionsRequest();
+export const createOrUpdateRolePermissionsRequest = new CreateOrUpdateRolePermissionsRequest();

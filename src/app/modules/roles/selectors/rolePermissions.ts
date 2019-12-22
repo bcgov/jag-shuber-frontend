@@ -126,7 +126,6 @@ export const getRoleApiScopePermissionsGroupedByRoleScope = createSelector(
         const result = Object.keys(roleScopePermissions)
             .reduce((acc, cur) => {
                 const permissions = acc[cur];
-                // TODO: Somehow this is already grouped - probably because we populated the permission object... double check that!
                 acc[cur] = permissions; // groupByRoleApiScope(permissions[cur]);
                 return acc;
             },      roleScopePermissions);

@@ -28,6 +28,7 @@ import {
     createOrUpdateRoles,
     createOrUpdateRoleFrontendScopes,
     createOrUpdateRoleApiScopes,
+    createOrUpdateRolePermissions,
     deleteRoles,
     deleteRoleFrontendScopes,
     deleteRoleApiScopes
@@ -69,6 +70,7 @@ import ApiScopeCodeDisplay from './ApiScopeCodeDisplay';
 import ApiScopeDescriptionDisplay from './ApiScopeDescriptionDisplay';
 import FrontendScopeSelector from './FrontendScopeSelector';
 import ApiScopeSelector from './ApiScopeSelector';
+import { RoleFrontendScopePermission } from '../../api/Api';
 
 export interface AdminRolesProps extends FormContainerProps {
     roles?: {}[];
@@ -387,6 +389,31 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                 }))
             : [];
 
+        let roleFrontendScopePermissions: Partial<RoleFrontendScope>[] = [];
+
+        if (data.roleFrontendScopePermissionsGrouped) {
+            const roleFrontendScopeKeys = Object.keys(data.roleFrontendScopePermissionsGrouped);
+
+            const roleFrontendScopePermissionsGrouped = roleFrontendScopeKeys
+                .reduce((acc, cur, idx: number) => {
+                    const roleScopes = data.roleFrontendScopePermissionsGrouped[cur];
+                    return Object.assign({}, acc, roleScopes);
+                }, {});
+
+            roleFrontendScopePermissions = Object.keys(roleFrontendScopePermissionsGrouped)
+                .reduce((acc: {}[], cur, idx: number) => {
+                    return acc.concat(roleFrontendScopePermissionsGrouped[cur]);
+                }, [])
+                .map((rs: RoleFrontendScopePermission) => ({
+                    ...rs,
+                    createdBy: 'DEV - FRONTEND',
+                    updatedBy: 'DEV - FRONTEND',
+                    createdDtm: new Date().toISOString(),
+                    updatedDtm: new Date().toISOString(),
+                    revisionCount: 0
+                }));
+        }
+
         const roleApiScopes: Partial<RoleApiScope>[] = (data.roleApiScopesGrouped)
             ? Object.keys(data.roleApiScopesGrouped)
                 .reduce((acc, cur, idx) => {
@@ -408,6 +435,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
             dispatch(deleteRoleFrontendScopes(deletedRoleFrontendScopes, { toasts: {} })),
             dispatch(deleteRoleApiScopes(deletedRoleApiScopes, { toasts: {} })),
             dispatch(createOrUpdateRoleFrontendScopes(roleFrontendScopes, { toasts: {} })),
+            dispatch(createOrUpdateRolePermissions(roleFrontendScopePermissions, { toasts: {} })),
             dispatch(createOrUpdateRoleApiScopes(roleApiScopes, { toasts: {} }))
         ]);
     }
