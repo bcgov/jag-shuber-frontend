@@ -51,7 +51,9 @@ export const getRoleFrontendScopePermissions = createSelector(
                 // which combines the FrontendScopePermission and RolePermission shapes, and which is also the actual
                 // model used by the UI in redux-form FormArrays.
                 let roleScopePermission = rolePermissions.find(
-                    (p) => p.frontendScopePermissionId === i.id
+                    (p) => {
+                        return p.frontendScopePermissionId === i.id;
+                    }
                 ) as RoleFrontendScopePermission;
 
                 let hasPermission = false;
