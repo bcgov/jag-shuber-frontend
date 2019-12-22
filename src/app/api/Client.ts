@@ -545,6 +545,14 @@ export default class Client implements API {
     }
 
     async deleteRolePermission(permissionId: IdType): Promise<void> {
+        return await this._client.DeleteRolePermission(permissionId);
+    }
+
+    async deleteRolePermissions(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.DeleteRolePermission(id));
+        }
+
         return Promise.resolve();
     }
 
@@ -603,7 +611,7 @@ export default class Client implements API {
     }
 
     async deleteFrontendScopePermission(permissionId: IdType): Promise<void> {
-        return Promise.resolve();
+        return await this._client.DeleteFrontendScopePermission(permissionId);
     }
 
     async getApiScopes(): Promise<ApiScope[]> {

@@ -14,6 +14,7 @@ import RequestAction, { RequestConfig } from '../../../infrastructure/Requests/R
 import CreateOrUpdateEntitiesRequest from '../../../infrastructure/Requests/CreateOrUpdateEntitiesRequest';
 import CreateEntityRequest from '../../../infrastructure/Requests/CreateEntityRequest';
 import UpdateEntityRequest from '../../../infrastructure/Requests/UpdateEntityRequest';
+import { roleFrontendScopeMapRequest } from './roleFrontendScopes';
 // import toTitleCase from '../../infrastructure/toTitleCase';
 
 // Get the Map
@@ -112,9 +113,9 @@ class DeleteRoleApiScopesRequest extends RequestAction<IdType[], IdType[], RoleM
     constructor() {
         super({
             namespace: STATE_KEY,
-            actionName: 'deleteRoleFrontendScopes',
+            actionName: 'deleteRoleApiScopes',
             toasts: {
-                success: (ids) => `${ids.length} role scopes(s) deleted`,
+                success: (ids) => `${ids.length} role scope(s) deleted`,
                 error: (err) => `Problem encountered while deleting role scopes: ${err ? err.toString() : 'Unknown Error'}`
             }
         });
@@ -123,6 +124,14 @@ class DeleteRoleApiScopesRequest extends RequestAction<IdType[], IdType[], RoleM
         await api.deleteRoleApiScopes(request);
         return request;
     }
+
+    // TODO: How does this all work?
+    setRequestData(moduleState: RoleModuleState, roleScopeIds: IdType[]) {
+        const newMap = { ...roleApiScopeMapRequest.getRequestData(moduleState) };
+        roleScopeIds.forEach(id => delete newMap[id]);
+        return roleApiScopeMapRequest.setRequestData(moduleState, newMap);
+    }
 }
 
 export const deleteRoleApiScopesRequest = new DeleteRoleApiScopesRequest();
+

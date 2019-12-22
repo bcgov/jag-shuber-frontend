@@ -31,7 +31,8 @@ import {
     createOrUpdateRolePermissions,
     deleteRoles,
     deleteRoleFrontendScopes,
-    deleteRoleApiScopes
+    deleteRoleApiScopes,
+    deleteRolePermissions
 } from '../../modules/roles/actions';
 
 import {
@@ -300,6 +301,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
         const deletedRoleIds: IdType[] = [];
         const deletedRoleFrontendScopeIds: IdType[] = [];
         const deletedRoleApiScopeIds: IdType[] = [];
+        const deletedRolePermissionIds: IdType[] = [];
 
         if (map.roles) {
             const initialValues = map.roles.initialValues;
@@ -329,6 +331,23 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
             deletedRoleFrontendScopeIds.push(...removeRoleFrontendScopeIds);
         }
 
+        if (map.roleFrontendScopesPermissionsGrouped) {
+            const initialValues = map.roleFrontendScopesPermissionsGrouped.initialValues;
+
+            const removeRoleFrontendScopeIds = Object.keys(initialValues).reduce((acc: any, cur: any) => {
+                const initValues = map.roleFrontendScopesPermissionsGrouped.initialValues[cur];
+                const existingIds = map.roleFrontendScopesPermissionsGrouped.values[cur].map((val: any) => val.id);
+
+                const removeIds = initValues
+                    .filter((val: any) => (existingIds.indexOf(val.id) === -1))
+                    .map((val: any) => val.id);
+
+                return acc.concat(removeIds);
+            }, []);
+
+            deletedRolePermissionIds.push(...removeRoleFrontendScopeIds);
+        }
+
         if (map.roleApiScopesGrouped) {
             const initialValues = map.roleApiScopesGrouped.initialValues;
 
@@ -349,7 +368,8 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
         return {
             roles: deletedRoleIds,
             roleFrontendScopes: deletedRoleFrontendScopeIds,
-            roleApiScopes: deletedRoleApiScopeIds
+            roleApiScopes: deletedRoleApiScopeIds,
+            deletedRolePermissionIds: deletedRolePermissionIds
         };
     }
 
@@ -361,6 +381,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
         const deletedRoles: IdType[] = dataToDelete.roles as IdType[];
         const deletedRoleFrontendScopes: IdType[] = dataToDelete.roleFrontendScopes as IdType[];
         const deletedRoleApiScopes: IdType[] = dataToDelete.roleApiScopes as IdType[];
+        const deletedRolePermissions: IdType[] = dataToDelete.rolePermissions as IdType[];
 
         const roles: Partial<Role>[] = (data.roles) ? data.roles.map((r: Role) => ({
             ...r,
@@ -430,10 +451,11 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
             : [];
 
         return Promise.all([
+            dispatch(deleteRolePermissions(deletedRolePermissions, { toasts: {} })),
             dispatch(deleteRoles(deletedRoles, { toasts: {} })),
-            dispatch(createOrUpdateRoles(roles, { toasts: {} })),
             dispatch(deleteRoleFrontendScopes(deletedRoleFrontendScopes, { toasts: {} })),
             dispatch(deleteRoleApiScopes(deletedRoleApiScopes, { toasts: {} })),
+            dispatch(createOrUpdateRoles(roles, { toasts: {} })),
             dispatch(createOrUpdateRoleFrontendScopes(roleFrontendScopes, { toasts: {} })),
             dispatch(createOrUpdateRolePermissions(roleFrontendScopePermissions, { toasts: {} })),
             dispatch(createOrUpdateRoleApiScopes(roleApiScopes, { toasts: {} }))
