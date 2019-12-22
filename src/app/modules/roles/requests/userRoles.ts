@@ -15,6 +15,7 @@ import CreateOrUpdateEntitiesRequest from '../../../infrastructure/Requests/Crea
 import CreateEntityRequest from '../../../infrastructure/Requests/CreateEntityRequest';
 import UpdateEntityRequest from '../../../infrastructure/Requests/UpdateEntityRequest';
 import { UserModuleState } from '../../users/common';
+import { roleFrontendScopeMapRequest } from './roleFrontendScopes';
 // import toTitleCase from '../../infrastructure/toTitleCase';
 
 // Get the Map
@@ -123,6 +124,13 @@ class DeleteUserRolesRequest extends RequestAction<IdType[], IdType[], RoleModul
     public async doWork(request: IdType[], { api }: ThunkExtra): Promise<IdType[]> {
         await api.deleteUserRoles(request);
         return request;
+    }
+
+    // TODO: How does this all work?
+    setRequestData(moduleState: RoleModuleState, roleScopeIds: IdType[]) {
+        const newMap = { ...userRoleMapRequest.getRequestData(moduleState) };
+        roleScopeIds.forEach(id => delete newMap[id]);
+        return userRoleMapRequest.setRequestData(moduleState, newMap);
     }
 }
 

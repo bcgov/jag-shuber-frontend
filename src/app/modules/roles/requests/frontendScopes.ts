@@ -126,9 +126,9 @@ class DeleteFrontendScopesRequest extends RequestAction<IdType[], IdType[], Role
     }
 
     // TODO: How does this all work?
-    setRequestData(moduleState: RoleModuleState, courtroomIds: IdType[]) {
+    setRequestData(moduleState: RoleModuleState, frontendScopeIds: IdType[]) {
         const newMap = { ...frontendScopeMapRequest.getRequestData(moduleState) };
-        courtroomIds.forEach(id => delete newMap[id]);
+        frontendScopeIds.forEach(id => delete newMap[id]);
         return frontendScopeMapRequest.setRequestData(moduleState, newMap);
     }
 }

@@ -7,13 +7,14 @@ import {
 import {
     RolePermissionMap,
     RolePermission,
-    MapType
+    MapType, IdType
 } from '../../../api/Api';
 import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRequest';
-import { RequestConfig } from '../../../infrastructure/Requests/RequestActionBase';
+import RequestAction, { RequestConfig } from '../../../infrastructure/Requests/RequestActionBase';
 import CreateOrUpdateEntitiesRequest from '../../../infrastructure/Requests/CreateOrUpdateEntitiesRequest';
 import CreateEntityRequest from '../../../infrastructure/Requests/CreateEntityRequest';
 import UpdateEntityRequest from '../../../infrastructure/Requests/UpdateEntityRequest';
+import { frontendScopeMapRequest } from './frontendScopes';
 // import toTitleCase from '../../infrastructure/toTitleCase';
 
 // Get the Map
@@ -107,3 +108,29 @@ class CreateOrUpdateRolePermissionsRequest extends CreateOrUpdateEntitiesRequest
 }
 
 export const createOrUpdateRolePermissionsRequest = new CreateOrUpdateRolePermissionsRequest();
+
+class DeleteRolePermissionsRequest extends RequestAction<IdType[], IdType[], RoleModuleState> {
+    constructor() {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'deleteRolePermissions',
+            toasts: {
+                success: (ids) => `${ids.length} permission(s) deleted`,
+                error: (err) => `Problem encountered while deleting permissions: ${err ? err.toString() : 'Unknown Error'}`
+            }
+        });
+    }
+    public async doWork(request: IdType[], { api }: ThunkExtra): Promise<IdType[]> {
+        await api.deleteRolePermissions(request);
+        return request;
+    }
+
+    // TODO: How does this all work?
+    setRequestData(moduleState: RoleModuleState, permissionIds: IdType[]) {
+        const newMap = { ...rolePermissionMapRequest.getRequestData(moduleState) };
+        permissionIds.forEach(id => delete newMap[id]);
+        return rolePermissionMapRequest.setRequestData(moduleState, newMap);
+    }
+}
+
+export const deleteRolePermissionsRequest = new DeleteRolePermissionsRequest();

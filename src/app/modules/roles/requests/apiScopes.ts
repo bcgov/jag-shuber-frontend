@@ -124,9 +124,9 @@ class DeleteApiScopesRequest extends RequestAction<IdType[], IdType[], RoleModul
         return request;
     }
 
-    setRequestData(moduleState: RoleModuleState, courtroomIds: IdType[]) {
+    setRequestData(moduleState: RoleModuleState, apiScopeIds: IdType[]) {
         const newMap = { ...apiScopeMapRequest.getRequestData(moduleState) };
-        courtroomIds.forEach(id => delete newMap[id]);
+        apiScopeIds.forEach(id => delete newMap[id]);
         return apiScopeMapRequest.setRequestData(moduleState, newMap);
     }
 }

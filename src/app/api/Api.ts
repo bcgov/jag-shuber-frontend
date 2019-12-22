@@ -624,6 +624,7 @@ export interface API {
     createRolePermission(newRolePermission: Partial<RolePermission>): Promise<RolePermission>;
     updateRolePermission(updatedRolePermission: RolePermission): Promise<RolePermission>;
     getRolePermissions(): Promise<RolePermission[]>;
+    deleteRolePermissions(permissionIds: IdType[]): Promise<void>;
 
     getFrontendScope(): Promise<FrontendScope>;
     createFrontendScope(newFrontendScope: Partial<FrontendScope>): Promise<FrontendScope>;

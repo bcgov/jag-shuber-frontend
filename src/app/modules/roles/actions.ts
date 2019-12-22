@@ -55,6 +55,7 @@ export const createRolePermission = rolePermissionRequests.createRolePermissionR
 export const updateRolePermission = rolePermissionRequests.updateRolePermissionRequest.actionCreator;
 export const createOrUpdateRolePermissions = rolePermissionRequests.createOrUpdateRolePermissionsRequest.actionCreator;
 // export const deleteRolePermission = rolePermissionRequests.deleteRolePermissionRequest.actionCreator;
+export const deleteRolePermissions = rolePermissionRequests.deleteRolePermissionsRequest.actionCreator;
 
 export const getUserRoles = userRoleRequests.userRoleMapRequest.actionCreator;
 export const createUserRole = userRoleRequests.createUserRoleRequest.actionCreator;
