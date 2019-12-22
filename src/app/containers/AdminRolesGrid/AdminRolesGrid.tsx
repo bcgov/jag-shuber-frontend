@@ -10,8 +10,7 @@ import { Dispatch } from 'redux';
 
 import {
     Role,
-    FrontendScope,
-    ApiScope,
+    RolePermission,
     RoleFrontendScope,
     RoleApiScope
 } from '../../api';
@@ -331,23 +330,6 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
             deletedRoleFrontendScopeIds.push(...removeRoleFrontendScopeIds);
         }
 
-        if (map.roleFrontendScopesPermissionsGrouped) {
-            const initialValues = map.roleFrontendScopesPermissionsGrouped.initialValues;
-
-            const removeRoleFrontendScopeIds = Object.keys(initialValues).reduce((acc: any, cur: any) => {
-                const initValues = map.roleFrontendScopesPermissionsGrouped.initialValues[cur];
-                const existingIds = map.roleFrontendScopesPermissionsGrouped.values[cur].map((val: any) => val.id);
-
-                const removeIds = initValues
-                    .filter((val: any) => (existingIds.indexOf(val.id) === -1))
-                    .map((val: any) => val.id);
-
-                return acc.concat(removeIds);
-            }, []);
-
-            deletedRolePermissionIds.push(...removeRoleFrontendScopeIds);
-        }
-
         if (map.roleApiScopesGrouped) {
             const initialValues = map.roleApiScopesGrouped.initialValues;
 
@@ -381,7 +363,8 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
         const deletedRoles: IdType[] = dataToDelete.roles as IdType[];
         const deletedRoleFrontendScopes: IdType[] = dataToDelete.roleFrontendScopes as IdType[];
         const deletedRoleApiScopes: IdType[] = dataToDelete.roleApiScopes as IdType[];
-        const deletedRolePermissions: IdType[] = dataToDelete.rolePermissions as IdType[];
+        // Important! We don't handle permissions the same way as the other deletes!
+        const deletedRolePermissions: IdType[] = [] as IdType[];
 
         const roles: Partial<Role>[] = (data.roles) ? data.roles.map((r: Role) => ({
             ...r,
@@ -410,7 +393,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                 }))
             : [];
 
-        let roleFrontendScopePermissions: Partial<RoleFrontendScope>[] = [];
+        let roleFrontendScopePermissions: Partial<RolePermission>[] = [];
 
         if (data.roleFrontendScopePermissionsGrouped) {
             const roleFrontendScopeKeys = Object.keys(data.roleFrontendScopePermissionsGrouped);
@@ -425,14 +408,33 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                 .reduce((acc: {}[], cur, idx: number) => {
                     return acc.concat(roleFrontendScopePermissionsGrouped[cur]);
                 }, [])
-                .map((rs: RoleFrontendScopePermission) => ({
-                    ...rs,
-                    createdBy: 'DEV - FRONTEND',
-                    updatedBy: 'DEV - FRONTEND',
-                    createdDtm: new Date().toISOString(),
-                    updatedDtm: new Date().toISOString(),
-                    revisionCount: 0
-                }));
+                .map((rsp: RoleFrontendScopePermission) => {
+                    if (rsp.hasPermission !== true) {
+                        if (rsp.id) deletedRolePermissions.push(rsp.id as string);
+                        return undefined;
+                    } else {
+                        return {
+                            id: rsp.id ? rsp.id : undefined,
+                            roleId: rsp.roleId,
+                            frontendScopePermissionId: rsp.frontendScopePermissionId,
+                            roleFrontendScopeId: rsp.roleFrontendScopeId,
+                            roleFrontendScopePermissionId: rsp.frontendScopePermissionId,
+                            // TODO: Make sure not to  add displayName or description!
+                            //  We will be removing those from RolePermission!
+                            displayName: rsp.displayName,
+                            description: rsp.description,
+                            createdBy: 'DEV - FRONTEND',
+                            updatedBy: 'DEV - FRONTEND',
+                            createdDtm: new Date().toISOString(),
+                            updatedDtm: new Date().toISOString(),
+                            // TODO: Might have to use one of the nested properties
+                            //  Make syre this is the correct entity version (there are currently no versions)
+                            revisionCount: rsp.revisionCount ? rsp.revisionCount : 0
+                        } as RolePermission;
+                    }
+                })
+                .filter(rp => rp) as Partial<RolePermission>[];
+
         }
 
         const roleApiScopes: Partial<RoleApiScope>[] = (data.roleApiScopesGrouped)
