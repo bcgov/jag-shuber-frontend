@@ -12,12 +12,14 @@ import {
     LeaveSubCode,
     LeaveSubCodeMap,
     LeaveCancelCode,
-    LeaveCancelCodeMap,
+    LeaveCancelCodeMap, IdType,
 } from '../../api/Api';
 
 import GetEntityMapRequest from '../../infrastructure/Requests/GetEntityMapRequest';
-import { RequestConfig } from '../../infrastructure/Requests/RequestActionBase';
+import RequestAction, { RequestConfig } from '../../infrastructure/Requests/RequestActionBase';
 import CreateOrUpdateEntitiesRequest from '../../infrastructure/Requests/CreateOrUpdateEntitiesRequest';
+import { RoleModuleState } from '../roles/common';
+import { roleMapRequest } from '../roles/requests/roles';
 
 // Get the Map
 class LeaveMapRequest extends GetEntityMapRequest<void, Leave, LeaveModuleState> {
@@ -124,6 +126,32 @@ class CreateOrUpdateLeaveSubCodesRequest extends CreateOrUpdateEntitiesRequest<L
 }
 
 export const createOrUpdateLeaveSubCodesRequest = new CreateOrUpdateLeaveSubCodesRequest();
+
+class DeleteLeaveSubCodesRequest extends RequestAction<IdType[], IdType[], LeaveModuleState> {
+    constructor() {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'deleteLeaveSubCodes',
+            toasts: {
+                success: (ids) => `${ids.length} leave sub code(s) deleted`,
+                error: (err) => `Problem encountered while deleting sub codes: ${err ? err.toString() : 'Unknown Error'}`
+            }
+        });
+    }
+    public async doWork(request: IdType[], { api }: ThunkExtra): Promise<IdType[]> {
+        await api.deleteLeaveSubCodes(request);
+        return request;
+    }
+
+    // TODO: How does this all work?
+    setRequestData(moduleState: LeaveModuleState, leaveSubCodeIds: IdType[]) {
+        const newMap = { ...leaveSubCodeMapRequest.getRequestData(moduleState) };
+        leaveSubCodeIds.forEach(id => delete newMap[id]);
+        return  leaveSubCodeMapRequest.setRequestData(moduleState, newMap);
+    }
+}
+
+export const deleteLeaveSubCodesRequest = new DeleteLeaveSubCodesRequest();
 
 class LeaveCancelCodeMapRequest extends GetEntityMapRequest<void, LeaveCancelCode, LeaveModuleState> {
 

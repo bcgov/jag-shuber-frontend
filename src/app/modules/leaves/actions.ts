@@ -5,3 +5,4 @@ export const createOrUpdateLeaves = leaveRequests.createOrUpdateLeavesRequest.ac
 export const getLeaveSubCodes = leaveRequests.leaveTypeMapRequest.actionCreator;
 export const getLeaveCancelCodes = leaveRequests.leaveCancelCodeMapRequest.actionCreator;
 export const createOrUpdateLeaveSubCodes = leaveRequests.createOrUpdateLeaveSubCodesRequest.actionCreator;
+export const deleteLeaveSubCodes = leaveRequests.deleteLeaveSubCodesRequest.actionCreator;
