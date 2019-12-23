@@ -82,7 +82,7 @@ export default class AdminRoleScopeAccessModal extends React.Component<AdminRole
                                 actionsColumn={DataTable.ActionsColumn({
                                     actions: [
                                         ({ fields, index, model }) => <RemoveRow fields={fields} index={index} model={model} />,
-                                        ({ fields, index, model }) => <ExpireRow fields={fields} index={index} model={model} />
+                                        ({ fields, index, model }) => { return (model && model.id) ? (<ExpireRow fields={fields} index={index} model={model} />) : null; }
                                     ]
                                 })}
                                 columns={[
