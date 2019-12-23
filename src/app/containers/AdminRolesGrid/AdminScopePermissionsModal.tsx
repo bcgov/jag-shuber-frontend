@@ -92,12 +92,12 @@ export default class AdminScopePermissionsModal extends React.Component<AdminSco
                     )}
                     footerComponent={
                         <>
-                            <Button bsStyle={`default`}>
-                                <Glyphicon glyph="ban-circle" onClick={this.handleClose} /> Cancel
+                            <Button bsStyle={`default`} onClick={this.handleClose}>
+                                <Glyphicon glyph="ban-circle" /> Cancel
                             </Button>
                             &nbsp;
-                            <Button bsStyle={`success`}>
-                                <Glyphicon glyph="ok" onClick={this.handleClose} /> OK
+                            <Button bsStyle={`success`} onClick={this.handleClose}>
+                                <Glyphicon glyph="ok" /> OK
                             </Button>
                         </>
                     }
