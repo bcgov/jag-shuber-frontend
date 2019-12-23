@@ -41,8 +41,8 @@ class CreateApiScopeRequest extends CreateEntityRequest<ApiScope, RoleModuleStat
                 namespace: STATE_KEY,
                 actionName: 'createApiScope',
                 toasts: {
-                    success: (s) => `Successfully created the ${s.scopeName} scope`,
-                    error: (err) => (`Problem encountered while adding new scope: ${err ? err.toString() : 'Unknown Error'}`)
+                    success: (s) => `Successfully created the ${s.scopeName} api scope`,
+                    error: (err) => (`Problem encountered while adding new api scope: ${err ? err.toString() : 'Unknown Error'}`)
                 }
             },
             apiScopeMapRequest
@@ -64,9 +64,9 @@ class UpdateApiScopeRequest extends UpdateEntityRequest<ApiScope, RoleModuleStat
                 namespace: STATE_KEY,
                 actionName: 'updateApiScope',
                 toasts: {
-                    success: (s) => `Successfully updated the ${s.scopeName} scope`,
+                    success: (s) => `Successfully updated the ${s.scopeName} api scope`,
                     // tslint:disable-next-line:max-line-length
-                    error: (err) => `Problem encountered while updating scope: ${err ? err.toString() : 'Unknown Error'}`
+                    error: (err) => `Problem encountered while updating api scope: ${err ? err.toString() : 'Unknown Error'}`
                 }
             },
             apiScopeMapRequest
@@ -93,6 +93,7 @@ class CreateOrUpdateApiScopeRequest extends CreateOrUpdateEntitiesRequest<ApiSco
                 namespace: STATE_KEY,
                 actionName: 'createOrUpdateApiScope',
                 toasts: {
+                    success: (s) => `Successfully created/updated api scopes`,
                     error: (err: any) => `Couldn't create/update scopes: ${err.message}`
                 },
                 ...config
@@ -110,8 +111,8 @@ class DeleteApiScopesRequest extends RequestAction<IdType[], IdType[], RoleModul
             namespace: STATE_KEY,
             actionName: 'deleteApiScopes',
             toasts: {
-                success: (ids) => `${ids.length} scopes(s) deleted`,
-                error: (err) => `Problem encountered while deleting scopes: ${err ? err.toString() : 'Unknown Error'}`
+                success: (ids) => `${ids.length} api scopes(s) deleted`,
+                error: (err) => `Problem encountered while deleting api scopes: ${err ? err.toString() : 'Unknown Error'}`
             }
         });
     }

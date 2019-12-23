@@ -99,6 +99,7 @@ class CreateOrUpdateUserRolesRequest extends CreateOrUpdateEntitiesRequest<UserR
                 namespace: STATE_KEY,
                 actionName: 'createOrUpdateUserRoles',
                 toasts: {
+                    success: (s) => `Successfully created/updated user roles`,
                     error: (err: any) => `Couldn't create/update user roles: ${err.message}`
                 },
                 ...config

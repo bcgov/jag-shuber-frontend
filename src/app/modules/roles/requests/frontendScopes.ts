@@ -43,7 +43,7 @@ class CreateFrontendScopeRequest extends CreateEntityRequest<FrontendScope, Role
                 actionName: 'createFrontendScope',
                 toasts: {
                     success: (s) => `Successfully created the ${s.scopeName} frontend scope`,
-                    error: (err) => (`Problem encountered while adding new scope: ${err ? err.toString() : 'Unknown Error'}`)
+                    error: (err) => (`Problem encountered while adding new frontend scope: ${err ? err.toString() : 'Unknown Error'}`)
                 }
             },
             frontendScopeMapRequest
@@ -67,7 +67,7 @@ class UpdateFrontendScopeRequest extends UpdateEntityRequest<FrontendScope, Role
                 toasts: {
                     success: (s) => (`Successfully updated the ${s.scopeName} frontend scope`),
                     // tslint:disable-next-line:max-line-length
-                    error: (err) => `Problem encountered while updating scope: ${err ? err.toString() : 'Unknown Error'}`
+                    error: (err) => `Problem encountered while updating frontend scope: ${err ? err.toString() : 'Unknown Error'}`
                 }
             },
             frontendScopeMapRequest
@@ -94,7 +94,8 @@ class CreateOrUpdateFrontendScopeRequest extends CreateOrUpdateEntitiesRequest<F
                 namespace: STATE_KEY,
                 actionName: 'createOrUpdateFrontendScope',
                 toasts: {
-                    error: (err: any) => `Couldn't create/update scopes: ${err.message}`
+                    success: (s) => `Successfully created/updated frontend scopes`,
+                    error: (err: any) => `Couldn't create/update frontend scopes: ${err.message}`
                 },
                 ...config
             },
@@ -111,8 +112,8 @@ class DeleteFrontendScopesRequest extends RequestAction<IdType[], IdType[], Role
             namespace: STATE_KEY,
             actionName: 'deleteFrontendScopes',
             toasts: {
-                success: (ids) => `${ids.length} scopes(s) deleted`,
-                error: (err) => `Problem encountered while deleting scopes: ${err ? err.toString() : 'Unknown Error'}`
+                success: (ids) => `${ids.length} frontend scopes(s) deleted`,
+                error: (err) => `Problem encountered while deleting frontend scopes: ${err ? err.toString() : 'Unknown Error'}`
             }
         });
     }

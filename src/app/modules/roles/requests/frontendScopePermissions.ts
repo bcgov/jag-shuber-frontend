@@ -93,6 +93,7 @@ class CreateOrUpdateFrontendScopePermissionRequest extends CreateOrUpdateEntitie
                 namespace: STATE_KEY,
                 actionName: 'createOrUpdateFrontendScopePermission',
                 toasts: {
+                    success: (s) => `Successfully created/updated frontend scope permissions`,
                     error: (err: any) => `Couldn't create/update scope permissions: ${err.message}`
                 },
                 ...config

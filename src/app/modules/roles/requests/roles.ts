@@ -122,6 +122,7 @@ class CreateOrUpdateRolesRequest extends CreateOrUpdateEntitiesRequest<Role, Rol
                 namespace: STATE_KEY,
                 actionName: 'createOrUpdateRoles',
                 toasts: {
+                    success: (s) => `Successfully created/updated roles`,
                     error: (err: any) => `Couldn't create/update roles: ${err.message}`
                 },
                 ...config
