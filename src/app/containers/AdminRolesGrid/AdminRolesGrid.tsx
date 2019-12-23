@@ -71,6 +71,8 @@ import ApiScopeDescriptionDisplay from './ApiScopeDescriptionDisplay';
 import FrontendScopeSelector from './FrontendScopeSelector';
 import ApiScopeSelector from './ApiScopeSelector';
 import { RoleFrontendScopePermission } from '../../api/Api';
+import RemoveRow from '../../components/TableColumnActions/RemoveRow';
+import ExpireRow from '../../components/TableColumnActions/ExpireRow';
 
 export interface AdminRolesProps extends FormContainerProps {
     roles?: {}[];
@@ -173,6 +175,12 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                     buttonLabel={'Add Component to Role'}
                     displayHeaderActions={true}
                     displayHeaderSave={false}
+                    actionsColumn={DataTable.ActionsColumn({
+                        actions: [
+                            ({ fields, index, model }) => <RemoveRow fields={fields} index={index} model={model} />,
+                            ({ fields, index, model }) => <ExpireRow fields={fields} index={index} model={model} />
+                        ]
+                    })}
                     columns={[
                         DataTable.SelectorFieldColumn('Component to Access', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: FrontendScopeSelector, displayInfo: true, disabled: true }),
                         DataTable.MappedTextColumn('Code', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: FrontendScopeCodeDisplay, displayInfo: false }),
@@ -181,6 +189,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                         DataTable.StaticDateColumn('Date Assigned', { fieldName: 'createdDtm', colStyle: { width: '200px' }, displayInfo: false }),
                         DataTable.ButtonColumn('Configure Access', 'list', { displayInfo: true }, onButtonClicked)
                     ]}
+
                     rowComponent={EmptyDetailRow}
                     initialValue={{
                         roleId: parentModelId
@@ -194,6 +203,12 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                     buttonLabel={'Add API Access to Role'}
                     displayHeaderActions={true}
                     displayHeaderSave={false}
+                    actionsColumn={DataTable.ActionsColumn({
+                        actions: [
+                            ({ fields, index, model }) => <RemoveRow fields={fields} index={index} model={model} />,
+                            ({ fields, index, model }) => <ExpireRow fields={fields} index={index} model={model} />
+                        ]
+                    })}
                     columns={[
                         DataTable.SelectorFieldColumn('API Route to Access', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: ApiScopeSelector, displayInfo: true }),
                         DataTable.MappedTextColumn('Code', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: ApiScopeCodeDisplay, displayInfo: false }),
@@ -221,6 +236,12 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                     title={''} // Leave this blank
                     buttonLabel={'Add Role'}
                     displayHeaderActions={true}
+                    actionsColumn={DataTable.ActionsColumn({
+                        actions: [
+                            ({ fields, index, model }) => <RemoveRow fields={fields} index={index} model={model} />,
+                            ({ fields, index, model }) => <ExpireRow fields={fields} index={index} model={model} />
+                        ]
+                    })}
                     columns={[
                         DataTable.TextFieldColumn('Role Name', { fieldName: 'roleName', colStyle: { width: '300px' }, displayInfo: true, filterable: true }),
                         DataTable.TextFieldColumn('Role Code', { fieldName: 'roleCode', colStyle: { width: '300px' }, displayInfo: true, filterable: true }),

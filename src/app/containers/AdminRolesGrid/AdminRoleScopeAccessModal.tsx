@@ -10,6 +10,8 @@ import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
 
 import SelectorField from '../../components/FormElements/SelectorField';
 import FrontendScopeSelector from './FrontendScopeSelector';
+import RemoveRow from '../../components/TableColumnActions/RemoveRow';
+import ExpireRow from '../../components/TableColumnActions/ExpireRow';
 
 export interface AdminRoleScopeAccessModalProps {
     isOpen?: boolean;
@@ -77,6 +79,12 @@ export default class AdminRoleScopeAccessModal extends React.Component<AdminRole
                                 title={''} // Leave this blank
                                 displayHeaderActions={false}
                                 displayActionsColumn={false}
+                                actionsColumn={DataTable.ActionsColumn({
+                                    actions: [
+                                        ({ fields, index, model }) => <RemoveRow fields={fields} index={index} model={model} />,
+                                        ({ fields, index, model }) => <ExpireRow fields={fields} index={index} model={model} />
+                                    ]
+                                })}
                                 columns={[
                                     DataTable.StaticTextColumn('Permission', { fieldName: 'displayName', displayInfo: false }),
                                     // DataTable.StaticTextColumn('Code', { fieldName: 'displayName', displayInfo: false }),

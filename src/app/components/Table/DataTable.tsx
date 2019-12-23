@@ -38,8 +38,8 @@ export interface DataTableProps {
     title: React.ReactNode;
     buttonLabel?: React.ReactNode; // TODO... a hash of values maybe :)
     fieldName: string;
-    actions?: CellTypes.Types.TableColumnCell[];
     columns: CellTypes.Types.TableColumnCell[];
+    actionsColumn?: CellTypes.Types.TableColumnCell;
     displayHeaderActions?: boolean;
     displayHeaderSave?: boolean;
     displayActionsColumn?: boolean;
@@ -49,6 +49,7 @@ export interface DataTableProps {
     rowComponent: React.ReactType<DetailComponentProps>;
     modalProps?: any;
     modalComponent: React.ReactType<ModalComponentProps>;
+
     initialValue?: any;
     filterable?: boolean;
     filterRows?: Function;
@@ -65,6 +66,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
         rowComponent: <div />,
         modalProps: {},
         modalComponent: <div />,
+        actionsColumn: null,
         buttonLabel: 'Create',
         initialValue: {},
         filterable: false,
@@ -125,6 +127,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
             title,
             buttonLabel,
             columns = [],
+            actionsColumn,
             displayHeaderActions = false,
             displayHeaderSave = true,
             displayActionsColumn = true,
@@ -278,11 +281,11 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                                         })
                                                 }
                                                 {displayActionsColumn && (() => {
-                                                    const actionsColumn = CellTypes.Actions();
+                                                    const rowActionsColumn = actionsColumn || CellTypes.Actions();
 
                                                     const Column = cancelDate != undefined
-                                                        ? actionsColumn.CanceledRender
-                                                        : actionsColumn.FormRenderer;
+                                                        ? rowActionsColumn.CanceledRender
+                                                        : rowActionsColumn.FormRenderer;
 
                                                     // TODO: Make this use a class?
                                                     // Flex align end to make sure buttons are right-aligned

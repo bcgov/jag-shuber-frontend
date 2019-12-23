@@ -42,6 +42,8 @@ import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
 import FrontendScopeSelector from './FrontendScopeSelector';
 import AdminScopePermissionsModal from './AdminScopePermissionsModal';
 import { createOrUpdateFrontendScopePermissionRequest } from '../../modules/roles/requests/frontendScopePermissions';
+import RemoveRow from '../../components/TableColumnActions/RemoveRow';
+import ExpireRow from '../../components/TableColumnActions/ExpireRow';
 
 export interface AdminFrontendScopesProps extends FormContainerProps {
     frontendScopes?: any[];
@@ -116,6 +118,12 @@ export default class AdminFrontendScopesGrid extends FormContainerBase<AdminFron
                     title={''} // Leave this blank
                     buttonLabel={'Add Component'}
                     displayHeaderActions={true}
+                    actionsColumn={DataTable.ActionsColumn({
+                        actions: [
+                            ({ fields, index, model }) => <RemoveRow fields={fields} index={index} model={model} />,
+                            ({ fields, index, model }) => <ExpireRow fields={fields} index={index} model={model} />
+                        ]
+                    })}
                     columns={[
                         DataTable.TextFieldColumn('Component', { fieldName: 'scopeName', displayInfo: true, filterable: true }),
                         DataTable.TextFieldColumn('Code', { fieldName: 'scopeCode', displayInfo: true, filterable: true }),

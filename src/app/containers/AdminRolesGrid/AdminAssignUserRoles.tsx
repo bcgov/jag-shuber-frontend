@@ -61,6 +61,8 @@ import RoleSelector from './RoleSelector';
 
 import LocationDisplay from './LocationDisplay';
 import GenderCodeDisplay from '../GenderCodeDisplay';
+import RemoveRow from '../../components/TableColumnActions/RemoveRow';
+import ExpireRow from '../../components/TableColumnActions/ExpireRow';
 
 // TODO: Fix this interface!
 export interface AdminAssignUserRolesProps extends FormContainerProps {
@@ -143,6 +145,12 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                 buttonLabel={'Assign New Role'}
                 displayHeaderActions={true}
                 displayHeaderSave={false}
+                actionsColumn={DataTable.ActionsColumn({
+                    actions: [
+                        ({ fields, index, model }) => <RemoveRow fields={fields} index={index} model={model} />,
+                        ({ fields, index, model }) => <ExpireRow fields={fields} index={index} model={model} />
+                    ]
+                })}
                 columns={[
                     DataTable.SelectorFieldColumn('Assigned Role', { fieldName: 'roleId', colStyle: { width: '275px' }, selectorComponent: RoleSelector, displayInfo: true }),
                     // DataTable.StaticTextColumn('Description', { fieldName: 'description', colStyle: { width: '350px' }, displayInfo: false }),
@@ -172,9 +180,14 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                     fieldName={this.formFieldNames.users}
                     title={''} // Leave this blank
                     buttonLabel={'Add User'}
-                    actions={[]} // TODO: Finish adding configurable actions
                     displayHeaderActions={true}
                     displayActionsColumn={true}
+                    actionsColumn={DataTable.ActionsColumn({
+                        actions: [
+                            ({ fields, index, model }) => <RemoveRow fields={fields} index={index} model={model} />,
+                            ({ fields, index, model }) => <ExpireRow fields={fields} index={index} model={model} />
+                        ]
+                    })}
                     columns={[
                         DataTable.StaticTextColumn('Full Name', { fieldName: 'displayName', colStyle: { width: '300px' }, displayInfo: false, filterable: true }),
                         // DataTable.StaticTextColumn('Last Name', { fieldName: 'lastName', colStyle: { width: '175px' }, displayInfo: false, filterable: true }),

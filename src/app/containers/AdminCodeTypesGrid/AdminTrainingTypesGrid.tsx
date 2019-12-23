@@ -27,6 +27,8 @@ import {
 
 import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../components/Table/DataTable';
 import { AdminTrainingTypesProps } from './AdminTrainingTypesGrid';
+import RemoveRow from '../../components/TableColumnActions/RemoveRow';
+import ExpireRow from '../../components/TableColumnActions/ExpireRow';
 
 export interface AdminTrainingTypesProps extends FormContainerProps {
     leaveTypes?: any[];
@@ -61,6 +63,12 @@ export default class AdminTrainingTypesGrid extends FormContainerBase<AdminTrain
                     fieldName={this.formFieldNames.trainingLeaveTypes}
                     title={''} // Leave this blank
                     buttonLabel={'Add Training Type'}
+                    actionsColumn={DataTable.ActionsColumn({
+                        actions: [
+                            ({ fields, index, model }) => <RemoveRow fields={fields} index={index} model={model} />,
+                            ({ fields, index, model }) => <ExpireRow fields={fields} index={index} model={model} />
+                        ]
+                    })}
                     columns={[
                         // DataTable.TextFieldColumn('Leave Type', { fieldName: 'code', displayInfo: true }),
                         DataTable.TextFieldColumn('Training Leave Sub Code', { fieldName: 'subCode', colStyle: { width: '200px' }, displayInfo: true, filterable: true }),

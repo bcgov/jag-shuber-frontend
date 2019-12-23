@@ -27,6 +27,8 @@ import {
 
 import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../components/Table/DataTable';
 import { AdminLeaveTypesProps } from './AdminLeaveTypesGrid';
+import RemoveRow from '../../components/TableColumnActions/RemoveRow';
+import ExpireRow from '../../components/TableColumnActions/ExpireRow';
 
 export interface AdminLeaveTypesProps extends FormContainerProps {
     leaveTypes?: any[];
@@ -61,6 +63,12 @@ export default class AdminLeaveTypesGrid extends FormContainerBase<AdminLeaveTyp
                     fieldName={this.formFieldNames.personalLeaveTypes}
                     title={''} // Leave this blank
                     buttonLabel={'Add Leave Type'}
+                    actionsColumn={DataTable.ActionsColumn({
+                        actions: [
+                            ({ fields, index, model }) => <RemoveRow fields={fields} index={index} model={model} />,
+                            ({ fields, index, model }) => <ExpireRow fields={fields} index={index} model={model} />
+                        ]
+                    })}
                     columns={[
                         // DataTable.TextFieldColumn('Leave Type', { fieldName: 'code', displayInfo: true }),
                         DataTable.TextFieldColumn('Personal Leave Sub Code', { fieldName: 'subCode', colStyle: { width: '200px' }, displayInfo: true, filterable: true }),
