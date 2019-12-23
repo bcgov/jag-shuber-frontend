@@ -42,12 +42,8 @@ class CreateRoleApiScopeRequest extends CreateEntityRequest<RoleApiScope, RoleMo
                 namespace: STATE_KEY,
                 actionName: 'createRoleApiScope',
                 toasts: {
-                    success: (s) => (
-                        `Success`
-                    ),
-                    error: (err) => (
-                        `Problem encountered while adding new role scope: ${err ? err.toString() : 'Unknown Error'}`
-                    )
+                    success: (s) => `Successfully created a new role api scope`,
+                    error: (err) => (`Problem encountered while adding new role scope: ${err ? err.toString() : 'Unknown Error'}`)
                 }
             },
             roleApiScopeMapRequest
@@ -69,7 +65,7 @@ class UpdateRoleApiScopeRequest extends UpdateEntityRequest<RoleApiScope, RoleMo
                 namespace: STATE_KEY,
                 actionName: 'updateRoleApiScope',
                 toasts: {
-                    success: (s) => `Success`,
+                    success: (s) => `Successfully updated the role api scope`,
                     // tslint:disable-next-line:max-line-length
                     error: (err) => `Problem encountered while updating role scope: ${err ? err.toString() : 'Unknown Error'}`
                 }

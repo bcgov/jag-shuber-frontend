@@ -128,6 +128,6 @@ export default class AdminTrainingTypesGrid extends FormContainerBase<AdminTrain
 
         console.log('dumping AdminTrainingTypes grid data');
         console.log(leaveTypes);
-        return Promise.resolve([]); // await dispatch(createOrUpdateLeaveSubCodes(leaveTypes, { toasts: {} }));
+        return Promise.resolve([]); // await dispatch(createOrUpdateLeaveSubCodes(leaveTypes));
     }
 }

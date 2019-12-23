@@ -245,10 +245,10 @@ export default class AdminFrontendScopesGrid extends FormContainerBase<AdminFron
             : [];
 
         return Promise.all([
-            dispatch(deleteFrontendScopePermissions(deletedScopePermissions, { toasts: {} })),
-            dispatch(deleteFrontendScopes(deletedScopes, { toasts: {} })),
-            dispatch(createOrUpdateFrontendScopes(scopes, { toasts: {} })),
-            dispatch(createOrUpdateFrontendScopePermissions(scopePermissions, { toasts: {} }))
+            dispatch(deleteFrontendScopePermissions(deletedScopePermissions)),
+            dispatch(deleteFrontendScopes(deletedScopes)),
+            dispatch(createOrUpdateFrontendScopes(scopes)),
+            dispatch(createOrUpdateFrontendScopePermissions(scopePermissions))
         ]);
     }
 }

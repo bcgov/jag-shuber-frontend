@@ -46,7 +46,7 @@ class CreateRoleFrontendScopeRequest extends CreateEntityRequest<RoleFrontendSco
                 actionName: 'createRoleFrontendScope',
                 toasts: {
                     success: (s) => (
-                        `Success`
+                        `Successfully created a new role frontend scope`
                     ),
                     error: (err) => (
                         `Problem encountered while adding new role scope: ${err ? err.toString() : 'Unknown Error'}`
@@ -72,7 +72,7 @@ class UpdateRoleFrontendScopeRequest extends UpdateEntityRequest<RoleFrontendSco
                 namespace: STATE_KEY,
                 actionName: 'updateRoleFrontendScope',
                 toasts: {
-                    success: (s) => `Success`,
+                    success: (s) => `Successfully updated the role frontend scope`,
                     // tslint:disable-next-line:max-line-length
                     error: (err) => `Problem encountered while updating role scope: ${err ? err.toString() : 'Unknown Error'}`
                 }

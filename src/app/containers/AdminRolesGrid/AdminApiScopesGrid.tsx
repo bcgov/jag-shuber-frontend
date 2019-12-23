@@ -181,8 +181,8 @@ export default class AdminApiScopesGrid extends FormContainerBase<AdminApiScopes
         }));
 
         return Promise.all([
-            dispatch(deleteApiScopes(deletedScopes, { toasts: {} })),
-            dispatch(createOrUpdateApiScopes(scopes, { toasts: {} }))
+            dispatch(deleteApiScopes(deletedScopes)),
+            dispatch(createOrUpdateApiScopes(scopes))
         ]);
     }
 }

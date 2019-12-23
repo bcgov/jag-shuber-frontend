@@ -128,6 +128,6 @@ export default class AdminLeaveTypesGrid extends FormContainerBase<AdminLeaveTyp
 
         console.log('dumping AdminLeaveTypes grid data');
         console.log(leaveTypes);
-        return Promise.resolve([]); // await dispatch(createOrUpdateLeaveSubCodes(leaveTypes, { toasts: {} }));
+        return Promise.resolve([]); // await dispatch(createOrUpdateLeaveSubCodes(leaveTypes));
     }
 }
