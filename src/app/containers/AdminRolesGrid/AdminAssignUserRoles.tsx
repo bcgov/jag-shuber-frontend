@@ -149,7 +149,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                 actionsColumn={DataTable.ActionsColumn({
                     actions: [
                         ({ fields, index, model }) => <RemoveRow fields={fields} index={index} model={model} />,
-                        ({ fields, index, model }) => <ExpireRow fields={fields} index={index} model={model} />
+                        ({ fields, index, model }) => { return (model && model.id) ? (<ExpireRow fields={fields} index={index} model={model} />) : null; }
                     ]
                 })}
                 columns={[
@@ -185,9 +185,9 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                     displayActionsColumn={true}
                     actionsColumn={DataTable.ActionsColumn({
                         actions: [
-                            ({ fields, index, model }) => <EditRow fields={fields} index={index} model={model} />,
+                            ({ fields, index, model }) => { return (model && model.id) ? (<EditRow fields={fields} index={index} model={model} />) : null; },
                             ({ fields, index, model }) => <RemoveRow fields={fields} index={index} model={model} />,
-                            ({ fields, index, model }) => <ExpireRow fields={fields} index={index} model={model} />
+                            ({ fields, index, model }) => { return (model && model.id) ? (<ExpireRow fields={fields} index={index} model={model} />) : null; }
                         ]
                     })}
                     columns={[
