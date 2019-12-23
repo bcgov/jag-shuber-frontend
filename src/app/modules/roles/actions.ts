@@ -42,6 +42,7 @@ export const createFrontendScopePermission = frontendScopePermissionRequests.cre
 export const updateFrontendScopePermission = frontendScopePermissionRequests.updateFrontendScopePermissionRequest.actionCreator;
 export const createOrUpdateFrontendScopePermissions = frontendScopePermissionRequests.createOrUpdateFrontendScopePermissionRequest.actionCreator;
 // export const deleteFrontendScopePermission = frontendScopePermissionRequests.deleteFrontendScopePermissionRequest.actionCreator;
+export const deleteFrontendScopePermissions = frontendScopePermissionRequests.deleteFrontendScopePermissionsRequest.actionCreator;
 
 export const getApiScopes = apiScopeRequests.apiScopeMapRequest.actionCreator;
 export const createApiScope = apiScopeRequests.createApiScopeRequest.actionCreator;

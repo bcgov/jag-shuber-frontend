@@ -614,6 +614,14 @@ export default class Client implements API {
         return await this._client.DeleteFrontendScopePermission(permissionId);
     }
 
+     async deleteFrontendScopePermissions(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.DeleteFrontendScopePermission(id));
+        }
+
+        return Promise.resolve();
+    }
+
     async getApiScopes(): Promise<ApiScope[]> {
         const list = await this._client.GetApiScopes();
         return list as ApiScope[];
