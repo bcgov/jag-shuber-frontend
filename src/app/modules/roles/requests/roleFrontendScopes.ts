@@ -101,6 +101,7 @@ class CreateOrUpdateRoleFrontendScopeRequest extends CreateOrUpdateEntitiesReque
                 namespace: STATE_KEY,
                 actionName: 'createOrUpdateRoleFrontendScope',
                 toasts: {
+                    success: (s) => `Successfully created/updated role scopes`,
                     error: (err: any) => `Couldn't create/update role scopes: ${err.message}`
                 },
                 ...config

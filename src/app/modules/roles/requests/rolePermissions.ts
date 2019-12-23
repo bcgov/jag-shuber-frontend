@@ -96,6 +96,7 @@ class CreateOrUpdateRolePermissionsRequest extends CreateOrUpdateEntitiesRequest
                 namespace: STATE_KEY,
                 actionName: 'createOrUpdateRolePermissions',
                 toasts: {
+                    success: (s) => `Successfully created/updated role permissions`,
                     error: (err: any) => `Couldn't create/update role permissions: ${err.message}`
                 },
                 ...config
