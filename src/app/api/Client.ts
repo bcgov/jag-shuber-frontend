@@ -374,6 +374,22 @@ export default class Client implements API {
         return this._client.GetLeaveSubCodes() as Promise<LeaveSubCode[]>;
     }
 
+    createLeaveSubCode(subCode: Partial<LeaveSubCode>): Promise<LeaveSubCode> {
+        return Promise.resolve({} as LeaveSubCode);
+    }
+
+    updateLeaveSubCode(subCode: Partial<LeaveSubCode>): Promise<LeaveSubCode> {
+        const { code } = subCode;
+        if (!code) {
+            throw 'No code included in the sub code to update';
+        }
+        return Promise.resolve({} as LeaveSubCode);
+    }
+
+    deleteLeaveSubCodes(ids: IdType[]): Promise<void> {
+        return Promise.resolve();
+    }
+
     getLeaveCancelCodes(): Promise<LeaveCancelCode[]> {
         return this._client.GetLeaveCancelReasonCodes() as Promise<LeaveCancelCode[]>;
     }

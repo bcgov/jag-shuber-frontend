@@ -4,14 +4,17 @@ import {
     STATE_KEY,
     LeaveModuleState
 } from './common';
+
 import {
-    LeaveMap,
-    LeaveCancelCodeMap,
-    Leave,
     MapType,
+    Leave,
+    LeaveMap,
     LeaveSubCode,
-    LeaveCancelCode
+    LeaveSubCodeMap,
+    LeaveCancelCode,
+    LeaveCancelCodeMap,
 } from '../../api/Api';
+
 import GetEntityMapRequest from '../../infrastructure/Requests/GetEntityMapRequest';
 import { RequestConfig } from '../../infrastructure/Requests/RequestActionBase';
 import CreateOrUpdateEntitiesRequest from '../../infrastructure/Requests/CreateOrUpdateEntitiesRequest';
@@ -57,7 +60,7 @@ class CreateOrUpdateLeavesRequest extends CreateOrUpdateEntitiesRequest<Leave, L
 
 export const createOrUpdateLeavesRequest = new CreateOrUpdateLeavesRequest();
 
-class LeaveSubCodeMapRequest extends GetEntityMapRequest<void, LeaveSubCode[], LeaveModuleState> {
+class LeaveTypeMapRequest extends GetEntityMapRequest<void, LeaveSubCode[], LeaveModuleState> {
 
     constructor(config?: RequestConfig<MapType<LeaveSubCode[]>>) {
         super({
@@ -80,7 +83,47 @@ class LeaveSubCodeMapRequest extends GetEntityMapRequest<void, LeaveSubCode[], L
     }
 }
 
-export const leaveTypeMapRequest = new LeaveSubCodeMapRequest();
+export const leaveTypeMapRequest = new LeaveTypeMapRequest();
+
+class LeaveSubCodeMapRequest extends GetEntityMapRequest<void, LeaveSubCode, LeaveModuleState> {
+    constructor(config?: RequestConfig<MapType<LeaveSubCode>>) {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'leaveSubCodeMap',
+            ...config
+        });
+    }
+    public async doWork(request: void, { api }: ThunkExtra): Promise<LeaveSubCodeMap> {
+        let leaveSubCodes = await api.getLeaveSubCodes();
+        return arrayToMap(leaveSubCodes, t => t.subCode);
+    }
+}
+
+export const leaveSubCodeMapRequest = new LeaveSubCodeMapRequest();
+
+class CreateOrUpdateLeaveSubCodesRequest extends CreateOrUpdateEntitiesRequest<LeaveSubCode, LeaveModuleState>{
+    createEntity(entity: Partial<LeaveSubCode>, { api }: ThunkExtra): Promise<LeaveSubCode> {
+        return api.createLeaveSubCode(entity);
+    }
+    updateEntity(entity: Partial<LeaveSubCode>, { api }: ThunkExtra): Promise<LeaveSubCode> {
+        return api.updateLeaveSubCode(entity as LeaveSubCode);
+    }
+    constructor(config?: RequestConfig<LeaveSubCode[]>) {
+        super(
+            {
+                namespace: STATE_KEY,
+                actionName: 'createOrUpdateLeaveSubCodes',
+                toasts: {
+                    error: (err: any) => `Couldn't create/update leave sub codes: ${err.message}`
+                },
+                ...config
+            },
+            leaveSubCodeMapRequest
+        );
+    }
+}
+
+export const createOrUpdateLeaveSubCodesRequest = new CreateOrUpdateLeaveSubCodesRequest();
 
 class LeaveCancelCodeMapRequest extends GetEntityMapRequest<void, LeaveCancelCode, LeaveModuleState> {
 

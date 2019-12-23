@@ -348,6 +348,7 @@ export interface Leave {
 }
 
 export interface LeaveSubCode {
+    id?: IdType; // Used on client-side only
     code: string;
     subCode: string;
     description: string;
@@ -580,6 +581,9 @@ export interface API {
     createLeave(newLeave: Partial<Leave>): Promise<Leave>;
     updateLeave(updatedLeave: Leave): Promise<Leave>;
     getLeaveSubCodes(): Promise<LeaveSubCode[]>;
+    createLeaveSubCode(newLeaveSubCode: Partial<LeaveSubCode>): Promise<LeaveSubCode>;
+    updateLeaveSubCode(updatedLeaveSubCode: LeaveSubCode): Promise<LeaveSubCode>;
+    deleteLeaveSubCodes(ids: IdType[]): Promise<void>;
     getLeaveCancelCodes(): Promise<LeaveCancelCode[]>;
 
     // Courtrooms

@@ -9,11 +9,12 @@ import { Dispatch } from 'redux';
 import { RootState } from '../../store';
 
 import {
-    getLeaveSubCodes
+    getLeaveSubCodes,
+    createOrUpdateLeaveSubCodes
 } from '../../modules/leaves/actions';
 
 import {
-    allLeavesSubCodeMap as getAllLeaveSubCodes
+    getAllPersonalLeaveSubCodes as getAllLeaveSubCodes
 } from '../../modules/leaves/selectors';
 
 import { LeaveSubCode, IdType } from '../../api';
@@ -28,6 +29,7 @@ import { AdminLeaveTypesProps } from './AdminLeaveTypesGrid';
 
 export interface AdminLeaveTypesProps extends FormContainerProps {
     leaveTypes?: any[];
+    personalLeaveTypes?: any[];
 }
 
 export interface AdminLeaveTypesDisplayProps extends FormContainerProps {
@@ -47,7 +49,7 @@ export default class AdminLeaveTypesGrid extends FormContainerBase<AdminLeaveTyp
     name = 'admin-leave-types-grid';
     reduxFormKey = 'leaves';
     formFieldNames = {
-        default: 'leaves.leaveTypes'
+        personalLeaveTypes: 'leaves.personalLeaveTypes'
     };
     title: string = ' Personal Leave Types';
 
@@ -55,7 +57,7 @@ export default class AdminLeaveTypesGrid extends FormContainerBase<AdminLeaveTyp
         return (
             <div>
                 <DataTable
-                    fieldName={this.formFieldNames.default}
+                    fieldName={this.formFieldNames.personalLeaveTypes}
                     title={''} // Leave this blank
                     buttonLabel={'Add Leave Type'}
                     columns={[
@@ -103,10 +105,18 @@ export default class AdminLeaveTypesGrid extends FormContainerBase<AdminLeaveTyp
         const leaveTypesArray: any[] = [];
         // TODO: Maybe this should go in the selector or something instead? Not sure...
 
-        Object.keys(leaveTypes).forEach(t => leaveTypesArray.push(leaveTypes[t]));
+        Object.keys(leaveTypes).forEach(t => {
+            const leaveType = Object.assign(
+                {
+                    id: leaveTypes[t].code
+                },
+                leaveTypes[t]
+            );
+            leaveTypesArray.push(leaveType);
+        });
 
         return {
-            leaveTypes: leaveTypesArray
+            personalLeaveTypes: leaveTypesArray
         };
     }
 
@@ -118,7 +128,7 @@ export default class AdminLeaveTypesGrid extends FormContainerBase<AdminLeaveTyp
     async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any[]> {
         const data: any = this.getDataFromFormValues(formValues, initialValues);
 
-        const leaveTypes: Partial<LeaveSubCode>[] = data.leaveTypes.map((c: LeaveSubCode) => ({
+        const leaveTypes: Partial<LeaveSubCode>[] = data.personalLeaveTypes.map((c: LeaveSubCode) => ({
             ...c,
             createdBy: 'DEV - FRONTEND',
             updatedBy: 'DEV - FRONTEND',
@@ -128,6 +138,8 @@ export default class AdminLeaveTypesGrid extends FormContainerBase<AdminLeaveTyp
 
         console.log('dumping AdminLeaveTypes grid data');
         console.log(leaveTypes);
-        return Promise.resolve([]); // await dispatch(createOrUpdateLeaveSubCodes(leaveTypes));
+        return Promise.all([
+            dispatch(createOrUpdateLeaveSubCodes(leaveTypes))
+        ]);
     }
 }
