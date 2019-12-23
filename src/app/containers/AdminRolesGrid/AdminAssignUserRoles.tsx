@@ -61,6 +61,7 @@ import RoleSelector from './RoleSelector';
 
 import LocationDisplay from './LocationDisplay';
 import GenderCodeDisplay from '../GenderCodeDisplay';
+import EditRow from '../../components/TableColumnActions/EditRow';
 import RemoveRow from '../../components/TableColumnActions/RemoveRow';
 import ExpireRow from '../../components/TableColumnActions/ExpireRow';
 
@@ -184,6 +185,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                     displayActionsColumn={true}
                     actionsColumn={DataTable.ActionsColumn({
                         actions: [
+                            ({ fields, index, model }) => <EditRow fields={fields} index={index} model={model} />,
                             ({ fields, index, model }) => <RemoveRow fields={fields} index={index} model={model} />,
                             ({ fields, index, model }) => <ExpireRow fields={fields} index={index} model={model} />
                         ]
