@@ -28,6 +28,8 @@ import {
 } from '../../components/Form/FormContainer';
 
 import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
+import RemoveRow from '../../components/TableColumnActions/RemoveRow';
+import ExpireRow from '../../components/TableColumnActions/ExpireRow';
 
 // import ApiScopeSelector from './ApiScopeSelector';
 // import AdminScopePermissionsModal from './AdminScopePermissionsModal';
@@ -97,6 +99,12 @@ export default class AdminApiScopesGrid extends FormContainerBase<AdminApiScopes
                     title={''} // Leave this blank
                     buttonLabel={'Add Endpoint'}
                     displayHeaderActions={true}
+                    actionsColumn={DataTable.ActionsColumn({
+                        actions: [
+                            ({ fields, index, model }) => <RemoveRow fields={fields} index={index} model={model} />,
+                            ({ fields, index, model }) => <ExpireRow fields={fields} index={index} model={model} />
+                        ]
+                    })}
                     columns={[
                         DataTable.TextFieldColumn('API Endpoint', { fieldName: 'scopeName', displayInfo: true, filterable: true }),
                         DataTable.TextFieldColumn('Code', { fieldName: 'scopeCode', displayInfo: true, filterable: true }),

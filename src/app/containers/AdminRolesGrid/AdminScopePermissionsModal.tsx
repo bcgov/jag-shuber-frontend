@@ -9,6 +9,8 @@ import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
 
 import SelectorField from '../../components/FormElements/SelectorField';
 import FrontendScopeSelector from './FrontendScopeSelector';
+import RemoveRow from '../../components/TableColumnActions/RemoveRow';
+import ExpireRow from '../../components/TableColumnActions/ExpireRow';
 
 export interface AdminScopePermissionsModalProps {
     isOpen?: boolean;
@@ -80,6 +82,12 @@ export default class AdminScopePermissionsModal extends React.Component<AdminSco
                                 displayHeaderActions={true}
                                 displayHeaderSave={false}
                                 displayActionsColumn={true}
+                                actionsColumn={DataTable.ActionsColumn({
+                                    actions: [
+                                        ({ fields, index, model }) => <RemoveRow fields={fields} index={index} model={model} />,
+                                        ({ fields, index, model }) => <ExpireRow fields={fields} index={index} model={model} />
+                                    ]
+                                })}
                                 columns={[
                                     DataTable.TextFieldColumn('Permission Name', { fieldName: 'displayName', displayInfo: true }),
                                     DataTable.TextFieldColumn('Code', { fieldName: 'permissionCode', displayInfo: true }),
