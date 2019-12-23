@@ -150,7 +150,7 @@ export default class AdminTrainingTypesGrid extends FormContainerBase<AdminTrain
         const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
 
         // Delete records before saving new ones!
-        const deletedLeaveTypes: IdType[] = dataToDelete.personalLeaveTypes as IdType[];
+        const deletedLeaveTypes: IdType[] = dataToDelete.trainingLeaveTypes as IdType[];
 
         const leaveTypes: Partial<LeaveSubCode>[] = data.trainingLeaveTypes.map((c: LeaveSubCode) => ({
             ...c,
@@ -161,6 +161,7 @@ export default class AdminTrainingTypesGrid extends FormContainerBase<AdminTrain
         }));
 
         console.log('dumping AdminTrainingTypes grid data');
+        console.log(deletedLeaveTypes);
         console.log(leaveTypes);
         return Promise.all([
             dispatch(deleteLeaveSubCodes(deletedLeaveTypes)),
