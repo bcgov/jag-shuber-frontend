@@ -109,7 +109,7 @@ export default class AdminTrainingTypesGrid extends FormContainerBase<AdminTrain
         Object.keys(leaveTypes).forEach(t => {
             const leaveType = Object.assign(
                 {
-                    id: leaveTypes[t].code
+                    id: leaveTypes[t].subCode
                 },
                 leaveTypes[t]
             );
