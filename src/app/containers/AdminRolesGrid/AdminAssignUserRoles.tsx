@@ -314,10 +314,10 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
             : [];
 
         return Promise.all([
-            dispatch(deleteUsers(deletedUsers, { toasts: {} })),
-            dispatch(deleteUserRoles(deletedUserRoles, { toasts: {} })),
-            dispatch(createOrUpdateUsers(users, { toasts: {} })),
-            dispatch(createOrUpdateUserRoles(userRoles, { toasts: {} }))
+            dispatch(deleteUsers(deletedUsers)),
+            dispatch(deleteUserRoles(deletedUserRoles)),
+            dispatch(createOrUpdateUsers(users)),
+            dispatch(createOrUpdateUserRoles(userRoles))
         ]);
 
     }

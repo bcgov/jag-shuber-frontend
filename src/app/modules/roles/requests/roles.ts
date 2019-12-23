@@ -45,9 +45,7 @@ class CreateRoleRequest extends CreateEntityRequest<Role, RoleModuleState> {
                 namespace: STATE_KEY,
                 actionName: 'createRole',
                 toasts: {
-                    success: (s) => (
-                        `Success`
-                    ),
+                    success: (s) => `Successfully created a new ${s.roleName} role`,
                     error: (err) => (
                         `Problem encountered while adding new role: ${err ? err.toString() : 'Unknown Error'}`
                     )
@@ -72,7 +70,7 @@ class UpdateRoleRequest extends UpdateEntityRequest<Role, RoleModuleState> {
                 namespace: STATE_KEY,
                 actionName: 'updateRole',
                 toasts: {
-                    success: (s) => `Success`,
+                    success: (s) => `Successfully updated the ${s.roleName} role`,
                     // tslint:disable-next-line:max-line-length
                     error: (err) => `Problem encountered while updating role: ${err ? err.toString() : 'Unknown Error'}`
                 }
@@ -95,7 +93,7 @@ class DeleteRoleRequest extends DeleteEntityRequest<Role, RoleModuleState> {
                 namespace: STATE_KEY,
                 actionName: 'deleteRole',
                 toasts: {
-                    success: (s) => `Success`,
+                    success: (s) => `Successfully deleted the role`,
                     // tslint:disable-next-line:max-line-length
                     error: (err) => `Problem encountered while updating role: ${err ? err.toString() : 'Unknown Error'}`
                 }

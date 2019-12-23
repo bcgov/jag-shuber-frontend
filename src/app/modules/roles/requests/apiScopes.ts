@@ -41,12 +41,8 @@ class CreateApiScopeRequest extends CreateEntityRequest<ApiScope, RoleModuleStat
                 namespace: STATE_KEY,
                 actionName: 'createApiScope',
                 toasts: {
-                    success: (s) => (
-                        `Success`
-                    ),
-                    error: (err) => (
-                        `Problem encountered while adding new scope: ${err ? err.toString() : 'Unknown Error'}`
-                    )
+                    success: (s) => `Successfully created the ${s.scopeName} scope`,
+                    error: (err) => (`Problem encountered while adding new scope: ${err ? err.toString() : 'Unknown Error'}`)
                 }
             },
             apiScopeMapRequest
@@ -68,7 +64,7 @@ class UpdateApiScopeRequest extends UpdateEntityRequest<ApiScope, RoleModuleStat
                 namespace: STATE_KEY,
                 actionName: 'updateApiScope',
                 toasts: {
-                    success: (s) => `Success`,
+                    success: (s) => `Successfully updated the ${s.scopeName} scope`,
                     // tslint:disable-next-line:max-line-length
                     error: (err) => `Problem encountered while updating scope: ${err ? err.toString() : 'Unknown Error'}`
                 }

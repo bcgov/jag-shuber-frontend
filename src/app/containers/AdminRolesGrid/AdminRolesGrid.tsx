@@ -450,14 +450,14 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
             : [];
 
         return Promise.all([
-            dispatch(deleteRolePermissions(deletedRolePermissions, { toasts: {} })),
-            dispatch(deleteRoleFrontendScopes(deletedRoleFrontendScopes, { toasts: {} })),
-            dispatch(deleteRoleApiScopes(deletedRoleApiScopes, { toasts: {} })),
-            dispatch(deleteRoles(deletedRoles, { toasts: {} })),
-            dispatch(createOrUpdateRoles(roles, { toasts: {} })),
-            dispatch(createOrUpdateRoleFrontendScopes(roleFrontendScopes, { toasts: {} })),
-            dispatch(createOrUpdateRolePermissions(roleFrontendScopePermissions, { toasts: {} })),
-            dispatch(createOrUpdateRoleApiScopes(roleApiScopes, { toasts: {} }))
+            dispatch(deleteRolePermissions(deletedRolePermissions)),
+            dispatch(deleteRoleFrontendScopes(deletedRoleFrontendScopes)),
+            dispatch(deleteRoleApiScopes(deletedRoleApiScopes)),
+            dispatch(deleteRoles(deletedRoles)),
+            dispatch(createOrUpdateRoles(roles)),
+            dispatch(createOrUpdateRoleFrontendScopes(roleFrontendScopes)),
+            dispatch(createOrUpdateRolePermissions(roleFrontendScopePermissions)),
+            dispatch(createOrUpdateRoleApiScopes(roleApiScopes))
         ]);
     }
 }

@@ -42,12 +42,8 @@ class CreateFrontendScopeRequest extends CreateEntityRequest<FrontendScope, Role
                 namespace: STATE_KEY,
                 actionName: 'createFrontendScope',
                 toasts: {
-                    success: (s) => (
-                        `Success`
-                    ),
-                    error: (err) => (
-                        `Problem encountered while adding new scope: ${err ? err.toString() : 'Unknown Error'}`
-                    )
+                    success: (s) => `Successfully created the ${s.scopeName} frontend scope`,
+                    error: (err) => (`Problem encountered while adding new scope: ${err ? err.toString() : 'Unknown Error'}`)
                 }
             },
             frontendScopeMapRequest
@@ -69,7 +65,7 @@ class UpdateFrontendScopeRequest extends UpdateEntityRequest<FrontendScope, Role
                 namespace: STATE_KEY,
                 actionName: 'updateFrontendScope',
                 toasts: {
-                    success: (s) => `Success`,
+                    success: (s) => (`Successfully updated the ${s.scopeName} frontend scope`),
                     // tslint:disable-next-line:max-line-length
                     error: (err) => `Problem encountered while updating scope: ${err ? err.toString() : 'Unknown Error'}`
                 }

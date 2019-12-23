@@ -146,8 +146,8 @@ export default class AdminCourtroomsGrid extends FormContainerBase<AdminCourtroo
         }));
 
         return Promise.all([
-            dispatch(deleteCourtrooms(deletedCourtrooms, { toasts: {} })),
-            dispatch(createOrUpdateCourtrooms(courtrooms, { toasts: {} }))
+            dispatch(deleteCourtrooms(deletedCourtrooms)),
+            dispatch(createOrUpdateCourtrooms(courtrooms))
         ]);
     }
 }
