@@ -386,7 +386,14 @@ export default class Client implements API {
         return Promise.resolve({} as LeaveSubCode);
     }
 
+    deleteLeaveSubCode(code: IdType): Promise<void> {
+        return Promise.resolve();
+    }
+
     deleteLeaveSubCodes(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+        }
+
         return Promise.resolve();
     }
 
@@ -429,7 +436,7 @@ export default class Client implements API {
              ids.forEach(id => this._client.DeleteCourtroom(id));
         }
 
-        return Promise.resolve()
+        return Promise.resolve();
     }
 
     async getEscortRuns(): Promise<EscortRun[]> {

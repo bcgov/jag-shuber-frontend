@@ -10,7 +10,8 @@ import { RootState } from '../../store';
 
 import {
     getLeaveSubCodes,
-    createOrUpdateLeaveSubCodes
+    createOrUpdateLeaveSubCodes,
+    deleteLeaveSubCodes
 } from '../../modules/leaves/actions';
 
 import {
@@ -125,8 +126,31 @@ export default class AdminLeaveTypesGrid extends FormContainerBase<AdminLeaveTyp
         };
     }
 
+    mapDeletesFromFormValues(map: any) {
+        const deletedLeaveTypeIds: IdType[] = [];
+
+        if (map.personalLeaveTypes) {
+            const initialValues = map.personalLeaveTypes.initialValues;
+            const existingIds = map.personalLeaveTypes.values.map((val: any) => val.id);
+
+            const removeLeaveTypeIds = initialValues
+                .filter((val: any) => (existingIds.indexOf(val.id) === -1))
+                .map((val: any) => val.id);
+
+            deletedLeaveTypeIds.push(...removeLeaveTypeIds);
+        }
+
+        return {
+            personalLeaveTypes: deletedLeaveTypeIds
+        };
+    }
+
     async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any[]> {
         const data: any = this.getDataFromFormValues(formValues, initialValues);
+        const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
+
+        // Delete records before saving new ones!
+        const deletedLeaveTypes: IdType[] = dataToDelete.personalLeaveTypes as IdType[];
 
         const leaveTypes: Partial<LeaveSubCode>[] = data.personalLeaveTypes.map((c: LeaveSubCode) => ({
             ...c,
@@ -139,6 +163,7 @@ export default class AdminLeaveTypesGrid extends FormContainerBase<AdminLeaveTyp
         console.log('dumping AdminLeaveTypes grid data');
         console.log(leaveTypes);
         return Promise.all([
+            dispatch(deleteLeaveSubCodes(deletedLeaveTypes)),
             dispatch(createOrUpdateLeaveSubCodes(leaveTypes))
         ]);
     }

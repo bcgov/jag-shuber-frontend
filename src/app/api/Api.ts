@@ -583,6 +583,7 @@ export interface API {
     getLeaveSubCodes(): Promise<LeaveSubCode[]>;
     createLeaveSubCode(newLeaveSubCode: Partial<LeaveSubCode>): Promise<LeaveSubCode>;
     updateLeaveSubCode(updatedLeaveSubCode: LeaveSubCode): Promise<LeaveSubCode>;
+    deleteLeaveSubCode(subCodeId: IdType): Promise<void>;
     deleteLeaveSubCodes(ids: IdType[]): Promise<void>;
     getLeaveCancelCodes(): Promise<LeaveCancelCode[]>;
 

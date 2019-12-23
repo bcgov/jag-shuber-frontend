@@ -9,7 +9,9 @@ import { Dispatch } from 'redux';
 import { RootState } from '../../store';
 
 import {
-    getLeaveSubCodes
+    getLeaveSubCodes,
+    createOrUpdateLeaveSubCodes,
+    deleteLeaveSubCodes
 } from '../../modules/leaves/actions';
 
 import {
@@ -124,8 +126,31 @@ export default class AdminTrainingTypesGrid extends FormContainerBase<AdminTrain
         };
     }
 
+    mapDeletesFromFormValues(map: any) {
+        const deletedLeaveTypeIds: IdType[] = [];
+
+        if (map.trainingLeaveTypes) {
+            const initialValues = map.trainingLeaveTypes.initialValues;
+            const existingIds = map.trainingLeaveTypes.values.map((val: any) => val.id);
+
+            const removeLeaveTypeIds = initialValues
+                .filter((val: any) => (existingIds.indexOf(val.id) === -1))
+                .map((val: any) => val.id);
+
+            deletedLeaveTypeIds.push(...removeLeaveTypeIds);
+        }
+
+        return {
+            trainingLeaveTypes: deletedLeaveTypeIds
+        };
+    }
+
     async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any[]> {
         const data: any = this.getDataFromFormValues(formValues, initialValues);
+        const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
+
+        // Delete records before saving new ones!
+        const deletedLeaveTypes: IdType[] = dataToDelete.personalLeaveTypes as IdType[];
 
         const leaveTypes: Partial<LeaveSubCode>[] = data.trainingLeaveTypes.map((c: LeaveSubCode) => ({
             ...c,
@@ -137,6 +162,9 @@ export default class AdminTrainingTypesGrid extends FormContainerBase<AdminTrain
 
         console.log('dumping AdminTrainingTypes grid data');
         console.log(leaveTypes);
-        return Promise.resolve([]); // await dispatch(createOrUpdateLeaveSubCodes(leaveTypes));
+        return Promise.all([
+            dispatch(deleteLeaveSubCodes(deletedLeaveTypes)),
+            dispatch(createOrUpdateLeaveSubCodes(leaveTypes))
+        ]);
     }
 }
