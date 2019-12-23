@@ -161,6 +161,7 @@ export default class AdminLeaveTypesGrid extends FormContainerBase<AdminLeaveTyp
         }));
 
         console.log('dumping AdminLeaveTypes grid data');
+        console.log(deletedLeaveTypes);
         console.log(leaveTypes);
         return Promise.all([
             dispatch(deleteLeaveSubCodes(deletedLeaveTypes)),
