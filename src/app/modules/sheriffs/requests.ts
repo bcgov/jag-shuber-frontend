@@ -63,15 +63,18 @@ export const createSheriffRequest = new CreateSheriffRequest();
 // Sheriff Edit
 class UpdateSheriffRequest extends UpdateEntityRequest<Sheriff, SheriffModuleState> {
     constructor() {
-        super({
-            namespace: STATE_KEY,
-            actionName: 'updateSheriff',
-            toasts: {
-                success: (s) => `${toTitleCase(s.firstName)} ${toTitleCase(s.lastName)}'s profile has been updated`,
-                // tslint:disable-next-line:max-line-length
-                error: (err) => `Problem encountered while updating sheriff profile: ${err ? err.toString() : 'Unknown Error'}`
-            }
-        }, sheriffMapRequest);
+        super(
+            {
+                namespace: STATE_KEY,
+                actionName: 'updateSheriff',
+                toasts: {
+                    success: (s) => `${toTitleCase(s.firstName)} ${toTitleCase(s.lastName)}'s profile has been updated`,
+                    // tslint:disable-next-line:max-line-length
+                    error: (err) => `Problem encountered while updating sheriff profile: ${err ? err.toString() : 'Unknown Error'}`
+                }
+            },
+            sheriffMapRequest
+        );
     }
     public async doWork(sheriff: Partial<Sheriff>, { api }: ThunkExtra): Promise<Sheriff> {
         let newSheriff = await api.updateSheriff(sheriff);

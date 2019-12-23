@@ -471,8 +471,8 @@ export default class Client implements API {
 
     // Methods for users
     async getUsers(): Promise<User[]> {
-        const list = await this._client.GetUsers();
-        return list as Role[];
+        const list = await this._client.GetUsersByLocationId(this.currentLocation);
+        return list as User[];
     }
 
     async getUser(id: IdType): Promise<User> {

@@ -1,6 +1,7 @@
 import { Action } from 'redux';
 import { ThunkAction } from '../../store';
 import { getSheriffList } from '../sheriffs/actions';
+import { getUsers } from '../users/actions';
 import {
   getAssignments,
   getAssignmentDuties,
@@ -43,12 +44,14 @@ const _updateCurrentLocation = (currentLocation: string) => (
 
 export const updateCurrentLocation: ThunkAction<string> =
   (locationId = '') => async (dispatch, getState, extra) => {
-    dispatch(_updateCurrentLocation(locationId));
+  console.log('updating currrent location... reloading data');
+  dispatch(_updateCurrentLocation(locationId));
 
     await Promise.all([
       dispatch(getRuns()),
       dispatch(getCourtrooms()),
       dispatch(getSheriffList()),
+      dispatch(getUsers()),
       dispatch(getAssignments()),
       dispatch(getAssignmentDuties()),
       dispatch(getShifts())
