@@ -145,11 +145,8 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
         roles: 'roles.roles',
         apiScopes: 'roles.apiScopes',
         frontendScopes: 'roles.frontendScopes',
-        roleApiScopes: 'roles.roleApiScopes',
         roleApiScopesGrouped: 'roles.roleApiScopesGrouped',
-        roleFrontendScopes: 'roles.roleFrontendScopes',
         roleFrontendScopesGrouped: 'roles.roleFrontendScopesGrouped',
-        rolePermissions: 'roles.rolePermissions',
         rolePermissionsGrouped: 'roles.rolePermissions',
         roleApiPermissionsGrouped: 'roles.roleApiPermissionsGrouped',
         roleFrontendPermissionsGrouped: 'roles.roleFrontendPermissionsGrouped',
@@ -454,9 +451,9 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
 
         return Promise.all([
             dispatch(deleteRolePermissions(deletedRolePermissions, { toasts: {} })),
-            dispatch(deleteRoles(deletedRoles, { toasts: {} })),
             dispatch(deleteRoleFrontendScopes(deletedRoleFrontendScopes, { toasts: {} })),
             dispatch(deleteRoleApiScopes(deletedRoleApiScopes, { toasts: {} })),
+            dispatch(deleteRoles(deletedRoles, { toasts: {} })),
             dispatch(createOrUpdateRoles(roles, { toasts: {} })),
             dispatch(createOrUpdateRoleFrontendScopes(roleFrontendScopes, { toasts: {} })),
             dispatch(createOrUpdateRolePermissions(roleFrontendScopePermissions, { toasts: {} })),

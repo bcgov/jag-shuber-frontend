@@ -82,7 +82,7 @@ export default class AdminScopePermissionsModal extends React.Component<AdminSco
                                 displayActionsColumn={true}
                                 columns={[
                                     DataTable.TextFieldColumn('Permission Name', { fieldName: 'displayName', displayInfo: true }),
-                                    DataTable.TextFieldColumn('Code', { fieldName: 'displayName', displayInfo: true }),
+                                    DataTable.TextFieldColumn('Code', { fieldName: 'permissionCode', displayInfo: true }),
                                     DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: true })
                                 ]}
                                 rowComponent={EmptyDetailRow}

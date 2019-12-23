@@ -9,14 +9,17 @@ import {
 import { Dispatch } from 'redux';
 
 import {
-    FrontendScope
+    FrontendScope,
+    FrontendScopePermission
 } from '../../api';
 
 import {
     getFrontendScopes,
     getFrontendScopePermissions,
     createOrUpdateFrontendScopes,
-    deleteFrontendScopes
+    createOrUpdateFrontendScopePermissions,
+    deleteFrontendScopes,
+    deleteFrontendScopePermissions
 } from '../../modules/roles/actions';
 
 import { RootState } from '../../store';
@@ -38,6 +41,7 @@ import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
 
 import FrontendScopeSelector from './FrontendScopeSelector';
 import AdminScopePermissionsModal from './AdminScopePermissionsModal';
+import { createOrUpdateFrontendScopePermissionRequest } from '../../modules/roles/requests/frontendScopePermissions';
 
 export interface AdminFrontendScopesProps extends FormContainerProps {
     frontendScopes?: any[];
@@ -93,7 +97,8 @@ export default class AdminFrontendScopesGrid extends FormContainerBase<AdminFron
     name = 'admin-frontend-scopes-grid';
     reduxFormKey = 'roles';
     formFieldNames = {
-        frontendScopes: 'roles.frontendScopes'
+        frontendScopes: 'roles.frontendScopes',
+        frontendScopePermissionsGrouped: 'roles.frontendScopePermissionsGrouped'
     };
     title: string = 'Register Components';
 
@@ -159,7 +164,8 @@ export default class AdminFrontendScopesGrid extends FormContainerBase<AdminFron
     }
 
     mapDeletesFromFormValues(map: any) {
-        const deletedFrontendScopeIds: IdType[] = [];
+        const deletedScopeIds: IdType[] = [];
+        const deletedScopePermissionIds: IdType[] = [];
 
         // TODO: This isn't going to work...
         if (map.frontendScopes) {
@@ -170,11 +176,29 @@ export default class AdminFrontendScopesGrid extends FormContainerBase<AdminFron
                 .filter((val: any) => (existingIds.indexOf(val.id) === -1))
                 .map((val: any) => val.id);
 
-            deletedFrontendScopeIds.push(...removeFrontendScopeIds);
+            deletedScopeIds.push(...removeFrontendScopeIds);
+        }
+
+        if (map.frontendScopePermissionsGrouped) {
+            const initialValues = map.frontendScopePermissionsGrouped.initialValues;
+
+            const removeScopePermissionIds = Object.keys(initialValues).reduce((acc: any, cur: any) => {
+                const initValues = map.frontendScopePermissionsGrouped.initialValues[cur];
+                const existingIds = map.frontendScopePermissionsGrouped.values[cur].map((val: any) => val.id);
+
+                const removeIds = initValues
+                    .filter((val: any) => (existingIds.indexOf(val.id) === -1))
+                    .map((val: any) => val.id);
+
+                return acc.concat(removeIds);
+            }, []);
+
+            deletedScopePermissionIds.push(...removeScopePermissionIds);
         }
 
         return {
-            frontendScopes: deletedFrontendScopeIds
+            frontendScopes: deletedScopeIds,
+            frontendScopePermissions: deletedScopePermissionIds
         };
     }
 
@@ -184,6 +208,7 @@ export default class AdminFrontendScopesGrid extends FormContainerBase<AdminFron
 
         // Delete records before saving new ones!
         const deletedScopes: IdType[] = dataToDelete.frontendScopes as IdType[];
+        const deletedScopePermissions: IdType[] = dataToDelete.frontendScopePermissions as IdType[];
 
         const scopes: Partial<FrontendScope>[] = data.frontendScopes.map((s: FrontendScope) => ({
             ...s,
@@ -198,9 +223,32 @@ export default class AdminFrontendScopesGrid extends FormContainerBase<AdminFron
             revisionCount: 0 // TODO: Is there entity versioning anywhere in this project???
         }));
 
+        const scopePermissions: Partial<FrontendScopePermission>[] = (data.frontendScopePermissionsGrouped)
+            ? Object.keys(data.frontendScopePermissionsGrouped)
+                .reduce((acc, cur, idx) => {
+                    const currentScopePermissions = data.frontendScopePermissionsGrouped[cur]
+                        // We need to set frontendScopeIds, or new rows will not save
+                        .map((permission: FrontendScopePermission) => {
+                            permission.frontendScopeId = cur;
+                            return permission;
+                        });
+                    return acc.concat(currentScopePermissions);
+                }, [])
+                .map((sp: FrontendScopePermission) => ({
+                    ...sp,
+                    createdBy: 'DEV - FRONTEND',
+                    updatedBy: 'DEV - FRONTEND',
+                    createdDtm: new Date().toISOString(),
+                    updatedDtm: new Date().toISOString(),
+                    revisionCount: 0
+                }))
+            : [];
+
         return Promise.all([
+            dispatch(deleteFrontendScopePermissions(deletedScopePermissions, { toasts: {} })),
             dispatch(deleteFrontendScopes(deletedScopes, { toasts: {} })),
-            dispatch(createOrUpdateFrontendScopes(scopes, { toasts: {} }))
+            dispatch(createOrUpdateFrontendScopes(scopes, { toasts: {} })),
+            dispatch(createOrUpdateFrontendScopePermissions(scopePermissions, { toasts: {} }))
         ]);
     }
 }

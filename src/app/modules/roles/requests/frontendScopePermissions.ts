@@ -7,10 +7,10 @@ import {
 import {
     FrontendScopePermissionMap,
     FrontendScopePermission,
-    MapType
+    MapType, IdType
 } from '../../../api/Api';
 import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRequest';
-import { RequestConfig } from '../../../infrastructure/Requests/RequestActionBase';
+import RequestAction, { RequestConfig } from '../../../infrastructure/Requests/RequestActionBase';
 import CreateOrUpdateEntitiesRequest from '../../../infrastructure/Requests/CreateOrUpdateEntitiesRequest';
 import CreateEntityRequest from '../../../infrastructure/Requests/CreateEntityRequest';
 import UpdateEntityRequest from '../../../infrastructure/Requests/UpdateEntityRequest';
@@ -107,3 +107,29 @@ class CreateOrUpdateFrontendScopePermissionRequest extends CreateOrUpdateEntitie
 }
 
 export const createOrUpdateFrontendScopePermissionRequest = new CreateOrUpdateFrontendScopePermissionRequest();
+
+class DeleteFrontendScopePermissionsRequest extends RequestAction<IdType[], IdType[], RoleModuleState> {
+    constructor() {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'deleteFrontendScopePermissions',
+            toasts: {
+                success: (ids) => `${ids.length} permission(s) deleted`,
+                error: (err) => `Problem encountered while deleting permissions: ${err ? err.toString() : 'Unknown Error'}`
+            }
+        });
+    }
+    public async doWork(request: IdType[], { api }: ThunkExtra): Promise<IdType[]> {
+        await api.deleteFrontendScopePermissions(request);
+        return request;
+    }
+
+    // TODO: How does this all work?
+    setRequestData(moduleState: RoleModuleState, permissionIds: IdType[]) {
+        const newMap = { ...frontendScopePermissionMapRequest.getRequestData(moduleState) };
+        permissionIds.forEach(id => delete newMap[id]);
+        return frontendScopePermissionMapRequest.setRequestData(moduleState, newMap);
+    }
+}
+
+export const deleteFrontendScopePermissionsRequest = new DeleteFrontendScopePermissionsRequest();

@@ -637,6 +637,7 @@ export interface API {
     createFrontendScopePermission(newFrontendScopePermission: Partial<FrontendScopePermission>): Promise<FrontendScopePermission>;
     updateFrontendScopePermission(updatedFrontendScopePermission: FrontendScopePermission): Promise<FrontendScopePermission>;
     getFrontendScopePermissions(): Promise<FrontendScopePermission[]>;
+    deleteFrontendScopePermissions(frontendScopePermissionIds: IdType[]): Promise<void>;
 
     getApiScope(): Promise<ApiScope>;
     createApiScope(newApiScope: Partial<ApiScope>): Promise<ApiScope>;
