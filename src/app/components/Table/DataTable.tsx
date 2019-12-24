@@ -4,16 +4,12 @@ import {
     FieldArray, FieldsProps
 } from 'redux-form';
 
-// TODO: This has to be generic!
-import { Role } from '../../api';
-
 import { Table, FormGroup, Button, Glyphicon, Well } from 'react-bootstrap';
 
 import * as CellTypes from '../../components/TableColumnCell';
 // TODO: Move this into a common location with AdminForm
+import DataTableFilterRow from './DataTableFilterRow';
 import HeaderSaveButton from '../../containers/AdminRolesGrid/HeaderSaveButton';
-import TextField from '../FormElements/TextField';
-import { FieldColumnOptions } from '../TableColumnCell/types';
 
 export interface ColumnRendererProps {
     index: number;
@@ -33,7 +29,7 @@ export interface ModalComponentProps {}
 
 export const EmptyDetailRow: React.SFC<DetailComponentProps> = () => (<div />);
 
-// TODO: This is the same as LeavesFieldTableProps... make it generic?
+// TODO: This is the same as LeavesFieldTableProps... make the other one use a generic?
 export interface DataTableProps {
     title: React.ReactNode;
     buttonLabel?: React.ReactNode; // TODO... a hash of values maybe :)
@@ -196,51 +192,11 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                     )}
                                 </tr>
                                 {filterable && filterFieldName && (
-                                    <FieldArray<Partial<any & T>>
-                                        name={filterFieldName}
-                                        component={() => {
-                                            return (
-                                                <tr style={{backgroundColor: '#eee'}}>
-                                                    {expandable && (<th style={{width: '60px'}}/>)}
-                                                    {columns.map((col, colIndex) => {
-                                                        const Column = (col.filterComponent)
-                                                            ? col.filterComponent().FormRenderer
-                                                            : col.FormRenderer;
-
-                                                        return (
-                                                            <th className="text-left" key={colIndex}
-                                                                style={col.colStyle}>
-                                                                {col.filterable && (
-                                                                    <div
-                                                                        style={{display: 'flex', alignItems: 'center'}}>
-                                                                        <Column
-                                                                            model={{test: 'test'}}
-                                                                            fieldInstanceName={`fieldName_${Math.random().toString()}`}
-                                                                            fields={fields}
-                                                                            index={0}
-                                                                            callbackContext={componentInstance}
-                                                                        />
-                                                                        <div className="form-group"
-                                                                             style={{marginLeft: '0.5rem'}}>
-                                                                            <Glyphicon glyph="filter"/>
-                                                                            {/* TODO: Change this to 'ban' icon if filter is set */}
-                                                                        </div>
-                                                                    </div>
-                                                                )}
-                                                            </th>
-                                                        );
-                                                    })}
-
-                                                    {displayActionsColumn && (
-                                                        <th
-                                                            style={{
-                                                                width: '250px'
-                                                            }}
-                                                        />
-                                                    )}
-                                                </tr>
-                                            );
-                                        }}
+                                    <DataTableFilterRow<Partial<any & T>>
+                                        fieldName={filterFieldName}
+                                        columns={columns}
+                                        expandable={expandable}
+                                        filterable={filterable}
                                     />
                                 )}
                                 </thead>
