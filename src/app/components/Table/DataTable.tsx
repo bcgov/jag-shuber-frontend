@@ -8,6 +8,7 @@ import { Table, FormGroup, Button, Glyphicon, Well } from 'react-bootstrap';
 
 import * as CellTypes from '../../components/TableColumnCell';
 // TODO: Move this into a common location with AdminForm
+import DataTableHeaderRow from './DataTableHeaderRow';
 import DataTableFilterRow from './DataTableFilterRow';
 import HeaderSaveButton from '../../containers/AdminRolesGrid/HeaderSaveButton';
 
@@ -161,36 +162,10 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                         return (
                             <Table striped={true} style={{tableLayout: 'fixed', width: '100%'}}>
                                 <thead>
-                                <tr>
-                                    {expandable && (<th style={{width: '60px'}}/>)}
-                                    {columns.map((col, colIndex) => (
-                                        <th className="text-left" key={colIndex} style={col.colStyle}>
-                                            {col.title}&nbsp;{col.displayInfo && (<Glyphicon glyph="info-sign"/>)}
-                                        </th>
-                                    ))}
-
-                                    {displayActionsColumn && (
-                                        <th
-                                            style={{
-                                                width: '250px'
-                                            }}
-                                        >
-                                            {displayHeaderActions && (
-
-                                                <>
-                                                    {displayHeaderSave && (
-                                                        <HeaderSaveButton formName={'AdminForm'}/>
-                                                    )}
-                                                    <Button
-                                                        onClick={() => fields.push(initialValue as T)}
-                                                        style={{float: 'right'}}>
-                                                        <Glyphicon glyph="plus"/> {buttonLabel}
-                                                    </Button>
-                                                </>
-                                            )}
-                                        </th>
-                                    )}
-                                </tr>
+                                <DataTableHeaderRow
+                                    fields={fields}
+                                    columns={columns}
+                                />
                                 {filterable && filterFieldName && (
                                     <DataTableFilterRow<Partial<any & T>>
                                         fieldName={filterFieldName}
