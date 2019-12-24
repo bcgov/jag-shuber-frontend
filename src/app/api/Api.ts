@@ -538,6 +538,56 @@ export interface RoleApiScopePermission extends RolePermission {
     hasPermission?: boolean;
 }
 
+// Queries
+// First some base stuff
+export interface ExpirableRecordQuery {
+    effectiveDate?: DateType; // TODO: Verify that these DateTypes will work
+    expiryDate?: DateType; // TODO: Verify that these DateTypes will work
+}
+
+export interface RecordMetaQuery {
+    createdBy?: string;
+    createdDtm?: DateType; // TODO: Verify that these DateTypes will work
+    updatedBy?: string;
+    updatedDtm?: DateType; // TODO: Verify that these DateTypes will work
+    revisionCount?: number; // TODO: Verify that these DateTypes will work
+}
+
+export interface CodeQuery {
+    code?: string;
+}
+
+export interface ScopeQuery {
+    scopeName?: string;
+    scopeCode?: string;
+}
+
+// Concrete query types
+export interface RoleQuery extends RecordMetaQuery {
+    roleName?: string;
+    roleCode?: string;
+}
+
+export interface SheriffQuery extends RecordMetaQuery {
+    firstName?: string;
+    lastName?: string;
+    badgeNo?: string | number;
+    sheriffRankCode?: string;
+    currentLocationId?: string;
+    homeLocationId?: string;
+    genderCode?: string;
+}
+
+// TODO: Or should it be the other way around - SheriffQuery extends UserQuery?
+export interface UserQuery extends SheriffQuery {
+    displayName?: string;
+    locationId?: string;
+    defaultLocationId?: string;
+}
+
+export interface ApiScopeQuery extends ScopeQuery {}
+export interface FrontendScopeQuery extends ScopeQuery {}
+
 export interface API {
     // Sheriffs
     getSheriffs(): Promise<Sheriff[]>;
