@@ -158,203 +158,198 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
 
             <div>
                 {title}
-                <Table striped={true} style={{ tableLayout: 'fixed', width: '100%' }}>
+                <FieldArray<Partial<any & T>>
+                    name={fieldName}
+                    component={(props) => {
+                        const {fields} = props;
+                        return (
+                            <Table striped={true} style={{tableLayout: 'fixed', width: '100%'}}>
+                                <thead>
+                                <tr>
+                                    {expandable && (<th style={{width: '60px'}}/>)}
+                                    {columns.map((col, colIndex) => (
+                                        <th className="text-left" key={colIndex} style={col.colStyle}>
+                                            {col.title}&nbsp;{col.displayInfo && (<Glyphicon glyph="info-sign"/>)}
+                                        </th>
+                                    ))}
 
-                    <thead>
-                        <tr>
-                            {expandable && (<th style={{ width: '60px' }} />)}
-                            {columns.map((col, colIndex) => (
-                                <th className="text-left" key={colIndex} style={col.colStyle}>
-                                    {col.title}&nbsp;{col.displayInfo && (<Glyphicon glyph="info-sign" />)}
-                                </th>
-                            ))}
-
-                            {displayActionsColumn && (
-                                <th
-                                    style={{
-                                        width: '250px'
-                                    }}
-                                >
-                                    {displayHeaderActions && (
-                                        <FieldArray<Partial<any & T>>
-                                            // TODO: This is gross...
-                                            name={(filterFieldName) ? filterFieldName : ''}
-                                            component={(props) => {
-                                                const {fields} = props;
-                                                return (
-                                                    <>
-                                                        {displayHeaderSave && (
-                                                            <HeaderSaveButton formName={'AdminForm'} />
-                                                        )}
-                                                        <Button
-                                                            onClick={() => fields.push(initialValue as T)}
-                                                            style={{float: 'right'}}>
-                                                            <Glyphicon glyph="plus"/> {buttonLabel}
-                                                        </Button>
-                                                    </>
-                                                );
+                                    {displayActionsColumn && (
+                                        <th
+                                            style={{
+                                                width: '250px'
                                             }}
-                                        />
-                                    )}
-                                </th>
-                            )}
-                        </tr>
-                        {filterable && filterFieldName && (
-                        <FieldArray<Partial<any & T>>
-                            name={filterFieldName}
-                            component={(props) => {
-                                const {fields} = props;
-                                return (
-                                    <tr style={{ backgroundColor: '#eee' }}>
-                                        {expandable && (<th style={{ width: '60px' }} />)}
-                                        {columns.map((col, colIndex) => {
-                                            const Column = (col.filterComponent)
-                                                ? col.filterComponent().FormRenderer
-                                                : col.FormRenderer;
+                                        >
+                                            {displayHeaderActions && (
 
-                                            return (
-                                                <th className="text-left" key={colIndex} style={col.colStyle}>
-                                                    {col.filterable && (
-                                                        <div style={{display: 'flex', alignItems: 'center'}}>
-                                                            <Column
-                                                                model={{test: 'test'}}
-                                                                fieldInstanceName={`fieldName_${Math.random().toString()}`}
-                                                                fields={fields}
-                                                                index={0}
-                                                                callbackContext={componentInstance}
-                                                            />
-                                                            <div className="form-group" style={{marginLeft: '0.5rem'}}>
-                                                                <Glyphicon glyph="filter"/>
-                                                                {/* TODO: Change this to 'ban' icon if filter is set */}
-                                                            </div>
-                                                        </div>
+                                                <>
+                                                    {displayHeaderSave && (
+                                                        <HeaderSaveButton formName={'AdminForm'}/>
                                                     )}
-                                                </th>
+                                                    <Button
+                                                        onClick={() => fields.push(initialValue as T)}
+                                                        style={{float: 'right'}}>
+                                                        <Glyphicon glyph="plus"/> {buttonLabel}
+                                                    </Button>
+                                                </>
+                                            )}
+                                        </th>
+                                    )}
+                                </tr>
+                                {filterable && filterFieldName && (
+                                    <FieldArray<Partial<any & T>>
+                                        name={filterFieldName}
+                                        component={() => {
+                                            return (
+                                                <tr style={{backgroundColor: '#eee'}}>
+                                                    {expandable && (<th style={{width: '60px'}}/>)}
+                                                    {columns.map((col, colIndex) => {
+                                                        const Column = (col.filterComponent)
+                                                            ? col.filterComponent().FormRenderer
+                                                            : col.FormRenderer;
+
+                                                        return (
+                                                            <th className="text-left" key={colIndex}
+                                                                style={col.colStyle}>
+                                                                {col.filterable && (
+                                                                    <div
+                                                                        style={{display: 'flex', alignItems: 'center'}}>
+                                                                        <Column
+                                                                            model={{test: 'test'}}
+                                                                            fieldInstanceName={`fieldName_${Math.random().toString()}`}
+                                                                            fields={fields}
+                                                                            index={0}
+                                                                            callbackContext={componentInstance}
+                                                                        />
+                                                                        <div className="form-group"
+                                                                             style={{marginLeft: '0.5rem'}}>
+                                                                            <Glyphicon glyph="filter"/>
+                                                                            {/* TODO: Change this to 'ban' icon if filter is set */}
+                                                                        </div>
+                                                                    </div>
+                                                                )}
+                                                            </th>
+                                                        );
+                                                    })}
+
+                                                    {displayActionsColumn && (
+                                                        <th
+                                                            style={{
+                                                                width: '250px'
+                                                            }}
+                                                        />
+                                                    )}
+                                                </tr>
                                             );
-                                        })}
+                                        }}
+                                    />
+                                )}
+                                </thead>
 
-                                        {displayActionsColumn && (
-                                            <th
-                                                style={{
-                                                    width: '250px'
-                                                }}
-                                            />
-                                        )}
-                                    </tr>
-                                );
-                            }}
-                        />
-                        )}
-                    </thead>
-
-                    <FieldArray<Partial<any & T>>
-                        name={fieldName}
-                        component={(props) => {
-                            const {fields} = props;
-
-                            return (
                                 <tbody>
                                 {fields.length === 0 && (
                                     <tr>
-                                        <td colSpan={expandable ? columns.length + 2 : columns.length + 1}><Well
-                                            style={{textAlign: 'center'}}>No records found.</Well></td>
+                                        <td colSpan={expandable ? columns.length + 2 : columns.length + 1}>
+                                            <Well
+                                                style={{textAlign: 'center'}}>No records found.</Well></td>
                                     </tr>
                                 )}
                                 {fields.length > 0 && fields.map((fieldInstanceName, index) => {
-                                        const fieldModel: Partial<any & T> = fields.get(index);
-                                        const {id = null, cancelDate = undefined} = fieldModel || {};
+                                    const fieldModel: Partial<any & T> = fields.get(index);
+                                    const {id = null, cancelDate = undefined} = fieldModel || {};
 
-                                        return (
-                                            <>
-                                                <tr key={index}>
-                                                    {expandable && (
-                                                        <td>
-                                                            <FormGroup>
-                                                                <Button
-                                                                    bsStyle="link"
-                                                                    onClick={() => this.onExpandRowClicked(index)}
-                                                                    style={{color: '#666666'}}
-                                                                >
-                                                                    {id && expandedRows && !expandedRows.has(index) && (
-                                                                        <Glyphicon glyph="triangle-right"/>
-                                                                    )}
-                                                                    {id && expandedRows && expandedRows.has(index) && (
-                                                                        <Glyphicon glyph="triangle-bottom"/>
-                                                                    )}
-                                                                </Button>
-                                                            </FormGroup>
-                                                        </td>
-                                                    )}
-                                                    {
-                                                        columns
-                                                            .map((col, colIndex) => {
-                                                                const Column = cancelDate != undefined
-                                                                    ? col.CanceledRender
-                                                                    : col.FormRenderer;
+                                    return (
+                                        <>
+                                            <tr key={index}>
+                                                {expandable && (
+                                                    <td>
+                                                        <FormGroup>
+                                                            <Button
+                                                                bsStyle="link"
+                                                                onClick={() => this.onExpandRowClicked(index)}
+                                                                style={{color: '#666666'}}
+                                                            >
+                                                                {id && expandedRows && !expandedRows.has(index) && (
+                                                                    <Glyphicon glyph="triangle-right"/>
+                                                                )}
+                                                                {id && expandedRows && expandedRows.has(index) && (
+                                                                    <Glyphicon glyph="triangle-bottom"/>
+                                                                )}
+                                                            </Button>
+                                                        </FormGroup>
+                                                    </td>
+                                                )}
+                                                {
+                                                    columns
+                                                        .map((col, colIndex) => {
+                                                            const Column = cancelDate != undefined
+                                                                ? col.CanceledRender
+                                                                : col.FormRenderer;
 
-                                                                return (
-                                                                    <td key={colIndex}>
-                                                                        <Column
-                                                                            model={fieldModel}
-                                                                            fieldInstanceName={fieldInstanceName}
-                                                                            fields={fields}
-                                                                            index={index}
-                                                                            callbackContext={componentInstance}
-                                                                        />
-                                                                    </td>
-                                                                );
-                                                            })
-                                                    }
-                                                    {displayActionsColumn && (() => {
-                                                        const rowActionsColumn = actionsColumn || CellTypes.Actions();
+                                                            return (
+                                                                <td key={colIndex}>
+                                                                    <Column
+                                                                        model={fieldModel}
+                                                                        fieldInstanceName={fieldInstanceName}
+                                                                        fields={fields}
+                                                                        index={index}
+                                                                        callbackContext={componentInstance}
+                                                                    />
+                                                                </td>
+                                                            );
+                                                        })
+                                                }
+                                                {displayActionsColumn && (() => {
+                                                    const rowActionsColumn = actionsColumn || CellTypes.Actions();
 
-                                                        const Column = cancelDate != undefined
-                                                            ? rowActionsColumn.CanceledRender
-                                                            : rowActionsColumn.FormRenderer;
+                                                    const Column = cancelDate != undefined
+                                                        ? rowActionsColumn.CanceledRender
+                                                        : rowActionsColumn.FormRenderer;
 
-                                                        // TODO: Make this use a class?
-                                                        // Flex align end to make sure buttons are right-aligned
-                                                        return (
-                                                            <td style={{display: 'flex', justifyContent: 'flex-end'}}>
-                                                                <Column
-                                                                    model={fieldModel}
-                                                                    fieldInstanceName={fieldInstanceName}
-                                                                    fields={fields}
-                                                                    index={index}
-                                                                    callbackContext={componentInstance}
-                                                                />
-                                                            </td>
-                                                        );
-                                                    })()}
-                                                </tr>
-                                                {expandable && expandedRows && expandedRows.has(index) && (
-                                                    <tr key={index * 2}>
-                                                        <td>{/* Nest the Table for sub-rows */}</td>
-                                                        {/* tslint:disable-next-line:max-line-length */}
-                                                        <td style={{margin: '0', padding: '0'}}
-                                                            colSpan={expandable ? columns.length + 1 : columns.length}>
-                                                            <RowComponent
-                                                                parentModel={fieldModel}
-                                                                parentModelId={fieldModel.id}
+                                                    // TODO: Make this use a class?
+                                                    // Flex align end to make sure buttons are right-aligned
+                                                    return (
+                                                        <td style={{
+                                                            display: 'flex',
+                                                            justifyContent: 'flex-end'
+                                                        }}>
+                                                            <Column
+                                                                model={fieldModel}
+                                                                fieldInstanceName={fieldInstanceName}
+                                                                fields={fields}
+                                                                index={index}
+                                                                callbackContext={componentInstance}
                                                             />
                                                         </td>
-                                                    </tr>
-                                                )}
-                                                <ModalComponent
-                                                    isOpen={activeRowId && (activeRowId === fieldModel.id)}
-                                                    {...modalProps}
-                                                    parentModel={fieldModel}
-                                                    parentModelId={fieldModel.id}
-                                                />
-                                            </>
-                                        );
-                                    })
-                                }
+                                                    );
+                                                })()}
+                                            </tr>
+                                            {expandable && expandedRows && expandedRows.has(index) && (
+                                                <tr key={index * 2}>
+                                                    <td>{/* Nest the Table for sub-rows */}</td>
+                                                    {/* tslint:disable-next-line:max-line-length */}
+                                                    <td style={{margin: '0', padding: '0'}}
+                                                        colSpan={expandable ? columns.length + 1 : columns.length}>
+                                                        <RowComponent
+                                                            parentModel={fieldModel}
+                                                            parentModelId={fieldModel.id}
+                                                        />
+                                                    </td>
+                                                </tr>
+                                            )}
+                                            <ModalComponent
+                                                isOpen={activeRowId && (activeRowId === fieldModel.id)}
+                                                {...modalProps}
+                                                parentModel={fieldModel}
+                                                parentModelId={fieldModel.id}
+                                            />
+                                        </>
+                                    );
+                                })}
                                 </tbody>
-                            )
-                        }}
-                     />
-                </Table>
+                            </Table>
+                        );
+                    }}
+                />
             </div>
         );
     }
