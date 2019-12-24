@@ -15,7 +15,13 @@ class LocationSelector extends React.PureComponent<LocationSelectorStateProps & 
 
     render() {
         const { locations = [], label = 'Location', ...rest } = this.props;
-        const selectorValues = locations.map(location => ({ key: location.id, value: location.name }));
+        const selectorValues = locations
+            .map(location => ({ key: location.id, value: location.name }))
+
+        // TODO: Not sure if this is the best solution, but it gets things working they way we want to for now...
+        //  Just keep an eye out for ALL_LOCATIONS in the Client.
+        selectorValues.unshift({ key: 'ALL_LOCATIONS', value: 'All Locations' });
+
         return (
             <Selector
                 data={selectorValues}
@@ -38,7 +44,7 @@ const ConnectedLocationSelector = connect<LocationSelectorStateProps, {}, Select
     mapStateToProps
 )(LocationSelector);
 
-const ConnectedSystemLocationSelector :React.ComponentType = 
+const ConnectedSystemLocationSelector :React.ComponentType =
 connect<{ value: any }, { onChange: (v: any) => void }, {}, RootState>(
     (state) => ({ value: currentLocationSelector(state) }),
     { onChange: updateCurrentLocation }

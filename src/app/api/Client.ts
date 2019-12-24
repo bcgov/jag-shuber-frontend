@@ -116,7 +116,13 @@ export default class Client implements API {
     }
 
     async getSheriffs(): Promise<Sheriff[]> {
-        const sheriffList = (await this._client.GetSheriffs(this.currentLocation) as Sheriff[]);
+        // TODO: Not sure if this is the best solution, but it gets things working they way we want to for now...
+        //  ALL_LOCATIONS key is added to selectorValues in LocationSelector.
+        const currentLocation = (this.currentLocation && this.currentLocation !== 'ALL_LOCATIONS')
+            ? this.currentLocation
+            : undefined;
+
+        const sheriffList = (await this._client.GetSheriffs(currentLocation) as Sheriff[]);
         return sheriffList;
     }
 
@@ -143,13 +149,25 @@ export default class Client implements API {
 
     async getAssignments(dateRange: DateRange = {}): Promise<(CourtAssignment | JailAssignment | EscortAssignment | OtherAssignment)[]> {
         const { startDate, endDate } = dateRange;
-        const list = await this._client.GetAssignments(this.currentLocation, startDate, endDate);
+        // TODO: Not sure if this is the best solution, but it gets things working they way we want to for now...
+        //  ALL_LOCATIONS key is added to selectorValues in LocationSelector.
+        const currentLocation = (this.currentLocation && this.currentLocation !== 'ALL_LOCATIONS')
+            ? this.currentLocation
+            : undefined;
+
+        const list = await this._client.GetAssignments(currentLocation, startDate, endDate);
         return list as Assignment[];
     }
     async createAssignment(assignment: Partial<Assignment>): Promise<Assignment> {
+        // TODO: Not sure if this is the best solution, but it gets things working they way we want to for now...
+        //  ALL_LOCATIONS key is added to selectorValues in LocationSelector.
+        const currentLocation = (this.currentLocation && this.currentLocation !== 'ALL_LOCATIONS')
+            ? this.currentLocation
+            : undefined;
+
         const assignmentToCreate: any = {
             ...assignment,
-            locationId: this.currentLocation
+            locationId: currentLocation
         };
         const created = await this._client.CreateAssignment(assignmentToCreate);
         return created as Assignment;
@@ -287,21 +305,39 @@ export default class Client implements API {
     }
 
     async createDefaultDuties(date: moment.Moment = moment()): Promise<AssignmentDuty[]> {
+        // TODO: Not sure if this is the best solution, but it gets things working they way we want to for now...
+        //  ALL_LOCATIONS key is added to selectorValues in LocationSelector.
+        const currentLocation = (this.currentLocation && this.currentLocation !== 'ALL_LOCATIONS')
+            ? this.currentLocation
+            : undefined;
+
         return await this._client.ImportDefaultDuties({
-            locationId: this.currentLocation,
+            locationId: currentLocation,
             date: date.toISOString()
         }) as AssignmentDuty[];
     }
 
     async autoAssignSheriffDuties(date: moment.Moment = moment()): Promise<SheriffDuty[]> {
+        // TODO: Not sure if this is the best solution, but it gets things working they way we want to for now...
+        //  ALL_LOCATIONS key is added to selectorValues in LocationSelector.
+        const currentLocation = (this.currentLocation && this.currentLocation !== 'ALL_LOCATIONS')
+            ? this.currentLocation
+            : undefined;
+
         return await this._client.AutoAssignSheriffDuties({
-            locationId: this.currentLocation,
+            locationId: currentLocation,
             date: date.toISOString()
         }) as SheriffDuty[];
     }
 
     async getShifts(): Promise<Shift[]> {
-        const list = await this._client.GetShifts(this.currentLocation);
+        // TODO: Not sure if this is the best solution, but it gets things working they way we want to for now...
+        //  ALL_LOCATIONS key is added to selectorValues in LocationSelector.
+        const currentLocation = (this.currentLocation && this.currentLocation !== 'ALL_LOCATIONS')
+            ? this.currentLocation
+            : undefined;
+
+        const list = await this._client.GetShifts(currentLocation);
         return list as Shift[];
     }
 
@@ -326,9 +362,15 @@ export default class Client implements API {
     }
 
     async createShift(newShift: Partial<Shift>): Promise<Shift> {
+        // TODO: Not sure if this is the best solution, but it gets things working they way we want to for now...
+        //  ALL_LOCATIONS key is added to selectorValues in LocationSelector.
+        const currentLocation = (this.currentLocation && this.currentLocation !== 'ALL_LOCATIONS')
+            ? this.currentLocation
+            : undefined;
+
         const shiftToCreate: any = {
             ...newShift,
-            locationId: this.currentLocation
+            locationId: currentLocation
         };
         const created = await this._client.CreateShift(shiftToCreate);
         return created as Shift;
@@ -340,11 +382,17 @@ export default class Client implements API {
 
     async copyShifts(shiftCopyDetails: ShiftCopyOptions): Promise<Shift[]> {
         const { startOfWeekDestination, startOfWeekSource, shouldIncludeSheriffs } = shiftCopyDetails;
+        // TODO: Not sure if this is the best solution, but it gets things working they way we want to for now...
+        //  ALL_LOCATIONS key is added to selectorValues in LocationSelector.
+        const currentLocation = (this.currentLocation && this.currentLocation !== 'ALL_LOCATIONS')
+            ? this.currentLocation
+            : undefined;
+
         return await this._client.CopyShifts({
             startOfWeekDestination: moment(startOfWeekDestination).toISOString(),
             startOfWeekSource: moment(startOfWeekSource).toISOString(),
             shouldIncludeSheriffs,
-            locationId: this.currentLocation
+            locationId: currentLocation
         }) as Shift[];
     }
 
@@ -407,7 +455,13 @@ export default class Client implements API {
     }
 
     async getCourtrooms(): Promise<Courtroom[]> {
-        const list = await this._client.GetCourtrooms(this.currentLocation);
+        // TODO: Not sure if this is the best solution, but it gets things working they way we want to for now...
+        //  ALL_LOCATIONS key is added to selectorValues in LocationSelector.
+        const currentLocation = (this.currentLocation && this.currentLocation !== 'ALL_LOCATIONS')
+            ? this.currentLocation
+            : undefined;
+
+        const list = await this._client.GetCourtrooms(currentLocation);
         return list as Courtroom[];
     }
 
@@ -440,7 +494,11 @@ export default class Client implements API {
     }
 
     async getEscortRuns(): Promise<EscortRun[]> {
-        const list = await this._client.GetEscortRuns(this.currentLocation);
+        const currentLocation = (this.currentLocation && this.currentLocation !== 'ALL_LOCATIONS')
+            ? this.currentLocation
+            : undefined;
+
+        const list = await this._client.GetEscortRuns(currentLocation);
         return list as EscortRun[];
     }
 
@@ -471,7 +529,13 @@ export default class Client implements API {
 
     // Methods for users
     async getUsers(): Promise<User[]> {
-        const list = await this._client.GetUsersByLocationId(this.currentLocation);
+        // TODO: Not sure if this is the best solution, but it gets things working they way we want to for now...
+        //  ALL_LOCATIONS key is added to selectorValues in LocationSelector.
+        const currentLocation = (this.currentLocation && this.currentLocation !== 'ALL_LOCATIONS')
+            ? this.currentLocation
+            : undefined;
+
+        const list = await this._client.GetUsersByLocationId(currentLocation);
         return list as User[];
     }
 
