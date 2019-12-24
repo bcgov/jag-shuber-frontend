@@ -178,7 +178,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                     actionsColumn={DataTable.ActionsColumn({
                         actions: [
                             ({ fields, index, model }) => <RemoveRow fields={fields} index={index} model={model} />,
-                            ({ fields, index, model }) => { return (model && model.id) ? (<ExpireRow fields={fields} index={index} model={model} />) : null; }
+                            // ({ fields, index, model }) => { return (model && model.id) ? (<ExpireRow fields={fields} index={index} model={model} />) : null; }
                         ]
                     })}
                     columns={[
@@ -206,7 +206,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                     actionsColumn={DataTable.ActionsColumn({
                         actions: [
                             ({ fields, index, model }) => <RemoveRow fields={fields} index={index} model={model} />,
-                            ({ fields, index, model }) => { return (model && model.id) ? (<ExpireRow fields={fields} index={index} model={model} />) : null; }
+                            // ({ fields, index, model }) => { return (model && model.id) ? (<ExpireRow fields={fields} index={index} model={model} />) : null; }
                         ]
                     })}
                     columns={[
@@ -274,7 +274,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
     }
 
     // TODO: Remove roleId from abstract class?
-    fetchData(roleId: IdType, dispatch: Dispatch<{}>) {
+    fetchData(dispatch: Dispatch<{}>, filters: {} | undefined) {
         dispatch(getRoles()); // This data needs to always be available for select lists
         dispatch(getFrontendScopes()); // This data needs to always be available for select lists
         dispatch(getFrontendScopePermissions()); // This data needs to always be available for select lists
@@ -285,7 +285,8 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
         dispatch(getRolePermissions());
     }
 
-    getData(roleId: IdType, state: RootState) {
+    // TODO: Type filters as <T> in FormContainer interface?
+    getData(state: RootState, filters: {} | undefined) {
         const roles = getAllRoles(state) || undefined;
 
         const frontendScopes = getAllFrontendScopes(state) || undefined;

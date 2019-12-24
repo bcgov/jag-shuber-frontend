@@ -131,11 +131,11 @@ export default class AdminApiScopesGrid extends FormContainerBase<AdminApiScopes
     }
 
     // TODO: Not sure if this should be roleId or what, I'm not there yet...
-    fetchData(roleId: IdType, dispatch: Dispatch<{}>) {
+    fetchData(dispatch: Dispatch<{}>, filters: {} | undefined) {
         dispatch(getApiScopes()); // This data needs to always be available for select lists
     }
 
-    getData(roleId: IdType, state: RootState) {
+    getData(state: RootState, filters: {} | undefined) {
         const apiScopes = getAllApiScopes(state) || undefined;
 
         return {

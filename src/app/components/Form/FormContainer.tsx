@@ -27,8 +27,8 @@ export interface FormContainer<T = any> {
     hasErrors(errors: any): boolean;
     // onSubmit(objectId: IdType | undefined, formValues: any, dispatch: Dispatch<any>): Promise<any | void>;
     onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any | void>;
-    fetchData(objectId: IdType | undefined, dispatch: Dispatch<any>): void;
-    getData(objectId: IdType | undefined, state: RootState): T | undefined;
+    fetchData(dispatch: Dispatch<any>, filters: {} | undefined): void;
+    getData(state: RootState, filters?: {} | undefined): T | undefined;
     validate(values: T): FormErrors<T> | undefined;
 }
 
@@ -170,11 +170,11 @@ export abstract class FormContainerBase<T = any> implements FormContainer<T> {
         ));
     }
 
-    fetchData(objectId: IdType | undefined, dispatch: Dispatch<any>) {
+    fetchData(dispatch: Dispatch<any>, filters: {} | undefined) {
         // does nothing
     }
 
-    getData(objectId: IdType | undefined, state: RootState): T | undefined {
+    getData(state: RootState, filters?: {} | undefined): T | undefined {
         // Does nothing
         return undefined;
     }
