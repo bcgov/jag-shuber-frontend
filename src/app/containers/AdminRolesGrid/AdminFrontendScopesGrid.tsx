@@ -115,6 +115,7 @@ export default class AdminFrontendScopesGrid extends FormContainerBase<AdminFron
             <div>
                 <DataTable
                     fieldName={this.formFieldNames.frontendScopes}
+                    filterFieldName={(this.filterFieldNames) ? `${this.filterFieldNames.frontendScopes}` : undefined}
                     title={''} // Leave this blank
                     buttonLabel={'Add Component'}
                     displayHeaderActions={true}

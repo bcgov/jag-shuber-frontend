@@ -62,6 +62,7 @@ export default class AdminCourtroomsGrid extends FormContainerBase<AdminCourtroo
             <div>
                 <DataTable
                     fieldName={this.formFieldNames.courtrooms}
+                    filterFieldName={(this.filterFieldNames) ? `${this.filterFieldNames.courtrooms}` : undefined}
                     title={''} // Leave this blank
                     buttonLabel={'Add Courtroom'}
                     actionsColumn={DataTable.ActionsColumn({
