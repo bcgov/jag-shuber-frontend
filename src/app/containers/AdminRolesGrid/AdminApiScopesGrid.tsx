@@ -96,6 +96,7 @@ export default class AdminApiScopesGrid extends FormContainerBase<AdminApiScopes
             <div>
                 <DataTable
                     fieldName={this.formFieldNames.apiScopes}
+                    filterFieldName={(this.filterFieldNames) ? `${this.filterFieldNames.apiScopes}` : undefined}
                     title={''} // Leave this blank
                     buttonLabel={'Add Endpoint'}
                     displayHeaderActions={true}

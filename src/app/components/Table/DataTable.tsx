@@ -38,6 +38,7 @@ export interface DataTableProps {
     title: React.ReactNode;
     buttonLabel?: React.ReactNode; // TODO... a hash of values maybe :)
     fieldName: string;
+    filterFieldName?: string;
     columns: CellTypes.Types.TableColumnCell[];
     actionsColumn?: CellTypes.Types.TableColumnCell;
     displayHeaderActions?: boolean;
@@ -124,6 +125,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
 
         const {
             fieldName,
+            filterFieldName,
             title,
             buttonLabel,
             columns = [],
@@ -157,40 +159,52 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
             <div>
                 {title}
                 <Table striped={true} style={{ tableLayout: 'fixed', width: '100%' }}>
-                    <FieldArray<Partial<any & T>>
-                        name={fieldName}
-                        component={(props) => {
-                            const {fields} = props;
-                            return (
-                                <thead>
-                                    <tr>
-                                        {expandable && (<th style={{ width: '60px' }} />)}
-                                        {columns.map((col, colIndex) => (
-                                            <th className="text-left" key={colIndex} style={col.colStyle}>
-                                                {col.title}&nbsp;{col.displayInfo && (<Glyphicon glyph="info-sign" />)}
-                                            </th>
-                                        ))}
 
-                                        {displayActionsColumn && (
-                                            <th
-                                                style={{
-                                                    width: '250px'
-                                                }}
-                                            >
-                                                {displayHeaderActions && (
+                    <thead>
+                        <tr>
+                            {expandable && (<th style={{ width: '60px' }} />)}
+                            {columns.map((col, colIndex) => (
+                                <th className="text-left" key={colIndex} style={col.colStyle}>
+                                    {col.title}&nbsp;{col.displayInfo && (<Glyphicon glyph="info-sign" />)}
+                                </th>
+                            ))}
+
+                            {displayActionsColumn && (
+                                <th
+                                    style={{
+                                        width: '250px'
+                                    }}
+                                >
+                                    {displayHeaderActions && (
+                                        <FieldArray<Partial<any & T>>
+                                            // TODO: This is gross...
+                                            name={(filterFieldName) ? filterFieldName : ''}
+                                            component={(props) => {
+                                                const {fields} = props;
+                                                return (
                                                     <>
                                                         {displayHeaderSave && (
-                                                        <HeaderSaveButton formName={'AdminForm'} />
+                                                            <HeaderSaveButton formName={'AdminForm'} />
                                                         )}
-                                                        <Button onClick={() => fields.push(initialValue as T)} style={{ float: 'right' }}>
-                                                            <Glyphicon glyph="plus" /> {buttonLabel}
+                                                        <Button
+                                                            onClick={() => fields.push(initialValue as T)}
+                                                            style={{float: 'right'}}>
+                                                            <Glyphicon glyph="plus"/> {buttonLabel}
                                                         </Button>
                                                     </>
-                                                )}
-                                            </th>
-                                        )}
-                                    </tr>
-                                    {filterable && (
+                                                );
+                                            }}
+                                        />
+                                    )}
+                                </th>
+                            )}
+                        </tr>
+                        {filterable && filterFieldName && (
+                        <FieldArray<Partial<any & T>>
+                            name={filterFieldName}
+                            component={(props) => {
+                                const {fields} = props;
+                                return (
                                     <tr style={{ backgroundColor: '#eee' }}>
                                         {expandable && (<th style={{ width: '60px' }} />)}
                                         {columns.map((col, colIndex) => {
@@ -227,11 +241,11 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                             />
                                         )}
                                     </tr>
-                                    )}
-                                </thead>
-                            );
-                        }}
-                    />
+                                );
+                            }}
+                        />
+                        )}
+                    </thead>
 
                     <FieldArray<Partial<any & T>>
                         name={fieldName}
@@ -319,14 +333,19 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                                         {/* tslint:disable-next-line:max-line-length */}
                                                         <td style={{margin: '0', padding: '0'}}
                                                             colSpan={expandable ? columns.length + 1 : columns.length}>
-                                                            <RowComponent parentModel={fieldModel}
-                                                                          parentModelId={fieldModel.id}/>
+                                                            <RowComponent
+                                                                parentModel={fieldModel}
+                                                                parentModelId={fieldModel.id}
+                                                            />
                                                         </td>
                                                     </tr>
                                                 )}
                                                 <ModalComponent
-                                                    isOpen={activeRowId && (activeRowId === fieldModel.id)} {...modalProps}
-                                                    parentModel={fieldModel} parentModelId={fieldModel.id}/>
+                                                    isOpen={activeRowId && (activeRowId === fieldModel.id)}
+                                                    {...modalProps}
+                                                    parentModel={fieldModel}
+                                                    parentModelId={fieldModel.id}
+                                                />
                                             </>
                                         );
                                     })

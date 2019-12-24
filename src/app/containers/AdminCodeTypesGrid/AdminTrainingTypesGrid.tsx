@@ -61,6 +61,7 @@ export default class AdminTrainingTypesGrid extends FormContainerBase<AdminTrain
             <div>
                 <DataTable
                     fieldName={this.formFieldNames.trainingLeaveTypes}
+                    filterFieldName={(this.filterFieldNames) ? `${this.filterFieldNames.trainingLeaveTypes}` : undefined}
                     title={''} // Leave this blank
                     buttonLabel={'Add Training Type'}
                     actionsColumn={DataTable.ActionsColumn({

@@ -61,6 +61,7 @@ export default class AdminLeaveTypesGrid extends FormContainerBase<AdminLeaveTyp
             <div>
                 <DataTable
                     fieldName={this.formFieldNames.personalLeaveTypes}
+                    filterFieldName={(this.filterFieldNames) ? `${this.filterFieldNames.personalLeaveTypes}` : undefined}
                     title={''} // Leave this blank
                     buttonLabel={'Add Leave Type'}
                     actionsColumn={DataTable.ActionsColumn({

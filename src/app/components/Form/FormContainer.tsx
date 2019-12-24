@@ -61,6 +61,16 @@ export abstract class FormContainerBase<T = any> implements FormContainer<T> {
      * @memberof FormContainerBase
      */
     abstract formFieldNames: { [key: string]: string };
+
+    protected get filterFieldNames() {
+        const fieldNames = {};
+
+        Object.keys(this.formFieldNames)
+            .map(key => fieldNames[key] = `${this.formFieldNames[key]}_filters`);
+
+        return fieldNames as { [key: string]: string };
+    }
+
     DisplayComponent?: React.ReactType<FormContainerProps<T>>;
     FormComponent?: React.ReactType<FormContainerProps<T>>;
 

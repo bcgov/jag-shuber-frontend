@@ -233,6 +233,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
             <div>
                 <RolesDataTable
                     fieldName={this.formFieldNames.roles}
+                    filterFieldName={(this.filterFieldNames) ? `${this.filterFieldNames.roles}` : undefined}
                     title={''} // Leave this blank
                     buttonLabel={'Add Role'}
                     displayHeaderActions={true}
@@ -372,6 +373,10 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
             roleApiScopes: deletedRoleApiScopeIds,
             deletedRolePermissionIds: deletedRolePermissionIds
         };
+    }
+
+    async onUpdateFilters() {
+
     }
 
     async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any[]> {
