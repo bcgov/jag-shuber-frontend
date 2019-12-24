@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-    Field,
-    FieldArray, FieldsProps
-} from 'redux-form';
+import { FieldArray, FieldsProps } from 'redux-form';
 
 import { Glyphicon } from 'react-bootstrap';
 
@@ -18,7 +15,6 @@ export interface ColumnRendererProps {
 export type ColumnRenderer = React.ComponentType<ColumnRendererProps>;
 
 export interface DataTableFilterRowProps {
-
     fieldName: string;
     columns: CellTypes.Types.TableColumnCell[];
     actionsColumn?: CellTypes.Types.TableColumnCell;
@@ -26,7 +22,6 @@ export interface DataTableFilterRowProps {
     displayHeaderSave?: boolean;
     displayActionsColumn?: boolean;
     expandable?: boolean;
-    expandedRows?: Set<number>;
     buttonLabel?: React.ReactNode;
     initialValue?: any;
     filterable?: boolean;
@@ -44,15 +39,6 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
         initialValue: {},
         filterable: false,
         filterRows: () => true
-    };
-
-    static TextFieldColumn = CellTypes.TextField;
-    static DateColumn = CellTypes.Date;
-    static ActionsColumn = CellTypes.Actions;
-
-    state = {
-        expandedRows: new Set(),
-        activeRowId: null
     };
 
     // @ts-ignore
