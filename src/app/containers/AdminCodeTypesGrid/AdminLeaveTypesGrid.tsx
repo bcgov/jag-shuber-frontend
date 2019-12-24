@@ -103,11 +103,11 @@ export default class AdminLeaveTypesGrid extends FormContainerBase<AdminLeaveTyp
     }
 
     // TODO: Remove typeId from abstract
-    fetchData(typeId: IdType, dispatch: Dispatch<{}>) {
+    fetchData(dispatch: Dispatch<{}>, filters: {} | undefined) {
         dispatch(getLeaveSubCodes()); // This data needs to always be available for select lists
     }
 
-    getData(typeId: IdType, state: RootState) {
+    getData(state: RootState, filters: {} | undefined) {
         // TODO: Depending on component state, some of these calls will need to be filtered!
         const leaveTypes = getAllLeaveSubCodes(state) || undefined;
 

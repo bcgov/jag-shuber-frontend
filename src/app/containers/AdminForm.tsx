@@ -243,8 +243,8 @@ export default class extends
             initialValues = plugins
                 .map(p => {
                     // TODO: Get rid of 'data' param if it isn't necessary...
-                    const data = p.getData('data', state);
-                    if (data != undefined) {
+                    const data = p.getData(state);
+                    if (data !== undefined) {
                         const pluginState = {};
                         pluginState[p.reduxFormKey] = data;
                         return pluginState;
@@ -273,7 +273,7 @@ export default class extends
                     dispatch(setAdminFormPluginSubmitErrors());
                     plugins.forEach(p => {
                         // TODO: Get rid of this first param, unless we're implementing location specific roles...
-                        p.fetchData(undefined, dispatch);
+                        p.fetchData(dispatch, {}); // TODO: {} denotes an empty set of filters
                     });
                 },
                 onSelectSection: (sectionName) => dispatch(selectAdminFormSection(sectionName))

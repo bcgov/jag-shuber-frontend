@@ -102,11 +102,11 @@ export default class AdminCourtroomsGrid extends FormContainerBase<AdminCourtroo
     }
 
     // TODO: Remove typeId from abstract
-    fetchData(typeId: IdType, dispatch: Dispatch<{}>) {
+    fetchData(dispatch: Dispatch<{}>, filters: {} | undefined) {
         dispatch(getCourtrooms()); // This data needs to always be available for select lists
     }
 
-    getData(typeId: IdType, state: RootState) {
+    getData(state: RootState, filters: {} | undefined) {
         const courtrooms = getAllCourtrooms(state) || undefined;
 
         return {

@@ -151,12 +151,12 @@ export default class AdminFrontendScopesGrid extends FormContainerBase<AdminFron
     }
 
     // TODO: Not sure if this should be roleId or what, I'm not there yet...
-    fetchData(roleId: IdType, dispatch: Dispatch<{}>) {
+    fetchData(dispatch: Dispatch<{}>, filters: {} | undefined) {
         dispatch(getFrontendScopes()); // This data needs to always be available for select lists
         dispatch(getFrontendScopePermissions()); // This data needs to always be available for select lists
     }
 
-    getData(roleId: IdType, state: RootState) {
+    getData(state: RootState, filters: {} | undefined) {
         const frontendScopes = getAllFrontendScopes(state) || undefined;
         const frontendScopePermissionsGrouped = getFrontendScopePermissionsGroupedByScopeId(state) || undefined;
 

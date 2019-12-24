@@ -224,7 +224,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
     }
 
     // TODO: Remove roleId from abstract
-    fetchData(roleId: IdType, dispatch: Dispatch<{}>) {
+    fetchData(dispatch: Dispatch<{}>, filters: {} | undefined) {
         dispatch(getLocations()); // This data needs to always be available for select lists
         dispatch(getSheriffs()); // This data needs to always be available for select lists
         dispatch(getUsers());
@@ -233,7 +233,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
     }
 
     // TODO: Get rid of roleId
-    getData(roleId: IdType, state: RootState) {
+    getData(state: RootState, filters: {} | undefined) {
         const locations = getAllLocations(state) || undefined;
         const users = getAllUsers(state) || undefined;
         const sheriffs = getAllSheriffs(state) || undefined;
