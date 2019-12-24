@@ -28,6 +28,8 @@ import {
 import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../components/Table/DataTable';
 import { AdminCourtroomsProps } from './AdminCourtroomsGrid';
 import LocationSelector from '../LocationSelector';
+import RemoveRow from '../../components/TableColumnActions/RemoveRow';
+import ExpireRow from '../../components/TableColumnActions/ExpireRow';
 // import { createOrUpdateCourtrooms } from '../../modules/assignments/actions';
 
 export interface AdminCourtroomsProps extends FormContainerProps {
@@ -62,6 +64,12 @@ export default class AdminCourtroomsGrid extends FormContainerBase<AdminCourtroo
                     fieldName={this.formFieldNames.courtrooms}
                     title={''} // Leave this blank
                     buttonLabel={'Add Courtroom'}
+                    actionsColumn={DataTable.ActionsColumn({
+                        actions: [
+                            ({ fields, index, model }) => <RemoveRow fields={fields} index={index} model={model} />,
+                            ({ fields, index, model }) => { return (model && model.id) ? (<ExpireRow fields={fields} index={index} model={model} />) : null; }
+                        ]
+                    })}
                     columns={[
                         DataTable.SelectorFieldColumn('Location', { fieldName: 'locationId', selectorComponent: LocationSelector, displayInfo: false, filterable: true }),
                         DataTable.TextFieldColumn('Courtroom', { fieldName: 'name', displayInfo: false, filterable: true }),
