@@ -165,6 +165,8 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                 <DataTableHeaderRow
                                     fields={fields}
                                     columns={columns}
+                                    expandable={expandable}
+                                    filterable={filterable}
                                 />
                                 {filterable && filterFieldName && (
                                     <DataTableFilterRow<Partial<any & T>>
