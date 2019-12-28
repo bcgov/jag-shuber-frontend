@@ -244,8 +244,11 @@ export default class extends
             // @ts-ignore
             initialValues = plugins
                 .map(p => {
-                    // TODO: Get rid of 'data' param if it isn't necessary...
-                    const data = p.getData(state);
+                    const filters = (state[p.reduxFormKey].pluginFilters)
+                        ? (state[p.reduxFormKey].pluginFilters)
+                        : {};
+
+                    const data = p.getData(state, filters);
                     if (data !== undefined) {
                         const pluginState = {};
                         pluginState[p.reduxFormKey] = data;
@@ -280,9 +283,11 @@ export default class extends
                     });
                 },
                 onSelectSection: (sectionName) => dispatch(selectAdminFormSection(sectionName)),
-                // TODO: Only filter the current section, live with onSelectSection!
-                onFilterData: (filters: {}) => {
-                     if (filters) dispatch(setAdminFormFilters(filters));
+                // TODO: Restrict scope to the current section / plugin, live with onSelectSection!
+                setPluginFilters: (filters: {}) => {
+                    console.log('dispatching plugin filters');
+                    console.log(filters);
+                    if (filters) dispatch(setAdminFormFilters(filters));
                 }
             };
         }

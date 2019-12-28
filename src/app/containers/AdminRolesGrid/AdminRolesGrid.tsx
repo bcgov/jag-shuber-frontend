@@ -239,15 +239,31 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
     }
 
     FormComponent = (props: FormContainerProps<AdminRolesProps>) => {
-        const onFilterRoleName = () => {
-            const { dispatch } = this;
-            if (dispatch) {
-                this.fetchData(dispatch, {});
+        // TODO: We need to find a way to make sorting on multiple columns work, which probably involves figuring how to grab all the field values at once...
+        const onFilterRoleName = (event: Event, newValue: any, previousValue: any, name: string) => {
+            const { setPluginFilters } = props;
+            if (setPluginFilters) {
+                setPluginFilters({
+                    roles: {
+                        roleName: newValue
+                    }
+                });
             }
         };
 
-        RENDER_COUNT++;
-        console.log('ADMINROLESGRID RENDER COUNT: ' + RENDER_COUNT);
+        const onFilterRoleCode = (event: Event, newValue: any, previousValue: any, name: string) => {
+            const { setPluginFilters } = props;
+            if (setPluginFilters) {
+                setPluginFilters({
+                    roles: {
+                        roleCode: newValue
+                    }
+                });
+            }
+        };
+
+        // RENDER_COUNT++;
+        // console.log('ADMINROLESGRID RENDER COUNT: ' + RENDER_COUNT);
 
         return (
             <div>
@@ -264,8 +280,8 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                         ]
                     })}
                     columns={[
-                        DataTable.TextFieldColumn('Role Name', { fieldName: 'roleName', colStyle: { width: '300px' }, displayInfo: true, filterable: true, filterColumn: onFilterRoleName}),
-                        DataTable.TextFieldColumn('Role Code', { fieldName: 'roleCode', colStyle: { width: '300px' }, displayInfo: true, filterable: true }),
+                        DataTable.TextFieldColumn('Role Name', { fieldName: 'roleName', colStyle: { width: '300px' }, displayInfo: true, filterable: true, filterColumn: onFilterRoleName }),
+                        DataTable.TextFieldColumn('Role Code', { fieldName: 'roleCode', colStyle: { width: '300px' }, displayInfo: true, filterable: true, filterColumn: onFilterRoleCode }),
                         DataTable.TextFieldColumn('Description', { fieldName: 'description', colStyle: { width: '300px' }, displayInfo: true }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
                         DataTable.StaticTextColumn('Created By', { fieldName: 'createdBy', colStyle: { width: '200px' }, displayInfo: false, filterable: true }),
@@ -306,39 +322,38 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
     }
 
     // TODO: Type filters as <T> in FormContainer interface?
-    getData(state: RootState, filters: {} | undefined) {
-        let roles,
-            frontendScopes,
-            frontendScopePermissionsGrouped,
-            apiScopes,
-            roleFrontendScopesGrouped,
-            roleApiScopesGrouped,
-            roleFrontendScopePermissionsGrouped,
-            roleApiScopePermissionsGrouped;
+    getData(state: RootState, filters: any | undefined) {
+        const roles = (filters && filters.roles)
+            ? findAllRoles(filters.roles)(state)
+            : getAllRoles(state);
 
-        if (filters && JSON.stringify(filters) !== JSON.stringify({})) {
-            roles = findAllRoles(filters)(state) || undefined;
-            frontendScopes = findAllFrontendScopes(filters)(state) || undefined;
-            frontendScopePermissionsGrouped = findFrontendScopePermissionsGroupedByScopeId(filters)(state) || undefined;
-            apiScopes = findAllApiScopes(filters)(state) || undefined;
+        const frontendScopes = (filters && filters.frontendScopes)
+            ? findAllFrontendScopes(filters.frontendScopes)(state)
+            : getAllFrontendScopes(state);
 
-            roleFrontendScopesGrouped = findRoleFrontendScopesGroupedByRoleId(filters)(state) || undefined;
-            roleApiScopesGrouped = findRoleApiScopesGroupedByRoleId(filters)(state) || undefined;
+        const frontendScopePermissionsGrouped = (filters && filters.frontendScopePermissions)
+            ? findFrontendScopePermissionsGroupedByScopeId(filters.frontendScopePermissions)(state)
+            : getFrontendScopePermissionsGroupedByScopeId(state);
 
-            roleFrontendScopePermissionsGrouped = findRoleFrontendScopePermissionsGroupedByScopeId(filters)(state) || undefined;
-            roleApiScopePermissionsGrouped = findRoleApiScopePermissionsGroupedByScopeId(filters)(state) || undefined;
-        } else {
-            roles = getAllRoles(state) || undefined;
-            frontendScopes = getAllFrontendScopes(state) || undefined;
-            frontendScopePermissionsGrouped = getFrontendScopePermissionsGroupedByScopeId(state) || undefined;
-            apiScopes = getAllApiScopes(state) || undefined;
+        const apiScopes = (filters && filters.apiScopes)
+            ? findAllApiScopes(filters.apiScopes)(state)
+            : getAllApiScopes(state);
 
-            roleFrontendScopesGrouped = getRoleFrontendScopesGroupedByRoleId(state) || undefined;
-            roleApiScopesGrouped = getRoleApiScopesGroupedByRoleId(state) || undefined;
+        const roleFrontendScopesGrouped = (filters && filters.roleFrontendScopes)
+            ? findRoleFrontendScopesGroupedByRoleId(filters.roleFrontendScopes)(state)
+            : getRoleFrontendScopesGroupedByRoleId(state);
 
-            roleFrontendScopePermissionsGrouped = getRoleFrontendScopePermissionsGroupedByScopeId(state) || undefined;
-            roleApiScopePermissionsGrouped = getRoleApiScopePermissionsGroupedByScopeId(state) || undefined;
-        }
+        const roleApiScopesGrouped = (filters && filters.roleApiScopes)
+            ? findRoleApiScopesGroupedByRoleId(filters.roleApiScopes)(state)
+            : getRoleApiScopesGroupedByRoleId(state);
+
+        const roleFrontendScopePermissionsGrouped = (filters && filters.roleFrontendScopePermissions)
+            ? findRoleFrontendScopePermissionsGroupedByScopeId(filters.roleFrontendScopePermissions)(state)
+            : getRoleFrontendScopePermissionsGroupedByScopeId(state);
+
+        const roleApiScopePermissionsGrouped = (filters && filters.roleApiScopePermissions)
+            ? findRoleApiScopePermissionsGroupedByScopeId(filters.roleApiScopePermissions)(state)
+            : getRoleApiScopePermissionsGroupedByScopeId(state);
 
         return {
             roles,

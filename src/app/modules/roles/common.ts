@@ -24,6 +24,7 @@ export interface RoleModuleState {
     userRoleMap?: RequestActionState<MapType<UserRole>>;
     selectedProfileSection?: string;
     pluginSubmitErrors?: ErrorMap;
+    pluginFilters?: {}; // TODO: We could type this a bit better...
 }
 
 export const STATE_KEY: string = 'roles';

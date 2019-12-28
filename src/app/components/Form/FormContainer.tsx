@@ -6,8 +6,12 @@ import { FormErrors } from 'redux-form';
 import { deletedDiff, detailedDiff } from 'deep-object-diff';
 
 export interface FormContainerProps<T = any> {
+    // TODO: We aren't really using objectId anymore, we should remove it...
+    //  It's a remnant from converting the SheriffProfilePlugin to the current
+    //  forms implementation...
     objectId?: IdType;
     data?: T;
+    setPluginFilters?: Function;
 }
 export interface FormContainer<T = any> {
     /**
