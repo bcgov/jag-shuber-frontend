@@ -46,3 +46,11 @@ export const getRoleFrontendScopesGroupedByRoleId = (state: RootState) => {
     }
     return undefined;
 };
+
+export const findRoleFrontendScopesGroupedByRoleId = (filters: {} | undefined) => (state: RootState) => {
+    if (state) {
+        const result = getRoleFrontendScopesGrouped(state);
+        return result;
+    }
+    return undefined;
+};

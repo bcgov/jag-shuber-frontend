@@ -46,3 +46,11 @@ export const getRoleApiScopesGroupedByRoleId = (state: RootState) => {
     }
     return undefined;
 };
+
+export const findRoleApiScopesGroupedByRoleId = (filters: {} | undefined) => (state: RootState) => {
+    if (state) {
+        const result = getRoleApiScopesGrouped(state);
+        return result;
+    }
+    return undefined;
+};

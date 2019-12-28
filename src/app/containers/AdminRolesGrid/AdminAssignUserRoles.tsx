@@ -233,7 +233,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
         dispatch(getRoles()); // This data needs to always be available for select lists
     }
 
-    // TODO: Get rid of roleId
+    // OK, so how do we supply the filters...
     getData(state: RootState, filters: {} | undefined) {
         const locations = getAllLocations(state) || undefined;
         const users = getAllUsers(state) || undefined;

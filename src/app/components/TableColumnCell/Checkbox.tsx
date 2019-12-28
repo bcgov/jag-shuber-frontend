@@ -19,13 +19,14 @@ const CheckboxColumn = (label?: string, options?: Types.FieldColumnOptions): Typ
         ? Object.create(options) as Types.FieldColumnOptions
         : {} as Types.FieldColumnOptions;
 
+    filterComponentOptions.filterable = false;
     filterComponentOptions.displayInfo = false;
 
     return {
         title: label,
         colStyle: colStyle,
         filterable: filterable,
-        filterComponent: (filterable) ? () => CheckboxColumn(label, filterComponentOptions) : undefined,
+        filterComponent: (filterable) ? CheckboxColumn(label, filterComponentOptions) : undefined,
         displayInfo,
         FormRenderer: ({ fieldInstanceName }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>

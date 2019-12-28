@@ -7,8 +7,22 @@ import * as Types from './types';
 
 import TextField from '../../components/FormElements/TextField';
 
-import LeaveTrainingSubCodeSelector from '../../containers/LeaveTrainingSubCodeSelector';
-import LeaveSubCodeDisplay from '../../containers/LeaveSubCodeDisplay';
+// let RENDER_COUNT = 0;
+const FieldRenderer = (props: any) => {
+    /*if (props.label === 'Role Name') {
+        RENDER_COUNT++;
+        console.log('DATATABLE TEXTFIELD RENDER COUNT: ' + RENDER_COUNT);
+        console.log(props);
+    }*/
+
+    return (
+        <TextField
+            {...props}
+            placeholder={props.placeholder}
+            showLabel={false}
+        />
+    );
+}
 
 const TextFieldColumn = (label?: string, options?: Types.FieldColumnOptions): Types.TableColumnCell => {
     label = label || '';
@@ -18,32 +32,34 @@ const TextFieldColumn = (label?: string, options?: Types.FieldColumnOptions): Ty
     const colStyle = (options && options.colStyle) ? options.colStyle : {};
     const placeholder = (options && options.placeholder) ? options.placeholder : undefined;
     const filterable = (options && options.filterable) ? options.filterable : false;
+    const filterColumn = (options && options.filterColumn) ? options.filterColumn : undefined;
+    const onChange = (options && options.onChange) ? options.onChange : undefined;
 
     const filterComponentOptions = (options)
         ? Object.create(options) as Types.FieldColumnOptions
         : {} as Types.FieldColumnOptions;
 
+    filterComponentOptions.onChange = filterColumn;
+    filterComponentOptions.filterable = false;
     filterComponentOptions.displayInfo = false;
     filterComponentOptions.placeholder = `Filter ${label}`;
 
+    // @ts-ignore
     return {
         title: label,
-        colStyle: colStyle,
-        filterable: filterable,
-        filterComponent: (filterable) ? () => TextFieldColumn(label, filterComponentOptions) : undefined,
+        fieldName,
+        colStyle,
+        filterable,
+        filterComponent: (filterable) ? TextFieldColumn(label, filterComponentOptions) : undefined,
+        filterColumn,
         displayInfo,
         FormRenderer: ({ fieldInstanceName }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Field
-                    // TODO: Pass in field name as prop or whatever
                     name={`${fieldInstanceName}.${fieldName}`}
-                    component={(p) => <TextField
-                        {...p}
-                        placeholder={placeholder}
-                        showLabel={false}
-                        // TODO: Provide this via props or something so we can use custom codes...
-                    />}
+                    component={FieldRenderer}
                     label={label}
+                    onChange={onChange}
                 />
                 {/* This wrapper just adds equal spacing to the previous form group */}
                 {/* TODO: We need spacing utils */}

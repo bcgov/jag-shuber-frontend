@@ -18,3 +18,11 @@ export const getAllFrontendScopes = (state: RootState) => {
     }
     return undefined;
 };
+
+export const findAllFrontendScopes = (filters: {} | undefined) => (state: RootState) => {
+    if (state) {
+        return getFrontendScopes(state).sort((a: any, b: any) =>
+            (a.scopeName < b.scopeName) ? -1 : (a.scopeName > b.scopeName) ? 1 : 0);
+    }
+    return undefined;
+};
