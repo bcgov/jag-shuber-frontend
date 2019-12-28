@@ -49,6 +49,9 @@ const actionReducer = createReducer<RoleModuleState>({
   },
   ADMIN_ROLES_SET_PLUGIN_SUBMIT_ERRORS: (state, pluginErrors) => {
     return { ...state, pluginSubmitErrors: pluginErrors };
+  },
+  ADMIN_FORM_SET_PLUGIN_FILTERS: (state, filters) => {
+    return { ...state, pluginFilters: filters };
   }
 });
 
