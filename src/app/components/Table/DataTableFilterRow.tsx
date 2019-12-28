@@ -1,5 +1,5 @@
 import React from 'react';
-import { FieldArray, FieldsProps } from 'redux-form';
+import { Fields, FieldArray, FieldsProps } from 'redux-form';
 
 import { Glyphicon } from 'react-bootstrap';
 
@@ -52,52 +52,57 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
             expandable = false
         } = this.props;
 
+        const filterFieldNames = columns.map((col, index) => {
+            return (col.fieldName && col.filterable) ? `${fieldName}.${col.fieldName}` : undefined;
+        }).filter(col => col) as string[];
+
+        // console.log('dump filter field config');
+        // console.log(filterFieldNames);
+
         return (
-            <FieldArray<Partial<any & T>>
-                name={fieldName}
-                component={({ fields }) => {
-                    return (
-                        <tr style={{backgroundColor: '#eee'}}>
-                            {expandable && (<th style={{width: '60px'}}/>)}
-                            {columns.map((col, colIndex) => {
-                                const Column = (col.filterComponent)
-                                    ? col.filterComponent().FormRenderer
-                                    : col.FormRenderer;
+            <Fields<Partial<any & T>>
+                names={filterFieldNames}
+                component={({ fields }) => (
+                    <tr style={{backgroundColor: '#eee'}}>
+                        {expandable && (<th style={{width: '60px'}}/>)}
+                        {columns.map((col, colIndex) => {
+                            const Column = (col.filterComponent)
+                                ? col.filterComponent.FormRenderer
+                                : col.FormRenderer;
 
-                                return (
-                                    <th className="text-left" key={colIndex}
-                                        style={col.colStyle}>
-                                        {col.filterable && (
-                                            <div
-                                                style={{display: 'flex', alignItems: 'center'}}>
-                                                <Column
-                                                    model={{test: 'test'}}
-                                                    fieldInstanceName={`fieldName_${Math.random().toString()}`}
-                                                    fields={fields}
-                                                    index={0}
-                                                    callbackContext={componentInstance}
-                                                />
-                                                <div className="form-group"
-                                                     style={{marginLeft: '0.5rem'}}>
-                                                    <Glyphicon glyph="filter"/>
-                                                    {/* TODO: Change this to 'ban' icon if filter is set */}
-                                                </div>
+                            return (
+                                <th className="text-left"
+                                    key={col.fieldName}
+                                    style={col.colStyle}>
+                                    {col.filterable && (
+                                        <div
+                                            style={{display: 'flex', alignItems: 'center'}}>
+                                            <Column
+                                                model={{}}
+                                                fieldInstanceName={fieldName}
+                                                fields={fields}
+                                                index={colIndex}
+                                                callbackContext={componentInstance}
+                                            />
+                                            <div className="form-group"
+                                                 style={{marginLeft: '0.5rem'}}>
+                                                <Glyphicon glyph="filter"/>
                                             </div>
-                                        )}
-                                    </th>
-                                );
-                            })}
+                                        </div>
+                                    )}
+                                </th>
+                            );
+                        })}
 
-                            {displayActionsColumn && (
-                                <th
-                                    style={{
-                                        width: '250px'
-                                    }}
-                                />
-                            )}
-                        </tr>
-                    );
-                }}
+                        {displayActionsColumn && (
+                            <th
+                                style={{
+                                    width: '250px'
+                                }}
+                            />
+                        )}
+                    </tr>
+                )}
             />
         );
     }

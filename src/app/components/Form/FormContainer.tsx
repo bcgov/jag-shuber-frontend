@@ -48,6 +48,16 @@ export abstract class FormContainerBase<T = any> implements FormContainer<T> {
 
     abstract get title(): string;
 
+    protected _dispatch?: Dispatch<any>;
+
+    public get dispatch(): Dispatch<any> | undefined {
+        return this._dispatch;
+    }
+
+    public set dispatch(dispatch: Dispatch<any> | undefined) {
+        this._dispatch = dispatch;
+    }
+
     /**
      * The formFieldNames are used to enhance to experience
      * when submitting / saving the profile.  These fields
@@ -62,6 +72,7 @@ export abstract class FormContainerBase<T = any> implements FormContainer<T> {
      */
     abstract formFieldNames: { [key: string]: string };
 
+    // TODO: Might need to remove this, this isn't in the right place?
     protected get filterFieldNames() {
         const fieldNames = {};
 

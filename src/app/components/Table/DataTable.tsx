@@ -43,15 +43,16 @@ export interface DataTableProps {
     displayActionsColumn?: boolean;
     expandable?: boolean;
     expandedRows?: Set<number>;
-    // TODO: Rename as detailComponent
-    rowComponent: React.ReactType<DetailComponentProps>;
     modalProps?: any;
     modalComponent: React.ReactType<ModalComponentProps>;
-
+    rowComponent: React.ReactType<DetailComponentProps>;
     initialValue?: any;
     filterable?: boolean;
     filterRows?: Function;
 }
+
+// let RENDER_COUNT = 0;
+// let ARR_RENDER_COUNT = 0;
 
 export default class DataTable<T> extends React.Component<DataTableProps> {
     static defaultProps = {
@@ -84,6 +85,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
     static LeaveSubCodeColumn = CellTypes.LeaveSubCode;
     static ButtonColumn = CellTypes.Button;
     static CancelColumn = CellTypes.Cancel;
+
     static ActionsColumn = CellTypes.Actions;
 
     state = {
@@ -151,14 +153,18 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
         const RowComponent = rowComponent;
         const ModalComponent = modalComponent;
 
-        return (
+        // RENDER_COUNT++;
+        // console.log('DATATABLE RENDER COUNT: ' + RENDER_COUNT);
 
+        return (
             <div>
                 {title}
                 <FieldArray<Partial<any & T>>
                     name={fieldName}
                     component={(props) => {
-                        const {fields} = props;
+                        // ARR_RENDER_COUNT++;
+                        // console.log('DATATABLE FieldArray COMPONENT RENDER COUNT: ' + ARR_RENDER_COUNT);
+                        const { fields } = props;
                         return (
                             <Table striped={true} style={{tableLayout: 'fixed', width: '100%'}}>
                                 <thead>

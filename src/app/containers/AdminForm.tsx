@@ -33,8 +33,10 @@ import {
     getAdminRolesPluginErrors as getAdminFormPluginErrors
 } from '../modules/roles/selectors';
 import {
+    // TODO: make these two generic
     selectAdminRolesSection as selectAdminFormSection,
     setAdminRolesPluginSubmitErrors as setAdminFormPluginSubmitErrors,
+    setAdminFormFilters
 } from '../modules/roles/actions'; // TODO: This is not generic!
 
 import AdminFormComponent, { AdminFormProps } from '../components/AdminForm/AdminForm';
@@ -274,9 +276,14 @@ export default class extends
                     plugins.forEach(p => {
                         // TODO: Get rid of this first param, unless we're implementing location specific roles...
                         p.fetchData(dispatch, {}); // TODO: {} denotes an empty set of filters
+                        p.dispatch = dispatch;
                     });
                 },
-                onSelectSection: (sectionName) => dispatch(selectAdminFormSection(sectionName))
+                onSelectSection: (sectionName) => dispatch(selectAdminFormSection(sectionName)),
+                // TODO: Only filter the current section, live with onSelectSection!
+                onFilterData: (filters: {}) => {
+                     if (filters) dispatch(setAdminFormFilters(filters));
+                }
             };
         }
     )(AdminFormContainer as any) {

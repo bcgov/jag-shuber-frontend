@@ -35,4 +35,18 @@ export const getFrontendScopePermissionsGroupedByScopeId = (state: RootState) =>
         return getFrontendScopePermissionsGrouped(state);
     }
     return undefined;
-}
+};
+
+export const findAllFrontendScopePermissions = (filters: {} | undefined) => (state: RootState) => {
+    if (state) {
+        return getFrontendScopePermissions(state);
+    }
+    return undefined;
+};
+
+export const findFrontendScopePermissionsGroupedByScopeId = (filters: {} | undefined) => (state: RootState) => {
+    if (state) {
+        return getFrontendScopePermissionsGrouped(state);
+    }
+    return undefined;
+};

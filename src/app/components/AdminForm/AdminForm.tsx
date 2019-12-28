@@ -14,6 +14,7 @@ export interface AdminFormProps {
     pluginsWithErrors?: { [key: string]: boolean };
     selectedSection?: string;
     onSelectSection?: (sectionName: string) => void;
+    onFilterData?: (sectionName: string) => void;
     onSubmitSuccess?: () => void;
     initialValues?: any;
 }

@@ -156,3 +156,25 @@ export const getRoleApiScopePermissionsGroupedByScopeId = (state: RootState) => 
     }
     return undefined;
 };
+
+/**
+ * Returns temporal state used for permission assignment modal.
+ * @param state
+ */
+export const findRoleFrontendScopePermissionsGroupedByScopeId = (filters: {} | undefined) => (state: RootState) => {
+    if (state) {
+        return getRoleFrontendScopePermissionsGroupedByRoleScope(state);
+    }
+    return undefined;
+};
+
+/**
+ * Returns temporaal state used for permission assignment modal.
+ * @param state
+ */
+export const findRoleApiScopePermissionsGroupedByScopeId = (filters: {} | undefined) => (state: RootState) => {
+    if (state) {
+        return getRoleApiScopePermissionsGroupedByRoleScope(state);
+    }
+    return undefined;
+};

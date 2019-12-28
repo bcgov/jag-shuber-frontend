@@ -24,6 +24,7 @@ const TextAreaColumn = (label?: string, options?: Types.FieldColumnOptions): Typ
         ? Object.create(options) as Types.FieldColumnOptions
         : {} as Types.FieldColumnOptions;
 
+    filterComponentOptions.filterable = false;
     filterComponentOptions.displayInfo = false;
     filterComponentOptions.placeholder = `Filter ${label}`;
 
@@ -31,7 +32,7 @@ const TextAreaColumn = (label?: string, options?: Types.FieldColumnOptions): Typ
         title: label,
         colStyle: colStyle,
         filterable: filterable,
-        filterComponent: (filterable) ? () => TextAreaColumn(label, filterComponentOptions) : undefined,
+        filterComponent: (filterable) ? TextAreaColumn(label, filterComponentOptions) : undefined,
         displayInfo,
         FormRenderer: ({ fieldInstanceName }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>

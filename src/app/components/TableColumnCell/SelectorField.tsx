@@ -23,14 +23,16 @@ const SelectorFieldColumn = (label?: string, options?: Types.FieldColumnOptions)
         ? Object.create(options) as Types.FieldColumnOptions
         : {} as Types.FieldColumnOptions;
 
+    filterComponentOptions.filterable = false;
     filterComponentOptions.displayInfo = false;
     filterComponentOptions.displayInfo = false;
 
     return {
         title: label,
+        fieldName: fieldName,
         colStyle: colStyle,
         filterable: filterable,
-        filterComponent: (filterable) ? () => SelectorFieldColumn(label, filterComponentOptions) : undefined,
+        filterComponent: (filterable) ? SelectorFieldColumn(label, filterComponentOptions) : undefined,
         displayInfo,
         FormRenderer: ({ fieldInstanceName }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>

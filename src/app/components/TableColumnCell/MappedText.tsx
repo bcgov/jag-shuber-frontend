@@ -23,6 +23,7 @@ const MappedTextColumn = (label?: string, options?: Types.FieldColumnOptions): T
         ? Object.create(options) as Types.FieldColumnOptions
         : {} as Types.FieldColumnOptions;
 
+    filterComponentOptions.filterable = false;
     filterComponentOptions.displayInfo = false;
     filterComponentOptions.selectorComponent = Selector;
     // filterComponentOptions.placeholder = `Filter ${label}`;
@@ -31,7 +32,7 @@ const MappedTextColumn = (label?: string, options?: Types.FieldColumnOptions): T
         title: label,
         colStyle: colStyle,
         filterable: filterable,
-        filterComponent: (filterable) ? () => SelectorFieldColumn(label, filterComponentOptions) : undefined,
+        filterComponent: (filterable) ? SelectorFieldColumn(label, filterComponentOptions) : undefined,
         displayInfo,
         FormRenderer: ({ fieldInstanceName }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>

@@ -48,7 +48,15 @@ import {
     getRoleApiScopesGroupedByRoleId,
     getRoleFrontendScopesGroupedByRoleId,
     getRoleFrontendScopePermissionsGroupedByScopeId,
-    getRoleApiScopePermissionsGroupedByScopeId
+    getRoleApiScopePermissionsGroupedByScopeId,
+    findAllRoles,
+    findAllApiScopes,
+    findAllFrontendScopes,
+    findFrontendScopePermissionsGroupedByScopeId,
+    findRoleApiScopesGroupedByRoleId,
+    findRoleFrontendScopesGroupedByRoleId,
+    findRoleFrontendScopePermissionsGroupedByScopeId,
+    findRoleApiScopePermissionsGroupedByScopeId
 } from '../../modules/roles/selectors';
 
 import { IdType } from '../../api';
@@ -140,6 +148,8 @@ class RolesDataTable extends DataTable<Role> {}
 class RoleFrontendScopesDataTable extends DataTable<RoleFrontendScope> {}
 class RoleApiScopesDataTable extends DataTable<RoleApiScope> {}
 
+let RENDER_COUNT = 0;
+
 export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
     name = 'admin-roles-grid';
     reduxFormKey = 'roles';
@@ -229,6 +239,16 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
     }
 
     FormComponent = (props: FormContainerProps<AdminRolesProps>) => {
+        const onFilterRoleName = () => {
+            const { dispatch } = this;
+            if (dispatch) {
+                this.fetchData(dispatch, {});
+            }
+        };
+
+        RENDER_COUNT++;
+        console.log('ADMINROLESGRID RENDER COUNT: ' + RENDER_COUNT);
+
         return (
             <div>
                 <RolesDataTable
@@ -244,7 +264,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                         ]
                     })}
                     columns={[
-                        DataTable.TextFieldColumn('Role Name', { fieldName: 'roleName', colStyle: { width: '300px' }, displayInfo: true, filterable: true }),
+                        DataTable.TextFieldColumn('Role Name', { fieldName: 'roleName', colStyle: { width: '300px' }, displayInfo: true, filterable: true, filterColumn: onFilterRoleName}),
                         DataTable.TextFieldColumn('Role Code', { fieldName: 'roleCode', colStyle: { width: '300px' }, displayInfo: true, filterable: true }),
                         DataTable.TextFieldColumn('Description', { fieldName: 'description', colStyle: { width: '300px' }, displayInfo: true }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
@@ -274,7 +294,6 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
         return undefined;
     }
 
-    // TODO: Remove roleId from abstract class?
     fetchData(dispatch: Dispatch<{}>, filters: {} | undefined) {
         dispatch(getRoles()); // This data needs to always be available for select lists
         dispatch(getFrontendScopes()); // This data needs to always be available for select lists
@@ -288,17 +307,38 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
 
     // TODO: Type filters as <T> in FormContainer interface?
     getData(state: RootState, filters: {} | undefined) {
-        const roles = getAllRoles(state) || undefined;
+        let roles,
+            frontendScopes,
+            frontendScopePermissionsGrouped,
+            apiScopes,
+            roleFrontendScopesGrouped,
+            roleApiScopesGrouped,
+            roleFrontendScopePermissionsGrouped,
+            roleApiScopePermissionsGrouped;
 
-        const frontendScopes = getAllFrontendScopes(state) || undefined;
-        const frontendScopePermissionsGrouped = getFrontendScopePermissionsGroupedByScopeId(state) || undefined;
-        const apiScopes = getAllApiScopes(state) || undefined;
+        if (filters && JSON.stringify(filters) !== JSON.stringify({})) {
+            roles = findAllRoles(filters)(state) || undefined;
+            frontendScopes = findAllFrontendScopes(filters)(state) || undefined;
+            frontendScopePermissionsGrouped = findFrontendScopePermissionsGroupedByScopeId(filters)(state) || undefined;
+            apiScopes = findAllApiScopes(filters)(state) || undefined;
 
-        const roleFrontendScopesGrouped = getRoleFrontendScopesGroupedByRoleId(state) || undefined;
-        const roleApiScopesGrouped = getRoleApiScopesGroupedByRoleId(state) || undefined;
+            roleFrontendScopesGrouped = findRoleFrontendScopesGroupedByRoleId(filters)(state) || undefined;
+            roleApiScopesGrouped = findRoleApiScopesGroupedByRoleId(filters)(state) || undefined;
 
-        const roleFrontendScopePermissionsGrouped = getRoleFrontendScopePermissionsGroupedByScopeId(state) || undefined;
-        const roleApiScopePermissionsGrouped = getRoleApiScopePermissionsGroupedByScopeId(state) || undefined;
+            roleFrontendScopePermissionsGrouped = findRoleFrontendScopePermissionsGroupedByScopeId(filters)(state) || undefined;
+            roleApiScopePermissionsGrouped = findRoleApiScopePermissionsGroupedByScopeId(filters)(state) || undefined;
+        } else {
+            roles = getAllRoles(state) || undefined;
+            frontendScopes = getAllFrontendScopes(state) || undefined;
+            frontendScopePermissionsGrouped = getFrontendScopePermissionsGroupedByScopeId(state) || undefined;
+            apiScopes = getAllApiScopes(state) || undefined;
+
+            roleFrontendScopesGrouped = getRoleFrontendScopesGroupedByRoleId(state) || undefined;
+            roleApiScopesGrouped = getRoleApiScopesGroupedByRoleId(state) || undefined;
+
+            roleFrontendScopePermissionsGrouped = getRoleFrontendScopePermissionsGroupedByScopeId(state) || undefined;
+            roleApiScopePermissionsGrouped = getRoleApiScopePermissionsGroupedByScopeId(state) || undefined;
+        }
 
         return {
             roles,
@@ -373,10 +413,6 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
             roleApiScopes: deletedRoleApiScopeIds,
             deletedRolePermissionIds: deletedRolePermissionIds
         };
-    }
-
-    async onUpdateFilters() {
-
     }
 
     async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any[]> {
@@ -458,7 +494,6 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                     }
                 })
                 .filter(rp => rp) as Partial<RolePermission>[];
-
         }
 
         const roleApiScopes: Partial<RoleApiScope>[] = (data.roleApiScopesGrouped)
