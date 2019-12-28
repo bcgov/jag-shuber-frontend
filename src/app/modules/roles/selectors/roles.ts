@@ -23,18 +23,21 @@ export const getAllRoles = (state: RootState) => {
 
 export const findAllRoles = (filters: any) => (state: RootState) => {
     if (state) {
-        // console.log('finding all roles (findAllRoles) using filters');
-        // console.log(filters);
-        return getRoles(state)
-            .filter(i => {
-                if (!filters.roleName || filters.roleName === '') return true;
+        console.log('finding all roles (findAllRoles) using filters');
+        console.log(filters);
+        let roles = getRoles(state);
+        Object.keys(filters).forEach(key => {
+            if (filters[key]) {
+                roles = roles.filter(r => {
+                    return (r[key] && r[key] !== '')
+                        ? r[key].toLowerCase().includes(`${filters[key].toLowerCase()}`)
+                        : false;
+                });
+            }
+        });
 
-                return (i.roleName && filters.roleName)
-                    ? i.roleName.toLowerCase().includes(`${filters.roleName.toLowerCase()}`)
-                    : false;
-            })
-            .sort((a: any, b: any) =>
-                (a.roleName < b.roleName) ? -1 : (a.roleName > b.roleName) ? 1 : 0);
+        roles = roles.sort((a: any, b: any) => (a.roleName < b.roleName) ? -1 : (a.roleName > b.roleName) ? 1 : 0);
+        return roles;
     }
     return undefined;
 };
