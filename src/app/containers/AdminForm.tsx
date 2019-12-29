@@ -285,8 +285,8 @@ export default class extends
                 onSelectSection: (sectionName) => dispatch(selectAdminFormSection(sectionName)),
                 // TODO: Restrict scope to the current section / plugin, live with onSelectSection!
                 setPluginFilters: (filters: {}) => {
-                    console.log('dispatching plugin filters');
-                    console.log(filters);
+                    // console.log('dispatching plugin filters');
+                    // console.log(filters);
                     if (filters) dispatch(setAdminFormFilters(filters));
                 }
             };

@@ -39,7 +39,7 @@ class AdminFormSectionNav extends React.PureComponent<{ title: string, hasErrors
     }
 }
 
-export default class AdminForm extends React.Component<InjectedFormProps<any, AdminFormProps> & AdminFormProps>{
+export default class AdminForm extends React.PureComponent<InjectedFormProps<any, AdminFormProps> & AdminFormProps>{
     private handleSelectSection(sectionName: string) {
         const { onSelectSection } = this.props;
         if (onSelectSection) {
@@ -47,9 +47,9 @@ export default class AdminForm extends React.Component<InjectedFormProps<any, Ad
         }
     }
 
-    shouldComponentUpdate(nextProps: any, nextState: any){
+    /*shouldComponentUpdate(nextProps: any, nextState: any){
         return true;
-    }
+    }*/
 
     renderPlugin(plugin: FormContainer) {
         const { initialValues = {}, isEditing = false, setPluginFilters } = this.props;
