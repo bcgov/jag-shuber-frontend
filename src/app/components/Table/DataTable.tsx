@@ -190,6 +190,8 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                         filterable={filterable}
                                         displayHeaderActions={displayHeaderActions}
                                         displayHeaderSave={displayHeaderSave}
+                                        // TODO: Rename this, what kind of button is it :)
+                                        buttonLabel={buttonLabel}
                                     />
                                 </thead>
 
