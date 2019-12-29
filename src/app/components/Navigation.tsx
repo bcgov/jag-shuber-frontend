@@ -77,7 +77,7 @@ export default class Navigation extends React.Component<NavigationProps, any> {
                 },
                 apis: {
                     path: '/apis/manage',
-                    label: 'Manage APIs'
+                    label: 'Manage API Scopes'
                 }
             }
         },

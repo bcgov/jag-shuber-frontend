@@ -89,7 +89,7 @@ export default class AdminApiScopesGrid extends FormContainerBase<AdminApiScopes
     formFieldNames = {
         apiScopes: 'roles.apiScopes'
     };
-    title: string = 'Register API Routes';
+    title: string = 'Manage API Scopes';
 
     FormComponent = (props: FormContainerProps<AdminApiScopesProps>) => {
         return (
@@ -98,7 +98,7 @@ export default class AdminApiScopesGrid extends FormContainerBase<AdminApiScopes
                     fieldName={this.formFieldNames.apiScopes}
                     filterFieldName={(this.filterFieldNames) ? `${this.filterFieldNames.apiScopes}` : undefined}
                     title={''} // Leave this blank
-                    buttonLabel={'Add Endpoint'}
+                    buttonLabel={'Add Scope'}
                     displayHeaderActions={true}
                     actionsColumn={DataTable.ActionsColumn({
                         actions: [
@@ -107,8 +107,8 @@ export default class AdminApiScopesGrid extends FormContainerBase<AdminApiScopes
                         ]
                     })}
                     columns={[
-                        DataTable.TextFieldColumn('API Endpoint', { fieldName: 'scopeName', displayInfo: true, filterable: true }),
-                        DataTable.TextFieldColumn('Code', { fieldName: 'scopeCode', displayInfo: true, filterable: true }),
+                        DataTable.TextFieldColumn('Scope Name', { fieldName: 'scopeName', displayInfo: true, filterable: true }),
+                        DataTable.TextFieldColumn('Scope Code', { fieldName: 'scopeCode', displayInfo: true, filterable: true }),
                         DataTable.TextFieldColumn('Description', { fieldName: 'description', colStyle: { width: '300px' }, displayInfo: false })
                     ]}
                     filterable={true}
