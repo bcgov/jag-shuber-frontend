@@ -15,7 +15,10 @@ import {
 } from '../../modules/users/actions';
 
 import {
-    getAllUsers, getUserRolesGroupedByUserId
+    getAllUsers,
+    getUserRolesGroupedByUserId,
+    findAllUsers,
+    findUserRolesGroupedByUserId,
 } from '../../modules/users/selectors';
 
 import {
@@ -23,7 +26,8 @@ import {
 } from '../../modules/sheriffs/actions';
 
 import {
-    getAllSheriffs
+    getAllSheriffs,
+    // findAllSheriffs
 } from '../../modules/sheriffs/selectors';
 
 import {
@@ -35,7 +39,9 @@ import {
 
 import {
     getAllRoles,
-    getAllUserRoles
+    getAllUserRoles,
+    findAllRoles,
+    findAllUserRoles
 } from '../../modules/roles/selectors';
 
 import {
@@ -43,7 +49,8 @@ import {
 } from '../../modules/system/action'; // TODO: Naming not consistent here!
 
 import {
-    getAllLocations
+    getAllLocations,
+    findAllLocations
 } from '../../modules/system/selectors';
 
 import { RootState } from '../../store';
@@ -175,6 +182,31 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
     }
 
     FormComponent = (props: FormContainerProps<AdminAssignUserRolesProps>) => {
+        // TODO: We need to find a way to make sorting on multiple columns work, which probably involves figuring how to grab all the field values at once...
+        const onFilterDisplayName = (event: Event, newValue: any, previousValue: any, name: string) => {
+            const { setPluginFilters } = props;
+            if (setPluginFilters) {
+                console.log('setting plugin filters');
+                setPluginFilters({
+                    users: {
+                        displayName: newValue
+                    }
+                });
+            }
+        };
+
+        const onFilterBadgeNo = (event: Event, newValue: any, previousValue: any, name: string) => {
+            const { setPluginFilters } = props;
+            if (setPluginFilters) {
+                console.log('setting plugin filters');
+                setPluginFilters({
+                    users: {
+                        badgeNo: newValue
+                    }
+                });
+            }
+        };
+
         return (
             <div>
                 <DataTable
@@ -192,9 +224,9 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                         ]
                     })}
                     columns={[
-                        DataTable.StaticTextColumn('Full Name', { fieldName: 'displayName', colStyle: { width: '300px' }, displayInfo: false, filterable: true }),
+                        DataTable.StaticTextColumn('Full Name', { fieldName: 'displayName', colStyle: { width: '300px' }, displayInfo: false, filterable: true, filterColumn: onFilterDisplayName }),
                         // DataTable.StaticTextColumn('Last Name', { fieldName: 'lastName', colStyle: { width: '175px' }, displayInfo: false, filterable: true }),
-                        DataTable.StaticTextColumn('Badge No.', { fieldName: 'sheriff.badgeNo', colStyle: { width: '175px' }, displayInfo: false, filterable: true }),
+                        DataTable.StaticTextColumn('Badge No.', { fieldName: 'sheriff.badgeNo', colStyle: { width: '175px' }, displayInfo: false, filterable: true, filterColumn: onFilterBadgeNo }),
                         DataTable.StaticTextColumn('Rank', { fieldName: 'sheriff.rankCode', colStyle: { width: '175px' }, displayInfo: false, filterable: true }),
                         DataTable.MappedTextColumn('Gender', { fieldName: 'sheriff.genderCode', colStyle: { width: '175px' }, selectorComponent: GenderCodeDisplay, displayInfo: false, filterable: true }),
                         DataTable.MappedTextColumn('Home Location', { fieldName: 'sheriff.homeLocationId', colStyle: { width: '225px' }, selectorComponent: LocationDisplay, displayInfo: false, filterable: true }),
@@ -225,6 +257,8 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
     }
 
     // TODO: Remove roleId from abstract
+    // TODO: If we need to pre filter or server side filter,
+    //  we'd implement filters here, filters is just a placeholder for now
     fetchData(dispatch: Dispatch<{}>, filters: {} | undefined) {
         dispatch(getLocations()); // This data needs to always be available for select lists
         dispatch(getSheriffs()); // This data needs to always be available for select lists
@@ -234,15 +268,40 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
     }
 
     // OK, so how do we supply the filters...
-    getData(state: RootState, filters: {} | undefined) {
-        const locations = getAllLocations(state) || undefined;
-        const users = getAllUsers(state) || undefined;
-        const sheriffs = getAllSheriffs(state) || undefined;
-        const roles = getAllRoles(state) || undefined;
-        const userRoles = getAllUserRoles(state) || undefined;
-        const userRolesGrouped = getUserRolesGroupedByUserId(state) || undefined;
+    getData(state: RootState, filters: any | undefined) {
+        // Get filter data
+        const filterData = this.getFilterData(filters);
+        // console.log('AdminAssignUserRoles filterData');
+        // console.log(filterData);
+
+        const locations = (filters && filters.locations)
+            ? findAllLocations(filters.locations)(state)
+            : getAllLocations(state);
+
+        const users = (filters && filters.users)
+            ? findAllUsers(filters.users)(state)
+            : getAllUsers(state);
+
+        // TODO: Finish this
+        const sheriffs = (filters && filters.sheriffs)
+            // ? findAllSheriffs(filters)(state)
+            ? getAllSheriffs(state)
+            : getAllSheriffs(state);
+
+        const roles = (filters && filters.roles)
+            ? findAllRoles(filters.roles)(state)
+            : getAllRoles(state);
+
+        const userRoles = (filters && filters.userRoles)
+            ? findAllUserRoles(filters.userRoles)(state)
+            : getAllUserRoles(state);
+
+        const userRolesGrouped = (filters && filters.userRoles)
+            ? findUserRolesGroupedByUserId(filters.userRoles)(state)
+            : getUserRolesGroupedByUserId(state);
 
         return {
+            ...filterData,
             locations,
             sheriffs,
             roles,

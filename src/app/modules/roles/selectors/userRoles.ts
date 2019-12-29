@@ -17,3 +17,10 @@ export const getAllUserRoles = (state: RootState) => {
     }
     return undefined;
 };
+
+export const findAllUserRoles = (filters: any) => (state: RootState) => {
+    if (state) {
+        return getUserRoles(state);
+    }
+    return undefined;
+};
