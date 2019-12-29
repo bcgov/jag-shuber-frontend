@@ -462,7 +462,14 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
         const roleFrontendScopes: Partial<RoleFrontendScope>[] = (data.roleFrontendScopesGrouped)
             ? Object.keys(data.roleFrontendScopesGrouped)
                 .reduce((acc, cur, idx) => {
-                    return acc.concat(data.roleFrontendScopesGrouped[cur]);
+                    return acc
+                        .concat(
+                            data.roleFrontendScopesGrouped[cur]
+                                .map((rs: RoleFrontendScope) => {
+                                    rs.roleId = cur; // Set role ids on all rows
+                                    return rs;
+                                })
+                        );
                 }, [])
                 .map((rs: RoleFrontendScope) => ({
                     ...rs,
@@ -520,9 +527,16 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
         const roleApiScopes: Partial<RoleApiScope>[] = (data.roleApiScopesGrouped)
             ? Object.keys(data.roleApiScopesGrouped)
                 .reduce((acc, cur, idx) => {
-                    return acc.concat(data.roleApiScopesGrouped[cur]);
+                    return acc
+                        .concat(
+                            data.roleApiScopesGrouped[cur]
+                                .map((rs: RoleApiScope) => {
+                                    rs.roleId = cur; // Set role ids on all rows, we need it set on new rows
+                                    return rs;
+                                })
+                        );
                 }, [])
-                .map((rs: RoleFrontendScope) => ({
+                .map((rs: RoleApiScope) => ({
                     ...rs,
                     createdBy: 'DEV - FRONTEND',
                     updatedBy: 'DEV - FRONTEND',
