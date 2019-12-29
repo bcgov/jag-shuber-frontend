@@ -41,6 +41,10 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
         filterRows: () => true
     };
 
+    shouldComponentUpdate(nextProps: Readonly<DataTableFilterRowProps>, nextState: Readonly<{}>, nextContext: any): boolean {
+        return false;
+    }
+
     // @ts-ignore
     render() {
         const componentInstance = this;
