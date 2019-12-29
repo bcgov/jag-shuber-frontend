@@ -29,6 +29,9 @@ export const findAllRoles = (filters: any) => (state: RootState) => {
         Object.keys(filters).forEach(key => {
             if (filters[key]) {
                 roles = roles.filter(r => {
+                    // console.log('dump key');
+                    // console.log(key);
+                    // console.log(r[key]);
                     return (r[key] && r[key] !== '')
                         ? r[key].toLowerCase().includes(`${filters[key].toLowerCase()}`)
                         : false;
