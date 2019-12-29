@@ -181,7 +181,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                         // console.log('DATATABLE FieldArray COMPONENT RENDER COUNT: ' + ARR_RENDER_COUNT);
                         const { fields } = props;
                         return (
-                            <Table striped={true} style={{ tableLayout: 'fixed', width: '100%', border: '1px solid lightgrey' }}>
+                            <Table striped={true} style={{ tableLayout: 'fixed', width: '100%', border: '1px solid lightgrey', borderBottom: 'none' }}>
                                 <thead>
                                 <DataTableHeaderRow
                                     fields={fields}
