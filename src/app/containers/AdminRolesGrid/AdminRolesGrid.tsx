@@ -179,10 +179,10 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
 
         return (
             <>
-                <RoleFrontendScopesDataTable
-                    fieldName={`${this.formFieldNames.roleFrontendScopesGrouped}['${parentModelId}']`}
+                <RoleApiScopesDataTable
+                    fieldName={`${this.formFieldNames.roleApiScopesGrouped}['${parentModelId}']`}
                     title={''} // Leave this blank
-                    buttonLabel={'Add Component to Role'}
+                    buttonLabel={'Add Authorization Scope'}
                     displayHeaderActions={true}
                     displayHeaderSave={false}
                     actionsColumn={DataTable.ActionsColumn({
@@ -192,14 +192,13 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                         ]
                     })}
                     columns={[
-                        DataTable.SelectorFieldColumn('Component to Access', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: FrontendScopeSelector, displayInfo: true, disabled: true }),
-                        DataTable.MappedTextColumn('Code', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: FrontendScopeCodeDisplay, displayInfo: false }),
-                        DataTable.MappedTextColumn('Description', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: FrontendScopeDescriptionDisplay, displayInfo: false }),
+                        DataTable.SelectorFieldColumn('Authorization Scope', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: ApiScopeSelector, displayInfo: true }),
+                        DataTable.MappedTextColumn('Scope Code', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: ApiScopeCodeDisplay, displayInfo: false }),
+                        DataTable.MappedTextColumn('Description', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: ApiScopeDescriptionDisplay, displayInfo: false }),
                         DataTable.StaticTextColumn('Assigned By', { fieldName: 'createdBy', colStyle: { width: '200px' }, displayInfo: false }),
-                        DataTable.StaticDateColumn('Date Assigned', { fieldName: 'createdDtm', colStyle: { width: '200px' }, displayInfo: false }),
-                        DataTable.ButtonColumn('Configure Access', 'list', { displayInfo: true }, onButtonClicked)
+                        DataTable.StaticDateColumn('Date Assigned', { fieldName: 'createdDtm', colStyle: { width: '350px' }, displayInfo: false }),
+                        // DataTable.ButtonColumn('Configure Access', 'eye-open', { displayInfo: true }, onButtonClicked),
                     ]}
-
                     rowComponent={EmptyDetailRow}
                     initialValue={{
                         roleId: parentModelId
@@ -207,10 +206,10 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                     modalProps={{ roleId: parentModelId }}
                     modalComponent={AdminRoleScopeAccessModal}
                 />
-                <RoleApiScopesDataTable
-                    fieldName={`${this.formFieldNames.roleApiScopesGrouped}['${parentModelId}']`}
+                <RoleFrontendScopesDataTable
+                    fieldName={`${this.formFieldNames.roleFrontendScopesGrouped}['${parentModelId}']`}
                     title={''} // Leave this blank
-                    buttonLabel={'Add API Access to Role'}
+                    buttonLabel={'Grant Component Access'}
                     displayHeaderActions={true}
                     displayHeaderSave={false}
                     actionsColumn={DataTable.ActionsColumn({
@@ -220,13 +219,14 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
                         ]
                     })}
                     columns={[
-                        DataTable.SelectorFieldColumn('API Route to Access', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: ApiScopeSelector, displayInfo: true }),
-                        DataTable.MappedTextColumn('Code', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: ApiScopeCodeDisplay, displayInfo: false }),
-                        DataTable.MappedTextColumn('Description', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: ApiScopeDescriptionDisplay, displayInfo: false }),
+                        DataTable.SelectorFieldColumn('App Component', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: FrontendScopeSelector, displayInfo: true, disabled: true }),
+                        DataTable.MappedTextColumn('Component Code', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: FrontendScopeCodeDisplay, displayInfo: false }),
+                        DataTable.MappedTextColumn('Description', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: FrontendScopeDescriptionDisplay, displayInfo: false }),
                         DataTable.StaticTextColumn('Assigned By', { fieldName: 'createdBy', colStyle: { width: '200px' }, displayInfo: false }),
                         DataTable.StaticDateColumn('Date Assigned', { fieldName: 'createdDtm', colStyle: { width: '200px' }, displayInfo: false }),
-                        DataTable.ButtonColumn('Configure Access', 'eye-open', { displayInfo: true }, onButtonClicked),
+                        DataTable.ButtonColumn('Configure Access', 'list', { displayInfo: true }, onButtonClicked)
                     ]}
+
                     rowComponent={EmptyDetailRow}
                     initialValue={{
                         roleId: parentModelId
