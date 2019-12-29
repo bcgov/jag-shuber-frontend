@@ -183,13 +183,14 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                         return (
                             <Table striped={true} style={{ tableLayout: 'fixed', width: '100%', border: '1px solid lightgrey', borderBottom: 'none' }}>
                                 <thead>
-                                <DataTableHeaderRow
-                                    fields={fields}
-                                    columns={columns}
-                                    expandable={expandable}
-                                    filterable={filterable}
-                                />
-
+                                    <DataTableHeaderRow
+                                        fields={fields}
+                                        columns={columns}
+                                        expandable={expandable}
+                                        filterable={filterable}
+                                        displayHeaderActions={displayHeaderActions}
+                                        displayHeaderSave={displayHeaderSave}
+                                    />
                                 </thead>
 
                                 <tbody>
