@@ -226,7 +226,8 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                     columns={[
                         DataTable.StaticTextColumn('Full Name', { fieldName: 'displayName', colStyle: { width: '300px' }, displayInfo: false, filterable: true, filterColumn: onFilterDisplayName }),
                         // DataTable.StaticTextColumn('Last Name', { fieldName: 'lastName', colStyle: { width: '175px' }, displayInfo: false, filterable: true }),
-                        DataTable.StaticTextColumn('Badge No.', { fieldName: 'sheriff.badgeNo', colStyle: { width: '175px' }, displayInfo: false, filterable: true, filterColumn: onFilterBadgeNo }),
+                        // TODO: We temporarily disabled filtering on badgeNo, it's tied to the sheriff, not sure how to handle that case yet...
+                        DataTable.StaticTextColumn('Badge No.', { fieldName: 'sheriff.badgeNo', colStyle: { width: '175px' }, displayInfo: false, filterable: false, filterColumn: onFilterBadgeNo }),
                         DataTable.StaticTextColumn('Rank', { fieldName: 'sheriff.rankCode', colStyle: { width: '175px' }, displayInfo: false, filterable: true }),
                         DataTable.MappedTextColumn('Gender', { fieldName: 'sheriff.genderCode', colStyle: { width: '175px' }, selectorComponent: GenderCodeDisplay, displayInfo: false, filterable: true }),
                         DataTable.MappedTextColumn('Home Location', { fieldName: 'sheriff.homeLocationId', colStyle: { width: '225px' }, selectorComponent: LocationDisplay, displayInfo: false, filterable: true }),
