@@ -160,7 +160,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
             <div>
                 {title}
                 {filterable && filterFieldName && (
-                    <Table striped={true} style={{tableLayout: 'fixed', width: '100%'}}>
+                    <Table striped={true} style={{ tableLayout: 'fixed', width: '100%', border: '1px solid lightgrey' }}>
                         {/* We're doing the filter row as a separate table because nesting it in the FieldArray causes
                         binding issues or issues with initialValues or something...
                         basically, redux-form doesn't like it so we're not gonna force it. */}
@@ -181,7 +181,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                         // console.log('DATATABLE FieldArray COMPONENT RENDER COUNT: ' + ARR_RENDER_COUNT);
                         const { fields } = props;
                         return (
-                            <Table striped={true} style={{tableLayout: 'fixed', width: '100%'}}>
+                            <Table striped={true} style={{ tableLayout: 'fixed', width: '100%', border: '1px solid lightgrey' }}>
                                 <thead>
                                 <DataTableHeaderRow
                                     fields={fields}
