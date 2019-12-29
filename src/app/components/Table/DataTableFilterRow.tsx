@@ -36,7 +36,7 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
         expandable: false,
         // expandedRows: false,
         buttonLabel: 'Create',
-        initialValue: {},
+        initialValue: {}, // TODO: Shouldn't this be initialValues? And do we actually need this...
         filterable: false,
         filterRows: () => true
     };

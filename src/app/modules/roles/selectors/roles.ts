@@ -23,8 +23,8 @@ export const getAllRoles = (state: RootState) => {
 
 export const findAllRoles = (filters: any) => (state: RootState) => {
     if (state) {
-        console.log('finding all roles (findAllRoles) using filters');
-        console.log(filters);
+        // console.log('finding all roles (findAllRoles) using filters');
+        // console.log(filters);
         let roles = getRoles(state);
         Object.keys(filters).forEach(key => {
             if (filters[key]) {
