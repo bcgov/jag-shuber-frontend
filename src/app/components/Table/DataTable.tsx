@@ -159,6 +159,21 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
         return (
             <div>
                 {title}
+                {filterable && filterFieldName && (
+                    <Table striped={true} style={{tableLayout: 'fixed', width: '100%'}}>
+                        {/* We're doing the filter row as a separate table because nesting it in the FieldArray causes
+                        binding issues or issues with initialValues or something...
+                        basically, redux-form doesn't like it so we're not gonna force it. */}
+                        <thead>
+                            <DataTableFilterRow<Partial<any & T>>
+                                fieldName={filterFieldName}
+                                columns={columns}
+                                expandable={expandable}
+                                filterable={filterable}
+                            />
+                        </thead>
+                    </Table>
+                )}
                 <FieldArray<Partial<any & T>>
                     name={fieldName}
                     component={(props) => {
@@ -174,14 +189,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                     expandable={expandable}
                                     filterable={filterable}
                                 />
-                                {filterable && filterFieldName && (
-                                    <DataTableFilterRow<Partial<any & T>>
-                                        fieldName={filterFieldName}
-                                        columns={columns}
-                                        expandable={expandable}
-                                        filterable={filterable}
-                                    />
-                                )}
+
                                 </thead>
 
                                 <tbody>
