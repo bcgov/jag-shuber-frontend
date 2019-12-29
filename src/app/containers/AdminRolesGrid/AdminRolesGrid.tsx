@@ -324,16 +324,7 @@ export default class AdminRolesGrid extends FormContainerBase<AdminRolesProps> {
     // TODO: Type filters as <T> in FormContainer interface?
     getData(state: RootState, filters: any | undefined) {
         // Get filter data
-        // console.log('filters');
-        // console.log(filters);
-        // console.log(this.filterFieldNames);
-
-        const filterData = Object.keys(this.filterFieldNames).reduce((data: any, filterKey: string, idx: number) => {
-            const dataKey = this.filterFieldNames[filterKey].split(`${this.reduxFormKey}.`).pop() as string;
-            if (filters[filterKey]) data[dataKey] = filters[filterKey];
-            return data;
-        }, {});
-
+        const filterData = this.getFilterData(filters);
         // console.log(filterData);
 
         // Get form data
