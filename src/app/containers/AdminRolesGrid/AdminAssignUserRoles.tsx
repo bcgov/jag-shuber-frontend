@@ -374,13 +374,20 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
             revisionCount: 0 // TODO: Is there entity versioning anywhere in this project???
         })) : [];
 
-        const userRoles: Partial<RoleApiScope>[] = (data.userRolesGrouped)
+        const userRoles: Partial<UserRole>[] = (data.userRolesGrouped)
             ? Object.keys(data.userRolesGrouped)
                 .reduce((acc, cur, idx) => {
-                    return acc.concat(data.userRolesGrouped[cur]);
+                    return acc
+                        .concat(
+                            data.userRolesGrouped[cur]
+                                .map((ur: UserRole) => {
+                                    ur.userId = cur; // Set user ids on all rows, we need it set on new rows
+                                    return ur;
+                                })
+                        );
                 }, [])
-                .map((rs: RoleFrontendScope) => ({
-                    ...rs,
+                .map((ur: UserRole) => ({
+                    ...ur,
                     createdBy: 'DEV - FRONTEND',
                     updatedBy: 'DEV - FRONTEND',
                     createdDtm: new Date().toISOString(),
