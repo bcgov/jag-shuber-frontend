@@ -182,15 +182,37 @@ body {
 
 /* Filter icons */
 th .glyphicon-filter {
-    position: relative;
-    left: -23px;
-    top: 2px;
-    color: grey;
-    cursor: pointer;
+  position: relative;
+  left: -23px;
+  top: 2px;
+  color: grey;
+  cursor: pointer;
 }
 
 .table-cell-text {
   margin-top: 7px;
   font-size: 14px;
 }
+
+/* Too many toasts! */
+.Toastify__toast-container {
+  margin-left: 0 !important; /* Override some style we're redoing the toasts  */
+  width: 100%;
+  left: 0;
+  top: 0;
+}
+
+.Toastify__toast {
+  position: absolute;
+  left: 0;
+  top: 73px;
+  border-radius: 0;
+  height: 73px;
+  width: 100%;
+}
+
+.Toastify__toast-body {
+  text-align: center;
+}
+
 

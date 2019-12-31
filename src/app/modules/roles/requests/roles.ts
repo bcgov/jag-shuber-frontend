@@ -45,7 +45,7 @@ class CreateRoleRequest extends CreateEntityRequest<Role, RoleModuleState> {
                 namespace: STATE_KEY,
                 actionName: 'createRole',
                 toasts: {
-                    success: (s) => `Successfully created a new ${s.roleName} role`,
+                    success: (s) => `Created a new ${s.roleName} role`,
                     error: (err) => (
                         `Problem encountered while adding new role: ${err ? err.toString() : 'Unknown Error'}`
                     )
@@ -70,7 +70,7 @@ class UpdateRoleRequest extends UpdateEntityRequest<Role, RoleModuleState> {
                 namespace: STATE_KEY,
                 actionName: 'updateRole',
                 toasts: {
-                    success: (s) => `Successfully updated the ${s.roleName} role`,
+                    success: (s) => `Updated the ${s.roleName} role`,
                     // tslint:disable-next-line:max-line-length
                     error: (err) => `Problem encountered while updating role: ${err ? err.toString() : 'Unknown Error'}`
                 }
@@ -93,7 +93,7 @@ class DeleteRoleRequest extends DeleteEntityRequest<Role, RoleModuleState> {
                 namespace: STATE_KEY,
                 actionName: 'deleteRole',
                 toasts: {
-                    success: (s) => `Successfully deleted the role`,
+                    success: (s) => `Deleted the role`,
                     // tslint:disable-next-line:max-line-length
                     error: (err) => `Problem encountered while updating role: ${err ? err.toString() : 'Unknown Error'}`
                 }
@@ -122,7 +122,7 @@ class CreateOrUpdateRolesRequest extends CreateOrUpdateEntitiesRequest<Role, Rol
                 namespace: STATE_KEY,
                 actionName: 'createOrUpdateRoles',
                 toasts: {
-                    success: (s) => `Successfully created/updated roles`,
+                    success: (s) => `Created/updated roles`,
                     error: (err: any) => `Couldn't create/update roles: ${err.message}`
                 },
                 ...config

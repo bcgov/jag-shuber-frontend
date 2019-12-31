@@ -44,6 +44,7 @@ class CreateOrUpdateCourtroomsRequest extends CreateOrUpdateEntitiesRequest<Cour
                 namespace: STATE_KEY,
                 actionName: 'createOrUpdateCourtrooms',
                 toasts: {
+                    success: (s) => `Created/updated courtrooms`,
                     error: (err: any) => `Couldn't create/update courtrooms: ${err.message}`
                 },
                 ...config
@@ -61,7 +62,7 @@ class DeleteCourtroomsRequest extends RequestAction<IdType[], IdType[], Assignme
             namespace: STATE_KEY,
             actionName: 'deleteCourtrooms',
             toasts: {
-                success: (ids) => `${ids.length} Courtroom(s) deleted`,
+                success: (ids) => `${ids.length} courtroom(s) deleted`,
                 error: (err) => `Problem encountered while deleting Courtroom: ${err ? err.toString() : 'Unknown Error'}`
             }
         });

@@ -42,7 +42,7 @@ class CreateRolePermissionRequest extends CreateEntityRequest<RolePermission, Ro
                 namespace: STATE_KEY,
                 actionName: 'createRolePermissions',
                 toasts: {
-                    success: (s) => `Successfully created a new role permission`,
+                    success: (s) => `Created a new role permission`,
                     error: (err) => (
                         `Problem encountered while adding new role permissions: ${err ? err.toString() : 'Unknown Error'}`
                     )
@@ -67,7 +67,7 @@ class UpdateRolePermissionsRequest extends UpdateEntityRequest<RolePermission, R
                 namespace: STATE_KEY,
                 actionName: 'updateRolePermissions',
                 toasts: {
-                    success: (s) => `Successfully updated the role permission`,
+                    success: (s) => `Updated the role permission`,
                     // tslint:disable-next-line:max-line-length
                     error: (err) => `Problem encountered while updating role permissions: ${err ? err.toString() : 'Unknown Error'}`
                 }
@@ -96,7 +96,7 @@ class CreateOrUpdateRolePermissionsRequest extends CreateOrUpdateEntitiesRequest
                 namespace: STATE_KEY,
                 actionName: 'createOrUpdateRolePermissions',
                 toasts: {
-                    success: (s) => `Successfully created/updated role permissions`,
+                    success: (s) => `Created/updated role permissions`,
                     error: (err: any) => `Couldn't create/update role permissions: ${err.message}`
                 },
                 ...config

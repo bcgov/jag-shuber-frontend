@@ -51,6 +51,7 @@ class CreateOrUpdateLeavesRequest extends CreateOrUpdateEntitiesRequest<Leave, L
                 namespace: STATE_KEY,
                 actionName: 'createOrUpdateLeaves',
                 toasts: {
+                    success: (s) => `Created/updated leaves`,
                     error: (err: any) => `Couldn't create/update leaves: ${err.message}`
                 },
                 ...config
@@ -116,6 +117,7 @@ class CreateOrUpdateLeaveSubCodesRequest extends CreateOrUpdateEntitiesRequest<L
                 namespace: STATE_KEY,
                 actionName: 'createOrUpdateLeaveSubCodes',
                 toasts: {
+                    success: (s) => `Created/updated leave sub codes`,
                     error: (err: any) => `Couldn't create/update leave sub codes: ${err.message}`
                 },
                 ...config

@@ -41,7 +41,7 @@ class CreateFrontendScopePermissionRequest extends CreateEntityRequest<FrontendS
                 namespace: STATE_KEY,
                 actionName: 'createFrontendScopePermission',
                 toasts: {
-                    success: (s) => `Successfully created a new ${s.displayName} frontend scope permission`,
+                    success: (s) => `Created a new ${s.displayName} frontend scope permission`,
                     error: (err) => (`Problem encountered while adding new scope permissions: ${err ? err.toString() : 'Unknown Error'}`)
                 }
             },
@@ -64,7 +64,7 @@ class UpdateFrontendScopePermissionRequest extends UpdateEntityRequest<FrontendS
                 namespace: STATE_KEY,
                 actionName: 'updateFrontendScopePermission',
                 toasts: {
-                    success: (s) => `Successfully updated the ${s.displayName} frontend scope permission`,
+                    success: (s) => `Updated the ${s.displayName} frontend scope permission`,
                     // tslint:disable-next-line:max-line-length
                     error: (err) => `Problem encountered while updating scope permissions: ${err ? err.toString() : 'Unknown Error'}`
                 }
@@ -93,7 +93,7 @@ class CreateOrUpdateFrontendScopePermissionRequest extends CreateOrUpdateEntitie
                 namespace: STATE_KEY,
                 actionName: 'createOrUpdateFrontendScopePermission',
                 toasts: {
-                    success: (s) => `Successfully created/updated frontend scope permissions`,
+                    success: (s) => `Created/updated frontend scope permissions`,
                     error: (err: any) => `Couldn't create/update scope permissions: ${err.message}`
                 },
                 ...config

@@ -137,7 +137,7 @@ const formConfig: ConfigProps<any, SheriffProfileProps> = {
         let sheriffEntityId: string;
         const profileUpdateConfig: RequestActionConfig<Sheriff> = {
             toasts: {
-                error: (e) => `Error occured while creating/updating Sheriff: ${e}`
+                error: (e) => `Error occurred while creating/updating Sheriff: ${e}`
             }
         };
         let actionMessage = '';
