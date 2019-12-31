@@ -128,7 +128,7 @@ const formConfig: ConfigProps<{}, AdminFormProps> = {
         const { plugins = [], initialValues } = props;
         const requestConfig: RequestActionConfig<any> = {
             toasts: {
-                error: (e) => `Error occured while creating/updating: ${e}`
+                error: (e) => `Error occurred while creating/updating: ${e}`
             }
         };
         let actionMessage = '';

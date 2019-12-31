@@ -44,7 +44,7 @@ class CreateUserRoleRequest extends CreateEntityRequest<UserRole, RoleModuleStat
                 actionName: 'createUserRole',
                 toasts: {
                     success: (s) => (
-                        `Successfully created a new user role`
+                        `Created a new user role`
                     ),
                     error: (err) => (
                         `Problem encountered while adding new user role: ${err ? err.toString() : 'Unknown Error'}`
@@ -70,7 +70,7 @@ class UpdateUserRoleRequest extends UpdateEntityRequest<UserRole, RoleModuleStat
                 namespace: STATE_KEY,
                 actionName: 'updateUserRole',
                 toasts: {
-                    success: (s) => `Successfully updated the user role`,
+                    success: (s) => `Updated the user role`,
                     // tslint:disable-next-line:max-line-length
                     error: (err) => `Problem encountered while updating user roles: ${err ? err.toString() : 'Unknown Error'}`
                 }
@@ -99,7 +99,7 @@ class CreateOrUpdateUserRolesRequest extends CreateOrUpdateEntitiesRequest<UserR
                 namespace: STATE_KEY,
                 actionName: 'createOrUpdateUserRoles',
                 toasts: {
-                    success: (s) => `Successfully created/updated user roles`,
+                    success: (s) => `Created/updated user roles`,
                     error: (err: any) => `Couldn't create/update user roles: ${err.message}`
                 },
                 ...config

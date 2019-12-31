@@ -49,7 +49,7 @@ class CreateAssignmentDutyRequest extends CreateEntityRequest<AssignmentDuty, As
                 namespace: STATE_KEY,
                 actionName: 'createAssignmentDuty',
                 toasts: {
-                    success: 'Duty Created',
+                    success: 'Duty has been created',
                     // tslint:disable-next-line:max-line-length
                     error: (err) => `Problem encountered while creating the duty: ${err ? err.toString() : 'Unknown Error'}`
                 }
@@ -77,7 +77,7 @@ class UpdateAssignmentDutyRequest extends UpdateEntityRequest<AssignmentDuty, As
                 namespace: STATE_KEY,
                 actionName: 'updateAssignmentDuty',
                 toasts: {
-                    success: 'Duty Updated',
+                    success: 'Duty has been updated',
                     // tslint:disable-next-line:max-line-length
                     error: (err) => `Problem encountered while updating the duty: ${err ? err.toString() : 'Unknown Error'}`
                 },
@@ -112,7 +112,7 @@ class DeleteAssignmentDutyRequest extends DeleteEntityRequest<AssignmentDuty, As
                 namespace: STATE_KEY,
                 actionName: 'deleteAssignmentDuty',
                 toasts: {
-                    success: 'Duty Deleted',
+                    success: 'Duty has been deleted',
                     // tslint:disable-next-line:max-line-length
                     error: (err) => `Problem encountered while deleting the duty: ${err ? err.toString() : 'Unknown Error'}`
                 }
@@ -155,7 +155,7 @@ class CreateDefaultDutiesRequest extends RequestAction<DateType, AssignmentDuty[
 export const createDefaultDutiesRequest = new CreateDefaultDutiesRequest();
 
 
-// Delete Sheriff Duty 
+// Delete Sheriff Duty
 class DeleteSheriffDutyRequest extends RequestAction<string, string, AssignmentModuleState> {
     constructor() {
         super({ namespace: STATE_KEY, actionName: 'deleteSheriffDuty' });

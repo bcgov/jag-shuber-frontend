@@ -50,7 +50,7 @@ class CreateUserRequest extends CreateEntityRequest<User, UserModuleState> {
                 actionName: 'createUser',
                 toasts: {
                     success: (s) => (
-                        `${toTitleCase(s.displayName)} has been added`
+                        `${toTitleCase(s.displayName)}'s profile has been created`
                     ),
                     error: (err) => (
                         `Problem encountered while adding new user: ${err ? err.toString() : 'Unknown Error'}`
@@ -99,7 +99,7 @@ class DeleteUserRequest extends DeleteEntityRequest<User, UserModuleState> {
                 namespace: STATE_KEY,
                 actionName: 'deleteUser',
                 toasts: {
-                    success: (s) => `Success`,
+                    success: (s) => `Deleted user`,
                     // tslint:disable-next-line:max-line-length
                     error: (err) => `Problem encountered while deleting user: ${err ? err.toString() : 'Unknown Error'}`
                 }
@@ -130,6 +130,7 @@ class CreateOrUpdateUsersRequest extends CreateOrUpdateEntitiesRequest<User, Use
                 namespace: STATE_KEY,
                 actionName: 'createOrUpdateUsers',
                 toasts: {
+                    success: () => `Updated users`,
                     error: (err: any) => `Couldn't create/update users: ${err.message}`
                 },
                 ...config

@@ -120,7 +120,7 @@ class CopyShiftsRequest extends RequestAction<ShiftCopyOptions, Shift[], ShiftMo
             namespace: STATE_KEY,
             actionName: 'copyShiftsFromPrevWeek',
             toasts: {
-                success: 'Shifts Copied',
+                success: 'Shifts copied',
                 error: (err) => `Problem encountered while copying shifts: ${err ? err.toString() : 'Unknown Error'}`
             }
         });
