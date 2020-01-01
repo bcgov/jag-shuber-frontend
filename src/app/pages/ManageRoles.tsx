@@ -7,7 +7,7 @@ import AdminForm from '../containers/AdminForm';
 import { AdminFormProps } from '../components/AdminForm/AdminForm';
 
 // Import plugins
-import AdminRolesGridPlugin from '../containers/AdminRolesGrid/AdminRolesGrid';
+import AdminRolesGridPlugin from '../plugins/AdminRoles/AdminRoles';
 
 export interface ManageRolesProps {}
 

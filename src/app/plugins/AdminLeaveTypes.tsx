@@ -6,29 +6,29 @@ import {
 
 import { Dispatch } from 'redux';
 
-import { RootState } from '../../store';
+import { RootState } from '../store';
 
 import {
     getLeaveSubCodes,
     createOrUpdateLeaveSubCodes,
     deleteLeaveSubCodes
-} from '../../modules/leaves/actions';
+} from '../modules/leaves/actions';
 
 import {
     getAllPersonalLeaveSubCodes as getAllLeaveSubCodes
-} from '../../modules/leaves/selectors';
+} from '../modules/leaves/selectors';
 
-import { LeaveSubCode, IdType } from '../../api';
+import { LeaveSubCode, IdType } from '../api';
 
 import {
     FormContainerBase,
     FormContainerProps,
-} from '../../components/Form/FormContainer';
+} from '../components/Form/FormContainer';
 
-import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../components/Table/DataTable';
-import { AdminLeaveTypesProps } from './AdminLeaveTypesGrid';
-import RemoveRow from '../../components/TableColumnActions/RemoveRow';
-import ExpireRow from '../../components/TableColumnActions/ExpireRow';
+import DataTable, { DetailComponentProps, EmptyDetailRow } from '../components/Table/DataTable';
+import { AdminLeaveTypesProps } from './AdminLeaveTypes';
+import RemoveRow from '../components/TableColumnActions/RemoveRow';
+import ExpireRow from '../components/TableColumnActions/ExpireRow';
 
 export interface AdminLeaveTypesProps extends FormContainerProps {
     leaveTypes?: any[];
@@ -48,7 +48,7 @@ class AdminLeaveTypesDisplay extends React.PureComponent<AdminLeaveTypesDisplayP
     }
 }
 
-export default class AdminLeaveTypesGrid extends FormContainerBase<AdminLeaveTypesProps> {
+export default class AdminLeaveTypes extends FormContainerBase<AdminLeaveTypesProps> {
     name = 'admin-leave-types-grid';
     reduxFormKey = 'leaves';
     formFieldNames = {

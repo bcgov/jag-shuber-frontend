@@ -5,7 +5,7 @@ import Page from '../components/Page/Page';
 
 import AdminForm from '../containers/AdminForm';
 import { AdminFormProps } from '../components/AdminForm/AdminForm';
-import AdminCourtroomsPlugin from '../containers/AdminCodeTypesGrid/AdminCourtroomsGrid';
+import AdminCourtroomsPlugin from '../plugins/AdminCourtrooms';
 
 export interface ManageCourtroomsProps {}
 

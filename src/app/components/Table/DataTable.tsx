@@ -10,7 +10,7 @@ import * as CellTypes from '../../components/TableColumnCell';
 // TODO: Move this into a common location with AdminForm
 import DataTableHeaderRow from './DataTableHeaderRow';
 import DataTableFilterRow from './DataTableFilterRow';
-import HeaderSaveButton from '../../containers/AdminRolesGrid/HeaderSaveButton';
+import HeaderSaveButton from '../../plugins/AdminRoles/containers/HeaderSaveButton';
 
 export interface ColumnRendererProps {
     index: number;

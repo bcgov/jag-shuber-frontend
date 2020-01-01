@@ -5,13 +5,13 @@ import {
     Glyphicon
 } from 'react-bootstrap';
 
-import ModalWrapper from '../ModalWrapper/ModalWrapper';
-import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
+import ModalWrapper from '../../../containers/ModalWrapper/ModalWrapper';
+import DataTable, { EmptyDetailRow } from '../../../components/Table/DataTable';
 
-import SelectorField from '../../components/FormElements/SelectorField';
-import FrontendScopeSelector from './FrontendScopeSelector';
-import RemoveRow from '../../components/TableColumnActions/RemoveRow';
-import ExpireRow from '../../components/TableColumnActions/ExpireRow';
+import SelectorField from '../../../components/FormElements/SelectorField';
+import FrontendScopeSelector from '../containers/FrontendScopeSelector';
+import RemoveRow from '../../../components/TableColumnActions/RemoveRow';
+import ExpireRow from '../../../components/TableColumnActions/ExpireRow';
 
 export interface AdminRoleScopeAccessModalProps {
     isOpen?: boolean;

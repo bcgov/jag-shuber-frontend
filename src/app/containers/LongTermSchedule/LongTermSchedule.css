@@ -33,7 +33,7 @@
     z-index: 85;
 }
 
-/* Don't Display the overlay if we click on the duty-bar */
+/* Don't TableColumnCellDisplay the overlay if we click on the duty-bar */
 
 .scheduling-timeline .shift-card:active::before {
     display: none;

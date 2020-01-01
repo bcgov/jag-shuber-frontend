@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { SelectorProps } from '../../components/FormElements/Selector';
+import { SelectorProps } from '../../../components/FormElements/Selector';
 
-import { ApiScope } from '../../api';
+import { ApiScope } from '../../../api';
 
-import { RootState } from '../../store';
-import { getAllApiScopes } from '../../modules/roles/selectors';
+import { RootState } from '../../../store';
+import { getAllApiScopes } from '../../../modules/roles/selectors';
 
 interface ApiScopeDisplayStateProps {
     apiScopes?: ApiScope[];

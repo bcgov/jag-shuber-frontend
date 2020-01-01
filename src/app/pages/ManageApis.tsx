@@ -7,7 +7,7 @@ import AdminForm from '../containers/AdminForm';
 import { AdminFormProps } from '../components/AdminForm/AdminForm';
 
 // Import plugins
-import AdminApiScopesGridPlugin from '../containers/AdminRolesGrid/AdminApiScopesGrid';
+import AdminApiScopesGridPlugin from '../plugins/AdminRoles/AdminApiScopes';
 
 export interface ManageApisProps {}
 

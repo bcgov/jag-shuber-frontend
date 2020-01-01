@@ -23,7 +23,7 @@ import * as Validators from '../../infrastructure/Validators';
 import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
 
 import { toTimeString } from 'jag-shuber-api';
-import RoleSelector from '../AdminRolesGrid/RoleSelector';
+import RoleSelector from '../../plugins/AdminRoles/containers/RoleSelector';
 import { getAllRoles } from '../../modules/roles/selectors';
 import { getRoles } from '../../modules/roles/actions';
 import RemoveRow from '../../components/TableColumnActions/RemoveRow';

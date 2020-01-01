@@ -39,8 +39,8 @@ import {
 
 import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
 
-import FrontendScopeSelector from './FrontendScopeSelector';
-import AdminScopePermissionsModal from './AdminScopePermissionsModal';
+import FrontendScopeSelector from './containers/FrontendScopeSelector';
+import AdminScopePermissionsModal from './components/AdminScopePermissionsModal';
 import { createOrUpdateFrontendScopePermissionRequest } from '../../modules/roles/requests/frontendScopePermissions';
 import RemoveRow from '../../components/TableColumnActions/RemoveRow';
 import ExpireRow from '../../components/TableColumnActions/ExpireRow';
@@ -95,8 +95,13 @@ class AdminFrontendScopesDisplay extends React.PureComponent<AdminFrontendScopes
     }
 }
 
-export default class AdminFrontendScopesGrid extends FormContainerBase<AdminFrontendScopesProps> {
-    name = 'admin-frontend-scopes-grid';
+export default class AdminFrontendScopes extends FormContainerBase<AdminFrontendScopesProps> {
+    // NOTICE!
+    // This key maps to the [appScope: FrontendScope] (in the token)
+    // To set permissions for a new plugin, add a corresponding entry under System Settings > Components
+    // with the name as defined as the plugin's name.
+    name = 'ADMIN_PLUGIN_FRONTEND_SCOPES';
+    // END NOTICE
     reduxFormKey = 'roles';
     formFieldNames = {
         frontendScopes: 'roles.frontendScopes',
