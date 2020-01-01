@@ -29,6 +29,10 @@ import { default as FormSubmitButton, SubmitButtonProps } from '../components/Fo
 import { RootState } from '../store';
 
 import {
+    currentUserRoleScopes
+} from '../modules/user/selectors';
+
+import {
     selectedAdminRolesSection as selectedAdminFormSection,
     getAdminRolesPluginErrors as getAdminFormPluginErrors
 } from '../modules/roles/selectors';
@@ -241,6 +245,17 @@ export default class extends
         (state, { plugins }) => {
             let initialValues: any = {};
 
+            // Filter out any plugins that the user doesn't have permission to access
+            // TODO: A cleaner way to get the data off the token?
+            const { appScopes, authScopes } = currentUserRoleScopes(state);
+            console.log('user scopes');
+            console.log(appScopes);
+            console.log(authScopes);
+
+            const pluginsToIgnore = (plugins) ? plugins.filter((s: any) => Object.keys(authScopes).indexOf(s.name) > -1) : [];
+            console.log('plugins to ignore');
+            console.log(pluginsToIgnore);
+
             // @ts-ignore
             initialValues = plugins
                 .map(p => {
@@ -257,6 +272,8 @@ export default class extends
                     return undefined;
                 })
                 .filter(s => s != undefined)
+                // Filter out plugins that don't have scopes assigned
+                .filter((s: any) => Object.keys(authScopes).indexOf(s.name) > -1)
                 .reduce(
                     (initValues, val) => {
                         return merge(initValues, val, { arrayMerge: combineMerge });
