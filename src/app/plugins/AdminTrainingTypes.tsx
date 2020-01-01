@@ -49,7 +49,12 @@ class AdminTrainingTypesDisplay extends React.PureComponent<AdminTrainingTypesDi
 }
 
 export default class AdminTrainingTypes extends FormContainerBase<AdminTrainingTypesProps> {
-    name = 'admin-training-types-grid';
+    // NOTICE!
+    // This key maps to the [appScope: FrontendScope] (in the token)
+    // To set permissions for a new plugin, add a corresponding entry under System Settings > Components
+    // with the name as defined as the plugin's name.
+    name = 'ADMIN_PLUGIN_TRAINING_TYPES';
+    // END NOTICE
     reduxFormKey = 'leaves';
     formFieldNames = {
         trainingLeaveTypes: 'leaves.trainingLeaveTypes'
