@@ -20,6 +20,17 @@ const currentUserToken = (state: RootState): TokenPayload | undefined => {
     return userTokenRequest.getData(state);
 };
 
+export const currentUserRoleScopes = (state: RootState): any => {
+    const token = currentUserToken(state);
+
+    if (!token) return undefined;
+
+    return {
+        authScopes: token.scopes,
+        appScopes: token.appScopes
+    };
+};
+
 export const isLoadingToken = userTokenRequest.getIsBusy;
 export const loadingTokenError = userTokenRequest.getError;
 
