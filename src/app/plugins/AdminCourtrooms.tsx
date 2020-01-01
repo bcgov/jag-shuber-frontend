@@ -10,26 +10,26 @@ import {
     getCourtrooms,
     createOrUpdateCourtrooms,
     deleteCourtrooms
-} from '../../modules/assignments/actions';
+} from '../modules/assignments/actions';
 
 import {
     getAllCourtrooms
-} from '../../modules/assignments/selectors';
+} from '../modules/assignments/selectors';
 
-import { RootState } from '../../store';
+import { RootState } from '../store';
 
-import { Courtroom, IdType } from '../../api';
+import { Courtroom, IdType } from '../api';
 
 import {
     FormContainerBase,
     FormContainerProps,
-} from '../../components/Form/FormContainer';
+} from '../components/Form/FormContainer';
 
-import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../components/Table/DataTable';
-import { AdminCourtroomsProps } from './AdminCourtroomsGrid';
-import LocationSelector from '../LocationSelector';
-import RemoveRow from '../../components/TableColumnActions/RemoveRow';
-import ExpireRow from '../../components/TableColumnActions/ExpireRow';
+import DataTable, { DetailComponentProps, EmptyDetailRow } from '../components/Table/DataTable';
+import { AdminCourtroomsProps } from './AdminCourtrooms';
+import LocationSelector from '../containers/LocationSelector';
+import RemoveRow from '../components/TableColumnActions/RemoveRow';
+import ExpireRow from '../components/TableColumnActions/ExpireRow';
 // import { createOrUpdateCourtrooms } from '../../modules/assignments/actions';
 
 export interface AdminCourtroomsProps extends FormContainerProps {
@@ -49,7 +49,7 @@ class AdminCourtroomsDisplay extends React.PureComponent<AdminCourtroomsDisplayP
     }
 }
 
-export default class AdminCourtroomsGrid extends FormContainerBase<AdminCourtroomsProps> {
+export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsProps> {
     name = 'admin-courtrooms-grid';
     reduxFormKey = 'assignments';
     formFieldNames = {

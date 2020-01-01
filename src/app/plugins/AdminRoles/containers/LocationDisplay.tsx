@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { SelectorProps } from '../../components/FormElements/Selector';
+import { SelectorProps } from '../../../components/FormElements/Selector';
 
-import { Location } from '../../api';
+import { Location } from '../../../api';
 
-import { RootState } from '../../store';
-import { getAllLocations } from '../../modules/system/selectors';
+import { RootState } from '../../../store';
+import { getAllLocations } from '../../../modules/system/selectors';
 
 interface LocationDisplayStateProps {
     locations?: Location[];

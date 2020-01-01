@@ -5,7 +5,7 @@ import { Button, Glyphicon } from 'react-bootstrap';
 
 import * as CellTypes from '../../components/TableColumnCell';
 
-import HeaderSaveButton from '../../containers/AdminRolesGrid/HeaderSaveButton';
+import HeaderSaveButton from '../../plugins/AdminRoles/containers/HeaderSaveButton';
 
 export interface ColumnRendererProps {
     index: number;

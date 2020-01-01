@@ -1,20 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { SelectorProps } from '../../components/FormElements/Selector';
+import { SelectorProps } from '../../../components/FormElements/Selector';
 
-import { FrontendScope } from '../../api';
+import { FrontendScope } from '../../../api';
 
-import { RootState } from '../../store';
-import { getAllFrontendScopes } from '../../modules/roles/selectors';
+import { RootState } from '../../../store';
+import { getAllFrontendScopes } from '../../../modules/roles/selectors';
 
-interface FrontendScopeCodeDisplayStateProps {
+interface FrontendScopeDescriptionDisplayStateProps {
     frontendScopes?: FrontendScope[];
     input?: any; // TODO: Type this?
 }
 
-class FrontendScopeCodeDisplay extends React.PureComponent<
-    FrontendScopeCodeDisplayStateProps & SelectorProps> {
+class FrontendScopeDescriptionDisplay extends React.PureComponent<
+    FrontendScopeDescriptionDisplayStateProps & SelectorProps> {
 
     render() {
         const {
@@ -27,7 +27,7 @@ class FrontendScopeCodeDisplay extends React.PureComponent<
         if (value) {
             const values = frontendScopes.map(frontendScope => ({
                 key: frontendScope.id as string,
-                value: frontendScope.scopeCode as string
+                value: frontendScope.description as string
             }));
 
             const match = values.find((item) => item.key === value);
@@ -50,6 +50,6 @@ const mapStateToProps = (state: RootState) => {
 };
 
 // tslint:disable-next-line:max-line-length
-export default connect<FrontendScopeCodeDisplayStateProps, {}, SelectorProps>(
+export default connect<FrontendScopeDescriptionDisplayStateProps, {}, SelectorProps>(
     mapStateToProps
-)(FrontendScopeCodeDisplay);
+)(FrontendScopeDescriptionDisplay);

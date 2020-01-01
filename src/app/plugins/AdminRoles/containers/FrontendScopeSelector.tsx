@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Selector, { SelectorProps } from '../../components/FormElements/Selector';
+import Selector, { SelectorProps } from '../../../components/FormElements/Selector';
 
-import { FrontendScope } from '../../api';
+import { FrontendScope } from '../../../api';
 
-import { RootState } from '../../store';
-import { getAllFrontendScopes } from '../../modules/roles/selectors';
+import { RootState } from '../../../store';
+import { getAllFrontendScopes } from '../../../modules/roles/selectors';
 
 interface FrontendScopeSelectorStateProps {
     frontendScopes?: FrontendScope[];

@@ -5,8 +5,8 @@ import Page from '../components/Page/Page';
 
 import AdminForm from '../containers/AdminForm';
 import { AdminFormProps } from '../components/AdminForm/AdminForm';
-import AdminLeaveTypesPlugin from '../containers/AdminCodeTypesGrid/AdminLeaveTypesGrid';
-import AdminTrainingTypesPlugin from '../containers/AdminCodeTypesGrid/AdminTrainingTypesGrid';
+import AdminLeaveTypesPlugin from '../plugins/AdminLeaveTypes';
+import AdminTrainingTypesPlugin from '../plugins/AdminTrainingTypes';
 
 export interface ManageCodeTypesProps {}
 

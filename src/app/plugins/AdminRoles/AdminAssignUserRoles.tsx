@@ -64,10 +64,10 @@ import {
 
 import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../components/Table/DataTable';
 
-import RoleSelector from './RoleSelector';
+import RoleSelector from './containers/RoleSelector';
 
-import LocationDisplay from './LocationDisplay';
-import GenderCodeDisplay from '../GenderCodeDisplay';
+import LocationDisplay from './containers/LocationDisplay';
+import GenderCodeDisplay from '../../containers/GenderCodeDisplay';
 import EditRow from '../../components/TableColumnActions/EditRow';
 import RemoveRow from '../../components/TableColumnActions/RemoveRow';
 import ExpireRow from '../../components/TableColumnActions/ExpireRow';
@@ -128,7 +128,12 @@ class AdminAssignUserRolesDisplay extends React.PureComponent<AdminAssignUserRol
 }
 
 export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignUserRolesProps> {
-    name = 'admin-assign-user-roles';
+    // NOTICE!
+    // This key maps to the [appScope: FrontendScope] (in the token)
+    // To set permissions for a new plugin, add a corresponding entry under System Settings > Components
+    // with the name as defined as the plugin's name.
+    name = 'ADMIN_PLUGIN_USER_ROLES';
+    // END NOTICE
     reduxFormKey = 'roles';
     formFieldNames = {
         users: 'roles.users',

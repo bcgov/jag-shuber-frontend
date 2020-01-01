@@ -1,20 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { SelectorProps } from '../../components/FormElements/Selector';
+import { SelectorProps } from '../../../components/FormElements/Selector';
 
-import { FrontendScope } from '../../api';
+import { FrontendScope } from '../../../api';
 
-import { RootState } from '../../store';
-import { getAllFrontendScopes } from '../../modules/roles/selectors';
+import { RootState } from '../../../store';
+import { getAllFrontendScopes } from '../../../modules/roles/selectors';
 
-interface FrontendScopeDisplayStateProps {
+interface FrontendScopeCodeDisplayStateProps {
     frontendScopes?: FrontendScope[];
-    input?: any;
+    input?: any; // TODO: Type this?
 }
 
-class FrontendScopeDisplay extends React.PureComponent<
-    FrontendScopeDisplayStateProps & SelectorProps> {
+class FrontendScopeCodeDisplay extends React.PureComponent<
+    FrontendScopeCodeDisplayStateProps & SelectorProps> {
 
     render() {
         const {
@@ -25,9 +25,9 @@ class FrontendScopeDisplay extends React.PureComponent<
         const value = (input && input.value) ? input.value : null;
 
         if (value) {
-            const values = frontendScopes.map(scope => ({
-                key: scope.id as string,
-                value: scope.scopeName as string
+            const values = frontendScopes.map(frontendScope => ({
+                key: frontendScope.id as string,
+                value: frontendScope.scopeCode as string
             }));
 
             const match = values.find((item) => item.key === value);
@@ -50,6 +50,6 @@ const mapStateToProps = (state: RootState) => {
 };
 
 // tslint:disable-next-line:max-line-length
-export default connect<FrontendScopeDisplayStateProps, {}, SelectorProps>(
+export default connect<FrontendScopeCodeDisplayStateProps, {}, SelectorProps>(
     mapStateToProps
-)(FrontendScopeDisplay);
+)(FrontendScopeCodeDisplay);

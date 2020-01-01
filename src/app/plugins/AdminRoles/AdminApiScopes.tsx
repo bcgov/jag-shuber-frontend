@@ -83,8 +83,13 @@ class AdminApiScopesDisplay extends React.PureComponent<AdminApiScopesDisplayPro
     }
 }
 
-export default class AdminApiScopesGrid extends FormContainerBase<AdminApiScopesProps> {
-    name = 'admin-api-scopes-grid';
+export default class AdminApiScopes extends FormContainerBase<AdminApiScopesProps> {
+    // NOTICE!
+    // This key maps to the [appScope: FrontendScope] (in the token)
+    // To set permissions for a new plugin, add a corresponding entry under System Settings > Components
+    // with the name as defined as the plugin's name.
+    name = 'ADMIN_PLUGIN_API_SCOPES';
+    // END NOTICE
     reduxFormKey = 'roles';
     formFieldNames = {
         apiScopes: 'roles.apiScopes'
