@@ -252,7 +252,7 @@ export default class extends
             console.log(appScopes);
             console.log(authScopes);
 
-            const pluginsToIgnore = (plugins) ? plugins.filter((s: any) => Object.keys(authScopes).indexOf(s.name) > -1) : [];
+            const pluginsToIgnore = (plugins) ? plugins.filter((s: any) => Object.keys(authScopes).indexOf(s.name) === -1) : [];
             console.log('plugins to ignore');
             console.log(pluginsToIgnore);
 
