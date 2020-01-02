@@ -70,6 +70,7 @@ export default class AdminForm extends React.PureComponent<InjectedFormProps<any
             pluginsWithErrors = {},
         } = this.props;
         let { selectedSection } = this.props;
+
         const nonSectionPlugins = plugins.filter(p => !(p instanceof FormContainerBase));
         // tslint:disable-next-line:max-line-length
         const sectionPlugins = plugins.filter(p => p instanceof FormContainerBase) as FormContainerBase<any>[];
