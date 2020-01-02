@@ -252,12 +252,23 @@ export default class extends
             console.log(appScopes);
             console.log(authScopes);
 
-            const pluginsToIgnore = (plugins) ? plugins.filter((s: any) => Object.keys(authScopes).indexOf(s.name) === -1) : [];
-            console.log('plugins to ignore');
-            console.log(pluginsToIgnore);
+            // Filter out plugins that don't have scopes assigned
+            const pluginsToRender = (plugins)
+                ? plugins
+                    .filter((s: any) => {
+                        return Object.keys(appScopes)
+                            .indexOf(s.name) > -1;
+                    })
+                    .filter(s => s != undefined)
+                : [];
+
+            console.log('configured plugins');
+            console.log(plugins);
+            console.log('plugins to render');
+            console.log(pluginsToRender);
 
             // @ts-ignore
-            initialValues = plugins
+            initialValues = pluginsToRender
                 .map(p => {
                     const filters = (state[p.reduxFormKey].pluginFilters)
                         ? (state[p.reduxFormKey].pluginFilters)
@@ -271,9 +282,6 @@ export default class extends
                     }
                     return undefined;
                 })
-                .filter(s => s != undefined)
-                // Filter out plugins that don't have scopes assigned
-                .filter((s: any) => Object.keys(authScopes).indexOf(s.name) > -1)
                 .reduce(
                     (initValues, val) => {
                         return merge(initValues, val, { arrayMerge: combineMerge });
@@ -282,6 +290,7 @@ export default class extends
                 );
 
             return {
+                plugins: pluginsToRender,
                 initialValues,
                 pluginState: { ...initialValues },
                 selectedSection: selectedAdminFormSection(state),
