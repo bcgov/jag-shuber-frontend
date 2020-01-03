@@ -31,7 +31,10 @@ import {
     deleteRoles,
     deleteRoleFrontendScopes,
     deleteRoleApiScopes,
-    deleteRolePermissions
+    deleteRolePermissions,
+    selectAdminRolesPluginSection,
+    setAdminRolesPluginSubmitErrors,
+    setAdminRolesPluginFilters
 } from '../../modules/roles/actions';
 
 import {
@@ -252,7 +255,7 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
                     roles: {
                         roleName: newValue
                     }
-                });
+                }, setAdminRolesPluginFilters);
             }
         };
 
@@ -263,7 +266,7 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
                     roles: {
                         roleCode: newValue
                     }
-                });
+                }, setAdminRolesPluginFilters);
             }
         };
 
@@ -274,7 +277,7 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
                     roles: {
                         createdBy: newValue
                     }
-                });
+                }, setAdminRolesPluginFilters);
             }
         };
 
@@ -285,7 +288,7 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
                     roles: {
                         createdDate: newValue
                     }
-                });
+                }, setAdminRolesPluginFilters);
             }
         };
 

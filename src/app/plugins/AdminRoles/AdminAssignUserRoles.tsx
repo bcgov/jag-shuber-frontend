@@ -34,7 +34,7 @@ import {
     getRoles,
     getUserRoles,
     createOrUpdateUserRoles,
-    deleteUserRoles
+    deleteUserRoles, setAdminRolesPluginFilters
 } from '../../modules/roles/actions';
 
 import {
@@ -197,7 +197,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                     users: {
                         displayName: newValue
                     }
-                });
+                }, setAdminRolesPluginFilters);
             }
         };
 
@@ -211,7 +211,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                             badgeNo: newValue
                         }
                     }
-                });
+                }, setAdminRolesPluginFilters);
             }
         };
 
@@ -226,7 +226,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                             rankCode: newValue
                         }
                     }
-                });
+                }, setAdminRolesPluginFilters);
             }
         };
 
@@ -239,7 +239,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                     sheriff: {
                         genderCode: newValue
                     }
-                });
+                }, setAdminRolesPluginFilters);
             }
         };
 
@@ -254,7 +254,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                             homeLocationId: newValue
                         }
                     }
-                });
+                }, setAdminRolesPluginFilters);
             }
         };
 
@@ -269,7 +269,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                             currentLocationId: newValue
                         }
                     }
-                });
+                }, setAdminRolesPluginFilters);
             }
         };
 

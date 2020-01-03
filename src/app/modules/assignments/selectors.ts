@@ -121,7 +121,6 @@ export const findAllCourtrooms = (filters: any) => (state: RootState) => {
     if (state) {
         let courtrooms = allCourtrooms(state);
         Object.keys(filters).forEach(key => {
-            debugger;
             if (filters[key]) {
                 courtrooms = courtrooms.filter(c => {
                     return (c[key] && c[key] !== '')

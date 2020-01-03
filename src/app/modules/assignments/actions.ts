@@ -10,6 +10,8 @@ import { ThunkAction } from '../../store';
 import { getAssignmentDuty } from './selectors';
 import { getSheriffShiftsForDate } from '../shifts/selectors';
 import { TimeRange, isTimeWithin } from 'jag-shuber-api';
+import { ErrorMap } from '../sheriffs/common';
+import { Action } from 'redux';
 //import { doTimeRangesOverlap } from 'jag-shuber-api';
 //import moment from 'moment';
 
@@ -135,3 +137,39 @@ export const linkSheriff: ThunkAction<AssignmentDuty, void> = (duty: AssignmentD
     });
     return;
 };
+
+type IActionMap = {
+    'ADMIN_COURTROOMS_SELECT_SECTION': string | undefined;
+    'ADMIN_COURTROOMS_SET_PLUGIN_SUBMIT_ERRORS': ErrorMap | undefined;
+    'ADMIN_COURTROOMS_SET_PLUGIN_FILTERS': {} | undefined;
+};
+
+export type IActionType = keyof IActionMap;
+
+export type IActionPayload<K extends IActionType> = IActionMap[K];
+
+interface IActionObject<K extends IActionType> extends Action {
+    type: K;
+    payload: IActionPayload<K>;
+}
+
+export type IAction = {
+    [P in IActionType]: IActionObject<P>
+}[IActionType];
+
+function actionCreator<Type extends IActionType>(type: Type) {
+    return (payload: IActionPayload<Type>): IActionObject<Type> =>
+        ({ type: type, payload: payload });
+}
+
+export const selectAdminCourtroomsPluginSection = (sectionName?: string) => (
+    actionCreator('ADMIN_COURTROOMS_SELECT_SECTION')(sectionName)
+);
+
+export const setAdminCourtroomsPluginSubmitErrors = (errors?: ErrorMap) => (
+    actionCreator('ADMIN_COURTROOMS_SET_PLUGIN_SUBMIT_ERRORS')(errors)
+);
+
+export const setAdminCourtroomsPluginFilters = (filters: {}) => (
+    actionCreator('ADMIN_COURTROOMS_SET_PLUGIN_FILTERS')(filters)
+);

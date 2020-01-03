@@ -64,11 +64,10 @@ export const updateUserRole = userRoleRequests.updateUserRoleRequest.actionCreat
 export const createOrUpdateUserRoles = userRoleRequests.createOrUpdateUserRolesRequest.actionCreator;
 export const deleteUserRoles = userRoleRequests.deleteUserRolesRequest.actionCreator;
 
-// TODO: Basically duped in sheriffs/actions, make something generic
 type IActionMap = {
     'ADMIN_ROLES_SELECT_SECTION': string | undefined;
     'ADMIN_ROLES_SET_PLUGIN_SUBMIT_ERRORS': ErrorMap | undefined;
-    'ADMIN_FORM_SET_PLUGIN_FILTERS': {} | undefined;
+    'ADMIN_ROLES_SET_PLUGIN_FILTERS': {} | undefined;
 };
 
 export type IActionType = keyof IActionMap;
@@ -89,8 +88,7 @@ function actionCreator<Type extends IActionType>(type: Type) {
         ({ type: type, payload: payload });
 }
 
-// TODO: make these two generic, and move these out of here they belong in some sort of AdminForm construct...
-export const selectAdminRolesSection = (sectionName?: string) => (
+export const selectAdminRolesPluginSection = (sectionName?: string) => (
     actionCreator('ADMIN_ROLES_SELECT_SECTION')(sectionName)
 );
 
@@ -98,6 +96,6 @@ export const setAdminRolesPluginSubmitErrors = (errors?: ErrorMap) => (
     actionCreator('ADMIN_ROLES_SET_PLUGIN_SUBMIT_ERRORS')(errors)
 );
 
-export const setAdminFormFilters = (filters: {}) => (
-    actionCreator('ADMIN_FORM_SET_PLUGIN_FILTERS')(filters)
+export const setAdminRolesPluginFilters = (filters: {}) => (
+    actionCreator('ADMIN_ROLES_SET_PLUGIN_FILTERS')(filters)
 );

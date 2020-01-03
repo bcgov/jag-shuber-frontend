@@ -11,7 +11,7 @@ import { Dispatch } from 'redux';
 import {
     getApiScopes,
     createOrUpdateApiScopes,
-    deleteApiScopes
+    deleteApiScopes, setAdminRolesPluginFilters
 } from '../../modules/roles/actions';
 
 import { RootState } from '../../store';
@@ -105,7 +105,7 @@ export default class AdminApiScopes extends FormContainerBase<AdminApiScopesProp
                     apiScopes: {
                         scopeName: newValue
                     }
-                });
+                }, setAdminRolesPluginFilters);
             }
         };
 
@@ -116,7 +116,7 @@ export default class AdminApiScopes extends FormContainerBase<AdminApiScopesProp
                     apiScopes: {
                         scopeCode: newValue
                     }
-                });
+                }, setAdminRolesPluginFilters);
             }
         };
 
