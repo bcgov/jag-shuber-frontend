@@ -6,6 +6,7 @@ import { Glyphicon } from 'react-bootstrap';
 import * as Types from './types';
 
 import TextField from '../../components/FormElements/TextField';
+import { on } from 'cluster';
 
 // let RENDER_COUNT = 0;
 const FieldRenderer = (props: any) => {
@@ -33,7 +34,7 @@ const TextFieldColumn = (label?: string, options?: Types.FieldColumnOptions): Ty
     const placeholder = (options && options.placeholder) ? options.placeholder : undefined;
     const filterable = (options && options.filterable) ? options.filterable : false;
     const filterColumn = (options && options.filterColumn) ? options.filterColumn : undefined;
-    const onChange = (options && options.onChange) ? options.onChange : undefined;
+    const onChange = (options && options.onChange) ? options.onChange : () => {};
 
     const filterComponentOptions = (options)
         ? Object.create(options) as Types.FieldColumnOptions

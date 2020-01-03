@@ -7,7 +7,6 @@ import * as Types from './types';
 
 import SelectorField from '../../components/FormElements/SelectorField';
 import Selector from '../../components/FormElements/Selector';
-import TextFieldColumn from './TextField';
 
 const SelectorFieldColumn = (label?: string, options?: Types.FieldColumnOptions): Types.TableColumnCell => {
     label = label || 'Select Field';
@@ -20,7 +19,7 @@ const SelectorFieldColumn = (label?: string, options?: Types.FieldColumnOptions)
     const filterColumn = (options && options.filterColumn) ? options.filterColumn : undefined;
     const FilterSelectorComponent = (options && options.filterSelectorComponent) ? options.filterSelectorComponent : Selector;
     const SelectorComponent = (options && options.selectorComponent) ? options.selectorComponent : Selector;
-    const onChange = (options && options.onChange) ? options.onChange : undefined;
+    const onChange = (options && options.onChange) ? options.onChange : () => {};
 
     const filterComponentOptions = (options)
         ? Object.create(options) as Types.FieldColumnOptions
@@ -50,12 +49,17 @@ const SelectorFieldColumn = (label?: string, options?: Types.FieldColumnOptions)
                             disabled={disabled}
                             SelectorComponent={
                                 (sp) =>
-                                    <SelectorComponent {...sp} label={label} onChange={onChange} />
+                                    <SelectorComponent {...sp} label={label} />
                             }
                         />
                     )}
                     label={label}
-
+                    onChange={(ev, newValue, previousValue) => {
+                        if (ev) {
+                            // TODO: No idea why this doesn't act the same as Field in say, the TextField column... ugh.
+                            onChange(ev.nativeEvent as Event, newValue, previousValue, `${fieldInstanceName}.${fieldName}`);
+                        }
+                    }}
                 >
                 </Field>
                 {/* This wrapper just adds equal spacing to the previous form group */}
