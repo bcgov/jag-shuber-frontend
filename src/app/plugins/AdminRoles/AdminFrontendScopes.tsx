@@ -19,7 +19,8 @@ import {
     createOrUpdateFrontendScopes,
     createOrUpdateFrontendScopePermissions,
     deleteFrontendScopes,
-    deleteFrontendScopePermissions, setAdminRolesPluginFilters
+    deleteFrontendScopePermissions,
+    setAdminRolesPluginFilters
 } from '../../modules/roles/actions';
 
 import { RootState } from '../../store';
@@ -124,7 +125,7 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
                     frontendScopes: {
                         scopeName: newValue
                     }
-                });
+                }, setAdminRolesPluginFilters);
             }
         };
 
