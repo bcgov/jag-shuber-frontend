@@ -17,22 +17,27 @@ const SelectorFieldColumn = (label?: string, options?: Types.FieldColumnOptions)
     const disabled = (options && options.disabled) ? options.disabled : false; // TODO: Merge disabled and atttributes?
     const colStyle = (options && options.colStyle) ? options.colStyle : {};
     const filterable = (options && options.filterable) ? options.filterable : false;
+    const filterColumn = (options && options.filterColumn) ? options.filterColumn : undefined;
+    const FilterSelectorComponent = (options && options.filterSelectorComponent) ? options.filterSelectorComponent : Selector;
     const SelectorComponent = (options && options.selectorComponent) ? options.selectorComponent : Selector;
+    const onChange = (options && options.onChange) ? options.onChange : undefined;
 
     const filterComponentOptions = (options)
         ? Object.create(options) as Types.FieldColumnOptions
         : {} as Types.FieldColumnOptions;
 
+    filterComponentOptions.onChange = filterColumn;
     filterComponentOptions.filterable = false;
     filterComponentOptions.displayInfo = false;
-    filterComponentOptions.displayInfo = false;
+    filterComponentOptions.selectorComponent = FilterSelectorComponent;
 
     return {
         title: label,
-        fieldName: fieldName,
-        colStyle: colStyle,
-        filterable: filterable,
+        fieldName,
+        colStyle,
+        filterable,
         filterComponent: (filterable) ? SelectorFieldColumn(label, filterComponentOptions) : undefined,
+        filterColumn,
         displayInfo,
         FormRenderer: ({ fieldInstanceName }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -45,11 +50,12 @@ const SelectorFieldColumn = (label?: string, options?: Types.FieldColumnOptions)
                             disabled={disabled}
                             SelectorComponent={
                                 (sp) =>
-                                    <SelectorComponent {...sp} label={label} />
+                                    <SelectorComponent {...sp} label={label} onChange={onChange} />
                             }
                         />
                     )}
                     label={label}
+
                 >
                 </Field>
                 {/* This wrapper just adds equal spacing to the previous form group */}

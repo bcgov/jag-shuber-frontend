@@ -389,6 +389,7 @@ export interface User {
     defaultLocationId?: IdType;
     systemAccountInd?: number;
     sheriffId?: IdType;
+    sheriff?: Sheriff;
     createdBy?: string;
     updatedBy?: string;
     createdDtm?: string;
