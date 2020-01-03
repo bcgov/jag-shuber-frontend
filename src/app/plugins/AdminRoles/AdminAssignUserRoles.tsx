@@ -207,55 +207,67 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                 console.log('setting plugin filters');
                 setPluginFilters({
                     users: {
-                        badgeNo: newValue
+                        sheriff: {
+                            badgeNo: newValue
+                        }
                     }
                 });
             }
         };
 
+        // Note: Rank is on the sheriff, values will not be filtered for regular users
         const onFilterRank = (event: Event, newValue: any, previousValue: any, name: string) => {
             const { setPluginFilters } = props;
             if (setPluginFilters) {
                 console.log('setting plugin filters');
                 setPluginFilters({
                     users: {
-                        rankCode: newValue
+                        sheriff: {
+                            rankCode: newValue
+                        }
                     }
                 });
             }
         };
 
+        // Note: Gender is on the sheriff, values will not be filtered for regular users
         const onFilterGender = (event: Event, newValue: any, previousValue: any, name: string) => {
             const { setPluginFilters } = props;
             if (setPluginFilters) {
                 console.log('setting plugin filters');
                 setPluginFilters({
-                    users: {
+                    sheriff: {
                         genderCode: newValue
                     }
                 });
             }
         };
 
-        const onFilterHomeLocation = (event: Event, newValue: any, previousValue: any, name: string) => {
+        // Note: Home Location is on the sheriff, values will not be filtered for regular users
+        const onFilterHomeLocation = (newValue: any) => {
             const { setPluginFilters } = props;
             if (setPluginFilters) {
                 console.log('setting plugin filters');
                 setPluginFilters({
                     users: {
-                        homeLocationId: newValue
+                        sheriff: {
+                            homeLocationId: newValue
+                        }
                     }
                 });
             }
         };
 
-        const onFilterCurrentLocation = (event: Event, newValue: any, previousValue: any, name: string) => {
+        // Note: Current Location is on the sheriff, values will not be filtered for regular users
+        const onFilterCurrentLocation = (newValue: any) => {
             const { setPluginFilters } = props;
             if (setPluginFilters) {
                 console.log('setting plugin filters');
                 setPluginFilters({
                     users: {
-                        currentLocationId: newValue
+                        sheriff: {
+                            currentLocationId: newValue
+                        }
                     }
                 });
             }
@@ -321,7 +333,8 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                             colStyle: { width: '250px' },
                             selectorComponent: LocationDisplay,
                             filterSelectorComponent: LocationSelector,
-                            displayInfo: false, filterable: true,
+                            displayInfo: false,
+                            filterable: true,
                             filterColumn: onFilterCurrentLocation
                         }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),

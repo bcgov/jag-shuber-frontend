@@ -17,13 +17,16 @@ const MappedTextColumn = (label?: string, options?: Types.FieldColumnOptions): T
     const colStyle = (options && options.colStyle) ? options.colStyle : {};
     const placeholder = (options && options.placeholder) ? options.placeholder : undefined;
     const filterable = (options && options.filterable) ? options.filterable : false;
+    const filterColumn = (options && options.filterColumn) ? options.filterColumn : undefined;
     const FilterSelectorComponent = (options && options.filterSelectorComponent) ? options.filterSelectorComponent : Selector;
     const DisplayComponent = (options && options.selectorComponent) ? options.selectorComponent : Selector;
+    const onChange = (options && options.onChange) ? options.onChange : undefined;
 
     const filterComponentOptions = (options)
         ? Object.create(options) as Types.FieldColumnOptions
         : {} as Types.FieldColumnOptions;
 
+    filterComponentOptions.onChange = filterColumn;
     filterComponentOptions.filterable = false;
     filterComponentOptions.displayInfo = false;
     filterComponentOptions.selectorComponent = FilterSelectorComponent;
@@ -31,9 +34,11 @@ const MappedTextColumn = (label?: string, options?: Types.FieldColumnOptions): T
 
     return {
         title: label,
-        colStyle: colStyle,
-        filterable: filterable,
+        fieldName,
+        colStyle,
+        filterable,
         filterComponent: (filterable) ? SelectorFieldColumn(label, filterComponentOptions) : undefined,
+        filterColumn,
         displayInfo,
         FormRenderer: ({ fieldInstanceName }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>
