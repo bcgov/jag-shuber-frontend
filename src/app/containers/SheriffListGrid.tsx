@@ -22,7 +22,7 @@ export interface SheriffListProps {
 }
 
 export interface SheriffListStateProps {
-  
+
 }
 
 interface SheriffListDispatchProps {
@@ -61,7 +61,9 @@ class SheriffList extends React.Component<CompositeProps> {
             {!SheriffRenderer &&
               <SheriffCard
                 sheriff={sheriff}
-                onClick={() => showSheriffProfileModal(sheriff.id)}
+                onClick={() => {
+                  showSheriffProfileModal(sheriff.id);
+                }}
               />
             }
           </div>

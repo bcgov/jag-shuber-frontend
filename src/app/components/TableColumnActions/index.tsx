@@ -13,6 +13,7 @@ export interface TableColumnActionProps {
     fields: FieldsProps<Partial<any>>;
     index: number;
     model: Partial<any>;
+    onClick?: (ev: any) => void;
 }
 
-export { ApproveRow, CancelRow, DeclineRow, DeleteRow, EditRow, ExpireRow, RemoveRow, SaveRow }
+export { ApproveRow, CancelRow, DeclineRow, DeleteRow, EditRow, ExpireRow, RemoveRow, SaveRow };

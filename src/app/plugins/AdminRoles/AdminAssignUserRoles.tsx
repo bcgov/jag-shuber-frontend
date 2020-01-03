@@ -73,6 +73,8 @@ import RemoveRow from '../../components/TableColumnActions/RemoveRow';
 import ExpireRow from '../../components/TableColumnActions/ExpireRow';
 import LocationSelector from '../../containers/LocationSelector';
 
+import { show as showModal, hide as hideModal } from 'redux-modal';
+
 // TODO: Fix this interface!
 export interface AdminAssignUserRolesProps extends FormContainerProps {
     // roles?: any[];
@@ -188,6 +190,8 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
     }
 
     FormComponent = (props: FormContainerProps<AdminAssignUserRolesProps>) => {
+        const { showSheriffProfileModal } = props;
+
         // TODO: We need to find a way to make sorting on multiple columns work, which probably involves figuring how to grab all the field values at once...
         const onFilterDisplayName = (event: Event, newValue: any, previousValue: any, name: string) => {
             const { setPluginFilters } = props;
@@ -284,7 +288,24 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                     displayActionsColumn={true}
                     actionsColumn={DataTable.ActionsColumn({
                         actions: [
-                            ({ fields, index, model }) => { return (model && model.id) ? (<EditRow fields={fields} index={index} model={model} />) : null; },
+                            ({ fields, index, model }) => {
+                                return (model && model.id)
+                                    ? (
+                                        <EditRow
+                                            fields={fields}
+                                            index={index}
+                                            model={model}
+                                            onClick={(userModel) => {
+                                                const { sheriffId } = userModel;
+                                                if (typeof showSheriffProfileModal === 'function' && sheriffId) {
+                                                    showSheriffProfileModal(sheriffId);
+                                                    // showModal('SheriffProfileModal', { sheriffId, isEditing: true, show: true });
+                                                }
+                                            }}
+                                        />
+                                    )
+                                    : null;
+                            },
                             ({ fields, index, model }) => <RemoveRow fields={fields} index={index} model={model} />,
                             ({ fields, index, model }) => { return (model && model.id) ? (<ExpireRow fields={fields} index={index} model={model} />) : null; }
                         ]
