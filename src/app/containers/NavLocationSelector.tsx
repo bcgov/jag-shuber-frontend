@@ -26,12 +26,17 @@ class LocationSelector extends React.PureComponent<LocationSelectorStateProps & 
         selectorValues.unshift({ key: 'ALL_LOCATIONS', value: 'All Locations' });
 
         return (
-            <Selector
-                // style={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
-                data={selectorValues}
-                label={label}
-                {...rest}
-            />
+            <FormGroup>
+                <InputGroup>
+                    <InputGroup.Addon style={{ backgroundColor: '#5cb85c', color: 'white'}}><Glyphicon glyph="globe" /></InputGroup.Addon>
+                    <Selector
+                        // style={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
+                        data={selectorValues}
+                        label={label}
+                        {...rest}
+                    />
+                </InputGroup>
+            </FormGroup>
 
         );
     }

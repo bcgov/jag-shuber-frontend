@@ -248,9 +248,9 @@ export default class extends
             // Filter out any plugins that the user doesn't have permission to access
             // TODO: A cleaner way to get the data off the token?
             const { appScopes, authScopes } = currentUserRoleScopes(state);
-            console.log('user scopes');
-            console.log(appScopes);
-            console.log(authScopes);
+            // console.log('user scopes');
+            // console.log(appScopes);
+            // console.log(authScopes);
 
             // Filter out plugins that don't have scopes assigned
             const pluginsToRender = (plugins)
@@ -262,10 +262,10 @@ export default class extends
                     .filter(s => s != undefined)
                 : [];
 
-            console.log('configured plugins');
-            console.log(plugins);
-            console.log('plugins to render');
-            console.log(pluginsToRender);
+            // console.log('configured plugins');
+            // console.log(plugins);
+            // console.log('plugins to render');
+            // console.log(pluginsToRender);
 
             // @ts-ignore
             initialValues = pluginsToRender

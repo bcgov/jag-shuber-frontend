@@ -43,7 +43,7 @@ import PublishSchedulePage from './pages/PublishSchedule/PublishSchedule';
 
 // Import container components
 import ToastManager from './components/ToastManager/ToastManager';
-import LocationSelector from './containers/LocationSelector';
+import LocationSelector from './containers/NavLocationSelector';
 import Footer from './components/Footer/Footer';
 
 // Import app-level modal components

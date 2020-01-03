@@ -71,6 +71,7 @@ import GenderCodeDisplay from '../../containers/GenderCodeDisplay';
 import EditRow from '../../components/TableColumnActions/EditRow';
 import RemoveRow from '../../components/TableColumnActions/RemoveRow';
 import ExpireRow from '../../components/TableColumnActions/ExpireRow';
+import LocationSelector from '../../containers/LocationSelector';
 
 // TODO: Fix this interface!
 export interface AdminAssignUserRolesProps extends FormContainerProps {
@@ -212,6 +213,54 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
             }
         };
 
+        const onFilterRank = (event: Event, newValue: any, previousValue: any, name: string) => {
+            const { setPluginFilters } = props;
+            if (setPluginFilters) {
+                console.log('setting plugin filters');
+                setPluginFilters({
+                    users: {
+                        rankCode: newValue
+                    }
+                });
+            }
+        };
+
+        const onFilterGender = (event: Event, newValue: any, previousValue: any, name: string) => {
+            const { setPluginFilters } = props;
+            if (setPluginFilters) {
+                console.log('setting plugin filters');
+                setPluginFilters({
+                    users: {
+                        genderCode: newValue
+                    }
+                });
+            }
+        };
+
+        const onFilterHomeLocation = (event: Event, newValue: any, previousValue: any, name: string) => {
+            const { setPluginFilters } = props;
+            if (setPluginFilters) {
+                console.log('setting plugin filters');
+                setPluginFilters({
+                    users: {
+                        homeLocationId: newValue
+                    }
+                });
+            }
+        };
+
+        const onFilterCurrentLocation = (event: Event, newValue: any, previousValue: any, name: string) => {
+            const { setPluginFilters } = props;
+            if (setPluginFilters) {
+                console.log('setting plugin filters');
+                setPluginFilters({
+                    users: {
+                        currentLocationId: newValue
+                    }
+                });
+            }
+        };
+
         return (
             <div>
                 <DataTable
@@ -229,14 +278,52 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                         ]
                     })}
                     columns={[
-                        DataTable.StaticTextColumn('Full Name', { fieldName: 'displayName', colStyle: { width: '300px' }, displayInfo: false, filterable: true, filterColumn: onFilterDisplayName }),
+                        DataTable.StaticTextColumn('Full Name', {
+                            fieldName: 'displayName',
+                            colStyle: { width: '300px' },
+                            displayInfo: false,
+                            filterable: true,
+                            filterColumn: onFilterDisplayName
+                        }),
                         // DataTable.StaticTextColumn('Last Name', { fieldName: 'lastName', colStyle: { width: '175px' }, displayInfo: false, filterable: true }),
                         // TODO: We temporarily disabled filtering on badgeNo, it's tied to the sheriff, not sure how to handle that case yet...
-                        DataTable.StaticTextColumn('Badge No.', { fieldName: 'sheriff.badgeNo', colStyle: { width: '175px' }, displayInfo: false, filterable: false, filterColumn: onFilterBadgeNo }),
-                        DataTable.StaticTextColumn('Rank', { fieldName: 'sheriff.rankCode', colStyle: { width: '175px' }, displayInfo: false, filterable: true }),
-                        DataTable.MappedTextColumn('Gender', { fieldName: 'sheriff.genderCode', colStyle: { width: '175px' }, selectorComponent: GenderCodeDisplay, displayInfo: false, filterable: true }),
-                        DataTable.MappedTextColumn('Home Location', { fieldName: 'sheriff.homeLocationId', colStyle: { width: '225px' }, selectorComponent: LocationDisplay, displayInfo: false, filterable: true }),
-                        DataTable.MappedTextColumn('Current Location', { fieldName: 'sheriff.currentLocationId', colStyle: { width: '250px' }, selectorComponent: LocationDisplay, displayInfo: false, filterable: true }),
+                        DataTable.StaticTextColumn('Badge No.', {
+                            fieldName: 'sheriff.badgeNo',
+                            colStyle: { width: '175px' },
+                            displayInfo: false,
+                            filterable: false,
+                            filterColumn: onFilterBadgeNo
+                        }),
+                        DataTable.StaticTextColumn('Rank', {
+                            fieldName: 'sheriff.rankCode',
+                            colStyle: { width: '175px' },
+                            displayInfo: false, filterable: true,
+                            filterColumn: onFilterRank
+                        }),
+                        DataTable.MappedTextColumn('Gender', {
+                            fieldName: 'sheriff.genderCode',
+                            colStyle: { width: '175px' },
+                            selectorComponent: GenderCodeDisplay,
+                            displayInfo: false,
+                            filterable: true,
+                            filterColumn: onFilterGender }),
+                        DataTable.MappedTextColumn('Home Location', {
+                            fieldName: 'sheriff.homeLocationId',
+                            colStyle: { width: '225px' },
+                            selectorComponent: LocationDisplay,
+                            filterSelectorComponent: LocationSelector,
+                            displayInfo: false,
+                            filterable: true,
+                            filterColumn: onFilterHomeLocation
+                        }),
+                        DataTable.MappedTextColumn('Current Location', {
+                            fieldName: 'sheriff.currentLocationId',
+                            colStyle: { width: '250px' },
+                            selectorComponent: LocationDisplay,
+                            filterSelectorComponent: LocationSelector,
+                            displayInfo: false, filterable: true,
+                            filterColumn: onFilterCurrentLocation
+                        }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
                         // DataTable.SelectorFieldColumn('Status', { displayInfo: true }), // No point really in setting the status here
 
