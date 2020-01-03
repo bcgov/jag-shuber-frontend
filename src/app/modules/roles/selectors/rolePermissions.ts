@@ -37,7 +37,10 @@ export const getRoleFrontendScopePermissions = createSelector(
             // This part is simple, the scopeId on a roleFrontendScope correlates to the id on a frontendScope.
             const currentScope = scopes.find(s => s.id === currentRoleScope.scopeId);
 
-            if (!currentScope) throw 'Could not find a matching scope for the current role scope!';
+            if (!currentScope) {
+                console.warn(`Could not find a matching scope for the current role scope [${currentRoleScope.scopeId}]`);
+                return arr;
+            }
 
             // Now we need to grab all the available permissions that belong to the scope
             const currentScopePermissions = scopePermissions.filter(sp => sp.frontendScopeId === currentScope.id);
