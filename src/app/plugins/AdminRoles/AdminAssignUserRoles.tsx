@@ -192,7 +192,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
         const onFilterDisplayName = (event: Event, newValue: any, previousValue: any, name: string) => {
             const { setPluginFilters } = props;
             if (setPluginFilters) {
-                console.log('setting plugin filters');
+                // console.log('setting plugin filters');
                 setPluginFilters({
                     users: {
                         displayName: newValue
@@ -204,7 +204,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
         const onFilterBadgeNo = (event: Event, newValue: any, previousValue: any, name: string) => {
             const { setPluginFilters } = props;
             if (setPluginFilters) {
-                console.log('setting plugin filters');
+                // console.log('setting plugin filters');
                 setPluginFilters({
                     users: {
                         sheriff: {
@@ -219,7 +219,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
         const onFilterRank = (event: Event, newValue: any, previousValue: any, name: string) => {
             const { setPluginFilters } = props;
             if (setPluginFilters) {
-                console.log('setting plugin filters');
+                // console.log('setting plugin filters');
                 setPluginFilters({
                     users: {
                         sheriff: {
@@ -234,7 +234,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
         const onFilterGender = (event: Event, newValue: any, previousValue: any, name: string) => {
             const { setPluginFilters } = props;
             if (setPluginFilters) {
-                console.log('setting plugin filters');
+                // console.log('setting plugin filters');
                 setPluginFilters({
                     sheriff: {
                         genderCode: newValue
@@ -247,7 +247,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
         const onFilterHomeLocation = (newValue: any) => {
             const { setPluginFilters } = props;
             if (setPluginFilters) {
-                console.log('setting plugin filters');
+                // console.log('setting plugin filters');
                 setPluginFilters({
                     users: {
                         sheriff: {
@@ -262,7 +262,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
         const onFilterCurrentLocation = (newValue: any) => {
             const { setPluginFilters } = props;
             if (setPluginFilters) {
-                console.log('setting plugin filters');
+                // console.log('setting plugin filters');
                 setPluginFilters({
                     users: {
                         sheriff: {
@@ -303,7 +303,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                             fieldName: 'sheriff.badgeNo',
                             colStyle: { width: '175px' },
                             displayInfo: false,
-                            filterable: false,
+                            filterable: true,
                             filterColumn: onFilterBadgeNo
                         }),
                         DataTable.StaticTextColumn('Rank', {
