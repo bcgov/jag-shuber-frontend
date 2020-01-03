@@ -20,8 +20,8 @@ export default interface TableColumnCell {
     filterable?: boolean;
     displayInfo?: boolean;
     filterComponent?: Types.TableColumnCell;
-    filterColumn?: Function;
-    onChange?: Function;
+    filterColumn?: (event: Event, newValue: any, previousValue: any, name: string) => void;
+    onChange?: (event: Event, newValue: any, previousValue: any, name: string) => void;
     FieldRenderer?: Function;
     FormRenderer: ColumnRenderer;
     CanceledRender: ColumnRenderer;
@@ -35,8 +35,8 @@ export interface FieldColumnOptions {
     placeholder?: string;
     filterable?: boolean;
     filterComponent?: TableColumnCell;
-    filterColumn?: Function; // TODO: Do I absolutely need this?
-    onChange?: Function; // TODO: Do I absolutely need this?
+    filterColumn?: (event: Event, newValue: any, previousValue: any, name: string) => void;
+    onChange?: (event: Event, newValue: any, previousValue: any, name: string) => void;
     filterSelectorComponent?: React.ReactType<any>;
     selectorComponent?: React.ReactType<any>;
     colStyle?: any;

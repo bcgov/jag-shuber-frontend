@@ -244,7 +244,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
         };
 
         // Note: Home Location is on the sheriff, values will not be filtered for regular users
-        const onFilterHomeLocation = (newValue: any) => {
+        const onFilterHomeLocation = (event: Event, newValue: any, previousValue: any, name: string) => {
             const { setPluginFilters } = props;
             if (setPluginFilters) {
                 // console.log('setting plugin filters');
@@ -259,7 +259,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
         };
 
         // Note: Current Location is on the sheriff, values will not be filtered for regular users
-        const onFilterCurrentLocation = (newValue: any) => {
+        const onFilterCurrentLocation = (event: Event, newValue: any, previousValue: any, name: string) => {
             const { setPluginFilters } = props;
             if (setPluginFilters) {
                 // console.log('setting plugin filters');
@@ -318,7 +318,8 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                             selectorComponent: GenderCodeDisplay,
                             displayInfo: false,
                             filterable: true,
-                            filterColumn: onFilterGender }),
+                            filterColumn: onFilterGender
+                        }),
                         DataTable.MappedTextColumn('Home Location', {
                             fieldName: 'sheriff.homeLocationId',
                             colStyle: { width: '225px' },

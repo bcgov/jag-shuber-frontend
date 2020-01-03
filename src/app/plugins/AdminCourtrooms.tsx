@@ -67,7 +67,7 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
     title: string = ' Courtrooms';
 
     FormComponent = (props: FormContainerProps<AdminCourtroomsProps>) => {
-        const onFilterLocation = (newValue: any) => {
+        const onFilterLocation = (event: Event, newValue: any) => {
             const { setPluginFilters } = props;
             if (setPluginFilters) {
                 setPluginFilters({

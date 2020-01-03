@@ -20,7 +20,6 @@ const MappedTextColumn = (label?: string, options?: Types.FieldColumnOptions): T
     const filterColumn = (options && options.filterColumn) ? options.filterColumn : undefined;
     const FilterSelectorComponent = (options && options.filterSelectorComponent) ? options.filterSelectorComponent : Selector;
     const DisplayComponent = (options && options.selectorComponent) ? options.selectorComponent : Selector;
-    const onChange = (options && options.onChange) ? options.onChange : undefined;
 
     const filterComponentOptions = (options)
         ? Object.create(options) as Types.FieldColumnOptions
