@@ -2,9 +2,13 @@ import * as React from 'react';
 import { Button, Glyphicon } from 'react-bootstrap';
 import { TableColumnActionProps } from './index';
 
-const EditRow = ({ fields, index }: TableColumnActionProps) => {
+const EditRow = ({ model, onClick}: TableColumnActionProps) => {
+    const handleClick = () => {
+        if (onClick) onClick(model);
+    };
+
     return (
-        <Button bsStyle="primary">
+        <Button bsStyle="primary" onClick={handleClick}>
             <Glyphicon glyph="edit" />
         </Button>
     );

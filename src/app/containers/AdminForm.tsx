@@ -45,6 +45,7 @@ import {
 
 import AdminFormComponent, { AdminFormProps } from '../components/AdminForm/AdminForm';
 import { FormContainerBase } from '../components/Form/FormContainer';
+import SheriffProfileModal from './SheriffProfileModal';
 
 async function submitPlugins(
     values: any,
@@ -317,7 +318,10 @@ export default class extends
                 setPluginFilters: (filters: {}, action: any) => {
                     // TODO: Can we type this action better?
                     if (filters && action) dispatch(action(filters));
-                }
+                },
+                // TODO: It would be nice if we could somehow pass in showSheriffProfileModal some other way that was more declarative, and from the plugin...
+                //  This is easy and works for now though.
+                showSheriffProfileModal: SheriffProfileModal.ShowAction
             };
         }
     )(AdminFormContainer as any) {

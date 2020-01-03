@@ -12,6 +12,9 @@ export interface FormContainerProps<T = any> {
     objectId?: IdType;
     data?: T;
     setPluginFilters?: Function;
+    // TODO: It would be nice if we could somehow pass in showSheriffProfileModal some other way that was more declarative, and from the plugin...
+    //  This is easy and works for now though.
+    showSheriffProfileModal?: Function;
 }
 export interface FormContainer<T = any> {
     /**

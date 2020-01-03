@@ -14,7 +14,8 @@ export interface AdminFormProps {
     pluginsWithErrors?: { [key: string]: boolean };
     selectedSection?: string;
     onSelectSection?: (sectionName: string) => void;
-    setPluginFilters?: (sectionName: string) => void;
+    setPluginFilters?: Function;
+    showSheriffProfileModal?: Function;
     onSubmitSuccess?: () => void;
     initialValues?: any;
 }
@@ -52,12 +53,13 @@ export default class AdminForm extends React.PureComponent<InjectedFormProps<any
     }*/
 
     renderPlugin(plugin: FormContainer) {
-        const { initialValues = {}, isEditing = false, setPluginFilters } = this.props;
+        const { initialValues = {}, isEditing = false, setPluginFilters, showSheriffProfileModal } = this.props;
 
         const pluginProps: FormContainerProps = {
             // sheriffId,
             data: initialValues[plugin.reduxFormKey],
-            setPluginFilters: setPluginFilters
+            setPluginFilters,
+            showSheriffProfileModal
         };
         return isEditing
             ? plugin.renderFormFields(pluginProps)
