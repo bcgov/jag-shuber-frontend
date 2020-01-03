@@ -62,6 +62,39 @@ export default class AdminTrainingTypes extends FormContainerBase<AdminTrainingT
     title: string = ' Training Leave Types';
 
     FormComponent = (props: FormContainerProps<AdminTrainingTypesProps>) => {
+        const onFilterSubCode = (event: Event, newValue: any, previousValue: any, name: string) => {
+            const { setPluginFilters } = props;
+            if (setPluginFilters) {
+                setPluginFilters({
+                    leaves: {
+                        subCode: newValue
+                    }
+                });
+            }
+        };
+
+        const onFilterEffectiveDate = (event: Event, newValue: any, previousValue: any, name: string) => {
+            const { setPluginFilters } = props;
+            if (setPluginFilters) {
+                setPluginFilters({
+                    leaves: {
+                        effectiveDate: newValue
+                    }
+                });
+            }
+        };
+
+        const onFilterExpiryDate = (event: Event, newValue: any, previousValue: any, name: string) => {
+            const { setPluginFilters } = props;
+            if (setPluginFilters) {
+                setPluginFilters({
+                    leaves: {
+                        expiryDate: newValue
+                    }
+                });
+            }
+        };
+
         return (
             <div>
                 <DataTable
@@ -77,10 +110,10 @@ export default class AdminTrainingTypes extends FormContainerBase<AdminTrainingT
                     })}
                     columns={[
                         // DataTable.TextFieldColumn('Leave Type', { fieldName: 'code', displayInfo: true }),
-                        DataTable.TextFieldColumn('Training Leave Sub Code', { fieldName: 'subCode', colStyle: { width: '200px' }, displayInfo: true, filterable: true }),
+                        DataTable.TextFieldColumn('Training Leave Sub Code', { fieldName: 'subCode', colStyle: { width: '200px' }, displayInfo: true, filterable: true, filterColumn: onFilterSubCode }),
                         DataTable.TextFieldColumn('Description', { fieldName: 'description', colStyle: { width: '300px' }, displayInfo: false }),
-                        DataTable.DateColumn('Effective Date', 'effectiveDate', { colStyle: { width: '175px'}, displayInfo: true, filterable: true }),
-                        DataTable.DateColumn('Expiry Date', 'expiryDate', { colStyle: { width: '175px' }, displayInfo: true, filterable: true }),
+                        DataTable.DateColumn('Effective Date', 'effectiveDate', { colStyle: { width: '175px'}, displayInfo: true, filterable: true, filterColumn: onFilterEffectiveDate }),
+                        DataTable.DateColumn('Expiry Date', 'expiryDate', { colStyle: { width: '175px'}, displayInfo: true, filterable: true, filterColumn: onFilterExpiryDate }),
                         // DataTable.StaticTextColumn('Created By', { fieldName: 'createdBy', colStyle: { width: '175px' }, displayInfo: false }),
                         // DataTable.StaticDateColumn('Date Created', { fieldName: 'createdDtm', colStyle: { width: '175px' }, displayInfo: false }),
                         // DataTable.SelectorFieldColumn('Status', { displayInfo: true }),
@@ -113,7 +146,12 @@ export default class AdminTrainingTypes extends FormContainerBase<AdminTrainingT
         dispatch(getLeaveSubCodes()); // This data needs to always be available for select lists
     }
 
-    getData(state: RootState, filters: {} | undefined) {
+    getData(state: RootState, filters: any | undefined) {
+        // Get filter data
+        const filterData = this.getFilterData(filters);
+        // console.log(filterData);
+
+        // Get form data
         // TODO: Depending on component state, some of these calls will need to be filtered!
         const leaveTypes = getAllLeaveSubCodes(state) || undefined;
 
@@ -131,6 +169,7 @@ export default class AdminTrainingTypes extends FormContainerBase<AdminTrainingT
         });
 
         return {
+            ...filterData,
             trainingLeaveTypes: leaveTypesArray
         };
     }

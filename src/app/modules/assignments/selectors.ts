@@ -117,6 +117,27 @@ export const getAllCourtrooms = (state: RootState) => {
     return undefined;
 };
 
+export const findAllCourtrooms = (filters: any) => (state: RootState) => {
+    if (state) {
+        let courtrooms = allCourtrooms(state);
+        Object.keys(filters).forEach(key => {
+            debugger;
+            if (filters[key]) {
+                courtrooms = courtrooms.filter(c => {
+                    return (c[key] && c[key] !== '')
+                        ? c[key].toLowerCase().includes(`${filters[key].toLowerCase()}`)
+                        : false;
+                });
+            }
+        });
+
+        courtrooms.sort((a: any, b: any) =>
+            (a.code < b.code) ? -1 : (a.code > b.code) ? 1 : 0);
+        return courtrooms;
+    }
+    return undefined;
+};
+
 // Jail Roles
 const jailRoleSelector = new CodeSelector(
     jailRoleRequests.jailRoleMapRequest.getData
