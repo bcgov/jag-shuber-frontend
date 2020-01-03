@@ -270,6 +270,8 @@ export default class extends
             // @ts-ignore
             initialValues = pluginsToRender
                 .map(p => {
+                    // TODO: SUPER IMPORTANT FIX THIS!
+                    // We need move filters out of the role reducer module!!!!!
                     const filters = (state[p.reduxFormKey].pluginFilters)
                         ? (state[p.reduxFormKey].pluginFilters)
                         : {};

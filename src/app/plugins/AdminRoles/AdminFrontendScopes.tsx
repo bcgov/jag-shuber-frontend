@@ -291,11 +291,11 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
                 }))
             : [];
 
-        return Promise.all([
-            dispatch(deleteFrontendScopePermissions(deletedScopePermissions)),
-            dispatch(deleteFrontendScopes(deletedScopes)),
-            dispatch(createOrUpdateFrontendScopes(scopes)),
-            dispatch(createOrUpdateFrontendScopePermissions(scopePermissions))
-        ]);
+        if (deletedScopePermissions.length > 0) await dispatch(deleteFrontendScopePermissions(deletedScopePermissions));
+        if (deletedScopes.length > 0) await dispatch(deleteFrontendScopes(deletedScopes));
+        if (scopes.length > 0) await dispatch(createOrUpdateFrontendScopes(scopes));
+        if (scopePermissions.length > 0) await dispatch(createOrUpdateFrontendScopePermissions(scopePermissions));
+
+        return Promise.resolve([]);
     }
 }

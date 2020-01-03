@@ -573,15 +573,48 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
                 }))
             : [];
 
-        return Promise.all([
-            dispatch(deleteRolePermissions(deletedRolePermissions)),
-            dispatch(deleteRoleFrontendScopes(deletedRoleFrontendScopes)),
-            dispatch(deleteRoleApiScopes(deletedRoleApiScopes)),
-            dispatch(deleteRoles(deletedRoles)),
-            dispatch(createOrUpdateRoles(roles)),
-            dispatch(createOrUpdateRoleFrontendScopes(roleFrontendScopes)),
-            dispatch(createOrUpdateRolePermissions(roleFrontendScopePermissions)),
-            dispatch(createOrUpdateRoleApiScopes(roleApiScopes))
-        ]);
+        // These have to be deleted in sequence
+        if (deletedRolePermissions.length > 0) {
+            console.log('deleting role permissions');
+            console.log(deletedRolePermissions);
+            await dispatch(deleteRolePermissions(deletedRolePermissions));
+        }
+        if (deletedRoleFrontendScopes.length > 0) {
+            console.log('deleting role frontend scopes');
+            console.log(deletedRoleFrontendScopes);
+            await dispatch(deleteRoleFrontendScopes(deletedRoleFrontendScopes));
+        }
+        if (deletedRoleApiScopes.length > 0) {
+            console.log('deleting role api scopes');
+            console.log(deletedRoleApiScopes);
+            await dispatch(deleteRoleApiScopes(deletedRoleApiScopes));
+        }
+        if (deletedRoles.length > 0) {
+            console.log('deleting roles');
+            console.log(deletedRoles);
+            await dispatch(deleteRoles(deletedRoles));
+        }
+        if (roles.length > 0) {
+            console.log('updating roles');
+            console.log(roles);
+            await dispatch(createOrUpdateRoles(roles));
+        }
+        if (roleFrontendScopes.length > 0) {
+            console.log('updating role frontend scopes');
+            console.log(roleFrontendScopes);
+            await dispatch(createOrUpdateRoleFrontendScopes(roleFrontendScopes));
+        }
+        if (roleFrontendScopePermissions.length > 0) {
+            console.log('updating role frontend scope permissions');
+            console.log(roleFrontendScopePermissions);
+            await dispatch(createOrUpdateRolePermissions(roleFrontendScopePermissions));
+        }
+        if (roleApiScopes.length > 0) {
+            console.log('updating role api scopes');
+            console.log(roles);
+            await dispatch(createOrUpdateRoleApiScopes(roleApiScopes));
+        }
+
+        return Promise.resolve([]);
     }
 }

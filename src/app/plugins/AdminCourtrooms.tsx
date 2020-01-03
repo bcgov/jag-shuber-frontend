@@ -138,7 +138,7 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
     getData(state: RootState, filters: any | undefined) {
         // Get filter data
         const filterData = this.getFilterData(filters);
-        // console.log(filterData);
+        console.log(filterData);
 
         // Get form data
         const courtrooms = (filters && filters.courtrooms)
