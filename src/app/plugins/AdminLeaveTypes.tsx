@@ -119,7 +119,7 @@ export default class AdminLeaveTypes extends FormContainerBase<AdminLeaveTypesPr
                         // DataTable.SelectorFieldColumn('Status', { displayInfo: true }),
 
                     ]}
-                    filterable={true}
+                    filterable={false}
                     expandable={false}
                     // expandedRows={[1, 2]}
                     rowComponent={EmptyDetailRow}
