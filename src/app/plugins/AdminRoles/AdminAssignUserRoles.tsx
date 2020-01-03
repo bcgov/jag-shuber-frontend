@@ -489,12 +489,22 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                 }))
             : [];
 
-        return Promise.all([
-            dispatch(deleteUsers(deletedUsers)),
-            dispatch(deleteUserRoles(deletedUserRoles)),
-            dispatch(createOrUpdateUsers(users)),
-            dispatch(createOrUpdateUserRoles(userRoles))
-        ]);
+        if (deletedUsers.length > 0) {
+            await dispatch(deleteUsers(deletedUsers));
+        }
 
+        if (deletedUserRoles.length > 0) {
+            await dispatch(deleteUserRoles(deletedUserRoles));
+        }
+
+        if (users.length > 0) {
+            await dispatch(createOrUpdateUsers(users));
+        }
+
+        if (userRoles.length > 0) {
+            await dispatch(createOrUpdateUserRoles(userRoles));
+        }
+
+        return Promise.resolve([]);
     }
 }

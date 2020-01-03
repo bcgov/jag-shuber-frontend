@@ -118,7 +118,6 @@ export abstract class FormContainerBase<T = any> implements FormContainer<T> {
         return {};
     }
 
-    // TODO: Type filters, haven't given it a lot of thought because it's not really necessary
     protected getFilterData(filters: any) {
         return Object.keys(this.filterFieldNames)
             .reduce((data: any, filterKey: string, idx: number) => {
