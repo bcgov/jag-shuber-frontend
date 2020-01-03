@@ -9,7 +9,10 @@ import { Dispatch } from 'redux';
 import {
     getCourtrooms,
     createOrUpdateCourtrooms,
-    deleteCourtrooms
+    deleteCourtrooms,
+    selectAdminCourtroomsPluginSection,
+    setAdminCourtroomsPluginSubmitErrors,
+    setAdminCourtroomsPluginFilters
 } from '../modules/assignments/actions';
 
 import {
@@ -64,6 +67,17 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
     title: string = ' Courtrooms';
 
     FormComponent = (props: FormContainerProps<AdminCourtroomsProps>) => {
+        const onFilterLocation = (newValue: any) => {
+            const { setPluginFilters } = props;
+            if (setPluginFilters) {
+                setPluginFilters({
+                    courtrooms: {
+                        locationId: newValue
+                    }
+                }, setAdminCourtroomsPluginFilters);
+            }
+        };
+
         const onFilterCourtroom = (event: Event, newValue: any, previousValue: any, name: string) => {
             const { setPluginFilters } = props;
             if (setPluginFilters) {
@@ -71,7 +85,7 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
                     courtrooms: {
                         name: newValue
                     }
-                });
+                }, setAdminCourtroomsPluginFilters);
             }
         };
 
@@ -82,7 +96,7 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
                     courtrooms: {
                         code: newValue
                     }
-                });
+                }, setAdminCourtroomsPluginFilters);
             }
         };
 
@@ -100,7 +114,7 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
                         ]
                     })}
                     columns={[
-                        DataTable.SelectorFieldColumn('Location', { fieldName: 'locationId', selectorComponent: LocationSelector, displayInfo: false, filterable: true }),
+                        DataTable.SelectorFieldColumn('Location', { fieldName: 'locationId', selectorComponent: LocationSelector, displayInfo: false, filterable: true, filterColumn: onFilterLocation }),
                         DataTable.TextFieldColumn('Courtroom', { fieldName: 'name', displayInfo: false, filterable: true, filterColumn: onFilterCourtroom }),
                         DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, filterable: true, filterColumn: onFilterCourtroomCode }),
                         DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false }),

@@ -71,30 +71,26 @@ export const findAllUsers = (filters: any) => (state: RootState) => {
         let users = getUsers(state);
         // User contains a sheriff reference, break into two sets of filters
         // eg: user: { sheriff: {...} }
-        const sheriffFilters = (filters && filters.sheriff) ? filters.sheriff : {};
-        Object.keys(sheriffFilters).forEach(key => {
-            if (filters.sheriff[key]) {
-                users = users.filter(u => {
-                    return (u.sheriff && u.sheriff[key] && u.sheriff[key] !== '')
-                        ? u.sheriff[key].toLowerCase().includes(`${filters.sheriff[key].toLowerCase()}`)
-                        : false;
-                });
-            }
-        });
+        if (filters.displayName) {
+            users = users.filter(u => {
+                return (u && u.displayName && u.displayName !== '')
+                    ? u.displayName.toLowerCase().includes(`${filters.displayName.toLowerCase()}`)
+                    : false;
+            });
+        }
 
-        // We're done filtering the sheriff, delete the key and filter the users
-        /* delete filters.sheriff;
-
-        // Now filter users
-        Object.keys(filters).forEach(key => {
-            if (filters[key]) {
-                users = users.filter(u => {
-                    return (u[key] && u[key] !== '')
-                        ? u[key].toLowerCase().includes(`${filters[key].toLowerCase()}`)
-                        : false;
-                });
-            }
-        }); */
+        if (filters && filters.sheriff) {
+            const sheriffFilters = filters.sheriff;
+            Object.keys(sheriffFilters).forEach(key => {
+                if (filters.sheriff[key]) {
+                    users = users.filter(u => {
+                        return (u.sheriff && u.sheriff[key] && u.sheriff[key] !== '')
+                            ? u.sheriff[key].toLowerCase().includes(`${filters.sheriff[key].toLowerCase()}`)
+                            : false;
+                    });
+                }
+            });
+        }
 
         users = users.sort((a: any, b: any) => (a.displayName < b.displayName) ? -1 : (a.displayName > b.displayName) ? 1 : 0);
         return users;

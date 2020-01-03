@@ -22,6 +22,7 @@ export interface RoleModuleState {
     frontendScopePermissionMap?: RequestActionState<MapType<FrontendScopePermission>>;
     apiScopeMap?: RequestActionState<MapType<ApiScope>>;
     userRoleMap?: RequestActionState<MapType<UserRole>>;
+
     selectedProfileSection?: string;
     pluginSubmitErrors?: ErrorMap;
     pluginFilters?: {}; // TODO: We could type this a bit better...

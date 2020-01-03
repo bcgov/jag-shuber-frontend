@@ -37,10 +37,10 @@ import {
     getAdminRolesPluginErrors as getAdminFormPluginErrors
 } from '../modules/roles/selectors';
 import {
-    // TODO: make these two generic
-    selectAdminRolesSection as selectAdminFormSection,
+    // TODO: We can almost pull these out now...
+    selectAdminRolesPluginSection as selectAdminFormSection,
     setAdminRolesPluginSubmitErrors as setAdminFormPluginSubmitErrors,
-    setAdminFormFilters
+    setAdminRolesPluginFilters
 } from '../modules/roles/actions'; // TODO: This is not generic!
 
 import AdminFormComponent, { AdminFormProps } from '../components/AdminForm/AdminForm';
@@ -135,7 +135,9 @@ const formConfig: ConfigProps<{}, AdminFormProps> = {
                 error: (e) => `Error occurred while creating/updating: ${e}`
             }
         };
-        let actionMessage = '';
+        // TODO: This probably is the annoying success message that doesn't display anything...
+        //  Just disable it for now...
+        // let actionMessage = '';
 
         try {
             // Filter out unchanged values so we're not making unnecessary requests
@@ -146,7 +148,9 @@ const formConfig: ConfigProps<{}, AdminFormProps> = {
             throw e;
         }
 
-        toast.success(`${actionMessage}`);
+        // TODO: This probably is the annoying success message that doesn't display anything...
+        //  Just disable it for now...
+        // toast.success(`${actionMessage}`);
     }
 };
 
@@ -270,8 +274,6 @@ export default class extends
             // @ts-ignore
             initialValues = pluginsToRender
                 .map(p => {
-                    // TODO: SUPER IMPORTANT FIX THIS!
-                    // We need move filters out of the role reducer module!!!!!
                     const filters = (state[p.reduxFormKey].pluginFilters)
                         ? (state[p.reduxFormKey].pluginFilters)
                         : {};
@@ -312,10 +314,9 @@ export default class extends
                 },
                 onSelectSection: (sectionName) => dispatch(selectAdminFormSection(sectionName)),
                 // TODO: Restrict scope to the current section / plugin, live with onSelectSection!
-                setPluginFilters: (filters: {}) => {
-                    // console.log('dispatching plugin filters');
-                    // console.log(filters);
-                    if (filters) dispatch(setAdminFormFilters(filters));
+                setPluginFilters: (filters: {}, action: any) => {
+                    // TODO: Can we type this action better?
+                    if (filters && action) dispatch(action(filters));
                 }
             };
         }

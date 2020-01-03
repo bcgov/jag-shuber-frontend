@@ -9,8 +9,11 @@ import * as userRoleRequests from './requests/userRoles';
 
 import { ReducersMapObject } from 'redux';
 import NestedReducer from '../../infrastructure/NestedReducer';
-import { STATE_KEY, RoleModuleState } from './common';
 import { addReducerToMap } from '../../infrastructure/reduxUtils';
+import {
+  RoleModuleState,
+  STATE_KEY
+} from './common';
 import {
   IActionType,
   IActionPayload,
@@ -50,7 +53,7 @@ const actionReducer = createReducer<RoleModuleState>({
   ADMIN_ROLES_SET_PLUGIN_SUBMIT_ERRORS: (state, pluginErrors) => {
     return { ...state, pluginSubmitErrors: pluginErrors };
   },
-  ADMIN_FORM_SET_PLUGIN_FILTERS: (state, filters) => {
+  ADMIN_ROLES_SET_PLUGIN_FILTERS: (state, filters) => {
     return { ...state, pluginFilters: filters };
   }
 });

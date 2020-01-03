@@ -10,6 +10,7 @@ import {
     JailRoleMap,
     RunMap
 } from '../../api/Api';
+import { ErrorMap } from '../roles/common';
 
 export interface AssignmentModuleState {
     // Assignments
@@ -34,5 +35,8 @@ export interface AssignmentModuleState {
     // Sheriff Duties
     deleteSheriffDuty?: RequestActionState<void>;
 
+    selectedProfileSection?: string;
+    pluginSubmitErrors?: ErrorMap;
+    pluginFilters?: {}; // TODO: We could type this a bit better...
 }
 export const STATE_KEY: string = 'assignments';
