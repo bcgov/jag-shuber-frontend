@@ -17,6 +17,7 @@ const MappedTextColumn = (label?: string, options?: Types.FieldColumnOptions): T
     const colStyle = (options && options.colStyle) ? options.colStyle : {};
     const placeholder = (options && options.placeholder) ? options.placeholder : undefined;
     const filterable = (options && options.filterable) ? options.filterable : false;
+    const FilterSelectorComponent = (options && options.filterSelectorComponent) ? options.filterSelectorComponent : Selector;
     const DisplayComponent = (options && options.selectorComponent) ? options.selectorComponent : Selector;
 
     const filterComponentOptions = (options)
@@ -25,7 +26,7 @@ const MappedTextColumn = (label?: string, options?: Types.FieldColumnOptions): T
 
     filterComponentOptions.filterable = false;
     filterComponentOptions.displayInfo = false;
-    filterComponentOptions.selectorComponent = Selector;
+    filterComponentOptions.selectorComponent = FilterSelectorComponent;
     // filterComponentOptions.placeholder = `Filter ${label}`;
 
     return {

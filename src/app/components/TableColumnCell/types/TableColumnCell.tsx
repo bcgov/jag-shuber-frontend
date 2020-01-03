@@ -37,6 +37,7 @@ export interface FieldColumnOptions {
     filterComponent?: TableColumnCell;
     filterColumn?: Function; // TODO: Do I absolutely need this?
     onChange?: Function; // TODO: Do I absolutely need this?
+    filterSelectorComponent?: React.ReactType<any>;
     selectorComponent?: React.ReactType<any>;
     colStyle?: any;
 

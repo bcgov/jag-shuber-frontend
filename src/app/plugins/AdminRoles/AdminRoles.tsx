@@ -267,6 +267,28 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
             }
         };
 
+        const onFilterCreatedBy = (event: Event, newValue: any, previousValue: any, name: string) => {
+            const { setPluginFilters } = props;
+            if (setPluginFilters) {
+                setPluginFilters({
+                    roles: {
+                        createdBy: newValue
+                    }
+                });
+            }
+        };
+
+        const onFilterCreatedDate = (event: Event, newValue: any, previousValue: any, name: string) => {
+            const { setPluginFilters } = props;
+            if (setPluginFilters) {
+                setPluginFilters({
+                    roles: {
+                        createdDate: newValue
+                    }
+                });
+            }
+        };
+
         // RENDER_COUNT++;
         // console.log('ADMINROLESGRID RENDER COUNT: ' + RENDER_COUNT);
 
@@ -289,8 +311,8 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
                         DataTable.TextFieldColumn('Role Code', { fieldName: 'roleCode', colStyle: { width: '300px' }, displayInfo: true, filterable: true, filterColumn: onFilterRoleCode }),
                         DataTable.TextFieldColumn('Description', { fieldName: 'description', colStyle: { width: '300px' }, displayInfo: true }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
-                        DataTable.StaticTextColumn('Created By', { fieldName: 'createdBy', colStyle: { width: '200px' }, displayInfo: false, filterable: true }),
-                        DataTable.StaticDateColumn('Date Created', { fieldName: 'createdDtm', colStyle: { width: '200px' }, displayInfo: false, filterable: true }),
+                        DataTable.StaticTextColumn('Created By', { fieldName: 'createdBy', colStyle: { width: '200px' }, displayInfo: false, filterable: true, filterColumn: onFilterCreatedBy }),
+                        DataTable.StaticDateColumn('Date Created', { fieldName: 'createdDtm', colStyle: { width: '200px' }, displayInfo: false, filterable: true, filterColumn: onFilterCreatedDate }),
                         DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
 
                     ]}

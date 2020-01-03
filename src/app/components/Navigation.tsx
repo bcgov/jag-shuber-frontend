@@ -6,7 +6,7 @@ import {
     Badge, Glyphicon
 } from 'react-bootstrap';
 import NavigationLink from './NavigationLink';
-import LocationSelector from '../containers/LocationSelector';
+import LocationSelector from '../containers/NavLocationSelector';
 import bcLogo from '../assets/images/bc-logo-transparent.png';
 import bcLogoDark from '../assets/images/bc-logo-transparent-dark.png';
 import NavigationDropDown from './NavigationDropDown';
