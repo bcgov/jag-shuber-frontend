@@ -27,7 +27,8 @@ import { RootState } from '../../store';
 import {
     getAllFrontendScopePermissions,
     getAllFrontendScopes,
-    getFrontendScopePermissionsGroupedByScopeId
+    getFrontendScopePermissionsGroupedByScopeId,
+    findAllFrontendScopes
 } from '../../modules/roles/selectors';
 
 import { IdType, Role } from '../../api';
@@ -116,6 +117,28 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
             context.setActiveRow(model.id);
         };
 
+        const onFilterName = (event: Event, newValue: any, previousValue: any, name: string) => {
+            const { setPluginFilters } = props;
+            if (setPluginFilters) {
+                setPluginFilters({
+                    frontendScopes: {
+                        scopeName: newValue
+                    }
+                });
+            }
+        };
+
+        const onFilterCode = (event: Event, newValue: any, previousValue: any, name: string) => {
+            const { setPluginFilters } = props;
+            if (setPluginFilters) {
+                setPluginFilters({
+                    frontendScopes: {
+                        scopeCode: newValue
+                    }
+                });
+            }
+        };
+
         return (
             <div>
                 <DataTable
@@ -131,8 +154,8 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
                         ]
                     })}
                     columns={[
-                        DataTable.TextFieldColumn('Component', { fieldName: 'scopeName', displayInfo: true, filterable: true }),
-                        DataTable.TextFieldColumn('Code', { fieldName: 'scopeCode', displayInfo: true, filterable: true }),
+                        DataTable.TextFieldColumn('Component', { fieldName: 'scopeName', displayInfo: true, filterable: true, filterColumn: onFilterName }),
+                        DataTable.TextFieldColumn('Code', { fieldName: 'scopeCode', displayInfo: true, filterable: true, filterColumn: onFilterCode }),
                         DataTable.TextFieldColumn('Description', { fieldName: 'description', colStyle: { width: '300px' }, displayInfo: false }),
                         DataTable.ButtonColumn('Define Permissions', 'list', { displayInfo: true }, onButtonClicked)
                     ]}
@@ -163,11 +186,20 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
         dispatch(getFrontendScopePermissions()); // This data needs to always be available for select lists
     }
 
-    getData(state: RootState, filters: {} | undefined) {
-        const frontendScopes = getAllFrontendScopes(state) || undefined;
+    getData(state: RootState, filters: any | undefined) {
+        // Get filter data
+        const filterData = this.getFilterData(filters);
+        // console.log(filterData);
+
+        // Get form data
+        const frontendScopes = (filters && filters.frontendScopes)
+            ? findAllFrontendScopes(filters.frontendScopes)(state) || undefined
+            : getAllFrontendScopes(state) || undefined;
+
         const frontendScopePermissionsGrouped = getFrontendScopePermissionsGroupedByScopeId(state) || undefined;
 
         return {
+            ...filterData,
             frontendScopes,
             frontendScopePermissionsGrouped
         };

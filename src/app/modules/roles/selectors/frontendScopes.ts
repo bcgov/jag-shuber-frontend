@@ -19,10 +19,22 @@ export const getAllFrontendScopes = (state: RootState) => {
     return undefined;
 };
 
-export const findAllFrontendScopes = (filters: {} | undefined) => (state: RootState) => {
+export const findAllFrontendScopes = (filters: any) => (state: RootState) => {
     if (state) {
-        return getFrontendScopes(state).sort((a: any, b: any) =>
+        let scopes = getFrontendScopes(state);
+        Object.keys(filters).forEach(key => {
+            if (filters[key]) {
+                scopes = scopes.filter(s => {
+                    return (s[key] && s[key] !== '')
+                        ? s[key].toLowerCase().includes(`${filters[key].toLowerCase()}`)
+                        : false;
+                });
+            }
+        });
+
+        scopes.sort((a: any, b: any) =>
             (a.scopeName < b.scopeName) ? -1 : (a.scopeName > b.scopeName) ? 1 : 0);
+        return scopes;
     }
     return undefined;
 };

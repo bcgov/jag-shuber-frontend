@@ -17,7 +17,8 @@ import {
 import { RootState } from '../../store';
 
 import {
-    getAllApiScopes
+    getAllApiScopes,
+    findAllApiScopes
 } from '../../modules/roles/selectors';
 
 import { ApiScope, IdType } from '../../api';
@@ -97,6 +98,28 @@ export default class AdminApiScopes extends FormContainerBase<AdminApiScopesProp
     title: string = 'Manage API Scopes';
 
     FormComponent = (props: FormContainerProps<AdminApiScopesProps>) => {
+        const onFilterName = (event: Event, newValue: any, previousValue: any, name: string) => {
+            const { setPluginFilters } = props;
+            if (setPluginFilters) {
+                setPluginFilters({
+                    apiScopes: {
+                        scopeName: newValue
+                    }
+                });
+            }
+        };
+
+        const onFilterCode = (event: Event, newValue: any, previousValue: any, name: string) => {
+            const { setPluginFilters } = props;
+            if (setPluginFilters) {
+                setPluginFilters({
+                    apiScopes: {
+                        scopeCode: newValue
+                    }
+                });
+            }
+        };
+
         return (
             <div>
                 <DataTable
@@ -112,8 +135,8 @@ export default class AdminApiScopes extends FormContainerBase<AdminApiScopesProp
                         ]
                     })}
                     columns={[
-                        DataTable.TextFieldColumn('Scope Name', { fieldName: 'scopeName', displayInfo: true, filterable: true }),
-                        DataTable.TextFieldColumn('Scope Code', { fieldName: 'scopeCode', displayInfo: true, filterable: true }),
+                        DataTable.TextFieldColumn('Scope Name', { fieldName: 'scopeName', displayInfo: true, filterable: true, filterColumn: onFilterName }),
+                        DataTable.TextFieldColumn('Scope Code', { fieldName: 'scopeCode', displayInfo: true, filterable: true, filterColumn: onFilterCode }),
                         DataTable.TextFieldColumn('Description', { fieldName: 'description', colStyle: { width: '300px' }, displayInfo: false })
                     ]}
                     filterable={true}
@@ -141,10 +164,18 @@ export default class AdminApiScopes extends FormContainerBase<AdminApiScopesProp
         dispatch(getApiScopes()); // This data needs to always be available for select lists
     }
 
-    getData(state: RootState, filters: {} | undefined) {
-        const apiScopes = getAllApiScopes(state) || undefined;
+    getData(state: RootState, filters: any | undefined) {
+        // Get filter data
+        const filterData = this.getFilterData(filters);
+        // console.log(filterData);
+
+        // Get form data
+        const apiScopes = (filters && filters.apiScopes)
+            ? findAllApiScopes(filters.apiScopes)(state) || undefined
+            : getAllApiScopes(state);
 
         return {
+            ...filterData,
             apiScopes
         };
     }

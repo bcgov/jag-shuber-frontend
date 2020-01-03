@@ -367,6 +367,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
         // console.log('AdminAssignUserRoles filterData');
         // console.log(filterData);
 
+        // Get form data
         const locations = (filters && filters.locations)
             ? findAllLocations(filters.locations)(state)
             : getAllLocations(state);

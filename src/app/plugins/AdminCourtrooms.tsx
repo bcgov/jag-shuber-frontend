@@ -13,7 +13,8 @@ import {
 } from '../modules/assignments/actions';
 
 import {
-    getAllCourtrooms
+    getAllCourtrooms,
+    findAllCourtrooms
 } from '../modules/assignments/selectors';
 
 import { RootState } from '../store';
@@ -63,6 +64,28 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
     title: string = ' Courtrooms';
 
     FormComponent = (props: FormContainerProps<AdminCourtroomsProps>) => {
+        const onFilterCourtroom = (event: Event, newValue: any, previousValue: any, name: string) => {
+            const { setPluginFilters } = props;
+            if (setPluginFilters) {
+                setPluginFilters({
+                    courtrooms: {
+                        name: newValue
+                    }
+                });
+            }
+        };
+
+        const onFilterCourtroomCode = (event: Event, newValue: any, previousValue: any, name: string) => {
+            const { setPluginFilters } = props;
+            if (setPluginFilters) {
+                setPluginFilters({
+                    courtrooms: {
+                        code: newValue
+                    }
+                });
+            }
+        };
+
         return (
             <div>
                 <DataTable
@@ -78,8 +101,8 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
                     })}
                     columns={[
                         DataTable.SelectorFieldColumn('Location', { fieldName: 'locationId', selectorComponent: LocationSelector, displayInfo: false, filterable: true }),
-                        DataTable.TextFieldColumn('Courtroom', { fieldName: 'name', displayInfo: false, filterable: true }),
-                        DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, filterable: true }),
+                        DataTable.TextFieldColumn('Courtroom', { fieldName: 'name', displayInfo: false, filterable: true, filterColumn: onFilterCourtroom }),
+                        DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, filterable: true, filterColumn: onFilterCourtroomCode }),
                         DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
                         DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
@@ -112,10 +135,18 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
         dispatch(getCourtrooms()); // This data needs to always be available for select lists
     }
 
-    getData(state: RootState, filters: {} | undefined) {
-        const courtrooms = getAllCourtrooms(state) || undefined;
+    getData(state: RootState, filters: any | undefined) {
+        // Get filter data
+        const filterData = this.getFilterData(filters);
+        // console.log(filterData);
+
+        // Get form data
+        const courtrooms = (filters && filters.courtrooms)
+            ? findAllCourtrooms(filters.courtrooms)(state) || undefined
+            : getAllCourtrooms(state);
 
         return {
+            ...filterData,
             courtrooms
         };
     }
