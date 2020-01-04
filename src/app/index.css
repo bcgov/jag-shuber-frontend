@@ -544,6 +544,17 @@ table .form-group {
   margin-bottom: auto;
 }
 
+/* Flex utils for sheriff profile forms, etc */
+.flex-row-wrap {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.flex-row-wrap .form-group {
+  width: auto;
+  margin-left: 15px;
+}
+
 /* Just a visual experiment moving the nav bar down, this could be done with a react portal */
 /* #header-main .nav-tabs {
     position: relative;
