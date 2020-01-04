@@ -591,3 +591,15 @@ h6.modal-title {
   color: white;
   font-weight: bold !important;
 }
+
+.modal-header {
+  background-color: #327AB7;
+  color: white;
+  font-weight: bold;
+}
+
+.modal-header .close {
+  color: white;
+  text-shadow: none;
+  opacity: 1;
+}
