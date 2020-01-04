@@ -29,24 +29,15 @@ const CheckboxColumn = (label?: string, options?: Types.FieldColumnOptions): Typ
         filterComponent: (filterable) ? CheckboxColumn(label, filterComponentOptions) : undefined,
         displayInfo,
         FormRenderer: ({ fieldInstanceName }) => (
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Field
-                    name={`${fieldInstanceName}.${fieldName}`}
-                    component={(p) => <CheckboxField
-                        {...p}
-                        showLabel={false}
-                        // TODO: Provide this via props or something so we can use custom codes...
-                    />}
-                    label={label}
-                />
-                {/* This wrapper just adds equal spacing to the previous form group */}
-                {/* TODO: We need spacing utils */}
-                {/*displayInfo && (
-                    <div className="form-group" style={{ marginLeft: '0.5rem' }}>
-                        <Glyphicon glyph="info-sign" />
-                    </div>
-                )*/}
-            </div>
+            <Field
+                name={`${fieldInstanceName}.${fieldName}`}
+                component={(p) => <CheckboxField
+                    {...p}
+                    showLabel={false}
+                    // TODO: Provide this via props or something so we can use custom codes...
+                />}
+                label={label}
+            />
         ),
         CanceledRender: ({ model }) => (<div>CheckboxField Cancelled Display</div>)
     };

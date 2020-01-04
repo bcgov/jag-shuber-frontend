@@ -35,26 +35,17 @@ const TextAreaColumn = (label?: string, options?: Types.FieldColumnOptions): Typ
         filterComponent: (filterable) ? TextAreaColumn(label, filterComponentOptions) : undefined,
         displayInfo,
         FormRenderer: ({ fieldInstanceName }) => (
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Field
-                    name={`${fieldInstanceName}.${fieldName}`}
-                    rows="1" // TODO: Ability to set number of rows and cols
-                    component={(p) => <TextArea
-                        {...p}
-                        placeholder={placeholder}
-                        showLabel={false}
-                        // TODO: Provide this via props or something so we can use custom codes...
-                    />}
-                    label={label}
-                />
-                {/* This wrapper just adds equal spacing to the previous form group */}
-                {/* TODO: We need spacing utils */}
-                {/*displayInfo && (
-                    <div className="form-group" style={{ marginLeft: '0.5rem' }}>
-                        <Glyphicon glyph="info-sign" />
-                    </div>
-                )*/}
-            </div>
+            <Field
+                name={`${fieldInstanceName}.${fieldName}`}
+                rows="1" // TODO: Ability to set number of rows and cols
+                component={(p) => <TextArea
+                    {...p}
+                    placeholder={placeholder}
+                    showLabel={false}
+                    // TODO: Provide this via props or something so we can use custom codes...
+                />}
+                label={label}
+            />
         ),
         CanceledRender: ({ model }) => (<div>TextField Cancelled Display</div>)
     };

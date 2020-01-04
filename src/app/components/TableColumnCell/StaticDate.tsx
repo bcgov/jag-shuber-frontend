@@ -31,20 +31,11 @@ const StaticDateColumn = (label?: string, options?: Types.FieldColumnOptions): T
         filterComponent: (filterable) ? DateColumn('Date', fieldName, filterComponentOptions) : undefined,
         displayInfo,
         FormRenderer: ({ fieldInstanceName }) => (
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Field
-                    // TODO: Pass in field name as prop or whatever
-                    name={`${fieldInstanceName}.${fieldName}`}
-                    component={(p) => <span className="table-cell-text">{new Date(p.input.value).toDateString()}</span>}
-                />
-                {/* This wrapper just adds equal spacing to the previous form group */}
-                {/* TODO: We need spacing utils */}
-                {/*displayInfo && (
-                    <div className="form-group" style={{ marginLeft: '0.5rem' }}>
-                        <Glyphicon glyph="info-sign" />
-                    </div>
-                )*/}
-            </div>
+            <Field
+                // TODO: Pass in field name as prop or whatever
+                name={`${fieldInstanceName}.${fieldName}`}
+                component={(p) => <span className="table-cell-text">{new Date(p.input.value).toDateString()}</span>}
+            />
         ),
         CanceledRender: ({ model }) => (<div>StaticDate Cancelled Display</div>)
     };
