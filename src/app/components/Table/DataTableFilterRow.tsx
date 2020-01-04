@@ -109,6 +109,14 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
                                     width: '250px'
                                 }}
                             >
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+                                    <FormGroup style={{ flex: '0', marginLeft: '5px', marginRight: '5px' }}>
+                                        <Button bsStyle="default">
+                                            <Glyphicon glyph="remove-sign" /> Clear Filters
+                                        </Button>
+                                    </FormGroup>
+                                </div>
+
                                 {displayHeaderActions && (
                                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
                                         <FormGroup style={{ flex: '0' }}>
