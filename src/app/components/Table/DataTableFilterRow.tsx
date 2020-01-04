@@ -72,7 +72,7 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
             <Fields<Partial<any & T>>
                 names={filterFieldNames}
                 component={({ fields }) => (
-                    <tr style={{backgroundColor: '#eee'}}>
+                    <tr>
                         {expandable && (<th style={{width: '60px'}}/>)}
                         {columns.map((col, colIndex) => {
                             const Column = (col.filterComponent)
