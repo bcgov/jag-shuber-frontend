@@ -84,7 +84,7 @@ class ManageUserRoles extends React.PureComponent<AdminFormProps & Partial<Manag
                                     bsStyle="danger"
                                     // onClick={() => this.handleSave()}
                                 >
-                                    <Glyphicon glyph="ban-circle" />
+                                    <Glyphicon glyph="ban-circle" /> Cancel
                                 </Button>
                             </div>
                         )}
