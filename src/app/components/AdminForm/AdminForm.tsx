@@ -15,7 +15,7 @@ export interface AdminFormProps {
     selectedSection?: string;
     onSelectSection?: (sectionName: string) => void;
     setPluginFilters?: Function;
-    showSheriffProfileModal?: Function;
+    showSheriffProfileModal?: (sheriffId: IdType, isEditing: boolean, sectionName?: string) => {};
     onSubmitSuccess?: () => void;
     initialValues?: any;
 }

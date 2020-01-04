@@ -170,6 +170,10 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                 columns={columns}
                                 expandable={expandable}
                                 filterable={filterable}
+                                displayHeaderActions={displayHeaderActions}
+                                displayHeaderSave={displayHeaderSave}
+                                // TODO: Rename this, what kind of button is it :)
+                                buttonLabel={buttonLabel}
                             />
                         </thead>
                     </Table>
@@ -188,8 +192,8 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                         columns={columns}
                                         expandable={expandable}
                                         filterable={filterable}
-                                        displayHeaderActions={displayHeaderActions}
-                                        displayHeaderSave={displayHeaderSave}
+                                        displayHeaderActions={(!filterable) ? displayHeaderActions : false}
+                                        displayHeaderSave={(!filterable) ? displayHeaderSave : false}
                                         // TODO: Rename this, what kind of button is it :)
                                         buttonLabel={buttonLabel}
                                     />

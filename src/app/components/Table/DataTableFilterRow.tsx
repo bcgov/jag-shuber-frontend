@@ -1,9 +1,10 @@
 import React from 'react';
 import { Fields, FieldArray, FieldsProps } from 'redux-form';
 
-import { Glyphicon } from 'react-bootstrap';
+import { Button, FormGroup, Glyphicon } from 'react-bootstrap';
 
 import * as CellTypes from '../../components/TableColumnCell';
+import HeaderSaveButton from '../../plugins/AdminRoles/containers/HeaderSaveButton';
 
 export interface ColumnRendererProps {
     index: number;
@@ -50,10 +51,14 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
         const componentInstance = this;
 
         const {
+            buttonLabel,
             fieldName,
             columns = [],
+            displayHeaderActions = false,
+            displayHeaderSave = true,
             displayActionsColumn = true,
-            expandable = false
+            expandable = false,
+            initialValue
         } = this.props;
 
         const filterFieldNames = columns.map((col, index) => {
@@ -103,7 +108,23 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
                                 style={{
                                     width: '250px'
                                 }}
-                            />
+                            >
+                                {displayHeaderActions && (
+                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+                                        <FormGroup style={{ flex: '0' }}>
+                                            <Button onClick={() => fields.push(initialValue as T)}>
+                                                <Glyphicon glyph="plus"/> {buttonLabel}
+                                            </Button>
+                                        </FormGroup>
+
+                                        {displayHeaderSave && (
+                                        <FormGroup style={{ flex: '0', marginLeft: '5px' }}>
+                                            <HeaderSaveButton formName={'AdminForm'}/>
+                                        </FormGroup>
+                                        )}
+                                    </div>
+                                )}
+                            </th>
                         )}
                     </tr>
                 )}
