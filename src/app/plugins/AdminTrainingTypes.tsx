@@ -141,7 +141,6 @@ export default class AdminTrainingTypes extends FormContainerBase<AdminTrainingT
         return undefined;
     }
 
-    // TODO: Remove typeId from abstract?
     fetchData(dispatch: Dispatch<{}>, filters: {} | undefined) {
         dispatch(getLeaveSubCodes()); // This data needs to always be available for select lists
     }
