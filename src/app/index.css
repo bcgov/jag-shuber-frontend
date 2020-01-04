@@ -452,3 +452,15 @@ table .form-group {
   border-bottom: 1px solid white;
   border-color: #FDB815; /* BC Gov Gold */
 }
+
+.modal-header {
+  background-color: #327AB7;
+  color: white;
+  font-weight: bold;
+}
+
+.modal-header .close {
+  color: white;
+  text-shadow: none;
+  opacity: 1;
+}
