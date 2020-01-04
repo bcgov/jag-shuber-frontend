@@ -14,21 +14,24 @@ interface LocationSelectorStateProps {
     locations?: Location[];
 }
 
-class LocationSelector extends React.PureComponent<LocationSelectorStateProps & SelectorProps> {
+interface NavLocationSelectorProps {
+    disabled?: boolean;
+}
 
+class LocationSelector extends React.PureComponent<LocationSelectorStateProps & SelectorProps & NavLocationSelectorProps> {
     render() {
-        const { locations = [], label = 'Location', ...rest } = this.props;
+        const { locations = [], label = 'Location', disabled, ...rest } = this.props;
         const selectorValues = locations
-            .map(location => ({ key: location.id, value: location.name }))
+            .map(location => ({ key: location.id, value: location.name }));
 
         // TODO: Not sure if this is the best solution, but it gets things working they way we want to for now...
         //  Just keep an eye out for ALL_LOCATIONS in the Client.
         selectorValues.unshift({ key: 'ALL_LOCATIONS', value: 'All Locations' });
 
         return (
-            <FormGroup>
+            <FormGroup className={`nav-location-selector${(disabled) ? ' is-disabled' : ''}`}>
                 <InputGroup>
-                    <InputGroup.Addon style={{ backgroundColor: '#5cb85c', color: 'white'}}><Glyphicon glyph="globe" /></InputGroup.Addon>
+                    <InputGroup.Addon className="nav-location-selector-addon"><Glyphicon glyph="globe" /></InputGroup.Addon>
                     <Selector
                         // style={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
                         data={selectorValues}
