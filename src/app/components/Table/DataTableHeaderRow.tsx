@@ -90,7 +90,7 @@ export default class DataTableHeaderRow<T> extends React.Component<DataTableHead
                                 </FormGroup>
 
                                 {displayHeaderSave && (
-                                <FormGroup style={{ flex: '0', marginLeft: '5px' }}>
+                                <FormGroup style={{ flex: '0', marginLeft: '5px', marginRight: '5px' }}>
                                     <HeaderSaveButton formName={'AdminForm'}/>
                                 </FormGroup>
                                 )}
