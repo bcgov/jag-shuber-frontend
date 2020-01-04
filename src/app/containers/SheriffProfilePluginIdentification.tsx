@@ -63,50 +63,54 @@ export default class SheriffProfilePluginId extends SheriffProfileSectionPlugin<
 
     FormComponent = (props: SheriffProfilePluginProps) => (
         <div>
-            <Field
-                name={this.formFieldNames.firstName}
-                component={TextField as any}
-                label="First Name"
-                validate={[Validators.required]}
-            />
-            <Field
-                name={this.formFieldNames.lastName}
-                component={TextField as any}
-                label="Last Name"
-                validate={[Validators.required]}
-            />
-            <Field
-                name={this.formFieldNames.rankCode}
-                component={
-                    (p) => <SelectorField 
-                        {...p} 
-                        SelectorComponent={
-                            (sp) => <SheriffRankCodeSelector {...sp} />}  
-                    /> }
-                label="Rank"
-                validate={[Validators.required]}
-            />
-            <Field
-                name={this.formFieldNames.badgeNo}
-                component={TextField as any}
-                label="Badge Number"
-                validate={[Validators.required]}
-            />
-            <Field
-                name={this.formFieldNames.alias}
-                component={TextField as any}
-                label="Alias"
-            />
-            <Field
-                name={this.formFieldNames.genderCode}
-                component={
-                    (p) => <SelectorField 
-                        {...p} 
-                        SelectorComponent={
-                            (sp) => <GenderSelector {...sp} />}  
-                    /> }
-                label="Gender"
-            />
+            <div style={{ display: 'flex' }}>
+                <Field
+                    name={this.formFieldNames.firstName}
+                    component={TextField as any}
+                    label="First Name"
+                    validate={[Validators.required]}
+                />
+                <Field
+                    name={this.formFieldNames.lastName}
+                    component={TextField as any}
+                    label="Last Name"
+                    validate={[Validators.required]}
+                />
+                <Field
+                    name={this.formFieldNames.alias}
+                    component={TextField as any}
+                    label="Alias"
+                />
+            </div>
+            <div style={{ display: 'flex' }}>
+                <Field
+                    name={this.formFieldNames.rankCode}
+                    component={
+                        (p) => <SelectorField
+                            {...p}
+                            SelectorComponent={
+                                (sp) => <SheriffRankCodeSelector {...sp} />}
+                        /> }
+                    label="Rank"
+                    validate={[Validators.required]}
+                />
+                <Field
+                    name={this.formFieldNames.badgeNo}
+                    component={TextField as any}
+                    label="Badge Number"
+                    validate={[Validators.required]}
+                />
+                <Field
+                    name={this.formFieldNames.genderCode}
+                    component={
+                        (p) => <SelectorField
+                            {...p}
+                            SelectorComponent={
+                                (sp) => <GenderSelector {...sp} />}
+                        /> }
+                    label="Gender"
+                />
+            </div>
         </div>
     )
 }
