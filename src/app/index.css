@@ -30,19 +30,19 @@ body {
 
 #header-main{
   z-index: 200;
+  margin:5px 0px;
 }
 
 #header-main .logo{
   text-align: center;
-  position:absolute;
+  /*position:absolute;*/
   width:120px;
   z-index: 100;
-  margin:5px 15px;
 }
 
-#header-main .logo img{
+/*#header-main .logo img{
   width:100%;
-}
+}*/
 
 .navbar{
   margin-bottom: 0px
@@ -63,7 +63,7 @@ body {
   }
 
   .navbar{
-    margin-left:150px;
+    margin-left:5px;
     margin-right:5px;
   }
 }
@@ -416,6 +416,51 @@ fieldset.with-border {
     margin-left: -15px;
     top: 10px;
     position: relative;
+}
+
+#header-main .navbar-nav > li a {
+  color: white !important;
+}
+
+#header-main .navbar-nav > li .dropdown-menu a {
+  color: #222 !important;
+}
+
+#header-main .nav-tabs {
+  border-bottom: none;
+}
+
+#header-main .navbar-default {
+  background: transparent;
+  border-radius: 0;
+  border-color: transparent;
+  border: none;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#header-main .navbar-default .navbar-nav>.active>a,
+#header-main .navbar-default .navbar-nav>.active>a:focus,
+#header-main .navbar-default .navbar-nav>.active>a:hover,
+#header-main .navbar-default .navbar-nav>.open>a,
+#header-main .navbar-default .navbar-nav>.open>a:focus,
+#header-main .navbar-default .navbar-nav>.open>a:hover {
+  background: transparent;
+}
+
+#header-main .logo {
+  text-align: center;
+  /* position: absolute; */
+  width: 120px;
+  z-index: 100;
+  position: relative;
+  top: -15px;
+}
+
+/* Just kill this nasty thing for now */
+.navbar-default .navbar-brand,
+.navbar-default .navbar-brand:hover {
+  color: transparent;
 }
 
 @media screen and (max-width: 1440px) {

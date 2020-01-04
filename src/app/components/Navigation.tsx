@@ -105,15 +105,13 @@ export default class Navigation extends React.Component<NavigationProps, any> {
     render() {
         return (
             <div id="header-main" >
-                <span className="logo">
-                    <img className="hidden-xs" src={bcLogo} />
-                    <img className="visible-xs" src={bcLogoDark} />
-                </span>
-
-
-                <Navbar staticTop={true} fluid={true} style={{ borderRadius: 4, maxWidth: '84.5%' }}>
+                <Navbar staticTop={true} fluid={true} style={{ maxWidth: '93%' }}>
                     <Navbar.Header color="#003366">
                         <NavbarBrand color="#003366">
+                            <span className="logo">
+                                <img className="hidden-xs" src={bcLogo} />
+                                <img className="visible-xs" src={bcLogoDark} />
+                            </span>
                             Sheriff Scheduling System
                         </NavbarBrand>
                     </Navbar.Header>
