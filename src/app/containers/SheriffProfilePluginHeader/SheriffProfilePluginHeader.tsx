@@ -4,13 +4,14 @@ import toTitleCase from '../../infrastructure/toTitleCase';
 import {
     Image
 } from 'react-bootstrap';
-import { 
-    SheriffProfilePluginBase, 
-    SheriffProfilePluginProps 
+import {
+    SheriffProfilePluginBase,
+    SheriffProfilePluginProps
 } from '../../components/SheriffProfile/SheriffProfilePlugin';
 import { Sheriff } from '../../api';
 import './SheriffProfilePluginHeader.css';
 import avatarImg from '../../assets/images/avatar.png';
+import SheriffRankDisplay from '../SheriffRankDisplay';
 
 export default class SheriffProfilePluginHeader extends SheriffProfilePluginBase<Sheriff> {
     name = 'header';
@@ -23,6 +24,8 @@ export default class SheriffProfilePluginHeader extends SheriffProfilePluginBase
                 firstName = '',
                 lastName = '',
                 imageUrl = '',
+                badgeNo = '',
+                rankCode = ''
             } = {} }) =>
                 (
                     <div className="sheriff-profile-header">
@@ -32,9 +35,11 @@ export default class SheriffProfilePluginHeader extends SheriffProfilePluginBase
                             width="115"
                             height="115"
                         />
-                        <h3 style={{ paddingTop: 8 }} className="sheriff-name">
-                            {`${lastName.toUpperCase()}, ${toTitleCase(firstName)}`}
-                        </h3>
+                        <div style={{ marginTop: 30, fontSize: 14 }}>#{badgeNo}</div>
+                        <div style={{ fontWeight: 'bold', fontSize: 18 }}>
+                            {firstName.toUpperCase()} {lastName.toUpperCase()}
+                        </div>
+                        <div style={{ fontSize: 14 }}><SheriffRankDisplay code={rankCode} /></div>
                     </div>
                 )
             }
@@ -45,7 +50,11 @@ export default class SheriffProfilePluginHeader extends SheriffProfilePluginBase
         <SheriffDisplay
             sheriffId={sheriffId}
             RenderComponent={({ sheriff: {
+                firstName = '',
+                lastName = '',
                 imageUrl = '',
+                badgeNo = '',
+                rankCode = ''
             } = {} }) =>
                 (
                     <div style={{ padding: 10, textAlign: 'center' }}>
@@ -55,9 +64,14 @@ export default class SheriffProfilePluginHeader extends SheriffProfilePluginBase
                             width="115"
                             height="115"
                         />
+                        <div style={{ marginTop: 30, fontSize: 14 }}>#{badgeNo}</div>
+                        <div style={{ fontWeight: 'bold', fontSize: 18 }}>
+                            {firstName.toUpperCase()} {lastName.toUpperCase()}
+                        </div>
+                        <div style={{ fontSize: 14 }}><SheriffRankDisplay code={rankCode} /></div>
                     </div>
                 )
-            } 
+            }
         />
     )
 }
