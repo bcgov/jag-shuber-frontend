@@ -17,7 +17,7 @@ class ManageUsers extends React.PureComponent<Partial<ManageUsersProps>> {
                 toolbar={
                     <Page.Toolbar
                         right={(
-                            <div style={{ marginTop: 3 }}>
+                            <div style={{ marginTop: 3, paddingTop: '10px' }}>
                                 &nbsp;
                                 <Button
                                     bsStyle="secondary"

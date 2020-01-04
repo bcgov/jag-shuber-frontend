@@ -55,21 +55,12 @@ const TextFieldColumn = (label?: string, options?: Types.FieldColumnOptions): Ty
         filterColumn,
         displayInfo,
         FormRenderer: ({ fieldInstanceName }) => (
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Field
-                    name={`${fieldInstanceName}.${fieldName}`}
-                    component={FieldRenderer}
-                    label={label}
-                    onChange={onChange}
-                />
-                {/* This wrapper just adds equal spacing to the previous form group */}
-                {/* TODO: We need spacing utils */}
-                {/*displayInfo && (
-                    <div className="form-group" style={{ marginLeft: '0.5rem' }}>
-                        <Glyphicon glyph="info-sign" />
-                    </div>
-                )*/}
-            </div>
+            <Field
+                name={`${fieldInstanceName}.${fieldName}`}
+                component={FieldRenderer}
+                label={label}
+                onChange={onChange}
+            />
         ),
         CanceledRender: ({ model }) => (<div>TextField Cancelled Display</div>)
     };

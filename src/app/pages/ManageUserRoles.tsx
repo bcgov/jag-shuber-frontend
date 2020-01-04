@@ -40,14 +40,14 @@ class ManageUserRoles extends React.PureComponent<AdminFormProps & Partial<Manag
                     <Page.Toolbar
                         // TODO: Figure out a better way to space this... just a temporary placeholder / spacer for now
                         left={(
-                            <div style={{ flex: 1, display: 'flex', position: 'relative', justifyContent: 'center' }}>
+                            <div style={{ flex: 1, display: 'flex', position: 'relative', justifyContent: 'center', paddingTop: '10px' }}>
                                 <div className="admin-form-filters-toggle">
-                                    <Glyphicon glyph="chevron-down" />&nbsp;&nbsp;Toggle Search Filters
+                                    <Glyphicon glyph="chevron-down" />&nbsp;&nbsp;Display User Search Filters
                                 </div>
                             </div>
                         )}
                         right={(
-                            <div style={{ marginTop: 3 }}>
+                            <div style={{ marginTop: 3, paddingTop: '10px' }}>
                                 &nbsp;
                                 {/* <Button
                                     bsStyle="secondary"

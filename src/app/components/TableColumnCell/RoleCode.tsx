@@ -29,27 +29,19 @@ const RoleCodeColumn = (label?: string, options?: Types.FieldColumnOptions): Typ
         filterable: filterable,
         filterComponent: (filterable) ? RoleCodeColumn(label, filterComponentOptions) : undefined,
         FormRenderer: ({ fieldInstanceName }) => (
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Field
-                    name={`${fieldInstanceName}.leaveSubCode`}
-                    component={(p) => <SelectorField
-                        {...p}
-                        showLabel={false}
-                        // TODO: Provide this via props or something so we can use custom codes...
-                        SelectorComponent={
-                            (sp) =>
-                                <LeaveTrainingSubCodeSelector {...sp} />
-                            }
-                    />}
-                    label={label}
-                >
-                </Field>
-                {/* This wrapper just adds equal spacing to the previous form group */}
-                {/* TODO: We need spacing utils */}
-                <div className="form-group" style={{ marginLeft: '0.5rem' }}>
-                    <Glyphicon glyph="info-sign" />
-                </div>
-            </div>
+            <Field
+                name={`${fieldInstanceName}.leaveSubCode`}
+                component={(p) => <SelectorField
+                    {...p}
+                    showLabel={false}
+                    // TODO: Provide this via props or something so we can use custom codes...
+                    SelectorComponent={
+                        (sp) =>
+                            <LeaveTrainingSubCodeSelector {...sp} />
+                        }
+                />}
+                label={label}
+            />
         ),
         CanceledRender: ({ model }) => (
             <LeaveSubCodeDisplay subCode={model.leaveSubCode} />
