@@ -25,7 +25,7 @@ class PageToolbar extends React.PureComponent<PageToolbarProps>{
                     maxWidth: '85%',
                     minWidth: 800,
                     margin: '0 auto',
-                    height: 46,
+                    height: 56,
                     borderRadius: 0,
                     ...style
                 }}
