@@ -51,14 +51,10 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
         const componentInstance = this;
 
         const {
-            buttonLabel,
             fieldName,
             columns = [],
-            displayHeaderActions = false,
-            displayHeaderSave = true,
             displayActionsColumn = true,
-            expandable = false,
-            initialValue
+            expandable = false
         } = this.props;
 
         const filterFieldNames = columns.map((col, index) => {
@@ -116,22 +112,6 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
                                         </Button>
                                     </FormGroup>
                                 </div>
-
-                                {displayHeaderActions && (
-                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-                                        <FormGroup style={{ flex: '0' }}>
-                                            <Button onClick={() => fields.push(initialValue as T)}>
-                                                <Glyphicon glyph="plus"/> {buttonLabel}
-                                            </Button>
-                                        </FormGroup>
-
-                                        {displayHeaderSave && (
-                                        <FormGroup style={{ flex: '0', marginLeft: '5px', marginRight: '5px' }}>
-                                            <HeaderSaveButton formName={'AdminForm'}/>
-                                        </FormGroup>
-                                        )}
-                                    </div>
-                                )}
                             </th>
                         )}
                     </tr>
