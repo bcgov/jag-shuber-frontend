@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { InputGroup, FormGroup, Glyphicon } from 'react-bootstrap';
+import { InputGroup, FormGroup, Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap';
 
 import { RootState } from '../store';
 import { Location } from '../api';
@@ -34,7 +34,11 @@ class LocationSelector extends React.PureComponent<LocationSelectorStateProps & 
         return (
             <FormGroup className={`nav-location-selector${(isDisabled) ? ' is-disabled' : ''}`}>
                 <InputGroup>
-                    <InputGroup.Addon className="nav-location-selector-addon"><Glyphicon glyph="globe" /></InputGroup.Addon>
+                    <InputGroup.Addon className="nav-location-selector-addon">
+                        <OverlayTrigger overlay={(<Tooltip>Change the Active Location</Tooltip>)} placement={'left'}>
+                            <Glyphicon glyph="globe" />
+                        </OverlayTrigger>
+                    </InputGroup.Addon>
                     <Selector
                         // style={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
                         data={selectorValues}

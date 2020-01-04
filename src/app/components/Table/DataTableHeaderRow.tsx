@@ -1,7 +1,7 @@
 import React from 'react';
 import { FieldsProps } from 'redux-form';
 
-import { Button, FormGroup, Glyphicon } from 'react-bootstrap';
+import { Button, FormGroup, Glyphicon, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 import * as CellTypes from '../../components/TableColumnCell';
 
@@ -68,10 +68,30 @@ export default class DataTableHeaderRow<T> extends React.Component<DataTableHead
         return (
 
             <tr>
-                {expandable && (<th style={{width: '60px'}}/>)}
+                {expandable && (
+                    <th style={{width: '60px'}}>
+                        <FormGroup style={{ textAlign: 'left' }}>
+                            <Button
+                                bsStyle="link"
+                                onClick={(e) => e.preventDefault()}
+                                style={{color: '#666666'}}
+                            >
+                                <OverlayTrigger overlay={(<Tooltip>Use the <Glyphicon glyph="triangle-right" /> to expand and collapse row details</Tooltip>)} placement={'right'}>
+                                    <Glyphicon glyph="info-sign" />
+                                </OverlayTrigger>
+                            </Button>
+                        </FormGroup>
+                    </th>
+                )}
                 {columns.map((col, colIndex) => (
                     <th className="text-left" key={colIndex} style={col.colStyle}>
-                        {col.title}&nbsp;{col.displayInfo && (<Glyphicon glyph="info-sign"/>)}
+                        {col.title}&nbsp;{col.displayInfo && (
+                            <OverlayTrigger
+                                overlay={(<Tooltip>This field is for...</Tooltip>)}
+                                placement={'top'}>
+                                <Glyphicon glyph="info-sign"/>
+                            </OverlayTrigger>
+                        )}
                     </th>
                 ))}
 

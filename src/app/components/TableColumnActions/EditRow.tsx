@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Glyphicon } from 'react-bootstrap';
+import { Button, Glyphicon, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { TableColumnActionProps } from './index';
 
 const EditRow = ({ model, onClick}: TableColumnActionProps) => {
@@ -8,9 +8,11 @@ const EditRow = ({ model, onClick}: TableColumnActionProps) => {
     };
 
     return (
-        <Button bsStyle="primary" onClick={handleClick}>
-            <Glyphicon glyph="edit" />
-        </Button>
+        <OverlayTrigger overlay={(<Tooltip>Edit</Tooltip>)} placement={'left'}>
+            <Button bsStyle="primary" onClick={handleClick}>
+                <Glyphicon glyph="edit" />
+            </Button>
+        </OverlayTrigger>
     );
 };
 
