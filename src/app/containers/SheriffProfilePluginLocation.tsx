@@ -47,14 +47,14 @@ export default class SheriffProfilePluginLocation extends SheriffProfileSectionP
     )
 
     FormComponent = ({ sheriffId }: SheriffProfilePluginProps) => (
-        <div>
+        <div style={{ display: 'flex' }}>
             <Field
                 name={this.formFieldNames.homeLocation}
                 component={
-                    (p) => <SelectorField 
-                        {...p} 
+                    (p) => <SelectorField
+                        {...p}
                         SelectorComponent={
-                            (sp) => <LocationSelector label="Home Location" {...sp} />}  
+                            (sp) => <LocationSelector label="Home Location" {...sp} />}
                     /> }
                 label="Home Location"
                 validate={[Validators.required]}
@@ -62,10 +62,10 @@ export default class SheriffProfilePluginLocation extends SheriffProfileSectionP
             <Field
                 name={this.formFieldNames.currentLocation}
                 component={
-                    (p) => <SelectorField 
-                        {...p} 
+                    (p) => <SelectorField
+                        {...p}
                         SelectorComponent={
-                            (sp) => <LocationSelector label="Current Location" {...sp} />}  
+                            (sp) => <LocationSelector label="Current Location" {...sp} />}
                     /> }
                 label="Current Location"
             />
