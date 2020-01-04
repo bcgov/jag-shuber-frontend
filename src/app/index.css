@@ -344,3 +344,14 @@ table tfoot {
 table .form-group {
   margin-bottom: auto;
 }
+
+/* Flex utils for sheriff profile forms, etc */
+.flex-row-wrap {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.flex-row-wrap .form-group {
+  width: auto;
+  margin-left: 15px;
+}

@@ -47,7 +47,7 @@ export default class SheriffProfilePluginLocation extends SheriffProfileSectionP
     )
 
     FormComponent = ({ sheriffId }: SheriffProfilePluginProps) => (
-        <div style={{ display: 'flex' }}>
+        <div className="flex-row-wrap">
             <Field
                 name={this.formFieldNames.homeLocation}
                 component={
