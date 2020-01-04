@@ -466,6 +466,7 @@ fieldset.with-border {
 .nav > li > a {
   background: #003366;
   border-bottom-color: transparent;
+  font-weight: bold;
 }
 
 .nav > li:hover > a {
