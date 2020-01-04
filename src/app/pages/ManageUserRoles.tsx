@@ -1,5 +1,6 @@
 import React from 'react';
-import { Well } from 'react-bootstrap';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { Button, Glyphicon, Well } from 'react-bootstrap';
 
 // import { IdType } from '../api';
 import Page from '../components/Page/Page';
@@ -8,10 +9,11 @@ import { AdminFormProps } from '../components/AdminForm/AdminForm';
 
 // Import plugins
 import AdminAssignUserRolesPlugin from '../plugins/AdminRoles/AdminAssignUserRoles';
+import SheriffProfileCreateModal from '../containers/SheriffProfileCreateModal';
 
-export interface ManageUserRolesProps {}
+export interface ManageUserRolesProps extends RouteComponentProps<any>{}
 
-class ManageUserRoles extends React.PureComponent<AdminFormProps> {
+class ManageUserRoles extends React.PureComponent<AdminFormProps & Partial<ManageUserRolesProps>> {
     state = {
       isEditing: true
     };
@@ -29,10 +31,59 @@ class ManageUserRoles extends React.PureComponent<AdminFormProps> {
     }
 
     render() {
+        const { history, location } = this.props;
         const { isEditing } = this.state;
 
         return (
-            <Page>
+            <Page
+                toolbar={
+                    <Page.Toolbar
+                        right={(
+                            <div style={{ marginTop: 3 }}>
+                                &nbsp;
+                                {/* <Button
+                                    bsStyle="secondary"
+                                    onClick={(): void => {
+                                        if (history) history.push('/roles/assign');
+                                    }}
+                                >
+                                    <Glyphicon glyph="th-list" /> View as List
+                                </Button>
+                                &nbsp;&nbsp; */}
+                                <Button
+                                    bsStyle="secondary"
+                                    onClick={(): void => {
+                                        if (history) history.push('/users/manage');
+                                    }}
+                                >
+                                    <Glyphicon glyph="th" /> View as Grid
+                                </Button>
+                                &nbsp;&nbsp;
+                                <SheriffProfileCreateModal.ShowButton />
+                                {/* <SheriffProfileModal.ShowButton
+                                    sheriffId={'90b48bc8-5cc2-48f3-8b28-d7121298a449'}
+                                >
+                                    Try This
+                                </SheriffProfileModal.ShowButton>*/}
+                                &nbsp;&nbsp;
+                                <Button
+                                    bsStyle="success"
+                                    // onClick={() => this.handleSave()}
+                                >
+                                    <Glyphicon glyph="ok" /> Save
+                                </Button>
+                                &nbsp;&nbsp;
+                                <Button
+                                    bsStyle="danger"
+                                    // onClick={() => this.handleSave()}
+                                >
+                                    <Glyphicon glyph="ban-circle" />
+                                </Button>
+                            </div>
+                        )}
+                    />
+                }
+            >
                 <Well
                     style={{
                         display: 'flex',
@@ -59,4 +110,4 @@ class ManageUserRoles extends React.PureComponent<AdminFormProps> {
     }
 }
 
-export default ManageUserRoles;
+export default withRouter(ManageUserRoles);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { FieldsProps } from 'redux-form';
 
-import { Button, Glyphicon } from 'react-bootstrap';
+import { Button, FormGroup, Glyphicon } from 'react-bootstrap';
 
 import * as CellTypes from '../../components/TableColumnCell';
 
@@ -82,17 +82,19 @@ export default class DataTableHeaderRow<T> extends React.Component<DataTableHead
                         }}
                     >
                         {displayHeaderActions && (
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+                                <FormGroup style={{ flex: '0' }}>
+                                    <Button onClick={() => fields.push(initialValue as T)}>
+                                        <Glyphicon glyph="plus"/> {buttonLabel}
+                                    </Button>
+                                </FormGroup>
 
-                            <>
                                 {displayHeaderSave && (
+                                <FormGroup style={{ flex: '0', marginLeft: '5px' }}>
                                     <HeaderSaveButton formName={'AdminForm'}/>
+                                </FormGroup>
                                 )}
-                                <Button
-                                    onClick={() => fields.push(initialValue as T)}
-                                    style={{float: 'right'}}>
-                                    <Glyphicon glyph="plus"/> {buttonLabel}
-                                </Button>
-                            </>
+                            </div>
                         )}
                     </th>
                 )}

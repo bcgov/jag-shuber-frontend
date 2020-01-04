@@ -1,19 +1,49 @@
 import React from 'react';
-import { Well } from 'react-bootstrap';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { Button, Glyphicon, Well } from 'react-bootstrap';
 import Page from '../components/Page/Page';
 
 import SheriffListComposable from '../containers/SheriffListComposable';
 import SheriffProfileCreateModal from '../containers/SheriffProfileCreateModal';
 
-class ManageUsers extends React.PureComponent {
+export interface ManageUsersProps extends RouteComponentProps<any>{}
+
+class ManageUsers extends React.PureComponent<Partial<ManageUsersProps>> {
     render() {
+        const { history, location } = this.props;
+
         return (
             <Page
                 toolbar={
                     <Page.Toolbar
                         right={(
                             <div style={{ marginTop: 3 }}>
+                                &nbsp;
+                                <Button
+                                    bsStyle="secondary"
+                                    onClick={(): void => {
+                                        if (history) history.push('/roles/assign');
+                                    }}
+                                >
+                                    <Glyphicon glyph="th-list" /> View as List
+                                </Button>
+                                &nbsp;&nbsp;
+                                {/* <Button
+                                    bsStyle="secondary"
+                                    onClick={(): void => {
+                                        if (history) history.push('/users/manage');
+                                    }}
+                                >
+                                    <Glyphicon glyph="th" /> View as Grid
+                                </Button>
+                                &nbsp;&nbsp; */}
                                 <SheriffProfileCreateModal.ShowButton />
+                                &nbsp;&nbsp;
+                                {/* <SheriffProfileModal.ShowButton
+                                    sheriffId={'90b48bc8-5cc2-48f3-8b28-d7121298a449'}
+                                >
+                                    Try This
+                                </SheriffProfileModal.ShowButton> */}
                             </div>
                         )}
                     />
@@ -39,4 +69,4 @@ class ManageUsers extends React.PureComponent {
     }
 }
 
-export default ManageUsers;
+export default withRouter(ManageUsers);

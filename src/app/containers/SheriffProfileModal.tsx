@@ -90,23 +90,35 @@ const modalConfig = {
     name: 'SheriffProfileModal'
 };
 
-const showAction = (sheriffId: IdType, isEditing: boolean = false, sectionName?: string) => (
-    showModal(modalConfig.name, { sheriffId, isEditing, sectionName })
-);
-// Here we extend the Higher Order Component so that we can add on some static
-// members that can be used to hide the modal configuration from consumers
-export default class extends connectModal(modalConfig)(
-    connect<SheriffProfileModalStateProps, SheriffProfileModalDispatchProps, SheriffProfileModalProps, RootState>(
-        (state, { sheriffId }) => ({
-            sheriff: getSheriff(sheriffId)(state) as Sheriff
-        }),
-        { showSheriffProfileModal: showAction })
-        (SheriffProfileModal) as any
-) {
+const showAction = (sheriffId: IdType, isEditing: boolean = false, sectionName?: string) => {
+    const modalProps = { sheriffId, isEditing, sectionName };
+    return showModal(modalConfig.name, modalProps);
+};
+
+const mapStateToModalProps = (state: RootState, { sheriffId }: SheriffProfileModalProps) => {
+    const newProps = { sheriff: getSheriff(sheriffId)(state) as Sheriff };
+    return newProps;
+};
+
+const mapDispatchToModalProps = () => {
+    const newProps = { showSheriffProfileModal: showAction };
+    return newProps;
+};
+
+const ConnectedModal = connect<
+    SheriffProfileModalStateProps, SheriffProfileModalDispatchProps, SheriffProfileModalProps, RootState>(
+        mapStateToModalProps,
+        mapDispatchToModalProps
+)(SheriffProfileModal) as any;
+
+const ReduxModal = connectModal(modalConfig)(ConnectedModal);
+
+export default class extends ReduxModal {
     static modalName = modalConfig.name;
     static ShowAction = showAction;
-    static ShowButton = (props: SheriffProfileModalProps) => (
-        <ConnectedShowModalButton modalName={modalConfig.name} modalProps={props} />
-    )
+    static ShowButton = (props: SheriffProfileModalProps) => {
+        return <ConnectedShowModalButton modalName={modalConfig.name} modalProps={props} />;
+    };
+
     static HideAction = () => hideModal(modalConfig.name);
 }

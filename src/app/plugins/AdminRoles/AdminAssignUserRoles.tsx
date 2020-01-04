@@ -73,8 +73,6 @@ import RemoveRow from '../../components/TableColumnActions/RemoveRow';
 import ExpireRow from '../../components/TableColumnActions/ExpireRow';
 import LocationSelector from '../../containers/LocationSelector';
 
-import { show as showModal, hide as hideModal } from 'redux-modal';
-
 // TODO: Fix this interface!
 export interface AdminAssignUserRolesProps extends FormContainerProps {
     // roles?: any[];
@@ -295,10 +293,11 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                                             fields={fields}
                                             index={index}
                                             model={model}
-                                            onClick={(userModel) => {
+                                            onClick={(userModel: Partial<User>) => {
                                                 const { sheriffId } = userModel;
                                                 if (typeof showSheriffProfileModal === 'function' && sheriffId) {
-                                                    showSheriffProfileModal(sheriffId);
+                                                    // TODO: See if this works....
+                                                    showSheriffProfileModal(sheriffId, true, 'leaves');
                                                     // showModal('SheriffProfileModal', { sheriffId, isEditing: true, show: true });
                                                 }
                                             }}

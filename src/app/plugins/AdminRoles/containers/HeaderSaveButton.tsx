@@ -36,8 +36,8 @@ class SaveButton extends React.PureComponent<SaveButtonProps>{
         return (
             <Button
                 bsStyle="success"
-                style={{ float: 'right', marginLeft: '5px' }}
                 onClick={() => this.handleSave()}
+
             >
                 <Glyphicon glyph="ok" /> Save
             </Button>
