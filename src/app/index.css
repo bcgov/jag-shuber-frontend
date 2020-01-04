@@ -235,7 +235,16 @@ th .glyphicon-filter {
 }
 
 /* DataTables */
-.data-table-filter-row {
+.data-table-filter-row table,
+.data-table-header-row table {
+  background-color: #eee;
+  table-layout: fixed;
+  width: 100%;
+  border: 1px solid lightgrey;
+  border-bottom: none;
+}
+
+.fixed-filters-data-table .data-table-filter-row {
   width: 100%;
   border: none;
   position: fixed;
@@ -245,25 +254,34 @@ th .glyphicon-filter {
   background-color: #327AB7;
 }
 
-.data-table-filter-row table {
+.fixed-filters-data-table .data-table-filter-row table {
   table-layout: fixed;
   margin-bottom: 0;
   border: none;
+  background-color: transparent;
 }
 
-.data-table-filter-row table thead th {
+.fixed-filters-data-table .data-table-filter-row table thead th {
   border: none;
 }
 
-.data-table-header-row {
+.fixed-filters-data-table .data-table-header-row {
   margin-top: 9rem !important;
 }
 
-.data-table-header-row table {
+.fixed-filters-data-table .data-table-header-row .data-table-header-row {
+  margin-top: auto !important;
+}
+
+.fixed-filters-data-table .data-table-header-row table {
   table-layout: fixed;
   width: 100%;
   border: 1px solid lightgrey;
   border-bottom: none;
+}
+
+.data-table .data-table table {
+  margin-bottom: auto !important;
 }
 
 
