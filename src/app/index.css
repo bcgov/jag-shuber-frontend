@@ -214,6 +214,21 @@ th .glyphicon-filter {
   text-align: center;
 }
 
+/* Location selector */
+.nav-location-selector-addon {
+  background-color: #327AB7;
+  color: white;
+}
+
+.nav-location-selector.is-disabled .nav-location-selector-addon {
+  background-color: #777;
+  color: white;
+}
+
+.nav-location-selector.is-disabled .form-control {
+  background-color: #efefef;
+}
+
 /* New user bar */
 .admin-form-filters-toggle {
   text-align: center;
