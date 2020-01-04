@@ -7,6 +7,8 @@ import { show as showModal, hide as hideModal } from 'redux-modal';
 import { Button } from 'react-bootstrap';
 import SheriffProfile from './SheriffProfile';
 import { connect } from 'react-redux';
+import { SheriffProfileModalDispatchProps } from './SheriffProfileModal';
+import { RootState } from '../store';
 
 interface SheriffProfileCreateModalProps {
 
@@ -61,9 +63,12 @@ const modalConfig = {
 const showAction = (props: SheriffProfileCreateModalProps = {}) => (
     showModal(modalConfig.name, props)
 );
-// Here we extend the Higher Order Component so that we can add on some static
-// members that can be used to hide the modal configuration from consumers
-export default class extends connectModal(modalConfig)(SheriffProfileCreateModal as any) {
+
+const ConnectedModal = SheriffProfileCreateModal as any;
+
+const ReduxModal = connectModal(modalConfig)(ConnectedModal);
+
+export default class extends ReduxModal {
     static modalName = modalConfig.name;
     static ShowAction = showAction;
     static ShowButton = connect<{}, { showAction: (props: SheriffProfileCreateModalProps) => void }, SheriffProfileCreateModalProps>(undefined, { showAction })(
