@@ -286,7 +286,7 @@ export default class extends
             new SheriffProfilePluginLocation(),
             new SheriffProfilePluginLeaves(),
             new SheriffProfilePluginTraining(),
-            new SheriffProfilePluginRoles()
+            // new SheriffProfilePluginRoles()
         ]
     };
     static SubmitButton = (props: Partial<SubmitButtonProps>) => (

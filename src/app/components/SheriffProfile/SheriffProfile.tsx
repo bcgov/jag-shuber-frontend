@@ -72,14 +72,17 @@ export default class SheriffProfile extends React.Component<InjectedFormProps<an
         selectedSection = selectedSection ? selectedSection : sectionPlugins[0].name;
         return (
             <div>
-                {nonSectionPlugins.map((p) => this.renderPlugin(p))}
+
                 <Tab.Container
                     id="profile-sections"
                     onSelect={(key: any) => this.handleSelectSection(key)}
                     activeKey={selectedSection}
                 >
                     <Row className="clearfix">
-                        <Col sm={12}>
+                        <Col md={12} lg={4}>
+                            {nonSectionPlugins.map((p) => this.renderPlugin(p))}
+                        </Col>
+                        <Col md={12} lg={8}>
                             <Nav bsStyle="tabs">
                                 {
                                     sectionPlugins.map((p) => {
@@ -94,8 +97,6 @@ export default class SheriffProfile extends React.Component<InjectedFormProps<an
                                     })
                                 }
                             </Nav>
-                        </Col>
-                        <Col sm={12}>
                             <Tab.Content animation={false}>
                                 {
                                     sectionPlugins
