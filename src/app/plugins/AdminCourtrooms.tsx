@@ -144,7 +144,6 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
         return undefined;
     }
 
-    // TODO: Remove typeId from abstract
     fetchData(dispatch: Dispatch<{}>, filters: {} | undefined) {
         dispatch(getCourtrooms()); // This data needs to always be available for select lists
     }

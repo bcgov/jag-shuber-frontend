@@ -168,7 +168,7 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
         );
     }
 
-    // TODO: Figure out why Fragments aren't working...
+    // TODO: Alternate display if no records round?
     DisplayComponent = (props: FormContainerProps<AdminFrontendScopesDisplayProps>) => (
         <div>
             {/*<Alert>No roles exist</Alert>*/}
@@ -180,8 +180,6 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
         return undefined;
     }
 
-    // TODO: Not sure if this should be roleId orclear
-    //  clearwhat, I'm not there yet...
     fetchData(dispatch: Dispatch<{}>, filters: {} | undefined) {
         dispatch(getFrontendScopes()); // This data needs to always be available for select lists
         dispatch(getFrontendScopePermissions()); // This data needs to always be available for select lists

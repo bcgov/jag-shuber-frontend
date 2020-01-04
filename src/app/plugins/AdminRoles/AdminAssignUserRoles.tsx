@@ -383,7 +383,6 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
         return undefined;
     }
 
-    // TODO: Remove roleId from abstract
     // TODO: If we need to pre filter or server side filter,
     //  we'd implement filters here, filters is just a placeholder for now
     fetchData(dispatch: Dispatch<{}>, filters: {} | undefined) {
