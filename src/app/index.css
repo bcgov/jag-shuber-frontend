@@ -30,7 +30,6 @@ body {
 
 #header-main{
   z-index: 200;
-  margin:5px 0px;
 }
 
 #header-main .logo{
@@ -55,7 +54,7 @@ body {
 }
 .navigationRibbon {
   border-top: 0px;
-  box-shadow: 0px;
+  box-shadow: none;
 }
 
 @media(min-width:768px){
@@ -184,7 +183,7 @@ body {
 th .glyphicon-filter {
   position: relative;
   left: -23px;
-  top: 2px;
+  top: 10px;
   color: grey;
   cursor: pointer;
 }
@@ -250,9 +249,9 @@ th .glyphicon-filter {
   position: fixed;
   top: 119px;
   left: 0;
-  padding: 2.0rem 50px 0 19px !important;
+  padding: 15px 50px 15px 20px !important;
   background-color: #327AB7;
-  z-index: 1000;
+  z-index: 300;
 }
 
 .fixed-filters-data-table .data-table-filter-row table {
@@ -285,4 +284,47 @@ th .glyphicon-filter {
   margin-bottom: auto !important;
 }
 
+/* Override user agent styling */
+input,
+select,
+textarea {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
 
+select.form-control {
+  border-radius: 5px;
+}
+
+/* Input group rounding */
+.input-group-addon + .form-control,
+.input-group-addon + select {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  border-radius: 0 5px 5px 0 !important;
+}
+
+/* Use different box spacing for tables */
+table,
+table thead,
+table tbody,
+table th,
+table td,
+table col,
+table tfoot {
+  box-sizing: content-box;
+}
+
+.table>tbody>tr>td,
+.table>tbody>tr>th,
+.table>tfoot>tr>td,
+.table>tfoot>tr>th,
+.table>thead>tr>td,
+.table>thead>tr>th {
+  vertical-align: middle;
+}
+
+table .form-group {
+  margin-bottom: auto;
+}
