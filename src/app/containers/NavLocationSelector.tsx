@@ -15,21 +15,24 @@ interface LocationSelectorStateProps {
 }
 
 interface NavLocationSelectorProps {
-    disabled?: boolean;
+    isDisabled?: boolean;
 }
 
 class LocationSelector extends React.PureComponent<LocationSelectorStateProps & SelectorProps & NavLocationSelectorProps> {
     render() {
-        const { locations = [], label = 'Location', disabled, ...rest } = this.props;
+        const { label = 'Location', locations = [], ...rest } = this.props;
         const selectorValues = locations
             .map(location => ({ key: location.id, value: location.name }));
+
+        let { value, isDisabled } = this.props;
+        isDisabled = (isDisabled === true) ? true : (value === 'ALL_LOCATIONS');
 
         // TODO: Not sure if this is the best solution, but it gets things working they way we want to for now...
         //  Just keep an eye out for ALL_LOCATIONS in the Client.
         selectorValues.unshift({ key: 'ALL_LOCATIONS', value: 'All Locations' });
 
         return (
-            <FormGroup className={`nav-location-selector${(disabled) ? ' is-disabled' : ''}`}>
+            <FormGroup className={`nav-location-selector${(isDisabled) ? ' is-disabled' : ''}`}>
                 <InputGroup>
                     <InputGroup.Addon className="nav-location-selector-addon"><Glyphicon glyph="globe" /></InputGroup.Addon>
                     <Selector
@@ -57,7 +60,7 @@ const ConnectedLocationSelector = connect<LocationSelectorStateProps, {}, Select
     mapStateToProps
 )(LocationSelector);
 
-const ConnectedSystemLocationSelector :React.ComponentType =
+const ConnectedSystemLocationSelector: React.ComponentType =
 connect<{ value: any }, { onChange: (v: any) => void }, {}, RootState>(
     (state) => ({ value: currentLocationSelector(state) }),
     { onChange: updateCurrentLocation }
