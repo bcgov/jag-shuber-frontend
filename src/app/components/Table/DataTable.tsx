@@ -157,7 +157,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
         // console.log('DATATABLE RENDER COUNT: ' + RENDER_COUNT);
 
         return (
-            <div>
+            <div className="data-table">
                 {title}
                 {filterable && filterFieldName && (
                     <div className="data-table-filter-row">
