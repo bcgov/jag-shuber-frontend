@@ -298,45 +298,6 @@ th .glyphicon-filter {
   margin-bottom: auto !important;
 }
 
-#header-main .navbar-nav > li a {
-  color: white !important;
-}
-
-#header-main .navbar-nav > li .dropdown-menu a {
-  color: #222 !important;
-}
-
-#header-main .nav-tabs {
-  border-bottom: none;
-}
-
-#header-main .navbar-default {
-  background: transparent;
-  border-radius: 0;
-  border-color: transparent;
-  border: none;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-#header-main .navbar-default .navbar-nav>.active>a,
-#header-main .navbar-default .navbar-nav>.active>a:focus,
-#header-main .navbar-default .navbar-nav>.active>a:hover,
-#header-main .navbar-default .navbar-nav>.open>a,
-#header-main .navbar-default .navbar-nav>.open>a:focus,
-#header-main .navbar-default .navbar-nav>.open>a:hover {
-  background: transparent;
-}
-
-#header-main .logo {
-  text-align: center;
-  /* position: absolute; */
-  width: 120px;
-  z-index: 100;
-  position: relative;
-  top: -15px;
-}
-
 /* Just kill this nasty thing for now */
 .navbar-default .navbar-brand,
 .navbar-default .navbar-brand:hover {
@@ -370,6 +331,53 @@ th .glyphicon-filter {
 .nav > li:not(.active):hover > a {
   /* font-weight: bold; */
   border-bottom-color: transparent;
+}
+
+.nav > li ul > li.active > a {
+  color: white;
+}
+
+#header-main .navbar-nav > li a {
+  color: white;
+}
+
+#header-main .navbar-nav > li ul > li a {
+  color: #222;
+}
+
+#header-main .navbar-nav > li ul > li.active a {
+  color: white;
+}
+
+#header-main .nav-tabs {
+  border-bottom: none;
+}
+
+#header-main .navbar-default {
+  background: transparent;
+  border-radius: 0;
+  border-color: transparent;
+  border: none;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#header-main .navbar-default .navbar-nav>.active>a,
+#header-main .navbar-default .navbar-nav>.active>a:focus,
+#header-main .navbar-default .navbar-nav>.active>a:hover,
+#header-main .navbar-default .navbar-nav>.open>a,
+#header-main .navbar-default .navbar-nav>.open>a:focus,
+#header-main .navbar-default .navbar-nav>.open>a:hover {
+  background: transparent;
+}
+
+#header-main .logo {
+  text-align: center;
+  /* position: absolute; */
+  width: 120px;
+  z-index: 100;
+  position: relative;
+  top: -15px;
 }
 
 /* Override user agent styling */
