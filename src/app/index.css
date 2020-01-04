@@ -252,6 +252,7 @@ th .glyphicon-filter {
   left: 0;
   padding: 2.0rem 50px 0 19px !important;
   background-color: #327AB7;
+  z-index: 1000;
 }
 
 .fixed-filters-data-table .data-table-filter-row table {
