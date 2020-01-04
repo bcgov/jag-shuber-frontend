@@ -257,6 +257,11 @@ th .glyphicon-filter {
   border-bottom: none;
 }
 
+.fixed-filters-data-table {
+  /* TODO: Should this really be a universal offset? */
+  margin-top: 9rem !important;
+}
+
 .fixed-filters-data-table .data-table-filter-row {
   width: 100%;
   border: none;
@@ -277,10 +282,6 @@ th .glyphicon-filter {
 
 .fixed-filters-data-table .data-table-filter-row table thead th {
   border: none;
-}
-
-.fixed-filters-data-table .data-table-header-row {
-  margin-top: 9rem !important;
 }
 
 .fixed-filters-data-table .data-table-header-row .data-table-header-row {
