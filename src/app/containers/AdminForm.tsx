@@ -46,6 +46,7 @@ import {
 import AdminFormComponent, { AdminFormProps } from '../components/AdminForm/AdminForm';
 import { FormContainerBase } from '../components/Form/FormContainer';
 import SheriffProfileModal from './SheriffProfileModal';
+import { IdType } from '../api';
 
 async function submitPlugins(
     values: any,
@@ -321,7 +322,9 @@ export default class extends
                 },
                 // TODO: It would be nice if we could somehow pass in showSheriffProfileModal some other way that was more declarative, and from the plugin...
                 //  This is easy and works for now though.
-                showSheriffProfileModal: SheriffProfileModal.ShowAction
+                showSheriffProfileModal: (sheriffId: IdType, isEditing: boolean = false, sectionName?: string) => {
+                    dispatch(SheriffProfileModal.ShowAction(sheriffId, isEditing, sectionName));
+                }
             };
         }
     )(AdminFormContainer as any) {
