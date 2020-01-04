@@ -51,6 +51,7 @@ class ManageUserRoles extends React.PureComponent<AdminFormProps & Partial<Manag
                         )}
                         right={(
                             <div style={{ marginTop: 3, paddingTop: '10px' }}>
+                                &nbsp;
                                 {/* <Button
                                     bsStyle="secondary"
                                     onClick={(): void => {

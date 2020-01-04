@@ -30,7 +30,6 @@ body {
 
 #header-main{
   z-index: 200;
-  margin:5px 0px;
 }
 
 #header-main .logo{
@@ -463,6 +462,94 @@ fieldset.with-border {
   color: transparent;
 }
 
+/* Dropdown styling for main nav */
+.nav > li > a {
+  background: #003366;
+  border-bottom-color: transparent;
+}
+
+.nav > li:hover > a {
+  border-color: #327AB7;
+  border-bottom-color: transparent;
+}
+
+.nav > li.active > a {
+  border-color: #FDB815; /* BC Gov Gold */
+  border-bottom-color: #003366;
+  position: relative;
+  top: 1px;
+}
+
+.nav > li.active:hover > a {
+  border-color: #FDB815; /* BC Gov Gold */
+  border-bottom-color: #003366;
+}
+
+.nav > li:not(.active):hover > a {
+  /* font-weight: bold; */
+  border-bottom-color: transparent;
+}
+
+/* Override user agent styling */
+input,
+select,
+textarea {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+select.form-control {
+  border-radius: 5px;
+}
+
+/* Input group rounding */
+.input-group-addon + .form-control,
+.input-group-addon + select {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  border-radius: 0 5px 5px 0 !important;
+}
+
+/* Use different box spacing for tables */
+table,
+table thead,
+table tbody,
+table th,
+table td,
+table col,
+table tfoot {
+  box-sizing: content-box;
+}
+
+.table>tbody>tr>td,
+.table>tbody>tr>th,
+.table>tfoot>tr>td,
+.table>tfoot>tr>th,
+.table>thead>tr>td,
+.table>thead>tr>th {
+  vertical-align: middle;
+}
+
+table .form-group {
+  margin-bottom: auto;
+}
+
+/* Just a visual experiment moving the nav bar down, this could be done with a react portal */
+/* #header-main .nav-tabs {
+    position: relative;
+    top: 62px;
+} */
+
+#header-main .nav-tabs {
+    position: relative;
+    top: 10px;
+}
+
+#header-main .navbar-static-top > .container-fluid {
+  border-bottom: 1px solid white;
+  border-color: #FDB815; /* BC Gov Gold */
+}
 @media screen and (max-width: 1440px) {
   .navbar-header {
       display: none;
