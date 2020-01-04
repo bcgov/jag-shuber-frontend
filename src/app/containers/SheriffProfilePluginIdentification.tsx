@@ -63,7 +63,7 @@ export default class SheriffProfilePluginId extends SheriffProfileSectionPlugin<
 
     FormComponent = (props: SheriffProfilePluginProps) => (
         <div>
-            <div style={{ display: 'flex' }}>
+            <div className="flex-row-wrap">
                 <Field
                     name={this.formFieldNames.firstName}
                     component={TextField as any}
@@ -82,7 +82,17 @@ export default class SheriffProfilePluginId extends SheriffProfileSectionPlugin<
                     label="Alias"
                 />
             </div>
-            <div style={{ display: 'flex' }}>
+            <div className="flex-row-wrap">
+                <Field
+                    name={this.formFieldNames.genderCode}
+                    component={
+                        (p) => <SelectorField
+                            {...p}
+                            SelectorComponent={
+                                (sp) => <GenderSelector {...sp} />}
+                        /> }
+                    label="Gender"
+                />
                 <Field
                     name={this.formFieldNames.rankCode}
                     component={
@@ -99,16 +109,6 @@ export default class SheriffProfilePluginId extends SheriffProfileSectionPlugin<
                     component={TextField as any}
                     label="Badge Number"
                     validate={[Validators.required]}
-                />
-                <Field
-                    name={this.formFieldNames.genderCode}
-                    component={
-                        (p) => <SelectorField
-                            {...p}
-                            SelectorComponent={
-                                (sp) => <GenderSelector {...sp} />}
-                        /> }
-                    label="Gender"
                 />
             </div>
         </div>
