@@ -464,3 +464,9 @@ table .form-group {
   text-shadow: none;
   opacity: 1;
 }
+
+/* Action buttons */
+.action-buttons > button,
+.action-buttons .action-button {
+  margin-left: 5px;
+}

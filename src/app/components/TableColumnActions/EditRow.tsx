@@ -9,7 +9,7 @@ const EditRow = ({ model, onClick}: TableColumnActionProps) => {
 
     return (
         <OverlayTrigger overlay={(<Tooltip>Edit</Tooltip>)} placement={'left'}>
-            <Button bsStyle="primary" onClick={handleClick}>
+            <Button bsStyle="info" onClick={handleClick}>
                 <Glyphicon glyph="edit" />
             </Button>
         </OverlayTrigger>

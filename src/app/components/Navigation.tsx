@@ -3,13 +3,14 @@ import {
     Nav,
     Navbar,
     NavbarBrand,
-    Badge, Glyphicon
+    Badge, Glyphicon, Image
 } from 'react-bootstrap';
 import NavigationLink from './NavigationLink';
 import LocationSelector from '../containers/NavLocationSelector';
 import bcLogo from '../assets/images/bc-logo-transparent-no-underline.png';
 import bcLogoDark from '../assets/images/bc-logo-transparent-dark.png';
 import NavigationDropDown from './NavigationDropDown';
+import avatarImg from '../assets/images/avatar.png';
 
 export interface NavigationProps {
 
@@ -124,7 +125,16 @@ export default class Navigation extends React.Component<NavigationProps, any> {
                         <NavigationLink {...Navigation.Routes.audit} />
                     </Nav>
                     <Nav pullRight={true} style={{ paddingTop: 13, paddingRight: 15 }}>
-                        <LocationSelector.Current />
+                        <div className="flex-row-wrap">
+                            <LocationSelector.Current />
+                            <Image
+                                style={{ marginLeft: '30px' }}
+                                src={avatarImg}
+                                circle={true}
+                                width="32"
+                                height="32"
+                            />
+                        </div>
                     </Nav>
                 </Navbar>
             </div >

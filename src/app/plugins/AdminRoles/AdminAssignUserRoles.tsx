@@ -70,6 +70,7 @@ import LocationDisplay from './containers/LocationDisplay';
 import GenderCodeDisplay from '../../containers/GenderCodeDisplay';
 import EditRow from '../../components/TableColumnActions/EditRow';
 import RemoveRow from '../../components/TableColumnActions/RemoveRow';
+import DeleteRow from '../../components/TableColumnActions/DeleteRow';
 import ExpireRow from '../../components/TableColumnActions/ExpireRow';
 import LocationSelector from '../../containers/LocationSelector';
 
@@ -161,8 +162,21 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                 displayHeaderSave={false}
                 actionsColumn={DataTable.ActionsColumn({
                     actions: [
-                        ({ fields, index, model }) => <RemoveRow fields={fields} index={index} model={model} />,
-                        ({ fields, index, model }) => { return (model && model.id) ? (<ExpireRow fields={fields} index={index} model={model} />) : null; }
+                        ({ fields, index, model }) => {
+                            return (model && !model.id || model.id === '')
+                                ? (<RemoveRow fields={fields} index={index} model={model} />)
+                                : null;
+                        },
+                        ({ fields, index, model }) => {
+                            return (model && model.id && model.id !== '')
+                                ? (<ExpireRow fields={fields} index={index} model={model} />)
+                                : null;
+                        },
+                        ({ fields, index, model }) => {
+                            return (model && model.id && model.id !== '')
+                                ? (<DeleteRow fields={fields} index={index} model={model} />)
+                                : null;
+                        }
                     ]
                 })}
                 columns={[
@@ -305,8 +319,21 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                                     )
                                     : null;
                             },
-                            ({ fields, index, model }) => <RemoveRow fields={fields} index={index} model={model} />,
-                            ({ fields, index, model }) => { return (model && model.id) ? (<ExpireRow fields={fields} index={index} model={model} />) : null; }
+                            ({ fields, index, model }) => {
+                            return (model && !model.id || model.id === '')
+                                    ? (<RemoveRow fields={fields} index={index} model={model} />)
+                                    : null;
+                            },
+                            /*({ fields, index, model }) => {
+                                return (model && model.id && model.id !== '')
+                                    ? (<ExpireRow fields={fields} index={index} model={model} />)
+                                    : null;
+                            },*/
+                            ({ fields, index, model }) => {
+                                return (model && model.id && model.id !== '')
+                                    ? (<DeleteRow fields={fields} index={index} model={model} />)
+                                    : null;
+                            }
                         ]
                     })}
                     columns={[
