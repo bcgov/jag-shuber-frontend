@@ -298,6 +298,9 @@ th .glyphicon-filter {
 
 .data-table .data-table table {
   margin-bottom: auto !important;
+  max-width: 100% !important;
+  min-width: 100% !important;
+  width: auto !important;
 }
 
 /* Override user agent styling */
@@ -334,7 +337,7 @@ table tfoot {
 
 table {
   width: auto;
-  max-width: 100%;
+  max-width: 100% !important;
 }
 
 .table>tbody>tr>td,
