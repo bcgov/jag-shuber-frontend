@@ -302,7 +302,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                     filterFieldName={(this.filterFieldNames) ? `${this.filterFieldNames.users}` : undefined}
                     title={''} // Leave this blank
                     buttonLabel={'Add User'}
-                    displayHeaderActions={false}
+                    displayHeaderActions={true}
                     displayActionsColumn={true}
                     actionsColumn={DataTable.ActionsColumn({
                         actions: [

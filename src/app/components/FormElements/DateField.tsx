@@ -29,7 +29,9 @@ export default class DateField extends React.PureComponent<FormFieldWrapperProps
                     closeOnSelect={closeOnSelect}
                     value={moment(value)}
                     onChange={(e) => this.onChange(e)}
-                    inputProps={{readOnly: true, placeholder: `Select ${label}` }}
+                    // TODO: Why was this readonly?
+                    // inputProps={{readOnly: true, placeholder: `Select ${label}` }}
+                    inputProps={{placeholder: `Select ${label}` }}
                 />
             </FormFieldWrapper>
         );
