@@ -413,6 +413,9 @@ fieldset.with-border {
     margin-left: -15px;
     top: 10px;
     position: relative;
+  max-width: 100% !important;
+  min-width: 100% !important;
+  width: auto !important;
 }
 
 /* Just kill this nasty thing for now */
@@ -531,7 +534,7 @@ table tfoot {
 
 table {
   width: auto;
-  max-width: 100%;
+  max-width: 100% !important;
 }
 
 .table>tbody>tr>td,
