@@ -1,5 +1,6 @@
 import React from 'react';
-import { Well } from 'react-bootstrap';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { Button, Glyphicon, Well } from 'react-bootstrap';
 
 // import { IdType } from '../api';
 import Page from '../components/Page/Page';
@@ -8,10 +9,11 @@ import { AdminFormProps } from '../components/AdminForm/AdminForm';
 
 // Import plugins
 import AdminRolesGridPlugin from '../plugins/AdminRoles/AdminRoles';
+import SheriffProfileCreateModal from '../containers/SheriffProfileCreateModal';
 
-export interface ManageRolesProps {}
+export interface ManageRolesProps extends RouteComponentProps<any>{}
 
-class ManageRoles extends React.PureComponent<AdminFormProps> {
+class ManageRoles extends React.PureComponent<AdminFormProps & Partial<ManageRolesProps>> {
     state = {
       isEditing: true
     };
@@ -29,10 +31,41 @@ class ManageRoles extends React.PureComponent<AdminFormProps> {
     }
 
     render() {
+        const { history, location } = this.props;
         const { isEditing } = this.state;
 
         return (
-            <Page>
+            <Page
+                toolbar={
+                    <Page.Toolbar
+                        // TODO: Figure out a better way to space this... just a temporary placeholder / spacer for now
+                        left={(
+                            <div style={{ flex: 1, display: 'flex', position: 'relative', justifyContent: 'center', paddingTop: '10px' }}>
+                                <div className="admin-form-filters-toggle">
+                                    <Glyphicon glyph="chevron-down" />&nbsp;&nbsp;Display Role Search Filters
+                                </div>
+                            </div>
+                        )}
+                        right={(
+                            <div style={{ marginTop: 3, paddingTop: '10px' }}>
+                                <Button
+                                    bsStyle="success"
+                                    // onClick={() => this.handleSave()}
+                                >
+                                    <Glyphicon glyph="ok" /> Save
+                                </Button>
+                                &nbsp;&nbsp;
+                                <Button
+                                    bsStyle="danger"
+                                    // onClick={() => this.handleSave()}
+                                >
+                                    <Glyphicon glyph="ban-circle" /> Cancel
+                                </Button>
+                            </div>
+                        )}
+                    />
+                }
+            >
                 <Well
                     style={{
                         display: 'flex',
@@ -59,4 +92,4 @@ class ManageRoles extends React.PureComponent<AdminFormProps> {
     }
 }
 
-export default ManageRoles;
+export default withRouter(ManageRoles);
