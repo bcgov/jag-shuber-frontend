@@ -175,7 +175,7 @@ body {
 
 /* TODO: For some reason table header columns bold the text and set the width of inputs differently */
 .form-control {
-  width: auto;
+  /*width: auto;*/
   font-weight: normal;
 }
 
