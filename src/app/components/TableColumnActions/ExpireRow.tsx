@@ -5,7 +5,7 @@ import { TableColumnActionProps } from './index';
 
 const ExpireRow = ({ fields, index }: TableColumnActionProps) => {
     return (
-        <OverlayTrigger overlay={(<Tooltip>Expire</Tooltip>)} placement={'bottom'}>
+        <OverlayTrigger overlay={(<Tooltip>Expire</Tooltip>)} placement={'left'}>
             <Button bsStyle="warning">
                 <Glyphicon glyph="time" onClick={() => fields.remove(index)} />
             </Button>

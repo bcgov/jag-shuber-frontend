@@ -34,6 +34,7 @@ import { AdminCourtroomsProps } from './AdminCourtrooms';
 import LocationSelector from '../containers/LocationSelector';
 import RemoveRow from '../components/TableColumnActions/RemoveRow';
 import ExpireRow from '../components/TableColumnActions/ExpireRow';
+import DeleteRow from '../components/TableColumnActions/DeleteRow';
 // import { createOrUpdateCourtrooms } from '../../modules/assignments/actions';
 
 export interface AdminCourtroomsProps extends FormContainerProps {
@@ -109,8 +110,21 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
                     buttonLabel={'Add Courtroom'}
                     actionsColumn={DataTable.ActionsColumn({
                         actions: [
-                            ({ fields, index, model }) => <RemoveRow fields={fields} index={index} model={model} />,
-                            ({ fields, index, model }) => { return (model && model.id) ? (<ExpireRow fields={fields} index={index} model={model} />) : null; }
+                            ({ fields, index, model }) => {
+                                return (model && !model.id || model.id === '')
+                                    ? (<RemoveRow fields={fields} index={index} model={model} />)
+                                    : null;
+                            },
+                            ({ fields, index, model }) => {
+                                return (model && model.id && model.id !== '')
+                                    ? (<ExpireRow fields={fields} index={index} model={model} />)
+                                    : null;
+                            },
+                            ({ fields, index, model }) => {
+                                return (model && model.id && model.id !== '')
+                                    ? (<DeleteRow fields={fields} index={index} model={model} />)
+                                    : null;
+                            }
                         ]
                     })}
                     columns={[
