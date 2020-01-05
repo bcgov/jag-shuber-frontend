@@ -89,10 +89,13 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
                                                 index={colIndex}
                                                 callbackContext={componentInstance}
                                             />
+                                            {/*
                                             <div className="form-group"
                                                  style={{marginLeft: '0.5rem'}}>
                                                 <Glyphicon glyph="filter"/>
+                                                <Glyphicon style={{ color: '#d9534f' }}glyph="remove-sign"/>
                                             </div>
+                                            */}
                                         </div>
                                     )}
                                 </th>

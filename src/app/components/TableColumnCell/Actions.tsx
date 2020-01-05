@@ -32,12 +32,12 @@ const ActionsColumn = (options?: ActionColumnOptions): Types.TableColumnCell => 
         colStyle: colStyle,
         // TODO: Don't hardcode in the formName! This is just in here while I work on some save related stuff...
         FormRenderer: ({ fields, index, model }) => (
-            <>
+            <div className="action-buttons">
                 {actions.map(action => {
                     const Action = action;
-                    return <><Action fields={fields} index={index} model={model} />&nbsp;</>;
+                    return <><Action fields={fields} index={index} model={model} /></>;
                 })}
-            </>
+            </div>
 
         ),
         CanceledRender: ({ model }) => (

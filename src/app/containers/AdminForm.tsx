@@ -171,6 +171,8 @@ interface AdminFormContainerStateProps {
 }
 
 interface AdminFormContainerDispatchProps {
+    // Just pass the dispatcher down to the plugins
+    dispatch: Dispatch<any>;
     initialize: () => void;
     onSelectSection: (sectionName: string) => void;
 }
@@ -305,6 +307,7 @@ export default class extends
         },
         (dispatch, { plugins = [] }) => {
             return {
+                dispatch, // Just pass dispatch through so we can use it in plugins
                 initialize: () => {
                     dispatch(selectAdminFormSection());
                     dispatch(setAdminFormPluginSubmitErrors());
@@ -318,10 +321,12 @@ export default class extends
                 // TODO: Restrict scope to the current section / plugin, live with onSelectSection!
                 setPluginFilters: (filters: {}, action: any) => {
                     // TODO: Can we type this action better?
+                    // TODO: We're just passing down dispatch now, refactor this method.
                     if (filters && action) dispatch(action(filters));
                 },
                 // TODO: It would be nice if we could somehow pass in showSheriffProfileModal some other way that was more declarative, and from the plugin...
                 //  This is easy and works for now though.
+                // TODO: We're just passing down dispatch now, refactor this method.
                 showSheriffProfileModal: (sheriffId: IdType, isEditing: boolean = false, sectionName?: string) => {
                     dispatch(SheriffProfileModal.ShowAction(sheriffId, isEditing, sectionName));
                 }
@@ -333,4 +338,5 @@ export default class extends
         };
 
         static SubmitButton = AdminFormSubmitButton;
+        static resetAction = () => reset(formConfig.form);
     }

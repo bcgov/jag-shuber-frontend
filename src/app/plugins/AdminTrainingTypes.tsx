@@ -27,7 +27,7 @@ import {
 
 import DataTable, { DetailComponentProps, EmptyDetailRow } from '../components/Table/DataTable';
 import { AdminTrainingTypesProps } from './AdminTrainingTypes';
-import RemoveRow from '../components/TableColumnActions/RemoveRow';
+import DeleteRow from '../components/TableColumnActions/DeleteRow';
 import ExpireRow from '../components/TableColumnActions/ExpireRow';
 
 export interface AdminTrainingTypesProps extends FormContainerProps {
@@ -104,7 +104,7 @@ export default class AdminTrainingTypes extends FormContainerBase<AdminTrainingT
                     buttonLabel={'Add Training Type'}
                     actionsColumn={DataTable.ActionsColumn({
                         actions: [
-                            ({ fields, index, model }) => <RemoveRow fields={fields} index={index} model={model} />,
+                            ({ fields, index, model }) => <DeleteRow fields={fields} index={index} model={model} />,
                             ({ fields, index, model }) => { return (model && model.id) ? (<ExpireRow fields={fields} index={index} model={model} />) : null; },
                         ]
                     })}

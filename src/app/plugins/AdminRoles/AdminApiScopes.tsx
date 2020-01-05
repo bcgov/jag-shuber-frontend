@@ -29,7 +29,7 @@ import {
 } from '../../components/Form/FormContainer';
 
 import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
-import RemoveRow from '../../components/TableColumnActions/RemoveRow';
+import DeleteRow from '../../components/TableColumnActions/DeleteRow';
 import ExpireRow from '../../components/TableColumnActions/ExpireRow';
 
 // import ApiScopeSelector from './ApiScopeSelector';
@@ -130,8 +130,8 @@ export default class AdminApiScopes extends FormContainerBase<AdminApiScopesProp
                     displayHeaderActions={true}
                     actionsColumn={DataTable.ActionsColumn({
                         actions: [
-                            ({ fields, index, model }) => <RemoveRow fields={fields} index={index} model={model} />,
-                            ({ fields, index, model }) => { return (model && model.id) ? (<ExpireRow fields={fields} index={index} model={model} />) : null; }
+                            ({ fields, index, model }) => <DeleteRow fields={fields} index={index} model={model} />,
+                            // ({ fields, index, model }) => { return (model && model.id) ? (<ExpireRow fields={fields} index={index} model={model} />) : null; }
                         ]
                     })}
                     columns={[
