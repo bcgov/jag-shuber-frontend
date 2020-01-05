@@ -5,7 +5,7 @@ import { TableColumnActionProps } from './index';
 
 const DeleteRow = ({ fields, index }: TableColumnActionProps) => {
     return (
-        <Button bsStyle={'danger'} onClick={() => fields.remove(index)}>
+        <Button bsStyle="danger" onClick={() => fields.remove(index)}>
             <Glyphicon glyph="trash" />
         </Button>
     );

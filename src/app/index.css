@@ -355,3 +355,37 @@ table .form-group {
   width: auto;
   margin-left: 15px;
 }
+
+/* Just a visual experiment moving the nav bar down, this could be done with a react portal */
+/* #header-main .nav-tabs {
+    position: relative;
+    top: 62px;
+} */
+
+#header-main .nav-tabs {
+    position: relative;
+    top: 10px;
+}
+
+#header-main .navbar-static-top > .container-fluid {
+  border-bottom: 1px solid white;
+  border-color: #FDB815; /* BC Gov Gold */
+}
+
+.modal-header {
+  background-color: #327AB7;
+  color: white;
+  font-weight: bold;
+}
+
+.modal-header .close {
+  color: white;
+  text-shadow: none;
+  opacity: 1;
+}
+
+/* Action buttons */
+.action-buttons > button,
+.action-buttons .action-button {
+  margin-left: 5px;
+}
