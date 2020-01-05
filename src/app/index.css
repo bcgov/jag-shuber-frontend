@@ -332,6 +332,11 @@ table tfoot {
   box-sizing: content-box;
 }
 
+table {
+  width: auto;
+  max-width: 100%;
+}
+
 .table>tbody>tr>td,
 .table>tbody>tr>th,
 .table>tfoot>tr>td,
