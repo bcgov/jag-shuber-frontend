@@ -567,9 +567,10 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
             await dispatch(deleteUserRoles(deletedUserRoles));
         }
 
-        if (users.length > 0) {
+        // We don't update users here, unless we're deleting them...
+        /* if (users.length > 0) {
             await dispatch(createOrUpdateUsers(users));
-        }
+        } */
 
         if (userRoles.length > 0) {
             await dispatch(createOrUpdateUserRoles(userRoles));
