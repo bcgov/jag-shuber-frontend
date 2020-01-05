@@ -102,7 +102,7 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
         };
 
         return (
-            <div>
+            <div className="fixed-filters-data-table">
                 <DataTable
                     fieldName={this.formFieldNames.courtrooms}
                     filterFieldName={(this.filterFieldNames) ? `${this.filterFieldNames.courtrooms}` : undefined}

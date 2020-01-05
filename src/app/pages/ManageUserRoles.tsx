@@ -11,7 +11,7 @@ import { AdminFormProps } from '../components/AdminForm/AdminForm';
 import AdminAssignUserRolesPlugin from '../plugins/AdminRoles/AdminAssignUserRoles';
 import SheriffProfileCreateModal from '../containers/SheriffProfileCreateModal';
 
-export interface ManageUserRolesProps extends RouteComponentProps<any>{}
+export interface ManageUserRolesProps extends RouteComponentProps<any>{};
 
 class ManageUserRoles extends React.PureComponent<AdminFormProps & Partial<ManageUserRolesProps>> {
     state = {
