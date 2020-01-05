@@ -603,3 +603,9 @@ h6.modal-title {
   text-shadow: none;
   opacity: 1;
 }
+
+/* Action buttons */
+.action-buttons > button,
+.action-buttons .action-button {
+  margin-left: 5px;
+}
