@@ -21,7 +21,7 @@ class SheriffRankDisplay extends React.PureComponent<
     render() {
         const { sheriffRank, code } = this.props;
         return (
-            code ? (sheriffRank ? sheriffRank.description : `Unknown rank '${code}'`) : 'not selected'
+            code ? (sheriffRank ? sheriffRank.description : `Unknown Rank '${code}'`) : 'Not Specified'
         );
     }
 }

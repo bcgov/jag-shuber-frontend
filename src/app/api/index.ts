@@ -1,5 +1,6 @@
 export {
     Sheriff,
+    SheriffRank,
     Assignment,
     AssignmentMap,
     AssignmentDuty,
@@ -16,6 +17,7 @@ export {
     Courtroom,
     API,
     IdType,
+    GenderCode,
     MapType,
     Shift,
     Leave,

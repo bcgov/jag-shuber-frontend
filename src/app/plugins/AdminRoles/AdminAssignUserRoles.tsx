@@ -73,6 +73,12 @@ import RemoveRow from '../../components/TableColumnActions/RemoveRow';
 import DeleteRow from '../../components/TableColumnActions/DeleteRow';
 import ExpireRow from '../../components/TableColumnActions/ExpireRow';
 import LocationSelector from '../../containers/LocationSelector';
+import SheriffRankDisplay from './containers/SheriffRankDisplay';
+import SheriffRankCodeSelector from '../../containers/SheriffRankCodeSelector';
+import GenderSelector from '../../containers/GenderSelector';
+
+// TODO: There already is a SheriffRankDisplay, but it doesn't work for our tables...
+//  It selects a single item using a code...
 
 // TODO: Fix this interface!
 export interface AdminAssignUserRolesProps extends FormContainerProps {
@@ -353,16 +359,20 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                             filterable: true,
                             filterColumn: onFilterBadgeNo
                         }),
-                        DataTable.StaticTextColumn('Rank', {
+                        DataTable.MappedTextColumn('Rank', {
                             fieldName: 'sheriff.rankCode',
                             colStyle: { width: '175px' },
-                            displayInfo: false, filterable: true,
+                            selectorComponent: SheriffRankDisplay,
+                            filterSelectorComponent: SheriffRankCodeSelector,
+                            displayInfo: false,
+                            filterable: true,
                             filterColumn: onFilterRank
                         }),
                         DataTable.MappedTextColumn('Gender', {
                             fieldName: 'sheriff.genderCode',
                             colStyle: { width: '175px' },
                             selectorComponent: GenderCodeDisplay,
+                            filterSelectorComponent: GenderSelector,
                             displayInfo: false,
                             filterable: true,
                             filterColumn: onFilterGender
