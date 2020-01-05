@@ -14,6 +14,9 @@ import DataTable from '../components/Table/DataTable';
 import GenderCodeDisplay from '../containers/GenderCodeDisplay';
 import LocationDisplay from '../plugins/AdminRoles/containers/LocationDisplay';
 import LocationSelector from '../containers/LocationSelector';
+import SheriffRankDisplay from '../plugins/AdminRoles/containers/SheriffRankDisplay';
+import SheriffRankCodeSelector from '../containers/SheriffRankCodeSelector';
+import GenderSelector from '../containers/GenderSelector';
 
 export interface ManageUsersProps extends RouteComponentProps<any>{}
 
@@ -93,16 +96,20 @@ class ManageUsers extends React.PureComponent<Partial<ManageUsersProps>> {
                                                 filterable: true,
                                                 // filterColumn: onFilterBadgeNo
                                             }),
-                                            DataTable.StaticTextColumn('Rank', {
+                                            DataTable.MappedTextColumn('Rank', {
                                                 fieldName: 'sheriff.rankCode',
                                                 colStyle: { width: '175px' },
-                                                displayInfo: false, filterable: true,
+                                                selectorComponent: SheriffRankDisplay,
+                                                filterSelectorComponent: SheriffRankCodeSelector,
+                                                displayInfo: false,
+                                                filterable: true,
                                                 // filterColumn: onFilterRank
                                             }),
                                             DataTable.MappedTextColumn('Gender', {
                                                 fieldName: 'sheriff.genderCode',
                                                 colStyle: { width: '175px' },
                                                 selectorComponent: GenderCodeDisplay,
+                                                filterSelectorComponent: GenderSelector,
                                                 displayInfo: false,
                                                 filterable: true,
                                                 // filterColumn: onFilterGender
