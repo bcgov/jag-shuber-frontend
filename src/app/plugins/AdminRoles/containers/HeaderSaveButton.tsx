@@ -11,7 +11,7 @@ import { ButtonProps } from 'react-bootstrap';
 export interface SaveButtonProps extends Partial<ButtonProps> {
     model?: any;
     modelId?: string;
-    formName: string,
+    formName: string;
     submit?: () => void;
     onSave?: () => void;
     // TODO: Fix this... getting an error...
@@ -19,7 +19,7 @@ export interface SaveButtonProps extends Partial<ButtonProps> {
     // style?: any; // React.CSSProperties;
 }
 
-class SaveButton extends React.PureComponent<SaveButtonProps>{
+class SaveButton extends React.PureComponent<SaveButtonProps> {
     private handleSave() {
         const { submit, onSave } = this.props;
         if (submit) {
@@ -37,7 +37,6 @@ class SaveButton extends React.PureComponent<SaveButtonProps>{
             <Button
                 bsStyle="success"
                 onClick={() => this.handleSave()}
-
             >
                 <Glyphicon glyph="ok" /> Save
             </Button>
