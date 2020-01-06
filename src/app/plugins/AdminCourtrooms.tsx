@@ -35,6 +35,7 @@ import LocationSelector from '../containers/LocationSelector';
 import RemoveRow from '../components/TableColumnActions/RemoveRow';
 import ExpireRow from '../components/TableColumnActions/ExpireRow';
 import DeleteRow from '../components/TableColumnActions/DeleteRow';
+import { setAdminRolesPluginFilters } from '../modules/roles/actions';
 // import { createOrUpdateCourtrooms } from '../../modules/assignments/actions';
 
 export interface AdminCourtroomsProps extends FormContainerProps {
@@ -101,6 +102,16 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
             }
         };
 
+        const onResetFilters = () => {
+            const { setPluginFilters } = props;
+            if (setPluginFilters) {
+                // console.log('reset plugin filters');
+                setPluginFilters({
+                    courtroomss: {}
+                }, setAdminRolesPluginFilters);
+            }
+        };
+
         return (
             <div className="fixed-filters-data-table">
                 <DataTable
@@ -108,6 +119,9 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
                     filterFieldName={(this.filterFieldNames) ? `${this.filterFieldNames.courtrooms}` : undefined}
                     title={''} // Leave this blank
                     buttonLabel={'Add Courtroom'}
+                    displayHeaderActions={true}
+                    onResetClicked={onResetFilters}
+                    displayActionsColumn={true}
                     actionsColumn={DataTable.ActionsColumn({
                         actions: [
                             ({ fields, index, model }) => {
@@ -141,7 +155,6 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
                     // expandedRows={[1, 2]}
                     rowComponent={EmptyDetailRow}
                     modalComponent={EmptyDetailRow}
-                    displayHeaderActions={true}
                 />
             </div>
         );

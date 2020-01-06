@@ -11,6 +11,7 @@ import { AdminFormProps } from '../components/AdminForm/AdminForm';
 import AdminRolesGridPlugin from '../plugins/AdminRoles/AdminRoles';
 import SheriffProfileCreateModal from '../containers/SheriffProfileCreateModal';
 import HeaderSaveButton from '../plugins/AdminRoles/containers/HeaderSaveButton';
+import HeaderCancelButton from '../plugins/AdminRoles/containers/HeaderCancelButton';
 
 export interface ManageRolesProps extends RouteComponentProps<any>{}
 
@@ -51,12 +52,7 @@ class ManageRoles extends React.PureComponent<AdminFormProps & Partial<ManageRol
                             <div style={{ marginTop: 3, paddingTop: '10px' }}>
                                 <HeaderSaveButton formName={'AdminForm'} />
                                 &nbsp;&nbsp;
-                                <Button
-                                    bsStyle="danger"
-                                    // onClick={() => this.handleSave()}
-                                >
-                                    <Glyphicon glyph="ban-circle" /> Cancel
-                                </Button>
+                               <HeaderCancelButton formName={'AdminForm'} />
                             </div>
                         )}
                     />
