@@ -21,6 +21,7 @@ export interface DataTableFilterRowProps {
     actionsColumn?: CellTypes.Types.TableColumnCell;
     displayHeaderActions?: boolean;
     displayHeaderSave?: boolean;
+    onResetClicked?: Function,
     displayActionsColumn?: boolean;
     expandable?: boolean;
     buttonLabel?: React.ReactNode;
@@ -33,6 +34,7 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
     static defaultProps = {
         displayHeaderActions: false,
         displayHeaderSave: true,
+        onResetClicked: () => {},
         displayActionsColumn: true,
         expandable: false,
         // expandedRows: false,
@@ -54,7 +56,8 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
             fieldName,
             columns = [],
             displayActionsColumn = true,
-            expandable = false
+            expandable = false,
+            onResetClicked
         } = this.props;
 
         const filterFieldNames = columns.map((col, index) => {
@@ -110,7 +113,7 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
                             >
                                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
                                     <FormGroup style={{ flex: '0', marginLeft: '5px', marginRight: '5px' }}>
-                                        <Button bsStyle="default">
+                                        <Button bsStyle="default" onClick={onResetClicked as any}>
                                             <Glyphicon glyph="remove-sign" /> Clear Filters
                                         </Button>
                                     </FormGroup>

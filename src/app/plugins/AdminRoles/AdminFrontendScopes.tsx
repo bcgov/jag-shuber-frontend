@@ -52,9 +52,7 @@ export interface AdminFrontendScopesProps extends FormContainerProps {
     frontendScopePermissionsGrouped?: {};
 }
 
-export interface AdminFrontendScopesDisplayProps extends FormContainerProps {
-
-}
+export interface AdminFrontendScopesDisplayProps extends FormContainerProps {}
 
 class AdminFrontendScopesDisplay extends React.PureComponent<AdminFrontendScopesDisplayProps, any> {
     render() {
@@ -140,6 +138,16 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
             }
         };
 
+        const onResetFilters = () => {
+            const { setPluginFilters } = props;
+            if (setPluginFilters) {
+                // console.log('reset plugin filters');
+                setPluginFilters({
+                    frontendScopes: {}
+                }, setAdminRolesPluginFilters);
+            }
+        };
+
         return (
             <div>
                 <DataTable
@@ -148,6 +156,7 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
                     title={''} // Leave this blank
                     buttonLabel={'Add Component'}
                     displayHeaderActions={true}
+                    onResetClicked={onResetFilters}
                     actionsColumn={DataTable.ActionsColumn({
                         actions: [
                             ({ fields, index, model }) => <DeleteRow fields={fields} index={index} model={model} />,

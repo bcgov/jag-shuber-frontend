@@ -7,8 +7,10 @@ import Page from '../components/Page/Page';
 import AdminForm from '../containers/AdminForm';
 import { AdminFormProps } from '../components/AdminForm/AdminForm';
 import AdminCourtroomsPlugin from '../plugins/AdminCourtrooms';
-import SheriffProfileCreateModal from '../containers/SheriffProfileCreateModal';
+// import SheriffProfileCreateModal from '../containers/SheriffProfileCreateModal';
+
 import HeaderSaveButton from '../plugins/AdminRoles/containers/HeaderSaveButton';
+import HeaderCancelButton from '../plugins/AdminRoles/containers/HeaderCancelButton';
 
 export interface ManageCourtroomsProps extends RouteComponentProps<any>{};
 
@@ -48,12 +50,7 @@ class ManageCourtrooms extends React.PureComponent<AdminFormProps & Partial<Mana
                             <div style={{ marginTop: 3, paddingTop: '10px' }}>
                                 <HeaderSaveButton formName={'AdminForm'} />
                                 &nbsp;&nbsp;
-                                <Button
-                                    bsStyle="danger"
-                                    // onClick={() => this.handleSave()}
-                                >
-                                    <Glyphicon glyph="ban-circle" /> Cancel
-                                </Button>
+                                <HeaderCancelButton formName={'AdminForm'} />
                             </div>
                         )}
                     />

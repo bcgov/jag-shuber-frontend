@@ -301,6 +301,16 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
             }
         };
 
+        const onResetFilters = () => {
+            const { setPluginFilters } = props;
+            if (setPluginFilters) {
+                // console.log('reset plugin filters');
+                setPluginFilters({
+                    roles: {}
+                }, setAdminRolesPluginFilters);
+            }
+        };
+
         // RENDER_COUNT++;
         // console.log('ADMINROLESGRID RENDER COUNT: ' + RENDER_COUNT);
 
@@ -311,7 +321,10 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
                     filterFieldName={(this.filterFieldNames) ? `${this.filterFieldNames.roles}` : undefined}
                     title={''} // Leave this blank
                     buttonLabel={'Add Role'}
-                    displayHeaderActions={false}
+                    displayHeaderActions={true}
+                    displayHeaderSave={false}
+                    onResetClicked={onResetFilters}
+                    displayActionsColumn={true}
                     actionsColumn={DataTable.ActionsColumn({
                         actions: [
                             ({ fields, index, model }) => {
@@ -493,8 +506,6 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
         const deletedRoleApiScopes: IdType[] = dataToDelete.roleApiScopes as IdType[];
         // Important! We don't handle permissions the same way as the other deletes!
         const deletedRolePermissions: IdType[] = [] as IdType[];
-
-
 
         const roles: Partial<Role>[] = (data.roles) ? data.roles.map((r: Role) => ({
             ...r,

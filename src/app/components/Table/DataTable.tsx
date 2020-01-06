@@ -40,6 +40,8 @@ export interface DataTableProps {
     actionsColumn?: CellTypes.Types.TableColumnCell;
     displayHeaderActions?: boolean;
     displayHeaderSave?: boolean;
+    // TODO: It would be preferable to supply header actions the same way we use actionsColumn...
+    onResetClicked?: Function;
     displayActionsColumn?: boolean;
     expandable?: boolean;
     expandedRows?: Set<number>;
@@ -58,6 +60,8 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
     static defaultProps = {
         displayHeaderActions: false,
         displayHeaderSave: true,
+        // TODO: It would be preferable to supply header actions the same way we use actionsColumn...
+        onResetClicked: () => {},
         displayActionsColumn: true,
         expandable: false,
         // expandedRows: false,
@@ -131,6 +135,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
             actionsColumn,
             displayHeaderActions = false,
             displayHeaderSave = true,
+            onResetClicked,
             displayActionsColumn = true,
             expandable = false,
             rowComponent,
@@ -167,6 +172,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                             basically, redux-form doesn't like it so we're not gonna force it. */}
                             <thead>
                                 <DataTableFilterRow<Partial<any & T>>
+                                    onResetClicked={onResetClicked}
                                     fieldName={filterFieldName}
                                     columns={columns}
                                     expandable={expandable}
