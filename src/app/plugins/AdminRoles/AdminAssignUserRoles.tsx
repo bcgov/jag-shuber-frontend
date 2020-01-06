@@ -295,6 +295,16 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
             }
         };
 
+        const onResetFilters = () => {
+            const { setPluginFilters } = props;
+            if (setPluginFilters) {
+                // console.log('reset plugin filters');
+                setPluginFilters({
+                    users: {}
+                }, setAdminRolesPluginFilters);
+            }
+        };
+
         return (
             <div className="fixed-filters-data-table">
                 <DataTable
@@ -303,6 +313,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                     title={''} // Leave this blank
                     buttonLabel={'Add User'}
                     displayHeaderActions={false}
+                    onResetClicked={onResetFilters}
                     displayActionsColumn={true}
                     actionsColumn={DataTable.ActionsColumn({
                         actions: [

@@ -39,9 +39,7 @@ export interface AdminApiScopesProps extends FormContainerProps {
     apiScopes?: any[];
 }
 
-export interface AdminApiScopesDisplayProps extends FormContainerProps {
-
-}
+export interface AdminApiScopesDisplayProps extends FormContainerProps {}
 
 class AdminApiScopesDisplay extends React.PureComponent<AdminApiScopesDisplayProps, any> {
     render() {
@@ -120,6 +118,16 @@ export default class AdminApiScopes extends FormContainerBase<AdminApiScopesProp
             }
         };
 
+        const onResetFilters = () => {
+            const { setPluginFilters } = props;
+            if (setPluginFilters) {
+                // console.log('reset plugin filters');
+                setPluginFilters({
+                    apiScopes: {}
+                }, setAdminRolesPluginFilters);
+            }
+        };
+
         return (
             <div>
                 <DataTable
@@ -128,6 +136,7 @@ export default class AdminApiScopes extends FormContainerBase<AdminApiScopesProp
                     title={''} // Leave this blank
                     buttonLabel={'Add Scope'}
                     displayHeaderActions={true}
+                    onResetClicked={onResetFilters}
                     actionsColumn={DataTable.ActionsColumn({
                         actions: [
                             ({ fields, index, model }) => <DeleteRow fields={fields} index={index} model={model} />,
