@@ -507,8 +507,6 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
         // Important! We don't handle permissions the same way as the other deletes!
         const deletedRolePermissions: IdType[] = [] as IdType[];
 
-
-
         const roles: Partial<Role>[] = (data.roles) ? data.roles.map((r: Role) => ({
             ...r,
             systemCodeInd: 0, // TODO: Ability to set this - we haven't implemented system codes yet but it will be needed

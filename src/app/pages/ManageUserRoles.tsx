@@ -9,7 +9,6 @@ import { AdminFormProps } from '../components/AdminForm/AdminForm';
 
 // Import plugins
 import AdminAssignUserRolesPlugin from '../plugins/AdminRoles/AdminAssignUserRoles';
-import HeaderSaveButton from '../plugins/AdminRoles/containers/HeaderSaveButton';
 import SheriffProfileCreateModal from '../containers/SheriffProfileCreateModal';
 
 import HeaderSaveButton from '../plugins/AdminRoles/containers/HeaderSaveButton';
