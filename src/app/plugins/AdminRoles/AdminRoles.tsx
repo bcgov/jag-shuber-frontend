@@ -311,7 +311,7 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
                     filterFieldName={(this.filterFieldNames) ? `${this.filterFieldNames.roles}` : undefined}
                     title={''} // Leave this blank
                     buttonLabel={'Add Role'}
-                    displayHeaderActions={true}
+                    displayHeaderActions={false}
                     actionsColumn={DataTable.ActionsColumn({
                         actions: [
                             ({ fields, index, model }) => {

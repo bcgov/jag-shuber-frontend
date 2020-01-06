@@ -9,6 +9,7 @@ import { AdminFormProps } from '../components/AdminForm/AdminForm';
 
 // Import plugins
 import AdminAssignUserRolesPlugin from '../plugins/AdminRoles/AdminAssignUserRoles';
+import HeaderSaveButton from '../plugins/AdminRoles/containers/HeaderSaveButton';
 import SheriffProfileCreateModal from '../containers/SheriffProfileCreateModal';
 
 export interface ManageUserRolesProps extends RouteComponentProps<any>{};
@@ -47,7 +48,6 @@ class ManageUserRoles extends React.PureComponent<AdminFormProps & Partial<Manag
                         )}
                         right={(
                             <div style={{ marginTop: 3, paddingTop: '10px' }}>
-                                &nbsp;
                                 {/* <Button
                                     bsStyle="secondary"
                                     onClick={(): void => {
@@ -73,12 +73,7 @@ class ManageUserRoles extends React.PureComponent<AdminFormProps & Partial<Manag
                                     Try This
                                 </SheriffProfileModal.ShowButton>*/}
                                 &nbsp;&nbsp;
-                                <Button
-                                    bsStyle="success"
-                                    // onClick={() => this.handleSave()}
-                                >
-                                    <Glyphicon glyph="ok" /> Save
-                                </Button>
+                                <HeaderSaveButton formName={'AdminForm'} />
                                 &nbsp;&nbsp;
                                 <Button
                                     bsStyle="danger"

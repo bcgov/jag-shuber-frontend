@@ -8,6 +8,7 @@ import AdminForm from '../containers/AdminForm';
 import { AdminFormProps } from '../components/AdminForm/AdminForm';
 import AdminCourtroomsPlugin from '../plugins/AdminCourtrooms';
 import SheriffProfileCreateModal from '../containers/SheriffProfileCreateModal';
+import HeaderSaveButton from '../plugins/AdminRoles/containers/HeaderSaveButton';
 
 export interface ManageCourtroomsProps extends RouteComponentProps<any>{};
 
@@ -45,13 +46,7 @@ class ManageCourtrooms extends React.PureComponent<AdminFormProps & Partial<Mana
                         )}
                         right={(
                             <div style={{ marginTop: 3, paddingTop: '10px' }}>
-                                &nbsp;
-                                <Button
-                                    bsStyle="success"
-                                    // onClick={() => this.handleSave()}
-                                >
-                                    <Glyphicon glyph="ok" /> Save
-                                </Button>
+                                <HeaderSaveButton formName={'AdminForm'} />
                                 &nbsp;&nbsp;
                                 <Button
                                     bsStyle="danger"
