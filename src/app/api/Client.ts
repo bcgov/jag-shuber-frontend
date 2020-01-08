@@ -592,8 +592,6 @@ export default class Client implements API {
         return await this._client.UpdateRole(id, role) as Role;
     }
 
-    // TODO: Add expireRole? or expireUserRole?
-
     async deleteRole(roleId: string): Promise<void> {
         return await this._client.DeleteRole(roleId);
     }
@@ -835,6 +833,22 @@ export default class Client implements API {
             throw 'No Id included in the userRole to update';
         }
         return await this._client.UpdateUserRole(id, userRole) as UserRole;
+    }
+
+    async expireUserRole(userRoleId: IdType): Promise<void> {
+        if (userRoleId === undefined) {
+            return;
+        }
+
+        return await this._client.ExpireUserRole(userRoleId);
+    }
+
+    async expireUserRoles(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.ExpireUserRole(id));
+        }
+
+        return Promise.resolve();
     }
 
     async deleteUserRole(userRoleId: IdType): Promise<void> {

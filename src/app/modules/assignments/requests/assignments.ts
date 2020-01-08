@@ -12,20 +12,20 @@ import {
 import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRequest';
 import CreateEntityRequest from '../../../infrastructure/Requests/CreateEntityRequest';
 import UpdateEntityRequest from '../../../infrastructure/Requests/UpdateEntityRequest';
-//import DeleteEntityRequest from '../../../infrastructure/Requests/DeleteEntityRequest';
+// import DeleteEntityRequest from '../../../infrastructure/Requests/DeleteEntityRequest';
 import RequestAction from '../../../infrastructure/Requests/RequestActionBase';
 import toTitleCase from '../../../infrastructure/toTitleCase';
 
 // Assignment Map
 class AssignmentMapRequest extends GetEntityMapRequest<DateRange, Assignment, AssignmentModuleState> {
     constructor() {
-        super({ 
-            namespace: STATE_KEY, 
+        super({
+            namespace: STATE_KEY,
             actionName: 'assignmentMap',
             toasts: {
                 // tslint:disable-next-line:max-line-length
                 error: (err) => `Problem encountered while retrieving the assignment list: ${err ? err.toString() : 'Unknown Error'}`
-            } 
+            }
         });
     }
     public async doWork(request: DateRange, { api }: ThunkExtra) {
@@ -39,8 +39,8 @@ export const assignmentMapRequest = new AssignmentMapRequest();
 // Assignment Create
 class CreateAssignmentRequest extends CreateEntityRequest<Assignment, AssignmentModuleState> {
     constructor() {
-        super({ 
-            namespace: STATE_KEY, 
+        super({
+            namespace: STATE_KEY,
             actionName: 'createAssignment',
             toasts: {
                 success: (a) => `Assignment created for ${toTitleCase(a.workSectionId)}`,
@@ -60,15 +60,15 @@ export const createAssignmentRequest = new CreateAssignmentRequest();
 // Assignment Edit
 class UpdateAssignmentRequest extends UpdateEntityRequest<Assignment, AssignmentModuleState> {
     constructor() {
-        super({ 
-            namespace: STATE_KEY, 
+        super({
+            namespace: STATE_KEY,
             actionName: 'updateAssignment',
             toasts: {
                 success: (a) => `${toTitleCase(a.workSectionId)} assignment updated`,
                 // tslint:disable-next-line:max-line-length
                 error: (err) => `Problem encountered while updating the assignment: ${err ? err.toString() : 'Unknown Error'}`
-            } 
-        }, 
+            }
+        },
         assignmentMapRequest);
     }
 
@@ -83,15 +83,15 @@ export const updateAssignmentRequest = new UpdateAssignmentRequest();
 // Assignment Delete
 // class DeleteAssignmentRequest extends DeleteEntityRequest<Assignment, AssignmentModuleState> {
 //     constructor() {
-//         super({ 
-//             namespace: STATE_KEY, 
+//         super({
+//             namespace: STATE_KEY,
 //             actionName: 'deleteAssignment',
 //             toasts: {
 //                 success: 'Assignment deleted',
 //                 // tslint:disable-next-line:max-line-length
 //                 error: (err) => `Problem encountered while deleting the assignment: ${err ? err.toString() : 'Unknown Error'}`
-//             } 
-//         }, 
+//             }
+//         },
 //         assignmentMapRequest);
 //     }
 
