@@ -9,6 +9,7 @@ import {
     Location,
     Courtroom,
     DateType,
+    DateRange,
     EscortAssignment,
     IdType,
     JailAssignment,
@@ -23,7 +24,6 @@ import {
     WorkSectionCode,
     ShiftUpdates,
     SheriffRank,
-    DateRange,
     LeaveSubCode,
     LeaveCancelCode,
     CourtRole,
@@ -293,7 +293,7 @@ export default class Client implements API {
             }));
 
             if (!targetSheriffDuty.sheriffId) {
-                //End the target sheriff duty at the new target start time
+                // End the target sheriff duty at the new target start time
                 sheriffDutyPromises.push(this.updateSheriffDuty({
                     ...targetSheriffDuty,
                     endDateTime: targetCutOffTime,
@@ -404,49 +404,51 @@ export default class Client implements API {
         } as Leave));
     }
 
-    createLeave(newLeave: Partial<Leave>): Promise<Leave> {
-        return this._client.CreateLeave({
+    async createLeave(newLeave: Partial<Leave>): Promise<Leave> {
+        return await this._client.CreateLeave({
             ...newLeave,
             isPartial: newLeave.isPartial ? 1 : 0
-        } as any) as Promise<Leave>;
+        } as any) as Leave;
     }
 
-    updateLeave(updatedLeave: Leave): Promise<Leave> {
-        return this._client.UpdateLeave(updatedLeave.id, {
+    async updateLeave(updatedLeave: Leave): Promise<Leave> {
+        return await this._client.UpdateLeave(updatedLeave.id, {
             ...updatedLeave,
             isPartial: updatedLeave.isPartial ? 1 : 0
-        } as any) as Promise<Leave>;
+        } as any) as Leave;
     }
 
-    getLeaveSubCodes(): Promise<LeaveSubCode[]> {
-        return this._client.GetLeaveSubCodes() as Promise<LeaveSubCode[]>;
+    async getLeaveSubCodes(dateRange: DateRange = {}): Promise<LeaveSubCode[]> {
+        const { startDate, endDate } = dateRange;
+        return await this._client.GetLeaveSubCodes(startDate as string, endDate as string) as LeaveSubCode[];
     }
 
-    createLeaveSubCode(subCode: Partial<LeaveSubCode>): Promise<LeaveSubCode> {
-        return Promise.resolve({} as LeaveSubCode);
+    async createLeaveSubCode(subCode: Partial<LeaveSubCode>): Promise<LeaveSubCode> {
+        return await this._client.CreateLeaveSubCode(subCode) as LeaveSubCode;
     }
 
-    updateLeaveSubCode(subCode: Partial<LeaveSubCode>): Promise<LeaveSubCode> {
+    async updateLeaveSubCode(subCode: Partial<LeaveSubCode>): Promise<LeaveSubCode> {
         const { code } = subCode;
         if (!code) {
             throw 'No code included in the sub code to update';
         }
-        return Promise.resolve({} as LeaveSubCode);
+        return await this._client.UpdateLeaveSubCode(code, subCode) as LeaveSubCode;
     }
 
-    deleteLeaveSubCode(code: IdType): Promise<void> {
-        return Promise.resolve();
+    async deleteLeaveSubCode(code: IdType): Promise<void> {
+        return await this._client.DeleteLeaveSubCode(code);
     }
 
-    deleteLeaveSubCodes(ids: IdType[]): Promise<void> {
+    async deleteLeaveSubCodes(ids: IdType[]): Promise<void> {
         if (ids.length > 0) {
+             ids.forEach(id => this._client.DeleteLeaveSubCode(id));
         }
 
         return Promise.resolve();
     }
 
-    getLeaveCancelCodes(): Promise<LeaveCancelCode[]> {
-        return this._client.GetLeaveCancelReasonCodes() as Promise<LeaveCancelCode[]>;
+    async getLeaveCancelCodes(): Promise<LeaveCancelCode[]> {
+        return await this._client.GetLeaveCancelReasonCodes() as LeaveCancelCode[];
     }
 
     async getLocations(): Promise<Location[]> {
@@ -591,8 +593,6 @@ export default class Client implements API {
         }
         return await this._client.UpdateRole(id, role) as Role;
     }
-
-    // TODO: Add expireRole? or expireUserRole?
 
     async deleteRole(roleId: string): Promise<void> {
         return await this._client.DeleteRole(roleId);
@@ -816,8 +816,16 @@ export default class Client implements API {
         return Promise.resolve();
     }
 
-    async getUserRoles(): Promise<UserRole[]> {
-        const list = await this._client.GetUserRoles();
+    async getUserRoles(dateRange: DateRange = {}): Promise<UserRole[]> {
+        const { startDate, endDate } = dateRange;
+
+        // TODO: Not sure if this is the best solution, but it gets things working they way we want to for now...
+        //  ALL_LOCATIONS key is added to selectorValues in LocationSelector.
+        const currentLocation = (this.currentLocation && this.currentLocation !== 'ALL_LOCATIONS')
+            ? this.currentLocation
+            : ''; // TODO: Add entry to ExtendedClient, so this can remain 'undefined'
+
+        const list = await this._client.GetUserRoles(currentLocation, startDate as string, endDate as string);
         return list as RoleApiScope[];
     }
 
@@ -835,6 +843,22 @@ export default class Client implements API {
             throw 'No Id included in the userRole to update';
         }
         return await this._client.UpdateUserRole(id, userRole) as UserRole;
+    }
+
+    async expireUserRole(userRoleId: IdType): Promise<void> {
+        if (userRoleId === undefined) {
+            return;
+        }
+
+        return await this._client.ExpireUserRole(userRoleId);
+    }
+
+    async expireUserRoles(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.ExpireUserRole(id));
+        }
+
+        return Promise.resolve();
     }
 
     async deleteUserRole(userRoleId: IdType): Promise<void> {

@@ -206,6 +206,7 @@ export default class AdminTrainingTypes extends FormContainerBase<AdminTrainingT
 
         const leaveTypes: Partial<LeaveSubCode>[] = data.trainingLeaveTypes.map((c: LeaveSubCode) => ({
             ...c,
+            code: 'TRAINING', // TODO: Use API value
             createdBy: 'DEV - FRONTEND',
             updatedBy: 'DEV - FRONTEND',
             createdDtm: new Date().toISOString(),

@@ -5464,7 +5464,7 @@ istanbul@^0.4.5:
 
 "jag-shuber-api@github:bcgov/jag-shuber-api#feature/implement-roles":
   version "2.0.0"
-  resolved "https://codeload.github.com/bcgov/jag-shuber-api/tar.gz/62f673038d9eaa6ffc0393969792b1e481a1e844"
+  resolved "https://codeload.github.com/bcgov/jag-shuber-api/tar.gz/d662a947cc88dfd33ab925bc5b0254ad5f2aa309"
   dependencies:
     jsonwebtoken "^8.3.0"
     jwt-decode "^2.2.0"
