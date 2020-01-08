@@ -34,7 +34,9 @@ import {
     getRoles,
     getUserRoles,
     createOrUpdateUserRoles,
-    deleteUserRoles, setAdminRolesPluginFilters
+    deleteUserRoles,
+    expireUserRoles,
+    setAdminRolesPluginFilters
 } from '../../modules/roles/actions';
 
 import {
@@ -575,7 +577,11 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
         }
 
         if (deletedUserRoles.length > 0) {
-            await dispatch(deleteUserRoles(deletedUserRoles));
+            // await dispatch(deleteUserRoles(deletedUserRoles));
+        }
+
+        if (deletedUserRoles.length > 0) {
+            await dispatch(expireUserRoles(deletedUserRoles));
         }
 
         // We don't update users here, unless we're deleting them...

@@ -111,6 +111,32 @@ class CreateOrUpdateUserRolesRequest extends CreateOrUpdateEntitiesRequest<UserR
 
 export const createOrUpdateUserRolesRequest = new CreateOrUpdateUserRolesRequest();
 
+class ExpireUserRolesRequest extends RequestAction<IdType[], IdType[], RoleModuleState> {
+    constructor() {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'expireUserRoles',
+            toasts: {
+                success: (ids) => `${ids.length} user role(s) expired`,
+                error: (err) => `Problem encountered while expiring user roles: ${err ? err.toString() : 'Unknown Error'}`
+            }
+        });
+    }
+    public async doWork(request: IdType[], { api }: ThunkExtra): Promise<IdType[]> {
+        await api.expireUserRoles(request);
+        return request;
+    }
+
+    // TODO: How does this all work?
+    setRequestData(moduleState: RoleModuleState, roleScopeIds: IdType[]) {
+        const newMap = { ...userRoleMapRequest.getRequestData(moduleState) };
+        roleScopeIds.forEach(id => delete newMap[id]);
+        return userRoleMapRequest.setRequestData(moduleState, newMap);
+    }
+}
+
+export const expireUserRolesRequest = new ExpireUserRolesRequest();
+
 class DeleteUserRolesRequest extends RequestAction<IdType[], IdType[], RoleModuleState> {
     constructor() {
         super({
