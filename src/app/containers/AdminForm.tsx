@@ -255,8 +255,8 @@ export default class extends
 
             // Filter out any plugins that the user doesn't have permission to access
             // TODO: A cleaner way to get the data off the token?
-            const { appScopes, authScopes } = currentUserRoleScopes(state);
-            // console.log('user scopes');
+            const { appScopes = {}, authScopes } = currentUserRoleScopes(state);
+
             // console.log(appScopes);
             // console.log(authScopes);
 
