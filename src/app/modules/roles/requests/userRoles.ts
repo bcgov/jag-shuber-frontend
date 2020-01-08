@@ -9,14 +9,12 @@ import {
     UserRole,
     MapType, IdType
 } from '../../../api/Api';
+
 import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRequest';
 import RequestAction, { RequestConfig } from '../../../infrastructure/Requests/RequestActionBase';
 import CreateOrUpdateEntitiesRequest from '../../../infrastructure/Requests/CreateOrUpdateEntitiesRequest';
 import CreateEntityRequest from '../../../infrastructure/Requests/CreateEntityRequest';
 import UpdateEntityRequest from '../../../infrastructure/Requests/UpdateEntityRequest';
-import { UserModuleState } from '../../users/common';
-import { roleFrontendScopeMapRequest } from './roleFrontendScopes';
-// import toTitleCase from '../../infrastructure/toTitleCase';
 
 // Get the Map
 class UserRoleMapRequest extends GetEntityMapRequest<void, UserRole, RoleModuleState> {

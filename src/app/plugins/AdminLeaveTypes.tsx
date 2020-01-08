@@ -206,6 +206,7 @@ export default class AdminLeaveTypes extends FormContainerBase<AdminLeaveTypesPr
 
         const leaveTypes: Partial<LeaveSubCode>[] = data.personalLeaveTypes.map((c: LeaveSubCode) => ({
             ...c,
+            code: 'PERSONAL', // TODO: Use API value
             createdBy: 'DEV - FRONTEND',
             updatedBy: 'DEV - FRONTEND',
             createdDtm: new Date().toISOString(),
