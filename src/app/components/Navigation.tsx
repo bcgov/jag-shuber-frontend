@@ -60,17 +60,17 @@ export default class Navigation extends React.Component<NavigationProps, any> {
                 }
             }
         },
-        courtrooms: {
-            path: '/courtrooms/manage',
-            label: 'Courtrooms'
-        },
         system: {
             path: '#',
-            label: 'System Settings',
+            label: 'System',
             children: {
+                courtrooms: {
+                    path: '/courtrooms/manage',
+                    label: 'Add / Remove Courtrooms'
+                },
                 codes: {
                     path: '/codes/manage',
-                    label: 'Configure Lists'
+                    label: 'Configure Leave Types'
                 },
                 components: {
                     path: '/components/manage',
@@ -113,18 +113,18 @@ export default class Navigation extends React.Component<NavigationProps, any> {
                             <NavigationLink {...Navigation.Routes.schedule.manage} />
                             <NavigationLink {...Navigation.Routes.schedule.distribute} />
                         </NavigationDropDown>
-                        <NavigationLink {...Navigation.Routes.courtrooms}>&nbsp;<small><Glyphicon glyph="star" /></small></NavigationLink>
                         <NavigationDropDown title={Navigation.Routes.team.label} id="admin_dropdown">
                             <NavigationLink {...Navigation.Routes.team.children.users} />
                             <NavigationLink {...Navigation.Routes.team.children.userRoles}>&nbsp;<small><Glyphicon glyph="star" /></small></NavigationLink>
                             <NavigationLink {...Navigation.Routes.team.children.roles}>&nbsp;<small><Glyphicon glyph="star" /></small></NavigationLink>
                         </NavigationDropDown>
                         <NavigationDropDown title={Navigation.Routes.system.label} id="system_dropdown">
+                            <NavigationLink {...Navigation.Routes.system.children.courtrooms}>&nbsp;<small><Glyphicon glyph="star" /></small></NavigationLink>
                             <NavigationLink {...Navigation.Routes.system.children.codes}>&nbsp;<small><Glyphicon glyph="star" /></small></NavigationLink>
                             <NavigationLink {...Navigation.Routes.system.children.components}>&nbsp;<small><Glyphicon glyph="star" /></small></NavigationLink>
                             <NavigationLink {...Navigation.Routes.system.children.apis}>&nbsp;<small><Glyphicon glyph="star" /></small></NavigationLink>
                         </NavigationDropDown>
-                        <NavigationLink {...Navigation.Routes.audit} />
+                        {/*<NavigationLink {...Navigation.Routes.audit} />*/}
                     </Nav>
                     <Nav pullRight={true} style={{ paddingTop: 13, paddingRight: 15 }}>
                         <div className="flex-row-wrap">

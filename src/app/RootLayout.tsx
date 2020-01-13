@@ -135,11 +135,11 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
               <Route path={Navigation.Routes.schedule.distribute.path} component={PublishSchedulePage} />
               <Route path={Navigation.Routes.dutyRoster.setup.path} component={DefaultAssignmentsPage} />
               <Route path={Navigation.Routes.assignment.path} component={AssignmentPage} />
-              <Route path={Navigation.Routes.courtrooms.path} component={ManageCourtroomsPage} />
               <Route path={Navigation.Routes.team.path} component={ManageSheriffsPage} />
               <Route path={Navigation.Routes.team.children.roles.path} component={ManageRolesPage} />
               <Route path={Navigation.Routes.team.children.users.path} component={ManageUsersPage} />
               <Route path={Navigation.Routes.team.children.userRoles.path} component={ManageUserRolesPage} />
+              <Route path={Navigation.Routes.system.children.courtrooms.path} component={ManageCourtroomsPage} />
               <Route path={Navigation.Routes.system.children.codes.path} component={ManageCodesPage} />
               <Route path={Navigation.Routes.system.children.components.path} component={ManageComponentsPage} />
               <Route path={Navigation.Routes.audit.path} component={AuditPage} />
