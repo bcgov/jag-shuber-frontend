@@ -5,7 +5,7 @@ import {
     SheriffProfileSectionPlugin
 } from '../components/SheriffProfile/SheriffProfilePlugin';
 import SheriffDisplay from './SheriffDisplay';
-import { Table } from 'react-bootstrap';
+import { Table, Row, Col } from 'react-bootstrap';
 import SheriffRankDisplay from './SheriffRankDisplay';
 import { Field } from 'redux-form';
 import TextField from '../components/FormElements/TextField';
@@ -14,6 +14,7 @@ import SheriffRankCodeSelector from './SheriffRankCodeSelector';
 import SelectorField from '../components/FormElements/SelectorField';
 import GenderSelector from './GenderSelector';
 import GenderCodeDisplay from './GenderCodeDisplay';
+import ToggleField from '../components/FormElements/ToggleField';
 
 export default class SheriffProfilePluginId extends SheriffProfileSectionPlugin<Sheriff> {
     name = 'identification';
@@ -23,7 +24,10 @@ export default class SheriffProfilePluginId extends SheriffProfileSectionPlugin<
         rankCode: 'sheriff.rankCode',
         badgeNo: 'sheriff.badgeNo',
         alias: 'sheriff.alias',
-        genderCode: 'sheriff.genderCode'
+        genderCode: 'sheriff.genderCode',
+        isSheriff: 'sheriff.isSheriff',
+        userAuthId: 'sheriff.userAuthId',
+        siteminderId: 'sheriff.siteminderId'
     };
     title: string = 'Identification';
     DisplayComponent = ({ sheriffId }: SheriffProfilePluginProps) => (
@@ -63,53 +67,107 @@ export default class SheriffProfilePluginId extends SheriffProfileSectionPlugin<
 
     FormComponent = (props: SheriffProfilePluginProps) => (
         <div>
-            <div className="flex-row-wrap">
-                <Field
-                    name={this.formFieldNames.firstName}
-                    component={TextField as any}
-                    label="First Name"
-                    validate={[Validators.required]}
-                />
-                <Field
-                    name={this.formFieldNames.lastName}
-                    component={TextField as any}
-                    label="Last Name"
-                    validate={[Validators.required]}
-                />
-                <Field
-                    name={this.formFieldNames.alias}
-                    component={TextField as any}
-                    label="Alias"
-                />
+            <div className="container-fluid" style={{ margin: '15px 0', paddingLeft: '0', paddingRight: '0' }}>
+                <fieldset className="with-border" style={{ background: '#fefefe' }}>
+                    <Row>
+                        <Col xs={12} lg={6}>
+                            <Field
+                                name={this.formFieldNames.userAuthId}
+                                component={TextField as any}
+                                label="IDIR Username"
+                                validate={[Validators.required]}
+                            />
+                        </Col>
+                        <Col xs={12} lg={6}>
+                            <Field
+                                name={this.formFieldNames.siteminderId}
+                                component={TextField as any}
+                                label="Siteminder ID"
+                                validate={[Validators.required]}
+                            />
+                        </Col>
+                    </Row>
+                </fieldset>
             </div>
-            <div className="flex-row-wrap">
-                <Field
-                    name={this.formFieldNames.genderCode}
-                    component={
-                        (p) => <SelectorField
-                            {...p}
-                            SelectorComponent={
-                                (sp) => <GenderSelector {...sp} />}
-                        /> }
-                    label="Gender"
-                />
-                <Field
-                    name={this.formFieldNames.rankCode}
-                    component={
-                        (p) => <SelectorField
-                            {...p}
-                            SelectorComponent={
-                                (sp) => <SheriffRankCodeSelector {...sp} />}
-                        /> }
-                    label="Rank"
-                    validate={[Validators.required]}
-                />
-                <Field
-                    name={this.formFieldNames.badgeNo}
-                    component={TextField as any}
-                    label="Badge Number"
-                    validate={[Validators.required]}
-                />
+            <div className="container-fluid">
+                <Row>
+                    <Col xs={12}>
+                        <Field
+                            name={this.formFieldNames.alias}
+                            component={TextField as any}
+                            label="Display Name"
+                        />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xs={12} lg={6}>
+                        <Field
+                            name={this.formFieldNames.firstName}
+                            component={TextField as any}
+                            label="First Name"
+                            validate={[Validators.required]}
+                        />
+                    </Col>
+                    <Col xs={12} lg={6}>
+                        <Field
+                            name={this.formFieldNames.lastName}
+                            component={TextField as any}
+                            label="Last Name"
+                            validate={[Validators.required]}
+                        />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xs={12}>
+                        <Field
+                            name={this.formFieldNames.genderCode}
+                            component={
+                                (p) => <SelectorField
+                                    {...p}
+                                    SelectorComponent={
+                                        (sp) => <GenderSelector {...sp} />}
+                                /> }
+                            label="Gender"
+                        />
+                    </Col>
+                </Row>
+                {/* <Row>
+                    <Col xs={12} className="vert-center-with-label">
+                        <Field
+                            name={this.formFieldNames.isSheriff}
+                            component={ToggleField as any}
+                            label="Is Sheriff"
+                        />
+                    </Col>
+                </Row> */}
+            </div>
+            <div className="container-fluid" style={{ margin: '15px 0', paddingLeft: '0', paddingRight: '0' }}>
+                <fieldset className="with-border" style={{ background: '#fefefe' }}>
+                    {/* Double up the rows to equalize the margins */}
+                    <Row>
+                        <Col xs={12} lg={6}>
+                            <Field
+                                name={this.formFieldNames.badgeNo}
+                                component={TextField as any}
+                                label="Badge Number"
+                                validate={[Validators.required]}
+                            />
+                        </Col>
+                        <Col xs={12} lg={6}>
+                            <Field
+                                name={this.formFieldNames.rankCode}
+                                component={
+                                    (p) => <SelectorField
+                                        {...p}
+                                        SelectorComponent={
+                                            (sp) => <SheriffRankCodeSelector {...sp} />}
+                                    /> }
+                                label="Rank"
+                                validate={[Validators.required]}
+                            />
+                        </Col>
+                    </Row>
+                </fieldset>
             </div>
         </div>
     )

@@ -59,7 +59,7 @@ class SheriffProfileModal extends React.PureComponent<CompositeProps> {
                 <Modal.Body>
                     {!isEditing && <Button
                         bsStyle="primary"
-                        style={{ position: 'absolute', right: 15 }}
+                        style={{ position: 'absolute', right: 15, zIndex: 100 }}
                         onClick={() => showSheriffProfileModal(sheriffId, true)}
                     >
                         <Glyphicon glyph="pencil" />

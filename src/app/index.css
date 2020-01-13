@@ -397,3 +397,16 @@ table .form-group {
 .action-buttons .action-button {
   margin-left: 5px;
 }
+
+/* Fix spacing */
+.vert-center-with-label .control-label + .react-toggle {
+  margin-left: 15px;
+  position: relative;
+  top: 6px;
+}
+
+fieldset.with-border {
+  padding: 15px;
+  border: 1px dotted #ddd;
+  border-radius: 5px;
+}
