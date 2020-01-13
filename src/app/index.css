@@ -410,3 +410,16 @@ fieldset.with-border {
   border: 1px dotted #ddd;
   border-radius: 5px;
 }
+
+/* Main Navbar */
+.navbar-brand {
+    margin-left: -15px;
+    top: 10px;
+    position: relative;
+}
+
+@media screen and (max-width: 1440px) {
+  .navbar-header {
+      display: none;
+  }
+}
