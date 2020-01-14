@@ -81,7 +81,7 @@ class UpdateFrontendScopeRequest extends UpdateEntityRequest<FrontendScope, Role
 
 export const updateFrontendScopeRequest = new UpdateFrontendScopeRequest();
 
-class CreateOrUpdateFrontendScopeRequest extends CreateOrUpdateEntitiesRequest<FrontendScope, RoleModuleState>{
+class CreateOrUpdateFrontendScopesRequest extends CreateOrUpdateEntitiesRequest<FrontendScope, RoleModuleState>{
     createEntity(entity: Partial<FrontendScope>, { api }: ThunkExtra): Promise<FrontendScope> {
         return api.createFrontendScope(entity);
     }
@@ -104,7 +104,7 @@ class CreateOrUpdateFrontendScopeRequest extends CreateOrUpdateEntitiesRequest<F
     }
 }
 
-export const createOrUpdateFrontendScopeRequest = new CreateOrUpdateFrontendScopeRequest();
+export const createOrUpdateFrontendScopesRequest = new CreateOrUpdateFrontendScopesRequest();
 
 class DeleteFrontendScopesRequest extends RequestAction<IdType[], IdType[], RoleModuleState> {
     constructor() {

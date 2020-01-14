@@ -43,7 +43,7 @@ import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
 
 import FrontendScopeSelector from './containers/FrontendScopeSelector';
 import AdminScopePermissionsModal from './components/AdminScopePermissionsModal';
-import { createOrUpdateFrontendScopePermissionRequest } from '../../modules/roles/requests/frontendScopePermissions';
+import { createOrUpdateFrontendScopePermissionsRequest } from '../../modules/roles/requests/frontendScopePermissions';
 import DeleteRow from '../../components/TableColumnActions/DeleteRow';
 import ExpireRow from '../../components/TableColumnActions/ExpireRow';
 

@@ -64,19 +64,19 @@ const nestedReducer = new NestedReducer([
   apiScopeRequests.createApiScopeRequest.reducer,
   apiScopeRequests.updateApiScopeRequest.reducer,
   apiScopeRequests.deleteApiScopesRequest.reducer,
-  apiScopeRequests.createOrUpdateApiScopeRequest.reducer,
+  apiScopeRequests.createOrUpdateApiScopesRequest.reducer,
   // Frontend Scopes
   frontendScopeRequests.frontendScopeMapRequest.reducer,
   frontendScopeRequests.createFrontendScopeRequest.reducer,
   frontendScopeRequests.updateFrontendScopeRequest.reducer,
   frontendScopeRequests.deleteFrontendScopesRequest.reducer,
-  frontendScopeRequests.createOrUpdateFrontendScopeRequest.reducer,
+  frontendScopeRequests.createOrUpdateFrontendScopesRequest.reducer,
   // Frontend Scope Permissions
   frontendScopePermissionRequests.frontendScopePermissionMapRequest.reducer,
   frontendScopePermissionRequests.createFrontendScopePermissionRequest.reducer,
   frontendScopePermissionRequests.updateFrontendScopePermissionRequest.reducer,
   frontendScopePermissionRequests.deleteFrontendScopePermissionsRequest.reducer,
-  frontendScopePermissionRequests.createOrUpdateFrontendScopePermissionRequest.reducer,
+  frontendScopePermissionRequests.createOrUpdateFrontendScopePermissionsRequest.reducer,
   // Roles
   roleRequests.roleMapRequest.reducer,
   roleRequests.createRoleRequest.reducer,
@@ -89,13 +89,13 @@ const nestedReducer = new NestedReducer([
   roleApiScopeRequests.createRoleApiScopeRequest.reducer,
   roleApiScopeRequests.updateRoleApiScopeRequest.reducer,
   roleApiScopeRequests.deleteRoleApiScopesRequest.reducer,
-  roleApiScopeRequests.createOrUpdateRoleApiScopeRequest.reducer,
+  roleApiScopeRequests.createOrUpdateRoleApiScopesRequest.reducer,
   // Role Frontend Scopes
   roleFrontendScopeRequests.roleFrontendScopeMapRequest.reducer,
   roleFrontendScopeRequests.createRoleFrontendScopeRequest.reducer,
   roleFrontendScopeRequests.updateRoleFrontendScopeRequest.reducer,
   roleFrontendScopeRequests.deleteRoleFrontendScopesRequest.reducer,
-  roleFrontendScopeRequests.createOrUpdateRoleFrontendScopeRequest.reducer,
+  roleFrontendScopeRequests.createOrUpdateRoleFrontendScopesRequest.reducer,
   // Role Permission Scopes
   rolePermissionRequests.rolePermissionMapRequest.reducer,
   rolePermissionRequests.createRolePermissionRequest.reducer,

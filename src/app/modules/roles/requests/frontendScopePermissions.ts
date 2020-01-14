@@ -80,7 +80,7 @@ class UpdateFrontendScopePermissionRequest extends UpdateEntityRequest<FrontendS
 
 export const updateFrontendScopePermissionRequest = new UpdateFrontendScopePermissionRequest();
 
-class CreateOrUpdateFrontendScopePermissionRequest extends CreateOrUpdateEntitiesRequest<FrontendScopePermission, RoleModuleState>{
+class CreateOrUpdateFrontendScopePermissionsRequest extends CreateOrUpdateEntitiesRequest<FrontendScopePermission, RoleModuleState>{
     createEntity(entity: Partial<FrontendScopePermission>, { api }: ThunkExtra): Promise<FrontendScopePermission> {
         return api.createFrontendScopePermission(entity);
     }
@@ -103,7 +103,7 @@ class CreateOrUpdateFrontendScopePermissionRequest extends CreateOrUpdateEntitie
     }
 }
 
-export const createOrUpdateFrontendScopePermissionRequest = new CreateOrUpdateFrontendScopePermissionRequest();
+export const createOrUpdateFrontendScopePermissionsRequest = new CreateOrUpdateFrontendScopePermissionsRequest();
 
 class DeleteFrontendScopePermissionsRequest extends RequestAction<IdType[], IdType[], RoleModuleState> {
     constructor() {

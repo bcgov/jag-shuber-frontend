@@ -80,7 +80,7 @@ class UpdateApiScopeRequest extends UpdateEntityRequest<ApiScope, RoleModuleStat
 
 export const updateApiScopeRequest = new UpdateApiScopeRequest();
 
-class CreateOrUpdateApiScopeRequest extends CreateOrUpdateEntitiesRequest<ApiScope, RoleModuleState>{
+class CreateOrUpdateApiScopesRequest extends CreateOrUpdateEntitiesRequest<ApiScope, RoleModuleState>{
     createEntity(entity: Partial<ApiScope>, { api }: ThunkExtra): Promise<ApiScope> {
         return api.createApiScope(entity);
     }
@@ -103,7 +103,7 @@ class CreateOrUpdateApiScopeRequest extends CreateOrUpdateEntitiesRequest<ApiSco
     }
 }
 
-export const createOrUpdateApiScopeRequest = new CreateOrUpdateApiScopeRequest();
+export const createOrUpdateApiScopesRequest = new CreateOrUpdateApiScopesRequest();
 
 class DeleteApiScopesRequest extends RequestAction<IdType[], IdType[], RoleModuleState> {
     constructor() {
