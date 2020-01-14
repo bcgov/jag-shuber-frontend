@@ -126,7 +126,7 @@ export default class SheriffProfilePluginId extends SheriffProfileSectionPlugin<
                                 (p) => <SelectorField
                                     {...p}
                                     SelectorComponent={
-                                        (sp) => <GenderSelector {...sp} />}
+                                        (sp) => <GenderSelector {...sp} allowNone={true} />}
                                 /> }
                             label="Gender"
                         />

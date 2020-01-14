@@ -13,13 +13,13 @@ class SheriffRankList extends React.PureComponent<
     SelectorProps & SheriffRankListStateProps> {
 
     render() {
-        const { sheriffRanks = [], label = 'Rank', ...restProps } = this.props;
+        const { sheriffRanks = [], label = 'Rank', ...rest } = this.props;
         const selectorValues = sheriffRanks.map(rank => ({ key: rank.code, value: rank.description }));
         return (
-            <Selector 
+            <Selector
                 data={selectorValues}
                 label={label}
-                {...restProps} 
+                {...rest}
             />
         );
     }

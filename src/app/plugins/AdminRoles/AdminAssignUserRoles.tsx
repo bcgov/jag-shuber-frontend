@@ -66,18 +66,17 @@ import {
 
 import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../components/Table/DataTable';
 
-import RoleSelector from './containers/RoleSelector';
-
-import LocationDisplay from './containers/LocationDisplay';
-import GenderCodeDisplay from '../../containers/GenderCodeDisplay';
 import EditRow from '../../components/TableColumnActions/EditRow';
 import RemoveRow from '../../components/TableColumnActions/RemoveRow';
 import DeleteRow from '../../components/TableColumnActions/DeleteRow';
 import ExpireRow from '../../components/TableColumnActions/ExpireRow';
+import RoleSelector from './containers/RoleSelector';
+import LocationDisplay from './containers/LocationDisplay';
 import LocationSelector from '../../containers/LocationSelector';
 import SheriffRankDisplay from './containers/SheriffRankDisplay';
 import SheriffRankCodeSelector from '../../containers/SheriffRankCodeSelector';
-import GenderSelector from '../../containers/GenderSelector';
+import GenderDisplay from './containers/GenderDisplay';
+import GenderSelector from './containers/GenderSelector';
 
 // TODO: There already is a SheriffRankDisplay, but it doesn't work for our tables...
 //  It selects a single item using a code...
@@ -260,8 +259,10 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
             if (setPluginFilters) {
                 // console.log('setting plugin filters');
                 setPluginFilters({
-                    sheriff: {
-                        genderCode: newValue
+                    users: {
+                        sheriff: {
+                            genderCode: newValue
+                        }
                     }
                 }, setAdminRolesPluginFilters);
             }
@@ -384,7 +385,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                         DataTable.MappedTextColumn('Gender', {
                             fieldName: 'sheriff.genderCode',
                             colStyle: { width: '175px' },
-                            selectorComponent: GenderCodeDisplay,
+                            selectorComponent: GenderDisplay,
                             filterSelectorComponent: GenderSelector,
                             displayInfo: false,
                             filterable: true,

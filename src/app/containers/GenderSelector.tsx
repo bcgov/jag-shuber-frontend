@@ -4,24 +4,19 @@ import { allEffectiveGenderCodes } from '../modules/system/selectors';
 import Selector, { SelectorProps } from '../components/FormElements/Selector';
 import { GenderCode } from '../api/Api';
 import { RootState } from '../store';
-
+// TODO: Rename as GenderCodeSelector!!!
 interface GenderSelectorStateProps {
     genderCodes?: GenderCode[];
 }
 
-class GenderSelector extends React.PureComponent<
-    GenderSelectorStateProps & SelectorProps> {
+class GenderSelector extends React.PureComponent<GenderSelectorStateProps & SelectorProps> {
 
     render() {
-        const { 
-            genderCodes = [],
-            label = 'Gender',
-            ...rest
-        } = this.props;
+        const { genderCodes = [], label = 'Gender', ...rest } = this.props;
         const selectorValues = genderCodes.map(gender => ({ key: gender.code, value: gender.description }));
         return (
-            <Selector 
-                data={selectorValues} 
+            <Selector
+                data={selectorValues}
                 label={label}
                 {...rest}
             />
