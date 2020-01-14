@@ -68,6 +68,8 @@ const nestedReducer = new NestedReducer([
   alternateAssignmentTypeRequests.alternateAssignmentTypeMapRequest.reducer,
   courtRoleRequests.courtRoleMapRequest.reducer,
   courtroomRequests.courtroomMapRequest.reducer,
+  courtroomRequests.createOrUpdateCourtroomsRequest.reducer,
+  courtroomRequests.deleteCourtroomsRequest.reducer,
   jailRoleRequests.jailRoleMapRequest.reducer,
   runRequests.runMapRequest.reducer,
 

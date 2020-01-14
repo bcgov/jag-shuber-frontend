@@ -14,7 +14,9 @@ const nestedReducer = new NestedReducer([
   leaveRequests.leaveMapRequest.reducer,
   leaveRequests.leaveTypeMapRequest.reducer,
   leaveRequests.leaveCancelCodeMapRequest.reducer,
-  leaveRequests.createOrUpdateLeavesRequest.reducer
+  leaveRequests.createOrUpdateLeavesRequest.reducer,
+  leaveRequests.createOrUpdateLeaveSubCodesRequest.reducer,
+  leaveRequests.deleteLeaveSubCodesRequest.reducer
 ]);
 
 const reducer = nestedReducer.reducer;
