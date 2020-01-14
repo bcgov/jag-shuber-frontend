@@ -19,6 +19,7 @@ import SheriffProfile from './SheriffProfile';
 interface SheriffProfileModalProps {
     sheriffId: IdType;
     isEditing?: boolean;
+    sectionName?: string;
 }
 
 interface SheriffProfileModalStateProps {
@@ -26,7 +27,7 @@ interface SheriffProfileModalStateProps {
 }
 
 export interface SheriffProfileModalDispatchProps {
-    showSheriffProfileModal: (sheriffId: IdType, isEditing: boolean) => void;
+    showSheriffProfileModal: (sheriffId: IdType, isEditing: boolean, sectionName: string) => void;
 }
 
 type CompositeProps =
@@ -60,20 +61,23 @@ class SheriffProfileModal extends React.PureComponent<CompositeProps> {
                     {!isEditing && <Button
                         bsStyle="primary"
                         style={{ position: 'absolute', right: 15, zIndex: 100 }}
-                        onClick={() => showSheriffProfileModal(sheriffId, true)}
+                        onClick={() => {
+                            const sectionName = 'leaves'; // TODO: What are the other names
+                            showSheriffProfileModal(sheriffId, true, sectionName);
+                        }}
                     >
                         <Glyphicon glyph="pencil" />
                     </Button>}
                     <SheriffProfile
                         isEditing={isEditing}
                         sheriffId={sheriffId}
-                        onSubmitSuccess={() => showSheriffProfileModal(sheriffId, false)}
+                        onSubmitSuccess={() => showSheriffProfileModal(sheriffId, false, 'leaves')}
                     />
                 </Modal.Body>
                 {isEditing &&
                     <Modal.Footer>
                         <div>
-                            <Button onClick={() => showSheriffProfileModal(sheriffId, false)}>
+                            <Button onClick={() => showSheriffProfileModal(sheriffId, false, 'leaves')}>
                                 Cancel
                             </Button>
                             <SheriffProfile.SubmitButton>

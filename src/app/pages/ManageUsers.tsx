@@ -31,7 +31,7 @@ class ManageUsers extends React.PureComponent<Partial<ManageUsersProps>> {
                         left={(
                             <div style={{ flex: 1, display: 'flex', position: 'relative', justifyContent: 'center', paddingTop: '10px' }}>
                                 <div className="admin-form-filters-toggle">
-                                    <Glyphicon glyph="chevron-down" />&nbsp;&nbsp;Display User Search Filters
+                                    <Glyphicon glyph="chevron-right" />&nbsp;&nbsp;Display User Search Filters
                                 </div>
                             </div>
                         )}
@@ -69,13 +69,10 @@ class ManageUsers extends React.PureComponent<Partial<ManageUsersProps>> {
                 }
             >
                 {/* TODO: Note! This isn't a data table, just re-using some stuff that we'll refactor later... */}
-                <div className="fixed-filters-data-table">
+                {/* <div className="fixed-filters-data-table">
                     <div className="data-table">
                         <div className="data-table-filter-row">
                             <Table striped={true}>
-                                {/* We're doing the filter row as a separate table because nesting it in the FieldArray causes
-                                binding issues or issues with initialValues or something...
-                                basically, redux-form doesn't like it so we're not gonna force it. */}
                                 <thead>
                                     <DataTableFilterRow<Partial<User>>
                                         fieldName={'userFilters'}
@@ -143,7 +140,7 @@ class ManageUsers extends React.PureComponent<Partial<ManageUsersProps>> {
                             </Table>
                         </div>
                     </div>
-                </div>
+                </div> */}
                 <Well
                     style={{
                         display: 'flex',
