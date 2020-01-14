@@ -23,11 +23,12 @@ export default class SheriffProfilePluginId extends SheriffProfileSectionPlugin<
         lastName: 'sheriff.lastName',
         rankCode: 'sheriff.rankCode',
         badgeNo: 'sheriff.badgeNo',
-        alias: 'sheriff.alias',
+        // alias: 'sheriff.alias', // Unused ref, just replace with displayName
+        alias: 'sheriff.user.displayName',
         genderCode: 'sheriff.genderCode',
         isSheriff: 'sheriff.isSheriff',
-        userAuthId: 'sheriff.userAuthId',
-        siteminderId: 'sheriff.siteminderId'
+        userAuthId: 'sheriff.user.userAuthId',
+        siteminderId: 'sheriff.user.siteminderId'
     };
     title: string = 'Identification';
     DisplayComponent = ({ sheriffId }: SheriffProfilePluginProps) => (
@@ -90,7 +91,7 @@ export default class SheriffProfilePluginId extends SheriffProfileSectionPlugin<
                 </fieldset>
             </div>
             <div className="container-fluid">
-                <Row>
+                {/* <Row>
                     <Col xs={12}>
                         <Field
                             name={this.formFieldNames.alias}
@@ -98,7 +99,7 @@ export default class SheriffProfilePluginId extends SheriffProfileSectionPlugin<
                             label="Display Name"
                         />
                     </Col>
-                </Row>
+                </Row> */}
                 <Row>
                     <Col xs={12} lg={6}>
                         <Field
