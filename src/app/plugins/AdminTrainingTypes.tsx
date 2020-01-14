@@ -205,8 +205,14 @@ export default class AdminTrainingTypes extends FormContainerBase<AdminTrainingT
         const deletedLeaveTypes: IdType[] = dataToDelete.trainingLeaveTypes as IdType[];
 
         const leaveTypes: Partial<LeaveSubCode>[] = data.trainingLeaveTypes.map((c: LeaveSubCode) => ({
-            ...c,
+            // ...c, // Don't just spread the operator, we need to replace the id GUID used on client side with a code
+            // Just an alias used for updates, save method relies on the existence of an ID to determine whether or not
+            // to create or update a particular record...
+            id: c.id,
             code: 'TRAINING', // TODO: Use API value
+            subCode: c.subCode,
+            description: c.description,
+            expiryDate: c.expiryDate,
             createdBy: 'DEV - FRONTEND',
             updatedBy: 'DEV - FRONTEND',
             createdDtm: new Date().toISOString(),

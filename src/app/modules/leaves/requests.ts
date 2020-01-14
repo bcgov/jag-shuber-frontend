@@ -125,6 +125,13 @@ class CreateOrUpdateLeaveSubCodesRequest extends CreateOrUpdateEntitiesRequest<L
             leaveSubCodeMapRequest
         );
     }
+    setRequestData(moduleState: LeaveModuleState, data: LeaveSubCode[]) {
+        const newMap = { ...this.mapRequest.getRequestData(moduleState) };
+        data.forEach(d => {
+            newMap[d.subCode] = { ...d, id: d.subCode };
+        });
+        return this.mapRequest.setRequestData(moduleState, newMap);
+    }
 }
 
 export const createOrUpdateLeaveSubCodesRequest = new CreateOrUpdateLeaveSubCodesRequest();

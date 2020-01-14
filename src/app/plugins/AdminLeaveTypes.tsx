@@ -205,8 +205,14 @@ export default class AdminLeaveTypes extends FormContainerBase<AdminLeaveTypesPr
         const deletedLeaveTypes: IdType[] = dataToDelete.personalLeaveTypes as IdType[];
 
         const leaveTypes: Partial<LeaveSubCode>[] = data.personalLeaveTypes.map((c: LeaveSubCode) => ({
-            ...c,
+            // ...c, // Don't just spread the operator, we need to replace the id GUID used on client side with a code
+            // Just an alias used for updates, save method relies on the existence of an ID to determine whether or not
+            // to create or update a particular record...
+            id: c.id,
             code: 'PERSONAL', // TODO: Use API value
+            subCode: c.subCode,
+            description: c.description,
+            expiryDate: c.expiryDate,
             createdBy: 'DEV - FRONTEND',
             updatedBy: 'DEV - FRONTEND',
             createdDtm: new Date().toISOString(),
