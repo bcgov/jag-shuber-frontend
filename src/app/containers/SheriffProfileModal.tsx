@@ -33,7 +33,6 @@ export interface SheriffProfileModalDispatchProps {
 type CompositeProps =
     SheriffProfileModalProps & SheriffProfileModalDispatchProps & SheriffProfileModalStateProps & IModalInjectedProps;
 class SheriffProfileModal extends React.PureComponent<CompositeProps> {
-
     render() {
         const {
             // sheriff,
@@ -100,13 +99,11 @@ const showAction = (sheriffId: IdType, isEditing: boolean = false, sectionName?:
 };
 
 const mapStateToModalProps = (state: RootState, { sheriffId }: SheriffProfileModalProps) => {
-    const newProps = { sheriff: getSheriff(sheriffId)(state) as Sheriff };
-    return newProps;
+    return { sheriff: getSheriff(sheriffId)(state) as Sheriff };
 };
 
-const mapDispatchToModalProps = () => {
-    const newProps = { showSheriffProfileModal: showAction };
-    return newProps;
+const mapDispatchToModalProps = {
+    showSheriffProfileModal: showAction
 };
 
 const ConnectedModal = connect<
