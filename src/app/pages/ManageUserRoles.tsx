@@ -3,7 +3,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Button, Glyphicon, Well } from 'react-bootstrap';
 
 // import { IdType } from '../api';
-import Page from '../components/Page/Page';
+import Page, { PageToolbar } from '../components/Page/Page';
 import AdminForm from '../containers/AdminForm';
 import { AdminFormProps } from '../components/AdminForm/AdminForm';
 
@@ -40,7 +40,7 @@ class ManageUserRoles extends React.PureComponent<AdminFormProps & Partial<Manag
         return (
             <Page
                 toolbar={
-                    <Page.Toolbar
+                    <PageToolbar
                         left={(
                             <div style={{ flex: 1, display: 'flex', position: 'relative', justifyContent: 'center', paddingTop: '10px' }}>
                                 <div className="admin-form-filters-toggle">

@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Button, Glyphicon, Well } from 'react-bootstrap';
 
-import Page from '../components/Page/Page';
+import Page, { PageToolbar } from '../components/Page/Page';
 
 import AdminForm from '../containers/AdminForm';
 import { AdminFormProps } from '../components/AdminForm/AdminForm';
@@ -38,7 +38,7 @@ class ManageCourtrooms extends React.PureComponent<AdminFormProps & Partial<Mana
         return (
             <Page
                 toolbar={
-                    <Page.Toolbar
+                    <PageToolbar
                         left={(
                             <div style={{ flex: 1, display: 'flex', position: 'relative', justifyContent: 'center', paddingTop: '10px' }}>
                                 <div className="admin-form-filters-toggle">

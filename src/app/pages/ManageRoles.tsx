@@ -3,7 +3,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Button, Glyphicon, Well } from 'react-bootstrap';
 
 // import { IdType } from '../api';
-import Page from '../components/Page/Page';
+import Page, { PageToolbar } from '../components/Page/Page';
 import AdminForm from '../containers/AdminForm';
 import { AdminFormProps } from '../components/AdminForm/AdminForm';
 
@@ -38,8 +38,9 @@ class ManageRoles extends React.PureComponent<AdminFormProps & Partial<ManageRol
 
         return (
             <Page
+                disableLocations={true}
                 toolbar={
-                    <Page.Toolbar
+                    <PageToolbar
                         // TODO: Figure out a better way to space this... just a temporary placeholder / spacer for now
                         left={(
                             <div style={{ flex: 1, display: 'flex', position: 'relative', justifyContent: 'center', paddingTop: '10px' }}>

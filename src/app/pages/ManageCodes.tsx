@@ -31,7 +31,7 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps> {
         const { isEditing } = this.state;
 
         return (
-            <Page>
+            <Page disableLocations={true}>
                 <Well
                     style={{
                         display: 'flex',

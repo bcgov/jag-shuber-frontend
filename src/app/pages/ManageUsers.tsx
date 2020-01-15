@@ -3,7 +3,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Button, Glyphicon, Table, Well } from 'react-bootstrap';
 import { reduxForm } from 'redux-form';
 
-import Page from '../components/Page/Page';
+import Page, { PageToolbar } from '../components/Page/Page';
 
 import { User } from '../api';
 
@@ -27,7 +27,7 @@ class ManageUsers extends React.PureComponent<Partial<ManageUsersProps>> {
         return (
             <Page
                 toolbar={
-                    <Page.Toolbar
+                    <PageToolbar
                         left={(
                             <div style={{ flex: 1, display: 'flex', position: 'relative', justifyContent: 'center', paddingTop: '10px' }}>
                                 <div className="admin-form-filters-toggle">

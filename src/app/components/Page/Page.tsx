@@ -1,12 +1,12 @@
 import * as React from 'react';
 import './Page.css';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-export interface PageProps {
-    style?: any; // React.CSSProperties;
-    toolbarStyle?: any; // React.CSSProperties;
-    contentStyle?: any; // React.CSSProperties;
-    toolbar?: React.ReactNode;
-}
+import { currentUserScopes } from '../../modules/user/selectors';
+import { currentLocation as currentLocationSelector } from '../../modules/user/selectors';
+import { updateCurrentLocation } from '../../modules/user/actions';
+import { RootState, ThunkAction } from '../../store';
 
 export interface PageToolbarProps {
     style?: any; // React.CSSProperties;
@@ -15,7 +15,7 @@ export interface PageToolbarProps {
     right?: React.ReactNode;
 }
 
-class PageToolbar extends React.PureComponent<PageToolbarProps>{
+export class PageToolbar extends React.PureComponent<PageToolbarProps>{
     render() {
         const { style, left, middle, right } = this.props;
         return (
@@ -44,8 +44,28 @@ class PageToolbar extends React.PureComponent<PageToolbarProps>{
     }
 }
 
-export default class Page extends React.PureComponent<PageProps> {
+export interface PageProps {
+    style?: any; // React.CSSProperties;
+    toolbarStyle?: any; // React.CSSProperties;
+    contentStyle?: any; // React.CSSProperties;
+    toolbar?: React.ReactNode;
+    // Disable specific locations
+    disableLocations?: boolean;
+    dispatchDisableLocations?: any;
+}
+
+export class Page extends React.PureComponent<PageProps> {
     static Toolbar = PageToolbar;
+    constructor(props: PageProps) {
+        super(props);
+
+        const { disableLocations, dispatchDisableLocations } = props;
+        if (disableLocations === true) {
+            // Set to All Locations and disable
+            dispatchDisableLocations();
+        }
+    }
+
     render() {
         const { style = {}, toolbar, toolbarStyle = {}, contentStyle = {} } = this.props;
         return (
@@ -62,3 +82,11 @@ export default class Page extends React.PureComponent<PageProps> {
         );
     }
 }
+
+export default
+    connect<Partial<PageProps>, Partial<{ dispatchDisableLocations?: any }>, {}>(
+        null,
+        (dispatch) => ({
+                // TODO: Export and standardize the ALL_LOCATIONS const
+                dispatchDisableLocations: () => dispatch(updateCurrentLocation('ALL_LOCATIONS'))
+        }))(Page);

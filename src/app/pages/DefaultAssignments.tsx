@@ -4,14 +4,14 @@ import {
 } from 'react-bootstrap';
 import AssignmentAddModal from '../containers/AssignmentAddModal';
 import AssignmentList from '../containers/AssignmentList';
-import Page from '../components/Page/Page';
+import Page, { PageToolbar } from '../components/Page/Page';
 
 class DefaultAssignments extends React.PureComponent {
     render() {
         return (
             <Page
                 toolbar={
-                    <Page.Toolbar
+                    <PageToolbar
                         right={(
                             <div style={{ marginTop: 3 }}>
                                 <AssignmentAddModal isDefaultTemplate={true} />

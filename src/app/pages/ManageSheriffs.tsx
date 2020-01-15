@@ -1,7 +1,7 @@
 import React from 'react';
 import SheriffList from '../containers/SheriffList';
 import { Well } from 'react-bootstrap';
-import Page from '../components/Page/Page';
+import Page, { PageToolbar } from '../components/Page/Page';
 import SheriffProfileCreateModal from '../containers/SheriffProfileCreateModal';
 
 class ManageSheriffs extends React.PureComponent {
@@ -9,7 +9,7 @@ class ManageSheriffs extends React.PureComponent {
         return (
             <Page
                 toolbar={
-                    <Page.Toolbar
+                    <PageToolbar
                         right={(
                             <div style={{ marginTop: 3 }}>
                                 <SheriffProfileCreateModal.ShowButton />
