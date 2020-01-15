@@ -3,8 +3,11 @@ import './Page.css';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { currentUserScopes } from '../../modules/user/selectors';
-import { currentLocation as currentLocationSelector } from '../../modules/user/selectors';
+import {
+    currentLocation as currentLocationSelector,
+    isLocationSet as isLocationSetSelector,
+    currentUserScopes
+} from '../../modules/user/selectors';
 import { updateCurrentLocation } from '../../modules/user/actions';
 import { RootState, ThunkAction } from '../../store';
 
@@ -51,18 +54,36 @@ export interface PageProps {
     toolbar?: React.ReactNode;
     // Disable specific locations
     disableLocations?: boolean;
-    dispatchDisableLocations?: any;
+    dispatchDisableCurrentLocation?: any;
+    dispatchResetCurrentLocation?: any;
 }
 
 export class Page extends React.PureComponent<PageProps> {
     static Toolbar = PageToolbar;
-    constructor(props: PageProps) {
+    constructor(props: PageProps & PageStateProps & PageDispatchProps) {
         super(props);
 
-        const { disableLocations, dispatchDisableLocations } = props;
+        const {
+            disableLocations,
+            dispatchDisableCurrentLocation,
+            dispatchResetCurrentLocation,
+            currentLocation
+        } = props;
+
+        // TODO: Export and standardize the ALL_LOCATIONS const
         if (disableLocations === true) {
-            // Set to All Locations and disable
-            dispatchDisableLocations();
+            if (currentLocation !== 'ALL_LOCATIONS') {
+                // Set to All Locations and disable the location switch
+                console.log('disable current location');
+                dispatchDisableCurrentLocation();
+            }
+        } else if (disableLocations === false) {
+            if (currentLocation === 'ALL_LOCATIONS') {
+                // TODO: Let's display a confirm modal or something instead
+                //  of pushing the user to the Select your Location screen
+                console.log('reset current location');
+                dispatchResetCurrentLocation();
+            }
         }
     }
 
@@ -83,10 +104,24 @@ export class Page extends React.PureComponent<PageProps> {
     }
 }
 
+export interface PageStateProps extends PageProps {
+    currentLocation?: any;
+    isCurrentLocationSet?: boolean;
+};
+
+export interface PageDispatchProps extends PageProps {
+    dispatchDisableCurrentLocation?: any;
+    dispatchResetCurrentLocation?: any;
+};
+
 export default
-    connect<Partial<PageProps>, Partial<{ dispatchDisableLocations?: any }>, {}>(
-        null,
+    connect<Partial<PageStateProps>, Partial<PageDispatchProps>, PageProps, RootState>(
+        (state: RootState) => ({
+            currentLocation: currentLocationSelector(state),
+            isCurrentLocationSet: isLocationSetSelector(state)
+        }),
         (dispatch) => ({
                 // TODO: Export and standardize the ALL_LOCATIONS const
-                dispatchDisableLocations: () => dispatch(updateCurrentLocation('ALL_LOCATIONS'))
+                dispatchDisableCurrentLocation: () => dispatch(updateCurrentLocation('ALL_LOCATIONS')),
+                dispatchResetCurrentLocation: () => dispatch(updateCurrentLocation(''))
         }))(Page);

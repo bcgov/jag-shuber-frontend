@@ -39,6 +39,7 @@ class ManageUserRoles extends React.PureComponent<AdminFormProps & Partial<Manag
 
         return (
             <Page
+                disableLocations={false}
                 toolbar={
                     <PageToolbar
                         left={(

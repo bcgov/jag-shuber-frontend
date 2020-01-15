@@ -26,6 +26,7 @@ class ManageUsers extends React.PureComponent<Partial<ManageUsersProps>> {
 
         return (
             <Page
+                disableLocations={false}
                 toolbar={
                     <PageToolbar
                         left={(
