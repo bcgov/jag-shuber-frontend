@@ -162,7 +162,7 @@ class AssignmentControls extends React.PureComponent<
                         onClick={() => showEditModal(selectedAssignments[0], allAssignments)}
                         disabled={!areAssignmentsSelected}
                     >
-                        <Glyphicon glyph="pencil" />
+                        <Glyphicon glyph="penci+l" />
                     </Button>
 
                     <ConfirmationModal

@@ -77,16 +77,12 @@ export default class AdminRoleScopeAccessModal extends React.Component<AdminRole
                             <DataTable
                                 fieldName={`roles.roleFrontendScopePermissionsGrouped['${roleId}']['${parentModel.id}']`}
                                 title={''} // Leave this blank
+                                expandable={false}
                                 displayHeaderActions={false}
                                 displayActionsColumn={false}
-                                actionsColumn={DataTable.ActionsColumn({
-                                    actions: [
-                                        ({ fields, index, model }) => <RemoveRow fields={fields} index={index} model={model} />,
-                                        ({ fields, index, model }) => { return (model && model.id) ? (<ExpireRow fields={fields} index={index} model={model} />) : null; }
-                                    ]
-                                })}
+                                // No actions necessary
                                 columns={[
-                                    DataTable.StaticTextColumn('Permission', { fieldName: 'displayName', displayInfo: false }),
+                                    DataTable.StaticTextColumn('Permission', { fieldName: 'displayName', colStyle: { width: '200px' }, displayInfo: false }),
                                     // DataTable.StaticTextColumn('Code', { fieldName: 'displayName', displayInfo: false }),
                                     DataTable.StaticTextColumn('Description', { fieldName: 'description', displayInfo: false }),
                                     DataTable.CheckboxColumn('Grant Permission', { fieldName: 'hasPermission', displayInfo: false }), // TODO: Use a checkbox

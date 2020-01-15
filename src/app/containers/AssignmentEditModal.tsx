@@ -37,7 +37,7 @@ class AssignmentEditModal extends React.PureComponent<
             assignmentTitle = 'Assignment'
         } = this.props;
 
-        const deleteConfirmationMessage = (            
+        const deleteConfirmationMessage = (
             <p style={{ fontSize: 14 }}>
                 <b>This will impact your Duty Roster!</b><br />
                 {toTitleCase(assignmentTitle)} duties for today and all future days will be removed.
@@ -50,7 +50,8 @@ class AssignmentEditModal extends React.PureComponent<
                     title="Edit Assignment"
                     showButton={({ handleShow }) =>
                         <Button
-                            bsSize="xsmall"
+                            // bsSize="xsmall"
+                            bsStyle="primary"
                             onClick={() => handleShow()}
                         >
                             <Glyphicon glyph="pencil" />

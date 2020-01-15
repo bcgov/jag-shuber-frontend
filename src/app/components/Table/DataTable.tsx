@@ -177,6 +177,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                     columns={columns}
                                     expandable={expandable}
                                     filterable={filterable}
+                                    displayActionsColumn={displayActionsColumn}
                                 />
                             </thead>
                         </Table>
@@ -199,6 +200,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                             filterable={filterable}
                                             displayHeaderActions={displayHeaderActions}
                                             displayHeaderSave={displayHeaderSave}
+                                            displayActionsColumn={displayActionsColumn}
                                             // TODO: Rename this, what kind of button is it :)
                                             buttonLabel={buttonLabel}
                                         />

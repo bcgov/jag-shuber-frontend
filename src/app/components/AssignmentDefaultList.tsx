@@ -38,17 +38,17 @@ export default class AssignmentDefaultList extends React.Component<AssignmentDef
                             {assignments.map((assignment, index) => {
                                 return (
                                     <tr key={index}>
-                                        <td style={{position:'relative'}}>
-                                            <WorkSectionIndicator 
-                                                workSectionId={assignment.workSectionId} 
-                                                includeCode={false}                                                
+                                        <td style={{position: 'relative'}}>
+                                            <WorkSectionIndicator
+                                                workSectionId={assignment.workSectionId}
+                                                includeCode={false}
                                             />
                                         </td>
                                         <td>{WORK_SECTIONS[assignment.workSectionId]}</td>
                                         <td><strong>{assignment.title}</strong></td>
                                         <td>
                                             {assignment.dutyRecurrences &&
-                                                assignment.dutyRecurrences.map((recurrence) => 
+                                                assignment.dutyRecurrences.map((recurrence) =>
                                                 <AssignmentDefaultRecurrenceDetails key="recurrence" data={recurrence}/>
                                             )}
                                         </td>

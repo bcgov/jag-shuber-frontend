@@ -304,7 +304,7 @@ th .glyphicon-filter {
 }
 
 /* Override user agent styling */
-input,
+input:not([type="checkbox"]),
 select,
 textarea {
   -webkit-appearance: none;
