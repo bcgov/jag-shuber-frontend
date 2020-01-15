@@ -58,7 +58,7 @@ export interface PageProps {
     dispatchResetCurrentLocation?: any;
 }
 
-export class Page extends React.PureComponent<PageProps> {
+export class Page extends React.PureComponent<PageProps & PageStateProps & PageDispatchProps> {
     static Toolbar = PageToolbar;
     constructor(props: PageProps & PageStateProps & PageDispatchProps) {
         super(props);
@@ -88,7 +88,26 @@ export class Page extends React.PureComponent<PageProps> {
     }
 
     render() {
-        const { style = {}, toolbar, toolbarStyle = {}, contentStyle = {} } = this.props;
+        const {
+            style = {},
+            toolbar,
+            toolbarStyle = {},
+            contentStyle = {} ,
+            disableLocations,
+            currentLocation,
+            // isCurrentLocationSet
+        } = this.props;
+
+        const isCurrentLocationSet = (
+            typeof currentLocation === 'string' &&
+            currentLocation !== 'ALL_LOCATIONS' &&
+            currentLocation !== '');
+
+        const shouldRenderChildren = ((disableLocations !== false) || (!disableLocations && isCurrentLocationSet));
+        console.log('should we render the page contents?');
+        console.log('current location is: ' + currentLocation);
+        console.log(shouldRenderChildren);
+
         return (
             <div className="pageContainer" style={style}>
                 {toolbar && (
@@ -97,7 +116,7 @@ export class Page extends React.PureComponent<PageProps> {
                     </div>
                 )}
                 <div className="page-content" style={contentStyle}>
-                    {this.props.children}
+                    {shouldRenderChildren ? this.props.children : null}
                 </div>
             </div>
         );

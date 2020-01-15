@@ -44,19 +44,34 @@ const _updateCurrentLocation = (currentLocation: string) => (
 
 export const updateCurrentLocation: ThunkAction<string> =
   (locationId = '') => async (dispatch, getState, extra) => {
-  console.log('updating currrent location... reloading data');
+  console.log(`updating current location [${locationId}] ... reloading data`);
   dispatch(_updateCurrentLocation(locationId));
-
-    await Promise.all([
-      dispatch(getRuns()),
-      dispatch(getCourtrooms()),
-      dispatch(getSheriffList()),
-      dispatch(getUsers()),
-      dispatch(getAssignments()),
-      dispatch(getAssignmentDuties()),
-      dispatch(getShifts())
-    ]);
-  };
+  // TODO: Use constant!
+  if (locationId === '' || locationId === 'ALL_LOCATIONS') {
+      await Promise.all([
+        // dispatch(getRuns()),
+        dispatch(getCourtrooms()), // TODO: Only fetch if we're a super admin, or master locations admin
+        // Don't grab new data if we're set to ALL_LOCATIONS, it's heavy and not paged
+        // ALL_LOCATIONS is basically only for admin pages like code types, courtrooms,
+        // frontend scopes, api scopes, and roles...
+        // dispatch(getSheriffList()),
+        // dispatch(getUsers()),
+        // dispatch(getAssignments()),
+        // dispatch(getAssignmentDuties()),
+        // dispatch(getShifts())
+      ]);
+  } else {
+      await Promise.all([
+          dispatch(getRuns()),
+          dispatch(getCourtrooms()),
+          dispatch(getSheriffList()),
+          dispatch(getUsers()),
+          dispatch(getAssignments()),
+          dispatch(getAssignmentDuties()),
+          dispatch(getShifts())
+      ]);
+  }
+};
 
 export const updateUserToken: ThunkAction<string> = (token?: string) => async (dispatch, getState, extra) => {
   const payload = decodeJwt(token);
