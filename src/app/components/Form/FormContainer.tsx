@@ -15,6 +15,10 @@ export interface FormContainerProps<T = any> {
     // TODO: It would be nice if we could somehow pass in showSheriffProfileModal some other way that was more declarative, and from the plugin...
     //  This is easy and works for now though.
     showSheriffProfileModal?: (sheriffId: IdType, isEditing: boolean, sectionName?: string) => {};
+    // TODO: Is there a LocationProps that exists? We are / will be using this in more than one place
+    // TODO: Not my fav having location coupled here, but it gets the job done
+    currentLocation?: string;
+    isLocationSet?: boolean;
 }
 export interface FormContainer<T = any> {
     /**

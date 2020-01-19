@@ -18,6 +18,7 @@ export interface AdminFormProps {
     showSheriffProfileModal?: (sheriffId: IdType, isEditing: boolean, sectionName?: string) => {};
     onSubmitSuccess?: () => void;
     initialValues?: any;
+    currentLocation?: string;
 }
 
 class AdminFormSectionNav extends React.PureComponent<{ title: string, hasErrors?: boolean }>{
@@ -53,14 +54,18 @@ export default class AdminForm extends React.PureComponent<InjectedFormProps<any
     }*/
 
     renderPlugin(plugin: FormContainer) {
-        const { initialValues = {}, isEditing = false, setPluginFilters, showSheriffProfileModal } = this.props;
+        const { initialValues = {}, isEditing = false, setPluginFilters, showSheriffProfileModal, currentLocation } = this.props;
 
         const pluginProps: FormContainerProps = {
             // sheriffId,
+            currentLocation: currentLocation,
             data: initialValues[plugin.reduxFormKey],
             setPluginFilters,
             showSheriffProfileModal
         };
+
+        console.log('dump plugin props');
+
         return isEditing
             ? plugin.renderFormFields(pluginProps)
             : plugin.renderDisplay(pluginProps);

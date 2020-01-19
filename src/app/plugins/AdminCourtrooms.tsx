@@ -69,6 +69,11 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
     title: string = ' Courtrooms';
 
     FormComponent = (props: FormContainerProps<AdminCourtroomsProps>) => {
+        const { currentLocation, isLocationSet } = props;
+        const loc = currentLocation;
+        console.log('test current loc');
+        console.log(loc);
+
         const onFilterLocation = (event: Event, newValue: any) => {
             const { setPluginFilters } = props;
             if (setPluginFilters) {

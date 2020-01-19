@@ -29,7 +29,9 @@ import { default as FormSubmitButton, SubmitButtonProps } from '../components/Fo
 import { RootState } from '../store';
 
 import {
-    currentUserRoleScopes
+    currentUserRoleScopes,
+    currentLocation as currentLocationSelector,
+    isLocationSet as isLocationSetSelector
 } from '../modules/user/selectors';
 
 import {
@@ -164,7 +166,12 @@ const AdminFormSubmitButton = (props: Partial<SubmitButtonProps>) => (
     <FormSubmitButton {...props} formName={formConfig.form} />
 )
 
-interface AdminFormContainerStateProps {
+interface LocationProps {
+    currentLocation?: string;
+    isLocationSet?: boolean;
+}
+
+interface AdminFormContainerStateProps extends LocationProps {
     pluginsWithErrors: { [key: string]: boolean };
     pluginErrors: { [key: string]: Error | string };
     selectedSection?: string;
@@ -217,7 +224,7 @@ class AdminFormContainer extends React.PureComponent<AdminFormContainerProps> {
     }
 
     render() {
-        const { isEditing, pluginErrors = {} } = this.props;
+        const { isEditing, pluginErrors = {}, currentLocation } = this.props;
 
         return (
             <div>
@@ -299,6 +306,8 @@ export default class extends
 
             return {
                 plugins: pluginsToRender,
+                currentLocation: currentLocationSelector(state),
+                isLocationSet: isLocationSetSelector(state),
                 initialValues,
                 pluginState: { ...initialValues },
                 selectedSection: selectedAdminFormSection(state),
