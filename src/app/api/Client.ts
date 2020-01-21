@@ -196,9 +196,19 @@ export default class Client implements API {
 
     // TODO: getAssignmentDuties broke before, not sure why!!! Is this still an issue?
     async getAssignmentDuties(startDate: DateType = moment(), endDate?: DateType): Promise<AssignmentDuty[]> {
-        // let duties: AssignmentDuty[] = (await this._client.GetDuties() as any);
-        // return duties;
-        return Promise.resolve([] as AssignmentDuty[]);
+        // TODO: Not sure if this is the best solution, but it gets things working they way we want to for now...
+        //  ALL_LOCATIONS key is added to selectorValues in LocationSelector.
+        const currentLocation = (this.currentLocation && this.currentLocation !== 'ALL_LOCATIONS')
+            ? this.currentLocation
+            : 'ALL_LOCATIONS';
+
+        const startDateString = (endDate) ? startDate.toString() : '';
+        const endDateString = (endDate) ? endDate.toString() : '';
+        // TODO: Double check to make sure Assignment Duties are working correctly!
+        const duties: AssignmentDuty[] = await this._client
+            .GetDuties(currentLocation, startDateString, endDateString) as any;
+
+        return duties;
     }
 
     async createAssignmentDuty(duty: Partial<AssignmentDuty>): Promise<AssignmentDuty> {
