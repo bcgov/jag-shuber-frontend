@@ -20,6 +20,10 @@ import {
     findAllCourtrooms
 } from '../../modules/assignments/selectors';
 
+import {
+    currentLocation as getCurrentLocation
+} from '../../modules/user/selectors';
+
 import { RootState } from '../../store';
 
 import { Courtroom, IdType } from '../../api';
@@ -71,8 +75,6 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
     FormComponent = (props: FormContainerProps<AdminCourtroomsProps>) => {
         const { currentLocation, isLocationSet } = props;
         const loc = currentLocation;
-        console.log('test current loc');
-        console.log(loc);
 
         const onFilterLocation = (event: Event, newValue: any) => {
             const { setPluginFilters } = props;
@@ -117,6 +119,24 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
             }
         };
 
+        const courtroomColumns = (currentLocation === 'ALL_LOCATIONS')
+            ? [
+                DataTable.SelectorFieldColumn('Location', { fieldName: 'locationId', selectorComponent: LocationSelector, displayInfo: false, filterable: true, filterColumn: onFilterLocation }),
+                DataTable.TextFieldColumn('Courtroom', { fieldName: 'name', displayInfo: false, filterable: true, filterColumn: onFilterCourtroom }),
+                DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, filterable: true, filterColumn: onFilterCourtroomCode }),
+                DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false }),
+                // DataTable.DateColumn('Date Created', 'createdDtm'),
+                DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
+            ]
+            : [
+                // DataTable.SelectorFieldColumn('Location', { fieldName: 'locationId', selectorComponent: LocationSelector, displayInfo: false, filterable: true, filterColumn: onFilterLocation }),
+                DataTable.TextFieldColumn('Courtroom', { fieldName: 'name', displayInfo: false, filterable: true, filterColumn: onFilterCourtroom }),
+                DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, filterable: true, filterColumn: onFilterCourtroomCode }),
+                DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false }),
+                // DataTable.DateColumn('Date Created', 'createdDtm'),
+                DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
+            ];
+
         return (
             <div>
             {/* Only use fixed if configured as a standalone page */}
@@ -148,15 +168,7 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
                             }
                         ]
                     })}
-                    columns={[
-                        DataTable.SelectorFieldColumn('Location', { fieldName: 'locationId', selectorComponent: LocationSelector, displayInfo: false, filterable: true, filterColumn: onFilterLocation }),
-                        DataTable.TextFieldColumn('Courtroom', { fieldName: 'name', displayInfo: false, filterable: true, filterColumn: onFilterCourtroom }),
-                        DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, filterable: true, filterColumn: onFilterCourtroomCode }),
-                        // DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false }),
-                        // DataTable.DateColumn('Date Created', 'createdDtm'),
-                        DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
-
-                    ]}
+                    columns={courtroomColumns}
                     filterable={true}
                     expandable={false}
                     // expandedRows={[1, 2]}
@@ -191,9 +203,12 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
             ? findAllCourtrooms(filters.courtrooms)(state) || undefined
             : getAllCourtrooms(state);
 
+        const currentLocation = getCurrentLocation(state);
+
         return {
             ...filterData,
-            courtrooms
+            courtrooms,
+            currentLocation
         };
     }
 
@@ -228,13 +243,26 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
         // Delete records before saving new ones!
         const deletedCourtrooms: IdType[] = dataToDelete.courtrooms as IdType[];
 
-        const courtrooms: Partial<Courtroom>[] = data.courtrooms.map((c: Courtroom) => ({
-            ...c,
-            createdBy: 'DEV - FRONTEND',
-            updatedBy: 'DEV - FRONTEND',
-            createdDtm: new Date().toISOString(),
-            updatedDtm: new Date().toISOString()
-        }));
+        const { currentLocation } = initialValues.assignments;
+        let courtrooms: Partial<Courtroom>[];
+        if (currentLocation === 'ALL_LOCATIONS' || currentLocation === '') {
+            courtrooms = data.courtrooms.map((c: Courtroom) => ({
+                ...c,
+                createdBy: 'DEV - FRONTEND',
+                updatedBy: 'DEV - FRONTEND',
+                createdDtm: new Date().toISOString(),
+                updatedDtm: new Date().toISOString()
+            }));
+        } else {
+            courtrooms = data.courtrooms.map((c: Courtroom) => ({
+                ...c,
+                locationId: currentLocation,
+                createdBy: 'DEV - FRONTEND',
+                updatedBy: 'DEV - FRONTEND',
+                createdDtm: new Date().toISOString(),
+                updatedDtm: new Date().toISOString()
+            }));
+        }
 
         return Promise.all([
             dispatch(deleteCourtrooms(deletedCourtrooms)),

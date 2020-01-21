@@ -71,8 +71,6 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
     FormComponent = (props: FormContainerProps<AdminJailRolesProps>) => {
         const { currentLocation, isLocationSet } = props;
         const loc = currentLocation;
-        console.log('test current loc');
-        console.log(loc);
 
         const onFilterLocation = (event: Event, newValue: any) => {
             const { setPluginFilters } = props;

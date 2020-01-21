@@ -64,9 +64,6 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
             return (col.fieldName && col.filterable) ? `${fieldName}.${col.fieldName}` : undefined;
         }).filter(col => col) as string[];
 
-        // console.log('dump filter field config');
-        // console.log(filterFieldNames);
-
         return (
             <Fields<Partial<any & T>>
                 names={filterFieldNames}

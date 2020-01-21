@@ -71,8 +71,6 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
     FormComponent = (props: FormContainerProps<AdminOtherTypesProps>) => {
         const { currentLocation, isLocationSet } = props;
         const loc = currentLocation;
-        console.log('test current loc');
-        console.log(loc);
 
         const onFilterLocation = (event: Event, newValue: any) => {
             const { setPluginFilters } = props;
@@ -117,6 +115,13 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
             }
         };
 
+        const assignmentTypeColumns = [
+            DataTable.TextFieldColumn('Assignment Type', { fieldName: 'description', displayInfo: false, filterable: true, filterColumn: onFilterOtherType }),
+            DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, filterable: true, filterColumn: onFilterOtherTypeCode }),
+            DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false, filterable: false }),
+            DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
+        ];
+
         return (
             <div>
             {/* Only use fixed if configured as a standalone page */}
@@ -148,15 +153,7 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
                             }
                         ]
                     })}
-                    columns={[
-                        // DataTable.SelectorFieldColumn('Location', { fieldName: 'locationId', selectorComponent: LocationSelector, displayInfo: false, filterable: true, filterColumn: onFilterLocation }),
-                        DataTable.TextFieldColumn('Assignment Type', { fieldName: 'description', displayInfo: false, filterable: true, filterColumn: onFilterOtherType }),
-                        DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, filterable: true, filterColumn: onFilterOtherTypeCode }),
-                        // DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false }),
-                        // DataTable.DateColumn('Date Created', 'createdDtm'),
-                        DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
-
-                    ]}
+                    columns={assignmentTypeColumns}
                     filterable={true}
                     expandable={false}
                     // expandedRows={[1, 2]}

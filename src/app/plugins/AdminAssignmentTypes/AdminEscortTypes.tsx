@@ -20,6 +20,10 @@ import {
     findAllEscortRunTypes
 } from '../../modules/assignments/selectors';
 
+import {
+    currentLocation as getCurrentLocation,
+} from '../../modules/user/selectors';
+
 import { RootState } from '../../store';
 
 import { EscortRun as EscortType, IdType } from '../../api';
@@ -71,8 +75,6 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
     FormComponent = (props: FormContainerProps<AdminEscortTypesProps>) => {
         const { currentLocation, isLocationSet } = props;
         const loc = currentLocation;
-        console.log('test current loc');
-        console.log(loc);
 
         const onFilterLocation = (event: Event, newValue: any) => {
             const { setPluginFilters } = props;
@@ -117,6 +119,19 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
             }
         };
 
+        const escortTypeColumns = (currentLocation === 'ALL_LOCATIONS')
+            ? [
+                DataTable.SelectorFieldColumn('Location', { fieldName: 'locationId', selectorComponent: LocationSelector, displayInfo: false, filterable: true, filterColumn: onFilterLocation }),
+                DataTable.TextFieldColumn('Run Name', { fieldName: 'title', displayInfo: false, filterable: true, filterColumn: onFilterEscortType }),
+                DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false, filterable: false }),
+                DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true })
+            ]
+            : [
+                DataTable.TextFieldColumn('Run Name', { fieldName: 'title', displayInfo: false, filterable: true, filterColumn: onFilterEscortType }),
+                DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false, filterable: false }),
+                DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true })
+            ];
+
         return (
             <div>
             {/* Only use fixed if configured as a standalone page */}
@@ -148,15 +163,7 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
                             }
                         ]
                     })}
-                    columns={[
-                        DataTable.SelectorFieldColumn('Location', { fieldName: 'locationId', selectorComponent: LocationSelector, displayInfo: false, filterable: true, filterColumn: onFilterLocation }),
-                        DataTable.TextFieldColumn('Run Name', { fieldName: 'title', displayInfo: false, filterable: true, filterColumn: onFilterEscortType }),
-                        // DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, filterable: true, filterColumn: onFilterEscortTypeCode }),
-                        // DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false }),
-                        // DataTable.DateColumn('Date Created', 'createdDtm'),
-                        DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
-
-                    ]}
+                    columns={escortTypeColumns}
                     filterable={true}
                     expandable={false}
                     // expandedRows={[1, 2]}
@@ -191,9 +198,12 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
             ? findAllEscortRunTypes(filters.escortTypes)(state) || undefined
             : getAllEscortRunTypes(state);
 
+        const currentLocation = getCurrentLocation(state);
+
         return {
             ...filterData,
-            escortTypes
+            escortTypes,
+            currentLocation
         };
     }
 
@@ -228,13 +238,27 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
         // Delete records before saving new ones!
         const deletedEscortTypes: IdType[] = dataToDelete.escortTypes as IdType[];
 
-        const escortTypes: Partial<EscortType>[] = data.escortTypes.map((c: EscortType) => ({
-            ...c,
-            createdBy: 'DEV - FRONTEND',
-            updatedBy: 'DEV - FRONTEND',
-            createdDtm: new Date().toISOString(),
-            updatedDtm: new Date().toISOString()
-        }));
+        const { currentLocation } = initialValues.assignments;
+        const escortTypes: Partial<EscortType>[] = data.escortTypes.map((c: EscortType) => {
+            if (currentLocation === 'ALL_LOCATIONS' || currentLocation === '') {
+                return {
+                    ...c,
+                    createdBy: 'DEV - FRONTEND',
+                    updatedBy: 'DEV - FRONTEND',
+                    createdDtm: new Date().toISOString(),
+                    updatedDtm: new Date().toISOString()
+                };
+            } else {
+                return {
+                    ...c,
+                    locationId: currentLocation,
+                    createdBy: 'DEV - FRONTEND',
+                    updatedBy: 'DEV - FRONTEND',
+                    createdDtm: new Date().toISOString(),
+                    updatedDtm: new Date().toISOString()
+                };
+            }
+        });
 
         return Promise.all([
             dispatch(deleteEscortTypes(deletedEscortTypes)),

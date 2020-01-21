@@ -219,9 +219,6 @@ export default class AdminTrainingTypes extends FormContainerBase<AdminTrainingT
             updatedDtm: new Date().toISOString()
         }));
 
-        console.log('dumping AdminTrainingTypes grid data');
-        console.log(deletedLeaveTypes);
-        console.log(leaveTypes);
         return Promise.all([
             dispatch(deleteLeaveSubCodes(deletedLeaveTypes)),
             dispatch(createOrUpdateLeaveSubCodes(leaveTypes))

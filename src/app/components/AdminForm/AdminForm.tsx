@@ -64,8 +64,6 @@ export default class AdminForm extends React.PureComponent<InjectedFormProps<any
             showSheriffProfileModal
         };
 
-        console.log('dump plugin props');
-
         return isEditing
             ? plugin.renderFormFields(pluginProps)
             : plugin.renderDisplay(pluginProps);
