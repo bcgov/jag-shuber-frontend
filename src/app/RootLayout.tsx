@@ -30,8 +30,10 @@ import AuditPage from './pages/Audit';
 import AssignmentPage from './pages/Assignments';
 import DefaultAssignmentsPage from './pages/DefaultAssignments';
 import DutyRosterPage from './pages/DutyRoster';
-import ManageCourtroomsPage from './pages/ManageCourtrooms';
-import ManageCodesPage from './pages/ManageCodes';
+// import ManageCourtroomsPage from './pages/ManageCourtrooms';
+import ManageWorkSectionRolesPage from './pages/ManageWorkSectionRoles';
+import ManageLeaveTypesPage from './pages/ManageCodes';
+import ManageAssignmentTypesPage from './pages/ManageAssignmentTypes';
 import ManageComponentsPage from './pages/ManageComponents';
 import ManageApisPage from './pages/ManageApis';
 import ManageRolesPage from './pages/ManageRoles';
@@ -58,6 +60,7 @@ import ScheduleShiftAddModal from './containers/ScheduleShiftAddModal';
 import ScheduleShiftMultiEditModal from './containers/ScheduleMultiShiftEditModal';
 import SheriffProfileModal from './containers/SheriffProfileModal';
 import SheriffProfileCreateModal from './containers/SheriffProfileCreateModal';
+import ManageWorkSectionRoles from './pages/ManageWorkSectionRoles';
 
 export interface LayoutStateProps {
   isLocationSet?: boolean;
@@ -139,8 +142,10 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
               <Route path={Navigation.Routes.team.children.roles.path} component={ManageRolesPage} />
               <Route path={Navigation.Routes.team.children.users.path} component={ManageUsersPage} />
               <Route path={Navigation.Routes.team.children.userRoles.path} component={ManageUserRolesPage} />
-              <Route path={Navigation.Routes.system.children.courtrooms.path} component={ManageCourtroomsPage} />
-              <Route path={Navigation.Routes.system.children.codes.path} component={ManageCodesPage} />
+              {/* <Route path={Navigation.Routes.system.children.courtrooms.path} component={ManageCourtroomsPage} /> */}
+              <Route path={Navigation.Routes.system.children.workSectionRoles.path} component={ManageWorkSectionRolesPage} />
+              <Route path={Navigation.Routes.system.children.leaveTypes.path} component={ManageLeaveTypesPage} />
+              <Route path={Navigation.Routes.system.children.assignmentTypes.path} component={ManageAssignmentTypesPage} />
               <Route path={Navigation.Routes.system.children.components.path} component={ManageComponentsPage} />
               <Route path={Navigation.Routes.audit.path} component={AuditPage} />
               <Route path={Navigation.Routes.system.children.apis.path} component={ManageApisPage} />

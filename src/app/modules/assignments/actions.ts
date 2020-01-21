@@ -12,8 +12,8 @@ import { getSheriffShiftsForDate } from '../shifts/selectors';
 import { TimeRange, isTimeWithin } from 'jag-shuber-api';
 import { ErrorMap } from '../sheriffs/common';
 import { Action } from 'redux';
-//import { doTimeRangesOverlap } from 'jag-shuber-api';
-//import moment from 'moment';
+// import { doTimeRangesOverlap } from 'jag-shuber-api';
+// import moment from 'moment';
 
 // Assignments
 export const getAssignments = assignmentRequests.assignmentMapRequest.actionCreator;
@@ -22,16 +22,34 @@ export const editAssignment = assignmentRequests.updateAssignmentRequest.actionC
 export const deleteAssignment = assignmentRequests.deleteAssignmentRequest.actionCreator;
 export const deleteDutyRecurrence = assignmentRequests.deleteAssignmentDutyRecurrenceRequest.actionCreator;
 
+// Alternate Assignment Types
 export const getAlternateAssignmentTypes =
     alternateAssignmentTypeRequests.alternateAssignmentTypeMapRequest.actionCreator;
+export const createOrUpdateAlternateAssignmentTypes =
+    alternateAssignmentTypeRequests.createOrUpdateAlternateAssignmentTypesRequest.actionCreator;
+export const deleteAlternateAssignmentTypes =
+    alternateAssignmentTypeRequests.deleteAlternateAssignmentTypesRequest.actionCreator;
 
-export const getCourtRoles = courtRoleRequest.courtRoleMapRequest.actionCreator;
+// Courtrooms
 export const getCourtrooms = courtroomRequests.courtroomMapRequest.actionCreator;
 export const createOrUpdateCourtrooms = courtroomRequests.createOrUpdateCourtroomsRequest.actionCreator;
 export const deleteCourtrooms = courtroomRequests.deleteCourtroomsRequest.actionCreator;
 
+// Court Roles
+export const getCourtRoles = courtRoleRequest.courtRoleMapRequest.actionCreator;
+export const createOrUpdateCourtRoles = courtRoleRequest.createOrUpdateCourtRolesRequest.actionCreator;
+export const deleteCourtRoles = courtRoleRequest.deleteCourtRolesRequest.actionCreator;
+
+// Jail Roles
 export const getJailRoles = jailRoleRequests.jailRoleMapRequest.actionCreator;
-export const getRuns = runRequests.runMapRequest.actionCreator;
+export const createOrUpdateJailRoles = jailRoleRequests.createOrUpdateJailRolesRequest.actionCreator;
+export const deleteJailRoles = jailRoleRequests.deleteJailRolesRequest.actionCreator;
+
+// Escort Runs // TODO: Or is it Escort Run Types?
+export const getRuns = runRequests.runMapRequest.actionCreator; // Just in here for pre-existing stuff
+export const getEscortRuns = runRequests.runMapRequest.actionCreator; // In here for new stuff
+export const createOrUpdateEscortRuns = runRequests.createOrUpdateEscortRunsRequest.actionCreator;
+export const deleteEscortRuns = runRequests.deleteEscortRunsRequest.actionCreator;
 
 // Assignment Duties
 export const getAssignmentDuties = assignmentDutyRequests.assignmentDutyMapRequest.actionCreator;
@@ -142,6 +160,18 @@ type IActionMap = {
     'ADMIN_COURTROOMS_SELECT_SECTION': string | undefined;
     'ADMIN_COURTROOMS_SET_PLUGIN_SUBMIT_ERRORS': ErrorMap | undefined;
     'ADMIN_COURTROOMS_SET_PLUGIN_FILTERS': {} | undefined;
+    'ADMIN_COURT_ROLES_SELECT_SECTION': string | undefined;
+    'ADMIN_COURT_ROLES_SET_PLUGIN_SUBMIT_ERRORS': ErrorMap | undefined;
+    'ADMIN_COURT_ROLES_SET_PLUGIN_FILTERS': {} | undefined;
+    'ADMIN_JAIL_ROLES_SELECT_SECTION': string | undefined;
+    'ADMIN_JAIL_ROLES_SET_PLUGIN_SUBMIT_ERRORS': ErrorMap | undefined;
+    'ADMIN_JAIL_ROLES_SET_PLUGIN_FILTERS': {} | undefined;
+    'ADMIN_ESCORT_TYPES_SELECT_SECTION': string | undefined;
+    'ADMIN_ESCORT_TYPES_SET_PLUGIN_SUBMIT_ERRORS': ErrorMap | undefined;
+    'ADMIN_ESCORT_TYPES_SET_PLUGIN_FILTERS': {} | undefined;
+    'ADMIN_OTHER_TYPES_SELECT_SECTION': string | undefined;
+    'ADMIN_OTHER_TYPES_SET_PLUGIN_SUBMIT_ERRORS': ErrorMap | undefined;
+    'ADMIN_OTHER_TYPES_SET_PLUGIN_FILTERS': {} | undefined;
 };
 
 export type IActionType = keyof IActionMap;
@@ -172,4 +202,52 @@ export const setAdminCourtroomsPluginSubmitErrors = (errors?: ErrorMap) => (
 
 export const setAdminCourtroomsPluginFilters = (filters: {}) => (
     actionCreator('ADMIN_COURTROOMS_SET_PLUGIN_FILTERS')(filters)
+);
+
+export const selectAdminCourtRolesPluginSection = (sectionName?: string) => (
+    actionCreator('ADMIN_COURT_ROLES_SELECT_SECTION')(sectionName)
+);
+
+export const setAdminCourtRolesPluginSubmitErrors = (errors?: ErrorMap) => (
+    actionCreator('ADMIN_COURT_ROLES_SET_PLUGIN_SUBMIT_ERRORS')(errors)
+);
+
+export const setAdminCourtRolesPluginFilters = (filters: {}) => (
+    actionCreator('ADMIN_COURT_ROLES_SET_PLUGIN_FILTERS')(filters)
+);
+
+export const selectAdminJailRolesPluginSection = (sectionName?: string) => (
+    actionCreator('ADMIN_JAIL_ROLES_SELECT_SECTION')(sectionName)
+);
+
+export const setAdminJailRolesPluginSubmitErrors = (errors?: ErrorMap) => (
+    actionCreator('ADMIN_JAIL_ROLES_SET_PLUGIN_SUBMIT_ERRORS')(errors)
+);
+
+export const setAdminJailRolesPluginFilters = (filters: {}) => (
+    actionCreator('ADMIN_JAIL_ROLES_SET_PLUGIN_FILTERS')(filters)
+);
+
+export const selectAdminEscortTypesPluginSection = (sectionName?: string) => (
+    actionCreator('ADMIN_ESCORT_TYPES_SELECT_SECTION')(sectionName)
+);
+
+export const setAdminEscortTypesPluginSubmitErrors = (errors?: ErrorMap) => (
+    actionCreator('ADMIN_ESCORT_TYPES_SET_PLUGIN_SUBMIT_ERRORS')(errors)
+);
+
+export const setAdminEscortTypesPluginFilters = (filters: {}) => (
+    actionCreator('ADMIN_ESCORT_TYPES_SET_PLUGIN_FILTERS')(filters)
+);
+
+export const selectAdminOtherTypesPluginSection = (sectionName?: string) => (
+    actionCreator('ADMIN_OTHER_TYPES_SELECT_SECTION')(sectionName)
+);
+
+export const setAdminOtherTypesPluginSubmitErrors = (errors?: ErrorMap) => (
+    actionCreator('ADMIN_OTHER_TYPES_SET_PLUGIN_SUBMIT_ERRORS')(errors)
+);
+
+export const setAdminOtherTypesPluginFilters = (filters: {}) => (
+    actionCreator('ADMIN_OTHER_TYPES_SET_PLUGIN_FILTERS')(filters)
 );

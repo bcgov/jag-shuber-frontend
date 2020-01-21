@@ -298,12 +298,14 @@ export interface Courtroom {
 }
 
 export interface JailRole {
+    id?: IdType; // Used on client-side only
     code: IdType;
     description: string;
     expiryDate?: DateType;
 }
 
 export interface CourtRole {
+    id?: IdType; // Used on client-side only
     code: IdType;
     description: string;
     expiryDate?: DateType;
@@ -368,6 +370,7 @@ export interface EscortRun {
 }
 
 export interface AlternateAssignment {
+    id?: IdType; // Used on client-side only
     code: IdType | string;
     description: string;
     expiryDate?: DateType;
@@ -645,11 +648,35 @@ export interface API {
     deleteCourtroom(courtroomId: IdType): Promise<void>;
     deleteCourtrooms(courtroomIds: IdType[]): Promise<void>;
 
-    getEscortRuns(): Promise<EscortRun[]>;
-    getJailRoles(): Promise<JailRole[]>;
-    getAlternateAssignmentTypes(): Promise<AlternateAssignment[]>;
-    getSheriffRankCodes(): Promise<SheriffRank[]>;
+    // Court Roles
     getCourtRoles(): Promise<CourtRole[]>;
+    createCourtRole(newCourtRole: Partial<CourtRole>): Promise<CourtRole>;
+    updateCourtRole(updatedCourtRole: Partial<CourtRole>): Promise<CourtRole>;
+    deleteCourtRole(courtRoleId: IdType): Promise<void>;
+    deleteCourtRoles(courtRoleIds: IdType[]): Promise<void>;
+
+    // Jail Roles
+    getJailRoles(): Promise<JailRole[]>;
+    createJailRole(newJailRole: Partial<JailRole>): Promise<JailRole>;
+    updateJailRole(updatedJailRole: Partial<JailRole>): Promise<JailRole>;
+    deleteJailRole(jailRoleId: IdType): Promise<void>;
+    deleteJailRoles(jailRoleIds: IdType[]): Promise<void>;
+
+    // Escort Runs Types
+    getEscortRuns(): Promise<EscortRun[]>;
+    createEscortRun(newRun: Partial<EscortRun>): Promise<EscortRun>;
+    updateEscortRun(updatedRun: Partial<EscortRun>): Promise<EscortRun>;
+    deleteEscortRun(runId: IdType): Promise<void>;
+    deleteEscortRuns(runIds: IdType[]): Promise<void>;
+
+    // Alternate Assignment Types
+    getAlternateAssignmentTypes(): Promise<AlternateAssignment[]>;
+    createAlternateAssignmentType(newType: Partial<AlternateAssignment>): Promise<AlternateAssignment>;
+    updateAlternateAssignmentType(updatedType: Partial<AlternateAssignment>): Promise<AlternateAssignment>;
+    deleteAlternateAssignmentType(typeId: IdType): Promise<void>;
+    deleteAlternateAssignmentTypes(typeIds: IdType[]): Promise<void>;
+
+    getSheriffRankCodes(): Promise<SheriffRank[]>;
     getGenderCodes(): Promise<GenderCode[]>;
 
     getLocations(): Promise<Location[]>;

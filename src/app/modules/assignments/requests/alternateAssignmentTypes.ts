@@ -5,9 +5,11 @@ import {
     AssignmentModuleState
 } from '../common';
 import {
-    AlternateAssignment
+    AlternateAssignment, IdType
 } from '../../../api';
 import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRequest';
+import CreateOrUpdateEntitiesRequest from '../../../infrastructure/Requests/CreateOrUpdateEntitiesRequest';
+import RequestAction, { RequestConfig } from '../../../infrastructure/Requests/RequestActionBase';
 
 class AlternateAssignmentTypeMapRequest
     extends GetEntityMapRequest<void, AlternateAssignment, AssignmentModuleState> {
@@ -21,3 +23,55 @@ class AlternateAssignmentTypeMapRequest
 }
 
 export const alternateAssignmentTypeMapRequest = new AlternateAssignmentTypeMapRequest();
+
+class CreateOrUpdateAlternateAssignmentTypesRequest extends CreateOrUpdateEntitiesRequest<AlternateAssignment, AssignmentModuleState>{
+    createEntity(entity: Partial<AlternateAssignment>, { api }: ThunkExtra): Promise<AlternateAssignment> {
+        return api.createAlternateAssignmentType(entity);
+    }
+
+    updateEntity(entity: AlternateAssignment, { api }: ThunkExtra): Promise<AlternateAssignment> {
+        return api.updateAlternateAssignmentType(entity);
+    }
+
+    constructor(config?: RequestConfig<AlternateAssignment[]>) {
+        super(
+            {
+                namespace: STATE_KEY,
+                actionName: 'createOrUpdateAlternateAssignmentTypes',
+                toasts: {
+                    success: (s) => `Created/updated other assignment types`,
+                    error: (err: any) => `Couldn't create/update other assignment types: ${err.message}`
+                },
+                ...config
+            },
+            alternateAssignmentTypeMapRequest
+        );
+    }
+}
+
+export const createOrUpdateAlternateAssignmentTypesRequest = new CreateOrUpdateAlternateAssignmentTypesRequest();
+
+class DeleteAlternateAssignmentTypesRequest extends RequestAction<IdType[], IdType[], AssignmentModuleState> {
+    constructor() {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'deleteAlternateAssignmentTypes',
+            toasts: {
+                success: (ids) => `${ids.length} other assignment type(s) deleted`,
+                error: (err) => `Problem encountered while deleting other assignment types: ${err ? err.toString() : 'Unknown Error'}`
+            }
+        });
+    }
+    public async doWork(request: IdType[], { api }: ThunkExtra): Promise<IdType[]> {
+        await api.deleteAlternateAssignmentTypes(request);
+        return request;
+    }
+
+    setRequestData(moduleState: AssignmentModuleState, otherAssignmentTypeIds: IdType[]) {
+        const newMap = { ...alternateAssignmentTypeMapRequest.getRequestData(moduleState) };
+        otherAssignmentTypeIds.forEach(id => delete newMap[id]);
+        return alternateAssignmentTypeMapRequest.setRequestData(moduleState, newMap);
+    }
+}
+
+export const deleteAlternateAssignmentTypesRequest = new DeleteAlternateAssignmentTypesRequest();

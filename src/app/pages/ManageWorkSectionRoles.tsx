@@ -1,7 +1,3 @@
-/**
- * Note! This page is DEPRECATED in favour of the new ManageAssignmentTypes page.
- * It will be removed as soon as we're done moving things to their new places.
- */
 import React from 'react';
 import { Well } from 'react-bootstrap';
 
@@ -9,12 +5,15 @@ import Page from '../components/Page/Page';
 
 import AdminForm from '../containers/AdminForm';
 import { AdminFormProps } from '../components/AdminForm/AdminForm';
-import AdminLeaveTypesPlugin from '../plugins/AdminAssignmentTypes/AdminLeaveTypes';
-import AdminTrainingTypesPlugin from '../plugins/AdminAssignmentTypes/AdminTrainingTypes';
+import AdminCourtroomsPlugin from '../plugins/AdminAssignmentTypes/AdminCourtrooms';
+import AdminCourtRolesPlugin from '../plugins/AdminAssignmentTypes/AdminCourtRoles';
+import AdminJailRolesPlugin from '../plugins/AdminAssignmentTypes/AdminJailRoles';
+import AdminEscortTypesPlugin from '../plugins/AdminAssignmentTypes/AdminEscortTypes';
+import AdminOtherTypesPlugin from '../plugins/AdminAssignmentTypes/AdminOtherTypes';
 
-export interface ManageAssignmentTypesProps {}
+export interface ManageWorkSectionRolesProps {}
 
-class ManageAssignmentTypes extends React.PureComponent<AdminFormProps> {
+class ManageWorkSectionRoles extends React.PureComponent<AdminFormProps> {
     state = {
       isEditing: true
     };
@@ -50,10 +49,10 @@ class ManageAssignmentTypes extends React.PureComponent<AdminFormProps> {
                     }}
                 >
                     <AdminForm
-                        key={'admin-code-types-grid'}
+                        key={'admin-work-section-roles-grid'}
                         plugins={[
-                            new AdminLeaveTypesPlugin(),
-                            new AdminTrainingTypesPlugin()
+                            new AdminCourtRolesPlugin(),
+                            new AdminJailRolesPlugin()
                         ]}
                         isEditing={isEditing}
                     />
@@ -63,4 +62,4 @@ class ManageAssignmentTypes extends React.PureComponent<AdminFormProps> {
     }
 }
 
-export default ManageAssignmentTypes;
+export default ManageWorkSectionRoles;

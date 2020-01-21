@@ -64,21 +64,35 @@ export default class Navigation extends React.Component<NavigationProps, any> {
             path: '#',
             label: 'System',
             children: {
-                courtrooms: {
+                /* courtrooms: {
                     path: '/courtrooms/manage',
                     label: 'Add / Remove Courtrooms'
-                },
-                codes: {
+                }, */
+                leaveTypes: {
                     path: '/codes/manage',
-                    label: 'Configure Leave Types'
+                    label: 'Leave & Training Types'
+                },
+                workSectionRoles: {
+                    path: '/workSectionRoles/manage',
+                    label: 'Court & Jail Roles'
+                },
+                assignmentTypes: {
+                    path: '/assignmentTypes/manage',
+                    label: 'Assignment Types',
+                    children: {
+                        courtrooms: {
+                            path: '/courtrooms/manage',
+                            label: 'Add + Remove Courtrooms'
+                        }
+                    }
                 },
                 components: {
                     path: '/components/manage',
-                    label: 'Manage Components'
+                    label: 'Define Components'
                 },
                 apis: {
                     path: '/apis/manage',
-                    label: 'Manage API Scopes'
+                    label: 'Define API Scopes'
                 }
             }
         },
@@ -119,8 +133,9 @@ export default class Navigation extends React.Component<NavigationProps, any> {
                             <NavigationLink {...Navigation.Routes.team.children.roles}>&nbsp;<small><Glyphicon glyph="star" /></small></NavigationLink>
                         </NavigationDropDown>
                         <NavigationDropDown title={Navigation.Routes.system.label} id="system_dropdown">
-                            <NavigationLink {...Navigation.Routes.system.children.courtrooms}>&nbsp;<small><Glyphicon glyph="star" /></small></NavigationLink>
-                            <NavigationLink {...Navigation.Routes.system.children.codes}>&nbsp;<small><Glyphicon glyph="star" /></small></NavigationLink>
+                            <NavigationLink {...Navigation.Routes.system.children.assignmentTypes}>&nbsp;<small><Glyphicon glyph="star" /></small></NavigationLink>
+                            <NavigationLink {...Navigation.Routes.system.children.leaveTypes}>&nbsp;<small><Glyphicon glyph="star" /></small></NavigationLink>
+                            <NavigationLink {...Navigation.Routes.system.children.workSectionRoles}>&nbsp;<small><Glyphicon glyph="star" /></small></NavigationLink>
                             <NavigationLink {...Navigation.Routes.system.children.components}>&nbsp;<small><Glyphicon glyph="star" /></small></NavigationLink>
                             <NavigationLink {...Navigation.Routes.system.children.apis}>&nbsp;<small><Glyphicon glyph="star" /></small></NavigationLink>
                         </NavigationDropDown>

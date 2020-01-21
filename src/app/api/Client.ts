@@ -504,9 +504,104 @@ export default class Client implements API {
         return list as EscortRun[];
     }
 
+    async createEscortRun(run: Partial<EscortRun>): Promise<EscortRun> {
+        return await this._client.CreateEscortRun(run) as EscortRun;
+    }
+
+    async updateEscortRun(run: Partial<EscortRun>): Promise<EscortRun> {
+        const { id } = run;
+        if (!id) {
+            throw 'No Id included in the courtroom to update';
+        }
+        return await this._client.UpdateEscortRun(id, run) as EscortRun;
+    }
+
+    async deleteEscortRun(runId: string): Promise<void> {
+        return await this._client.DeleteEscortRun(runId);
+    }
+
+    /**
+     * TODO: We need a proper endpoint to deal with this this loop isn't gonna do it...
+     * @param ids
+     */
+    async deleteEscortRuns(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.DeleteEscortRun(id));
+        }
+
+        return Promise.resolve();
+    }
+
+    async getCourtRoles(): Promise<CourtRole[]> {
+        const list = await this._client.GetCourtRoleCodes();
+        return list as CourtRole[];
+    }
+
+    async createCourtRole(courtRole: Partial<CourtRole>): Promise<CourtRole> {
+        return Promise.resolve({} as CourtRole);
+        // return await this._client.CreateCourtRole(courtRole) as CourtRole;
+    }
+
+    async updateCourtRole(courtRole: Partial<CourtRole>): Promise<CourtRole> {
+        const { id } = courtRole;
+        if (!id) {
+            throw 'No Id included in the courtroom to update';
+        }
+        // return await this._client.UpdateCourtRole(id, courtRole) as CourtRole;
+        return Promise.resolve({} as CourtRole);
+    }
+
+    async deleteCourtRole(courtRoleId: string): Promise<void> {
+        // return await this._client.DeleteCourtRole(courtRoleId);
+        return Promise.resolve();
+    }
+
+    /**
+     * TODO: We need a proper endpoint to deal with this this loop isn't gonna do it...
+     * @param ids
+     */
+    async deleteCourtRoles(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             // ids.forEach(id => this._client.DeleteCourtRole(id));
+        }
+
+        return Promise.resolve();
+    }
+
     async getJailRoles(): Promise<JailRole[]> {
         const list = await this._client.GetJailRoleCodes();
         return list as JailRole[];
+    }
+
+    async createJailRole(jailRole: Partial<JailRole>): Promise<JailRole> {
+        return Promise.resolve({} as JailRole);
+        // return await this._client.CreateJailRole(jailRole) as JailRole;
+    }
+
+    async updateJailRole(jailRole: Partial<JailRole>): Promise<JailRole> {
+        const { id } = jailRole;
+        if (!id) {
+            throw 'No Id included in the courtroom to update';
+        }
+        // return await this._client.UpdateJailRole(id, jailRole) as JailRole;
+        return Promise.resolve({} as JailRole);
+    }
+
+    async deleteJailRole(jailRoleId: string): Promise<void> {
+        // return await this._client.DeleteJailRole(jailRoleId);
+        return Promise.resolve();
+    }
+
+    /**
+     * TODO: We need a proper endpoint to deal with this this loop isn't gonna do it...
+     * @param ids
+     */
+    async deleteJailRoles(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             // ids.forEach(id => this._client.DeleteJailRole(id));
+        }
+
+        return Promise.resolve();
     }
 
     async getAlternateAssignmentTypes(): Promise<AlternateAssignment[]> {
@@ -514,14 +609,40 @@ export default class Client implements API {
         return list as AlternateAssignment[];
     }
 
+    async createAlternateAssignmentType(assignmentType: Partial<AlternateAssignment>): Promise<AlternateAssignment> {
+        return Promise.resolve({} as AlternateAssignment);
+        // return await this._client.CreateAlternateAssignment(assignmentType) as AlternateAssignment;
+    }
+
+    async updateAlternateAssignmentType(assignmentType: Partial<AlternateAssignment>): Promise<AlternateAssignment> {
+        const { id } = assignmentType;
+        if (!id) {
+            throw 'No Id included in the courtroom to update';
+        }
+        // return await this._client.UpdateAlternateAssignment(id, assignmentType) as AlternateAssignment;
+        return Promise.resolve({} as AlternateAssignment);
+    }
+
+    async deleteAlternateAssignmentType(assignmentTypeId: string): Promise<void> {
+        // return await this._client.DeleteAlternateAssignment(assignmentTypeId);
+        return Promise.resolve();
+    }
+
+    /**
+     * TODO: We need a proper endpoint to deal with this this loop isn't gonna do it...
+     * @param ids
+     */
+    async deleteAlternateAssignmentTypes(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             // ids.forEach(id => this._client.DeleteAlternateAssignment(id));
+        }
+
+        return Promise.resolve();
+    }
+
     async getSheriffRankCodes(): Promise<SheriffRank[]> {
         const list = await this._client.GetSheriffRankCodes();
         return list as SheriffRank[];
-    }
-
-    async getCourtRoles(): Promise<CourtRole[]> {
-        const list = await this._client.GetCourtRoleCodes();
-        return list as CourtRole[];
     }
 
     async getGenderCodes(): Promise<GenderCode[]> {

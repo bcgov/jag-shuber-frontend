@@ -93,7 +93,36 @@ const altAssignmentTypesSelector = new CodeSelector(
 
 export const allAlternateAssignmentTypes = altAssignmentTypesSelector.all;
 
+// TODO: This returns a moment? Huh?
 export const allEffectAlternateAssignmentTypes = altAssignmentTypesSelector.effective;
+
+// Alternate / Other Assignment Types
+export const getAllOtherTypes = (state: RootState) => {
+    if (state) {
+        return allAlternateAssignmentTypes(state);
+    }
+    return undefined;
+};
+
+export const findAllOtherTypes = (filters: any) => (state: RootState) => {
+    if (state) {
+        let otherTypes = allAlternateAssignmentTypes(state);
+        Object.keys(filters).forEach(key => {
+            if (filters[key]) {
+                otherTypes = otherTypes.filter(c => {
+                    return (c[key] && c[key] !== '')
+                        ? c[key].toLowerCase().includes(`${filters[key].toLowerCase()}`)
+                        : false;
+                });
+            }
+        });
+
+        otherTypes.sort((a: any, b: any) =>
+            (a.code < b.code) ? -1 : (a.code > b.code) ? 1 : 0);
+        return otherTypes;
+    }
+    return undefined;
+};
 
 // Court Roles
 const courtRoleSelector = new CodeSelector(
@@ -103,6 +132,34 @@ const courtRoleSelector = new CodeSelector(
 export const allCourtRoles = courtRoleSelector.all;
 
 export const allEffectiveCourtRoles = courtRoleSelector.effective;
+
+// TODO: Just grab the effective ones?
+export const getAllCourtRoles = (state: RootState) => {
+    if (state) {
+        return allCourtRoles(state);
+    }
+    return undefined;
+};
+
+export const findAllCourtRoles = (filters: any) => (state: RootState) => {
+    if (state) {
+        let courtRoles = allCourtRoles(state);
+        Object.keys(filters).forEach(key => {
+            if (filters[key]) {
+                courtRoles = courtRoles.filter(c => {
+                    return (c[key] && c[key] !== '')
+                        ? c[key].toLowerCase().includes(`${filters[key].toLowerCase()}`)
+                        : false;
+                });
+            }
+        });
+
+        courtRoles.sort((a: any, b: any) =>
+            (a.code < b.code) ? -1 : (a.code > b.code) ? 1 : 0);
+        return courtRoles;
+    }
+    return undefined;
+};
 
 // Courtrooms
 export const allCourtrooms = createSelector(
@@ -146,8 +203,62 @@ export const allJailRoles = jailRoleSelector.all;
 
 export const allEffectiveJailRoles = jailRoleSelector.effective;
 
+export const getAllJailRoles = (state: RootState) => {
+    if (state) {
+        return allJailRoles(state);
+    }
+    return undefined;
+};
+
+export const findAllJailRoles = (filters: any) => (state: RootState) => {
+    if (state) {
+        let jailRoles = allJailRoles(state);
+        Object.keys(filters).forEach(key => {
+            if (filters[key]) {
+                jailRoles = jailRoles.filter(c => {
+                    return (c[key] && c[key] !== '')
+                        ? c[key].toLowerCase().includes(`${filters[key].toLowerCase()}`)
+                        : false;
+                });
+            }
+        });
+
+        jailRoles.sort((a: any, b: any) =>
+            (a.code < b.code) ? -1 : (a.code > b.code) ? 1 : 0);
+        return jailRoles;
+    }
+    return undefined;
+};
+
 // Runs
 export const allRuns = createSelector(
     runRequests.runMapRequest.getData,
     (runs) => mapToArray(runs).sort((a, b) => a.title.localeCompare(b.title))
 );
+
+export const getAllEscortRunTypes = (state: RootState) => {
+    if (state) {
+        return allRuns(state);
+    }
+    return undefined;
+};
+
+export const findAllEscortRunTypes = (filters: any) => (state: RootState) => {
+    if (state) {
+        let escortRunTypes = allRuns(state);
+        Object.keys(filters).forEach(key => {
+            if (filters[key]) {
+                escortRunTypes = escortRunTypes.filter(c => {
+                    return (c[key] && c[key] !== '')
+                        ? c[key].toLowerCase().includes(`${filters[key].toLowerCase()}`)
+                        : false;
+                });
+            }
+        });
+
+        escortRunTypes.sort((a: any, b: any) =>
+            (a.code < b.code) ? -1 : (a.code > b.code) ? 1 : 0);
+        return escortRunTypes;
+    }
+    return undefined;
+};

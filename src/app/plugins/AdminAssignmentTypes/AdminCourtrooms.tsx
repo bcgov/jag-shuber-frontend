@@ -13,29 +13,29 @@ import {
     selectAdminCourtroomsPluginSection,
     setAdminCourtroomsPluginSubmitErrors,
     setAdminCourtroomsPluginFilters
-} from '../modules/assignments/actions';
+} from '../../modules/assignments/actions';
 
 import {
     getAllCourtrooms,
     findAllCourtrooms
-} from '../modules/assignments/selectors';
+} from '../../modules/assignments/selectors';
 
-import { RootState } from '../store';
+import { RootState } from '../../store';
 
-import { Courtroom, IdType } from '../api';
+import { Courtroom, IdType } from '../../api';
 
 import {
     FormContainerBase,
     FormContainerProps,
-} from '../components/Form/FormContainer';
+} from '../../components/Form/FormContainer';
 
-import DataTable, { DetailComponentProps, EmptyDetailRow } from '../components/Table/DataTable';
+import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../components/Table/DataTable';
 import { AdminCourtroomsProps } from './AdminCourtrooms';
-import LocationSelector from '../containers/LocationSelector';
-import RemoveRow from '../components/TableColumnActions/RemoveRow';
-import ExpireRow from '../components/TableColumnActions/ExpireRow';
-import DeleteRow from '../components/TableColumnActions/DeleteRow';
-import { setAdminRolesPluginFilters } from '../modules/roles/actions';
+import LocationSelector from '../../containers/LocationSelector';
+import RemoveRow from '../../components/TableColumnActions/RemoveRow';
+import ExpireRow from '../../components/TableColumnActions/ExpireRow';
+import DeleteRow from '../../components/TableColumnActions/DeleteRow';
+import { setAdminRolesPluginFilters } from '../../modules/roles/actions';
 // import { createOrUpdateCourtrooms } from '../../modules/assignments/actions';
 
 export interface AdminCourtroomsProps extends FormContainerProps {
@@ -118,7 +118,9 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
         };
 
         return (
-            <div className="fixed-filters-data-table">
+            <div>
+            {/* Only use fixed if configured as a standalone page */}
+            {/* <div className="fixed-filters-data-table"> */}
                 <DataTable
                     fieldName={this.formFieldNames.courtrooms}
                     filterFieldName={(this.filterFieldNames) ? `${this.filterFieldNames.courtrooms}` : undefined}
@@ -150,7 +152,7 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
                         DataTable.SelectorFieldColumn('Location', { fieldName: 'locationId', selectorComponent: LocationSelector, displayInfo: false, filterable: true, filterColumn: onFilterLocation }),
                         DataTable.TextFieldColumn('Courtroom', { fieldName: 'name', displayInfo: false, filterable: true, filterColumn: onFilterCourtroom }),
                         DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, filterable: true, filterColumn: onFilterCourtroomCode }),
-                        DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false }),
+                        // DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
                         DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
 
@@ -183,7 +185,6 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
     getData(state: RootState, filters: any | undefined) {
         // Get filter data
         const filterData = this.getFilterData(filters);
-        console.log(filterData);
 
         // Get form data
         const courtrooms = (filters && filters.courtrooms)

@@ -6,40 +6,40 @@ import {
 
 import { Dispatch } from 'redux';
 
-import { RootState } from '../store';
+import { RootState } from '../../store';
 
 import {
     getLeaveSubCodes,
     createOrUpdateLeaveSubCodes,
     deleteLeaveSubCodes
-} from '../modules/leaves/actions';
+} from '../../modules/leaves/actions';
 
 import {
-    getAllPersonalLeaveSubCodes as getAllLeaveSubCodes
-} from '../modules/leaves/selectors';
+    getAllTrainingLeaveSubCodes as getAllLeaveSubCodes
+} from '../../modules/leaves/selectors';
 
-import { LeaveSubCode, IdType } from '../api';
+import { IdType, LeaveSubCode } from '../../api';
 
 import {
     FormContainerBase,
     FormContainerProps,
-} from '../components/Form/FormContainer';
+} from '../../components/Form/FormContainer';
 
-import DataTable, { DetailComponentProps, EmptyDetailRow } from '../components/Table/DataTable';
-import { AdminLeaveTypesProps } from './AdminLeaveTypes';
-import DeleteRow from '../components/TableColumnActions/DeleteRow';
-import ExpireRow from '../components/TableColumnActions/ExpireRow';
+import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../components/Table/DataTable';
+import { AdminTrainingTypesProps } from './AdminTrainingTypes';
+import DeleteRow from '../../components/TableColumnActions/DeleteRow';
+import ExpireRow from '../../components/TableColumnActions/ExpireRow';
 
-export interface AdminLeaveTypesProps extends FormContainerProps {
+export interface AdminTrainingTypesProps extends FormContainerProps {
     leaveTypes?: any[];
-    personalLeaveTypes?: any[];
+    trainingLeaveTypes?: any[];
 }
 
-export interface AdminLeaveTypesDisplayProps extends FormContainerProps {
+export interface AdminTrainingTypesDisplayProps extends FormContainerProps {
 
 }
 
-class AdminLeaveTypesDisplay extends React.PureComponent<AdminLeaveTypesDisplayProps, any> {
+class AdminTrainingTypesDisplay extends React.PureComponent<AdminTrainingTypesDisplayProps, any> {
     render() {
         const { data = [] } = this.props;
         return (
@@ -48,20 +48,20 @@ class AdminLeaveTypesDisplay extends React.PureComponent<AdminLeaveTypesDisplayP
     }
 }
 
-export default class AdminLeaveTypes extends FormContainerBase<AdminLeaveTypesProps> {
+export default class AdminTrainingTypes extends FormContainerBase<AdminTrainingTypesProps> {
     // NOTICE!
     // This key maps to the [appScope: FrontendScope] (in the token)
     // To set permissions for a new plugin, add a corresponding entry under System Settings > Components
     // with the name as defined as the plugin's name.
-    name = 'ADMIN_PLUGIN_LEAVE_TYPES';
+    name = 'ADMIN_PLUGIN_TRAINING_TYPES';
     // END NOTICE
     reduxFormKey = 'leaves';
     formFieldNames = {
-        personalLeaveTypes: 'leaves.personalLeaveTypes'
+        trainingLeaveTypes: 'leaves.trainingLeaveTypes'
     };
-    title: string = ' Personal Leave Types';
+    title: string = ' Training Leave Types';
 
-    FormComponent = (props: FormContainerProps<AdminLeaveTypesProps>) => {
+    FormComponent = (props: FormContainerProps<AdminTrainingTypesProps>) => {
         const onFilterSubCode = (event: Event, newValue: any, previousValue: any, name: string) => {
             const { setPluginFilters } = props;
             if (setPluginFilters) {
@@ -98,19 +98,19 @@ export default class AdminLeaveTypes extends FormContainerBase<AdminLeaveTypesPr
         return (
             <div>
                 <DataTable
-                    fieldName={this.formFieldNames.personalLeaveTypes}
-                    filterFieldName={(this.filterFieldNames) ? `${this.filterFieldNames.personalLeaveTypes}` : undefined}
+                    fieldName={this.formFieldNames.trainingLeaveTypes}
+                    filterFieldName={(this.filterFieldNames) ? `${this.filterFieldNames.trainingLeaveTypes}` : undefined}
                     title={''} // Leave this blank
-                    buttonLabel={'Add Leave Type'}
+                    buttonLabel={'Add Training Type'}
                     actionsColumn={DataTable.ActionsColumn({
                         actions: [
                             ({ fields, index, model }) => <DeleteRow fields={fields} index={index} model={model} />,
-                            ({ fields, index, model }) => { return (model && model.id) ? (<ExpireRow fields={fields} index={index} model={model} />) : null; }
+                            ({ fields, index, model }) => { return (model && model.id) ? (<ExpireRow fields={fields} index={index} model={model} />) : null; },
                         ]
                     })}
                     columns={[
                         // DataTable.TextFieldColumn('Leave Type', { fieldName: 'code', displayInfo: true }),
-                        DataTable.TextFieldColumn('Personal Leave Sub Code', { fieldName: 'subCode', colStyle: { width: '200px' }, displayInfo: true, filterable: true, filterColumn: onFilterSubCode }),
+                        DataTable.TextFieldColumn('Training Leave Sub Code', { fieldName: 'subCode', colStyle: { width: '200px' }, displayInfo: true, filterable: true, filterColumn: onFilterSubCode }),
                         DataTable.TextFieldColumn('Description', { fieldName: 'description', colStyle: { width: '300px' }, displayInfo: false }),
                         DataTable.DateColumn('Effective Date', 'effectiveDate', { colStyle: { width: '175px'}, displayInfo: true, filterable: true, filterColumn: onFilterEffectiveDate }),
                         DataTable.DateColumn('Expiry Date', 'expiryDate', { colStyle: { width: '175px'}, displayInfo: true, filterable: true, filterColumn: onFilterExpiryDate }),
@@ -130,14 +130,14 @@ export default class AdminLeaveTypes extends FormContainerBase<AdminLeaveTypesPr
         );
     }
 
-    DisplayComponent = (props: FormContainerProps<AdminLeaveTypesDisplayProps>) => (
+    DisplayComponent = (props: FormContainerProps<AdminTrainingTypesDisplayProps>) => (
         <div>
             {/*<Alert>No leaves exist</Alert>*/}
-            <AdminLeaveTypesDisplay {...props} />
+            <AdminTrainingTypesDisplay {...props} />
         </div>
     )
 
-    validate(values: AdminLeaveTypesProps = {}): FormErrors | undefined {
+    validate(values: AdminTrainingTypesProps = {}): FormErrors | undefined {
         return undefined;
     }
 
@@ -169,7 +169,7 @@ export default class AdminLeaveTypes extends FormContainerBase<AdminLeaveTypesPr
 
         return {
             ...filterData,
-            personalLeaveTypes: leaveTypesArray
+            trainingLeaveTypes: leaveTypesArray
         };
     }
 
@@ -181,9 +181,9 @@ export default class AdminLeaveTypes extends FormContainerBase<AdminLeaveTypesPr
     mapDeletesFromFormValues(map: any) {
         const deletedLeaveTypeIds: IdType[] = [];
 
-        if (map.personalLeaveTypes) {
-            const initialValues = map.personalLeaveTypes.initialValues;
-            const existingIds = map.personalLeaveTypes.values.map((val: any) => val.id);
+        if (map.trainingLeaveTypes) {
+            const initialValues = map.trainingLeaveTypes.initialValues;
+            const existingIds = map.trainingLeaveTypes.values.map((val: any) => val.id);
 
             const removeLeaveTypeIds = initialValues
                 .filter((val: any) => (existingIds.indexOf(val.id) === -1))
@@ -193,7 +193,7 @@ export default class AdminLeaveTypes extends FormContainerBase<AdminLeaveTypesPr
         }
 
         return {
-            personalLeaveTypes: deletedLeaveTypeIds
+            trainingLeaveTypes: deletedLeaveTypeIds
         };
     }
 
@@ -202,14 +202,14 @@ export default class AdminLeaveTypes extends FormContainerBase<AdminLeaveTypesPr
         const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
 
         // Delete records before saving new ones!
-        const deletedLeaveTypes: IdType[] = dataToDelete.personalLeaveTypes as IdType[];
+        const deletedLeaveTypes: IdType[] = dataToDelete.trainingLeaveTypes as IdType[];
 
-        const leaveTypes: Partial<LeaveSubCode>[] = data.personalLeaveTypes.map((c: LeaveSubCode) => ({
+        const leaveTypes: Partial<LeaveSubCode>[] = data.trainingLeaveTypes.map((c: LeaveSubCode) => ({
             // ...c, // Don't just spread the operator, we need to replace the id GUID used on client side with a code
             // Just an alias used for updates, save method relies on the existence of an ID to determine whether or not
             // to create or update a particular record...
             id: c.id,
-            code: 'PERSONAL', // TODO: Use API value
+            code: 'TRAINING', // TODO: Use API value
             subCode: c.subCode,
             description: c.description,
             expiryDate: c.expiryDate,
@@ -219,7 +219,7 @@ export default class AdminLeaveTypes extends FormContainerBase<AdminLeaveTypesPr
             updatedDtm: new Date().toISOString()
         }));
 
-        console.log('dumping AdminLeaveTypes grid data');
+        console.log('dumping AdminTrainingTypes grid data');
         console.log(deletedLeaveTypes);
         console.log(leaveTypes);
         return Promise.all([

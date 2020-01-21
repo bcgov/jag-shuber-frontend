@@ -6,7 +6,7 @@ import Page, { PageToolbar } from '../components/Page/Page';
 
 import AdminForm from '../containers/AdminForm';
 import { AdminFormProps } from '../components/AdminForm/AdminForm';
-import AdminCourtroomsPlugin from '../plugins/AdminCourtrooms';
+import AdminCourtroomsPlugin from '../plugins/AdminAssignmentTypes/AdminCourtrooms';
 // import SheriffProfileCreateModal from '../containers/SheriffProfileCreateModal';
 
 import HeaderSaveButton from '../plugins/AdminRoles/containers/HeaderSaveButton';

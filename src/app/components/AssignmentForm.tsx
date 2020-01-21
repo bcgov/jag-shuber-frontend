@@ -210,16 +210,16 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
                     endTime: moment(endTime, TIME_FORMAT).toISOString()
                 }
             })),
-            courtAssignmentId: isCourtAssignment(rest) 
-                    ? (rest.courtroomId 
+            courtAssignmentId: isCourtAssignment(rest)
+                    ? (rest.courtroomId
                         ? CourtSecurityFields.assignmentValueToCourtAssignmentId(rest.courtroomId, true)
-                        : CourtSecurityFields.assignmentValueToCourtAssignmentId(rest.courtRoleId, false)) 
+                        : CourtSecurityFields.assignmentValueToCourtAssignmentId(rest.courtRoleId, false))
                     : undefined
         };
     }
 
     static duplicateCheck(values: any, assignments: Assignment[]) {
-        const { 
+        const {
             jailRoleCode,
             courtAssignmentId,
             escortRunId,
@@ -234,7 +234,7 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
         const courtRoleId = (!isCourtroomAssignment ? courtAssignment : undefined);
 
         let assignment: Assignment | undefined;
-        let workSectionAssignments = assignments!.filter(a => a.workSectionId == workSectionId && a.id !== id); 
+        let workSectionAssignments = assignments!.filter(a => a.workSectionId == workSectionId && a.id !== id);
         switch (workSectionId)
         {
             case 'COURTS':
@@ -280,7 +280,6 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
                 errors.dutyRecurrences = recurrenceArrayErrors;
             }
         }
-
 
         return errors;
     }

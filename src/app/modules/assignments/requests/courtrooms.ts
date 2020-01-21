@@ -63,7 +63,7 @@ class DeleteCourtroomsRequest extends RequestAction<IdType[], IdType[], Assignme
             actionName: 'deleteCourtrooms',
             toasts: {
                 success: (ids) => `${ids.length} courtroom(s) deleted`,
-                error: (err) => `Problem encountered while deleting Courtroom: ${err ? err.toString() : 'Unknown Error'}`
+                error: (err) => `Problem encountered while deleting courtroom: ${err ? err.toString() : 'Unknown Error'}`
             }
         });
     }
