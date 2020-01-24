@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
-import { JailRole } from '../api';
+import { JailRoleCode } from '../api';
 import { allEffectiveJailRoles } from '../modules/assignments/selectors';
 import Selector, { SelectorProps } from '../components/FormElements/Selector';
 
 interface JailRoleListStateProps {
-    jailRoles: JailRole[];
+    jailRoles: JailRoleCode[];
 }
 
 class JailRoleList extends React.PureComponent<

@@ -5,13 +5,13 @@ import {
     AssignmentModuleState
 } from '../common';
 import {
-    CourtRole, IdType
+    CourtRoleCode, IdType
 } from '../../../api';
 import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRequest';
 import CreateOrUpdateEntitiesRequest from '../../../infrastructure/Requests/CreateOrUpdateEntitiesRequest';
 import RequestAction, { RequestConfig } from '../../../infrastructure/Requests/RequestActionBase';
 
-class CourtRoleMapRequest extends GetEntityMapRequest<void, CourtRole, AssignmentModuleState> {
+class CourtRoleMapRequest extends GetEntityMapRequest<void, CourtRoleCode, AssignmentModuleState> {
     constructor() {
         super({ namespace: STATE_KEY, actionName: 'courtRoleMap' });
     }
@@ -23,16 +23,16 @@ class CourtRoleMapRequest extends GetEntityMapRequest<void, CourtRole, Assignmen
 
 export const courtRoleMapRequest = new CourtRoleMapRequest();
 
-class CreateOrUpdateCourtRolesRequest extends CreateOrUpdateEntitiesRequest<CourtRole, AssignmentModuleState>{
-    createEntity(entity: Partial<CourtRole>, { api }: ThunkExtra): Promise<CourtRole> {
+class CreateOrUpdateCourtRolesRequest extends CreateOrUpdateEntitiesRequest<CourtRoleCode, AssignmentModuleState>{
+    createEntity(entity: Partial<CourtRoleCode>, { api }: ThunkExtra): Promise<CourtRoleCode> {
         return api.createCourtRole(entity);
     }
 
-    updateEntity(entity: CourtRole, { api }: ThunkExtra): Promise<CourtRole> {
+    updateEntity(entity: CourtRoleCode, { api }: ThunkExtra): Promise<CourtRoleCode> {
         return api.updateCourtRole(entity);
     }
 
-    constructor(config?: RequestConfig<CourtRole[]>) {
+    constructor(config?: RequestConfig<CourtRoleCode[]>) {
         super(
             {
                 namespace: STATE_KEY,

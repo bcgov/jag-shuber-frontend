@@ -13,7 +13,7 @@ import {
     EscortAssignment,
     IdType,
     JailAssignment,
-    JailRole,
+    JailRoleCode,
     Leave,
     OtherAssignment,
     EscortRun,
@@ -26,7 +26,7 @@ import {
     SheriffRank,
     LeaveSubCode,
     LeaveCancelCode,
-    CourtRole,
+    CourtRoleCode,
     GenderCode,
     SheriffDutyReassignmentDetails,
     User,
@@ -521,7 +521,7 @@ export default class Client implements API {
     async updateEscortRun(run: Partial<EscortRun>): Promise<EscortRun> {
         const { id } = run;
         if (!id) {
-            throw 'No Id included in the courtroom to update';
+            throw 'No Id included in the escort run to update';
         }
         return await this._client.UpdateEscortRun(id, run) as EscortRun;
     }
@@ -542,28 +542,28 @@ export default class Client implements API {
         return Promise.resolve();
     }
 
-    async getCourtRoles(): Promise<CourtRole[]> {
+    async getCourtRoles(): Promise<CourtRoleCode[]> {
         const list = await this._client.GetCourtRoleCodes();
-        return list as CourtRole[];
+        return list as CourtRoleCode[];
     }
 
-    async createCourtRole(courtRole: Partial<CourtRole>): Promise<CourtRole> {
-        return Promise.resolve({} as CourtRole);
-        // return await this._client.CreateCourtRole(courtRole) as CourtRole;
+    async createCourtRole(courtRole: Partial<CourtRoleCode>): Promise<CourtRoleCode> {
+        // return Promise.resolve({} as CourtRoleCode);
+        return await this._client.CreateCourtRoleCode(courtRole as ShuberApi.CourtRoleCode) as CourtRoleCode;
     }
 
-    async updateCourtRole(courtRole: Partial<CourtRole>): Promise<CourtRole> {
+    async updateCourtRole(courtRole: Partial<CourtRoleCode>): Promise<CourtRoleCode> {
         const { id } = courtRole;
         if (!id) {
-            throw 'No Id included in the courtroom to update';
+            throw 'No Id included in the court role to update';
         }
-        // return await this._client.UpdateCourtRole(id, courtRole) as CourtRole;
-        return Promise.resolve({} as CourtRole);
+        return await this._client.UpdateCourtRoleCode(id, courtRole as ShuberApi.CourtRoleCode) as CourtRoleCode;
+        // return Promise.resolve({} as CourtRoleCode);
     }
 
     async deleteCourtRole(courtRoleId: string): Promise<void> {
-        // return await this._client.DeleteCourtRole(courtRoleId);
-        return Promise.resolve();
+        return await this._client.DeleteCourtRoleCode(courtRoleId);
+        // return Promise.resolve();
     }
 
     /**
@@ -572,34 +572,34 @@ export default class Client implements API {
      */
     async deleteCourtRoles(ids: IdType[]): Promise<void> {
         if (ids.length > 0) {
-             // ids.forEach(id => this._client.DeleteCourtRole(id));
+             ids.forEach(id => this._client.DeleteCourtRoleCode(id));
         }
 
         return Promise.resolve();
     }
 
-    async getJailRoles(): Promise<JailRole[]> {
+    async getJailRoles(): Promise<JailRoleCode[]> {
         const list = await this._client.GetJailRoleCodes();
-        return list as JailRole[];
+        return list as JailRoleCode[];
     }
 
-    async createJailRole(jailRole: Partial<JailRole>): Promise<JailRole> {
-        return Promise.resolve({} as JailRole);
-        // return await this._client.CreateJailRole(jailRole) as JailRole;
+    async createJailRole(jailRole: Partial<JailRoleCode>): Promise<JailRoleCode> {
+        // return Promise.resolve({} as JailRoleCode);
+        return await this._client.CreateJailRoleCode(jailRole as ShuberApi.JailRoleCode) as JailRoleCode;
     }
 
-    async updateJailRole(jailRole: Partial<JailRole>): Promise<JailRole> {
+    async updateJailRole(jailRole: Partial<JailRoleCode>): Promise<JailRoleCode> {
         const { id } = jailRole;
         if (!id) {
-            throw 'No Id included in the courtroom to update';
+            throw 'No Id included in the jail role code to update';
         }
-        // return await this._client.UpdateJailRole(id, jailRole) as JailRole;
-        return Promise.resolve({} as JailRole);
+        return await this._client.UpdateJailRoleCode(id, jailRole as ShuberApi.JailRoleCode) as JailRoleCode;
+        // return Promise.resolve({} as JailRoleCode);
     }
 
     async deleteJailRole(jailRoleId: string): Promise<void> {
-        // return await this._client.DeleteJailRole(jailRoleId);
-        return Promise.resolve();
+        return await this._client.DeleteJailRoleCode(jailRoleId);
+        // return Promise.resolve();
     }
 
     /**
@@ -608,7 +608,7 @@ export default class Client implements API {
      */
     async deleteJailRoles(ids: IdType[]): Promise<void> {
         if (ids.length > 0) {
-             // ids.forEach(id => this._client.DeleteJailRole(id));
+             ids.forEach(id => this._client.DeleteJailRoleCode(id));
         }
 
         return Promise.resolve();
@@ -620,22 +620,22 @@ export default class Client implements API {
     }
 
     async createAlternateAssignmentType(assignmentType: Partial<AlternateAssignment>): Promise<AlternateAssignment> {
-        return Promise.resolve({} as AlternateAssignment);
-        // return await this._client.CreateAlternateAssignment(assignmentType) as AlternateAssignment;
+        // return Promise.resolve({} as AlternateAssignment);
+        return await this._client.CreateOtherAssignCode(assignmentType as ShuberApi.OtherAssignCode) as AlternateAssignment;
     }
 
     async updateAlternateAssignmentType(assignmentType: Partial<AlternateAssignment>): Promise<AlternateAssignment> {
         const { id } = assignmentType;
         if (!id) {
-            throw 'No Id included in the courtroom to update';
+            throw 'No Id included in the alternate assignment to update';
         }
-        // return await this._client.UpdateAlternateAssignment(id, assignmentType) as AlternateAssignment;
-        return Promise.resolve({} as AlternateAssignment);
+        return await this._client.UpdateOtherAssignCode(id, assignmentType as ShuberApi.OtherAssignCode) as AlternateAssignment;
+        // return Promise.resolve({} as AlternateAssignment);
     }
 
     async deleteAlternateAssignmentType(assignmentTypeId: string): Promise<void> {
-        // return await this._client.DeleteAlternateAssignment(assignmentTypeId);
-        return Promise.resolve();
+        return await this._client.DeleteOtherAssignCode(assignmentTypeId);
+        // return Promise.resolve();
     }
 
     /**
@@ -644,7 +644,7 @@ export default class Client implements API {
      */
     async deleteAlternateAssignmentTypes(ids: IdType[]): Promise<void> {
         if (ids.length > 0) {
-             // ids.forEach(id => this._client.DeleteAlternateAssignment(id));
+             ids.forEach(id => this._client.DeleteOtherAssignCode(id));
         }
 
         return Promise.resolve();
@@ -784,7 +784,7 @@ export default class Client implements API {
     }
 
     async createFrontendScope(frontendScope: Partial<FrontendScope>): Promise<FrontendScope> {
-        return this._client.CreateFrontendScope(frontendScope) as FrontendScope;
+        return await this._client.CreateFrontendScope(frontendScope) as FrontendScope;
     }
 
     async updateFrontendScope(frontendScope: Partial<FrontendScope>): Promise<FrontendScope> {
@@ -792,7 +792,7 @@ export default class Client implements API {
         if (!id) {
             throw 'No Id included in the frontendScope to update';
         }
-        return this._client.UpdateFrontendScope(id, frontendScope) as FrontendScope;
+        return await this._client.UpdateFrontendScope(id, frontendScope) as FrontendScope;
     }
 
     async deleteFrontendScope(frontendScopeId: IdType): Promise<void> {
@@ -817,7 +817,7 @@ export default class Client implements API {
     }
 
     async createFrontendScopePermission(permission: FrontendScopePermission): Promise<FrontendScopePermission> {
-        return this._client.CreateFrontendScopePermission(permission) as FrontendScopePermission;
+        return await this._client.CreateFrontendScopePermission(permission) as FrontendScopePermission;
     }
 
     async updateFrontendScopePermission(permission: FrontendScopePermission): Promise<FrontendScopePermission> {
@@ -825,7 +825,7 @@ export default class Client implements API {
         if (!id) {
             throw 'No Id included in the frontendScopePermission to update';
         }
-        return this._client.UpdateFrontendScopePermission(id, permission) as FrontendScopePermission;
+        return await this._client.UpdateFrontendScopePermission(id, permission) as FrontendScopePermission;
     }
 
     async deleteFrontendScopePermission(permissionId: IdType): Promise<void> {

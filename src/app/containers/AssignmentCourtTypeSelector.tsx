@@ -3,17 +3,17 @@ import { connect } from 'react-redux';
 import { RootState } from '../store';
 import {
     Courtroom, COURT_ASSIGNMENT_ROOM, COURT_ASSIGNMENT_ROLE,
-    CourtRole
+    CourtRoleCode
 } from '../api/Api';
-import { 
-    allCourtRoles, 
-    allCourtrooms 
+import {
+    allCourtRoles,
+    allCourtrooms
 } from '../modules/assignments/selectors';
 import SelectorWithOptGroup, { SelectorWithOptGroupProps } from '../components/FormElements/SelectorWithOptGroups';
 
 interface CourtAssignmentSelectorStateProps {
     courtrooms: Courtroom[];
-    courtRoles: CourtRole[];
+    courtRoles: CourtRoleCode[];
 }
 
 class CourtAssignmentList extends React.PureComponent<

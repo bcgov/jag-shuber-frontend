@@ -17,14 +17,14 @@ export type Assignment = CourtAssignment | JailAssignment | EscortAssignment | O
 export type TimeType = ApiTypes.TimeType;
 export type CourtroomMap = MapType<Courtroom>;
 export type RunMap = MapType<EscortRun>;
-export type JailRoleMap = MapType<JailRole>;
+export type JailRoleMap = MapType<JailRoleCode>;
 export type AlternateAssignmentMap = MapType<AlternateAssignment>;
 export type DateRange = { startDate?: DateType, endDate?: DateType };
 export type LocationMap = MapType<Location>;
 export type SheriffRankCodeMap = MapType<SheriffRank>;
 export type LeaveSubCodeMap = MapType<LeaveSubCode>;
 export type LeaveCancelCodeMap = MapType<LeaveCancelCode>;
-export type CourtRoleMap = MapType<CourtRole>;
+export type CourtRoleMap = MapType<CourtRoleCode>;
 export type GenderCodeMap = MapType<GenderCode>;
 export type RoleMap = MapType<Role>;
 export type RolePermissionMap = MapType<RolePermission>;
@@ -297,14 +297,14 @@ export interface Courtroom {
     name: string;
 }
 
-export interface JailRole {
+export interface JailRoleCode {
     id?: IdType; // Used on client-side only
     code: IdType;
     description: string;
     expiryDate?: DateType;
 }
 
-export interface CourtRole {
+export interface CourtRoleCode {
     id?: IdType; // Used on client-side only
     code: IdType;
     description: string;
@@ -432,7 +432,7 @@ export interface ApiScope {
     apiScopeId?: string;
     scopeName?: string; // Human-friendly scope name
     scopeCode?: string; // Code type for the scope
-    systemScopeInd?: string; // Is the scope required by the SYSTEM
+    systemScopeInd?: boolean; // Is the scope required by the SYSTEM
     description?: string; // Scope description
     createdBy?: string;
     updatedBy?: string;
@@ -446,7 +446,7 @@ export interface FrontendScope {
     frontendScopeId?: string;
     scopeName?: string; // Human-friendly scope name
     scopeCode?: string; // Code type for the scope
-    systemScopeInd?: string; // Is the scope required by the SYSTEM
+    systemScopeInd?: boolean; // Is the scope required by the SYSTEM
     description?: string; // Scope description
     createdBy?: string;
     updatedBy?: string;
@@ -649,16 +649,16 @@ export interface API {
     deleteCourtrooms(courtroomIds: IdType[]): Promise<void>;
 
     // Court Roles
-    getCourtRoles(): Promise<CourtRole[]>;
-    createCourtRole(newCourtRole: Partial<CourtRole>): Promise<CourtRole>;
-    updateCourtRole(updatedCourtRole: Partial<CourtRole>): Promise<CourtRole>;
+    getCourtRoles(): Promise<CourtRoleCode[]>;
+    createCourtRole(newCourtRole: Partial<CourtRoleCode>): Promise<CourtRoleCode>;
+    updateCourtRole(updatedCourtRole: Partial<CourtRoleCode>): Promise<CourtRoleCode>;
     deleteCourtRole(courtRoleId: IdType): Promise<void>;
     deleteCourtRoles(courtRoleIds: IdType[]): Promise<void>;
 
     // Jail Roles
-    getJailRoles(): Promise<JailRole[]>;
-    createJailRole(newJailRole: Partial<JailRole>): Promise<JailRole>;
-    updateJailRole(updatedJailRole: Partial<JailRole>): Promise<JailRole>;
+    getJailRoles(): Promise<JailRoleCode[]>;
+    createJailRole(newJailRole: Partial<JailRoleCode>): Promise<JailRoleCode>;
+    updateJailRole(updatedJailRole: Partial<JailRoleCode>): Promise<JailRoleCode>;
     deleteJailRole(jailRoleId: IdType): Promise<void>;
     deleteJailRoles(jailRoleIds: IdType[]): Promise<void>;
 

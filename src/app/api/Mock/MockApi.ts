@@ -9,7 +9,7 @@
 //     Shift,
 //     ShiftCopyOptions,
 //     EscortRun,
-//     JailRole,
+//     JailRoleCode,
 //     AlternateAssignment,
 //     SheriffDuty,
 //     Location,
@@ -18,7 +18,7 @@
 //     Leave,
 //     LeaveSubCode,
 //     LeaveCancelCode,
-//     CourtRole,
+//     CourtRoleCode,
 //     GenderCode,
 //     SheriffDutyReassignmentDetails
 // } from '../Api';
@@ -80,8 +80,8 @@
 //     getGenderCodes(): Promise<GenderCode[]> {
 //         throw new Error("Method not implemented.");
 //     }
-    
-//     getCourtRoles(): Promise<CourtRole[]> {
+
+//     getCourtRoles(): Promise<CourtRoleCode[]> {
 //         throw new Error("Method not implemented.");
 //     }
 
@@ -386,7 +386,7 @@
 //         throw new Error("Method not implemented.");
 //     }
 
-//     getJailRoles(): Promise<JailRole[]> {
+//     getJailRoles(): Promise<JailRoleCode[]> {
 //         throw new Error("Method not implemented.");
 //     }
 

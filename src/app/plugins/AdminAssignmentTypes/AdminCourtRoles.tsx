@@ -22,7 +22,7 @@ import {
 
 import { RootState } from '../../store';
 
-import { CourtRole, IdType } from '../../api';
+import { CourtRoleCode, IdType } from '../../api';
 
 import {
     FormContainerBase,
@@ -228,7 +228,7 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
         // Delete records before saving new ones!
         const deletedCourtRoles: IdType[] = dataToDelete.courtRoles as IdType[];
 
-        const courtRoles: Partial<CourtRole>[] = data.courtRoles.map((c: CourtRole) => ({
+        const courtRoles: Partial<CourtRoleCode>[] = data.courtRoles.map((c: CourtRoleCode) => ({
             ...c,
             createdBy: 'DEV - FRONTEND',
             updatedBy: 'DEV - FRONTEND',

@@ -5,13 +5,13 @@ import {
     AssignmentModuleState
 } from '../common';
 import {
-    JailRole, IdType
+    JailRoleCode, IdType
 } from '../../../api';
 import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRequest';
 import CreateOrUpdateEntitiesRequest from '../../../infrastructure/Requests/CreateOrUpdateEntitiesRequest';
 import RequestAction, { RequestConfig } from '../../../infrastructure/Requests/RequestActionBase';
 
-class JailRoleMapRequest extends GetEntityMapRequest<void, JailRole, AssignmentModuleState> {
+class JailRoleMapRequest extends GetEntityMapRequest<void, JailRoleCode, AssignmentModuleState> {
     constructor() {
         super({ namespace: STATE_KEY, actionName: 'jailRoleMap' });
     }
@@ -23,16 +23,16 @@ class JailRoleMapRequest extends GetEntityMapRequest<void, JailRole, AssignmentM
 
 export const jailRoleMapRequest = new JailRoleMapRequest();
 
-class CreateOrUpdateJailRolesRequest extends CreateOrUpdateEntitiesRequest<JailRole, AssignmentModuleState>{
-    createEntity(entity: Partial<JailRole>, { api }: ThunkExtra): Promise<JailRole> {
+class CreateOrUpdateJailRolesRequest extends CreateOrUpdateEntitiesRequest<JailRoleCode, AssignmentModuleState>{
+    createEntity(entity: Partial<JailRoleCode>, { api }: ThunkExtra): Promise<JailRoleCode> {
         return api.createJailRole(entity);
     }
 
-    updateEntity(entity: JailRole, { api }: ThunkExtra): Promise<JailRole> {
+    updateEntity(entity: JailRoleCode, { api }: ThunkExtra): Promise<JailRoleCode> {
         return api.updateJailRole(entity);
     }
 
-    constructor(config?: RequestConfig<JailRole[]>) {
+    constructor(config?: RequestConfig<JailRoleCode[]>) {
         super(
             {
                 namespace: STATE_KEY,

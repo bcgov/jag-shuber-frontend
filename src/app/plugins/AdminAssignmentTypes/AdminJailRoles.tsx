@@ -22,7 +22,7 @@ import {
 
 import { RootState } from '../../store';
 
-import { JailRole, IdType } from '../../api';
+import { JailRoleCode, IdType } from '../../api';
 
 import {
     FormContainerBase,
@@ -228,7 +228,7 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
         // Delete records before saving new ones!
         const deletedJailRoles: IdType[] = dataToDelete.jailRoles as IdType[];
 
-        const jailRoles: Partial<JailRole>[] = data.jailRoles.map((c: JailRole) => ({
+        const jailRoles: Partial<JailRoleCode>[] = data.jailRoles.map((c: JailRoleCode) => ({
             ...c,
             createdBy: 'DEV - FRONTEND',
             updatedBy: 'DEV - FRONTEND',
