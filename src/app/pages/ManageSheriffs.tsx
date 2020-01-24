@@ -8,6 +8,7 @@ class ManageSheriffs extends React.PureComponent {
     render() {
         return (
             <Page
+                disableLocations={false}
                 toolbar={
                     <PageToolbar
                         right={(

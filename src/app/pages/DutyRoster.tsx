@@ -13,6 +13,7 @@ class DutyRoster extends React.PureComponent {
     render() {
         return (
             <Page
+                disableLocations={false}
                 toolbarStyle={{ justifyContent: 'center' }}
                 contentStyle={{ height: 'inherit' }}
                 toolbar={(

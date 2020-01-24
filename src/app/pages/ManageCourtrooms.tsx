@@ -37,6 +37,7 @@ class ManageCourtrooms extends React.PureComponent<AdminFormProps & Partial<Mana
 
         return (
             <Page
+                disableLocations={false}
                 toolbar={
                     <PageToolbar
                         left={(

@@ -423,3 +423,19 @@ fieldset.with-border {
       display: none;
   }
 }
+
+/* Override weird bootstrap style */
+.modal-header .close {
+  min-width: auto !important;
+  width: auto !important;
+}
+
+h1.modal-title,
+h2.modal-title,
+h3.modal-title,
+h4.modal-title,
+h5.modal-title,
+h6.modal-title {
+  color: white;
+  font-weight: bold !important;
+}

@@ -7,6 +7,7 @@ class AssignmentPage extends React.PureComponent {
     render() {
         return (
             <Page
+                disableLocations={false}
                 toolbarStyle={{ justifyContent: 'center' }}
                 toolbar={(
                     <div style={{ flex: 1, display: 'flex', position: 'relative', justifyContent: 'center' }}>

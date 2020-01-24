@@ -16,6 +16,7 @@ class DeputySchedule extends React.PureComponent {
     render() {
         return (
             <Page
+                disableLocations={false}
                 toolbar={<SchedulePublishViewControls />}
             >
                 <div id="deputySchedule">

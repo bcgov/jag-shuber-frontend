@@ -32,7 +32,9 @@ class ManageComponents extends React.PureComponent<AdminFormProps> {
         const { isEditing } = this.state;
 
         return (
-            <Page disableLocations={true}>
+            <Page
+                disableLocations={true}
+            >
                 <Well
                     style={{
                         display: 'flex',
