@@ -76,7 +76,7 @@ export default class SheriffProfilePluginId extends SheriffProfileSectionPlugin<
                                 name={this.formFieldNames.userAuthId}
                                 component={TextField as any}
                                 label="IDIR Username"
-                                validate={[Validators.required]}
+                                // validate={[Validators.required]}
                             />
                         </Col>
                         <Col xs={12} lg={6}>
@@ -84,7 +84,7 @@ export default class SheriffProfilePluginId extends SheriffProfileSectionPlugin<
                                 name={this.formFieldNames.siteminderId}
                                 component={TextField as any}
                                 label="Siteminder ID"
-                                validate={[Validators.required]}
+                                // validate={[Validators.required]}
                             />
                         </Col>
                     </Row>
