@@ -104,7 +104,7 @@ export default class DataTableHeaderRow<T> extends React.Component<DataTableHead
                         {displayHeaderActions && (
                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
                                 <FormGroup style={{ flex: '0' }}>
-                                    <Button onClick={() => fields.push(initialValue as T)}>
+                                    <Button onClick={() => fields.unshift(initialValue as T)}>
                                         <Glyphicon glyph="plus"/> {buttonLabel}
                                     </Button>
                                 </FormGroup>
