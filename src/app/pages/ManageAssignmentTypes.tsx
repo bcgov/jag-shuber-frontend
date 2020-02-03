@@ -1,7 +1,7 @@
 import React from 'react';
-import { Well } from 'react-bootstrap';
+import { Glyphicon, Well } from 'react-bootstrap';
 
-import Page from '../components/Page/Page';
+import Page, { PageToolbar } from '../components/Page/Page';
 
 import AdminForm from '../containers/AdminForm';
 import { AdminFormProps } from '../components/AdminForm/AdminForm';
@@ -10,8 +10,10 @@ import AdminCourtRolesPlugin from '../plugins/AdminAssignmentTypes/AdminCourtRol
 import AdminJailRolesPlugin from '../plugins/AdminAssignmentTypes/AdminJailRoles';
 import AdminEscortTypesPlugin from '../plugins/AdminAssignmentTypes/AdminEscortTypes';
 import AdminOtherTypesPlugin from '../plugins/AdminAssignmentTypes/AdminOtherTypes';
+import HeaderSaveButton from '../plugins/AdminRoles/containers/HeaderSaveButton';
+import HeaderCancelButton from '../plugins/AdminRoles/containers/HeaderCancelButton';
 
-export interface ManageCodeTypesProps {}
+export interface ManageAssignmentTypesProps {}
 
 class ManageCodeTypes extends React.PureComponent<AdminFormProps> {
     state = {
@@ -34,14 +36,53 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps> {
         const { isEditing } = this.state;
 
         return (
-            <Page disableLocations={false}>
+            <Page
+                disableLocations={false}
+                toolbar={
+                    <PageToolbar
+                        left={(
+                            <div style={{ flex: 1, display: 'flex', position: 'relative', justifyContent: 'center', paddingTop: '10px' }}>
+                                <h3 style={{ color: 'white', fontWeight: 'bold' }}>Work Section</h3>
+                            </div>
+                        )}
+                        middle={(
+                            <>
+                                <div style={{ flex: 1, display: 'flex', position: 'relative', justifyContent: 'center', paddingTop: '10px' }}>
+                                    <div className="admin-form-filters-toggle">
+                                        {/* <Glyphicon glyph="chevron-down" /> */}&nbsp;&nbsp;Courts
+                                    </div>
+                                    &nbsp;&nbsp;
+                                    <div className="admin-form-filters-toggle">
+                                        {/* <Glyphicon glyph="chevron-down" /> */}&nbsp;&nbsp;Jails
+                                    </div>
+                                    &nbsp;&nbsp;
+                                    <div className="admin-form-filters-toggle">
+                                        {/* <Glyphicon glyph="chevron-down" /> */}&nbsp;&nbsp;Escort Runs
+                                    </div>
+                                    &nbsp;&nbsp;
+                                    <div className="admin-form-filters-toggle">
+                                        {/* <Glyphicon glyph="chevron-down" /> */}&nbsp;&nbsp;Other
+                                    </div>
+                                </div>
+                            </>
+                        )}
+                        right={(
+                            <div style={{ marginTop: 3, paddingTop: '10px' }}>
+                                <HeaderSaveButton formName={'AdminForm'} />
+                                &nbsp;&nbsp;
+                                <HeaderCancelButton formName={'AdminForm'} />
+                            </div>
+                        )}
+                    />
+                }
+            >
                 <Well
                     style={{
                         display: 'flex',
                         backgroundColor: 'white',
                         flexDirection: 'column',
                         flex: '1 1',
-                        maxWidth: '85%',
+                        maxWidth: '100%',
                         minWidth: 800,
                         height: 'max-content',
                         margin: '0 auto',
@@ -50,8 +91,27 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps> {
                 >
                     <AdminForm
                         key={'admin-assignment-types-grid'}
+                        /* plugins={{
+                            courts: [
+                                new AdminCourtroomsPlugin(),
+                                new AdminCourtRolesPlugin(),
+                            ],
+                            jails: [
+                                // new AdminJailroomsPlugin(),
+                                new AdminJailRolesPlugin()
+                            ],
+                            escortRuns: [
+                                new AdminEscortTypesPlugin()
+                            ],
+                            otherTypes: [
+                                new AdminOtherTypesPlugin()
+                            ]
+                        }} */
                         plugins={[
                             new AdminCourtroomsPlugin(),
+                            new AdminCourtRolesPlugin(),
+                            // new AdminJailroomsPlugin(),
+                            new AdminJailRolesPlugin(),
                             new AdminEscortTypesPlugin(),
                             new AdminOtherTypesPlugin()
                         ]}

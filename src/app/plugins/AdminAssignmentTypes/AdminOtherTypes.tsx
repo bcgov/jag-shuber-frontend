@@ -119,7 +119,7 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
             DataTable.TextFieldColumn('Assignment Type', { fieldName: 'description', displayInfo: false, filterable: true, filterColumn: onFilterOtherType }),
             DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, filterable: true, filterColumn: onFilterOtherTypeCode }),
             DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false, filterable: false }),
-            DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
+            // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
         ];
 
         return (

@@ -123,13 +123,13 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
             ? [
                 DataTable.SelectorFieldColumn('Location', { fieldName: 'locationId', selectorComponent: LocationSelector, displayInfo: false, filterable: true, filterColumn: onFilterLocation }),
                 DataTable.TextFieldColumn('Run Name', { fieldName: 'title', displayInfo: false, filterable: true, filterColumn: onFilterEscortType }),
-                DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false, filterable: false }),
-                DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true })
+                // DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false, filterable: false }),
+                // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true })
             ]
             : [
                 DataTable.TextFieldColumn('Run Name', { fieldName: 'title', displayInfo: false, filterable: true, filterColumn: onFilterEscortType }),
-                DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false, filterable: false }),
-                DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true })
+                // DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false, filterable: false }),
+                // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true })
             ];
 
         return (

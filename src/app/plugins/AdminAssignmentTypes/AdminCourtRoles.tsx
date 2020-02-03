@@ -152,7 +152,7 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
                         DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, filterable: true, filterColumn: onFilterCourtRoleCode }),
                         // DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
-                        DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
+                        // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
 
                     ]}
                     filterable={true}

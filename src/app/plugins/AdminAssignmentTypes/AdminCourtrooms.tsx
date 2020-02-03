@@ -124,17 +124,17 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
                 DataTable.SelectorFieldColumn('Location', { fieldName: 'locationId', selectorComponent: LocationSelector, displayInfo: false, filterable: true, filterColumn: onFilterLocation }),
                 DataTable.TextFieldColumn('Courtroom', { fieldName: 'name', displayInfo: false, filterable: true, filterColumn: onFilterCourtroom }),
                 DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, filterable: true, filterColumn: onFilterCourtroomCode }),
-                DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false }),
+                // DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false }),
                 // DataTable.DateColumn('Date Created', 'createdDtm'),
-                DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
+                // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
             ]
             : [
                 // DataTable.SelectorFieldColumn('Location', { fieldName: 'locationId', selectorComponent: LocationSelector, displayInfo: false, filterable: true, filterColumn: onFilterLocation }),
                 DataTable.TextFieldColumn('Courtroom', { fieldName: 'name', displayInfo: false, filterable: true, filterColumn: onFilterCourtroom }),
                 DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, filterable: true, filterColumn: onFilterCourtroomCode }),
-                DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false }),
+                // DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false }),
                 // DataTable.DateColumn('Date Created', 'createdDtm'),
-                DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
+                // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
             ];
 
         return (
