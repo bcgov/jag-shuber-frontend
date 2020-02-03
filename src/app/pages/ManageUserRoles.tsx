@@ -85,6 +85,7 @@ class ManageUserRoles extends React.PureComponent<AdminFormProps & Partial<Manag
                 }
             >
                 <Well
+                    className="fixed-filters-data-table"
                     style={{
                         display: 'flex',
                         backgroundColor: 'white',
@@ -97,6 +98,9 @@ class ManageUserRoles extends React.PureComponent<AdminFormProps & Partial<Manag
                         borderRadius: 0
                     }}
                 >
+                    <div className="container-fluid" style={{ width: '100%' }}>
+                        <h3 style={{ marginBottom: '15px', paddingBottom: '10px', borderBottom: '1px dotted grey', color: '#003366' }}>Assign Victoria User Roles</h3>
+                    </div>
                     <AdminForm
                         key={'admin-roles-grid'}
                         plugins={[

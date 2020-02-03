@@ -257,7 +257,7 @@ th .glyphicon-filter {
 
 .fixed-filters-data-table {
   /* TODO: Should this really be a universal offset? */
-  margin-top: 9rem !important;
+  margin-top: 8rem !important;
 }
 
 .fixed-filters-data-table .data-table-filter-row {
@@ -443,9 +443,10 @@ fieldset.with-border {
   top: 1px;
 }
 
-.nav > li.active:hover > a {
+.nav > li.active:hover > a,
+.nav > li.active:hover > a:hover {
   border-color: #FDB815; /* BC Gov Gold */
-  border-bottom-color: #003366;
+  border-bottom-color: #003366 !important;
 }
 
 .nav > li:not(.active):hover > a {

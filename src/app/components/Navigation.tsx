@@ -78,13 +78,7 @@ export default class Navigation extends React.Component<NavigationProps, any> {
                 },
                 assignmentTypes: {
                     path: '/assignmentTypes/manage',
-                    label: 'Assignment Types',
-                    children: {
-                        courtrooms: {
-                            path: '/courtrooms/manage',
-                            label: 'Add + Remove Courtrooms'
-                        }
-                    }
+                    label: 'Assignment Types'
                 },
                 components: {
                     path: '/components/manage',
@@ -121,21 +115,20 @@ export default class Navigation extends React.Component<NavigationProps, any> {
                             <NavigationLink {...Navigation.Routes.dutyRoster.setup} />
                         </NavigationDropDown>
                         <NavigationLink {...Navigation.Routes.assignment} />
+                        <NavigationLink {...Navigation.Routes.system.children.assignmentTypes} />
                         <NavigationDropDown title="Shift Schedule" id="schedule_dropdown">
                             <NavigationLink {...Navigation.Routes.schedule.manage} />
                             <NavigationLink {...Navigation.Routes.schedule.distribute} />
                         </NavigationDropDown>
                         <NavigationDropDown title={Navigation.Routes.team.label} id="admin_dropdown">
                             <NavigationLink {...Navigation.Routes.team.children.users} />
-                            <NavigationLink {...Navigation.Routes.team.children.userRoles}>&nbsp;<small><Glyphicon glyph="star" /></small></NavigationLink>
-                            <NavigationLink {...Navigation.Routes.team.children.roles}>&nbsp;<small><Glyphicon glyph="star" /></small></NavigationLink>
+                            <NavigationLink {...Navigation.Routes.team.children.userRoles} />
+                            <NavigationLink {...Navigation.Routes.team.children.roles} />
                         </NavigationDropDown>
                         <NavigationDropDown title={Navigation.Routes.system.label} id="system_dropdown">
-                            <NavigationLink {...Navigation.Routes.system.children.assignmentTypes}>&nbsp;<small><Glyphicon glyph="star" /></small></NavigationLink>
-                            <NavigationLink {...Navigation.Routes.system.children.leaveTypes}>&nbsp;<small><Glyphicon glyph="star" /></small></NavigationLink>
-                            <NavigationLink {...Navigation.Routes.system.children.workSectionRoles}>&nbsp;<small><Glyphicon glyph="star" /></small></NavigationLink>
-                            <NavigationLink {...Navigation.Routes.system.children.components}>&nbsp;<small><Glyphicon glyph="star" /></small></NavigationLink>
-                            <NavigationLink {...Navigation.Routes.system.children.apis}>&nbsp;<small><Glyphicon glyph="star" /></small></NavigationLink>
+                            <NavigationLink {...Navigation.Routes.system.children.leaveTypes} />
+                            <NavigationLink {...Navigation.Routes.system.children.components} />
+                            <NavigationLink {...Navigation.Routes.system.children.apis} />
                         </NavigationDropDown>
                         {/*<NavigationLink {...Navigation.Routes.audit} />*/}
                     </Nav>

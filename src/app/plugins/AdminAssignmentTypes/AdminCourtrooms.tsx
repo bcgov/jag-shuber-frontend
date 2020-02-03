@@ -138,7 +138,7 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
             ];
 
         return (
-            <div>
+            <div className="col-sm-12">
             {/* Only use fixed if configured as a standalone page */}
             {/* <div className="fixed-filters-data-table"> */}
                 <DataTable

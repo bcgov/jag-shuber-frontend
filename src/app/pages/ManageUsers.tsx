@@ -148,13 +148,16 @@ class ManageUsers extends React.PureComponent<Partial<ManageUsersProps>> {
                         backgroundColor: 'white',
                         flexDirection: 'column',
                         flex: '1 1',
-                        maxWidth: '93%',
+                        maxWidth: '100%',
                         minWidth: 800,
                         height: 'max-content',
                         margin: '0 auto',
                         borderRadius: 0
                     }}
                 >
+                    <div className="container-fluid" style={{ width: '100%' }}>
+                        <h3 style={{ marginBottom: '15px', paddingBottom: '10px', borderBottom: '1px dotted grey', color: '#003366' }}>Manage Victoria Sheriffs & Users</h3>
+                    </div>
                     <SheriffListComposable />
                 </Well>
             </Page>

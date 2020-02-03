@@ -4,7 +4,11 @@ import { Glyphicon, Well } from 'react-bootstrap';
 import Page, { PageToolbar } from '../components/Page/Page';
 
 import AdminForm from '../containers/AdminForm';
+import * as AdminFormTemplates from '../components/AdminForm';
 import { AdminFormProps } from '../components/AdminForm/AdminForm';
+
+import WorkSectionsLayout from '../plugins/AdminAssignmentTypes/WorkSectionsLayout';
+
 import AdminCourtroomsPlugin from '../plugins/AdminAssignmentTypes/AdminCourtrooms';
 import AdminCourtRolesPlugin from '../plugins/AdminAssignmentTypes/AdminCourtRoles';
 import AdminJailRolesPlugin from '../plugins/AdminAssignmentTypes/AdminJailRoles';
@@ -41,36 +45,39 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps> {
                 toolbar={
                     <PageToolbar
                         left={(
-                            <div style={{ flex: 1, display: 'flex', position: 'relative', justifyContent: 'center', paddingTop: '10px' }}>
-                                <h3 style={{ color: 'white', fontWeight: 'bold' }}>Work Section</h3>
-                            </div>
+                            <div style={{ flex: 1, display: 'flex', position: 'relative', justifyContent: 'center', paddingTop: '10px' }} />
                         )}
                         middle={(
                             <>
                                 <div style={{ flex: 1, display: 'flex', position: 'relative', justifyContent: 'center', paddingTop: '10px' }}>
-                                    <div className="admin-form-filters-toggle">
-                                        {/* <Glyphicon glyph="chevron-down" /> */}&nbsp;&nbsp;Courts
+                                    <div style={{ display: 'flex', alignItems: 'center', marginRight: '15px' }}>
+                                        <h6 style={{ color: 'white', fontWeight: 'bold', marginBottom: '3px' }}>Choose Work Section: </h6>
+                                    </div>
+                                    <div className="admin-form-filters-toggle" style={{ backgroundColor: 'white', color: 'black' }}>
+                                        {/* <Glyphicon glyph="chevron-down" /> */}Court Assignments
                                     </div>
                                     &nbsp;&nbsp;
                                     <div className="admin-form-filters-toggle">
-                                        {/* <Glyphicon glyph="chevron-down" /> */}&nbsp;&nbsp;Jails
+                                        {/* <Glyphicon glyph="chevron-down" /> */}Jail Assignments
                                     </div>
                                     &nbsp;&nbsp;
                                     <div className="admin-form-filters-toggle">
-                                        {/* <Glyphicon glyph="chevron-down" /> */}&nbsp;&nbsp;Escort Runs
+                                        {/* <Glyphicon glyph="chevron-down" /> */}Escort Runs
                                     </div>
                                     &nbsp;&nbsp;
                                     <div className="admin-form-filters-toggle">
-                                        {/* <Glyphicon glyph="chevron-down" /> */}&nbsp;&nbsp;Other
+                                        {/* <Glyphicon glyph="chevron-down" /> */}Other Assignments
                                     </div>
+
+                                    <div style={{ width: '160px' }} />
                                 </div>
                             </>
                         )}
                         right={(
                             <div style={{ marginTop: 3, paddingTop: '10px' }}>
-                                <HeaderSaveButton formName={'AdminForm'} />
+                                {/* <HeaderSaveButton formName={'AdminForm'} />
                                 &nbsp;&nbsp;
-                                <HeaderCancelButton formName={'AdminForm'} />
+                                <HeaderCancelButton formName={'AdminForm'} /> */}
                             </div>
                         )}
                     />
@@ -89,24 +96,13 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps> {
                         borderRadius: 0
                     }}
                 >
+                    <div className="container-fluid" style={{ width: '100%' }}>
+                        <h3 style={{ paddingBottom: '10px', borderBottom: '1px dotted grey', color: '#003366' }}>Manage Assignment Types, Victoria Courts</h3>
+                    </div>
                     <AdminForm
                         key={'admin-assignment-types-grid'}
-                        /* plugins={{
-                            courts: [
-                                new AdminCourtroomsPlugin(),
-                                new AdminCourtRolesPlugin(),
-                            ],
-                            jails: [
-                                // new AdminJailroomsPlugin(),
-                                new AdminJailRolesPlugin()
-                            ],
-                            escortRuns: [
-                                new AdminEscortTypesPlugin()
-                            ],
-                            otherTypes: [
-                                new AdminOtherTypesPlugin()
-                            ]
-                        }} */
+                        templateComponent={WorkSectionsLayout}
+                        showTabs={false}
                         plugins={[
                             new AdminCourtroomsPlugin(),
                             new AdminCourtRolesPlugin(),

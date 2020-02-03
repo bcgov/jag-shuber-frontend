@@ -1,12 +1,13 @@
-import { Col, Nav, NavItem, Row, Tab } from 'react-bootstrap';
 import React from 'react';
+import { Col, Nav, NavItem, Row, Tab } from 'react-bootstrap';
+
+import AdminFormSectionNav from './AdminFormSectionNav';
 
 export default (props: any) => {
     const {
         selectedSection,
         sectionPlugins,
         pluginsWithErrors,
-        AdminFormSectionNav,
         handleSelectSection,
         renderPlugin
     } = props;

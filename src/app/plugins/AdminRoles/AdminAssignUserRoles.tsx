@@ -309,7 +309,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
         };
 
         return (
-            <div className="fixed-filters-data-table">
+            <div>
                 <DataTable
                     fieldName={this.formFieldNames.users}
                     filterFieldName={(this.filterFieldNames) ? `${this.filterFieldNames.users}` : undefined}

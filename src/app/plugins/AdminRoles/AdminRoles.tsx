@@ -315,7 +315,7 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
         // console.log('ADMINROLESGRID RENDER COUNT: ' + RENDER_COUNT);
 
         return (
-            <div className="fixed-filters-data-table">
+            <div>
                 <RolesDataTable
                     fieldName={this.formFieldNames.roles}
                     filterFieldName={(this.filterFieldNames) ? `${this.filterFieldNames.roles}` : undefined}
