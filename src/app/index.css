@@ -616,3 +616,9 @@ h6.modal-title {
 .action-buttons .action-button {
   margin-left: 5px;
 }
+
+/* Custom tabs */
+.admin-form-page-tab.is-active {
+  background-color: white;
+  color: black;
+}

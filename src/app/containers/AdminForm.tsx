@@ -273,7 +273,7 @@ export default class extends
                         return Object.keys(appScopes)
                             .indexOf(s.name) > -1;
                     })
-                    .filter(s => s != undefined)
+                    .filter(s => s !== undefined)
                 : [];
 
             // console.log('configured plugins');

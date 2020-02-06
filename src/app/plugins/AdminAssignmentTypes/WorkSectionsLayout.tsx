@@ -54,7 +54,7 @@ export default (props: any) => {
                         <Tab.Pane key={'jails'} eventKey={'jails'}>
                             <Row className="clearfix">
                                 <Col sm={12} md={7}>
-                                    {jailroomsPlugin && renderPlugin(jailroomsPlugin)}
+                                    {courtroomsPlugin && renderPlugin(courtroomsPlugin)}
                                 </Col>
                                 <Col sm={12} md={5}>
                                     {jailRolesPlugin && renderPlugin(jailRolesPlugin)}
@@ -63,14 +63,14 @@ export default (props: any) => {
                         </Tab.Pane>
                         <Tab.Pane key={'escortRuns'} eventKey={'escortRuns'}>
                             <Row className="clearfix">
-                                <Col sm={12}>
+                                <Col sm={12} md={6} mdPush={3}>
                                     {escortTypesPlugin && renderPlugin(escortTypesPlugin)}
                                 </Col>
                             </Row>
                         </Tab.Pane>
                         <Tab.Pane key={'other'} eventKey={'other'}>
                             <Row className="clearfix">
-                                <Col sm={12}>
+                                <Col sm={12}  md={8} mdPush={2}>
                                     {otherTypesPlugin && renderPlugin(otherTypesPlugin)}
                                 </Col>
                             </Row>

@@ -17,13 +17,21 @@ import AdminJailRolesPlugin from '../plugins/AdminAssignmentTypes/AdminJailRoles
 import AdminEscortTypesPlugin from '../plugins/AdminAssignmentTypes/AdminEscortTypes';
 import AdminOtherTypesPlugin from '../plugins/AdminAssignmentTypes/AdminOtherTypes';
 
+import { selectedAdminRolesSection as selectedAdminFormSection } from '../modules/roles/selectors';
 import { selectAdminRolesPluginSection } from '../modules/roles/actions';
 
 import { RootState } from '../store';
 
-export interface ManageAssignmentTypesProps {
+export interface ManageAssignmentTypesStateProps {
+    selectedSection: any; // TODO: Think it's a string, always though?
+}
+
+export interface ManageAssignmentTypesDispatchProps {
     selectAdminFormSection: (sectionName: string) => any;
 }
+
+export interface ManageAssignmentTypesProps extends
+    ManageAssignmentTypesStateProps, ManageAssignmentTypesDispatchProps {}
 
 class ManageCodeTypes extends React.PureComponent<AdminFormProps & ManageAssignmentTypesProps> {
     state = {
@@ -44,8 +52,7 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps & ManageAssignm
 
     render() {
         const { isEditing } = this.state;
-        const { selectAdminFormSection } = this.props;
-
+        const { selectAdminFormSection, selectedSection } = this.props;
         return (
             <Page
                 disableLocations={false}
@@ -60,19 +67,19 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps & ManageAssignm
                                     <div style={{ display: 'flex', alignItems: 'center', marginRight: '15px' }}>
                                         <h6 style={{ color: 'white', fontWeight: 'bold', marginBottom: '3px' }}>Choose Work Section: </h6>
                                     </div>
-                                    <div className="admin-form-filters-toggle" onClick={() => selectAdminFormSection('courts')} style={{ backgroundColor: 'white', color: 'black' }}>
+                                    <div className={`admin-form-filters-toggle admin-form-page-tab${selectedSection === 'courts' ? ' is-active' : ''}`} onClick={() => selectAdminFormSection('courts')}>
                                         {/* <Glyphicon glyph="chevron-down" /> */}Court Assignments
                                     </div>
                                     &nbsp;&nbsp;
-                                    <div className="admin-form-filters-toggle" onClick={() => selectAdminFormSection('jails')}>
+                                    <div className={`admin-form-filters-toggle admin-form-page-tab${selectedSection === 'jails' ? ' is-active' : ''}`} onClick={() => selectAdminFormSection('jails')}>
                                         {/* <Glyphicon glyph="chevron-down" /> */}Jail Assignments
                                     </div>
                                     &nbsp;&nbsp;
-                                    <div className="admin-form-filters-toggle" onClick={() => selectAdminFormSection('escortRuns')}>
+                                    <div className={`admin-form-filters-toggle admin-form-page-tab${selectedSection === 'escortRuns' ? ' is-active' : ''}`} onClick={() => selectAdminFormSection('escortRuns')}>
                                         {/* <Glyphicon glyph="chevron-down" /> */}Escort Runs
                                     </div>
                                     &nbsp;&nbsp;
-                                    <div className="admin-form-filters-toggle" onClick={() => selectAdminFormSection('other')}>
+                                    <div className={`admin-form-filters-toggle admin-form-page-tab${selectedSection === 'other' ? ' is-active' : ''}`} onClick={() => selectAdminFormSection('other')}>
                                         {/* <Glyphicon glyph="chevron-down" /> */}Other Assignments
                                     </div>
 
@@ -119,6 +126,7 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps & ManageAssignm
                             new AdminOtherTypesPlugin()
                         ]}
                         isEditing={isEditing}
+                        selectedSection={selectedSection}
                     />
                 </Well>
             </Page>
@@ -126,12 +134,18 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps & ManageAssignm
     }
 }
 
+const mapStateToProps = (state: RootState) => {
+    return {
+        selectedSection: selectedAdminFormSection(state)
+    };
+};
+
 const mapDispatchToProps = {
   selectAdminFormSection: selectAdminRolesPluginSection
 };
 
 // tslint:disable-next-line:max-line-length
-export default connect<ManageAssignmentTypesProps>(
-  null,
+export default connect<ManageAssignmentTypesStateProps, ManageAssignmentTypesDispatchProps>(
+  mapStateToProps,
   mapDispatchToProps
 )(ManageCodeTypes);
