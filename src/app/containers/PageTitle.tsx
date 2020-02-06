@@ -23,7 +23,10 @@ class PageTitle extends React.PureComponent<AdminFormProps & ManageAssignmentTyp
     render() {
         const { currentLocation, title } = this.props;
 
-        const currentLocationName = currentLocation.name ? currentLocation.name : 'Provincial';
+        const currentLocationName = currentLocation && currentLocation.name
+            ? currentLocation.name
+            : 'Provincial';
+
         let titleString;
         titleString = (typeof title === 'function')
             ? title({ currentLocationName })
