@@ -30,12 +30,13 @@ export default (props: any) => {
     const otherTypesPlugin = sectionPlugins
         .find((p: any) => p.name === 'ADMIN_PLUGIN_OTHER_TYPES');
 
+    console.log('WorkSectionsLayout selectedSection: ' + selectedSection);
+
     return (
         <Tab.Container
             id="profile-sections" // TODO: Change this ID!
             onSelect={(key: any) => handleSelectSection(key)}
-            // activeKey={selectedSection}
-            activeKey={'courts'}
+            activeKey={selectedSection}
         >
             <Row className="clearfix">
                 <Col sm={12}>

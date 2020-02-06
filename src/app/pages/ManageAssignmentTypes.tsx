@@ -1,6 +1,8 @@
 import React from 'react';
 import { Glyphicon, Well } from 'react-bootstrap';
 
+import { connect, Dispatch } from 'react-redux';
+
 import Page, { PageToolbar } from '../components/Page/Page';
 
 import AdminForm from '../containers/AdminForm';
@@ -14,17 +16,21 @@ import AdminCourtRolesPlugin from '../plugins/AdminAssignmentTypes/AdminCourtRol
 import AdminJailRolesPlugin from '../plugins/AdminAssignmentTypes/AdminJailRoles';
 import AdminEscortTypesPlugin from '../plugins/AdminAssignmentTypes/AdminEscortTypes';
 import AdminOtherTypesPlugin from '../plugins/AdminAssignmentTypes/AdminOtherTypes';
-import HeaderSaveButton from '../plugins/AdminRoles/containers/HeaderSaveButton';
-import HeaderCancelButton from '../plugins/AdminRoles/containers/HeaderCancelButton';
 
-export interface ManageAssignmentTypesProps {}
+import { selectAdminRolesPluginSection } from '../modules/roles/actions';
 
-class ManageCodeTypes extends React.PureComponent<AdminFormProps> {
+import { RootState } from '../store';
+
+export interface ManageAssignmentTypesProps {
+    selectAdminFormSection: (sectionName: string) => any;
+}
+
+class ManageCodeTypes extends React.PureComponent<AdminFormProps & ManageAssignmentTypesProps> {
     state = {
       isEditing: true
     };
 
-    constructor(props: AdminFormProps) {
+    constructor(props: AdminFormProps & ManageAssignmentTypesProps) {
         super(props);
 
         this.toggleEditMode = this.toggleEditMode.bind(this);
@@ -38,6 +44,7 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps> {
 
     render() {
         const { isEditing } = this.state;
+        const { selectAdminFormSection } = this.props;
 
         return (
             <Page
@@ -53,19 +60,19 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps> {
                                     <div style={{ display: 'flex', alignItems: 'center', marginRight: '15px' }}>
                                         <h6 style={{ color: 'white', fontWeight: 'bold', marginBottom: '3px' }}>Choose Work Section: </h6>
                                     </div>
-                                    <div className="admin-form-filters-toggle" style={{ backgroundColor: 'white', color: 'black' }}>
+                                    <div className="admin-form-filters-toggle" onClick={() => selectAdminFormSection('courts')} style={{ backgroundColor: 'white', color: 'black' }}>
                                         {/* <Glyphicon glyph="chevron-down" /> */}Court Assignments
                                     </div>
                                     &nbsp;&nbsp;
-                                    <div className="admin-form-filters-toggle">
+                                    <div className="admin-form-filters-toggle" onClick={() => selectAdminFormSection('jails')}>
                                         {/* <Glyphicon glyph="chevron-down" /> */}Jail Assignments
                                     </div>
                                     &nbsp;&nbsp;
-                                    <div className="admin-form-filters-toggle">
+                                    <div className="admin-form-filters-toggle" onClick={() => selectAdminFormSection('escortRuns')}>
                                         {/* <Glyphicon glyph="chevron-down" /> */}Escort Runs
                                     </div>
                                     &nbsp;&nbsp;
-                                    <div className="admin-form-filters-toggle">
+                                    <div className="admin-form-filters-toggle" onClick={() => selectAdminFormSection('other')}>
                                         {/* <Glyphicon glyph="chevron-down" /> */}Other Assignments
                                     </div>
 
@@ -119,4 +126,12 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps> {
     }
 }
 
-export default ManageCodeTypes;
+const mapDispatchToProps = {
+  selectAdminFormSection: selectAdminRolesPluginSection
+};
+
+// tslint:disable-next-line:max-line-length
+export default connect<ManageAssignmentTypesProps>(
+  null,
+  mapDispatchToProps
+)(ManageCodeTypes);

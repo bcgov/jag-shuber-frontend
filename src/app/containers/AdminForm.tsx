@@ -13,7 +13,6 @@ import {
     reset
 } from 'redux-form';
 
-// TODO: Rewire dispatches
 import { connect, Dispatch } from 'react-redux';
 
 import { Alert } from 'react-bootstrap';
@@ -314,7 +313,18 @@ export default class extends
                 ...collectPluginErrors(state, formConfig.form, plugins)
             };
         },
-        (dispatch, { plugins = [] }) => {
+        (dispatch, { plugins = [], onSelectSection }) => {
+            if (onSelectSection !== undefined) {
+                console.log('onSelectSection custom function - test me!');
+                // @ts-ignore Ignore the warning, we're checking to see if onSelectSection is defined
+                onSelectSection = (sectionName: string) => onSelectSection(sectionName)(dispatch);
+            } else {
+                console.log('onSelectSection default function');
+                onSelectSection = (sectionName) => {
+                    dispatch(selectAdminFormSection(sectionName));
+                };
+            }
+
             return {
                 dispatch, // Just pass dispatch through so we can use it in plugins
                 initialize: () => {
@@ -326,7 +336,7 @@ export default class extends
                         p.dispatch = dispatch;
                     });
                 },
-                onSelectSection: (sectionName) => dispatch(selectAdminFormSection(sectionName)),
+                onSelectSection: onSelectSection,
                 // TODO: Restrict scope to the current section / plugin, live with onSelectSection!
                 setPluginFilters: (filters: {}, action: any) => {
                     // TODO: Can we type this action better?
