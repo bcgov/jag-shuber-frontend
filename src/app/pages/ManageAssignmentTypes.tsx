@@ -34,6 +34,10 @@ export interface ManageAssignmentTypesProps extends
     ManageAssignmentTypesStateProps, ManageAssignmentTypesDispatchProps {}
 
 class ManageCodeTypes extends React.PureComponent<AdminFormProps & ManageAssignmentTypesProps> {
+    static defaultProps: Partial<ManageAssignmentTypesProps> = {
+        selectedSection: 'courts'
+    };
+
     state = {
       isEditing: true
     };
@@ -53,6 +57,7 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps & ManageAssignm
     render() {
         const { isEditing } = this.state;
         const { selectAdminFormSection, selectedSection } = this.props;
+
         return (
             <Page
                 disableLocations={false}
