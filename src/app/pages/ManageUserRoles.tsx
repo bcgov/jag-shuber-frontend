@@ -99,7 +99,7 @@ class ManageUserRoles extends React.PureComponent<AdminFormProps & Partial<Manag
                         borderRadius: 0
                     }}
                 >
-                    <PageTitle title={({ currentLocationName }) => `Assign ${currentLocationName} User Roles`} />
+                    <PageTitle title={({ currentLocationName }: any) => `Assign ${currentLocationName} User Roles`} />
                     <AdminForm
                         key={'admin-roles-grid'}
                         plugins={[

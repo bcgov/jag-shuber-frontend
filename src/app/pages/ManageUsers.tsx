@@ -159,7 +159,7 @@ class ManageUsers extends React.PureComponent<Partial<ManageUsersProps>> {
                         borderRadius: 0
                     }}
                 >
-                    <PageTitle title={({ currentLocationName }) => `Manage ${currentLocationName} Users`} />
+                    <PageTitle title={({ currentLocationName }: any) => `Manage ${currentLocationName} Users`} />
                     <SheriffListComposable />
                 </Well>
             </Page>

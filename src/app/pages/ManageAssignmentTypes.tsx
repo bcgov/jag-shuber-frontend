@@ -19,18 +19,12 @@ import AdminJailRolesPlugin from '../plugins/AdminAssignmentTypes/AdminJailRoles
 import AdminEscortTypesPlugin from '../plugins/AdminAssignmentTypes/AdminEscortTypes';
 import AdminOtherTypesPlugin from '../plugins/AdminAssignmentTypes/AdminOtherTypes';
 
-import { getLocationById } from '../modules/system/selectors';
-import {
-    currentLocation as getCurrentLocation,
-} from '../modules/user/selectors';
-
 import { selectedAdminRolesSection as selectedAdminFormSection } from '../modules/roles/selectors';
 import { selectAdminRolesPluginSection } from '../modules/roles/actions';
 
 import { RootState } from '../store';
 
 export interface ManageAssignmentTypesStateProps {
-    currentLocation: any;
     selectedSection?: any; // TODO: Think it's a string, always though?
 }
 
@@ -67,11 +61,8 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps & ManageAssignm
 
         const {
             selectAdminFormSection,
-            selectedSection,
-            currentLocation
+            selectedSection
         } = this.props;
-
-        const currentLocationName = currentLocation.name ? currentLocation.name : 'Provincial';
 
         return (
             <Page
@@ -130,7 +121,7 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps & ManageAssignm
                         borderRadius: 0
                     }}
                 >
-                    <PageTitle title={({ currentLocationName }) => `Manage ${currentLocationName} Assignment Types`} />
+                    <PageTitle title={({ currentLocationName }: any) => `Manage ${currentLocationName} Assignment Types`} />
                     <AdminForm
                         key={'admin-assignment-types-grid'}
                         templateComponent={WorkSectionsLayout}
@@ -154,7 +145,6 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps & ManageAssignm
 
 const mapStateToProps = (state: RootState) => {
     return {
-        currentLocation: getLocationById(getCurrentLocation(state))(state),
         selectedSection: selectedAdminFormSection(state)
     };
 };

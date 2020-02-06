@@ -7,24 +7,24 @@ import { RootState } from '../store';
 import { getLocationById } from '../modules/system/selectors';
 import { currentLocation as getCurrentLocation } from '../modules/user/selectors';
 
-export interface ManageAssignmentTypesStateProps {
-    currentLocation: any;
+import { Location } from '../api';
+
+export interface PageTitleStateProps {
+    systemLocation?: Location;
 }
 
-export interface ManageAssignmentTypesProps extends ManageAssignmentTypesStateProps {
+export interface PageTitleProps extends PageTitleStateProps {
     title: ((params: any) => string) | string;
 }
 
-class PageTitle extends React.PureComponent<AdminFormProps & ManageAssignmentTypesProps> {
-    static defaultProps: Partial<ManageAssignmentTypesProps> = {
-        selectedSection: 'courts'
-    };
+class PageTitle extends React.PureComponent<PageTitleProps> {
+    static defaultProps: Partial<PageTitleProps> = {};
 
     render() {
-        const { currentLocation, title } = this.props;
+        const { systemLocation, title } = this.props;
 
-        const currentLocationName = currentLocation && currentLocation.name
-            ? currentLocation.name
+        const currentLocationName = systemLocation && systemLocation.name
+            ? systemLocation.name
             : 'Provincial';
 
         let titleString;
@@ -50,10 +50,10 @@ class PageTitle extends React.PureComponent<AdminFormProps & ManageAssignmentTyp
 
 const mapStateToProps = (state: RootState) => {
     return {
-        currentLocation: getLocationById(getCurrentLocation(state))(state),
+        systemLocation: getLocationById(getCurrentLocation(state))(state),
     };
 };
 
-export default connect<ManageAssignmentTypesStateProps>(
+export default connect<PageTitleStateProps, null, PageTitleProps>(
   mapStateToProps
 )(PageTitle);
