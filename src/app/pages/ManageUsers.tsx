@@ -5,18 +5,22 @@ import { reduxForm } from 'redux-form';
 
 import Page, { PageToolbar } from '../components/Page/Page';
 
-import { User } from '../api';
+import PageTitle from '../containers/PageTitle';
 
 import SheriffListComposable from '../containers/SheriffListComposable';
 import SheriffProfileCreateModal from '../containers/SheriffProfileCreateModal';
-import DataTableFilterRow from '../components/Table/DataTableFilterRow';
-import DataTable from '../components/Table/DataTable';
-import GenderCodeDisplay from '../containers/GenderCodeDisplay';
-import LocationDisplay from '../plugins/AdminRoles/containers/LocationDisplay';
-import LocationSelector from '../containers/LocationSelector';
-import SheriffRankDisplay from '../plugins/AdminRoles/containers/SheriffRankDisplay';
-import SheriffRankCodeSelector from '../containers/SheriffRankCodeSelector';
-import GenderSelector from '../containers/GenderSelector';
+
+// Used for commented out filters, don't delete these we will need them later
+// import DataTableFilterRow from '../components/Table/DataTableFilterRow';
+// import DataTable from '../components/Table/DataTable';
+// import GenderCodeDisplay from '../containers/GenderCodeDisplay';
+// import LocationDisplay from '../plugins/AdminRoles/containers/LocationDisplay';
+// import LocationSelector from '../containers/LocationSelector';
+// import SheriffRankDisplay from '../plugins/AdminRoles/containers/SheriffRankDisplay';
+// import SheriffRankCodeSelector from '../containers/SheriffRankCodeSelector';
+// import GenderSelector from '../containers/GenderSelector';
+
+// import { User } from '../api';
 
 export interface ManageUsersProps extends RouteComponentProps<any>{}
 
@@ -155,9 +159,7 @@ class ManageUsers extends React.PureComponent<Partial<ManageUsersProps>> {
                         borderRadius: 0
                     }}
                 >
-                    <div className="container-fluid" style={{ width: '100%' }}>
-                        <h3 style={{ marginBottom: '15px', paddingBottom: '10px', borderBottom: '1px dotted grey', color: '#003366' }}>Manage Victoria Sheriffs & Users</h3>
-                    </div>
+                    <PageTitle title={({ currentLocationName }) => `Manage ${currentLocationName} Users`} />
                     <SheriffListComposable />
                 </Well>
             </Page>

@@ -9,6 +9,8 @@ import AdminForm from '../containers/AdminForm';
 import * as AdminFormTemplates from '../components/AdminForm';
 import { AdminFormProps } from '../components/AdminForm/AdminForm';
 
+import PageTitle from '../containers/PageTitle';
+
 import WorkSectionsLayout from '../plugins/AdminAssignmentTypes/WorkSectionsLayout';
 
 import AdminCourtroomsPlugin from '../plugins/AdminAssignmentTypes/AdminCourtrooms';
@@ -17,13 +19,19 @@ import AdminJailRolesPlugin from '../plugins/AdminAssignmentTypes/AdminJailRoles
 import AdminEscortTypesPlugin from '../plugins/AdminAssignmentTypes/AdminEscortTypes';
 import AdminOtherTypesPlugin from '../plugins/AdminAssignmentTypes/AdminOtherTypes';
 
+import { getLocationById } from '../modules/system/selectors';
+import {
+    currentLocation as getCurrentLocation,
+} from '../modules/user/selectors';
+
 import { selectedAdminRolesSection as selectedAdminFormSection } from '../modules/roles/selectors';
 import { selectAdminRolesPluginSection } from '../modules/roles/actions';
 
 import { RootState } from '../store';
 
 export interface ManageAssignmentTypesStateProps {
-    selectedSection: any; // TODO: Think it's a string, always though?
+    currentLocation: any;
+    selectedSection?: any; // TODO: Think it's a string, always though?
 }
 
 export interface ManageAssignmentTypesDispatchProps {
@@ -56,7 +64,14 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps & ManageAssignm
 
     render() {
         const { isEditing } = this.state;
-        const { selectAdminFormSection, selectedSection } = this.props;
+
+        const {
+            selectAdminFormSection,
+            selectedSection,
+            currentLocation
+        } = this.props;
+
+        const currentLocationName = currentLocation.name ? currentLocation.name : 'Provincial';
 
         return (
             <Page
@@ -115,9 +130,7 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps & ManageAssignm
                         borderRadius: 0
                     }}
                 >
-                    <div className="container-fluid" style={{ width: '100%' }}>
-                        <h3 style={{ paddingBottom: '10px', borderBottom: '1px dotted grey', color: '#003366' }}>Manage Assignment Types, Victoria Courts</h3>
-                    </div>
+                    <PageTitle title={({ currentLocationName }) => `Manage ${currentLocationName} Assignment Types`} />
                     <AdminForm
                         key={'admin-assignment-types-grid'}
                         templateComponent={WorkSectionsLayout}
@@ -141,6 +154,7 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps & ManageAssignm
 
 const mapStateToProps = (state: RootState) => {
     return {
+        currentLocation: getLocationById(getCurrentLocation(state))(state),
         selectedSection: selectedAdminFormSection(state)
     };
 };

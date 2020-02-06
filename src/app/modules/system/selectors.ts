@@ -25,7 +25,7 @@ export const allLocations = createSelector(
 );
 
 export const getLocationById = (id?: IdType) => (state: RootState) => {
-    if (id == undefined) {
+    if (id === undefined) {
         return undefined;
     }
     const map = locationRequests.locationMapRequest.getData(state);
