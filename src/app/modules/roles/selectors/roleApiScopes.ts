@@ -32,7 +32,7 @@ export const getAllRoleApiScopes = (state: RootState) => {
 };
 
 export const getRoleApiScopesById = (id?: IdType) => (state: RootState) => {
-   if (state && id !== null) {
+   if (state && id) {
        const result = getRoleApiScopes(state).filter((i: any) => i.id === id);
        return result;
    }

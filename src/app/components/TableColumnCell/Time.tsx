@@ -11,7 +11,7 @@ import { fromTimeString, toTimeString } from 'jag-shuber-api';
 const TimeColumn = (label: string, nullTimeLabel: string, fieldName: string): Types.TableColumnCell => {
     return {
         title: label,
-        FormRenderer: ({ fieldInstanceName }) => (
+        FormRenderer: ({ fieldInstanceName , disabled}) => (
             <Field
                 name={`${fieldInstanceName}.${fieldName}`}
                 component={
@@ -30,11 +30,14 @@ const TimeColumn = (label: string, nullTimeLabel: string, fieldName: string): Ty
                 normalize={(val) => toTimeString(val)}
             />
         ),
-        CanceledRender: ({ model }) => (
-            <span>
-                {fromTimeString(model[fieldName]).format('HH:mm')}
-            </span>
-        )
+        CanceledRender: ({ model }) => {
+            if (!model) return null;
+            return (
+                <span>
+                    {fromTimeString(model[fieldName]).format('HH:mm')}
+                </span>
+            );
+        }
     };
 };
 

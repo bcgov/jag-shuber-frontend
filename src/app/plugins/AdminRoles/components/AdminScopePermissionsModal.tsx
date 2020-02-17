@@ -35,7 +35,7 @@ export default class AdminScopePermissionsModal extends React.Component<AdminSco
     // @ts-ignore
     render() {
         const { isDefaultTemplate = false, isOpen, parentModel } = this.props;
-        const title = `Define ${isDefaultTemplate === true ? 'Default ' : ''}Component Permissions`; // TODO: Auto switch text between 'Component' and 'API'
+        const title = `Define ${isDefaultTemplate ? 'Default ' : ''}Component Permissions`; // TODO: Auto switch text between 'Component' and 'API'
 
         return (
             <div>

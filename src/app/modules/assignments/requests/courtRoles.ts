@@ -17,7 +17,7 @@ class CourtRoleMapRequest extends GetEntityMapRequest<void, CourtRoleCode, Assig
     }
     public async doWork(request: void, { api }: ThunkExtra) {
         let courtRoles = await api.getCourtRoles();
-        return arrayToMap(courtRoles, cr => cr.code);
+        return arrayToMap(courtRoles, cr => cr.id);
     }
 }
 

@@ -4,13 +4,13 @@ import { FormControl } from 'react-bootstrap';
 
 export default class TextField extends React.PureComponent<FormFieldWrapperProps>{
     render() {
-        const { input: {value, onChange}, label, placeholder } = this.props;
+        const { input: {value, onChange}, label, placeholder, disabled } = this.props;
 
         const placeholderValue = (placeholder) ? placeholder : `Enter ${label}`;
 
         return (
             <FormFieldWrapper {...this.props}>
-                <FormControl type="text" placeholder={placeholderValue} value={value} onChange={onChange} />
+                <FormControl type="text" placeholder={placeholderValue} value={value} onChange={onChange} disabled={disabled} />
             </FormFieldWrapper>
         );
     }

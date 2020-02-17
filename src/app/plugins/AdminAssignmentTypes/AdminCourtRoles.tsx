@@ -31,12 +31,14 @@ import {
 
 import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../components/Table/DataTable';
 import { AdminCourtRolesProps } from './AdminCourtRoles';
-import LocationSelector from '../../containers/LocationSelector';
+
 import RemoveRow from '../../components/TableColumnActions/RemoveRow';
 import ExpireRow from '../../components/TableColumnActions/ExpireRow';
 import DeleteRow from '../../components/TableColumnActions/DeleteRow';
+
+import CodeScopeSelector from '../../containers/CodeScopeSelector';
+
 import { setAdminRolesPluginFilters } from '../../modules/roles/actions';
-// import { createOrUpdateCourtRoles } from '../../modules/assignments/actions';
 
 export interface AdminCourtRolesProps extends FormContainerProps {
     courtRoles?: any[];
@@ -130,7 +132,7 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
                     actionsColumn={DataTable.ActionsColumn({
                         actions: [
                             ({ fields, index, model }) => {
-                                return (model && !model.id || model.id === '')
+                                return (model && !model.id || model && model.id === '')
                                     ? (<RemoveRow fields={fields} index={index} model={model} />)
                                     : null;
                             },
@@ -153,13 +155,17 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
                         // DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
                         // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
-
+                        DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, displayInfo: false, filterable: false })
                     ]}
                     filterable={true}
                     expandable={false}
                     // expandedRows={[1, 2]}
                     rowComponent={EmptyDetailRow}
                     modalComponent={EmptyDetailRow}
+                    shouldDisableRow={(model) => {
+                        // TODO: Only disable if the user doesn't have permission to edit provincial codes
+                        return (model) ? model.isProvincialCode : false;
+                    }}
                 />
             </div>
         );
@@ -189,7 +195,9 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
             ? findAllCourtRoles(filters.courtRoles)(state) || []
             : getAllCourtRoles(state) || [];
 
-        const courtRolesArray: any[] = courtRoles.map(role => Object.assign({ id: role.code }, role));
+        const courtRolesArray: any[] = courtRoles.map(role => {
+            return Object.assign({ isProvincialCode: (role.locationId === null) ? 0 : 1 }, role);
+        });
 
         return {
             ...filterData,

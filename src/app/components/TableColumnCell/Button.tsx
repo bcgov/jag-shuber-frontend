@@ -12,14 +12,14 @@ const ButtonColumn = (label?: string, icon?: string, options?: Types.FieldColumn
     return {
         title: '',
         colStyle: colStyle,
-        FormRenderer: ({ fieldInstanceName, model, callbackContext }) => {
+        FormRenderer: ({ fieldInstanceName, model, callbackContext, disabled }) => {
             const handleClick = (onButtonClicked)
                 ? (ev: React.SyntheticEvent<any>) => {
                     onButtonClicked(ev, callbackContext, model);
                 }
                 : () => {};
 
-            return !model.id ? (
+            return !model || !model.id ? (
                 <div style={{ display: 'flex', alignItems: 'center' }} />
             )
             :

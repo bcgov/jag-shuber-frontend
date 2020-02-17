@@ -30,14 +30,14 @@ const StaticDateColumn = (label?: string, options?: Types.FieldColumnOptions): T
         // TODO: Finish me!
         filterComponent: (filterable) ? DateColumn('Date', fieldName, filterComponentOptions) : undefined,
         displayInfo,
-        FormRenderer: ({ fieldInstanceName }) => (
+        FormRenderer: ({ fieldInstanceName , disabled}) => (
             <Field
                 // TODO: Pass in field name as prop or whatever
                 name={`${fieldInstanceName}.${fieldName}`}
                 component={(p) => <span className="table-cell-text">{new Date(p.input.value).toDateString()}</span>}
             />
         ),
-        CanceledRender: ({ model }) => (<div>StaticDate Cancelled Display</div>)
+        CanceledRender: () => (<div>StaticDate Cancelled Display</div>)
     };
 };
 

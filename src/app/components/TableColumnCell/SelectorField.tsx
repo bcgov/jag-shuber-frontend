@@ -13,7 +13,8 @@ const SelectorFieldColumn = (label?: string, options?: Types.FieldColumnOptions)
 
     const fieldName = (options && options.fieldName) ? options.fieldName : 'selectorField';
     const displayInfo = (options && options.displayInfo) ? options.displayInfo : false;
-    const disabled = (options && options.disabled) ? options.disabled : false; // TODO: Merge disabled and atttributes?
+    // TODO: Merge / re-implement disabled - we're now disabling by row... we'll need another way to disable individual cells.
+    // const disabled = (options && options.disabled) ? options.disabled : false;
     const colStyle = (options && options.colStyle) ? options.colStyle : {};
     const filterable = (options && options.filterable) ? options.filterable : false;
     const filterColumn = (options && options.filterColumn) ? options.filterColumn : undefined;
@@ -38,7 +39,7 @@ const SelectorFieldColumn = (label?: string, options?: Types.FieldColumnOptions)
         filterComponent: (filterable) ? SelectorFieldColumn(label, filterComponentOptions) : undefined,
         filterColumn,
         displayInfo,
-        FormRenderer: ({ fieldInstanceName }) => (
+        FormRenderer: ({ fieldInstanceName , disabled}) => (
             <Field
                 name={`${fieldInstanceName}.${fieldName}`}
                 component={(p) => (
@@ -59,11 +60,10 @@ const SelectorFieldColumn = (label?: string, options?: Types.FieldColumnOptions)
                         onChange(ev.nativeEvent as Event, newValue, previousValue, `${fieldInstanceName}.${fieldName}`);
                     }
                 }}
+                disabled={disabled}
             />
         ),
-        CanceledRender: ({ model }) => (
-            <option disabled={true} />
-        )
+        CanceledRender: () => (<option disabled={true} />)
     };
 };
 

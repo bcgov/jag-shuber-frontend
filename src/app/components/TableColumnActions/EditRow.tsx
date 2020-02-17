@@ -4,7 +4,7 @@ import { TableColumnActionProps } from './index';
 
 const EditRow = ({ model, onClick}: TableColumnActionProps) => {
     const handleClick = () => {
-        if (onClick) onClick(model);
+        if (onClick && model) onClick(model);
     };
 
     return (

@@ -28,7 +28,7 @@ const CheckboxColumn = (label?: string, options?: Types.FieldColumnOptions): Typ
         filterable: filterable,
         filterComponent: (filterable) ? CheckboxColumn(label, filterComponentOptions) : undefined,
         displayInfo,
-        FormRenderer: ({ fieldInstanceName }) => (
+        FormRenderer: ({ fieldInstanceName , disabled}) => (
             <Field
                 name={`${fieldInstanceName}.${fieldName}`}
                 component={(p) => <CheckboxField
@@ -39,7 +39,7 @@ const CheckboxColumn = (label?: string, options?: Types.FieldColumnOptions): Typ
                 label={label}
             />
         ),
-        CanceledRender: ({ model }) => (<div>CheckboxField Cancelled Display</div>)
+        CanceledRender: () => (<div>CheckboxField Cancelled Display</div>)
     };
 };
 

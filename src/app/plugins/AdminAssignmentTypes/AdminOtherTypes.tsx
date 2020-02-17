@@ -137,7 +137,7 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
                     actionsColumn={DataTable.ActionsColumn({
                         actions: [
                             ({ fields, index, model }) => {
-                                return (model && !model.id || model.id === '')
+                                return (model && !model.id || model && model.id === '')
                                     ? (<RemoveRow fields={fields} index={index} model={model} />)
                                     : null;
                             },
@@ -188,7 +188,9 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
             ? findAllOtherTypes(filters.otherTypes)(state) || []
             : getAllOtherTypes(state) || [];
 
-        const otherTypesArray: any[] = otherTypes.map(type => Object.assign({ id: type.code }, type));
+        const otherTypesArray: any[] = otherTypes.map(type => {
+            return Object.assign({ isProvincialCode: (type.locationId === null) }, type);
+        });
 
         return {
             ...filterData,

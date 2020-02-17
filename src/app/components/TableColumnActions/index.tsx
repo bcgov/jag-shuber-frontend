@@ -12,7 +12,7 @@ import SaveRow from './SaveRow';
 export interface TableColumnActionProps {
     fields: FieldsProps<Partial<any>>;
     index: number;
-    model: Partial<any>;
+    model?: Partial<any>;
     onClick?: (ev: any) => void;
 }
 

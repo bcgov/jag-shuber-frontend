@@ -15,14 +15,9 @@ import { fromTimeString, toTimeString } from 'jag-shuber-api';
 import LeaveSubCodeDisplay from '../LeaveSubCodeDisplay';
 import LeaveTrainingSubCodeSelector from '../LeaveTrainingSubCodeSelector';
 
-export interface ColumnRendererProps {
-    index: number;
-    fields: FieldsProps<Partial<Leave>>;
-    leave: Partial<Leave>;
-    fieldInstanceName: string;
-}
+import { ColumnRendererProps } from '../../components/TableColumn';
 
-export type ColumnRenderer = React.ComponentType<ColumnRendererProps>;
+export type ColumnRenderer = React.ComponentType<ColumnRendererProps & { leave: Partial<Leave> }>;
 
 export interface LeavesFieldTableColumn {
     title: React.ReactNode;
@@ -161,7 +156,7 @@ export default class LeavesFieldTable extends React.Component<LeavesFieldTablePr
                                             {
                                                 columns
                                                     .map((col, colIndex) => {
-                                                        const Column = cancelDate != undefined
+                                                        const Column = cancelDate !== undefined
                                                             ? col.CanceledRender
                                                             : col.FormRenderer;
                                                         return (

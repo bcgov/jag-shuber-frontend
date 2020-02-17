@@ -1,15 +1,8 @@
 import * as React from 'react';
-import { FieldsProps } from 'redux-form';
-import { Leave } from '../../../api';
+
 import * as Types from './index';
 
-export interface ColumnRendererProps {
-    index: number;
-    fields: FieldsProps<Partial<any>>;
-    model: Partial<any>;
-    fieldInstanceName: string;
-    callbackContext?: any;
-}
+import { ColumnRendererProps } from '../../TableColumn';
 
 export type ColumnRenderer = React.ComponentType<ColumnRendererProps>;
 

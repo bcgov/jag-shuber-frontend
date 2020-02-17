@@ -34,14 +34,14 @@ const StaticTextColumn = (label?: string, options?: Types.FieldColumnOptions): T
         filterable: filterable,
         filterComponent: (filterable) ? TextFieldColumn(label, filterComponentOptions) : undefined,
         displayInfo,
-        FormRenderer: ({ fieldInstanceName }) => (
+        FormRenderer: ({ fieldInstanceName , disabled}) => (
             <Field
                 // TODO: Pass in field name as prop or whatever
                 name={`${fieldInstanceName}.${fieldName}`}
                 component={(p) => <span className="table-cell-text">{p.input.value}</span>}
             />
         ),
-        CanceledRender: ({ model }) => (<div>StaticText Cancelled Display</div>)
+        CanceledRender: () => (<div>StaticText Cancelled Display</div>)
     };
 };
 

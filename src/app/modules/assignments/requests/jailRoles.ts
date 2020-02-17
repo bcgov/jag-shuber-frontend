@@ -17,7 +17,7 @@ class JailRoleMapRequest extends GetEntityMapRequest<void, JailRoleCode, Assignm
     }
     public async doWork(request: void, { api }: ThunkExtra) {
         let jailRoles = await api.getJailRoles();
-        return arrayToMap(jailRoles, j => j.code);
+        return arrayToMap(jailRoles, j => j.id);
     }
 }
 

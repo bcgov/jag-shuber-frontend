@@ -4,16 +4,6 @@ import { Fields, FieldArray, FieldsProps } from 'redux-form';
 import { Button, FormGroup, Glyphicon } from 'react-bootstrap';
 
 import * as CellTypes from '../../components/TableColumnCell';
-import HeaderSaveButton from '../../plugins/AdminRoles/containers/HeaderSaveButton';
-
-export interface ColumnRendererProps {
-    index: number;
-    fields: FieldsProps<Partial<any>>;
-    model: Partial<any>;
-    fieldInstanceName: string;
-}
-
-export type ColumnRenderer = React.ComponentType<ColumnRendererProps>;
 
 export interface DataTableFilterRowProps {
     fieldName: string;

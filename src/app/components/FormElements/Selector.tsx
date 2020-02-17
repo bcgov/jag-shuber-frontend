@@ -1,13 +1,15 @@
 import React from 'react';
 import { FormControl } from 'react-bootstrap';
+import { IdType } from '../../api';
 
 export interface SelectorProps {
-    data?: { key: string | number, value: string }[];
+    data?: { key?: IdType | string | number, value: string | undefined }[];
     allowNone?: boolean;
     noneLabel?: string;
     showVariedOption?: boolean;
     variedLabel?: string;
-    isDisabled?: boolean;
+    isDisabled?: boolean; // TODO: Remove or re-implement this to support disabling a single cell... we're disabling rows
+    disabled?: boolean;
     label?:  string;
     value?: string;
     onChange?: (val: string) => void;
@@ -23,7 +25,7 @@ export default class Selector extends React.PureComponent<SelectorProps> {
     handleOnChange(ev: any) {
         const { onChange } = this.props;
         if (onChange) {
-            onChange((ev.target as any).value)
+            onChange((ev.target as any).value);
         }
     }
 
@@ -34,7 +36,7 @@ export default class Selector extends React.PureComponent<SelectorProps> {
             noneLabel = 'None',
             showVariedOption = false,
             variedLabel = 'Varied',
-            isDisabled = false,
+            disabled = false,
             label = '',
             value = ''
         } = this.props;
@@ -43,7 +45,7 @@ export default class Selector extends React.PureComponent<SelectorProps> {
                 componentClass="select"
                 value={value}
                 onChange={(v) => this.handleOnChange(v)}
-                disabled={isDisabled}                
+                disabled={disabled}
             >
                 {!allowNone &&
                     <option disabled={true} selected={value === ''} value="">{`Select ${label}`}</option>}

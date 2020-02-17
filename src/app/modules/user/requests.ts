@@ -16,7 +16,7 @@ class UserTokenRequest extends RequestActionBase<void, TokenPayload | undefined,
 
     dispatchSuccess(dispatch: Dispatch<any>, response: TokenPayload | undefined, actionConfig: RequestActionConfig<TokenPayload | undefined> = {}) {
         // if a token has been retrieved, then initialize our application
-        if (response != undefined) {
+        if (response !== undefined) {
             dispatch(initializeApplication());
         }
         super.dispatchSuccess(dispatch, response, actionConfig);

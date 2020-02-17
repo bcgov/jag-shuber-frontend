@@ -14,7 +14,7 @@ export default abstract class CreateOrUpdateEntitiesRequest<TEntity extends { id
     abstract updateEntity(entity: TEntity, extra: ThunkExtra): Promise<TEntity>;
 
     async doWork(entities: Partial<TEntity>[] = [], extra: ThunkExtra, getState: () => RootState) {
-        const entitiesToUpdate = entities.filter(e => e.id != undefined);
+        const entitiesToUpdate = entities.filter(e => e.id !== undefined);
         const entitiesToCreate = entities.filter(e => e.id == undefined);
         return await Promise.all(
             entitiesToCreate.map(e => this.createEntity(e, extra))

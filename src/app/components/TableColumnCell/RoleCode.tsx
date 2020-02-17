@@ -28,7 +28,7 @@ const RoleCodeColumn = (label?: string, options?: Types.FieldColumnOptions): Typ
         colStyle: colStyle,
         filterable: filterable,
         filterComponent: (filterable) ? RoleCodeColumn(label, filterComponentOptions) : undefined,
-        FormRenderer: ({ fieldInstanceName }) => (
+        FormRenderer: ({ fieldInstanceName , disabled}) => (
             <Field
                 name={`${fieldInstanceName}.leaveSubCode`}
                 component={(p) => <SelectorField
@@ -43,9 +43,12 @@ const RoleCodeColumn = (label?: string, options?: Types.FieldColumnOptions): Typ
                 label={label}
             />
         ),
-        CanceledRender: ({ model }) => (
-            <LeaveSubCodeDisplay subCode={model.leaveSubCode} />
-        )
+        CanceledRender: ({ model }) => {
+            if (!model) return null;
+            return (
+                <LeaveSubCodeDisplay subCode={model.leaveSubCode} />
+            );
+        }
     };
 };
 

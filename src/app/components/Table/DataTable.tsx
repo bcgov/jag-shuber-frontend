@@ -1,7 +1,6 @@
 import React from 'react';
 import {
-    Field,
-    FieldArray, FieldsProps
+    FieldArray
 } from 'redux-form';
 
 import { Table, FormGroup, Button, Glyphicon, Well, OverlayTrigger, Tooltip } from 'react-bootstrap';
@@ -10,16 +9,6 @@ import * as CellTypes from '../../components/TableColumnCell';
 // TODO: Move this into a common location with AdminForm
 import DataTableHeaderRow from './DataTableHeaderRow';
 import DataTableFilterRow from './DataTableFilterRow';
-import HeaderSaveButton from '../../plugins/AdminRoles/containers/HeaderSaveButton';
-
-export interface ColumnRendererProps {
-    index: number;
-    fields: FieldsProps<Partial<any>>;
-    model: Partial<any>;
-    fieldInstanceName: string;
-}
-
-export type ColumnRenderer = React.ComponentType<ColumnRendererProps>;
 
 export interface DetailComponentProps {
     parentModel?: any;
@@ -48,6 +37,8 @@ export interface DataTableProps {
     modalProps?: any;
     modalComponent: React.ReactType<ModalComponentProps>;
     rowComponent: React.ReactType<DetailComponentProps>;
+    shouldRenderRow?: (model: any) => boolean;
+    shouldDisableRow?: (model: any) => boolean;
     initialValue?: any;
     filterable?: boolean;
     filterRows?: Function;
@@ -67,6 +58,8 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
         // expandedRows: false,
         // TODO: What is up with default props?
         rowComponent: <div />,
+        shouldRenderRow: (model: any) => true,
+        shouldDisableRow: (model: any) => true,
         modalProps: {},
         modalComponent: <div />,
         actionsColumn: null,
@@ -139,6 +132,8 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
             displayActionsColumn = true,
             expandable = false,
             rowComponent,
+            shouldRenderRow,
+            shouldDisableRow,
             modalProps,
             modalComponent,
             initialValue,
@@ -210,13 +205,16 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                     {fields.length === 0 && (
                                         <tr>
                                             <td colSpan={expandable ? columns.length + 2 : columns.length + 1}>
-                                                <Well
-                                                    style={{textAlign: 'center'}}>No records found.</Well></td>
+                                                <Well style={{textAlign: 'center'}}>No records found.</Well>
+                                            </td>
                                         </tr>
                                     )}
                                     {fields.length > 0 && fields.map((fieldInstanceName, index) => {
                                         const fieldModel: Partial<any & T> = fields.get(index);
                                         const {id = null, cancelDate = undefined} = fieldModel || {};
+
+                                        if (shouldRenderRow && !shouldRenderRow(fieldModel)) return null;
+                                        const disableRow = (shouldDisableRow && !shouldDisableRow(fieldModel));
 
                                         return (
                                             <>
@@ -242,13 +240,14 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                                     {
                                                         columns
                                                             .map((col, colIndex) => {
-                                                                const Column = cancelDate != undefined
+                                                                const Column = cancelDate !== undefined
                                                                     ? col.CanceledRender
                                                                     : col.FormRenderer;
 
                                                                 return (
                                                                     <td key={colIndex}>
                                                                         <Column
+                                                                            disabled={disableRow}
                                                                             model={fieldModel}
                                                                             fieldInstanceName={fieldInstanceName}
                                                                             fields={fields}
@@ -262,7 +261,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                                     {displayActionsColumn && (() => {
                                                         const rowActionsColumn = actionsColumn || CellTypes.Actions();
 
-                                                        const Column = cancelDate != undefined
+                                                        const Column = cancelDate !== undefined
                                                             ? rowActionsColumn.CanceledRender
                                                             : rowActionsColumn.FormRenderer;
 

@@ -43,7 +43,7 @@ export const findAllRoles = (filters: any) => (state: RootState) => {
 };
 
 export const getRole = (id?: IdType) => (state: RootState) => {
-    if (state && id != null) {
+    if (state && id) {
         const map: RoleMap = roleRequests.roleMapRequest.getData(state);
         return map[id];
     }

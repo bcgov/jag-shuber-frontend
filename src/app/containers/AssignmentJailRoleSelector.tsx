@@ -14,7 +14,7 @@ class JailRoleList extends React.PureComponent<
 
     render() {
         const { jailRoles = [], ...restProps } = this.props;
-        const selectorValues = jailRoles.map(role => ({ key: role.code, value: role.description }));
+        const selectorValues = jailRoles.map(role => ({ key: role.id as string, value: role.description as string }));
         return (
             <Selector {...restProps} data={selectorValues} />
         );

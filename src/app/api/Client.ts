@@ -104,7 +104,7 @@ export default class Client implements API {
     }
 
     get isLocationSet() {
-        return this._locationId != undefined;
+        return this._locationId !== undefined;
     }
 
     setCurrentLocation(id: IdType) {
@@ -543,7 +543,13 @@ export default class Client implements API {
     }
 
     async getCourtRoles(): Promise<CourtRoleCode[]> {
-        const list = await this._client.GetCourtRoleCodes();
+        // TODO: Not sure if this is the best solution, but it gets things working they way we want to for now...
+        //  ALL_LOCATIONS key is added to selectorValues in LocationSelector.
+        const currentLocation = (this.currentLocation && this.currentLocation !== 'ALL_LOCATIONS')
+            ? this.currentLocation
+            : undefined;
+
+        const list = await this._client.GetCourtRoleCodes(currentLocation);
         return list as CourtRoleCode[];
     }
 
@@ -579,7 +585,13 @@ export default class Client implements API {
     }
 
     async getJailRoles(): Promise<JailRoleCode[]> {
-        const list = await this._client.GetJailRoleCodes();
+        // TODO: Not sure if this is the best solution, but it gets things working they way we want to for now...
+        //  ALL_LOCATIONS key is added to selectorValues in LocationSelector.
+        const currentLocation = (this.currentLocation && this.currentLocation !== 'ALL_LOCATIONS')
+            ? this.currentLocation
+            : undefined;
+
+        const list = await this._client.GetJailRoleCodes(currentLocation);
         return list as JailRoleCode[];
     }
 
@@ -614,8 +626,15 @@ export default class Client implements API {
         return Promise.resolve();
     }
 
+    // TODO: Calling these alternate assignments here and other assignments in the API is kind of weird we should rename these if we can
     async getAlternateAssignmentTypes(): Promise<AlternateAssignment[]> {
-        const list = await this._client.GetOtherAssignCodes();
+        // TODO: Not sure if this is the best solution, but it gets things working they way we want to for now...
+        //  ALL_LOCATIONS key is added to selectorValues in LocationSelector.
+        const currentLocation = (this.currentLocation && this.currentLocation !== 'ALL_LOCATIONS')
+            ? this.currentLocation
+            : undefined;
+
+        const list = await this._client.GetOtherAssignCodes(currentLocation);
         return list as AlternateAssignment[];
     }
 

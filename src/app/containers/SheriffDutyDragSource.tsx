@@ -31,7 +31,7 @@ export default class SheriffDutyDragSource extends React.PureComponent<SheriffDu
             sheriffDuty,
             beginDrag,
             endDrag,
-            canDrag = (sd: SheriffDuty) => sd && sd.sheriffId != undefined
+            canDrag = (sd: SheriffDuty) => sd && sd.sheriffId !== undefined
         } = this.props;
         return (
             <GenericSheriffDutyDragSource

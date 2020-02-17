@@ -202,7 +202,8 @@ export interface SheriffRank {
 
 export interface BaseAssignment {
     id: IdType;
-    title: string;
+    // TODO: title has to be optional or it breaks some selectors
+    title?: string;
     locationId: IdType;
     workSectionId: WorkSectionCode;
     dutyRecurrences?: DutyRecurrence[];
@@ -291,22 +292,40 @@ export interface Region {
 }
 
 export interface Courtroom {
-    id: IdType;
-    locationId: IdType;
+    id?: IdType;
     code: IdType;
+    locationId?: IdType;
     name: string;
 }
 
 export interface JailRoleCode {
-    id?: IdType; // Used on client-side only
-    code: IdType;
+    id?: IdType;
+    code?: IdType;
+    locationId?: IdType;
     description: string;
     expiryDate?: DateType;
 }
 
 export interface CourtRoleCode {
-    id?: IdType; // Used on client-side only
+    id?: IdType;
+    code?: IdType;
+    locationId?: IdType;
+    description: string;
+    expiryDate?: DateType;
+}
+
+export interface EscortRun {
+    id: IdType;
+    // code?: IdType; // This isn't being used, just keep it in here so code type interfaces are all the same
+    locationId?: IdType;
+    title: string;
+}
+
+// TODO: Rename this OtherAssignment if we can...
+export interface AlternateAssignment {
+    id: IdType;
     code: IdType;
+    locationId?: IdType;
     description: string;
     expiryDate?: DateType;
 }
@@ -359,19 +378,6 @@ export interface LeaveSubCode {
 
 export interface LeaveCancelCode {
     code: string;
-    description: string;
-    expiryDate?: DateType;
-}
-
-export interface EscortRun {
-    id: IdType;
-    locationId: IdType | string;
-    title: string;
-}
-
-export interface AlternateAssignment {
-    id?: IdType; // Used on client-side only
-    code: IdType | string;
     description: string;
     expiryDate?: DateType;
 }

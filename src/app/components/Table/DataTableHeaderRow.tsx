@@ -7,15 +7,6 @@ import * as CellTypes from '../../components/TableColumnCell';
 
 import HeaderSaveButton from '../../plugins/AdminRoles/containers/HeaderSaveButton';
 
-export interface ColumnRendererProps {
-    index: number;
-    fields: FieldsProps<Partial<any>>;
-    model: Partial<any>;
-    fieldInstanceName: string;
-}
-
-export type ColumnRenderer = React.ComponentType<ColumnRendererProps>;
-
 export interface DetailComponentProps {
     parentModel?: any;
     parentModelId?: any;

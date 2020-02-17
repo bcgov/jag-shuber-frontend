@@ -61,7 +61,7 @@ export const isLoadingAssignments = assignmentRequests.assignmentMapRequest.getI
 export const assignmentsError = assignmentRequests.assignmentMapRequest.getError;
 
 export const getAssignment = (id?: IdType) => (state: RootState) => {
-    if (state && id != null) {
+    if (state && id) {
         const map = assignmentRequests.assignmentMapRequest.getData(state);
         return map[id];
     }
@@ -79,7 +79,7 @@ export const isLoadingAssignmentDuties = assignmentDutyRequests.assignmentDutyMa
 export const assignmentDutiesError = assignmentDutyRequests.assignmentDutyMapRequest.getError;
 
 export const getAssignmentDuty = (id?: IdType) => (state: RootState) => {
-    if (state && id != null) {
+    if (state && id) {
         const map = assignmentDutyRequests.assignmentDutyMapRequest.getData(state);
         return map[id] as AssignmentDuty;
     }
@@ -117,8 +117,6 @@ export const findAllOtherTypes = (filters: any) => (state: RootState) => {
             }
         });
 
-        otherTypes.sort((a: any, b: any) =>
-            (a.code < b.code) ? -1 : (a.code > b.code) ? 1 : 0);
         return otherTypes;
     }
     return undefined;
@@ -154,8 +152,6 @@ export const findAllCourtRoles = (filters: any) => (state: RootState) => {
             }
         });
 
-        courtRoles.sort((a: any, b: any) =>
-            (a.code < b.code) ? -1 : (a.code > b.code) ? 1 : 0);
         return courtRoles;
     }
     return undefined;
@@ -187,8 +183,6 @@ export const findAllCourtrooms = (filters: any) => (state: RootState) => {
             }
         });
 
-        courtrooms.sort((a: any, b: any) =>
-            (a.code < b.code) ? -1 : (a.code > b.code) ? 1 : 0);
         return courtrooms;
     }
     return undefined;
@@ -223,8 +217,6 @@ export const findAllJailRoles = (filters: any) => (state: RootState) => {
             }
         });
 
-        jailRoles.sort((a: any, b: any) =>
-            (a.code < b.code) ? -1 : (a.code > b.code) ? 1 : 0);
         return jailRoles;
     }
     return undefined;
@@ -256,8 +248,6 @@ export const findAllEscortRunTypes = (filters: any) => (state: RootState) => {
             }
         });
 
-        escortRunTypes.sort((a: any, b: any) =>
-            (a.code < b.code) ? -1 : (a.code > b.code) ? 1 : 0);
         return escortRunTypes;
     }
     return undefined;

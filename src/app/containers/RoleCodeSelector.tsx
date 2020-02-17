@@ -17,7 +17,7 @@ class RoleCodeSelector extends React.PureComponent<
             roleCodes = [],
             ...restProps
         } = this.props;
-        const selectorValues = roleCodes.map(role => ({ key: role.code, value: role.description }));
+        const selectorValues = roleCodes.map(role => ({ key: role.id as string, value: role.description }));
         return (
             <Selector {...restProps} data={selectorValues} />
         );

@@ -103,7 +103,7 @@ export default class SheriffDutyBar extends React.PureComponent<SheriffDutyBarPr
             style = {},
             className
         } = this.props;
-        const isAssigned = sheriffId != undefined && sheriffId !== '';
+        const isAssigned = sheriffId !== undefined && sheriffId !== '';
         const title = !this.props.title ? (isAssigned ? `Sheriff #${sheriffId}` : '') : this.props.title.toUpperCase();
 
         return (
@@ -111,7 +111,7 @@ export default class SheriffDutyBar extends React.PureComponent<SheriffDutyBarPr
                 onDropSheriff={(s) => onDropSheriff && onDropSheriff(s, sheriffDuty)}
                 canDropSheriff={(s: Sheriff) => canDropSheriff && canDropSheriff(s)}
                 onDropSheriffDuty={(sd) => onDropSheriffDuty && onDropSheriffDuty(sd, sheriffDuty)}
-                canDropSheriffDuty={(sd) => sd.id != sheriffDuty.id}
+                canDropSheriffDuty={(sd) => sd.id !== sheriffDuty.id}
                 computeStyle={computeStyle}
                 className={`sheriff-duty-bar ${className}`}
                 style={{

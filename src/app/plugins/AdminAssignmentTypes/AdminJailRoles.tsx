@@ -130,7 +130,7 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
                     actionsColumn={DataTable.ActionsColumn({
                         actions: [
                             ({ fields, index, model }) => {
-                                return (model && !model.id || model.id === '')
+                                return (model && !model.id || model && model.id === '')
                                     ? (<RemoveRow fields={fields} index={index} model={model} />)
                                     : null;
                             },
@@ -189,7 +189,9 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
             ? findAllJailRoles(filters.jailRoles)(state) || []
             : getAllJailRoles(state) || [];
 
-        const jailRolesArray: any[] = jailRoles.map(role => Object.assign({ id: role.code }, role));
+        const jailRolesArray: any[] = jailRoles.map(role => {
+            return Object.assign({ isProvincialCode: (role.locationId === null) }, role);
+        });
 
         return {
             ...filterData,

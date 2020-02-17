@@ -32,7 +32,7 @@ export const getAllRoleFrontendScopes = (state: RootState) => {
 };
 
 export const getRoleFrontendScopesById = (id?: IdType) => (state: RootState) => {
-    if (state && id !== null) {
+    if (state && id) {
         const result = getRoleFrontendScopes(state).filter((i: any) => i.roleId === id);
         return result;
     }
