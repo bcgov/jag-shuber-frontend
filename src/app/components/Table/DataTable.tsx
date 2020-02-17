@@ -59,7 +59,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
         // TODO: What is up with default props?
         rowComponent: <div />,
         shouldRenderRow: (model: any) => true,
-        shouldDisableRow: (model: any) => true,
+        shouldDisableRow: (model: any) => false,
         modalProps: {},
         modalComponent: <div />,
         actionsColumn: null,
@@ -214,7 +214,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                         const {id = null, cancelDate = undefined} = fieldModel || {};
 
                                         if (shouldRenderRow && !shouldRenderRow(fieldModel)) return null;
-                                        const disableRow = (shouldDisableRow && !shouldDisableRow(fieldModel));
+                                        const disableRow = (shouldDisableRow && shouldDisableRow(fieldModel));
 
                                         return (
                                             <>

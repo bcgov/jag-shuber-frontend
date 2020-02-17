@@ -6,8 +6,8 @@ class CodeScopeSelector extends React.PureComponent<SelectorProps> {
         const { ...restProps } = this.props;
 
         const selectorValues = [
-            { key: 0, value: 'All Locations' },
-            { key: 1, value: 'Current Location' }
+            { key: 1, value: 'All Locations' },
+            { key: 0, value: 'Current Location' }
         ];
 
         return (

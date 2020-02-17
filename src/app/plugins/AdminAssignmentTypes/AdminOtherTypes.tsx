@@ -163,7 +163,7 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
                     modalComponent={EmptyDetailRow}
                     shouldDisableRow={(model) => {
                         // TODO: Only disable if the user doesn't have permission to edit provincial codes
-                        return (model) ? model.isProvincialCode : false;
+                        return (!model) ? false : (model && model.id) ? model.isProvincialCode : false;
                     }}
                 />
             </div>
@@ -195,7 +195,7 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
             : getAllOtherTypes(state) || [];
 
         const otherTypesArray: any[] = otherTypes.map(type => {
-            return Object.assign({ isProvincialCode: (type.locationId === null) ? 0 : 1 }, type);
+            return Object.assign({ isProvincialCode: (type.locationId === null) ? 1 : 0 }, type);
         });
 
         return {

@@ -164,7 +164,7 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
                     modalComponent={EmptyDetailRow}
                     shouldDisableRow={(model) => {
                         // TODO: Only disable if the user doesn't have permission to edit provincial codes
-                        return (model) ? model.isProvincialCode : false;
+                        return (!model) ? false : (model && model.id) ? model.isProvincialCode : false;
                     }}
                 />
             </div>
@@ -196,7 +196,7 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
             : getAllCourtRoles(state) || [];
 
         const courtRolesArray: any[] = courtRoles.map(role => {
-            return Object.assign({ isProvincialCode: (role.locationId === null) ? 0 : 1 }, role);
+            return Object.assign({ isProvincialCode: (role.locationId === null) ? 1 : 0 }, role);
         });
 
         return {
