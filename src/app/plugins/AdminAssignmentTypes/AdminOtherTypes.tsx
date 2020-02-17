@@ -36,6 +36,7 @@ import RemoveRow from '../../components/TableColumnActions/RemoveRow';
 import ExpireRow from '../../components/TableColumnActions/ExpireRow';
 import DeleteRow from '../../components/TableColumnActions/DeleteRow';
 import { setAdminRolesPluginFilters } from '../../modules/roles/actions';
+import CodeScopeSelector from '../../containers/CodeScopeSelector';
 // import { createOrUpdateAlternateAssignmentTypes } from '../../modules/assignments/actions';
 
 export interface AdminOtherTypesProps extends FormContainerProps {
@@ -120,6 +121,7 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
             DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, filterable: true, filterColumn: onFilterOtherTypeCode }),
             DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false, filterable: false }),
             // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
+            DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, displayInfo: false, filterable: false })
         ];
 
         return (
@@ -159,6 +161,10 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
                     // expandedRows={[1, 2]}
                     rowComponent={EmptyDetailRow}
                     modalComponent={EmptyDetailRow}
+                    shouldDisableRow={(model) => {
+                        // TODO: Only disable if the user doesn't have permission to edit provincial codes
+                        return (model) ? model.isProvincialCode : false;
+                    }}
                 />
             </div>
         );
@@ -189,7 +195,7 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
             : getAllOtherTypes(state) || [];
 
         const otherTypesArray: any[] = otherTypes.map(type => {
-            return Object.assign({ isProvincialCode: (type.locationId === null) }, type);
+            return Object.assign({ isProvincialCode: (type.locationId === null) ? 0 : 1 }, type);
         });
 
         return {

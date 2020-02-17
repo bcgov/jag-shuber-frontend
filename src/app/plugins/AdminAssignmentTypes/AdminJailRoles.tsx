@@ -36,6 +36,7 @@ import RemoveRow from '../../components/TableColumnActions/RemoveRow';
 import ExpireRow from '../../components/TableColumnActions/ExpireRow';
 import DeleteRow from '../../components/TableColumnActions/DeleteRow';
 import { setAdminRolesPluginFilters } from '../../modules/roles/actions';
+import CodeScopeSelector from '../../containers/CodeScopeSelector';
 // import { createOrUpdateJailRoles } from '../../modules/assignments/actions';
 
 export interface AdminJailRolesProps extends FormContainerProps {
@@ -153,6 +154,7 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
                         // DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
                         // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
+                        DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, displayInfo: false, filterable: false })
 
                     ]}
                     filterable={true}
@@ -160,6 +162,10 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
                     // expandedRows={[1, 2]}
                     rowComponent={EmptyDetailRow}
                     modalComponent={EmptyDetailRow}
+                    shouldDisableRow={(model) => {
+                        // TODO: Only disable if the user doesn't have permission to edit provincial codes
+                        return (model) ? model.isProvincialCode : false;
+                    }}
                 />
             </div>
         );
@@ -190,7 +196,7 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
             : getAllJailRoles(state) || [];
 
         const jailRolesArray: any[] = jailRoles.map(role => {
-            return Object.assign({ isProvincialCode: (role.locationId === null) }, role);
+            return Object.assign({ isProvincialCode: (role.locationId === null) ? 0 : 1 }, role);
         });
 
         return {

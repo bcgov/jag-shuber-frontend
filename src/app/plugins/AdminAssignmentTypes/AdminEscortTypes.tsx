@@ -40,6 +40,7 @@ import RemoveRow from '../../components/TableColumnActions/RemoveRow';
 import ExpireRow from '../../components/TableColumnActions/ExpireRow';
 import DeleteRow from '../../components/TableColumnActions/DeleteRow';
 import { setAdminRolesPluginFilters } from '../../modules/roles/actions';
+import CodeScopeSelector from '../../containers/CodeScopeSelector';
 // import { createOrUpdateEscortTypes } from '../../modules/assignments/actions';
 
 export interface AdminEscortTypesProps extends FormContainerProps {
@@ -125,11 +126,13 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
                 DataTable.TextFieldColumn('Run Name', { fieldName: 'title', displayInfo: false, filterable: true, filterColumn: onFilterEscortType }),
                 // DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false, filterable: false }),
                 // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true })
+                DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, displayInfo: false, filterable: false })
             ]
             : [
                 DataTable.TextFieldColumn('Run Name', { fieldName: 'title', displayInfo: false, filterable: true, filterColumn: onFilterEscortType }),
                 // DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false, filterable: false }),
                 // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true })
+                DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, displayInfo: false, filterable: false })
             ];
 
         return (
