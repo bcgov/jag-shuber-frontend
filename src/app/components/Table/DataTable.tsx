@@ -273,6 +273,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                                                 justifyContent: 'flex-end'
                                                             }}>
                                                                 <Column
+                                                                    disabled={disableRow}
                                                                     model={fieldModel}
                                                                     fieldInstanceName={fieldInstanceName}
                                                                     fields={fields}

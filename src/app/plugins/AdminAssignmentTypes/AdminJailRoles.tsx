@@ -106,6 +106,17 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
             }
         };
 
+        const onFilterJailRoleScope = (event: Event, newValue: any, previousValue: any, name: string) => {
+            const { setPluginFilters } = props;
+            if (setPluginFilters) {
+                setPluginFilters({
+                    jailRoles: {
+                        isProvincialCode: newValue
+                    }
+                }, setAdminJailRolesPluginFilters);
+            }
+        };
+
         const onResetFilters = () => {
             const { setPluginFilters } = props;
             if (setPluginFilters) {
@@ -154,7 +165,7 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
                         // DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
                         // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
-                        DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, displayInfo: false, filterable: false })
+                        DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, displayInfo: false, filterable: true, filterColumn: onFilterJailRoleScope })
 
                     ]}
                     filterable={true}

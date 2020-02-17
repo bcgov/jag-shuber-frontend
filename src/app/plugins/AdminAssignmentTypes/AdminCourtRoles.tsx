@@ -107,6 +107,17 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
             }
         };
 
+        const onFilterCourtRoleScope = (event: Event, newValue: any, previousValue: any, name: string) => {
+            const { setPluginFilters } = props;
+            if (setPluginFilters) {
+                setPluginFilters({
+                    courtRoles: {
+                        isProvincialCode: newValue
+                    }
+                }, setAdminCourtRolesPluginFilters);
+            }
+        };
+
         const onResetFilters = () => {
             const { setPluginFilters } = props;
             if (setPluginFilters) {
@@ -155,7 +166,7 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
                         // DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
                         // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
-                        DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, displayInfo: false, filterable: false })
+                        DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, displayInfo: false, filterable: true, filterColumn: onFilterCourtRoleScope })
                     ]}
                     filterable={true}
                     expandable={false}

@@ -198,14 +198,18 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
 
         // Get form data
         const escortTypes = (filters && filters.escortTypes)
-            ? findAllEscortRunTypes(filters.escortTypes)(state) || undefined
-            : getAllEscortRunTypes(state);
+            ? findAllEscortRunTypes(filters.escortTypes)(state) || []
+            : getAllEscortRunTypes(state) || [];
+
+        const escortTypesArray: any[] = escortTypes.map(type => {
+            return Object.assign({ isProvincialCode: (type.locationId === null) ? 1 : 0 }, type);
+        });
 
         const currentLocation = getCurrentLocation(state);
 
         return {
             ...filterData,
-            escortTypes,
+            escortTypes: escortTypesArray,
             currentLocation
         };
     }

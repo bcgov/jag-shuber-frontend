@@ -106,6 +106,17 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
             }
         };
 
+        const onFilterOtherTypeScope = (event: Event, newValue: any, previousValue: any, name: string) => {
+            const { setPluginFilters } = props;
+            if (setPluginFilters) {
+                setPluginFilters({
+                    otherTypes: {
+                        isProvincialCode: newValue
+                    }
+                }, setAdminOtherTypesPluginFilters);
+            }
+        };
+
         const onResetFilters = () => {
             const { setPluginFilters } = props;
             if (setPluginFilters) {
@@ -121,7 +132,7 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
             DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, filterable: true, filterColumn: onFilterOtherTypeCode }),
             DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false, filterable: false }),
             // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
-            DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, displayInfo: false, filterable: false })
+            DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, displayInfo: false, filterable: true, filterColumn: onFilterOtherTypeScope })
         ];
 
         return (
