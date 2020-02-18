@@ -165,7 +165,8 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
                         // DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
                         // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
-                        DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, displayInfo: false, filterable: true, filterColumn: onFilterJailRoleScope })
+                        DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, displayInfo: false, filterable: true, filterColumn: onFilterJailRoleScope }),
+                        DataTable.TextFieldColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: true, filterable: false }),
 
                     ]}
                     filterable={true}

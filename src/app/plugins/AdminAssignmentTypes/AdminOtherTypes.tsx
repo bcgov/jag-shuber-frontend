@@ -132,7 +132,8 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
             DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, filterable: true, filterColumn: onFilterOtherTypeCode }),
             DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false, filterable: false }),
             // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
-            DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, displayInfo: false, filterable: true, filterColumn: onFilterOtherTypeScope })
+            DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, displayInfo: false, filterable: true, filterColumn: onFilterOtherTypeScope }),
+            DataTable.TextFieldColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: true, filterable: false })
         ];
 
         return (

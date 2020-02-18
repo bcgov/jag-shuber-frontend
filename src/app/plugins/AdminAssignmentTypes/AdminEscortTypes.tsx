@@ -126,13 +126,15 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
                 DataTable.TextFieldColumn('Run Name', { fieldName: 'title', displayInfo: false, filterable: true, filterColumn: onFilterEscortType }),
                 // DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false, filterable: false }),
                 // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true })
-                DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, displayInfo: false, filterable: false })
+                DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, displayInfo: false, filterable: false }),
+                DataTable.TextFieldColumn('Sort Order', { fieldName: 'sortOrder', displayInfo: true, filterable: false }),
             ]
             : [
                 DataTable.TextFieldColumn('Run Name', { fieldName: 'title', displayInfo: false, filterable: true, filterColumn: onFilterEscortType }),
                 // DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false, filterable: false }),
                 // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true })
-                DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, displayInfo: false, filterable: false })
+                DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, displayInfo: false, filterable: false }),
+                DataTable.TextFieldColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: true, filterable: false }),
             ];
 
         return (
