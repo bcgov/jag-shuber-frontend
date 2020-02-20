@@ -34,7 +34,7 @@ export default (props: any) => {
         .find((p: any) => p.name === 'ADMIN_PLUGIN_OTHER_TYPES');
 
     // TODO: Fix me! This console log should explain exactly what's going on...
-    console.log('WorkSectionsLayout selectedSection: ' + selectedSection);
+    // console.log('WorkSectionsLayout selectedSection: ' + selectedSection);
 
     const validSections = ['courts', 'jails', 'escortRuns', 'other'];
     selectedSection = (validSections.indexOf(selectedSection) > -1) ? selectedSection : 'courts';

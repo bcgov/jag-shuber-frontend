@@ -190,6 +190,30 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                         // ARR_RENDER_COUNT++;
                         // console.log('DATATABLE FieldArray COMPONENT RENDER COUNT: ' + ARR_RENDER_COUNT);
                         const { fields } = props;
+
+                        const { groupByKey, valueMapLabels } = groupBy || { groupByKey: null, valueMapLabels: {} };
+
+                        const aggregates = fields.getAll().reduce((acc: any , cur: any, idx) => {
+                            const value = cur[groupByKey];
+                            if (value === undefined || value === null) return acc;
+                            if (!acc.hasOwnProperty(value)) {
+                                acc[value] = { count: 1 };
+                            } else if (acc.hasOwnProperty(value)) {
+                                acc[value].count++;
+                            }
+                            return acc;
+                        }, {});
+
+                        /* if (Object.keys(aggregates).length > 0) {
+                            console.log(`Group [${fieldName}] by [${groupByKey}]: ${JSON.stringify(aggregates)}`);
+                        } */
+
+                        const groupByParams = (groupBy) ? {
+                            groupByField: groupByKey,
+                            valueMapLabels: valueMapLabels,
+                            values: { ...aggregates }
+                        } : {};
+
                         return (
                             <div className="data-table-header-row">
                                 <Table striped={true} >
@@ -227,7 +251,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                             <>
                                                 <tr key={index}>
                                                     {groupBy && (
-                                                        <DataTableGroupBy rowIndex={index} params={groupBy} />
+                                                        <DataTableGroupBy rowIndex={index} params={groupByParams} />
                                                     )}
                                                     {expandable && (
                                                         <td>

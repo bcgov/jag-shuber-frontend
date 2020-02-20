@@ -6,14 +6,40 @@ export interface DataTableGroupByProps {
 }
 
 const DataTableGroupBy = ({ rowIndex, params = {}}: DataTableGroupByProps) => {
-    const groupBy = true;
-    const groupByRowCount = 5;
+    const { groupByField, valueMapLabels = {}, values = {} } = params;
 
-    const { groupNames = [] } = params;
+    let groupLabels: any[] = [];
+
+    const groupBreakIndexes = values
+        ? Object.keys(values)
+            .map((key) => {
+                if (values[key]) {
+                    groupLabels.push({ rowIndex: null, label: valueMapLabels[key] });
+                    return values[key].count;
+                }
+            })
+            .reduce((acc, cur, idx) => {
+                const agrIdx = acc[acc.length - 1];
+                groupLabels[idx].rowIndex = agrIdx;
+                acc.push(agrIdx + cur);
+                return acc;
+            }, [0])
+        : null;
+
+    // console.log('break at indexes:' + JSON.stringify(groupBreakIndexes));
+
+    const groupLabel = (groupLabels.length > 0)
+        ? groupLabels.find((l) => l.rowIndex === rowIndex)
+        : null;
+
+    console.log('groupLabels');
+    console.log(groupLabels);
+
+    const groupLabelStr = (groupLabel) ? groupLabel.label : '';
 
     return (
         <>
-            {groupBy && ((rowIndex + 1) % groupByRowCount === 1) && (
+            {groupBreakIndexes && groupBreakIndexes.indexOf(rowIndex) > -1 && (
                 <td
                     style={{
                         width: '3rem',
@@ -23,11 +49,11 @@ const DataTableGroupBy = ({ rowIndex, params = {}}: DataTableGroupByProps) => {
                     }}
                 >
                     <div className="group-label-vert">
-                        {groupNames.shift()}
+                        {groupLabelStr}
                     </div>
                 </td>
             )}
-            {groupBy && ((rowIndex + 1) % groupByRowCount !== 1) && (
+            {groupBreakIndexes && groupBreakIndexes.indexOf(rowIndex) === -1 && (
                 <td style={{ width: '3rem', backgroundColor: '#eee', borderTop: 'none', borderRight: '1px solid #ddd' }} />
             )}
         </>
