@@ -6,8 +6,8 @@ class CodeScopeSelector extends React.PureComponent<SelectorProps> {
         const { ...restProps } = this.props;
 
         const selectorValues = [
-            { key: 1, value: 'General Role' },
-            { key: 0, value: 'Location Specific Role' }
+            { key: 1, value: 'Default Role' },
+            { key: 0, value: 'Custom Role' }
         ];
 
         return (

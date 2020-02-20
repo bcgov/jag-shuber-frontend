@@ -622,3 +622,27 @@ h6.modal-title {
   background-color: white;
   color: black;
 }
+
+/* More custom table stuff */
+.group-label-vert {
+  transform: rotate(-90deg);
+  display: flex; width: 100%;
+  height: 100%;
+  white-space: nowrap;
+  position: relative;
+  bottom: -120px;
+  font-weight: bold;
+}
+
+.btn-transparent,
+.btn-transparent:hover,
+.btn-transparent:focus,
+.btn-transparent:active {
+  background-color: transparent;
+  border: none;
+}
+
+.sort-order-field .btn-xs {
+  padding: 0px 10px;
+  margin-left: 5px;
+}

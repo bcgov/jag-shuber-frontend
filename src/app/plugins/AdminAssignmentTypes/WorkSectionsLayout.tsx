@@ -1,7 +1,7 @@
 import React from 'react';
 import { Col, Nav, NavItem, Row, Tab } from 'react-bootstrap';
 
-import AdminFormSectionNav from '../../components/AdminForm/AdminFormSectionNav';
+import PageTitle from '../../containers/PageTitle';
 
 export default (props: any) => {
     const {
@@ -52,9 +52,11 @@ export default (props: any) => {
                         <Tab.Pane key={'courts'} eventKey={'courts'}>
                             <Row className="clearfix">
                                 <Col sm={12} md={5}>
+                                    <PageTitle title={({ currentLocationName }: any) => `${currentLocationName} Courtrooms`} />
                                     {courtroomsPlugin && renderPlugin(courtroomsPlugin)}
                                 </Col>
                                 <Col sm={12} md={7}>
+                                    <PageTitle title={({ currentLocationName }: any) => `${currentLocationName} Court Roles`} />
                                     {courtRolesPlugin && renderPlugin(courtRolesPlugin)}
                                 </Col>
                             </Row>
@@ -65,6 +67,7 @@ export default (props: any) => {
                                     {courtroomsPlugin && renderPlugin(courtroomsPlugin)}
                                 </Col> */}
                                 <Col sm={12} md={6} mdPush={3}>
+                                    <PageTitle title={({ currentLocationName }: any) => `${currentLocationName} Jail Roles`} />
                                     {jailRolesPlugin && renderPlugin(jailRolesPlugin)}
                                 </Col>
                             </Row>
@@ -72,6 +75,7 @@ export default (props: any) => {
                         <Tab.Pane key={'escortRuns'} eventKey={'escortRuns'}>
                             <Row className="clearfix">
                                 <Col sm={12} md={6} mdPush={3}>
+                                    <PageTitle title={({ currentLocationName }: any) => `${currentLocationName} Escort Runs`} />
                                     {escortTypesPlugin && renderPlugin(escortTypesPlugin)}
                                 </Col>
                             </Row>
@@ -79,6 +83,7 @@ export default (props: any) => {
                         <Tab.Pane key={'other'} eventKey={'other'}>
                             <Row className="clearfix">
                                 <Col sm={12}  md={8} mdPush={2}>
+                                    <PageTitle title={({ currentLocationName }: any) => `${currentLocationName} Other Assignments`} />
                                     {otherTypesPlugin && renderPlugin(otherTypesPlugin)}
                                 </Col>
                             </Row>

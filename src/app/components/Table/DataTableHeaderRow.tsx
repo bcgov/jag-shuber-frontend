@@ -28,6 +28,7 @@ export interface DataTableHeaderRowProps {
     initialValue?: any;
     filterable?: boolean;
     filterRows?: Function;
+    groupBy?: boolean;
 }
 
 export default class DataTableHeaderRow<T> extends React.Component<DataTableHeaderRowProps> {
@@ -53,12 +54,15 @@ export default class DataTableHeaderRow<T> extends React.Component<DataTableHead
             displayHeaderSave = true,
             displayActionsColumn = true,
             expandable = false,
-            initialValue
+            initialValue,
+            groupBy = false,
         } = this.props;
 
         return (
-
             <tr>
+                {groupBy && (
+                    <th style={{ width: '3rem', backgroundColor: '#eee', borderTop: 'none' }}></th>
+                )}
                 {expandable && (
                     <th style={{width: '60px'}}>
                         <FormGroup style={{ textAlign: 'left' }}>

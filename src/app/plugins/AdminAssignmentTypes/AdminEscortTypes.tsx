@@ -172,6 +172,7 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
                     filterable={true}
                     expandable={false}
                     // expandedRows={[1, 2]}
+                    groupBy={{ fieldName: 'isProvincialCode', groupNames: ['Custom Roles'] }}
                     rowComponent={EmptyDetailRow}
                     modalComponent={EmptyDetailRow}
                 />

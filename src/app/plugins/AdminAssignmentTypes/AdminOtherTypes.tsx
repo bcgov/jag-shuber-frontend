@@ -171,12 +171,13 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
                     filterable={true}
                     expandable={false}
                     // expandedRows={[1, 2]}
-                    rowComponent={EmptyDetailRow}
-                    modalComponent={EmptyDetailRow}
+                    groupBy={{ fieldName: 'isProvincialCode', groupNames: ['Default Roles', 'Custom Roles'] }}
                     shouldDisableRow={(model) => {
                         // TODO: Only disable if the user doesn't have permission to edit provincial codes
                         return (!model) ? false : (model && model.id) ? model.isProvincialCode : false;
                     }}
+                    rowComponent={EmptyDetailRow}
+                    modalComponent={EmptyDetailRow}
                 />
             </div>
         );

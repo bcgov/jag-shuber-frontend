@@ -9,6 +9,7 @@ import * as CellTypes from '../../components/TableColumnCell';
 // TODO: Move this into a common location with AdminForm
 import DataTableHeaderRow from './DataTableHeaderRow';
 import DataTableFilterRow from './DataTableFilterRow';
+import DataTableGroupBy from './DataTableGroupBy';
 
 export interface DetailComponentProps {
     parentModel?: any;
@@ -42,6 +43,7 @@ export interface DataTableProps {
     initialValue?: any;
     filterable?: boolean;
     filterRows?: Function;
+    groupBy?: any; // TODO: Not sure what this should be yet, just trying something out, see if it works
 }
 
 // let RENDER_COUNT = 0;
@@ -69,6 +71,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
         filterRows: () => true
     };
 
+    // TODO: It would be cool if we could dynamically supply at least some of these types...
     static MappedTextColumn = CellTypes.MappedText;
     static StaticTextColumn = CellTypes.StaticText;
     static StaticDateColumn = CellTypes.StaticDate;
@@ -78,6 +81,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
     static CheckboxColumn = CellTypes.Checkbox;
     static DateColumn = CellTypes.Date;
     static TimeColumn = CellTypes.Time;
+    static SortOrderColumn = CellTypes.SortOrder;
     static RoleCodeColumn = CellTypes.RoleCode;
     static LeaveSubCodeColumn = CellTypes.LeaveSubCode;
     static ButtonColumn = CellTypes.Button;
@@ -139,6 +143,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
             initialValue,
             filterable,
             filterRows,
+            groupBy,
         } = this.props;
 
         const {
@@ -172,6 +177,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                     columns={columns}
                                     expandable={expandable}
                                     filterable={filterable}
+                                    groupBy={!!groupBy}
                                     displayActionsColumn={displayActionsColumn}
                                 />
                             </thead>
@@ -193,6 +199,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                             columns={columns}
                                             expandable={expandable}
                                             filterable={filterable}
+                                            groupBy={!!groupBy}
                                             displayHeaderActions={displayHeaderActions}
                                             displayHeaderSave={displayHeaderSave}
                                             displayActionsColumn={displayActionsColumn}
@@ -204,7 +211,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                     <tbody>
                                     {fields.length === 0 && (
                                         <tr>
-                                            <td colSpan={expandable ? columns.length + 2 : columns.length + 1}>
+                                            <td colSpan={(expandable ? columns.length + 2 : columns.length + 1) + (!!groupBy ? 1 : 0)}>
                                                 <Well style={{textAlign: 'center'}}>No records found.</Well>
                                             </td>
                                         </tr>
@@ -219,6 +226,9 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                         return (
                                             <>
                                                 <tr key={index}>
+                                                    {groupBy && (
+                                                        <DataTableGroupBy rowIndex={index} params={groupBy} />
+                                                    )}
                                                     {expandable && (
                                                         <td>
                                                             <FormGroup>

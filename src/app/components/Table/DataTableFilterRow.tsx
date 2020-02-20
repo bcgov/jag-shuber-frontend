@@ -18,6 +18,7 @@ export interface DataTableFilterRowProps {
     initialValue?: any;
     filterable?: boolean;
     filterRows?: Function;
+    groupBy?: boolean;
 }
 
 export default class DataTableFilterRow<T> extends React.Component<DataTableFilterRowProps> {
@@ -47,7 +48,8 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
             columns = [],
             displayActionsColumn = true,
             expandable = false,
-            onResetClicked
+            onResetClicked,
+            groupBy = false
         } = this.props;
 
         const filterFieldNames = columns.map((col, index) => {
@@ -59,6 +61,9 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
                 names={filterFieldNames}
                 component={({ fields }) => (
                     <tr>
+                        {groupBy && (
+                            <th style={{ width: '3rem', backgroundColor: '#eee', borderTop: 'none' }}></th>
+                        )}
                         {expandable && (<th style={{width: '60px'}}/>)}
                         {columns.map((col, colIndex) => {
                             const Column = (col.filterComponent)
@@ -66,9 +71,11 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
                                 : col.FormRenderer;
 
                             return (
-                                <th className="text-left"
+                                <th
+                                    className="text-left"
                                     key={col.fieldName}
-                                    style={col.colStyle}>
+                                    style={col.colStyle}
+                                >
                                     {col.filterable && (
                                         <div
                                             style={{display: 'flex', alignItems: 'center'}}>
