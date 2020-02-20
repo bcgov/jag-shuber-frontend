@@ -127,6 +127,7 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
                 // DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false }),
                 // DataTable.DateColumn('Date Created', 'createdDtm'),
                 // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
+                DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false })
             ]
             : [
                 // DataTable.SelectorFieldColumn('Location', { fieldName: 'locationId', selectorComponent: LocationSelector, displayInfo: false, filterable: true, filterColumn: onFilterLocation }),
@@ -135,6 +136,7 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
                 // DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false }),
                 // DataTable.DateColumn('Date Created', 'createdDtm'),
                 // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
+                DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false })
             ];
 
         return (
