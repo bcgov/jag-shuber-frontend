@@ -61,11 +61,8 @@ export default (props: any) => {
                                 </Col>
                             </Row>
                         </Tab.Pane>
-                        <Tab.Pane key={'jails'} eventKey={'jails'}>
+                        {/* <Tab.Pane key={'jails'} eventKey={'jails'}>
                             <Row className="clearfix">
-                                {/* <Col sm={12} md={6}>
-                                    {courtroomsPlugin && renderPlugin(courtroomsPlugin)}
-                                </Col> */}
                                 <Col sm={12} md={6} mdPush={3}>
                                     <PageTitle title={({ currentLocationName }: any) => `${currentLocationName} Jail Roles`} />
                                     {jailRolesPlugin && renderPlugin(jailRolesPlugin)}
@@ -87,7 +84,7 @@ export default (props: any) => {
                                     {otherTypesPlugin && renderPlugin(otherTypesPlugin)}
                                 </Col>
                             </Row>
-                        </Tab.Pane>
+                        </Tab.Pane> */}
                     </Tab.Content>
                 </Col>
             </Row>

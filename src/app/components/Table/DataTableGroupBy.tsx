@@ -6,7 +6,7 @@ export interface DataTableGroupByProps {
 }
 
 const DataTableGroupBy = ({ rowIndex, params = {}}: DataTableGroupByProps) => {
-    const { groupByField, valueMapLabels = {}, values = {} } = params;
+    const { groupByKey, valueMapLabels = {}, valueMapLabelStyles = {}, values = {} } = params;
 
     let groupLabels: any[] = [];
 
@@ -14,7 +14,7 @@ const DataTableGroupBy = ({ rowIndex, params = {}}: DataTableGroupByProps) => {
         ? Object.keys(values)
             .map((key) => {
                 if (values[key]) {
-                    groupLabels.push({ rowIndex: null, label: valueMapLabels[key] });
+                    groupLabels.push({ rowIndex: null, label: valueMapLabels[key], style: valueMapLabelStyles[key] });
                     return values[key].count;
                 }
             })
@@ -32,21 +32,37 @@ const DataTableGroupBy = ({ rowIndex, params = {}}: DataTableGroupByProps) => {
         ? groupLabels.find((l) => l.rowIndex === rowIndex)
         : null;
 
-    console.log('groupLabels');
-    console.log(groupLabels);
-
     const groupLabelStr = (groupLabel) ? groupLabel.label : '';
+
+    // tslint:disable-next-line:max-line-length
+    /* if (groupLabels.length === 2 && groupLabels[0].style && groupLabels[1].style && groupLabelStr === 'Custom Roles') {
+        // debugger;
+    } */
+
+    const groupMinMaxIndexes = [...groupBreakIndexes].reduce((acc: number, cur: number, idx: number, arr: number[]) => {
+        if (rowIndex >= acc && rowIndex < cur) {
+            arr.splice(1); // Break out of reduce
+            return { min: acc, max: cur };
+        }
+
+        return cur;
+    });
+
+    // console.log('groupLabels');
+    // console.log(groupLabels);
+    // console.log(`groupIndex min: ${groupMinMaxIndexes.min}, max: ${groupMinMaxIndexes.max}`);
+
+    let groupLabelStyle = (groupLabels.length > 0)
+        ? groupLabels.find((l) => l.rowIndex === groupMinMaxIndexes.min)
+        : null;
+
+    groupLabelStyle = (groupLabelStyle) ? groupLabelStyle.style : {};
 
     return (
         <>
             {groupBreakIndexes && groupBreakIndexes.indexOf(rowIndex) > -1 && (
                 <td
-                    style={{
-                        width: '3rem',
-                        backgroundColor: '#eee',
-                        borderTop: '1px solid #ddd',
-                        borderRight: '1px solid #ddd'
-                    }}
+                    style={groupLabelStyle}
                 >
                     <div className="group-label-vert">
                         {groupLabelStr}
@@ -54,7 +70,7 @@ const DataTableGroupBy = ({ rowIndex, params = {}}: DataTableGroupByProps) => {
                 </td>
             )}
             {groupBreakIndexes && groupBreakIndexes.indexOf(rowIndex) === -1 && (
-                <td style={{ width: '3rem', backgroundColor: '#eee', borderTop: 'none', borderRight: '1px solid #ddd' }} />
+                <td style={groupLabelStyle} />
             )}
         </>
     );

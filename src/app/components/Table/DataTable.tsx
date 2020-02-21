@@ -191,7 +191,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                         // console.log('DATATABLE FieldArray COMPONENT RENDER COUNT: ' + ARR_RENDER_COUNT);
                         const { fields } = props;
 
-                        const { groupByKey, valueMapLabels } = groupBy || { groupByKey: null, valueMapLabels: {} };
+                        const { groupByKey, valueMapLabels, valueMapLabelStyles } = groupBy || { groupByKey: null, valueMapLabels: {}, valueMapLabelStyles: {} };
 
                         const aggregates = fields.getAll().reduce((acc: any , cur: any, idx) => {
                             const value = cur[groupByKey];
@@ -211,6 +211,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                         const groupByParams = (groupBy) ? {
                             groupByField: groupByKey,
                             valueMapLabels: valueMapLabels,
+                            valueMapLabelStyles: valueMapLabelStyles,
                             values: { ...aggregates }
                         } : {};
 
