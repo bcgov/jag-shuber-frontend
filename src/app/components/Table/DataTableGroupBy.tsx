@@ -26,14 +26,6 @@ const DataTableGroupBy = ({ rowIndex, params = {}}: DataTableGroupByProps) => {
             }, [0])
         : null;
 
-    // console.log('break at indexes:' + JSON.stringify(groupBreakIndexes));
-
-    const groupLabel = (groupLabels.length > 0)
-        ? groupLabels.find((l) => l.rowIndex === rowIndex)
-        : null;
-
-    const groupLabelStr = (groupLabel) ? groupLabel.label : '';
-
     // tslint:disable-next-line:max-line-length
     /* if (groupLabels.length === 2 && groupLabels[0].style && groupLabels[1].style && groupLabelStr === 'Custom Roles') {
         // debugger;
@@ -48,19 +40,30 @@ const DataTableGroupBy = ({ rowIndex, params = {}}: DataTableGroupByProps) => {
         return cur;
     });
 
-    // console.log('groupLabels');
-    // console.log(groupLabels);
-    // console.log(`groupIndex min: ${groupMinMaxIndexes.min}, max: ${groupMinMaxIndexes.max}`);
+    console.log('groupLabels');
+    console.log(groupLabels);
+    console.log(`groupIndex min: ${groupMinMaxIndexes.min}, max: ${groupMinMaxIndexes.max}`);
 
-    let groupLabelStyle = (groupLabels.length > 0)
+    let groupLabel = (groupLabels.length > 0)
         ? groupLabels.find((l) => l.rowIndex === groupMinMaxIndexes.min)
         : null;
 
-    groupLabelStyle = (groupLabelStyle) ? groupLabelStyle.style : {};
+    const groupLabelStyle = (groupLabel) ? groupLabel.style : {};
+    const groupLabelStr = (groupLabel) ? groupLabel.label : '';
+
+    // What row should we inject the label on?
+    const labelRowIndexOffset = Math.floor((groupMinMaxIndexes.max - groupMinMaxIndexes.min) / 2);
+    console.log(`rowIndex: ${rowIndex}`);
+    console.log(labelRowIndexOffset);
+    const offsetGroupBreakIndexes = [...groupBreakIndexes].map((breakIndex: number) => breakIndex + labelRowIndexOffset);
+    console.log(groupBreakIndexes);
+    console.log(offsetGroupBreakIndexes);
+    console.log(groupBreakIndexes && offsetGroupBreakIndexes.indexOf(rowIndex));
+    console.log('---------');
 
     return (
         <>
-            {groupBreakIndexes && groupBreakIndexes.indexOf(rowIndex) > -1 && (
+            {groupBreakIndexes && offsetGroupBreakIndexes.indexOf(rowIndex) > -1 && (
                 <td
                     style={groupLabelStyle}
                 >
@@ -69,7 +72,7 @@ const DataTableGroupBy = ({ rowIndex, params = {}}: DataTableGroupByProps) => {
                     </div>
                 </td>
             )}
-            {groupBreakIndexes && groupBreakIndexes.indexOf(rowIndex) === -1 && (
+            {groupBreakIndexes && offsetGroupBreakIndexes.indexOf(rowIndex) === -1 && (
                 <td style={groupLabelStyle} />
             )}
         </>
