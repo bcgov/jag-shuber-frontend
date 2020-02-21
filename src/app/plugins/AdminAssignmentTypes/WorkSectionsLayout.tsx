@@ -51,17 +51,17 @@ export default (props: any) => {
                     <Tab.Content animation={false}>
                         <Tab.Pane key={'courts'} eventKey={'courts'}>
                             <Row className="clearfix">
-                                <Col sm={12} md={5}>
-                                    <PageTitle title={({ currentLocationName }: any) => `${currentLocationName} Courtrooms`} />
-                                    {courtroomsPlugin && renderPlugin(courtroomsPlugin)}
-                                </Col>
                                 <Col sm={12} md={7}>
                                     <PageTitle title={({ currentLocationName }: any) => `${currentLocationName} Court Roles`} />
                                     {courtRolesPlugin && renderPlugin(courtRolesPlugin)}
                                 </Col>
+                                <Col sm={12} md={5}>
+                                    <PageTitle title={({ currentLocationName }: any) => `${currentLocationName} Courtrooms`} />
+                                    {courtroomsPlugin && renderPlugin(courtroomsPlugin)}
+                                </Col>
                             </Row>
                         </Tab.Pane>
-                        {/* <Tab.Pane key={'jails'} eventKey={'jails'}>
+                        <Tab.Pane key={'jails'} eventKey={'jails'}>
                             <Row className="clearfix">
                                 <Col sm={12} md={6} mdPush={3}>
                                     <PageTitle title={({ currentLocationName }: any) => `${currentLocationName} Jail Roles`} />
@@ -84,7 +84,7 @@ export default (props: any) => {
                                     {otherTypesPlugin && renderPlugin(otherTypesPlugin)}
                                 </Col>
                             </Row>
-                        </Tab.Pane> */}
+                        </Tab.Pane>
                     </Tab.Content>
                 </Col>
             </Row>
