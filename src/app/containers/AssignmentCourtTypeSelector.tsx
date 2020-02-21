@@ -6,6 +6,7 @@ import {
     CourtRoleCode
 } from '../api/Api';
 import {
+    allEffectiveCourtRoles,
     allCourtRoles,
     allCourtrooms
 } from '../modules/assignments/selectors';
@@ -46,8 +47,10 @@ class CourtAssignmentList extends React.PureComponent<
 
 const mapStateToProps = (state: RootState) => {
     return {
+        // TODO: Get these using effective and expiry dates!!!
         courtrooms: allCourtrooms(state),
-        courtRoles: allCourtRoles(state)
+        courtRoles: allCourtRoles(state),
+        // courtRoles: allEffectiveCourtRoles()(state)
     };
 };
 

@@ -2,7 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { JailRoleCode } from '../api';
-import { allEffectiveJailRoles } from '../modules/assignments/selectors';
+import {
+    allEffectiveJailRoles,
+    allJailRoles
+} from '../modules/assignments/selectors';
 import Selector, { SelectorProps } from '../components/FormElements/Selector';
 
 interface JailRoleListStateProps {
@@ -24,7 +27,9 @@ class JailRoleList extends React.PureComponent<
 
 const mapStateToProps = (state: RootState) => {
     return {
-        jailRoles: allEffectiveJailRoles()(state)
+        // TODO: Get these using effective and expiry dates!!!
+        jailRoles: allJailRoles(state),
+        // jailRoles: allEffectiveJailRoles()(state)
     };
 };
 

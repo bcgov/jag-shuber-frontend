@@ -94,7 +94,7 @@ const altAssignmentTypesSelector = new CodeSelector(
 export const allAlternateAssignmentTypes = altAssignmentTypesSelector.all;
 
 // TODO: This returns a moment? Huh?
-export const allEffectAlternateAssignmentTypes = altAssignmentTypesSelector.effective;
+export const allEffectiveAlternateAssignmentTypes = altAssignmentTypesSelector.effective;
 
 // Alternate / Other Assignment Types
 export const getAllOtherTypes = (state: RootState) => {
