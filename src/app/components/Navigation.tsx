@@ -115,11 +115,11 @@ export default class Navigation extends React.Component<NavigationProps, any> {
                             <NavigationLink {...Navigation.Routes.dutyRoster.setup} />
                         </NavigationDropDown>
                         <NavigationLink {...Navigation.Routes.assignment} />
-                        <NavigationLink {...Navigation.Routes.system.children.assignmentTypes} />
                         <NavigationDropDown title="Shift Schedule" id="schedule_dropdown">
                             <NavigationLink {...Navigation.Routes.schedule.manage} />
                             <NavigationLink {...Navigation.Routes.schedule.distribute} />
                         </NavigationDropDown>
+                        <NavigationLink {...Navigation.Routes.system.children.assignmentTypes} />
                         <NavigationDropDown title={Navigation.Routes.team.label} id="admin_dropdown">
                             <NavigationLink {...Navigation.Routes.team.children.users} />
                             <NavigationLink {...Navigation.Routes.team.children.userRoles} />
