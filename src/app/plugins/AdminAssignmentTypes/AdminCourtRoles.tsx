@@ -90,7 +90,7 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
             if (setPluginFilters) {
                 setPluginFilters({
                     courtRoles: {
-                        name: newValue
+                        description: newValue
                     }
                 }, setAdminCourtRolesPluginFilters);
             }

@@ -202,8 +202,8 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
 
         // Get form data
         const courtrooms = (filters && filters.courtrooms)
-            ? findAllCourtrooms(filters.courtrooms)(state) || undefined
-            : getAllCourtrooms(state);
+            ? findAllCourtrooms(filters.courtrooms)(state) || []
+            : getAllCourtrooms(state) || [];
 
         const currentLocation = getCurrentLocation(state);
 

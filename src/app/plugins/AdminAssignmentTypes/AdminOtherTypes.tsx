@@ -89,7 +89,7 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
             if (setPluginFilters) {
                 setPluginFilters({
                     otherTypes: {
-                        name: newValue
+                        description: newValue
                     }
                 }, setAdminOtherTypesPluginFilters);
             }

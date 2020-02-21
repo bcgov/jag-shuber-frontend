@@ -89,7 +89,7 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
             if (setPluginFilters) {
                 setPluginFilters({
                     jailRoles: {
-                        name: newValue
+                        description: newValue
                     }
                 }, setAdminJailRolesPluginFilters);
             }
