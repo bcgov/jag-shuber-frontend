@@ -1,4 +1,5 @@
 import React from 'react';
+import { Glyphicon } from 'react-bootstrap';
 
 export interface DataTableGroupByProps {
     rowIndex: number;
@@ -68,15 +69,24 @@ const DataTableGroupBy = ({ newRowCount = 0, rowIndex, params = {}}: DataTableGr
     console.log(groupBreakIndexes && offsetGroupBreakIndexes.indexOf(rowIndex));
     console.log('---------');
 
+    const labelDisplay = ((groupMinMaxIndexes.max - groupMinMaxIndexes.min) > 2) ? 'string' : 'icon';
+
     return (
         <>
             {groupBreakIndexes && offsetGroupBreakIndexes.indexOf(rowIndex) > -1 && (
                 <td
                     style={groupLabelStyle}
                 >
+                    {labelDisplay === 'string' && (
                     <div className="group-label-vert">
                         {groupLabelStr}
                     </div>
+                    )}
+                    {labelDisplay === 'icon' && (
+                    <div className="group-label">
+                        <div style={{ textAlign: 'center' }}><b>{groupLabelStr.slice(0, 1)}</b></div>
+                    </div>
+                    )}
                 </td>
             )}
             {groupBreakIndexes && offsetGroupBreakIndexes.indexOf(rowIndex) === -1 && (
