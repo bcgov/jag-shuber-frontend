@@ -2,11 +2,16 @@ import React from 'react';
 
 export interface DataTableGroupByProps {
     rowIndex: number;
+    newRowCount: number;
     params?: any; // TODO: Make params a shape
 }
 
-const DataTableGroupBy = ({ rowIndex, params = {}}: DataTableGroupByProps) => {
+const DataTableGroupBy = ({ newRowCount = 0, rowIndex, params = {}}: DataTableGroupByProps) => {
     const { groupByKey, valueMapLabels = {}, valueMapLabelStyles = {}, values = {} } = params;
+
+    if (rowIndex < newRowCount) {
+        return <td />;
+    }
 
     let groupLabels: any[] = [];
 
@@ -20,7 +25,7 @@ const DataTableGroupBy = ({ rowIndex, params = {}}: DataTableGroupByProps) => {
             })
             .reduce((acc, cur, idx) => {
                 const agrIdx = acc[acc.length - 1];
-                groupLabels[idx].rowIndex = agrIdx;
+                groupLabels[idx].rowIndex = agrIdx + newRowCount;
                 acc.push(agrIdx + cur);
                 return acc;
             }, [0])
@@ -32,9 +37,11 @@ const DataTableGroupBy = ({ rowIndex, params = {}}: DataTableGroupByProps) => {
     } */
 
     const groupMinMaxIndexes = [...groupBreakIndexes].reduce((acc: number, cur: number, idx: number, arr: number[]) => {
-        if (rowIndex >= acc && rowIndex < cur) {
+        let prevVal = acc + newRowCount;
+        let curVal = cur + newRowCount;
+        if (rowIndex >= prevVal && rowIndex < curVal) {
             arr.splice(1); // Break out of reduce
-            return { min: acc, max: cur };
+            return { min: prevVal, max: curVal };
         }
 
         return cur;
@@ -55,7 +62,7 @@ const DataTableGroupBy = ({ rowIndex, params = {}}: DataTableGroupByProps) => {
     const labelRowIndexOffset = Math.floor((groupMinMaxIndexes.max - groupMinMaxIndexes.min) / 2);
     console.log(`rowIndex: ${rowIndex}`);
     console.log(labelRowIndexOffset);
-    const offsetGroupBreakIndexes = [...groupBreakIndexes].map((breakIndex: number) => breakIndex + labelRowIndexOffset);
+    const offsetGroupBreakIndexes = [...groupBreakIndexes].map((breakIndex: number) => breakIndex + labelRowIndexOffset + newRowCount);
     console.log(groupBreakIndexes);
     console.log(offsetGroupBreakIndexes);
     console.log(groupBreakIndexes && offsetGroupBreakIndexes.indexOf(rowIndex));

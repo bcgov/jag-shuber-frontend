@@ -215,6 +215,8 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                             values: { ...aggregates }
                         } : {};
 
+                        let newRowCount = 0;
+
                         return (
                             <div className="data-table-header-row">
                                 <Table striped={true} >
@@ -243,16 +245,19 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                     )}
                                     {fields.length > 0 && fields.map((fieldInstanceName, index) => {
                                         const fieldModel: Partial<any & T> = fields.get(index);
-                                        const {id = null, cancelDate = undefined} = fieldModel || {};
+                                        const { id = null, cancelDate = undefined } = fieldModel || {};
 
                                         if (shouldRenderRow && !shouldRenderRow(fieldModel)) return null;
                                         const disableRow = (shouldDisableRow && shouldDisableRow(fieldModel));
+
+                                        // We can do this because new rows are always at the top of the list
+                                        if (!id) newRowCount++;
 
                                         return (
                                             <>
                                                 <tr key={index}>
                                                     {groupBy && (
-                                                        <DataTableGroupBy rowIndex={index} params={groupByParams} />
+                                                        <DataTableGroupBy newRowCount={newRowCount} rowIndex={index} params={groupByParams} />
                                                     )}
                                                     {expandable && (
                                                         <td>
