@@ -26,7 +26,7 @@ import {
 
 import { RootState } from '../../store';
 
-import { EscortRun as EscortType, IdType } from '../../api';
+import { EscortRun as EscortType, IdType, JailRoleCode } from '../../api';
 
 import {
     FormContainerBase,
@@ -273,30 +273,27 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
         const data: any = this.getDataFromFormValues(formValues, initialValues);
         const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
 
+        // Grab the currentLocation off of the root formValues object
+        const { currentLocation } = formValues;
+
         // Delete records before saving new ones!
         const deletedEscortTypes: IdType[] = dataToDelete.escortTypes as IdType[];
 
-        const { currentLocation } = initialValues.assignments;
-        const escortTypes: Partial<EscortType>[] = data.escortTypes.map((c: EscortType) => {
-            if (currentLocation === 'ALL_LOCATIONS' || currentLocation === '') {
-                return {
-                    ...c,
-                    createdBy: 'DEV - FRONTEND',
-                    updatedBy: 'DEV - FRONTEND',
-                    createdDtm: new Date().toISOString(),
-                    updatedDtm: new Date().toISOString()
-                };
-            } else {
-                return {
-                    ...c,
-                    locationId: currentLocation,
-                    createdBy: 'DEV - FRONTEND',
-                    updatedBy: 'DEV - FRONTEND',
-                    createdDtm: new Date().toISOString(),
-                    updatedDtm: new Date().toISOString()
-                };
-            }
-        });
+        let escortTypes: Partial<EscortType>[];
+        escortTypes = data.escortTypes.map((c: Partial<EscortType>) => ({
+            ...c,
+            createdBy: 'DEV - FRONTEND',
+            updatedBy: 'DEV - FRONTEND',
+            createdDtm: new Date().toISOString(),
+            updatedDtm: new Date().toISOString()
+        }));
+
+        if (!(currentLocation === 'ALL_LOCATIONS' || currentLocation === '')) {
+            escortTypes = escortTypes.map((c: Partial<EscortType>) => ({
+                ...c,
+                locationId: (!c.id && c.isProvincialCode === '1') ? null : currentLocation
+            }));
+        }
 
         return Promise.all([
             dispatch(deleteEscortTypes(deletedEscortTypes)),

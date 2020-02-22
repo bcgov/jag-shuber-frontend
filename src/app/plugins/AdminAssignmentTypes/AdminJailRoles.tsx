@@ -22,7 +22,7 @@ import {
 
 import { RootState } from '../../store';
 
-import { JailRoleCode, IdType } from '../../api';
+import { JailRoleCode, IdType, CourtRoleCode } from '../../api';
 
 import {
     FormContainerBase,
@@ -37,6 +37,7 @@ import ExpireRow from '../../components/TableColumnActions/ExpireRow';
 import DeleteRow from '../../components/TableColumnActions/DeleteRow';
 import { setAdminRolesPluginFilters } from '../../modules/roles/actions';
 import CodeScopeSelector from '../../containers/CodeScopeSelector';
+import { currentLocation as getCurrentLocation } from '../../modules/user/selectors';
 // import { createOrUpdateJailRoles } from '../../modules/assignments/actions';
 
 export interface AdminJailRolesProps extends FormContainerProps {
@@ -229,9 +230,12 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
             return Object.assign({ isProvincialCode: (role.locationId === null) ? 1 : 0 }, role);
         });
 
+        const currentLocation = getCurrentLocation(state);
+
         return {
             ...filterData,
-            jailRoles: jailRolesArray
+            jailRoles: jailRolesArray,
+            currentLocation
         };
     }
 
@@ -263,16 +267,27 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
         const data: any = this.getDataFromFormValues(formValues, initialValues);
         const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
 
+        // Grab the currentLocation off of the formValues.assignments object
+        const { currentLocation } = formValues.assignments;
+
         // Delete records before saving new ones!
         const deletedJailRoles: IdType[] = dataToDelete.jailRoles as IdType[];
 
-        const jailRoles: Partial<JailRoleCode>[] = data.jailRoles.map((c: JailRoleCode) => ({
+        let jailRoles: Partial<JailRoleCode>[];
+        jailRoles = data.jailRoles.map((c: Partial<JailRoleCode>) => ({
             ...c,
             createdBy: 'DEV - FRONTEND',
             updatedBy: 'DEV - FRONTEND',
             createdDtm: new Date().toISOString(),
             updatedDtm: new Date().toISOString()
         }));
+
+        if (!(currentLocation === 'ALL_LOCATIONS' || currentLocation === '')) {
+            jailRoles = jailRoles.map((c: Partial<JailRoleCode>) => ({
+                ...c,
+                locationId: (!c.id && c.isProvincialCode === '1') ? null : currentLocation
+            }));
+        }
 
         return Promise.all([
             dispatch(deleteJailRoles(deletedJailRoles)),

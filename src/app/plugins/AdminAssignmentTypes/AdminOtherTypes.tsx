@@ -22,7 +22,7 @@ import {
 
 import { RootState } from '../../store';
 
-import { AlternateAssignment as OtherType, IdType } from '../../api';
+import { AlternateAssignment as OtherType, IdType, JailRoleCode } from '../../api';
 
 import {
     FormContainerBase,
@@ -37,6 +37,7 @@ import ExpireRow from '../../components/TableColumnActions/ExpireRow';
 import DeleteRow from '../../components/TableColumnActions/DeleteRow';
 import { setAdminRolesPluginFilters } from '../../modules/roles/actions';
 import CodeScopeSelector from '../../containers/CodeScopeSelector';
+import { currentLocation as getCurrentLocation } from '../../modules/user/selectors';
 // import { createOrUpdateAlternateAssignmentTypes } from '../../modules/assignments/actions';
 
 export interface AdminOtherTypesProps extends FormContainerProps {
@@ -228,9 +229,12 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
             return Object.assign({ isProvincialCode: (type.locationId === null) ? 1 : 0 }, type);
         });
 
+        const currentLocation = getCurrentLocation(state);
+
         return {
             ...filterData,
-            otherTypes: otherTypesArray
+            otherTypes: otherTypesArray,
+            currentLocation
         };
     }
 
@@ -262,16 +266,27 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
         const data: any = this.getDataFromFormValues(formValues, initialValues);
         const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
 
+        // Grab the currentLocation off of the formValues.assignments object
+        const { currentLocation } = formValues.assignments;
+
         // Delete records before saving new ones!
         const deletedOtherTypes: IdType[] = dataToDelete.otherTypes as IdType[];
 
-        const otherTypes: Partial<OtherType>[] = data.otherTypes.map((c: OtherType) => ({
+        let otherTypes: Partial<OtherType>[];
+        otherTypes = data.otherTypes.map((c: Partial<OtherType>) => ({
             ...c,
             createdBy: 'DEV - FRONTEND',
             updatedBy: 'DEV - FRONTEND',
             createdDtm: new Date().toISOString(),
             updatedDtm: new Date().toISOString()
         }));
+
+        if (!(currentLocation === 'ALL_LOCATIONS' || currentLocation === '')) {
+            otherTypes = otherTypes.map((c: Partial<OtherType>) => ({
+                ...c,
+                locationId: (!c.id && c.isProvincialCode === '1') ? null : currentLocation
+            }));
+        }
 
         return Promise.all([
             dispatch(deleteAlternateAssignmentTypes(deletedOtherTypes)),

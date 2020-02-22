@@ -26,7 +26,7 @@ import {
 
 import { RootState } from '../../store';
 
-import { Courtroom, IdType } from '../../api';
+import { Courtroom, IdType, JailRoleCode } from '../../api';
 
 import {
     FormContainerBase,
@@ -245,24 +245,22 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
         // Delete records before saving new ones!
         const deletedCourtrooms: IdType[] = dataToDelete.courtrooms as IdType[];
 
-        const { currentLocation } = initialValues.assignments;
+        // Grab the currentLocation off of the formValues.assignments object
+        const { currentLocation } = formValues.assignments;
+
         let courtrooms: Partial<Courtroom>[];
-        if (currentLocation === 'ALL_LOCATIONS' || currentLocation === '') {
-            courtrooms = data.courtrooms.map((c: Courtroom) => ({
+        courtrooms = data.courtrooms.map((c: Partial<Courtroom>) => ({
+            ...c,
+            createdBy: 'DEV - FRONTEND',
+            updatedBy: 'DEV - FRONTEND',
+            createdDtm: new Date().toISOString(),
+            updatedDtm: new Date().toISOString()
+        }));
+
+        if (!(currentLocation === 'ALL_LOCATIONS' || currentLocation === '')) {
+            courtrooms = courtrooms.map((c: Partial<Courtroom>) => ({
                 ...c,
-                createdBy: 'DEV - FRONTEND',
-                updatedBy: 'DEV - FRONTEND',
-                createdDtm: new Date().toISOString(),
-                updatedDtm: new Date().toISOString()
-            }));
-        } else {
-            courtrooms = data.courtrooms.map((c: Courtroom) => ({
-                ...c,
-                locationId: currentLocation,
-                createdBy: 'DEV - FRONTEND',
-                updatedBy: 'DEV - FRONTEND',
-                createdDtm: new Date().toISOString(),
-                updatedDtm: new Date().toISOString()
+                locationId: currentLocation
             }));
         }
 

@@ -130,9 +130,9 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps & ManageAssignm
                             new AdminCourtroomsPlugin(),
                             new AdminCourtRolesPlugin(),
                             // new AdminJailroomsPlugin(),
-                            new AdminJailRolesPlugin(),
-                            new AdminEscortTypesPlugin(),
-                            new AdminOtherTypesPlugin()
+                            // new AdminJailRolesPlugin(),
+                            // new AdminEscortTypesPlugin(),
+                            // new AdminOtherTypesPlugin()
                         ]}
                         isEditing={isEditing}
                         selectedSection={selectedSection}

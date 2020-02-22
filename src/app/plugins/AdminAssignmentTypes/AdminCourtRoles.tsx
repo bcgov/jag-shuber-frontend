@@ -37,8 +37,7 @@ import ExpireRow from '../../components/TableColumnActions/ExpireRow';
 import DeleteRow from '../../components/TableColumnActions/DeleteRow';
 
 import CodeScopeSelector from '../../containers/CodeScopeSelector';
-
-import { setAdminRolesPluginFilters } from '../../modules/roles/actions';
+import { currentLocation as getCurrentLocation } from '../../modules/user/selectors';
 
 export interface AdminCourtRolesProps extends FormContainerProps {
     courtRoles?: any[];
@@ -229,9 +228,12 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
             return Object.assign({ isProvincialCode: (role.locationId === null) ? 1 : 0 }, role);
         });
 
+        const currentLocation = getCurrentLocation(state);
+
         return {
             ...filterData,
-            courtRoles: courtRolesArray
+            courtRoles: courtRolesArray,
+            currentLocation
         };
     }
 
@@ -263,16 +265,27 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
         const data: any = this.getDataFromFormValues(formValues, initialValues);
         const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
 
+        // Grab the currentLocation off of the formValues.assignments object
+        const { currentLocation } = formValues.assignments;
+
         // Delete records before saving new ones!
         const deletedCourtRoles: IdType[] = dataToDelete.courtRoles as IdType[];
 
-        const courtRoles: Partial<CourtRoleCode>[] = data.courtRoles.map((c: CourtRoleCode) => ({
+        let courtRoles: Partial<CourtRoleCode>[];
+        courtRoles = data.courtRoles.map((c: Partial<CourtRoleCode>) => ({
             ...c,
             createdBy: 'DEV - FRONTEND',
             updatedBy: 'DEV - FRONTEND',
             createdDtm: new Date().toISOString(),
             updatedDtm: new Date().toISOString()
         }));
+
+        if (!(currentLocation === 'ALL_LOCATIONS' || currentLocation === '')) {
+            courtRoles = courtRoles.map((c: Partial<CourtRoleCode>) => ({
+                ...c,
+                locationId: (!c.id && c.isProvincialCode === '1') ? null : currentLocation
+            }));
+        }
 
         return Promise.all([
             dispatch(deleteCourtRoles(deletedCourtRoles)),
