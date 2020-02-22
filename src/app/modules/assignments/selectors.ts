@@ -1,5 +1,8 @@
 import { createSelector } from 'reselect';
 import { RootState } from '../../store';
+
+import { func as selectorFunctions } from '../common';
+
 import * as assignmentRequests from './requests/assignments';
 import * as assignmentDutyRequests from './requests/assignmentDuties';
 import * as alternateAssignmentTypeRequests from './requests/alternateAssignmentTypes';
@@ -107,17 +110,7 @@ export const getAllOtherTypes = (state: RootState) => {
 export const findAllOtherTypes = (filters: any) => (state: RootState) => {
     if (state) {
         let otherTypes = allAlternateAssignmentTypes(state);
-        Object.keys(filters).forEach(key => {
-            if (filters[key]) {
-                otherTypes = otherTypes.filter(c => {
-                    return (c[key] && c[key] !== '')
-                        ? c[key].toLowerCase().includes(`${filters[key].toLowerCase()}`)
-                        : false;
-                });
-            }
-        });
-
-        return otherTypes;
+        return selectorFunctions.filterByKeys(otherTypes, filters);
     }
     return undefined;
 };
@@ -142,17 +135,7 @@ export const getAllCourtRoles = (state: RootState) => {
 export const findAllCourtRoles = (filters: any) => (state: RootState) => {
     if (state) {
         let courtRoles = allCourtRoles(state);
-        Object.keys(filters).forEach(key => {
-            if (filters[key]) {
-                courtRoles = courtRoles.filter(c => {
-                    return (c[key] && c[key] !== '')
-                        ? c[key].toLowerCase().includes(`${filters[key].toLowerCase()}`)
-                        : false;
-                });
-            }
-        });
-
-        return courtRoles;
+        return selectorFunctions.filterByKeys(courtRoles, filters);
     }
     return undefined;
 };
@@ -173,17 +156,7 @@ export const getAllCourtrooms = (state: RootState) => {
 export const findAllCourtrooms = (filters: any) => (state: RootState) => {
     if (state) {
         let courtrooms = allCourtrooms(state);
-        Object.keys(filters).forEach(key => {
-            if (filters[key]) {
-                courtrooms = courtrooms.filter(c => {
-                    return (c[key] && c[key] !== '')
-                        ? c[key].toLowerCase().includes(`${filters[key].toLowerCase()}`)
-                        : false;
-                });
-            }
-        });
-
-        return courtrooms;
+        return selectorFunctions.filterByKeys(courtrooms, filters);
     }
     return undefined;
 };
@@ -207,17 +180,7 @@ export const getAllJailRoles = (state: RootState) => {
 export const findAllJailRoles = (filters: any) => (state: RootState) => {
     if (state) {
         let jailRoles = allJailRoles(state);
-        Object.keys(filters).forEach(key => {
-            if (filters[key]) {
-                jailRoles = jailRoles.filter(c => {
-                    return (c[key] && c[key] !== '')
-                        ? c[key].toLowerCase().includes(`${filters[key].toLowerCase()}`)
-                        : false;
-                });
-            }
-        });
-
-        return jailRoles;
+        return selectorFunctions.filterByKeys(jailRoles, filters);
     }
     return undefined;
 };
@@ -238,17 +201,7 @@ export const getAllEscortRunTypes = (state: RootState) => {
 export const findAllEscortRunTypes = (filters: any) => (state: RootState) => {
     if (state) {
         let escortRunTypes = allRuns(state);
-        Object.keys(filters).forEach(key => {
-            if (filters[key]) {
-                escortRunTypes = escortRunTypes.filter(c => {
-                    return (c[key] && c[key] !== '')
-                        ? c[key].toLowerCase().includes(`${filters[key].toLowerCase()}`)
-                        : false;
-                });
-            }
-        });
-
-        return escortRunTypes;
+        return selectorFunctions.filterByKeys(escortRunTypes, filters);
     }
     return undefined;
 };

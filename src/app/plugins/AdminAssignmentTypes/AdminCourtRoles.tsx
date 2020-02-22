@@ -112,7 +112,7 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
             if (setPluginFilters) {
                 setPluginFilters({
                     courtRoles: {
-                        isProvincialCode: newValue
+                        locationId: (parseInt(newValue, 10) === 1) ? null : null // TODO: This needs to be the current location ID
                     }
                 }, setAdminCourtRolesPluginFilters);
             }
@@ -124,7 +124,7 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
                 // console.log('reset plugin filters');
                 setPluginFilters({
                     courtRoles: {}
-                }, setAdminRolesPluginFilters);
+                }, setAdminCourtRolesPluginFilters);
             }
         };
 
@@ -166,7 +166,7 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
                         // DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
                         // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
-                        DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, displayInfo: false, filterable: true, filterColumn: onFilterCourtRoleScope }),
+                        DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, filterSelectorComponent: CodeScopeSelector, displayInfo: false, filterable: true, filterColumn: onFilterCourtRoleScope }),
                         DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false }),
                     ]}
                     filterable={true}
@@ -221,11 +221,11 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
         const filterData = this.getFilterData(filters);
 
         // Get form data
-        const courtRoles = (filters && filters.courtRoles)
+        const courtRoles = (filters && filters.courtRoles !== undefined)
             ? findAllCourtRoles(filters.courtRoles)(state) || []
             : getAllCourtRoles(state) || [];
 
-        const courtRolesArray: any[] = courtRoles.map(role => {
+        const courtRolesArray: any[] = courtRoles.map((role: any) => {
             return Object.assign({ isProvincialCode: (role.locationId === null) ? 1 : 0 }, role);
         });
 

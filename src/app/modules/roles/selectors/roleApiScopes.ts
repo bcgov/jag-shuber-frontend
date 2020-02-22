@@ -2,6 +2,9 @@ import { createSelector } from 'reselect';
 import * as roleApiScopeRequests from '../requests/roleApiScopes';
 import mapToArray from '../../../infrastructure/mapToArray';
 import { RootState } from '../../../store';
+
+import { func as selectorFunctions } from '../../common';
+
 import { IdType } from '../../../api';
 import { groupByKey } from './index';
 

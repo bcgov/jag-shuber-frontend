@@ -12,7 +12,7 @@ import {
     deleteEscortRuns as deleteEscortTypes,
     selectAdminEscortTypesPluginSection,
     setAdminEscortTypesPluginSubmitErrors,
-    setAdminEscortTypesPluginFilters
+    setAdminEscortTypesPluginFilters, setAdminJailRolesPluginFilters
 } from '../../modules/assignments/actions';
 
 import {
@@ -110,13 +110,24 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
             }
         };
 
+        const onFilterEscortTypeScope = (event: Event, newValue: any, previousValue: any, name: string) => {
+            const { setPluginFilters } = props;
+            if (setPluginFilters) {
+                setPluginFilters({
+                    escortTypes: {
+                        locationId: (parseInt(newValue, 10) === 1) ? null : null // TODO: This needs to be the current location ID
+                    }
+                }, setAdminEscortTypesPluginFilters);
+            }
+        };
+
         const onResetFilters = () => {
             const { setPluginFilters } = props;
             if (setPluginFilters) {
                 // console.log('reset plugin filters');
                 setPluginFilters({
                     escortTypes: {}
-                }, setAdminRolesPluginFilters);
+                }, setAdminEscortTypesPluginFilters);
             }
         };
 
@@ -130,10 +141,10 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
                 DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false })
             ]
             : [
-                DataTable.TextFieldColumn('Run Name', { fieldName: 'title', displayInfo: false, filterable: true, filterColumn: onFilterEscortType }),
+                DataTable.TextFieldColumn('Run Name', { fieldName: 'title', displayInfo: false, filterable: true, filterColumn: onFilterEscortTypeScope }),
                 // DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false, filterable: false }),
                 // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true })
-                DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, displayInfo: false, filterable: false }),
+                DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, filterSelectorComponent: CodeScopeSelector, displayInfo: false, filterable: false }),
                 DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false })
             ];
 
@@ -217,11 +228,11 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
         const filterData = this.getFilterData(filters);
 
         // Get form data
-        const escortTypes = (filters && filters.escortTypes)
+        const escortTypes = (filters && filters.escortTypes !== undefined)
             ? findAllEscortRunTypes(filters.escortTypes)(state) || []
             : getAllEscortRunTypes(state) || [];
 
-        const escortTypesArray: any[] = escortTypes.map(type => {
+        const escortTypesArray: any[] = escortTypes.map((type: any) => {
             return Object.assign({ isProvincialCode: (type.locationId === null) ? 1 : 0 }, type);
         });
 

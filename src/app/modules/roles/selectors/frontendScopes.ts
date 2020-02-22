@@ -2,6 +2,7 @@ import { createSelector } from 'reselect';
 import * as frontendScopeRequests from '../requests/frontendScopes';
 import mapToArray from '../../../infrastructure/mapToArray';
 import { RootState } from '../../../store';
+import { func as selectorFunctions } from '../../common';
 
 export const getFrontendScopes = createSelector(
     frontendScopeRequests.frontendScopeMapRequest.getData,
@@ -22,15 +23,7 @@ export const getAllFrontendScopes = (state: RootState) => {
 export const findAllFrontendScopes = (filters: any) => (state: RootState) => {
     if (state) {
         let scopes = getFrontendScopes(state);
-        Object.keys(filters).forEach(key => {
-            if (filters[key]) {
-                scopes = scopes.filter(s => {
-                    return (s[key] && s[key] !== '')
-                        ? s[key].toLowerCase().includes(`${filters[key].toLowerCase()}`)
-                        : false;
-                });
-            }
-        });
+        scopes = selectorFunctions.filterByKeys(scopes, filters);
 
         scopes.sort((a: any, b: any) =>
             (a.scopeName < b.scopeName) ? -1 : (a.scopeName > b.scopeName) ? 1 : 0);

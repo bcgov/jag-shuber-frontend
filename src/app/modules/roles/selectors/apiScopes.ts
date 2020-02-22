@@ -2,7 +2,8 @@ import { createSelector } from 'reselect';
 import * as apiScopeRequests from '../requests/apiScopes';
 import mapToArray from '../../../infrastructure/mapToArray';
 import { RootState } from '../../../store';
-import { getFrontendScopes } from './frontendScopes';
+
+import { func as selectorFunctions } from '../../common';
 
 export const getApiScopes = createSelector(
     apiScopeRequests.apiScopeMapRequest.getData,
@@ -23,15 +24,7 @@ export const getAllApiScopes = (state: RootState) => {
 export const findAllApiScopes = (filters: any) => (state: RootState) => {
     if (state) {
         let scopes = getApiScopes(state);
-        Object.keys(filters).forEach(key => {
-            if (filters[key]) {
-                scopes = scopes.filter(s => {
-                    return (s[key] && s[key] !== '')
-                        ? s[key].toLowerCase().includes(`${filters[key].toLowerCase()}`)
-                        : false;
-                });
-            }
-        });
+        scopes = selectorFunctions.filterByKeys(scopes, filters);
 
         scopes.sort((a: any, b: any) =>
             (a.scopeName < b.scopeName) ? -1 : (a.scopeName > b.scopeName) ? 1 : 0);

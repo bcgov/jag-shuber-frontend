@@ -2,6 +2,9 @@ import { createSelector } from 'reselect';
 import * as rolePermissionRequests from '../requests/rolePermissions';
 import mapToArray from '../../../infrastructure/mapToArray';
 import { RootState } from '../../../store';
+
+import { func as selectorFunctions } from '../../common';
+
 import { IdType, RolePermission } from '../../../api';
 import { groupByKey } from './index';
 import * as frontendScopeSelectors from './frontendScopes';

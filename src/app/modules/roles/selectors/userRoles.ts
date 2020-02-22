@@ -3,6 +3,8 @@ import * as userRoleRequests from '../requests/userRoles';
 import mapToArray from '../../../infrastructure/mapToArray';
 import { RootState } from '../../../store';
 
+import { func as selectorFunctions } from '../../common';
+
 export const getUserRoles = createSelector(
     userRoleRequests.userRoleMapRequest.getData,
     (map) => {

@@ -2,6 +2,9 @@ import { createSelector } from 'reselect';
 import * as roleRequests from '../requests/roles';
 import mapToArray from '../../../infrastructure/mapToArray';
 import { RootState } from '../../../store';
+
+import { func as selectorFunctions } from '../../common';
+
 import { IdType } from '../../../api';
 import { RoleMap } from '../../../api/Api';
 
@@ -26,15 +29,7 @@ export const findAllRoles = (filters: any) => (state: RootState) => {
         // console.log('finding all roles (findAllRoles) using filters');
         // console.log(filters);
         let roles = getRoles(state);
-        Object.keys(filters).forEach(key => {
-            if (filters[key]) {
-                roles = roles.filter(r => {
-                    return (r[key] && r[key] !== '')
-                        ? r[key].toLowerCase().includes(`${filters[key].toLowerCase()}`)
-                        : false;
-                });
-            }
-        });
+        roles = selectorFunctions.filterByKeys(roles, filters);
 
         roles = roles.sort((a: any, b: any) => (a.roleName < b.roleName) ? -1 : (a.roleName > b.roleName) ? 1 : 0);
         return roles;

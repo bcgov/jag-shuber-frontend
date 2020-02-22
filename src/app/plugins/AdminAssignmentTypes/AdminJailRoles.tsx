@@ -111,7 +111,7 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
             if (setPluginFilters) {
                 setPluginFilters({
                     jailRoles: {
-                        isProvincialCode: newValue
+                        locationId: (parseInt(newValue, 10) === 1) ? null : null // TODO: This needs to be the current location ID
                     }
                 }, setAdminJailRolesPluginFilters);
             }
@@ -122,8 +122,8 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
             if (setPluginFilters) {
                 // console.log('reset plugin filters');
                 setPluginFilters({
-                    jailRoless: {}
-                }, setAdminRolesPluginFilters);
+                    jailRoles: {}
+                }, setAdminJailRolesPluginFilters);
             }
         };
 
@@ -165,7 +165,7 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
                         // DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
                         // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
-                        DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, displayInfo: false, filterable: true, filterColumn: onFilterJailRoleScope }),
+                        DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, filterSelectorComponent: CodeScopeSelector, displayInfo: false, filterable: true, filterColumn: onFilterJailRoleScope }),
                         DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false })
 
                     ]}
@@ -221,11 +221,11 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
         const filterData = this.getFilterData(filters);
 
         // Get form data
-        const jailRoles = (filters && filters.jailRoles)
+        const jailRoles = (filters && filters.jailRoles !== undefined)
             ? findAllJailRoles(filters.jailRoles)(state) || []
             : getAllJailRoles(state) || [];
 
-        const jailRolesArray: any[] = jailRoles.map(role => {
+        const jailRolesArray: any[] = jailRoles.map((role: any) => {
             return Object.assign({ isProvincialCode: (role.locationId === null) ? 1 : 0 }, role);
         });
 

@@ -111,7 +111,7 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
             if (setPluginFilters) {
                 setPluginFilters({
                     otherTypes: {
-                        isProvincialCode: newValue
+                        locationId: (parseInt(newValue, 10) === 1) ? null : null // TODO: This needs to be the current location ID
                     }
                 }, setAdminOtherTypesPluginFilters);
             }
@@ -123,7 +123,7 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
                 // console.log('reset plugin filters');
                 setPluginFilters({
                     otherTypess: {}
-                }, setAdminRolesPluginFilters);
+                }, setAdminOtherTypesPluginFilters);
             }
         };
 
@@ -132,7 +132,7 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
             DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, filterable: true, filterColumn: onFilterOtherTypeCode }),
             DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false, filterable: false }),
             // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
-            DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, displayInfo: false, filterable: true, filterColumn: onFilterOtherTypeScope }),
+            DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, filterSelectorComponent: CodeScopeSelector, displayInfo: false, filterable: true, filterColumn: onFilterOtherTypeScope }),
             DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false })
         ];
 
@@ -220,11 +220,11 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
         const filterData = this.getFilterData(filters);
 
         // Get form data
-        const otherTypes = (filters && filters.otherTypes)
+        const otherTypes = (filters && filters.otherTypes !== undefined)
             ? findAllOtherTypes(filters.otherTypes)(state) || []
             : getAllOtherTypes(state) || [];
 
-        const otherTypesArray: any[] = otherTypes.map(type => {
+        const otherTypesArray: any[] = otherTypes.map((type: any) => {
             return Object.assign({ isProvincialCode: (type.locationId === null) ? 1 : 0 }, type);
         });
 
