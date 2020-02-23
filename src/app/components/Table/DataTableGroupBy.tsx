@@ -16,8 +16,11 @@ const DataTableGroupBy = ({ newRowCount = 0, rowIndex, params = {}}: DataTableGr
 
     let groupLabels: any[] = [];
 
+    let objectKeys = Object.keys(values);
+    objectKeys.sort().reverse(); // TODO: Make the sorting configurable somehow
+
     const groupBreakIndexes = values
-        ? Object.keys(values)
+        ? objectKeys
             .map((key) => {
                 if (values[key]) {
                     groupLabels.push({ rowIndex: null, label: valueMapLabels[key], style: valueMapLabelStyles[key] });
@@ -61,13 +64,19 @@ const DataTableGroupBy = ({ newRowCount = 0, rowIndex, params = {}}: DataTableGr
 
     // What row should we inject the label on?
     const labelRowIndexOffset = Math.floor((groupMinMaxIndexes.max - groupMinMaxIndexes.min) / 2);
-    // console.log(`rowIndex: ${rowIndex}`);
-    // console.log(labelRowIndexOffset);
+
     const offsetGroupBreakIndexes = [...groupBreakIndexes].map((breakIndex: number) => breakIndex + labelRowIndexOffset + newRowCount);
-    // console.log(groupBreakIndexes);
-    // console.log(offsetGroupBreakIndexes);
-    // console.log(groupBreakIndexes && offsetGroupBreakIndexes.indexOf(rowIndex));
-    // console.log('---------');
+    /* console.log('----------------');
+    console.log(`rowIndex: ${rowIndex}`);
+    console.log('values');
+    console.log(values);
+    // console.log(labelRowIndexOffset);
+    console.log('group');
+    console.log(groupBreakIndexes);
+    console.log('offset');
+    console.log(offsetGroupBreakIndexes);
+    console.log(groupBreakIndexes && offsetGroupBreakIndexes.indexOf(rowIndex));
+    console.log('---------'); */
 
     const labelDisplay = ((groupMinMaxIndexes.max - groupMinMaxIndexes.min) > 2) ? 'string' : 'icon';
 

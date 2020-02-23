@@ -185,19 +185,19 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
                     // expandedRows={[1, 2]}
                     groupBy={{
                         groupByKey: 'isProvincialCode',
-                        valueMapLabels: { 0: 'Default Roles', 1: 'Custom Roles' },
+                        valueMapLabels: { 0: 'Custom Roles', 1: 'Default Roles' },
                         valueMapLabelStyles: {
                             0: {
-                                width: '3rem',
-                                backgroundColor: '#999',
-                                color: 'white',
-                                border: '1px solid #999'
-                            },
-                            1: {
                                 width: '3rem',
                                 backgroundColor: '#327AB7',
                                 color: 'white',
                                 border: '1px solid #327AB7'
+                            },
+                            1: {
+                                width: '3rem',
+                                backgroundColor: '#999',
+                                color: 'white',
+                                border: '1px solid #999'
                             }
                         }
                     }}
