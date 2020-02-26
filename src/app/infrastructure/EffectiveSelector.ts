@@ -27,7 +27,7 @@ export class EffectiveSelector<T> {
                 const effectiveItems = this.all(state)
                     .filter(c => {
                         const expiryDate = this.getExpiryDate(c);
-                        return expiryDate === undefined || moment(expiryDate).isAfter(moment(date));
+                        return !expiryDate || moment(expiryDate).isAfter(moment(date));
                     });
                 return effectiveItems;
             };

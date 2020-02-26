@@ -17,7 +17,9 @@ import {
 
 import {
     getAllOtherTypes,
-    findAllOtherTypes
+    getAllEffectiveOtherTypes,
+    findAllOtherTypes,
+    findAllEffectiveOtherTypes
 } from '../../modules/assignments/selectors';
 
 import { RootState } from '../../store';
@@ -227,8 +229,8 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
 
         // Get form data
         const otherTypes = (filters && filters.otherTypes !== undefined)
-            ? findAllOtherTypes(filters.otherTypes)(state) || []
-            : getAllOtherTypes(state) || [];
+            ? findAllEffectiveOtherTypes(filters.otherTypes)(state) || []
+            : getAllEffectiveOtherTypes(state) || [];
 
         const otherTypesArray: any[] = otherTypes.map((type: any) => {
             return Object.assign({ isProvincialCode: (type.locationId === null) ? 1 : 0 }, type);

@@ -17,7 +17,9 @@ import {
 
 import {
     getAllJailRoles,
-    findAllJailRoles
+    getAllEffectiveJailRoles,
+    findAllJailRoles,
+    findAllEffectiveJailRoles
 } from '../../modules/assignments/selectors';
 
 import { RootState } from '../../store';
@@ -228,8 +230,8 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
 
         // Get form data
         const jailRoles = (filters && filters.jailRoles !== undefined)
-            ? findAllJailRoles(filters.jailRoles)(state) || []
-            : getAllJailRoles(state) || [];
+            ? findAllEffectiveJailRoles(filters.jailRoles)(state) || []
+            : getAllEffectiveJailRoles(state) || [];
 
         const jailRolesArray: any[] = jailRoles.map((role: any) => {
             return Object.assign({ isProvincialCode: (role.locationId === null) ? 1 : 0 }, role);

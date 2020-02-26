@@ -17,7 +17,9 @@ import {
 
 import {
     getAllCourtRoles,
-    findAllCourtRoles
+    getAllEffectiveCourtRoles,
+    findAllCourtRoles,
+    findAllEffectiveCourtRoles
 } from '../../modules/assignments/selectors';
 
 import { RootState } from '../../store';
@@ -226,8 +228,8 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
 
         // Get form data
         const courtRoles = (filters && filters.courtRoles !== undefined)
-            ? findAllCourtRoles(filters.courtRoles)(state) || []
-            : getAllCourtRoles(state) || [];
+            ? findAllEffectiveCourtRoles(filters.courtRoles)(state) || []
+            : getAllEffectiveCourtRoles(state) || [];
 
         const courtRolesArray: any[] = courtRoles.map((role: any) => {
             return Object.assign({ isProvincialCode: (role.locationId === null) ? 1 : 0 }, role);

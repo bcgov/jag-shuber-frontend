@@ -33,9 +33,7 @@ class AlternateAssignmentTypeList extends React.PureComponent<
 
 const mapStateToProps = (state: RootState) => {
     return {
-        // TODO: Get these using effective and expiry dates!!!
-        alternateAssignmentTypes: allAlternateAssignmentTypes(state),
-        // alternateAssignmentTypes: allEffectiveAlternateAssignmentTypes()(state)
+        alternateAssignmentTypes: allEffectiveAlternateAssignmentTypes()(state)
     };
 };
 

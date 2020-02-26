@@ -96,7 +96,6 @@ const altAssignmentTypesSelector = new CodeSelector(
 
 export const allAlternateAssignmentTypes = altAssignmentTypesSelector.all;
 
-// TODO: This returns a moment? Huh?
 export const allEffectiveAlternateAssignmentTypes = altAssignmentTypesSelector.effective;
 
 // Alternate / Other Assignment Types
@@ -107,9 +106,24 @@ export const getAllOtherTypes = (state: RootState) => {
     return undefined;
 };
 
+export const getAllEffectiveOtherTypes = (state: RootState) => {
+    if (state) {
+        return allEffectiveAlternateAssignmentTypes()(state);
+    }
+    return undefined;
+};
+
 export const findAllOtherTypes = (filters: any) => (state: RootState) => {
     if (state) {
         let otherTypes = allAlternateAssignmentTypes(state);
+        return selectorFunctions.filterByKeys(otherTypes, filters);
+    }
+    return undefined;
+};
+
+export const findAllEffectiveOtherTypes = (filters: any) => (state: RootState) => {
+    if (state) {
+        let otherTypes = allEffectiveAlternateAssignmentTypes()(state);
         return selectorFunctions.filterByKeys(otherTypes, filters);
     }
     return undefined;
@@ -124,7 +138,6 @@ export const allCourtRoles = courtRoleSelector.all;
 
 export const allEffectiveCourtRoles = courtRoleSelector.effective;
 
-// TODO: Just grab the effective ones?
 export const getAllCourtRoles = (state: RootState) => {
     if (state) {
         return allCourtRoles(state);
@@ -132,9 +145,24 @@ export const getAllCourtRoles = (state: RootState) => {
     return undefined;
 };
 
+export const getAllEffectiveCourtRoles = (state: RootState) => {
+    if (state) {
+        return allEffectiveCourtRoles()(state);
+    }
+    return undefined;
+};
+
 export const findAllCourtRoles = (filters: any) => (state: RootState) => {
     if (state) {
         let courtRoles = allCourtRoles(state);
+        return selectorFunctions.filterByKeys(courtRoles, filters);
+    }
+    return undefined;
+};
+
+export const findAllEffectiveCourtRoles = (filters: any) => (state: RootState) => {
+    if (state) {
+        let courtRoles = allEffectiveCourtRoles()(state);
         return selectorFunctions.filterByKeys(courtRoles, filters);
     }
     return undefined;
@@ -177,9 +205,24 @@ export const getAllJailRoles = (state: RootState) => {
     return undefined;
 };
 
+export const getAllEffectiveJailRoles = (state: RootState) => {
+    if (state) {
+        return allEffectiveJailRoles()(state);
+    }
+    return undefined;
+};
+
 export const findAllJailRoles = (filters: any) => (state: RootState) => {
     if (state) {
         let jailRoles = allJailRoles(state);
+        return selectorFunctions.filterByKeys(jailRoles, filters);
+    }
+    return undefined;
+};
+
+export const findAllEffectiveJailRoles = (filters: any) => (state: RootState) => {
+    if (state) {
+        let jailRoles = allEffectiveJailRoles()(state);
         return selectorFunctions.filterByKeys(jailRoles, filters);
     }
     return undefined;
@@ -198,7 +241,22 @@ export const getAllEscortRunTypes = (state: RootState) => {
     return undefined;
 };
 
+export const getAllEffectiveEscortRunTypes = (state: RootState) => {
+    if (state) {
+        return allRuns(state);
+    }
+    return undefined;
+};
+
 export const findAllEscortRunTypes = (filters: any) => (state: RootState) => {
+    if (state) {
+        let escortRunTypes = allRuns(state);
+        return selectorFunctions.filterByKeys(escortRunTypes, filters);
+    }
+    return undefined;
+};
+
+export const findAllEffectiveEscortRunTypes = (filters: any) => (state: RootState) => {
     if (state) {
         let escortRunTypes = allRuns(state);
         return selectorFunctions.filterByKeys(escortRunTypes, filters);

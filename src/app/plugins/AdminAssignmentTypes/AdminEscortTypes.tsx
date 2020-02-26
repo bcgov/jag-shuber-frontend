@@ -17,7 +17,9 @@ import {
 
 import {
     getAllEscortRunTypes,
-    findAllEscortRunTypes
+    getAllEffectiveEscortRunTypes,
+    findAllEscortRunTypes,
+    findAllEffectiveEscortRunTypes
 } from '../../modules/assignments/selectors';
 
 import {
@@ -234,8 +236,8 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
 
         // Get form data
         const escortTypes = (filters && filters.escortTypes !== undefined)
-            ? findAllEscortRunTypes(filters.escortTypes)(state) || []
-            : getAllEscortRunTypes(state) || [];
+            ? findAllEffectiveEscortRunTypes(filters.escortTypes)(state) || []
+            : getAllEffectiveEscortRunTypes(state) || [];
 
         const escortTypesArray: any[] = escortTypes.map((type: any) => {
             return Object.assign({ isProvincialCode: (type.locationId === null) ? 1 : 0 }, type);

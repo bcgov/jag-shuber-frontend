@@ -27,9 +27,7 @@ class JailRoleList extends React.PureComponent<
 
 const mapStateToProps = (state: RootState) => {
     return {
-        // TODO: Get these using effective and expiry dates!!!
-        jailRoles: allJailRoles(state),
-        // jailRoles: allEffectiveJailRoles()(state)
+        jailRoles: allEffectiveJailRoles()(state)
     };
 };
 
