@@ -1,14 +1,45 @@
 import React from 'react';
 import { Glyphicon } from 'react-bootstrap';
 
+const DEBUG_FIELDNAME = 'assignments.courtRoles';
+
 export interface DataTableGroupByProps {
+    fieldName?: string; // Just for debugging
     rowIndex: number;
     newRowCount: number;
     params?: any; // TODO: Make params a shape
 }
 
-const DataTableGroupBy = ({ newRowCount = 0, rowIndex, params = {}}: DataTableGroupByProps) => {
-    const { groupByKey, valueMapLabels = {}, valueMapLabelStyles = {}, values = {} } = params;
+const getLabelRowMinMax = (rowIndex: number, indexes: number[], fieldName?: string) => {
+    // if (fieldName && fieldName === DEBUG_FIELDNAME && rowIndex === 2) debugger;
+
+    let breakIndexes: number[] = [...indexes];
+
+    let minBreakIndex = null;
+    let maxBreakIndex = null;
+
+    while (breakIndexes.length > 0) {
+        let breakIndex = breakIndexes.shift()!;
+        if (!isNaN(breakIndex) && rowIndex >= breakIndex) {
+            minBreakIndex = breakIndex;
+        }
+
+        // If we find our max, break out of the loop, we're done
+        if (!isNaN(breakIndex) && rowIndex < breakIndex) {
+            maxBreakIndex = breakIndex;
+            break;
+        }
+    }
+
+    if (minBreakIndex === null || maxBreakIndex === null) {
+        throw new Error('DataTable grouping error: a group must have max and min indexes!');
+    }
+
+    return { min: minBreakIndex, max: maxBreakIndex };
+};
+
+const DataTableGroupBy = ({ fieldName = '', newRowCount = 0, rowIndex, params = {}}: DataTableGroupByProps) => {
+    const { groupByKey, valueMapLabels = {}, values = {} } = params;
 
     if (rowIndex < newRowCount) {
         return <td />;
@@ -17,13 +48,16 @@ const DataTableGroupBy = ({ newRowCount = 0, rowIndex, params = {}}: DataTableGr
     let groupLabels: any[] = [];
 
     let objectKeys = Object.keys(values);
-    objectKeys.sort().reverse(); // TODO: Make the sorting configurable somehow
+    let sortedObjectKeys = [...objectKeys];
+    sortedObjectKeys.sort().reverse(); // TODO: Make the sorting configurable
 
-    const groupBreakIndexes = values
-        ? objectKeys
+    let totalValues = 0;
+    let groupBreakIndexes = values
+        ? sortedObjectKeys
             .map((key) => {
                 if (values[key]) {
-                    groupLabels.push({ rowIndex: null, label: valueMapLabels[key], style: valueMapLabelStyles[key] });
+                    groupLabels.push({ rowIndex: null, label: valueMapLabels[key].label, style: valueMapLabels[key].style || {} });
+                    totalValues += values[key].count;
                     return values[key].count;
                 }
             })
@@ -35,73 +69,69 @@ const DataTableGroupBy = ({ newRowCount = 0, rowIndex, params = {}}: DataTableGr
             }, [0])
         : null;
 
-    // tslint:disable-next-line:max-line-length
-    /* if (groupLabels.length === 2 && groupLabels[0].style && groupLabels[1].style && groupLabelStr === 'Custom Roles') {
-        // debugger;
-    } */
+    let offsetGroupBreakIndexes: any[] = [];
+    offsetGroupBreakIndexes = [...groupBreakIndexes].map((breakIndex: number) => breakIndex + newRowCount);
+    groupBreakIndexes = offsetGroupBreakIndexes;
 
-    const groupMinMaxIndexes = [...groupBreakIndexes].reduce((acc: number, cur: number, idx: number, arr: number[]) => {
-        let prevVal = acc + newRowCount;
-        let curVal = cur + newRowCount;
-        if (rowIndex >= prevVal && rowIndex < curVal) {
-            arr.splice(1); // Break out of reduce
-            return { min: prevVal, max: curVal };
-        }
-
-        return cur;
-    });
-
-    // console.log('groupLabels');
-    // console.log(groupLabels);
-    // console.log(`groupIndex min: ${groupMinMaxIndexes.min}, max: ${groupMinMaxIndexes.max}`);
+    const labelRowMinMax = getLabelRowMinMax(rowIndex, groupBreakIndexes, fieldName);
+    // What row should we inject the label on?
+    const labelRowIndexOffset = Math.floor((labelRowMinMax.max - labelRowMinMax.min) / 2);
 
     let groupLabel = (groupLabels.length > 0)
-        ? groupLabels.find((l) => l.rowIndex === groupMinMaxIndexes.min)
+        ? groupLabels.find((l) => l.rowIndex === labelRowMinMax.min)
         : null;
 
     const groupLabelStyle = (groupLabel) ? groupLabel.style : {};
     const groupLabelStr = (groupLabel) ? groupLabel.label : '';
+    const labelDisplay = ((labelRowMinMax.max - labelRowMinMax.min) > 2) ? 'string' : 'icon';
 
-    // What row should we inject the label on?
-    const labelRowIndexOffset = Math.floor((groupMinMaxIndexes.max - groupMinMaxIndexes.min) / 2);
+    const isLabelRow = (groupLabel && rowIndex === groupLabel.rowIndex + labelRowIndexOffset);
 
-    const offsetGroupBreakIndexes = [...groupBreakIndexes].map((breakIndex: number) => breakIndex + labelRowIndexOffset + newRowCount);
-    /* console.log('----------------');
-    console.log(`rowIndex: ${rowIndex}`);
-    console.log('values');
-    console.log(values);
-    // console.log(labelRowIndexOffset);
-    console.log('group');
-    console.log(groupBreakIndexes);
-    console.log('offset');
-    console.log(offsetGroupBreakIndexes);
-    console.log(groupBreakIndexes && offsetGroupBreakIndexes.indexOf(rowIndex));
-    console.log('---------'); */
-
-    const labelDisplay = ((groupMinMaxIndexes.max - groupMinMaxIndexes.min) > 2) ? 'string' : 'icon';
+    if (fieldName && fieldName === DEBUG_FIELDNAME) {
+        console.log(fieldName);
+        console.log('----------------');
+        console.log(`rowIndex: ${rowIndex}`);
+        console.log(`label row index offset: ${labelRowIndexOffset}`);
+        console.log('groupLabels');
+        console.log(groupLabels);
+        console.log(`groupIndex min: ${labelRowMinMax.min}, max: ${labelRowMinMax.max}`);
+        console.log('pre-sort values object keys');
+        console.log(objectKeys);
+        console.log('sorted values object keys');
+        console.log(sortedObjectKeys);
+        console.log('values');
+        console.log(values);
+        console.log('group break indexes');
+        console.log(groupBreakIndexes);
+        if (offsetGroupBreakIndexes.length > 0) {
+            console.log('group break offset indexes');
+            console.log(offsetGroupBreakIndexes);
+            console.log(offsetGroupBreakIndexes.indexOf(rowIndex));
+        }
+        console.log(groupLabelStyle);
+        console.log(groupLabelStr);
+        console.log('---------');
+    }
 
     return (
-        <>
-            {groupBreakIndexes && offsetGroupBreakIndexes.indexOf(rowIndex) > -1 && (
-                <td
-                    style={groupLabelStyle}
-                >
-                    {labelDisplay === 'string' && (
-                    <div className="group-label-vert">
-                        {groupLabelStr}
-                    </div>
-                    )}
-                    {labelDisplay === 'icon' && (
-                    <div className="group-label">
-                        <div style={{ textAlign: 'center' }}><b>{groupLabelStr.slice(0, 1)}</b></div>
-                    </div>
-                    )}
-                </td>
+        <td
+            style={groupLabelStyle}
+        >
+            {isLabelRow && (
+            <>
+                {labelDisplay === 'string' && (
+                <div className="group-label-vert">
+                    {groupLabelStr}
+                </div>
+                )}
+                {labelDisplay === 'icon' && (
+                <div className="group-label">
+                    <div style={{ textAlign: 'center' }}><b>{groupLabelStr.slice(0, 1)}</b></div>
+                </div>
+                )}
+            </>
             )}
-            {groupBreakIndexes && offsetGroupBreakIndexes.indexOf(rowIndex) === -1 && (
-                <td style={groupLabelStyle} />
-            )}
-        </>
+        </td>
     );
 };
 

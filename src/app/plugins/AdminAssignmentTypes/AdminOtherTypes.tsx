@@ -174,19 +174,24 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
                     // expandedRows={[1, 2]}
                     groupBy={{
                         groupByKey: 'isProvincialCode',
-                        valueMapLabels: { 0: 'Custom Roles', 1: 'Default Roles' },
-                        valueMapLabelStyles: {
+                        valueMapLabels: {
                             0: {
-                                width: '3rem',
-                                backgroundColor: '#327AB7',
-                                color: 'white',
-                                border: '1px solid #327AB7'
+                                label: 'Custom Roles',
+                                style: {
+                                    width: '3rem',
+                                    backgroundColor: '#327AB7',
+                                    color: 'white',
+                                    border: '1px solid #327AB7'
+                                }
                             },
                             1: {
-                                width: '3rem',
-                                backgroundColor: '#999',
-                                color: 'white',
-                                border: '1px solid #999'
+                                label: 'Default Roles',
+                                style: {
+                                    width: '3rem',
+                                    backgroundColor: '#999',
+                                    color: 'white',
+                                    border: '1px solid #999'
+                                }
                             }
                         }
                     }}

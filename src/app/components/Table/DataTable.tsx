@@ -144,6 +144,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
             filterable,
             filterRows,
             groupBy,
+
         } = this.props;
 
         const {
@@ -191,9 +192,13 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                         // console.log('DATATABLE FieldArray COMPONENT RENDER COUNT: ' + ARR_RENDER_COUNT);
                         const { fields } = props;
 
-                        const { groupByKey, valueMapLabels, valueMapLabelStyles } = groupBy || { groupByKey: null, valueMapLabels: {}, valueMapLabelStyles: {} };
+                        const { groupByKey, valueMapLabels } = groupBy || { groupByKey: null, valueMapLabels: {} };
 
-                        const aggregates = fields.getAll().reduce((acc: any , cur: any, idx) => {
+                        // This can be undefined, especially when things are just loading up...
+                        // Make sure we use an empty array a a fallback!
+                        const rows = fields.getAll() || [];
+
+                        const aggregates = rows.reduce((acc: any , cur: any, idx) => {
                             const value = cur[groupByKey];
                             if (value === undefined || value === null) return acc;
                             if (!acc.hasOwnProperty(value)) {
@@ -211,7 +216,6 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                         const groupByParams = (groupBy) ? {
                             groupByField: groupByKey,
                             valueMapLabels: valueMapLabels,
-                            valueMapLabelStyles: valueMapLabelStyles,
                             values: { ...aggregates }
                         } : {};
 
@@ -257,7 +261,11 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                             <>
                                                 <tr key={index}>
                                                     {groupBy && (
+                                                        <>
+                                                        {/* <DataTableGroupBy fieldName={fieldName} newRowCount={newRowCount} rowIndex={index} params={groupByParams} /> */}
+                                                        {/* Add fieldName prop to enable debugging logs */}
                                                         <DataTableGroupBy newRowCount={newRowCount} rowIndex={index} params={groupByParams} />
+                                                        </>
                                                     )}
                                                     {expandable && (
                                                         <td>
