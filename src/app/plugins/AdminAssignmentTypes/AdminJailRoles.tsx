@@ -288,10 +288,15 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
         }));
 
         if (!(currentLocation === 'ALL_LOCATIONS' || currentLocation === '')) {
-            jailRoles = jailRoles.map((c: Partial<JailRoleCode>) => ({
-                ...c,
-                locationId: (!c.id && c.isProvincialCode === '1') ? null : currentLocation
-            }));
+            jailRoles = jailRoles.map((c: Partial<JailRoleCode>) => {
+                const isNewRow = !c.id;
+                if (isNewRow) {
+                    const locationId = (c.isProvincialCode !== '1') ? currentLocation : null;
+                    return { ...c, locationId: locationId };
+                } else {
+                    return { ...c };
+                }
+            });
         }
 
         return Promise.all([

@@ -127,11 +127,11 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps & ManageAssignm
                         templateComponent={WorkSectionsLayout}
                         showTabs={false}
                         plugins={[
-                            new AdminCourtroomsPlugin(),
+                            // new AdminCourtroomsPlugin(),
                             new AdminCourtRolesPlugin(),
-                            new AdminJailRolesPlugin(),
-                            new AdminEscortTypesPlugin(),
-                            new AdminOtherTypesPlugin()
+                            // new AdminJailRolesPlugin(),
+                            // new AdminEscortTypesPlugin(),
+                            // new AdminOtherTypesPlugin()
                         ]}
                         isEditing={isEditing}
                         selectedSection={selectedSection}

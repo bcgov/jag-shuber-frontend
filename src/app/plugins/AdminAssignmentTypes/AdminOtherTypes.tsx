@@ -287,10 +287,15 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
         }));
 
         if (!(currentLocation === 'ALL_LOCATIONS' || currentLocation === '')) {
-            otherTypes = otherTypes.map((c: Partial<OtherType>) => ({
-                ...c,
-                locationId: (!c.id && c.isProvincialCode === '1') ? null : currentLocation
-            }));
+            otherTypes = otherTypes.map((c: Partial<OtherType>) => {
+                const isNewRow = !c.id;
+                if (isNewRow) {
+                    const locationId = (c.isProvincialCode !== '1') ? currentLocation : null;
+                    return { ...c, locationId: locationId };
+                } else {
+                    return { ...c };
+                }
+            });
         }
 
         return Promise.all([

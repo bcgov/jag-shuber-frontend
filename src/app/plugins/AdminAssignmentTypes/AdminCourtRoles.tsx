@@ -286,10 +286,15 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
         }));
 
         if (!(currentLocation === 'ALL_LOCATIONS' || currentLocation === '')) {
-            courtRoles = courtRoles.map((c: Partial<CourtRoleCode>) => ({
-                ...c,
-                locationId: (!c.id && c.isProvincialCode === '1') ? null : currentLocation
-            }));
+            courtRoles = courtRoles.map((c: Partial<CourtRoleCode>) => {
+                const isNewRow = !c.id;
+                if (isNewRow) {
+                    const locationId = (c.isProvincialCode !== '1') ? currentLocation : null;
+                    return { ...c, locationId: locationId };
+                } else {
+                    return { ...c };
+                }
+            });
         }
 
         return Promise.all([

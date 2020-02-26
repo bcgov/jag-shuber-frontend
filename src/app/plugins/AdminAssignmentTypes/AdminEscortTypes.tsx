@@ -294,10 +294,15 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
         }));
 
         if (!(currentLocation === 'ALL_LOCATIONS' || currentLocation === '')) {
-            escortTypes = escortTypes.map((c: Partial<EscortType>) => ({
-                ...c,
-                locationId: (!c.id && c.isProvincialCode === '1') ? null : currentLocation
-            }));
+            escortTypes = escortTypes.map((c: Partial<EscortType>) => {
+                const isNewRow = !c.id;
+                if (isNewRow) {
+                    const locationId = (c.isProvincialCode !== '1') ? currentLocation : null;
+                    return { ...c, locationId: locationId };
+                } else {
+                    return { ...c };
+                }
+            });
         }
 
         return Promise.all([
