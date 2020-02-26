@@ -18,9 +18,7 @@ class AlternateAssignmentTypeList extends React.PureComponent<
 
     render() {
         const { alternateAssignmentTypes = [], ...rest } = this.props;
-        const selectorValues = alternateAssignmentTypes.map(
-            (type) => ({ key: type.code, value: type.description })
-        );
+        const selectorValues = alternateAssignmentTypes.map(type => ({ key: type.id as string, value: type.description as string }));
         return (
             <Selector
                 data={selectorValues}
