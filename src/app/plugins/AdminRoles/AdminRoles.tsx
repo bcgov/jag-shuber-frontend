@@ -194,7 +194,7 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
             <RoleFrontendScopesDataTable
                 fieldName={`${this.formFieldNames.roleFrontendScopesGrouped}['${parentModelId}']`}
                 title={''} // Leave this blank
-                buttonLabel={'Grant Component Access'}
+                buttonLabel={'Grant Application Access'}
                 displayHeaderActions={true}
                 displayHeaderSave={false}
                 actionsColumn={DataTable.ActionsColumn({
