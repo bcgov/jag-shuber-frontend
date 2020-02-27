@@ -160,12 +160,6 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
     title: string = 'Register Components';
 
     DetailComponent: React.SFC<DetailComponentProps> = ({ parentModelId }) => {
-        const onButtonClicked = (ev: React.SyntheticEvent<{}>, context: any, model: any) => {
-            // TODO: Check on this!
-            // Executes in DataTable's context
-            context.setActiveRow(model.id);
-        };
-
         // If parentModelId is not supplied, the parent component is in a 'new' state, and its data has not been saved
         // Don't render the detail component
         if (!parentModelId) return null;
@@ -212,7 +206,7 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
     }
 
     FormComponent = (props: FormContainerProps<AdminFrontendScopesProps>) => {
-        const onButtonClicked = (ev: React.SyntheticEvent<any>, context: any, model: any) => {
+        const onButtonClicked = (ev: React.SyntheticEvent<{}>, context: any, model: any) => {
             // TODO: Check on this!
             // Executes in DataTable's context
             context.setActiveRow(model.id);

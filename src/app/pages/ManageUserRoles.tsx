@@ -92,7 +92,7 @@ class ManageUserRoles extends React.PureComponent<AdminFormProps & Partial<Manag
                         backgroundColor: 'white',
                         flexDirection: 'column',
                         flex: '1 1',
-                        maxWidth: '100%',
+                        maxWidth: '95%',
                         minWidth: 800,
                         height: 'max-content',
                         margin: '0 auto',

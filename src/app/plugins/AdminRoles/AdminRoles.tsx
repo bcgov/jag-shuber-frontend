@@ -1,5 +1,7 @@
 import React from 'react';
 import {
+    Col,
+    Row, Tab,
     Table
 } from 'react-bootstrap';
 import {
@@ -71,6 +73,7 @@ import {
 
 import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../components/Table/DataTable';
 import AdminRoleScopeAccessModal from './components/AdminRoleScopeAccessModal';
+import AdminEffectivePermissionsModal from './components/AdminEffectivePermissionsModal';
 
 // import RoleSelector from './RoleSelector';
 // import FrontendScopeDisplay from './FrontendScopeDisplay';
@@ -81,10 +84,13 @@ import ApiScopeCodeDisplay from './containers/ApiScopeCodeDisplay';
 import ApiScopeDescriptionDisplay from './containers/ApiScopeDescriptionDisplay';
 import FrontendScopeSelector from './containers/FrontendScopeSelector';
 import ApiScopeSelector from './containers/ApiScopeSelector';
+
 import { RoleFrontendScopePermission } from '../../api/Api';
+
 import DeleteRow from '../../components/TableColumnActions/DeleteRow';
 import RemoveRow from '../../components/TableColumnActions/RemoveRow';
 import ExpireRow from '../../components/TableColumnActions/ExpireRow';
+import PageTitle from '../../containers/PageTitle';
 
 export interface AdminRolesProps extends FormContainerProps {
     roles?: {}[];
@@ -187,40 +193,43 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
         if (!parentModelId) return null;
 
         return (
-            <>
-                <RoleFrontendScopesDataTable
-                    fieldName={`${this.formFieldNames.roleFrontendScopesGrouped}['${parentModelId}']`}
-                    title={''} // Leave this blank
-                    buttonLabel={'Grant Application Access'}
-                    displayHeaderActions={true}
-                    displayHeaderSave={false}
-                    actionsColumn={DataTable.ActionsColumn({
-                        actions: [
-                            ({ fields, index, model }) => <DeleteRow fields={fields} index={index} model={model} />,
-                            // ({ fields, index, model }) => { return (model && model.id) ? (<ExpireRow fields={fields} index={index} model={model} />) : null; }
-                        ]
-                    })}
-                    columns={[
-                        DataTable.SelectorFieldColumn('Application Access', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: FrontendScopeSelector, displayInfo: true, disabled: true }),
-                        DataTable.MappedTextColumn('Component Code', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: FrontendScopeCodeDisplay, displayInfo: true }),
-                        DataTable.MappedTextColumn('Description', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: FrontendScopeDescriptionDisplay, displayInfo: false }),
-                        DataTable.StaticTextColumn('Assigned By', { fieldName: 'createdBy', colStyle: { width: '200px' }, displayInfo: false }),
-                        DataTable.StaticDateColumn('Date Assigned', { fieldName: 'createdDtm', colStyle: { width: '200px' }, displayInfo: false }),
-                        DataTable.ButtonColumn('Configure Access', 'list', { displayInfo: true }, onButtonClicked)
-                    ]}
-
-                    rowComponent={EmptyDetailRow}
-                    initialValue={{
-                        roleId: parentModelId
-                    }}
-                    modalProps={{ roleId: parentModelId }}
-                    modalComponent={AdminRoleScopeAccessModal}
-                />
-            </>
+            <RoleFrontendScopesDataTable
+                fieldName={`${this.formFieldNames.roleFrontendScopesGrouped}['${parentModelId}']`}
+                title={''} // Leave this blank
+                buttonLabel={'Grant Component Access'}
+                displayHeaderActions={true}
+                displayHeaderSave={false}
+                actionsColumn={DataTable.ActionsColumn({
+                    actions: [
+                        ({ fields, index, model }) => <DeleteRow fields={fields} index={index} model={model} />,
+                        // ({ fields, index, model }) => { return (model && model.id) ? (<ExpireRow fields={fields} index={index} model={model} />) : null; }
+                    ]
+                })}
+                columns={[
+                    DataTable.SelectorFieldColumn('Application Access', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: FrontendScopeSelector, displayInfo: true, disabled: true }),
+                    DataTable.MappedTextColumn('Component Code', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: FrontendScopeCodeDisplay, displayInfo: false }),
+                    DataTable.MappedTextColumn('Description', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: FrontendScopeDescriptionDisplay, displayInfo: false }),
+                    DataTable.StaticTextColumn('Assigned By', { fieldName: 'createdBy', colStyle: { width: '200px' }, displayInfo: false }),
+                    DataTable.StaticDateColumn('Date Assigned', { fieldName: 'createdDtm', colStyle: { width: '200px' }, displayInfo: false }),
+                    DataTable.ButtonColumn('Configure Access', 'list', { displayInfo: true }, onButtonClicked)
+                ]}
+                rowComponent={EmptyDetailRow}
+                initialValue={{
+                    roleId: parentModelId
+                }}
+                modalProps={{ roleId: parentModelId }}
+                modalComponent={AdminRoleScopeAccessModal}
+            />
         );
     }
 
     FormComponent = (props: FormContainerProps<AdminRolesProps>) => {
+        const onButtonClicked = (ev: React.SyntheticEvent<any>, context: any, model: any) => {
+            // TODO: Check on this!
+            // Executes in DataTable's context
+            context.setActiveRow(model.id);
+        };
+
         // TODO: We need to find a way to make sorting on multiple columns work, which probably involves figuring how to grab all the field values at once...
         const onFilterRoleName = (event: Event, newValue: any, previousValue: any, name: string) => {
             const { setPluginFilters } = props;
@@ -311,6 +320,7 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
                         DataTable.StaticTextColumn('Created By', { fieldName: 'createdBy', colStyle: { width: '200px' }, displayInfo: false, filterable: true, filterColumn: onFilterCreatedBy }),
                         DataTable.StaticDateColumn('Date Created', { fieldName: 'createdDtm', colStyle: { width: '200px' }, displayInfo: false, filterable: true, filterColumn: onFilterCreatedDate }),
+                        DataTable.ButtonColumn('Effective Permissions', 'list', { displayInfo: true }, onButtonClicked),
                         // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
 
                     ]}
@@ -318,7 +328,7 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
                     expandable={true}
                     // expandedRows={[1, 2]}
                     rowComponent={this.DetailComponent}
-                    modalComponent={EmptyDetailRow}
+                    modalComponent={AdminEffectivePermissionsModal}
                 />
             </div>
         );
