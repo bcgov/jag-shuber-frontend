@@ -80,7 +80,8 @@ import { RoleFrontendScopePermission } from '../../api/Api';
 
 // THESE ROLES ARE REQUIRED BY THE SYSTEM FOR BASIC API ACCESS, THEY APPLY TO ALL USERS
 // TODO: Make this configurable in OpenShift!
-const SYSTEM_ROLE_ID = 'e6f71aaf-c7e5-4655-9979-c8721dcea848';
+// const SYSTEM_ROLE_ID = 'e6f71aaf-c7e5-4655-9979-c8721dcea848'; // LOCAL
+const SYSTEM_ROLE_ID = '19d900f6-a0ed-40a4-9685-8fe0b185123e'; // TEST
 
 export interface AdminFrontendScopesProps extends FormContainerProps {
     roles?: {}[];
@@ -161,7 +162,7 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
         roleFrontendScopesGrouped: 'roles.roleFrontendScopesGrouped',
         rolePermissionsGrouped: 'roles.rolePermissions',
         roleApiPermissionsGrouped: 'roles.roleApiPermissionsGrouped',
-        roleFrontendPermissionsGrouped: 'roles.roleFrontendPermissionsGrouped',
+        roleFrontendPermissionsGrouped: 'roles.roleFrontendPermissionsGro`uped',
         roleApiScopePermissionsGrouped: 'roles.roleApiScopePermissionsGrouped',
         roleFrontendScopePermissionsGrouped: 'roles.roleFrontendScopePermissionsGrouped'
     };

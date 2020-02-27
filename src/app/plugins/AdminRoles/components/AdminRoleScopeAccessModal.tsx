@@ -51,7 +51,7 @@ export default class AdminRoleScopeAccessModal extends React.Component<AdminRole
                         <>
                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                                    <Field
+                                    {/* <Field
                                         name={`component`}
                                         component={(p) => <SelectorField
                                             {...p}
@@ -59,13 +59,12 @@ export default class AdminRoleScopeAccessModal extends React.Component<AdminRole
                                             // TODO: Provide this via props or something so we can use custom codes...
                                             SelectorComponent={
                                                 (sp) =>
-                                                    // TODO: Actually make this work
-                                                    <FrontendScopeSelector {...sp} value={parentModel.scopeId} />
+                                                    {parentModel.scopeId} />
                                                 }
                                         />}
                                         label={'Choose Scope (Component / API)'}
                                     >
-                                    </Field>
+                                    </Field> */}
                                     {/* This wrapper just adds equal spacing to the previous form group */}
                                     {/* TODO: Where are the spacing utils? */}
                                     <div className="form-group" style={{ marginLeft: '0.5rem' }}>
