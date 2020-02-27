@@ -188,45 +188,10 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
 
         return (
             <>
-                <RoleApiScopesDataTable
-                    fieldName={`${this.formFieldNames.roleApiScopesGrouped}['${parentModelId}']`}
-                    title={''} // Leave this blank
-                    buttonLabel={'Add Authorization Scope'}
-                    displayHeaderActions={true}
-                    displayHeaderSave={false}
-                    actionsColumn={DataTable.ActionsColumn({
-                        actions: [
-                            ({ fields, index, model }) => {
-                                return (model && model.id && model.id !== '')
-                                    ? (<DeleteRow fields={fields} index={index} model={model} />)
-                                    : null;
-                            },
-                            ({ fields, index, model }) => {
-                            return (model && !model.id || model && model.id === '')
-                                    ? (<RemoveRow fields={fields} index={index} model={model} />)
-                                    : null;
-                            }
-                        ]
-                    })}
-                    columns={[
-                        DataTable.SelectorFieldColumn('Authorization Scope', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: ApiScopeSelector, displayInfo: true }),
-                        DataTable.MappedTextColumn('Scope Code', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: ApiScopeCodeDisplay, displayInfo: false }),
-                        DataTable.MappedTextColumn('Description', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: ApiScopeDescriptionDisplay, displayInfo: false }),
-                        DataTable.StaticTextColumn('Assigned By', { fieldName: 'createdBy', colStyle: { width: '200px' }, displayInfo: false }),
-                        DataTable.StaticDateColumn('Date Assigned', { fieldName: 'createdDtm', colStyle: { width: '350px' }, displayInfo: false }),
-                        // DataTable.ButtonColumn('Configure Access', 'eye-open', { displayInfo: true }, onButtonClicked),
-                    ]}
-                    rowComponent={EmptyDetailRow}
-                    initialValue={{
-                        roleId: parentModelId
-                    }}
-                    modalProps={{ roleId: parentModelId }}
-                    modalComponent={AdminRoleScopeAccessModal}
-                />
                 <RoleFrontendScopesDataTable
                     fieldName={`${this.formFieldNames.roleFrontendScopesGrouped}['${parentModelId}']`}
                     title={''} // Leave this blank
-                    buttonLabel={'Grant Component Access'}
+                    buttonLabel={'Grant Application Access'}
                     displayHeaderActions={true}
                     displayHeaderSave={false}
                     actionsColumn={DataTable.ActionsColumn({
@@ -236,8 +201,8 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
                         ]
                     })}
                     columns={[
-                        DataTable.SelectorFieldColumn('Component Access', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: FrontendScopeSelector, displayInfo: true, disabled: true }),
-                        DataTable.MappedTextColumn('Component Code', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: FrontendScopeCodeDisplay, displayInfo: false }),
+                        DataTable.SelectorFieldColumn('Application Access', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: FrontendScopeSelector, displayInfo: true, disabled: true }),
+                        DataTable.MappedTextColumn('Component Code', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: FrontendScopeCodeDisplay, displayInfo: true }),
                         DataTable.MappedTextColumn('Description', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: FrontendScopeDescriptionDisplay, displayInfo: false }),
                         DataTable.StaticTextColumn('Assigned By', { fieldName: 'createdBy', colStyle: { width: '200px' }, displayInfo: false }),
                         DataTable.StaticDateColumn('Date Assigned', { fieldName: 'createdDtm', colStyle: { width: '200px' }, displayInfo: false }),
@@ -346,7 +311,7 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
                         DataTable.StaticTextColumn('Created By', { fieldName: 'createdBy', colStyle: { width: '200px' }, displayInfo: false, filterable: true, filterColumn: onFilterCreatedBy }),
                         DataTable.StaticDateColumn('Date Created', { fieldName: 'createdDtm', colStyle: { width: '200px' }, displayInfo: false, filterable: true, filterColumn: onFilterCreatedDate }),
-                        DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
+                        // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
 
                     ]}
                     filterable={true}
