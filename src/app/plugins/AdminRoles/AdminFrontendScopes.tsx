@@ -25,7 +25,11 @@ import {
     deleteRoleFrontendScopes,
     deleteRoleApiScopes,
     deleteRoles,
-    createOrUpdateRoles, createOrUpdateRoleFrontendScopes, createOrUpdateRolePermissions, createOrUpdateRoleApiScopes
+    createOrUpdateRoles,
+    createOrUpdateRoleFrontendScopes,
+    createOrUpdateRolePermissions,
+    createOrUpdateRoleApiScopes,
+    getRoles, getApiScopes, getRoleFrontendScopes, getRoleApiScopes, getRolePermissions
 } from '../../modules/roles/actions';
 
 import { RootState } from '../../store';
@@ -73,6 +77,10 @@ import AdminRoleScopeAccessModal from './components/AdminRoleScopeAccessModal';
 import FrontendScopeCodeDisplay from './containers/FrontendScopeCodeDisplay';
 import FrontendScopeDescriptionDisplay from './containers/FrontendScopeDescriptionDisplay';
 import { RoleFrontendScopePermission } from '../../api/Api';
+
+// THESE ROLES ARE REQUIRED BY THE SYSTEM FOR BASIC API ACCESS, THEY APPLY TO ALL USERS
+// TODO: Make this configurable in OpenShift!
+const SYSTEM_ROLE_ID = 'e6f71aaf-c7e5-4655-9979-c8721dcea848';
 
 export interface AdminFrontendScopesProps extends FormContainerProps {
     roles?: {}[];
@@ -160,6 +168,12 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
     title: string = 'Register Components';
 
     DetailComponent: React.SFC<DetailComponentProps> = ({ parentModelId }) => {
+        // TODO: Add this to a README!
+        // Effective Permissions for any user are at a minimum the SYSTEM_ROLES required for basic application usage
+        // The application will not function without these roles as it will not be able to read any data
+        // parentModelId = parentModelId ? parentModelId : SYSTEM_ROLE_ID;
+        parentModelId = SYSTEM_ROLE_ID;
+
         // If parentModelId is not supplied, the parent component is in a 'new' state, and its data has not been saved
         // Don't render the detail component
         if (!parentModelId) return null;
@@ -288,8 +302,14 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
     }
 
     fetchData(dispatch: Dispatch<{}>, filters: {} | undefined) {
+        dispatch(getRoles()); // This data needs to always be available for select lists
         dispatch(getFrontendScopes()); // This data needs to always be available for select lists
         dispatch(getFrontendScopePermissions()); // This data needs to always be available for select lists
+        dispatch(getApiScopes()); // This data needs to always be available for select lists
+        // TODO: Only load these if we're expanding the grid...
+        dispatch(getRoleFrontendScopes());
+        dispatch(getRoleApiScopes());
+        dispatch(getRolePermissions());
     }
 
     getData(state: RootState, filters: any | undefined) {

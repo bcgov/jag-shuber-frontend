@@ -501,15 +501,6 @@ fieldset.with-border {
   top: -15px;
 }
 
-/* Override user agent styling */
-input,
-select,
-textarea {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-}
-
 select.form-control {
   border-radius: 5px;
 }

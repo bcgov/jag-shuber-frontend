@@ -108,9 +108,7 @@ export interface AdminRolesProps extends FormContainerProps {
     roleApiScopePermissionsGrouped?: {};
 }
 
-export interface AdminRolesDisplayProps extends FormContainerProps {
-
-}
+export interface AdminRolesDisplayProps extends FormContainerProps {}
 
 class AdminRolesDisplay extends React.PureComponent<AdminRolesDisplayProps, {}> {
     render() {

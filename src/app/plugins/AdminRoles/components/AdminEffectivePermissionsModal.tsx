@@ -62,7 +62,7 @@ export default class AdminEffectivePermissionsModal extends React.Component<Admi
         const { isDefaultTemplate = false, isOpen, parentModel } = this.props;
         const title = `View Effective Permissions`; // TODO: Auto switch text between 'Component' and 'API'
 
-        const parentModelId = parentModel.id ? parentModel.id : null;
+        const parentModelId = parentModel.id ? parentModel.id : null
 
         return (
             <div>
