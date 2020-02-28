@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+    Button, Glyphicon,
     Table
 } from 'react-bootstrap';
 import {
@@ -221,10 +222,13 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
     }
 
     FormComponent = (props: FormContainerProps<AdminFrontendScopesProps>) => {
-        const onButtonClicked = (ev: React.SyntheticEvent<{}>, context: any, model: any) => {
-            // TODO: Check on this!
+        // We can't use React hooks yet, and not sure if this project will ever be upgraded to 16.8
+        // This is a quick n' dirty way to achieve the same thing
+        let dataTableInstance: any;
+
+        const onButtonClicked = (ev: React.SyntheticEvent<{}>, context?: any, model?: any) => {
             // Executes in DataTable's context
-            context.setActiveRow(model.id);
+            if (model) context.setActiveRow(model.id);
         };
 
         const onFilterName = (event: Event, newValue: any, previousValue: any, name: string) => {
@@ -262,6 +266,7 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
         return (
             <div>
                 <DataTable
+                    ref={(dt) => dataTableInstance = dt}
                     fieldName={this.formFieldNames.frontendScopes}
                     filterFieldName={(this.filterFieldNames) ? `${this.filterFieldNames.frontendScopes}` : undefined}
                     title={''} // Leave this blank
@@ -270,6 +275,15 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
                     onResetClicked={onResetFilters}
                     actionsColumn={DataTable.ActionsColumn({
                         actions: [
+                            ({ fields, index, model }) => {
+                                return (model && model.id && model.id !== '')
+                                    ? (
+                                        <Button bsStyle="primary" onClick={(ev) => onButtonClicked(ev, dataTableInstance, model)}>
+                                            <Glyphicon glyph="lock" />
+                                        </Button>
+                                    )
+                                    : null;
+                            },
                             ({ fields, index, model }) => <DeleteRow fields={fields} index={index} model={model} />,
                             // ({ fields, index, model }) => { return (model && model.id) ? (<ExpireRow fields={fields} index={index} model={model} />) : null; }
                         ]
@@ -278,7 +292,7 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
                         DataTable.TextFieldColumn('Component', { fieldName: 'scopeName', displayInfo: true, filterable: true, filterColumn: onFilterName }),
                         DataTable.TextFieldColumn('Code', { fieldName: 'scopeCode', displayInfo: true, filterable: true, filterColumn: onFilterCode }),
                         DataTable.TextFieldColumn('Description', { fieldName: 'description', colStyle: { width: '300px' }, displayInfo: false }),
-                        DataTable.ButtonColumn('Define Permissions', 'list', { displayInfo: true }, onButtonClicked)
+                        // DataTable.ButtonColumn('Define Permissions', 'list', { displayInfo: true }, onButtonClicked)
                     ]}
                     filterable={true}
                     expandable={true}
