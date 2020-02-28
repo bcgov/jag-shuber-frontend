@@ -1,6 +1,7 @@
 import React from 'react';
 import {
-    Col,
+    Button,
+    Col, Glyphicon,
     Row, Tab,
     Table
 } from 'react-bootstrap';
@@ -180,10 +181,13 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
     };
     title: string = ' Manage Roles & Access';
     DetailComponent: React.SFC<DetailComponentProps> = ({ parentModelId }) => {
-        const onButtonClicked = (ev: React.SyntheticEvent<{}>, context: any, model: any) => {
-            // TODO: Check on this!
+        // We can't use React hooks yet, and not sure if this project will ever be upgraded to 16.8
+        // This is a quick n' dirty way to achieve the same thing
+        let dataTableInstance: any;
+
+        const onButtonClicked = (ev: React.SyntheticEvent<{}>, context?: any, model?: any) => {
             // Executes in DataTable's context
-            context.setActiveRow(model.id);
+            if (model) context.setActiveRow(model.id);
         };
 
         // If parentModelId is not supplied, the parent component is in a 'new' state, and its data has not been saved
@@ -192,6 +196,7 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
 
         return (
             <RoleFrontendScopesDataTable
+                ref={(dt) => dataTableInstance = dt}
                 fieldName={`${this.formFieldNames.roleFrontendScopesGrouped}['${parentModelId}']`}
                 title={''} // Leave this blank
                 buttonLabel={'Grant Application Access'}
@@ -199,6 +204,15 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
                 displayHeaderSave={false}
                 actionsColumn={DataTable.ActionsColumn({
                     actions: [
+                        ({ fields, index, model }) => {
+                            return (model && model.id && model.id !== '')
+                                ? (
+                                    <Button bsStyle="primary" onClick={(ev) => onButtonClicked(ev, dataTableInstance, model)}>
+                                        <Glyphicon glyph="wrench" />
+                                    </Button>
+                                )
+                                : null;
+                        },
                         ({ fields, index, model }) => <DeleteRow fields={fields} index={index} model={model} />,
                         // ({ fields, index, model }) => { return (model && model.id) ? (<ExpireRow fields={fields} index={index} model={model} />) : null; }
                     ]
@@ -209,7 +223,7 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
                     DataTable.MappedTextColumn('Description', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: FrontendScopeDescriptionDisplay, displayInfo: false }),
                     DataTable.StaticTextColumn('Assigned By', { fieldName: 'createdBy', colStyle: { width: '200px' }, displayInfo: false }),
                     DataTable.StaticDateColumn('Date Assigned', { fieldName: 'createdDtm', colStyle: { width: '200px' }, displayInfo: false }),
-                    DataTable.ButtonColumn('Configure Access', 'list', { displayInfo: true }, onButtonClicked)
+                    // DataTable.ButtonColumn('Configure Access', 'list', { displayInfo: true }, onButtonClicked)
                 ]}
                 rowComponent={EmptyDetailRow}
                 initialValue={{
@@ -222,10 +236,13 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
     }
 
     FormComponent = (props: FormContainerProps<AdminRolesProps>) => {
-        const onButtonClicked = (ev: React.SyntheticEvent<any>, context: any, model: any) => {
-            // TODO: Check on this!
+        // We can't use React hooks yet, and not sure if this project will ever be upgraded to 16.8
+        // This is a quick n' dirty way to achieve the same thing
+        let dataTableInstance: any;
+
+        const onButtonClicked = (ev: React.SyntheticEvent<any>, context?: any, model?: any) => {
             // Executes in DataTable's context
-            context.setActiveRow(model.id);
+            if (model) context.setActiveRow(model.id);
         };
 
         // TODO: We need to find a way to make sorting on multiple columns work, which probably involves figuring how to grab all the field values at once...
@@ -289,6 +306,7 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
         return (
             <div>
                 <RolesDataTable
+                    ref={(dt) => dataTableInstance = dt}
                     fieldName={this.formFieldNames.roles}
                     filterFieldName={(this.filterFieldNames) ? `${this.filterFieldNames.roles}` : undefined}
                     title={''} // Leave this blank
@@ -299,6 +317,15 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
                     displayActionsColumn={true}
                     actionsColumn={DataTable.ActionsColumn({
                         actions: [
+                            ({ fields, index, model }) => {
+                                return (model && model.id && model.id !== '')
+                                    ? (
+                                        <Button bsStyle="default" onClick={(ev) => onButtonClicked(ev, dataTableInstance, model)}>
+                                            <Glyphicon glyph="lock" />
+                                        </Button>
+                                    )
+                                    : null;
+                            },
                             ({ fields, index, model }) => {
                                 return (model && model.id && model.id !== '')
                                     ? (<DeleteRow fields={fields} index={index} model={model} />)
@@ -318,7 +345,7 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
                         DataTable.StaticTextColumn('Created By', { fieldName: 'createdBy', colStyle: { width: '200px' }, displayInfo: false, filterable: true, filterColumn: onFilterCreatedBy }),
                         DataTable.StaticDateColumn('Date Created', { fieldName: 'createdDtm', colStyle: { width: '200px' }, displayInfo: false, filterable: true, filterColumn: onFilterCreatedDate }),
-                        DataTable.ButtonColumn('Effective Permissions', 'list', { displayInfo: true }, onButtonClicked),
+                        // DataTable.ButtonColumn('Effective Permissions', 'list', { displayInfo: true }, onButtonClicked),
                         // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
 
                     ]}
