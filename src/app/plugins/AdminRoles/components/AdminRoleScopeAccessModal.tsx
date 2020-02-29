@@ -19,6 +19,7 @@ export interface AdminRoleScopeAccessModalProps {
     roleId?: any;
     parentModel?: any;
     parentModelId?: any;
+    onClose?: () => void;
 }
 
 export default class AdminRoleScopeAccessModal extends React.Component<AdminRoleScopeAccessModalProps>{
@@ -31,7 +32,10 @@ export default class AdminRoleScopeAccessModal extends React.Component<AdminRole
     handleClose = (e: React.SyntheticEvent<any>) => {
         e.preventDefault();
         e.stopPropagation();
-        return (this.modalWrapper) ? this.modalWrapper.handleClose() : undefined;
+
+        const { onClose } = this.props;
+
+        return (this.modalWrapper) ? this.modalWrapper.handleClose(onClose) : undefined;
     }
 
     // @ts-ignore

@@ -28,6 +28,7 @@ export interface AdminEffectivePermissionsModalProps {
     isDefaultTemplate?: boolean;
     parentModel?: any;
     parentModelId?: any;
+    onClose?: () => void;
 }
 
 export default class AdminEffectivePermissionsModal extends React.Component<AdminEffectivePermissionsModalProps> {
@@ -54,15 +55,18 @@ export default class AdminEffectivePermissionsModal extends React.Component<Admi
     handleClose = (e: React.SyntheticEvent<any>) => {
         e.preventDefault();
         e.stopPropagation();
-        return (this.modalWrapper) ? this.modalWrapper.handleClose() : undefined;
+
+        const { onClose } = this.props;
+
+        return (this.modalWrapper) ? this.modalWrapper.handleClose(onClose) : undefined;
     }
 
     // @ts-ignore
     render() {
-        const { isDefaultTemplate = false, isOpen, parentModel } = this.props;
+        const { isDefaultTemplate = false, isOpen, onClose, parentModel } = this.props;
         const title = `View Effective Permissions`; // TODO: Auto switch text between 'Component' and 'API'
 
-        const parentModelId = parentModel.id ? parentModel.id : null
+        const parentModelId = parentModel.id ? parentModel.id : null;
 
         return (
             <div>
@@ -71,6 +75,7 @@ export default class AdminEffectivePermissionsModal extends React.Component<Admi
                     styleClassName="modal-wrapper-medium"
                     showButton={() => null}
                     isOpen={isOpen}
+                    onClose={onClose}
                     title={title}
                     body={({ handleClose }: any) => (
                         <>

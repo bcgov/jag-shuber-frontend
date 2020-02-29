@@ -119,6 +119,11 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
         });
     }
 
+    getModalState(fieldModel: any) {
+        const { activeRowId } = this.state;
+        return activeRowId && (activeRowId === fieldModel.id);
+    }
+
     // @ts-ignore
     render() {
         const componentInstance = this;
@@ -149,8 +154,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
 
         const {
             expandedRows,
-            isModalOpen,
-            activeRowId
+            isModalOpen
         } = this.state;
 
         // return (<div>This would be the Table</div>);
@@ -346,7 +350,8 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                                     </tr>
                                                 )}
                                                 <ModalComponent
-                                                    isOpen={activeRowId && (activeRowId === fieldModel.id)}
+                                                    isOpen={this.getModalState(fieldModel)}
+                                                    onClose={() => this.setActiveRow(null)}
                                                     {...modalProps}
                                                     parentModel={fieldModel}
                                                     parentModelId={fieldModel.id}
