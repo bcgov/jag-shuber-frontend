@@ -33,6 +33,7 @@ import {
     Role,
     RolePermission,
     FrontendScope,
+    FrontendScopeApi,
     FrontendScopePermission,
     ApiScope,
     RoleFrontendScope,
@@ -821,6 +822,39 @@ export default class Client implements API {
     async deleteFrontendScopes(ids: IdType[]): Promise<void> {
         if (ids.length > 0) {
              ids.forEach(id => this._client.DeleteFrontendScope(id));
+        }
+
+        return Promise.resolve();
+    }
+
+    async getFrontendScopeApis(): Promise<FrontendScopeApi[]> {
+        const list = await this._client.GetFrontendScopeApis();
+        return list as FrontendScopeApi[];
+    }
+
+    async getFrontendScopeApi(): Promise<FrontendScopeApi> {
+        return {} as FrontendScopeApi;
+    }
+
+    async createFrontendScopeApi(permission: FrontendScopeApi): Promise<FrontendScopeApi> {
+        return await this._client.CreateFrontendScopeApi(permission) as FrontendScopeApi;
+    }
+
+    async updateFrontendScopeApi(permission: FrontendScopeApi): Promise<FrontendScopeApi> {
+        const { id } = permission;
+        if (!id) {
+            throw 'No Id included in the frontendScopeApi to update';
+        }
+        return await this._client.UpdateFrontendScopeApi(id, permission) as FrontendScopeApi;
+    }
+
+    async deleteFrontendScopeApi(permissionId: IdType): Promise<void> {
+        return await this._client.DeleteFrontendScopeApi(permissionId);
+    }
+
+     async deleteFrontendScopeApis(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.DeleteFrontendScopeApi(id));
         }
 
         return Promise.resolve();

@@ -15,22 +15,29 @@ import {
 } from '../../api';
 
 import {
+    getRoles,
+    getApiScopes,
+    getRoleFrontendScopes,
+    getRoleApiScopes,
+    getRolePermissions,
     getFrontendScopes,
+    getFrontendScopeApis,
     getFrontendScopePermissions,
-    createOrUpdateFrontendScopes,
-    createOrUpdateFrontendScopePermissions,
-    deleteFrontendScopes,
-    deleteFrontendScopePermissions,
-    setAdminRolesPluginFilters,
-    deleteRolePermissions,
-    deleteRoleFrontendScopes,
-    deleteRoleApiScopes,
-    deleteRoles,
     createOrUpdateRoles,
     createOrUpdateRoleFrontendScopes,
     createOrUpdateRolePermissions,
     createOrUpdateRoleApiScopes,
-    getRoles, getApiScopes, getRoleFrontendScopes, getRoleApiScopes, getRolePermissions
+    createOrUpdateFrontendScopes,
+    createOrUpdateFrontendScopeApis,
+    createOrUpdateFrontendScopePermissions,
+    deleteFrontendScopes,
+    deleteFrontendScopeApis,
+    deleteFrontendScopePermissions,
+    deleteRolePermissions,
+    deleteRoleFrontendScopes,
+    deleteRoleApiScopes,
+    deleteRoles,
+    setAdminRolesPluginFilters
 } from '../../modules/roles/actions';
 
 import { RootState } from '../../store';
@@ -38,8 +45,12 @@ import { RootState } from '../../store';
 import {
     getAllFrontendScopePermissions,
     getAllFrontendScopes,
+    getAllFrontendScopeApis,
+    getFrontendScopeApisGroupedByScopeId,
     getFrontendScopePermissionsGroupedByScopeId,
     findAllFrontendScopes,
+    findAllFrontendScopeApis,
+    findFrontendScopeApisGroupedByScopeId,
     findAllRoles,
     getAllRoles,
     findFrontendScopePermissionsGroupedByScopeId,
@@ -87,6 +98,8 @@ const SYSTEM_ROLE_ID = '7ec8ff51-7459-49fb-980d-4831fad663a1'; // LOCAL
 export interface AdminFrontendScopesProps extends FormContainerProps {
     roles?: {}[];
     frontendScopes?: {}[];
+    frontendScopeApis?: {}[];
+    frontendScopeApisGrouped?: {};
     frontendScopePermissions?: {}[];
     frontendScopePermissionsGrouped?: {};
     apiScopes?: {}[];
@@ -143,8 +156,7 @@ class AdminFrontendScopesDisplay extends React.PureComponent<AdminFrontendScopes
     }
 }
 
-class RoleApiScopesDataTable extends DataTable<RoleApiScope> {}
-class RoleFrontendScopesDataTable extends DataTable<RoleFrontendScope> {}
+class FrontendScopeApisDataTable extends DataTable<RoleApiScope> {}
 
 export default class AdminFrontendScopes extends FormContainerBase<AdminFrontendScopesProps> {
     // NOTICE!
@@ -156,6 +168,7 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
     reduxFormKey = 'roles';
     formFieldNames = {
         frontendScopes: 'roles.frontendScopes',
+        frontendScopeApisGrouped: 'roles.frontendScopeApisGrouped',
         frontendScopePermissionsGrouped: 'roles.frontendScopePermissionsGrouped',
         roles: 'roles.roles',
         apiScopes: 'roles.apiScopes',
@@ -174,7 +187,7 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
         // Effective Permissions for any user are at a minimum the SYSTEM_ROLES required for basic application usage
         // The application will not function without these roles as it will not be able to read any data
         // parentModelId = parentModelId ? parentModelId : SYSTEM_ROLE_ID;
-        parentModelId = SYSTEM_ROLE_ID;
+        // parentModelId = SYSTEM_ROLE_ID;
 
         // If parentModelId is not supplied, the parent component is in a 'new' state, and its data has not been saved
         // Don't render the detail component
@@ -182,8 +195,8 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
 
         return (
             <>
-                <RoleApiScopesDataTable
-                    fieldName={`${this.formFieldNames.roleApiScopesGrouped}['${parentModelId}']`}
+                <FrontendScopeApisDataTable
+                    fieldName={`${this.formFieldNames.frontendScopeApisGrouped}['${parentModelId}']`}
                     title={''} // Leave this blank
                     buttonLabel={'Add Authorization Scope'}
                     displayHeaderActions={true}
@@ -203,9 +216,8 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
                         ]
                     })}
                     columns={[
-                        DataTable.SelectorFieldColumn('Authorization Scope', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: ApiScopeSelector, displayInfo: true }),
-                        DataTable.MappedTextColumn('Scope Code', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: ApiScopeCodeDisplay, displayInfo: false }),
-                        DataTable.MappedTextColumn('Description', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: ApiScopeDescriptionDisplay, displayInfo: false }),
+                        DataTable.SelectorFieldColumn('Api Scope', { fieldName: 'apiScopeId', colStyle: { width: '300px' }, selectorComponent: ApiScopeSelector, displayInfo: true }),
+                        DataTable.MappedTextColumn('Scope Code', { fieldName: 'apiScope.scopeCode', colStyle: { width: '300px' }, selectorComponent: ApiScopeCodeDisplay, displayInfo: false }),
                         DataTable.StaticTextColumn('Assigned By', { fieldName: 'createdBy', colStyle: { width: '200px' }, displayInfo: false }),
                         DataTable.StaticDateColumn('Date Assigned', { fieldName: 'createdDtm', colStyle: { width: '350px' }, displayInfo: false }),
                         // DataTable.ButtonColumn('Configure Access', 'eye-open', { displayInfo: true }, onButtonClicked),
@@ -319,6 +331,7 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
     fetchData(dispatch: Dispatch<{}>, filters: {} | undefined) {
         dispatch(getRoles()); // This data needs to always be available for select lists
         dispatch(getFrontendScopes()); // This data needs to always be available for select lists
+        dispatch(getFrontendScopeApis()); // This data needs to always be available for select lists
         dispatch(getFrontendScopePermissions()); // This data needs to always be available for select lists
         dispatch(getApiScopes()); // This data needs to always be available for select lists
         // TODO: Only load these if we're expanding the grid...
@@ -340,6 +353,10 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
         const frontendScopes = (filters && filters.frontendScopes)
             ? findAllFrontendScopes(filters.frontendScopes)(state)
             : getAllFrontendScopes(state);
+
+        const frontendScopeApisGrouped = (filters && filters.frontendScopeApis)
+            ? findFrontendScopeApisGroupedByScopeId(filters.frontendScopeApis)(state)
+            : getFrontendScopeApisGroupedByScopeId(state);
 
         const frontendScopePermissionsGrouped = (filters && filters.frontendScopePermissions)
             ? findFrontendScopePermissionsGroupedByScopeId(filters.frontendScopePermissions)(state)
@@ -370,6 +387,7 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
             roles,
             apiScopes,
             frontendScopes,
+            frontendScopeApisGrouped,
             frontendScopePermissionsGrouped,
             roleFrontendScopesGrouped,
             roleFrontendScopePermissionsGrouped,

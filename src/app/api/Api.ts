@@ -31,6 +31,7 @@ export type RolePermissionMap = MapType<RolePermission>;
 export type RoleFrontendScopeMap = MapType<RoleFrontendScope>;
 export type RoleApiScopeMap = MapType<RoleApiScope>;
 export type FrontendScopeMap = MapType<FrontendScope>;
+export type FrontendScopeApiMap = MapType<FrontendScopeApi>;
 export type FrontendScopePermissionMap = MapType<FrontendScopePermission>;
 export type RoleFrontendScopePermissionMap = MapType<RoleFrontendScopePermission>;
 export type RoleApiScopePermissionMap = MapType<RoleApiScopePermission>;
@@ -465,6 +466,21 @@ export interface FrontendScope {
     revisionCount?: number;
 }
 
+export interface FrontendScopeApi {
+    id?: IdType;
+    frontendScopeId?: string; // GUID
+    frontendScope?: FrontendScope;
+    frontendScopeCode?: string;  // Only used when generating scopes
+    apiScopeId?: string; // GUID
+    apiScope?: ApiScope;
+    apiScopeCode?: string;  // Only used when generating scopes
+    createdBy?: string;
+    updatedBy?: string;
+    createdDtm?: string;
+    updatedDtm?: string;
+    revisionCount?: number;
+}
+
 export interface FrontendScopePermission {
     id?: IdType;
     frontendScopeId?: string;
@@ -727,6 +743,12 @@ export interface API {
     getFrontendScopes(): Promise<FrontendScope[]>;
     deleteFrontendScope(frontendScopeId: IdType): Promise<void>;
     deleteFrontendScopes(frontendScopeIds: IdType[]): Promise<void>;
+
+    getFrontendScopeApi(): Promise<FrontendScopeApi>;
+    createFrontendScopeApi(newFrontendScopeApi: Partial<FrontendScopeApi>): Promise<FrontendScopeApi>;
+    updateFrontendScopeApi(updatedFrontendScopeApi: FrontendScopeApi): Promise<FrontendScopeApi>;
+    getFrontendScopeApis(): Promise<FrontendScopeApi[]>;
+    deleteFrontendScopeApis(frontendScopeApiIds: IdType[]): Promise<void>;
 
     getFrontendScopePermission(): Promise<FrontendScopePermission>;
     createFrontendScopePermission(newFrontendScopePermission: Partial<FrontendScopePermission>): Promise<FrontendScopePermission>;
