@@ -194,42 +194,40 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
         if (!parentModelId) return null;
 
         return (
-            <>
-                <FrontendScopeApisDataTable
-                    fieldName={`${this.formFieldNames.frontendScopeApisGrouped}['${parentModelId}']`}
-                    title={''} // Leave this blank
-                    buttonLabel={'Add Authorization Scope'}
-                    displayHeaderActions={true}
-                    displayHeaderSave={false}
-                    actionsColumn={DataTable.ActionsColumn({
-                        actions: [
-                            ({ fields, index, model }) => {
-                                return (model && model.id && model.id !== '')
-                                    ? (<DeleteRow fields={fields} index={index} model={model} />)
-                                    : null;
-                            },
-                            ({ fields, index, model }) => {
-                            return (model && !model.id || model && model.id === '')
-                                    ? (<RemoveRow fields={fields} index={index} model={model} />)
-                                    : null;
-                            }
-                        ]
-                    })}
-                    columns={[
-                        DataTable.SelectorFieldColumn('Api Scope', { fieldName: 'apiScopeId', colStyle: { width: '300px' }, selectorComponent: ApiScopeSelector, displayInfo: true }),
-                        DataTable.MappedTextColumn('Scope Code', { fieldName: 'apiScope.scopeCode', colStyle: { width: '300px' }, selectorComponent: ApiScopeCodeDisplay, displayInfo: false }),
-                        DataTable.StaticTextColumn('Assigned By', { fieldName: 'createdBy', colStyle: { width: '200px' }, displayInfo: false }),
-                        DataTable.StaticDateColumn('Date Assigned', { fieldName: 'createdDtm', colStyle: { width: '350px' }, displayInfo: false }),
-                        // DataTable.ButtonColumn('Configure Access', 'eye-open', { displayInfo: true }, onButtonClicked),
-                    ]}
-                    rowComponent={EmptyDetailRow}
-                    initialValue={{
-                        roleId: parentModelId
-                    }}
-                    modalProps={{ roleId: parentModelId }}
-                    modalComponent={AdminRoleScopeAccessModal}
-                />
-            </>
+            <FrontendScopeApisDataTable
+                fieldName={`${this.formFieldNames.frontendScopeApisGrouped}['${parentModelId}']`}
+                title={''} // Leave this blank
+                buttonLabel={'Add Authorization Scope'}
+                displayHeaderActions={true}
+                displayHeaderSave={false}
+                actionsColumn={DataTable.ActionsColumn({
+                    actions: [
+                        ({ fields, index, model }) => {
+                            return (model && model.id && model.id !== '')
+                                ? (<DeleteRow fields={fields} index={index} model={model} />)
+                                : null;
+                        },
+                        ({ fields, index, model }) => {
+                        return (model && !model.id || model && model.id === '')
+                                ? (<RemoveRow fields={fields} index={index} model={model} />)
+                                : null;
+                        }
+                    ]
+                })}
+                columns={[
+                    DataTable.SelectorFieldColumn('Api Scope', { fieldName: 'apiScopeId', colStyle: { width: '300px' }, selectorComponent: ApiScopeSelector, displayInfo: true }),
+                    DataTable.MappedTextColumn('Scope Code', { fieldName: 'apiScope.scopeCode', colStyle: { width: '300px' }, selectorComponent: ApiScopeCodeDisplay, displayInfo: false }),
+                    DataTable.StaticTextColumn('Assigned By', { fieldName: 'createdBy', colStyle: { width: '200px' }, displayInfo: false }),
+                    DataTable.StaticDateColumn('Date Assigned', { fieldName: 'createdDtm', colStyle: { width: '350px' }, displayInfo: false }),
+                    // DataTable.ButtonColumn('Configure Access', 'eye-open', { displayInfo: true }, onButtonClicked),
+                ]}
+                rowComponent={EmptyDetailRow}
+                initialValue={{
+                    roleId: parentModelId
+                }}
+                modalProps={{ roleId: parentModelId }}
+                modalComponent={AdminRoleScopeAccessModal}
+            />
         );
     }
 

@@ -36,8 +36,8 @@ export default (props: any) => {
     // TODO: Fix me! This console log should explain exactly what's going on...
     // console.log('WorkSectionsLayout selectedSection: ' + selectedSection);
 
-    const validSections = ['courts', 'jails', 'escortRuns', 'other'];
-    selectedSection = (validSections.indexOf(selectedSection) > -1) ? selectedSection : 'courts';
+    const validSections = ['ADMIN_PLUGIN_COURTROOMS:ADMIN_PLUGIN_COURT_ROLES', 'ADMIN_PLUGIN_JAIL_ROLES', 'ADMIN_PLUGIN_ESCORT_TYPES', 'ADMIN_PLUGIN_OTHER_TYPES'];
+    selectedSection = (validSections.indexOf(selectedSection) > -1) ? selectedSection : 'ADMIN_PLUGIN_COURTROOMS:ADMIN_PLUGIN_COURT_ROLES';
 
     return (
         <Tab.Container
@@ -49,7 +49,7 @@ export default (props: any) => {
             <Row className="clearfix">
                 <Col sm={12}>
                     <Tab.Content animation={false}>
-                        <Tab.Pane key={'courts'} eventKey={'courts'}>
+                        <Tab.Pane key={'ADMIN_PLUGIN_COURTROOMS:ADMIN_PLUGIN_COURT_ROLES'} eventKey={'ADMIN_PLUGIN_COURTROOMS:ADMIN_PLUGIN_COURT_ROLES'}>
                             <Row className="clearfix">
                                 <Col sm={12} md={7}>
                                     <PageTitle title={({ currentLocationName }: any) => `${currentLocationName} Court Roles`} />
@@ -61,7 +61,7 @@ export default (props: any) => {
                                 </Col>
                             </Row>
                         </Tab.Pane>
-                        <Tab.Pane key={'jails'} eventKey={'jails'}>
+                        <Tab.Pane key={'ADMIN_PLUGIN_JAIL_ROLES'} eventKey={'ADMIN_PLUGIN_JAIL_ROLES'}>
                             <Row className="clearfix">
                                 <Col sm={12} md={6} mdPush={3}>
                                     <PageTitle title={({ currentLocationName }: any) => `${currentLocationName} Jail Roles`} />
@@ -69,7 +69,7 @@ export default (props: any) => {
                                 </Col>
                             </Row>
                         </Tab.Pane>
-                        <Tab.Pane key={'escortRuns'} eventKey={'escortRuns'}>
+                        <Tab.Pane key={'ADMIN_PLUGIN_ESCORT_TYPES'} eventKey={'ADMIN_PLUGIN_ESCORT_TYPES'}>
                             <Row className="clearfix">
                                 <Col sm={12} md={6} mdPush={3}>
                                     <PageTitle title={({ currentLocationName }: any) => `${currentLocationName} Escort Runs`} />
@@ -77,7 +77,7 @@ export default (props: any) => {
                                 </Col>
                             </Row>
                         </Tab.Pane>
-                        <Tab.Pane key={'other'} eventKey={'other'}>
+                        <Tab.Pane key={'ADMIN_PLUGIN_OTHER_TYPES'} eventKey={'ADMIN_PLUGIN_OTHER_TYPES'}>
                             <Row className="clearfix">
                                 <Col sm={12}  md={8} mdPush={2}>
                                     <PageTitle title={({ currentLocationName }: any) => `${currentLocationName} Other Assignments`} />

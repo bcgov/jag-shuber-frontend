@@ -37,7 +37,7 @@ export interface ManageAssignmentTypesProps extends
 
 class ManageCodeTypes extends React.PureComponent<AdminFormProps & ManageAssignmentTypesProps> {
     static defaultProps: Partial<ManageAssignmentTypesProps> = {
-        selectedSection: 'courts'
+        selectedSection: 'ADMIN_PLUGIN_COURTROOMS:ADMIN_PLUGIN_COURT_ROLES'
     };
 
     state = {
@@ -61,7 +61,7 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps & ManageAssignm
 
         const {
             selectAdminFormSection,
-            selectedSection
+            selectedSection = 'ADMIN_PLUGIN_COURTROOMS:ADMIN_PLUGIN_COURT_ROLES'
         } = this.props;
 
         return (
@@ -78,19 +78,19 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps & ManageAssignm
                                     <div style={{ display: 'flex', alignItems: 'center', marginRight: '15px' }}>
                                         <h6 style={{ color: 'white', fontWeight: 'bold', marginBottom: '3px' }}>Choose Work Section: </h6>
                                     </div>
-                                    <div className={`admin-form-filters-toggle admin-form-page-tab${selectedSection === 'courts' ? ' is-active' : ''}`} onClick={() => selectAdminFormSection('courts')}>
+                                    <div className={`admin-form-filters-toggle admin-form-page-tab${selectedSection === 'ADMIN_PLUGIN_COURTROOMS:ADMIN_PLUGIN_COURT_ROLES' ? ' is-active' : ''}`} onClick={() => selectAdminFormSection('ADMIN_PLUGIN_COURTROOMS:ADMIN_PLUGIN_COURT_ROLES')}>
                                         {/* <Glyphicon glyph="chevron-down" /> */}Court Assignments
                                     </div>
                                     &nbsp;&nbsp;
-                                    <div className={`admin-form-filters-toggle admin-form-page-tab${selectedSection === 'jails' ? ' is-active' : ''}`} onClick={() => selectAdminFormSection('jails')}>
+                                    <div className={`admin-form-filters-toggle admin-form-page-tab${selectedSection === 'ADMIN_PLUGIN_JAIL_ROLES' ? ' is-active' : ''}`} onClick={() => selectAdminFormSection('ADMIN_PLUGIN_JAIL_ROLES')}>
                                         {/* <Glyphicon glyph="chevron-down" /> */}Jail Assignments
                                     </div>
                                     &nbsp;&nbsp;
-                                    <div className={`admin-form-filters-toggle admin-form-page-tab${selectedSection === 'escortRuns' ? ' is-active' : ''}`} onClick={() => selectAdminFormSection('escortRuns')}>
+                                    <div className={`admin-form-filters-toggle admin-form-page-tab${selectedSection === 'ADMIN_PLUGIN_ESCORT_TYPES' ? ' is-active' : ''}`} onClick={() => selectAdminFormSection('ADMIN_PLUGIN_ESCORT_TYPES')}>
                                         {/* <Glyphicon glyph="chevron-down" /> */}Escort Runs
                                     </div>
                                     &nbsp;&nbsp;
-                                    <div className={`admin-form-filters-toggle admin-form-page-tab${selectedSection === 'other' ? ' is-active' : ''}`} onClick={() => selectAdminFormSection('other')}>
+                                    <div className={`admin-form-filters-toggle admin-form-page-tab${selectedSection === 'ADMIN_PLUGIN_OTHER_TYPES' ? ' is-active' : ''}`} onClick={() => selectAdminFormSection('ADMIN_PLUGIN_OTHER_TYPES')}>
                                         {/* <Glyphicon glyph="chevron-down" /> */}Other Assignments
                                     </div>
 
