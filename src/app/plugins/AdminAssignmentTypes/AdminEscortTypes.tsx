@@ -291,8 +291,8 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
         const data: any = this.getDataFromFormValues(formValues, initialValues);
         const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
 
-        // Grab the currentLocation off of the root formValues object
-        const { currentLocation } = formValues;
+        // Grab the currentLocation off of the formValues.assignments object
+        const { currentLocation } = formValues.assignments;
 
         // Delete records before saving new ones!
         const deletedEscortTypes: IdType[] = dataToDelete.escortTypes as IdType[];
