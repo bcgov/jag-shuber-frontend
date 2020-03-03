@@ -276,7 +276,7 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
         };
     }
 
-    async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any[]> {
+    async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>) {
         const data: any = this.getDataFromFormValues(formValues, initialValues);
         const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
 
@@ -307,9 +307,12 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
             });
         }
 
-        return Promise.all([
-            dispatch(deleteEscortTypes(deletedEscortTypes)),
-            dispatch(createOrUpdateEscortTypes(escortTypes))
-        ]);
+        if (deletedEscortTypes.length > 0) {
+            await dispatch(deleteEscortTypes(deletedEscortTypes));
+        }
+
+        if (escortTypes.length > 0) {
+            await dispatch(createOrUpdateEscortTypes(escortTypes));
+        }
     }
 }

@@ -270,7 +270,7 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
         };
     }
 
-    async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any[]> {
+    async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>) {
         const data: any = this.getDataFromFormValues(formValues, initialValues);
         const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
 
@@ -301,9 +301,12 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
             });
         }
 
-        return Promise.all([
-            dispatch(deleteJailRoles(deletedJailRoles)),
-            dispatch(createOrUpdateJailRoles(jailRoles))
-        ]);
+        if (deletedJailRoles.length > 0) {
+            await dispatch(deleteJailRoles(deletedJailRoles));
+        }
+
+        if (jailRoles.length > 0) {
+            await dispatch(createOrUpdateJailRoles(jailRoles));
+        }
     }
 }

@@ -197,7 +197,7 @@ export default class AdminLeaveTypes extends FormContainerBase<AdminLeaveTypesPr
         };
     }
 
-    async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any[]> {
+    async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>) {
         const data: any = this.getDataFromFormValues(formValues, initialValues);
         const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
 
@@ -219,9 +219,12 @@ export default class AdminLeaveTypes extends FormContainerBase<AdminLeaveTypesPr
             updatedDtm: new Date().toISOString()
         }));
 
-        return Promise.all([
-            dispatch(deleteLeaveSubCodes(deletedLeaveTypes)),
-            dispatch(createOrUpdateLeaveSubCodes(leaveTypes))
-        ]);
+        if (deletedLeaveTypes.length > 0) {
+            await dispatch(deleteLeaveSubCodes(deletedLeaveTypes));
+        }
+
+        if (leaveTypes.length > 0) {
+            await dispatch(createOrUpdateLeaveSubCodes(leaveTypes));
+        }
     }
 }

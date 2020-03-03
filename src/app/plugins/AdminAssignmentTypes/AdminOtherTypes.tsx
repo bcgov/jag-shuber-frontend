@@ -269,7 +269,7 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
         };
     }
 
-    async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any[]> {
+    async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>) {
         const data: any = this.getDataFromFormValues(formValues, initialValues);
         const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
 
@@ -300,9 +300,12 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
             });
         }
 
-        return Promise.all([
-            dispatch(deleteAlternateAssignmentTypes(deletedOtherTypes)),
-            dispatch(createOrUpdateAlternateAssignmentTypes(otherTypes))
-        ]);
+        if (deletedOtherTypes.length > 0) {
+            await dispatch(deleteAlternateAssignmentTypes(deletedOtherTypes));
+        }
+
+        if (otherTypes.length > 0) {
+            await dispatch(createOrUpdateAlternateAssignmentTypes(otherTypes));
+        }
     }
 }

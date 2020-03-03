@@ -238,7 +238,7 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
         };
     }
 
-    async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any[]> {
+    async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>) {
         const data: any = this.getDataFromFormValues(formValues, initialValues);
         const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
 
@@ -264,9 +264,12 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
             }));
         }
 
-        return Promise.all([
-            dispatch(deleteCourtrooms(deletedCourtrooms)),
-            dispatch(createOrUpdateCourtrooms(courtrooms))
-        ]);
+        if (deletedCourtrooms.length > 0) {
+            await dispatch(deleteCourtrooms(deletedCourtrooms));
+        }
+
+        if (courtrooms.length > 0) {
+            await dispatch(createOrUpdateCourtrooms(courtrooms));
+        }
     }
 }

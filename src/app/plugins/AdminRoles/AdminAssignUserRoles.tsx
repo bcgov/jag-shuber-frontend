@@ -593,7 +593,5 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
         if (userRoles.length > 0) {
             await dispatch(createOrUpdateUserRoles(userRoles));
         }
-
-        return Promise.resolve([]);
     }
 }

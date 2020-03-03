@@ -496,7 +496,7 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
         };
     }
 
-    async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any[]> {
+    async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>) {
         const data: any = this.getDataFromFormValues(formValues, initialValues) || {};
         const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
 
@@ -647,7 +647,5 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
             console.log(roles);
             await dispatch(createOrUpdateRoleApiScopes(roleApiScopes));
         }
-
-        return Promise.resolve([]);
     }
 }
