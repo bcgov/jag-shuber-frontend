@@ -180,7 +180,7 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
         roleFrontendScopePermissionsGrouped: 'roles.roleFrontendScopePermissionsGrouped'
     };
     title: string = ' Manage Roles & Access';
-    DetailComponent: React.SFC<DetailComponentProps> = ({ parentModelId }) => {
+    DetailComponent: React.SFC<DetailComponentProps> = ({ parentModelId, parentModel }) => {
         // We can't use React hooks yet, and not sure if this project will ever be upgraded to 16.8
         // This is a quick n' dirty way to achieve the same thing
         let dataTableInstance: any;
@@ -193,6 +193,7 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
         // If parentModelId is not supplied, the parent component is in a 'new' state, and its data has not been saved
         // Don't render the detail component
         if (!parentModelId) return null;
+        if (!parentModel) return null;
 
         return (
             <RoleFrontendScopesDataTable
@@ -200,7 +201,7 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
                 fieldName={`${this.formFieldNames.roleFrontendScopesGrouped}['${parentModelId}']`}
                 title={''} // Leave this blank
                 buttonLabel={'Grant Application Access'}
-                displayHeaderActions={true}
+                displayHeaderActions={!(parentModel.systemRoleInd === 1)}
                 displayHeaderSave={false}
                 actionsColumn={DataTable.ActionsColumn({
                     actions: [
@@ -226,6 +227,7 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
                     // DataTable.ButtonColumn('Configure Access', 'list', { displayInfo: true }, onButtonClicked)
                 ]}
                 rowComponent={EmptyDetailRow}
+                shouldDisableRow={() => parentModel.systemRoleInd === 1}
                 initialValue={{
                     roleId: parentModelId
                 }}
@@ -353,6 +355,10 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
                     expandable={true}
                     // expandedRows={[1, 2]}
                     rowComponent={this.DetailComponent}
+                    shouldDisableRow={(model) => {
+                        // TODO: Only disable if the user doesn't have permission to edit provincial codes
+                        return (!model) ? false : (model && model.id) ? model.systemRoleInd === 1 : false;
+                    }}
                     modalComponent={AdminEffectivePermissionsModal}
                 />
             </div>

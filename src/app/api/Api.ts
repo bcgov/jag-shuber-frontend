@@ -415,7 +415,7 @@ export interface Role {
     id: IdType;
     roleName?: string;
     roleCode?: string;
-    systemCodeInd?: number;
+    systemRoleInd?: number;
     description?: string;
     createdBy?: string;
     updatedBy?: string;
