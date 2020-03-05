@@ -63,7 +63,7 @@ export default (props: any) => {
                         </Tab.Pane>
                         <Tab.Pane key={'ADMIN_PLUGIN_JAIL_ROLES'} eventKey={'ADMIN_PLUGIN_JAIL_ROLES'}>
                             <Row className="clearfix">
-                                <Col sm={12} md={6} mdPush={3}>
+                                <Col sm={12} md={8} mdPush={2}>
                                     <PageTitle title={({ currentLocationName }: any) => `${currentLocationName} Jail Roles`} />
                                     {jailRolesPlugin && renderPlugin(jailRolesPlugin)}
                                 </Col>
@@ -71,7 +71,7 @@ export default (props: any) => {
                         </Tab.Pane>
                         <Tab.Pane key={'ADMIN_PLUGIN_ESCORT_TYPES'} eventKey={'ADMIN_PLUGIN_ESCORT_TYPES'}>
                             <Row className="clearfix">
-                                <Col sm={12} md={6} mdPush={3}>
+                                <Col sm={12} md={8} mdPush={2}>
                                     <PageTitle title={({ currentLocationName }: any) => `${currentLocationName} Escort Runs`} />
                                     {escortTypesPlugin && renderPlugin(escortTypesPlugin)}
                                 </Col>

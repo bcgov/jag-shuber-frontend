@@ -162,7 +162,7 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
                     })}
                     columns={[
                         // DataTable.SelectorFieldColumn('Location', { fieldName: 'locationId', selectorComponent: LocationSelector, displayInfo: false, filterable: true, filterColumn: onFilterLocation }),
-                        DataTable.TextFieldColumn('Court Role', { fieldName: 'description', displayInfo: false, filterable: true, filterColumn: onFilterCourtRole }),
+                        DataTable.TextFieldColumn('Type', { fieldName: 'description', displayInfo: false, filterable: true, filterColumn: onFilterCourtRole }),
                         DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, filterable: true, filterColumn: onFilterCourtRoleCode }),
                         // DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
@@ -198,7 +198,8 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
                     }}
                     shouldDisableRow={(model) => {
                         // TODO: Only disable if the user doesn't have permission to edit provincial codes
-                        return (!model) ? false : (model && model.id) ? model.isProvincialCode : false;
+                        // return (!model) ? false : (model && model.id) ? model.isProvincialCode : false;
+                        return false;
                     }}
                     rowComponent={EmptyDetailRow}
                     modalComponent={EmptyDetailRow}

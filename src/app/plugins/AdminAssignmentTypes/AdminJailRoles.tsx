@@ -163,7 +163,7 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
                     })}
                     columns={[
                         // DataTable.SelectorFieldColumn('Location', { fieldName: 'locationId', selectorComponent: LocationSelector, displayInfo: false, filterable: true, filterColumn: onFilterLocation }),
-                        DataTable.TextFieldColumn('Jail Role', { fieldName: 'description', displayInfo: false, filterable: true, filterColumn: onFilterJailRole }),
+                        DataTable.TextFieldColumn('Type', { fieldName: 'description', displayInfo: false, filterable: true, filterColumn: onFilterJailRole }),
                         DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, filterable: true, filterColumn: onFilterJailRoleCode }),
                         // DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
@@ -200,7 +200,8 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
                     }}
                     shouldDisableRow={(model) => {
                         // TODO: Only disable if the user doesn't have permission to edit provincial codes
-                        return (!model) ? false : (model && model.id) ? model.isProvincialCode : false;
+                        // return (!model) ? false : (model && model.id) ? model.isProvincialCode : false;
+                        return false;
                     }}
                     rowComponent={EmptyDetailRow}
                     modalComponent={EmptyDetailRow}
