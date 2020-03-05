@@ -142,9 +142,8 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
         const assignmentTypeColumns = [
             DataTable.TextFieldColumn('Assignment Type', { fieldName: 'description', displayInfo: false, filterable: true, filterColumn: onFilterOtherType }),
             DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, filterable: true, filterColumn: onFilterOtherTypeCode }),
-            DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false, filterable: false }),
-            // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
             DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, filterSelectorComponent: CodeScopeSelector, displayInfo: false, filterable: true, filterColumn: onFilterOtherTypeScope }),
+            // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
             DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false })
         ];
 
