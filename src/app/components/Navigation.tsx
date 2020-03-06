@@ -1,4 +1,5 @@
 import React from 'react';
+import { Dispatch } from 'redux';
 import {
     Nav,
     Navbar,
@@ -10,6 +11,7 @@ import {
     Glyphicon,
     Image
 } from 'react-bootstrap';
+
 import NavigationLink from './NavigationLink';
 import LocationSelector from '../containers/NavLocationSelector';
 import bcLogo from '../assets/images/bc-logo-transparent-no-underline.png';
@@ -19,11 +21,29 @@ import avatarImg from '../assets/images/avatar.png';
 import SheriffRankDisplay from '../containers/SheriffRankDisplay';
 import SheriffDisplay from '../containers/SheriffDisplay';
 
-export interface NavigationProps {
+import { TokenPayload } from 'jag-shuber-api';
+import { IdType, User, Sheriff } from '../api';
 
+import { getCurrentUser } from '../modules/user/actions';
+import { sheriffLeaves } from '../api/Mock/MockData';
+
+export interface NavigationStateProps {
+    getUserByAuthId?: (userAuthId: IdType) => any;
 }
 
-export default class Navigation extends React.Component<NavigationProps, any> {
+export interface NavigationDispatchProps {
+    dispatch?: Dispatch<any>;
+}
+
+export interface NavigationProps extends NavigationDispatchProps {
+    currentUserToken?: TokenPayload;
+    currentUser?: User;
+}
+
+interface NavigationState {
+}
+
+export default class Navigation extends React.Component<NavigationProps & NavigationStateProps> {
     static Routes = {
         dutyRoster: {
             timeline: {
@@ -101,13 +121,31 @@ export default class Navigation extends React.Component<NavigationProps, any> {
             path: '/audit',
             label: 'Audit Records'
         }
+    };
+
+    state: NavigationState = {
+    };
+
+    componentDidMount(): void {
+        const { dispatch } = this.props;
+        if (dispatch) {
+            Promise.resolve(dispatch(getCurrentUser()));
+        }
     }
 
     render() {
+        const {
+            currentUser = {
+                firstName: '',
+                lastName: '',
+                sheriffId: undefined
+            } as User
+        } = this.props;
+
         return (
             <div id="header-main" >
                 <Navbar staticTop={true} fluid={true} style={{ maxWidth: '93%' }}>
-                    <Navbar.Header color="#003366">
+                    <Navbar.Header color="#003366">s
                         <NavbarBrand color="#003366">
                             <span className="logo">
                                 <img className="hidden-xs" src={bcLogo} />
@@ -153,16 +191,17 @@ export default class Navigation extends React.Component<NavigationProps, any> {
                                      />
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
+                                    {currentUser && currentUser.sheriff && (
                                     <SheriffDisplay
-                                        sheriffId={''}
+                                        sheriffId={currentUser.sheriffId}
                                         RenderComponent={({ sheriff: {
-                                            firstName = 'George',
-                                            lastName = 'Thurman',
+                                            firstName = '',
+                                            lastName = '',
                                             imageUrl = '',
-                                            badgeNo = '123',
-                                            rankCode = 'STAFFINSPECTOR'
-                                        } = {} }) =>
-                                            (
+                                            badgeNo = '',
+                                            rankCode = ''
+                                        } = currentUser.sheriff as Sheriff }) => {
+                                            return (
                                                 <div className="sheriff-profile-header">
                                                     {/* <Image
                                                         src={imageUrl ? imageUrl : avatarImg}
@@ -176,9 +215,10 @@ export default class Navigation extends React.Component<NavigationProps, any> {
                                                     </div>
                                                     <div style={{ fontSize: 14 }}><SheriffRankDisplay code={rankCode} /></div>
                                                 </div>
-                                            )
-                                        }
+                                            );
+                                        }}
                                     />
+                                    )}
                                     <hr />
                                     <MenuItem
                                         style={{ textAlign: 'center' }}

@@ -121,8 +121,18 @@ export const findUserRolesGroupedByUserId = (filters: any) => (state: RootState)
 
 export const getUser = (id?: IdType) => (state: RootState) => {
     if (state && id !== undefined) {
-        const map = requests.userMapRequest.getData(state) || {};
-        return map[id];
+        return getUsers(state).find((user: User) => user.id === id as string);
+    }
+    return undefined;
+};
+
+export const getUserByAuthId = (userAuthId?: IdType) => (state: RootState) => {
+    if (state && userAuthId !== undefined) {
+        const users = getUsers(state);
+        if (users && users.length > 0) {
+            console.log('we have users');
+        }
+        return users.find((user: User) => user.userAuthId === userAuthId as string);
     }
     return undefined;
 };

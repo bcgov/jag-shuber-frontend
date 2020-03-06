@@ -9,7 +9,7 @@ interface ConnectedSheriffDisplayProps {
     sheriffId?: IdType;
     RenderComponent?: React.ComponentType<SheriffDisplayProps>;
 }
-interface SheriffDisplayProps {
+export interface SheriffDisplayProps {
     sheriff?: Sheriff;
 }
 
