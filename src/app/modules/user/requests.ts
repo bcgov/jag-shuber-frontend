@@ -28,3 +28,22 @@ class UserTokenRequest extends RequestActionBase<void, TokenPayload | undefined,
 }
 
 export const userTokenRequest = new UserTokenRequest();
+
+class CurrentUserRequest extends RequestActionBase<void, TokenPayload | undefined, UserState> {
+    constructor() {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'currentUser',
+            toasts: {
+                // tslint:disable-next-line:max-line-length
+                error: (err) => `Problem encountered while retrieving the current user: ${err ? err.toString() : 'Unknown Error'}`
+            }
+        });
+    }
+    public async doWork(request: void, { api }: ThunkExtra) {
+        let data = await api.getCurrentUser();
+        return data;
+    }
+}
+
+export const currentUserRequest = new CurrentUserRequest();

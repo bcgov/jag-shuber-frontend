@@ -399,6 +399,7 @@ export interface AssignmentScheduleItem {
 // Users, roles & permissions
 export interface User {
     id?: IdType;
+    userAuthId?: string;
     displayName?: string;
     defaultLocationId?: IdType;
     systemAccountInd?: number;
@@ -708,6 +709,7 @@ export interface API {
     getLocations(): Promise<Location[]>;
 
     // Users, roles & permissions
+    getCurrentUser(): Promise<User>;
     getUser(id: IdType): Promise<User>;
     createUser(newUser: Partial<User>): Promise<User>;
     updateUser(updatedUser: User): Promise<User>;

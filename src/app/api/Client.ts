@@ -692,6 +692,10 @@ export default class Client implements API {
         return list as User[];
     }
 
+    async getCurrentUser(): Promise<User> {
+        return await this._client.GetCurrentUser() as User;
+    }
+
     async getUser(id: IdType): Promise<User> {
         if (!id) {
             throw 'No Id to request';

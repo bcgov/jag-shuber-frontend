@@ -20,7 +20,7 @@ import { default as assignmentScheduleReducer, AssignmentScheduleState } from '.
 import { default as api, API } from './api';
 import Client from './api/Client';
 
-import { requestUserToken, updateUserToken } from './modules/user/actions';
+import { getUserToken, updateUserToken } from './modules/user/actions';
 
 export interface ThunkExtra {
     api: API;
@@ -80,6 +80,6 @@ const store = createStore(rootReducer, enhancers);
     store.dispatch(updateUserToken(t));
 });
 // Request the initial token
-store.dispatch(requestUserToken());
+store.dispatch(getUserToken());
 
 export default store;

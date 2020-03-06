@@ -23,7 +23,10 @@ import {
 } from './modules/user/selectors';
 
 // Import core layout components
-import Navigation from './components/Navigation';
+// import Navigation from './components/Navigation';
+// Use the new connected Navigation container
+import NavigationComponent from './components/Navigation';
+import Navigation from './containers/Navigation';
 
 // Import pages
 import AuditPage from './pages/Audit';
@@ -133,22 +136,22 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
 
           {isLocationSet && (
             <div className="mainArea">
-              <Route exact={true} path={Navigation.Routes.dutyRoster.timeline.path} component={DutyRosterPage} />
-              <Route path={Navigation.Routes.schedule.manage.path} component={SchedulingPage} />
-              <Route path={Navigation.Routes.schedule.distribute.path} component={PublishSchedulePage} />
-              <Route path={Navigation.Routes.dutyRoster.setup.path} component={DefaultAssignmentsPage} />
-              <Route path={Navigation.Routes.assignment.path} component={AssignmentPage} />
-              <Route path={Navigation.Routes.team.path} component={ManageSheriffsPage} />
-              <Route path={Navigation.Routes.team.children.roles.path} component={ManageRolesPage} />
-              <Route path={Navigation.Routes.team.children.users.path} component={ManageUsersPage} />
-              <Route path={Navigation.Routes.team.children.userRoles.path} component={ManageUserRolesPage} />
-              {/* <Route path={Navigation.Routes.system.children.courtrooms.path} component={ManageCourtroomsPage} /> */}
-              <Route path={Navigation.Routes.system.children.workSectionRoles.path} component={ManageWorkSectionRolesPage} />
-              <Route path={Navigation.Routes.system.children.leaveTypes.path} component={ManageLeaveTypesPage} />
-              <Route path={Navigation.Routes.system.children.assignmentTypes.path} component={ManageAssignmentTypesPage} />
-              <Route path={Navigation.Routes.system.children.components.path} component={ManageComponentsPage} />
-              <Route path={Navigation.Routes.audit.path} component={AuditPage} />
-              <Route path={Navigation.Routes.system.children.apis.path} component={ManageApisPage} />
+              <Route exact={true} path={NavigationComponent.Routes.dutyRoster.timeline.path} component={DutyRosterPage} />
+              <Route path={NavigationComponent.Routes.schedule.manage.path} component={SchedulingPage} />
+              <Route path={NavigationComponent.Routes.schedule.distribute.path} component={PublishSchedulePage} />
+              <Route path={NavigationComponent.Routes.dutyRoster.setup.path} component={DefaultAssignmentsPage} />
+              <Route path={NavigationComponent.Routes.assignment.path} component={AssignmentPage} />
+              <Route path={NavigationComponent.Routes.team.path} component={ManageSheriffsPage} />
+              <Route path={NavigationComponent.Routes.team.children.roles.path} component={ManageRolesPage} />
+              <Route path={NavigationComponent.Routes.team.children.users.path} component={ManageUsersPage} />
+              <Route path={NavigationComponent.Routes.team.children.userRoles.path} component={ManageUserRolesPage} />
+              {/* <Route path={NavigationComponent.Routes.system.children.courtrooms.path} component={ManageCourtroomsPage} /> */}
+              <Route path={NavigationComponent.Routes.system.children.workSectionRoles.path} component={ManageWorkSectionRolesPage} />
+              <Route path={NavigationComponent.Routes.system.children.leaveTypes.path} component={ManageLeaveTypesPage} />
+              <Route path={NavigationComponent.Routes.system.children.assignmentTypes.path} component={ManageAssignmentTypesPage} />
+              <Route path={NavigationComponent.Routes.system.children.components.path} component={ManageComponentsPage} />
+              <Route path={NavigationComponent.Routes.audit.path} component={AuditPage} />
+              <Route path={NavigationComponent.Routes.system.children.apis.path} component={ManageApisPage} />
               <DutyRosterToolsModal />
               <AssignmentDutyEditModal />
               <SheriffProfileModal />

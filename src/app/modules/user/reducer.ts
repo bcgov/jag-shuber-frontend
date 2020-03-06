@@ -9,7 +9,7 @@ import { ReducersMapObject } from 'redux';
 import { addReducerToMap } from '../../infrastructure/reduxUtils';
 import { UserState, STATE_KEY } from './common';
 import NestedReducer from '../../infrastructure/NestedReducer';
-import { userTokenRequest } from './requests';
+import { userTokenRequest, currentUserRequest } from './requests';
 
 export {
   UserState,
@@ -45,7 +45,8 @@ const nestedReducer = new NestedReducer([
       return { ...state, currentLocation };
     }
   }),
-  userTokenRequest.reducer
+  userTokenRequest.reducer,
+  currentUserRequest.reducer
 ]);
 
 const reducer = nestedReducer.reducer;
