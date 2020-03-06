@@ -629,11 +629,30 @@ h6.modal-title {
 .btn-transparent:hover,
 .btn-transparent:focus,
 .btn-transparent:active {
-  background-color: transparent;
+  background-color: transparent !important;
   border: none;
 }
 
 .sort-order-field .btn-xs {
   padding: 0px 10px;
   margin-left: 5px;
+}
+
+#user-profile-menu + .dropdown-menu {
+  border-radius: 0 0 4px 4px !important;
+  transform: translateY(-2px);
+  min-width: 250px;
+}
+
+.user-profile-menu-toggle,
+.user-profile-menu-toggle:hover,
+.user-profile-menu-toggle:active,
+.user-profile-menu-toggle:focus {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+.user-profile-menu-toggle .caret {
+  color: white;
 }
