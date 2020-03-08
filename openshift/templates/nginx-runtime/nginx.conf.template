@@ -46,8 +46,18 @@ http {
         add_header X-XSS-Protection 1;
         add_header X-Frame-Options DENY;
 
-        location /api {
+        %DEV_SM_VARIABLES%
+
+        location /sheriff-scheduling/api {
             proxy_pass          %API_URL%;
+            proxy_set_header    SMGOV_USERGUID  $http_smgov_userguid;
+            proxy_set_header    SMGOV_USERDISPLAYNAME  $http_smgov_userdisplayname;
+            proxy_set_header    SMGOV_USERTYPE  $http_smgov_usertype;
+            proxy_set_header    SMGOV_USERIDENTIFIER  $http_smgov_useridentifier;
+        }
+
+        location /sheriff-scheduling {
+            proxy_pass          http://localhost:8080/;
             proxy_set_header    SMGOV_USERGUID  $http_smgov_userguid;
             proxy_set_header    SMGOV_USERDISPLAYNAME  $http_smgov_userdisplayname;
             proxy_set_header    SMGOV_USERTYPE  $http_smgov_usertype;

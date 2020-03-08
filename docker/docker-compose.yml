@@ -1,0 +1,25 @@
+version: "3"
+services:
+  frontend:
+    image: frontend:latest
+    environment:
+      - API_URL=${API_URL}
+      - API_SERVICE_NAME=${API_SERVICE_NAME}
+      - API_PATH=${API_PATH}
+      - RealIpFrom=${RealIpFrom}
+      - SMGOV_USERGUID=${SMGOV_USERGUID}
+      - SMGOV_USERDISPLAYNAME=${SMGOV_USERDISPLAYNAME}
+      - SMGOV_USERTYPE=${SMGOV_USERTYPE}
+      - SMGOV_USERIDENTIFIER=${SMGOV_USERIDENTIFIER}
+    networks:
+      - sheriff-scheduling
+    ports:
+      - 8080:8080
+    volumes:
+      - jag-shuber-frontend-data:/tmp/app/dist/img/sheriffs
+
+volumes:
+  jag-shuber-frontend-data:
+
+networks:
+  sheriff-scheduling:

@@ -59,15 +59,37 @@ getApiUrl (){
   
   echo ${API_URL}
 }
-export API_URL=$(getApiUrl)
+
+# This is intended for use in development environments only.
+getDevSmVariables() {
+  unset devSmVariables
+  
+  if [ ! -z "${SMGOV_USERGUID}" ] && [ ! -z "${SMGOV_USERDISPLAYNAME}" ] && [ ! -z "${SMGOV_USERTYPE}" ] && [ ! -z "${SMGOV_USERIDENTIFIER}" ]; then
+    read -r -d '' devSmVariables << EOF
+        set \$http_smgov_userguid ${SMGOV_USERGUID};
+        set \$http_smgov_userdisplayname ${SMGOV_USERDISPLAYNAME};
+        set \$http_smgov_usertype ${SMGOV_USERTYPE};
+        set \$http_smgov_useridentifier ${SMGOV_USERIDENTIFIER};
+EOF
+  fi
+
+  echo "${devSmVariables}"
+}
+
+API_URL=$(getApiUrl)
+DEV_SM_VARIABLES=$(getDevSmVariables)
+DEV_SM_VARIABLES="$(echo "${DEV_SM_VARIABLES}" | sed ':a;N;$!ba;s/\n/\\n/g' | sed 's/\$/\\$/g')"
+
 if [ -z "$API_URL" ]; then
   echo "Could not find API Service to proxy to, exiting"
   exit 1
 fi
+
 echo "---> Replacing Configuration ..."
 echo "Setting:"
 echo "RealIpFrom = ${RealIpFrom:-172.51.0.0/16}"
 echo "API_URL = ${API_URL}"
-sed "s~%RealIpFrom%~${RealIpFrom:-172.51.0.0/16}~g; s~%API_URL%~${API_URL}~g" /tmp/nginx.conf.template > /etc/nginx/nginx.conf
+
+sed "s~%RealIpFrom%~${RealIpFrom:-172.51.0.0/16}~g; s~%API_URL%~${API_URL}~g; s~%DEV_SM_VARIABLES%~${DEV_SM_VARIABLES}~g" /tmp/nginx.conf.template > /etc/nginx/nginx.conf
 echo "---> Starting nginx ..."
 /usr/sbin/nginx -g "daemon off;"
