@@ -39,7 +39,7 @@ const MappedTextColumn = (label?: string, options?: Types.FieldColumnOptions): T
         filterComponent: (filterable) ? SelectorFieldColumn(label, filterComponentOptions) : undefined,
         filterColumn,
         displayInfo,
-        FormRenderer: ({ fieldInstanceName }) => (
+        FormRenderer: ({ fieldInstanceName , disabled}) => (
             <Field
                 name={`${fieldInstanceName}.${fieldName}`}
                 component={(p) => (
@@ -48,9 +48,7 @@ const MappedTextColumn = (label?: string, options?: Types.FieldColumnOptions): T
                 label={label}
             />
         ),
-        CanceledRender: ({ model }) => (
-            <option disabled={true} />
-        )
+        CanceledRender: () => (<option disabled={true} />)
     };
 };
 

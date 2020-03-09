@@ -1,7 +1,6 @@
 import React from 'react';
 import {
-    Field,
-    FieldArray, FieldsProps
+    FieldArray
 } from 'redux-form';
 
 import { Table, FormGroup, Button, Glyphicon, Well, OverlayTrigger, Tooltip } from 'react-bootstrap';
@@ -10,16 +9,7 @@ import * as CellTypes from '../../components/TableColumnCell';
 // TODO: Move this into a common location with AdminForm
 import DataTableHeaderRow from './DataTableHeaderRow';
 import DataTableFilterRow from './DataTableFilterRow';
-import HeaderSaveButton from '../../plugins/AdminRoles/containers/HeaderSaveButton';
-
-export interface ColumnRendererProps {
-    index: number;
-    fields: FieldsProps<Partial<any>>;
-    model: Partial<any>;
-    fieldInstanceName: string;
-}
-
-export type ColumnRenderer = React.ComponentType<ColumnRendererProps>;
+import DataTableGroupBy from './DataTableGroupBy';
 
 export interface DetailComponentProps {
     parentModel?: any;
@@ -48,9 +38,12 @@ export interface DataTableProps {
     modalProps?: any;
     modalComponent: React.ReactType<ModalComponentProps>;
     rowComponent: React.ReactType<DetailComponentProps>;
+    shouldRenderRow?: (model: any) => boolean;
+    shouldDisableRow?: (model: any) => boolean;
     initialValue?: any;
     filterable?: boolean;
     filterRows?: Function;
+    groupBy?: any; // TODO: Not sure what this should be yet, just trying something out, see if it works
 }
 
 // let RENDER_COUNT = 0;
@@ -67,6 +60,8 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
         // expandedRows: false,
         // TODO: What is up with default props?
         rowComponent: <div />,
+        shouldRenderRow: (model: any) => true,
+        shouldDisableRow: (model: any) => false,
         modalProps: {},
         modalComponent: <div />,
         actionsColumn: null,
@@ -76,6 +71,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
         filterRows: () => true
     };
 
+    // TODO: It would be cool if we could dynamically supply at least some of these types...
     static MappedTextColumn = CellTypes.MappedText;
     static StaticTextColumn = CellTypes.StaticText;
     static StaticDateColumn = CellTypes.StaticDate;
@@ -85,6 +81,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
     static CheckboxColumn = CellTypes.Checkbox;
     static DateColumn = CellTypes.Date;
     static TimeColumn = CellTypes.Time;
+    static SortOrderColumn = CellTypes.SortOrder;
     static RoleCodeColumn = CellTypes.RoleCode;
     static LeaveSubCodeColumn = CellTypes.LeaveSubCode;
     static ButtonColumn = CellTypes.Button;
@@ -122,6 +119,11 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
         });
     }
 
+    getModalState(fieldModel: any) {
+        const { activeRowId } = this.state;
+        return activeRowId && (activeRowId === fieldModel.id);
+    }
+
     // @ts-ignore
     render() {
         const componentInstance = this;
@@ -139,17 +141,20 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
             displayActionsColumn = true,
             expandable = false,
             rowComponent,
+            shouldRenderRow,
+            shouldDisableRow,
             modalProps,
             modalComponent,
             initialValue,
             filterable,
             filterRows,
+            groupBy,
+
         } = this.props;
 
         const {
             expandedRows,
-            isModalOpen,
-            activeRowId
+            isModalOpen
         } = this.state;
 
         // return (<div>This would be the Table</div>);
@@ -177,6 +182,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                     columns={columns}
                                     expandable={expandable}
                                     filterable={filterable}
+                                    groupBy={!!groupBy}
                                     displayActionsColumn={displayActionsColumn}
                                 />
                             </thead>
@@ -189,6 +195,36 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                         // ARR_RENDER_COUNT++;
                         // console.log('DATATABLE FieldArray COMPONENT RENDER COUNT: ' + ARR_RENDER_COUNT);
                         const { fields } = props;
+
+                        const { groupByKey, valueMapLabels } = groupBy || { groupByKey: null, valueMapLabels: {} };
+
+                        // This can be undefined, especially when things are just loading up...
+                        // Make sure we use an empty array a a fallback!
+                        const rows = fields.getAll() || [];
+
+                        const aggregates = rows.reduce((acc: any , cur: any, idx) => {
+                            const value = cur[groupByKey];
+                            if (value === undefined || value === null) return acc;
+                            if (!acc.hasOwnProperty(value)) {
+                                acc[value] = { count: 1 };
+                            } else if (acc.hasOwnProperty(value)) {
+                                acc[value].count++;
+                            }
+                            return acc;
+                        }, {});
+
+                        /* if (Object.keys(aggregates).length > 0) {
+                            console.log(`Group [${fieldName}] by [${groupByKey}]: ${JSON.stringify(aggregates)}`);
+                        } */
+
+                        const groupByParams = (groupBy) ? {
+                            groupByField: groupByKey,
+                            valueMapLabels: valueMapLabels,
+                            values: { ...aggregates }
+                        } : {};
+
+                        let newRowCount = 0;
+
                         return (
                             <div className="data-table-header-row">
                                 <Table striped={true} >
@@ -198,6 +234,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                             columns={columns}
                                             expandable={expandable}
                                             filterable={filterable}
+                                            groupBy={!!groupBy}
                                             displayHeaderActions={displayHeaderActions}
                                             displayHeaderSave={displayHeaderSave}
                                             displayActionsColumn={displayActionsColumn}
@@ -209,18 +246,31 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                     <tbody>
                                     {fields.length === 0 && (
                                         <tr>
-                                            <td colSpan={expandable ? columns.length + 2 : columns.length + 1}>
-                                                <Well
-                                                    style={{textAlign: 'center'}}>No records found.</Well></td>
+                                            <td colSpan={(expandable ? columns.length + 2 : columns.length + 1) + (!!groupBy ? 1 : 0)}>
+                                                <Well style={{textAlign: 'center'}}>No records found.</Well>
+                                            </td>
                                         </tr>
                                     )}
                                     {fields.length > 0 && fields.map((fieldInstanceName, index) => {
                                         const fieldModel: Partial<any & T> = fields.get(index);
-                                        const {id = null, cancelDate = undefined} = fieldModel || {};
+                                        const { id = null, cancelDate = undefined } = fieldModel || {};
+
+                                        if (shouldRenderRow && !shouldRenderRow(fieldModel)) return null;
+                                        const disableRow = (shouldDisableRow && shouldDisableRow(fieldModel));
+
+                                        // We can do this because new rows are always at the top of the list
+                                        if (!id) newRowCount++;
 
                                         return (
                                             <>
                                                 <tr key={index}>
+                                                    {groupBy && (
+                                                        <>
+                                                        {/* <DataTableGroupBy fieldName={fieldName} newRowCount={newRowCount} rowIndex={index} params={groupByParams} /> */}
+                                                        {/* Add fieldName prop to enable debugging logs */}
+                                                        <DataTableGroupBy newRowCount={newRowCount} rowIndex={index} params={groupByParams} />
+                                                        </>
+                                                    )}
                                                     {expandable && (
                                                         <td>
                                                             <FormGroup>
@@ -242,13 +292,14 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                                     {
                                                         columns
                                                             .map((col, colIndex) => {
-                                                                const Column = cancelDate != undefined
+                                                                const Column = cancelDate !== undefined
                                                                     ? col.CanceledRender
                                                                     : col.FormRenderer;
 
                                                                 return (
                                                                     <td key={colIndex}>
                                                                         <Column
+                                                                            disabled={disableRow}
                                                                             model={fieldModel}
                                                                             fieldInstanceName={fieldInstanceName}
                                                                             fields={fields}
@@ -262,7 +313,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                                     {displayActionsColumn && (() => {
                                                         const rowActionsColumn = actionsColumn || CellTypes.Actions();
 
-                                                        const Column = cancelDate != undefined
+                                                        const Column = cancelDate !== undefined
                                                             ? rowActionsColumn.CanceledRender
                                                             : rowActionsColumn.FormRenderer;
 
@@ -274,6 +325,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                                                 justifyContent: 'flex-end'
                                                             }}>
                                                                 <Column
+                                                                    disabled={disableRow}
                                                                     model={fieldModel}
                                                                     fieldInstanceName={fieldInstanceName}
                                                                     fields={fields}
@@ -298,7 +350,8 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                                     </tr>
                                                 )}
                                                 <ModalComponent
-                                                    isOpen={activeRowId && (activeRowId === fieldModel.id)}
+                                                    isOpen={this.getModalState(fieldModel)}
+                                                    onClose={() => this.setActiveRow(null)}
                                                     {...modalProps}
                                                     parentModel={fieldModel}
                                                     parentModelId={fieldModel.id}

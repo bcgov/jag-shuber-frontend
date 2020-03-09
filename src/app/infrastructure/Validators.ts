@@ -116,7 +116,7 @@ export const isSameOrAfter = (otherDateValue: any, otherDateName: string) => {
 export function validateWith(...validators: Validator[]): Validator {
     return (value: any) => (
         validators.map(v => v(value))
-            .filter(m => m != undefined)
+            .filter(m => m !== undefined)
             .join(', ')
     );
 }

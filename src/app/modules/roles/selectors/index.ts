@@ -2,11 +2,12 @@ import { RootState } from '../../../store';
 
 import {
     MapType
-} from '../../../api/Api';
+} from '../../../api';
 
 import { ErrorMap } from '../../sheriffs/common';
 
 export * from './frontendScopes';
+export * from './frontendScopeApis';
 export * from './frontendScopePermissions';
 export * from './apiScopes';
 export * from './roles';

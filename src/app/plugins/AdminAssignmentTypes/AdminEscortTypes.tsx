@@ -12,12 +12,14 @@ import {
     deleteEscortRuns as deleteEscortTypes,
     selectAdminEscortTypesPluginSection,
     setAdminEscortTypesPluginSubmitErrors,
-    setAdminEscortTypesPluginFilters
+    setAdminEscortTypesPluginFilters, setAdminJailRolesPluginFilters
 } from '../../modules/assignments/actions';
 
 import {
     getAllEscortRunTypes,
-    findAllEscortRunTypes
+    getAllEffectiveEscortRunTypes,
+    findAllEscortRunTypes,
+    findAllEffectiveEscortRunTypes
 } from '../../modules/assignments/selectors';
 
 import {
@@ -26,7 +28,7 @@ import {
 
 import { RootState } from '../../store';
 
-import { EscortRun as EscortType, IdType } from '../../api';
+import { EscortRun as EscortType, IdType, JailRoleCode } from '../../api';
 
 import {
     FormContainerBase,
@@ -40,6 +42,7 @@ import RemoveRow from '../../components/TableColumnActions/RemoveRow';
 import ExpireRow from '../../components/TableColumnActions/ExpireRow';
 import DeleteRow from '../../components/TableColumnActions/DeleteRow';
 import { setAdminRolesPluginFilters } from '../../modules/roles/actions';
+import CodeScopeSelector from '../../containers/CodeScopeSelector';
 // import { createOrUpdateEscortTypes } from '../../modules/assignments/actions';
 
 export interface AdminEscortTypesProps extends FormContainerProps {
@@ -109,27 +112,43 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
             }
         };
 
+        const onFilterEscortTypeScope = (event: Event, newValue: any, previousValue: any, name: string) => {
+            const { setPluginFilters } = props;
+            if (setPluginFilters) {
+                setPluginFilters({
+                    escortTypes: {
+                        locationId: (parseInt(newValue, 10) === 1) ? null : null // TODO: This needs to be the current location ID
+                    }
+                }, setAdminEscortTypesPluginFilters);
+            }
+        };
+
         const onResetFilters = () => {
             const { setPluginFilters } = props;
             if (setPluginFilters) {
                 // console.log('reset plugin filters');
                 setPluginFilters({
                     escortTypes: {}
-                }, setAdminRolesPluginFilters);
+                }, setAdminEscortTypesPluginFilters);
             }
         };
 
         const escortTypeColumns = (currentLocation === 'ALL_LOCATIONS')
             ? [
                 DataTable.SelectorFieldColumn('Location', { fieldName: 'locationId', selectorComponent: LocationSelector, displayInfo: false, filterable: true, filterColumn: onFilterLocation }),
-                DataTable.TextFieldColumn('Run Name', { fieldName: 'title', displayInfo: false, filterable: true, filterColumn: onFilterEscortType }),
-                // DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false, filterable: false }),
+                DataTable.TextFieldColumn('Type', { fieldName: 'title', displayInfo: false, filterable: true, filterColumn: onFilterEscortType }),
+                DataTable.TextFieldColumn('Code', { fieldName: 'title', displayInfo: false, filterable: false }),
                 // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true })
+                DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, displayInfo: false, filterable: false }),
+                DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false })
             ]
             : [
-                DataTable.TextFieldColumn('Run Name', { fieldName: 'title', displayInfo: false, filterable: true, filterColumn: onFilterEscortType }),
+                DataTable.TextFieldColumn('Type', { fieldName: 'title', displayInfo: false, filterable: true, filterColumn: onFilterEscortTypeScope }),
+                DataTable.TextFieldColumn('Code', { fieldName: 'title', displayInfo: false, filterable: true, filterColumn: onFilterEscortTypeScope }),
                 // DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false, filterable: false }),
                 // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true })
+                DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, filterSelectorComponent: CodeScopeSelector, displayInfo: false, filterable: false }),
+                DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false })
             ];
 
         return (
@@ -147,7 +166,7 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
                     actionsColumn={DataTable.ActionsColumn({
                         actions: [
                             ({ fields, index, model }) => {
-                                return (model && !model.id || model.id === '')
+                                return (model && !model.id || model && model.id === '')
                                     ? (<RemoveRow fields={fields} index={index} model={model} />)
                                     : null;
                             },
@@ -167,6 +186,29 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
                     filterable={true}
                     expandable={false}
                     // expandedRows={[1, 2]}
+                    groupBy={{
+                        groupByKey: 'isProvincialCode',
+                        valueMapLabels: {
+                            0: {
+                                label: 'Custom Roles',
+                                style: {
+                                    width: '3rem',
+                                    backgroundColor: '#327AB7',
+                                    color: 'white',
+                                    border: '1px solid #327AB7'
+                                }
+                            },
+                            1: {
+                                label: 'Default Roles',
+                                style: {
+                                    width: '3rem',
+                                    backgroundColor: '#999',
+                                    color: 'white',
+                                    border: '1px solid #999'
+                                }
+                            }
+                        }
+                    }}
                     rowComponent={EmptyDetailRow}
                     modalComponent={EmptyDetailRow}
                 />
@@ -194,15 +236,19 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
         const filterData = this.getFilterData(filters);
 
         // Get form data
-        const escortTypes = (filters && filters.escortTypes)
-            ? findAllEscortRunTypes(filters.escortTypes)(state) || undefined
-            : getAllEscortRunTypes(state);
+        const escortTypes = (filters && filters.escortTypes !== undefined)
+            ? findAllEffectiveEscortRunTypes(filters.escortTypes)(state) || []
+            : getAllEffectiveEscortRunTypes(state) || [];
+
+        const escortTypesArray: any[] = escortTypes.map((type: any) => {
+            return Object.assign({ isProvincialCode: (type.locationId === null) ? 1 : 0 }, type);
+        });
 
         const currentLocation = getCurrentLocation(state);
 
         return {
             ...filterData,
-            escortTypes,
+            escortTypes: escortTypesArray,
             currentLocation
         };
     }
@@ -231,38 +277,43 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
         };
     }
 
-    async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any[]> {
+    async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>) {
         const data: any = this.getDataFromFormValues(formValues, initialValues);
         const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
+
+        // Grab the currentLocation off of the formValues.assignments object
+        const { currentLocation } = formValues.assignments;
 
         // Delete records before saving new ones!
         const deletedEscortTypes: IdType[] = dataToDelete.escortTypes as IdType[];
 
-        const { currentLocation } = initialValues.assignments;
-        const escortTypes: Partial<EscortType>[] = data.escortTypes.map((c: EscortType) => {
-            if (currentLocation === 'ALL_LOCATIONS' || currentLocation === '') {
-                return {
-                    ...c,
-                    createdBy: 'DEV - FRONTEND',
-                    updatedBy: 'DEV - FRONTEND',
-                    createdDtm: new Date().toISOString(),
-                    updatedDtm: new Date().toISOString()
-                };
-            } else {
-                return {
-                    ...c,
-                    locationId: currentLocation,
-                    createdBy: 'DEV - FRONTEND',
-                    updatedBy: 'DEV - FRONTEND',
-                    createdDtm: new Date().toISOString(),
-                    updatedDtm: new Date().toISOString()
-                };
-            }
-        });
+        let escortTypes: Partial<EscortType>[];
+        escortTypes = data.escortTypes.map((c: Partial<EscortType>) => ({
+            ...c,
+            createdBy: 'DEV - FRONTEND',
+            updatedBy: 'DEV - FRONTEND',
+            createdDtm: new Date().toISOString(),
+            updatedDtm: new Date().toISOString()
+        }));
 
-        return Promise.all([
-            dispatch(deleteEscortTypes(deletedEscortTypes)),
-            dispatch(createOrUpdateEscortTypes(escortTypes))
-        ]);
+        if (!(currentLocation === 'ALL_LOCATIONS' || currentLocation === '')) {
+            escortTypes = escortTypes.map((c: Partial<EscortType>) => {
+                const isNewRow = !c.id;
+                if (isNewRow) {
+                    const locationId = (c.isProvincialCode !== '1') ? currentLocation : null;
+                    return { ...c, locationId: locationId };
+                } else {
+                    return { ...c };
+                }
+            });
+        }
+
+        if (deletedEscortTypes.length > 0) {
+            await dispatch(deleteEscortTypes(deletedEscortTypes));
+        }
+
+        if (escortTypes.length > 0) {
+            await dispatch(createOrUpdateEscortTypes(escortTypes));
+        }
     }
 }

@@ -37,7 +37,7 @@ export const getAllUsers = (state: RootState) => {
 };
 
 export const getUserRolesByUserRoleId = (id?: IdType) => (state: RootState) => {
-    if (state && id !== null) {
+    if (state && id) {
         return getUserRoles(state).filter(i => i.roleId === id);
     }
     return undefined;

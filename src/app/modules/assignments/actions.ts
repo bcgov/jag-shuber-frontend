@@ -110,7 +110,7 @@ const setAssignmentBasedOnShift = (sheriffShifts: Shift[], sheriffDuty: SheriffD
             {
                 // Check if the minimum required amount of sheriffs is match
                 // const sheriffDuties = duty.sheriffDuties.filter(sd =>
-                //     sd.id != sheriffDuty.id &&
+                //     sd.id !== sheriffDuty.id &&
                 //     doTimeRangesOverlap({ startTime: moment(sd.startDateTime), endTime: moment(sd.endDateTime)},
                 //         { startTime: moment(sheriffDuty.startDateTime), endTime: moment(shift.endDateTime) }));
                 // if (sheriffDuties.length < (duty.sheriffsRequired | 1))
@@ -124,7 +124,7 @@ const setAssignmentBasedOnShift = (sheriffShifts: Shift[], sheriffDuty: SheriffD
             if (shift.endDateTime < duty.endDateTime)
             {
                 // const sheriffDuties = duty.sheriffDuties.filter(sd =>
-                //     sd.id != sheriffDuty.id &&
+                //     sd.id !== sheriffDuty.id &&
                 //     doTimeRangesOverlap({ startTime: moment(sd.startDateTime), endTime: moment(sd.endDateTime)},
                 //         { startTime: moment(shift.endDateTime), endTime: moment(sheriffDuty.endDateTime) }));
                 // if (sheriffDuties.length < (duty.sheriffsRequired | 1))

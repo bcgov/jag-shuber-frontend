@@ -2,7 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { AlternateAssignment } from '../api';
-import { allEffectAlternateAssignmentTypes } from '../modules/assignments/selectors';
+import {
+    allEffectiveAlternateAssignmentTypes,
+    allAlternateAssignmentTypes
+} from '../modules/assignments/selectors';
 import Selector, { SelectorProps } from '../components/FormElements/Selector';
 
 interface AlternateAssignmentTypeListStateProps {
@@ -15,9 +18,7 @@ class AlternateAssignmentTypeList extends React.PureComponent<
 
     render() {
         const { alternateAssignmentTypes = [], ...rest } = this.props;
-        const selectorValues = alternateAssignmentTypes.map(
-            (type) => ({ key: type.code, value: type.description })
-        );
+        const selectorValues = alternateAssignmentTypes.map(type => ({ key: type.id as string, value: type.description as string }));
         return (
             <Selector
                 data={selectorValues}
@@ -30,7 +31,7 @@ class AlternateAssignmentTypeList extends React.PureComponent<
 
 const mapStateToProps = (state: RootState) => {
     return {
-        alternateAssignmentTypes: allEffectAlternateAssignmentTypes()(state)
+        alternateAssignmentTypes: allEffectiveAlternateAssignmentTypes()(state)
     };
 };
 

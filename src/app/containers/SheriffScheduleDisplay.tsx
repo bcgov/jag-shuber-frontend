@@ -9,8 +9,8 @@ import {
     getShifts
 } from '../modules/shifts/actions';
 import { getSheriffList } from '../modules/sheriffs/actions';
-import { 
-    sheriffs, 
+import {
+    sheriffs,
     sheriffLoanMap
 } from '../modules/sheriffs/selectors';
 import {
@@ -20,9 +20,9 @@ import {
     MapType
 } from '../api/Api';
 import ScheduleDeputyViewList from '../components/ScheduleDeputyViewList';
-import { 
+import {
     publishViewVisibleWeek,
-    isShowWorkSections 
+    isShowWorkSections
 } from '../modules/schedule/selectors';
 
 interface SheriffScheduleDisplayProps {
@@ -37,7 +37,7 @@ interface SheriffScheduleDisplayStateProps {
     shifts: Shift[];
     sheriffs: Sheriff[];
     weekStart?: TimeType;
-    includeWorkSection?: boolean;  
+    includeWorkSection?: boolean;
     sheriffLoanMap?: MapType<{isLoanedIn: boolean, isLoanedOut: boolean}>;
 }
 
@@ -48,20 +48,20 @@ class SheriffScheduleDisplay extends React.Component<SheriffScheduleDisplayProps
     getShiftsForWeek(): Shift[] {
         const { shifts, weekStart = moment().startOf('week').toISOString() } = this.props;
         const shiftsForWeek = shifts
-            .filter(s => 
+            .filter(s =>
                 moment(s.startDateTime)
                     .isBetween(moment(weekStart), moment(weekStart).endOf('week'), 'days', '[]')
             )
             // tslint:disable-next-line:triple-equals
-            .filter(weekShift => weekShift.sheriffId != undefined);
+            .filter(weekShift => weekShift.sheriffId !== undefined);
 
         return shiftsForWeek;
     }
 
     render() {
         const {
-            includeWorkSection, 
-            sheriffs: sheriffList, 
+            includeWorkSection,
+            sheriffs: sheriffList,
             weekStart,
             sheriffLoanMap: loanMap = {}
         } = this.props;

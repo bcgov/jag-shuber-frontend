@@ -2,10 +2,10 @@ import React from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
-import { 
-    DateRange, 
+import {
+    DateRange,
     Assignment,
-    WorkSectionCode 
+    WorkSectionCode
 } from '../api/Api';
 import Selector, { SelectorProps } from '../components/FormElements/Selector';
 import {
@@ -37,7 +37,7 @@ class AssignmentSelector extends React.PureComponent<
     componentWillMount() {
         const {
             fetchAssignments,
-            visibleTimeEnd: endDate, 
+            visibleTimeEnd: endDate,
             visibleTimeStart: startDate
         } = this.props;
 
@@ -45,7 +45,7 @@ class AssignmentSelector extends React.PureComponent<
         // tslint:disable-next-line:no-unused-expression
         fetchAssignments && fetchAssignments(dateRange);
     }
-    
+
     componentWillReceiveProps(nextProps: AssignmentSelectorDispatchProps & AssignmentSelectorStateProps) {
         const {
             visibleTimeStart: prevStartDate,
@@ -66,13 +66,18 @@ class AssignmentSelector extends React.PureComponent<
 
     render() {
         const { assignments = [], workSectionId, label, showVariedOption = false, ...restProps } = this.props;
-        const workSectionAssignments = assignments.filter(a => a.workSectionId == workSectionId);
-        const selectorValues = workSectionAssignments.map(a => ({ key: a.id, value: a.title }));
+        const workSectionAssignments = assignments.filter(a => a.workSectionId === workSectionId);
+        const selectorValues = workSectionAssignments.map(a => ({ key: a.id as string, value: a.title }));
         return (
-            <Selector {...restProps} data={selectorValues} label={label} allowNone={true}
-            noneLabel="Not Applicable"
-            showVariedOption={showVariedOption}
-            variedLabel="Anticipated Assignment Varied"/>
+            <Selector
+                {...restProps}
+                data={selectorValues}
+                label={label}
+                allowNone={true}
+                noneLabel="Not Applicable"
+                showVariedOption={showVariedOption}
+                variedLabel="Anticipated Assignment Varied"
+            />
         );
     }
 
@@ -88,7 +93,7 @@ const mapStateToProps = (state: RootState) => {
 
 // tslint:disable-next-line:max-line-length
 export default connect<AssignmentSelectorStateProps, AssignmentSelectorDispatchProps, SelectorProps>(
-    mapStateToProps, 
+    mapStateToProps,
     {
         fetchAssignments: getAssignments
     }

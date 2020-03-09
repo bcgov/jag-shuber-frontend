@@ -31,6 +31,7 @@ export type RolePermissionMap = MapType<RolePermission>;
 export type RoleFrontendScopeMap = MapType<RoleFrontendScope>;
 export type RoleApiScopeMap = MapType<RoleApiScope>;
 export type FrontendScopeMap = MapType<FrontendScope>;
+export type FrontendScopeApiMap = MapType<FrontendScopeApi>;
 export type FrontendScopePermissionMap = MapType<FrontendScopePermission>;
 export type RoleFrontendScopePermissionMap = MapType<RoleFrontendScopePermission>;
 export type RoleApiScopePermissionMap = MapType<RoleApiScopePermission>;
@@ -202,7 +203,8 @@ export interface SheriffRank {
 
 export interface BaseAssignment {
     id: IdType;
-    title: string;
+    // TODO: title has to be optional or it breaks some selectors
+    title?: string;
     locationId: IdType;
     workSectionId: WorkSectionCode;
     dutyRecurrences?: DutyRecurrence[];
@@ -291,24 +293,46 @@ export interface Region {
 }
 
 export interface Courtroom {
-    id: IdType;
-    locationId: IdType;
+    id?: IdType;
     code: IdType;
+    locationId?: IdType;
     name: string;
 }
 
 export interface JailRoleCode {
-    id?: IdType; // Used on client-side only
-    code: IdType;
+    id?: IdType;
+    code?: IdType;
+    locationId?: IdType;
     description: string;
     expiryDate?: DateType;
+    isProvincialCode?: any; // Only used on client-side
 }
 
 export interface CourtRoleCode {
-    id?: IdType; // Used on client-side only
-    code: IdType;
+    id?: IdType;
+    code?: IdType;
+    locationId?: IdType;
     description: string;
     expiryDate?: DateType;
+    isProvincialCode?: any; // Only used on client-side
+}
+
+export interface EscortRun {
+    id: IdType;
+    // code?: IdType; // This isn't being used, just keep it in here so code type interfaces are all the same
+    locationId?: IdType;
+    title: string;
+    isProvincialCode?: any; // Only used on client-side
+}
+
+// TODO: Rename this OtherAssignment if we can...
+export interface AlternateAssignment {
+    id: IdType;
+    code: IdType;
+    locationId?: IdType;
+    description: string;
+    expiryDate?: DateType;
+    isProvincialCode?: any; // Only used on client-side
 }
 
 export interface Shift {
@@ -363,19 +387,6 @@ export interface LeaveCancelCode {
     expiryDate?: DateType;
 }
 
-export interface EscortRun {
-    id: IdType;
-    locationId: IdType | string;
-    title: string;
-}
-
-export interface AlternateAssignment {
-    id?: IdType; // Used on client-side only
-    code: IdType | string;
-    description: string;
-    expiryDate?: DateType;
-}
-
 export interface AssignmentScheduleItem {
     id: string;
     assignmentId: IdType;
@@ -404,7 +415,7 @@ export interface Role {
     id: IdType;
     roleName?: string;
     roleCode?: string;
-    systemCodeInd?: number;
+    systemRoleInd?: number;
     description?: string;
     createdBy?: string;
     updatedBy?: string;
@@ -448,6 +459,21 @@ export interface FrontendScope {
     scopeCode?: string; // Code type for the scope
     systemScopeInd?: boolean; // Is the scope required by the SYSTEM
     description?: string; // Scope description
+    createdBy?: string;
+    updatedBy?: string;
+    createdDtm?: string;
+    updatedDtm?: string;
+    revisionCount?: number;
+}
+
+export interface FrontendScopeApi {
+    id?: IdType;
+    frontendScopeId?: string; // GUID
+    frontendScope?: FrontendScope;
+    frontendScopeCode?: string;  // Only used when generating scopes
+    apiScopeId?: string; // GUID
+    apiScope?: ApiScope;
+    apiScopeCode?: string;  // Only used when generating scopes
     createdBy?: string;
     updatedBy?: string;
     createdDtm?: string;
@@ -717,6 +743,12 @@ export interface API {
     getFrontendScopes(): Promise<FrontendScope[]>;
     deleteFrontendScope(frontendScopeId: IdType): Promise<void>;
     deleteFrontendScopes(frontendScopeIds: IdType[]): Promise<void>;
+
+    getFrontendScopeApi(): Promise<FrontendScopeApi>;
+    createFrontendScopeApi(newFrontendScopeApi: Partial<FrontendScopeApi>): Promise<FrontendScopeApi>;
+    updateFrontendScopeApi(updatedFrontendScopeApi: FrontendScopeApi): Promise<FrontendScopeApi>;
+    getFrontendScopeApis(): Promise<FrontendScopeApi[]>;
+    deleteFrontendScopeApis(frontendScopeApiIds: IdType[]): Promise<void>;
 
     getFrontendScopePermission(): Promise<FrontendScopePermission>;
     createFrontendScopePermission(newFrontendScopePermission: Partial<FrontendScopePermission>): Promise<FrontendScopePermission>;

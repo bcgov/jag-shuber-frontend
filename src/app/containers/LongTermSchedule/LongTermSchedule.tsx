@@ -131,11 +131,11 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
         } = this.props;
         const sheriff = sheriffs.find(s => s.id == shift.sheriffId);
         const assignment = assignments.find(a => a.id == shift.assignmentId);
-        return (        
+        return (
             `${WorkSection.getWorkSectionSortCode(shift.workSectionId)}:${assignment ? assignment.title : 'z'}:${shift.startDateTime}${sheriff ? sheriff.lastName : 'z'}`
         );
     }
-    
+
     render() {
         const {
             shifts = [],
@@ -144,7 +144,7 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
             visibleTimeEnd,
         } = this.props;
 
-        
+
         return (
             <div className="scheduling-timeline">
                 <ShiftSchedule
@@ -171,7 +171,7 @@ class LongTermSchedule extends React.Component<LongTermScheduleProps
                                 <ShiftCard
                                     shift={shift}
                                     isSelected={this.isShiftSelected(shift.id)}
-                                    isAssigned={shift.sheriffId != undefined}
+                                    isAssigned={shift.sheriffId !== undefined}
                                 >
                                     {partialLeave !== undefined &&
                                         <div style={{ position: 'absolute', top: 0, margin: 5 }}>

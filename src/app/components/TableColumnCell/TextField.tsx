@@ -54,15 +54,16 @@ const TextFieldColumn = (label?: string, options?: Types.FieldColumnOptions): Ty
         filterComponent: (filterable) ? TextFieldColumn(label, filterComponentOptions) : undefined,
         filterColumn,
         displayInfo,
-        FormRenderer: ({ fieldInstanceName }) => (
+        FormRenderer: ({ fieldInstanceName , disabled}) => (
             <Field
                 name={`${fieldInstanceName}.${fieldName}`}
                 component={FieldRenderer}
                 label={label}
                 onChange={onChange}
+                disabled={disabled}
             />
         ),
-        CanceledRender: ({ model }) => (<div>TextField Cancelled Display</div>)
+        CanceledRender: () => (<div>TextField Cancelled Display</div>)
     };
 };
 

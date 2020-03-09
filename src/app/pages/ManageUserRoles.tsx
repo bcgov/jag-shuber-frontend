@@ -13,6 +13,7 @@ import SheriffProfileCreateModal from '../containers/SheriffProfileCreateModal';
 
 import HeaderSaveButton from '../plugins/AdminRoles/containers/HeaderSaveButton';
 import HeaderCancelButton from '../plugins/AdminRoles/containers/HeaderCancelButton';
+import PageTitle from '../containers/PageTitle';
 
 export interface ManageUserRolesProps extends RouteComponentProps<any>{};
 
@@ -91,16 +92,14 @@ class ManageUserRoles extends React.PureComponent<AdminFormProps & Partial<Manag
                         backgroundColor: 'white',
                         flexDirection: 'column',
                         flex: '1 1',
-                        maxWidth: '100%',
+                        maxWidth: '95%',
                         minWidth: 800,
                         height: 'max-content',
                         margin: '0 auto',
                         borderRadius: 0
                     }}
                 >
-                    <div className="container-fluid" style={{ width: '100%' }}>
-                        <h3 style={{ marginBottom: '15px', paddingBottom: '10px', borderBottom: '1px dotted grey', color: '#003366' }}>Assign Victoria User Roles</h3>
-                    </div>
+                    <PageTitle title={({ currentLocationName }: any) => `Assign ${currentLocationName} User Roles`} />
                     <AdminForm
                         key={'admin-roles-grid'}
                         plugins={[

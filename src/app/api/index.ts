@@ -42,6 +42,7 @@ export {
     UserRole,
     ApiScope,
     FrontendScope,
+    FrontendScopeApi,
     FrontendScopePermission,
     RoleApiScope,
     RoleFrontendScope,

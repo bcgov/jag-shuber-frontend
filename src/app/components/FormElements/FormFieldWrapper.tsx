@@ -8,6 +8,7 @@ export interface FormFieldWrapperProps extends WrappedFieldProps {
     showLabel?: boolean;
     maxWidth?: number;
     fieldToolTip?: React.ReactNode;
+    disabled?: boolean;
 }
 
 export default class FormFieldWrapper extends React.PureComponent<FormFieldWrapperProps> {

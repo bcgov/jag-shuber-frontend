@@ -17,12 +17,14 @@ import {
 
 import {
     getAllJailRoles,
-    findAllJailRoles
+    getAllEffectiveJailRoles,
+    findAllJailRoles,
+    findAllEffectiveJailRoles
 } from '../../modules/assignments/selectors';
 
 import { RootState } from '../../store';
 
-import { JailRoleCode, IdType } from '../../api';
+import { JailRoleCode, IdType, CourtRoleCode } from '../../api';
 
 import {
     FormContainerBase,
@@ -36,6 +38,8 @@ import RemoveRow from '../../components/TableColumnActions/RemoveRow';
 import ExpireRow from '../../components/TableColumnActions/ExpireRow';
 import DeleteRow from '../../components/TableColumnActions/DeleteRow';
 import { setAdminRolesPluginFilters } from '../../modules/roles/actions';
+import CodeScopeSelector from '../../containers/CodeScopeSelector';
+import { currentLocation as getCurrentLocation } from '../../modules/user/selectors';
 // import { createOrUpdateJailRoles } from '../../modules/assignments/actions';
 
 export interface AdminJailRolesProps extends FormContainerProps {
@@ -88,7 +92,7 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
             if (setPluginFilters) {
                 setPluginFilters({
                     jailRoles: {
-                        name: newValue
+                        description: newValue
                     }
                 }, setAdminJailRolesPluginFilters);
             }
@@ -105,13 +109,24 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
             }
         };
 
+        const onFilterJailRoleScope = (event: Event, newValue: any, previousValue: any, name: string) => {
+            const { setPluginFilters } = props;
+            if (setPluginFilters) {
+                setPluginFilters({
+                    jailRoles: {
+                        locationId: (parseInt(newValue, 10) === 1) ? null : null // TODO: This needs to be the current location ID
+                    }
+                }, setAdminJailRolesPluginFilters);
+            }
+        };
+
         const onResetFilters = () => {
             const { setPluginFilters } = props;
             if (setPluginFilters) {
                 // console.log('reset plugin filters');
                 setPluginFilters({
-                    jailRoless: {}
-                }, setAdminRolesPluginFilters);
+                    jailRoles: {}
+                }, setAdminJailRolesPluginFilters);
             }
         };
 
@@ -130,7 +145,7 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
                     actionsColumn={DataTable.ActionsColumn({
                         actions: [
                             ({ fields, index, model }) => {
-                                return (model && !model.id || model.id === '')
+                                return (model && !model.id || model && model.id === '')
                                     ? (<RemoveRow fields={fields} index={index} model={model} />)
                                     : null;
                             },
@@ -148,16 +163,46 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
                     })}
                     columns={[
                         // DataTable.SelectorFieldColumn('Location', { fieldName: 'locationId', selectorComponent: LocationSelector, displayInfo: false, filterable: true, filterColumn: onFilterLocation }),
-                        DataTable.TextFieldColumn('Jail Role', { fieldName: 'description', displayInfo: false, filterable: true, filterColumn: onFilterJailRole }),
+                        DataTable.TextFieldColumn('Type', { fieldName: 'description', displayInfo: false, filterable: true, filterColumn: onFilterJailRole }),
                         DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, filterable: true, filterColumn: onFilterJailRoleCode }),
                         // DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
                         // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
+                        DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, filterSelectorComponent: CodeScopeSelector, displayInfo: false, filterable: true, filterColumn: onFilterJailRoleScope }),
+                        DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false })
 
                     ]}
                     filterable={true}
                     expandable={false}
                     // expandedRows={[1, 2]}
+                    groupBy={{
+                        groupByKey: 'isProvincialCode',
+                        valueMapLabels: {
+                            0: {
+                                label: 'Custom Roles',
+                                style: {
+                                    width: '3rem',
+                                    backgroundColor: '#327AB7',
+                                    color: 'white',
+                                    border: '1px solid #327AB7'
+                                }
+                            },
+                            1: {
+                                label: 'Default Roles',
+                                style: {
+                                    width: '3rem',
+                                    backgroundColor: '#999',
+                                    color: 'white',
+                                    border: '1px solid #999'
+                                }
+                            }
+                        }
+                    }}
+                    shouldDisableRow={(model) => {
+                        // TODO: Only disable if the user doesn't have permission to edit provincial codes
+                        // return (!model) ? false : (model && model.id) ? model.isProvincialCode : false;
+                        return false;
+                    }}
                     rowComponent={EmptyDetailRow}
                     modalComponent={EmptyDetailRow}
                 />
@@ -185,15 +230,20 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
         const filterData = this.getFilterData(filters);
 
         // Get form data
-        const jailRoles = (filters && filters.jailRoles)
-            ? findAllJailRoles(filters.jailRoles)(state) || []
-            : getAllJailRoles(state) || [];
+        const jailRoles = (filters && filters.jailRoles !== undefined)
+            ? findAllEffectiveJailRoles(filters.jailRoles)(state) || []
+            : getAllEffectiveJailRoles(state) || [];
 
-        const jailRolesArray: any[] = jailRoles.map(role => Object.assign({ id: role.code }, role));
+        const jailRolesArray: any[] = jailRoles.map((role: any) => {
+            return Object.assign({ isProvincialCode: (role.locationId === null) ? 1 : 0 }, role);
+        });
+
+        const currentLocation = getCurrentLocation(state);
 
         return {
             ...filterData,
-            jailRoles: jailRolesArray
+            jailRoles: jailRolesArray,
+            currentLocation
         };
     }
 
@@ -221,14 +271,18 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
         };
     }
 
-    async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any[]> {
+    async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>) {
         const data: any = this.getDataFromFormValues(formValues, initialValues);
         const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
+
+        // Grab the currentLocation off of the formValues.assignments object
+        const { currentLocation } = formValues.assignments;
 
         // Delete records before saving new ones!
         const deletedJailRoles: IdType[] = dataToDelete.jailRoles as IdType[];
 
-        const jailRoles: Partial<JailRoleCode>[] = data.jailRoles.map((c: JailRoleCode) => ({
+        let jailRoles: Partial<JailRoleCode>[];
+        jailRoles = data.jailRoles.map((c: Partial<JailRoleCode>) => ({
             ...c,
             createdBy: 'DEV - FRONTEND',
             updatedBy: 'DEV - FRONTEND',
@@ -236,9 +290,24 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
             updatedDtm: new Date().toISOString()
         }));
 
-        return Promise.all([
-            dispatch(deleteJailRoles(deletedJailRoles)),
-            dispatch(createOrUpdateJailRoles(jailRoles))
-        ]);
+        if (!(currentLocation === 'ALL_LOCATIONS' || currentLocation === '')) {
+            jailRoles = jailRoles.map((c: Partial<JailRoleCode>) => {
+                const isNewRow = !c.id;
+                if (isNewRow) {
+                    const locationId = (c.isProvincialCode !== '1') ? currentLocation : null;
+                    return { ...c, locationId: locationId };
+                } else {
+                    return { ...c };
+                }
+            });
+        }
+
+        if (deletedJailRoles.length > 0) {
+            await dispatch(deleteJailRoles(deletedJailRoles));
+        }
+
+        if (jailRoles.length > 0) {
+            await dispatch(createOrUpdateJailRoles(jailRoles));
+        }
     }
 }

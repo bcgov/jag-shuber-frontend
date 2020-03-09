@@ -233,14 +233,14 @@ export default class extends
                 initialValues = plugins
                     .map(p => {
                         const data = p.getData(sheriffId, state);
-                        if (data != undefined) {
+                        if (data !== undefined) {
                             const pluginState = {};
                             pluginState[p.name] = data;
                             return pluginState;
                         }
                         return undefined;
                     })
-                    .filter(s => s != undefined)
+                    .filter(s => s !== undefined)
                     .reduce(
                         (initValues, val) => {
                             return { ...initValues, ...val };

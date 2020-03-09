@@ -12,8 +12,8 @@ const CancelColumn = (options?: Types.FieldColumnOptions): Types.TableColumnCell
     return {
         title: '',
         colStyle: colStyle,
-        FormRenderer: ({ fields, index, model: { id } }) => (
-            !id ?
+        FormRenderer: ({ fields, index, model, disabled }) => {
+            return !model || !model.id ?
                 (
                     <Button
                         bsStyle="link"
@@ -24,11 +24,14 @@ const CancelColumn = (options?: Types.FieldColumnOptions): Types.TableColumnCell
                     </Button>
                 )
                 :
-                <CancelButton modelId={id} />
-        ),
-        CanceledRender: ({ model }) => (
-            <CancelledPopover model={model} />
-        )
+                (<CancelButton modelId={model.id} />);
+        },
+        CanceledRender: ({ model }) => {
+            if (!model) return null;
+            return (
+                <CancelledPopover model={model} />
+            );
+        }
     };
 };
 

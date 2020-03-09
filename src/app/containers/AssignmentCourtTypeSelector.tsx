@@ -6,6 +6,7 @@ import {
     CourtRoleCode
 } from '../api/Api';
 import {
+    allEffectiveCourtRoles,
     allCourtRoles,
     allCourtrooms
 } from '../modules/assignments/selectors';
@@ -27,9 +28,9 @@ class CourtAssignmentList extends React.PureComponent<
         } = this.props;
 
         const courtroomSelectorValues = courtrooms
-            .map(courtroom => ({ key: `${COURT_ASSIGNMENT_ROOM}:${courtroom.id}`, value: courtroom.code }));
+            .map(courtroom => ({ key: `${COURT_ASSIGNMENT_ROOM}:${courtroom.id as string}`, value: courtroom.code as string }));
         const rolesSelectorValues = courtRoles
-            .map(role => ({ key: `${COURT_ASSIGNMENT_ROLE}:${role.code}`, value: role.description }));
+            .map(role => ({ key: `${COURT_ASSIGNMENT_ROLE}:${role.id as string}`, value: role.description as string }));
 
         return (
             <SelectorWithOptGroup
@@ -47,7 +48,7 @@ class CourtAssignmentList extends React.PureComponent<
 const mapStateToProps = (state: RootState) => {
     return {
         courtrooms: allCourtrooms(state),
-        courtRoles: allCourtRoles(state)
+        courtRoles: allEffectiveCourtRoles()(state)
     };
 };
 

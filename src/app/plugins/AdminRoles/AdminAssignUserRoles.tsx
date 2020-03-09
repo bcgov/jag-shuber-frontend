@@ -170,7 +170,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                 actionsColumn={DataTable.ActionsColumn({
                     actions: [
                         ({ fields, index, model }) => {
-                            return (model && !model.id || model.id === '')
+                            return (model && !model.id || model && model.id === '')
                                 ? (<RemoveRow fields={fields} index={index} model={model} />)
                                 : null;
                         },
@@ -340,7 +340,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                                     : null;
                             },
                             ({ fields, index, model }) => {
-                            return (model && !model.id || model.id === '')
+                            return (model && !model.id || model && model.id === '')
                                     ? (<RemoveRow fields={fields} index={index} model={model} />)
                                     : null;
                             },
@@ -593,7 +593,5 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
         if (userRoles.length > 0) {
             await dispatch(createOrUpdateUserRoles(userRoles));
         }
-
-        return Promise.resolve([]);
     }
 }

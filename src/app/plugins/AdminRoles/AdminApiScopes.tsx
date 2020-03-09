@@ -139,7 +139,9 @@ export default class AdminApiScopes extends FormContainerBase<AdminApiScopesProp
                     onResetClicked={onResetFilters}
                     actionsColumn={DataTable.ActionsColumn({
                         actions: [
-                            ({ fields, index, model }) => <DeleteRow fields={fields} index={index} model={model} />,
+                            ({ fields, index, model }) => {
+                                return (<DeleteRow fields={fields} index={index} model={model} />);
+                            },
                             // ({ fields, index, model }) => { return (model && model.id) ? (<ExpireRow fields={fields} index={index} model={model} />) : null; }
                         ]
                     })}
@@ -214,7 +216,7 @@ export default class AdminApiScopes extends FormContainerBase<AdminApiScopesProp
         };
     }
 
-    async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any[]> {
+    async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>) {
         const data: any = this.getDataFromFormValues(formValues, initialValues);
         const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
 
@@ -234,9 +236,12 @@ export default class AdminApiScopes extends FormContainerBase<AdminApiScopesProp
             revisionCount: 0 // TODO: Is there entity versioning anywhere in this project???
         }));
 
-        return Promise.all([
-            dispatch(deleteApiScopes(deletedScopes)),
-            dispatch(createOrUpdateApiScopes(scopes))
-        ]);
+        if (deletedScopes.length > 0) {
+            await dispatch(deleteApiScopes(deletedScopes));
+        }
+
+        if (scopes.length > 0) {
+            await dispatch(createOrUpdateApiScopes(scopes));
+        }
     }
 }

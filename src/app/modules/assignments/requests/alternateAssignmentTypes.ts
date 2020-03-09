@@ -18,7 +18,7 @@ class AlternateAssignmentTypeMapRequest
     }
     public async doWork(request: void, { api }: ThunkExtra) {
         let alternateAssignmentTypes = await api.getAlternateAssignmentTypes();
-        return arrayToMap(alternateAssignmentTypes, a => a.code);
+        return arrayToMap(alternateAssignmentTypes, a => a.id);
     }
 }
 

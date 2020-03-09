@@ -34,7 +34,7 @@ const TextAreaColumn = (label?: string, options?: Types.FieldColumnOptions): Typ
         filterable: filterable,
         filterComponent: (filterable) ? TextAreaColumn(label, filterComponentOptions) : undefined,
         displayInfo,
-        FormRenderer: ({ fieldInstanceName }) => (
+        FormRenderer: ({ fieldInstanceName , disabled}) => (
             <Field
                 name={`${fieldInstanceName}.${fieldName}`}
                 rows="1" // TODO: Ability to set number of rows and cols
@@ -47,7 +47,7 @@ const TextAreaColumn = (label?: string, options?: Types.FieldColumnOptions): Typ
                 label={label}
             />
         ),
-        CanceledRender: ({ model }) => (<div>TextField Cancelled Display</div>)
+        CanceledRender: () => (<div>TextField Cancelled Display</div>)
     };
 };
 

@@ -52,7 +52,7 @@ export default class DataTable extends React.Component<DataTableProps> {
                                             {
                                                 columns
                                                     .map((col, colIndex) => {
-                                                        const Column = cancelDate != undefined
+                                                        const Column = cancelDate !== undefined
                                                             ? col.CanceledRender
                                                             : col.FormRenderer;
                                                         return (

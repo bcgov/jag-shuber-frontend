@@ -17,6 +17,7 @@ export interface AdminScopePermissionsModalProps {
     isDefaultTemplate?: boolean;
     parentModel?: any;
     parentModelId?: any;
+    onClose?: () => void;
 }
 
 export default class AdminScopePermissionsModal extends React.Component<AdminScopePermissionsModalProps> {
@@ -29,13 +30,16 @@ export default class AdminScopePermissionsModal extends React.Component<AdminSco
     handleClose = (e: React.SyntheticEvent<any>) => {
         e.preventDefault();
         e.stopPropagation();
-        return (this.modalWrapper) ? this.modalWrapper.handleClose() : undefined;
+
+        const { onClose } = this.props;
+
+        return (this.modalWrapper) ? this.modalWrapper.handleClose(onClose) : undefined;
     }
 
     // @ts-ignore
     render() {
-        const { isDefaultTemplate = false, isOpen, parentModel } = this.props;
-        const title = `Define ${isDefaultTemplate === true ? 'Default ' : ''}Component Permissions`; // TODO: Auto switch text between 'Component' and 'API'
+        const { isDefaultTemplate = false, isOpen, onClose, parentModel } = this.props;
+        const title = `Define ${isDefaultTemplate ? 'Default ' : ''}Component Permissions`; // TODO: Auto switch text between 'Component' and 'API'
 
         return (
             <div>
@@ -44,6 +48,7 @@ export default class AdminScopePermissionsModal extends React.Component<AdminSco
                     styleClassName="modal-wrapper-medium"
                     showButton={() => null}
                     isOpen={isOpen}
+                    onClose={onClose}
                     title={title}
                     body={({ handleClose }: any) => (
                         <>

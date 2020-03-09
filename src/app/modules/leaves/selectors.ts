@@ -42,7 +42,7 @@ export const getAllTrainingLeaves = (state: RootState) => {
 };
 
 export const getLeave = (id?: IdType) => (state: RootState) => {
-    if (state && id != null) {
+    if (state && id) {
         const map: LeaveMap = leaveRequests.leaveMapRequest.getData(state);
         return map[id];
     }
@@ -50,42 +50,42 @@ export const getLeave = (id?: IdType) => (state: RootState) => {
 };
 
 export const getSheriffLeaves = (sheriffId?: IdType) => (state: RootState) => {
-    if (state && sheriffId != null) {
+    if (state && sheriffId !== null) {
         return allLeaves(state).filter(l => l.sheriffId === sheriffId);
     }
     return [];
 };
 
 export const getPartialDayLeaves = (state: RootState) => {
-    if (state != null) {
+    if (state !== null) {
         return allLeaves(state).filter(l => l.isPartial);
     }
     return [];
 };
 
 export const getFullDayLeaves = (state: RootState) => {
-    if (state != null) {
+    if (state !== null) {
         return allLeaves(state).filter(l => !l.isPartial);
     }
     return [];
 };
 
 export const getAllSheriffPartialLeaves = (sheriffId?: IdType) => (state: RootState) => {
-    if (state && sheriffId != null) {
+    if (state && sheriffId !== null) {
         return getPartialDayLeaves(state).filter(l => l.sheriffId === sheriffId);
     }
     return [];
 };
 
 export const getAllSheriffFullDayLeaves = (sheriffId?: IdType) => (state: RootState) => {
-    if (state && sheriffId != null) {
+    if (state && sheriffId !== null) {
         return getFullDayLeaves(state).filter(l => l.sheriffId === sheriffId);
     }
     return [];
 };
 
 export const getSheriffPartialPersonalLeaves = (sheriffId?: IdType) => (state: RootState) => {
-    if (state && sheriffId != null) {
+    if (state && sheriffId !== null) {
         return getPartialDayLeaves(state)
             .filter(l => l.sheriffId === sheriffId)
             .filter(sl => sl.leaveCode === LEAVE_CODE_PERSONAL);
@@ -94,7 +94,7 @@ export const getSheriffPartialPersonalLeaves = (sheriffId?: IdType) => (state: R
 };
 
 export const getSheriffFullDayPersonalLeaves = (sheriffId?: IdType) => (state: RootState) => {
-    if (state && sheriffId != null) {
+    if (state && sheriffId !== null) {
         return getFullDayLeaves(state)
             .filter(l => l.sheriffId === sheriffId)
             .filter(sl => sl.leaveCode === LEAVE_CODE_PERSONAL);
@@ -103,7 +103,7 @@ export const getSheriffFullDayPersonalLeaves = (sheriffId?: IdType) => (state: R
 };
 
 export const getSheriffPartialTrainingLeaves = (sheriffId?: IdType) => (state: RootState) => {
-    if (state && sheriffId != null) {
+    if (state && sheriffId !== null) {
         return getPartialDayLeaves(state)
             .filter(l => l.sheriffId === sheriffId)
             .filter(sl => sl.leaveCode === LEAVE_CODE_TRAINING);
@@ -112,7 +112,7 @@ export const getSheriffPartialTrainingLeaves = (sheriffId?: IdType) => (state: R
 };
 
 export const getSheriffFullDayTrainingLeaves = (sheriffId?: IdType) => (state: RootState) => {
-    if (state && sheriffId != null) {
+    if (state && sheriffId !== null) {
         return getFullDayLeaves(state)
             .filter(l => l.sheriffId === sheriffId)
             .filter(sl => sl.leaveCode === LEAVE_CODE_TRAINING);

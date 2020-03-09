@@ -7,15 +7,6 @@ import * as CellTypes from '../../components/TableColumnCell';
 
 import HeaderSaveButton from '../../plugins/AdminRoles/containers/HeaderSaveButton';
 
-export interface ColumnRendererProps {
-    index: number;
-    fields: FieldsProps<Partial<any>>;
-    model: Partial<any>;
-    fieldInstanceName: string;
-}
-
-export type ColumnRenderer = React.ComponentType<ColumnRendererProps>;
-
 export interface DetailComponentProps {
     parentModel?: any;
     parentModelId?: any;
@@ -37,6 +28,7 @@ export interface DataTableHeaderRowProps {
     initialValue?: any;
     filterable?: boolean;
     filterRows?: Function;
+    groupBy?: boolean;
 }
 
 export default class DataTableHeaderRow<T> extends React.Component<DataTableHeaderRowProps> {
@@ -62,12 +54,15 @@ export default class DataTableHeaderRow<T> extends React.Component<DataTableHead
             displayHeaderSave = true,
             displayActionsColumn = true,
             expandable = false,
-            initialValue
+            initialValue,
+            groupBy = false,
         } = this.props;
 
         return (
-
             <tr>
+                {groupBy && (
+                    <th style={{ width: '3rem', backgroundColor: '#eee', borderTop: 'none' }}></th>
+                )}
                 {expandable && (
                     <th style={{width: '60px'}}>
                         <FormGroup style={{ textAlign: 'left' }}>

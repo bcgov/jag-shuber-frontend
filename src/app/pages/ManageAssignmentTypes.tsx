@@ -1,11 +1,15 @@
 import React from 'react';
 import { Glyphicon, Well } from 'react-bootstrap';
 
+import { connect, Dispatch } from 'react-redux';
+
 import Page, { PageToolbar } from '../components/Page/Page';
 
 import AdminForm from '../containers/AdminForm';
 import * as AdminFormTemplates from '../components/AdminForm';
 import { AdminFormProps } from '../components/AdminForm/AdminForm';
+
+import PageTitle from '../containers/PageTitle';
 
 import WorkSectionsLayout from '../plugins/AdminAssignmentTypes/WorkSectionsLayout';
 
@@ -14,17 +18,33 @@ import AdminCourtRolesPlugin from '../plugins/AdminAssignmentTypes/AdminCourtRol
 import AdminJailRolesPlugin from '../plugins/AdminAssignmentTypes/AdminJailRoles';
 import AdminEscortTypesPlugin from '../plugins/AdminAssignmentTypes/AdminEscortTypes';
 import AdminOtherTypesPlugin from '../plugins/AdminAssignmentTypes/AdminOtherTypes';
-import HeaderSaveButton from '../plugins/AdminRoles/containers/HeaderSaveButton';
-import HeaderCancelButton from '../plugins/AdminRoles/containers/HeaderCancelButton';
 
-export interface ManageAssignmentTypesProps {}
+import { selectedAdminRolesSection as selectedAdminFormSection } from '../modules/roles/selectors';
+import { selectAdminRolesPluginSection } from '../modules/roles/actions';
 
-class ManageCodeTypes extends React.PureComponent<AdminFormProps> {
+import { RootState } from '../store';
+
+export interface ManageAssignmentTypesStateProps {
+    selectedSection?: any; // TODO: Think it's a string, always though?
+}
+
+export interface ManageAssignmentTypesDispatchProps {
+    selectAdminFormSection: (sectionName: string) => any;
+}
+
+export interface ManageAssignmentTypesProps extends
+    ManageAssignmentTypesStateProps, ManageAssignmentTypesDispatchProps {}
+
+class ManageCodeTypes extends React.PureComponent<AdminFormProps & ManageAssignmentTypesProps> {
+    static defaultProps: Partial<ManageAssignmentTypesProps> = {
+        selectedSection: 'ADMIN_PLUGIN_COURTROOMS:ADMIN_PLUGIN_COURT_ROLES'
+    };
+
     state = {
       isEditing: true
     };
 
-    constructor(props: AdminFormProps) {
+    constructor(props: AdminFormProps & ManageAssignmentTypesProps) {
         super(props);
 
         this.toggleEditMode = this.toggleEditMode.bind(this);
@@ -38,6 +58,11 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps> {
 
     render() {
         const { isEditing } = this.state;
+
+        const {
+            selectAdminFormSection,
+            selectedSection = 'ADMIN_PLUGIN_COURTROOMS:ADMIN_PLUGIN_COURT_ROLES'
+        } = this.props;
 
         return (
             <Page
@@ -53,19 +78,19 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps> {
                                     <div style={{ display: 'flex', alignItems: 'center', marginRight: '15px' }}>
                                         <h6 style={{ color: 'white', fontWeight: 'bold', marginBottom: '3px' }}>Choose Work Section: </h6>
                                     </div>
-                                    <div className="admin-form-filters-toggle" style={{ backgroundColor: 'white', color: 'black' }}>
+                                    <div className={`admin-form-filters-toggle admin-form-page-tab${selectedSection === 'ADMIN_PLUGIN_COURTROOMS:ADMIN_PLUGIN_COURT_ROLES' ? ' is-active' : ''}`} onClick={() => selectAdminFormSection('ADMIN_PLUGIN_COURTROOMS:ADMIN_PLUGIN_COURT_ROLES')}>
                                         {/* <Glyphicon glyph="chevron-down" /> */}Court Assignments
                                     </div>
                                     &nbsp;&nbsp;
-                                    <div className="admin-form-filters-toggle">
+                                    <div className={`admin-form-filters-toggle admin-form-page-tab${selectedSection === 'ADMIN_PLUGIN_JAIL_ROLES' ? ' is-active' : ''}`} onClick={() => selectAdminFormSection('ADMIN_PLUGIN_JAIL_ROLES')}>
                                         {/* <Glyphicon glyph="chevron-down" /> */}Jail Assignments
                                     </div>
                                     &nbsp;&nbsp;
-                                    <div className="admin-form-filters-toggle">
+                                    <div className={`admin-form-filters-toggle admin-form-page-tab${selectedSection === 'ADMIN_PLUGIN_ESCORT_TYPES' ? ' is-active' : ''}`} onClick={() => selectAdminFormSection('ADMIN_PLUGIN_ESCORT_TYPES')}>
                                         {/* <Glyphicon glyph="chevron-down" /> */}Escort Runs
                                     </div>
                                     &nbsp;&nbsp;
-                                    <div className="admin-form-filters-toggle">
+                                    <div className={`admin-form-filters-toggle admin-form-page-tab${selectedSection === 'ADMIN_PLUGIN_OTHER_TYPES' ? ' is-active' : ''}`} onClick={() => selectAdminFormSection('ADMIN_PLUGIN_OTHER_TYPES')}>
                                         {/* <Glyphicon glyph="chevron-down" /> */}Other Assignments
                                     </div>
 
@@ -96,9 +121,7 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps> {
                         borderRadius: 0
                     }}
                 >
-                    <div className="container-fluid" style={{ width: '100%' }}>
-                        <h3 style={{ paddingBottom: '10px', borderBottom: '1px dotted grey', color: '#003366' }}>Manage Assignment Types, Victoria Courts</h3>
-                    </div>
+                    <PageTitle title={({ currentLocationName }: any) => `Manage ${currentLocationName} Assignment Types`} />
                     <AdminForm
                         key={'admin-assignment-types-grid'}
                         templateComponent={WorkSectionsLayout}
@@ -106,12 +129,12 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps> {
                         plugins={[
                             new AdminCourtroomsPlugin(),
                             new AdminCourtRolesPlugin(),
-                            // new AdminJailroomsPlugin(),
                             new AdminJailRolesPlugin(),
                             new AdminEscortTypesPlugin(),
                             new AdminOtherTypesPlugin()
                         ]}
                         isEditing={isEditing}
+                        selectedSection={selectedSection}
                     />
                 </Well>
             </Page>
@@ -119,4 +142,18 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps> {
     }
 }
 
-export default ManageCodeTypes;
+const mapStateToProps = (state: RootState) => {
+    return {
+        selectedSection: selectedAdminFormSection(state)
+    };
+};
+
+const mapDispatchToProps = {
+  selectAdminFormSection: selectAdminRolesPluginSection
+};
+
+// tslint:disable-next-line:max-line-length
+export default connect<ManageAssignmentTypesStateProps, ManageAssignmentTypesDispatchProps>(
+  mapStateToProps,
+  mapDispatchToProps
+)(ManageCodeTypes);

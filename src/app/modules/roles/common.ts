@@ -5,11 +5,12 @@ import {
     RoleFrontendScope,
     RoleApiScope,
     FrontendScope,
+    FrontendScopeApi,
     FrontendScopePermission,
     ApiScope,
     UserRole,
     MapType
-} from '../../api/Api';
+} from '../../api';
 
 export type ErrorMap = { [key: string]: Error | string };
 
@@ -19,6 +20,7 @@ export interface RoleModuleState {
     roleFrontendScopeMap?: RequestActionState<MapType<RoleFrontendScope>>;
     roleApiScopeMap?: RequestActionState<MapType<RoleApiScope>>;
     frontendScopeMap?: RequestActionState<MapType<FrontendScope>>;
+    frontendScopeApiMap?: RequestActionState<MapType<FrontendScopeApi>>;
     frontendScopePermissionMap?: RequestActionState<MapType<FrontendScopePermission>>;
     apiScopeMap?: RequestActionState<MapType<ApiScope>>;
     userRoleMap?: RequestActionState<MapType<UserRole>>;

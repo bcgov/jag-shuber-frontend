@@ -13,7 +13,7 @@ export default function dragSourceFactory
             if (beginDrag) {
                 // The setTimeout is necessary here as we need to handle
                 // operations on the next tick (i.e. let the drag and drop backend
-                // have a chance to go through its regular beginDrag flow before 
+                // have a chance to go through its regular beginDrag flow before
                 // we potentially allow the consumer of this api to change the state)
                 setTimeout(() => beginDrag(data as TDrag), 0);
             }
@@ -26,7 +26,7 @@ export default function dragSourceFactory
 
                 // The setTimeout is necessary here as we need to handle
                 // operations on the next tick (i.e. let the drag and drop backend
-                // have a chance to go through its regular endDrag flow before 
+                // have a chance to go through its regular endDrag flow before
                 // we potentially allow the consumer of this api to change the state)
                 setTimeout(() => endDrag(result), 0);
             }
@@ -39,7 +39,7 @@ export default function dragSourceFactory
             const { id: itemId } = monitor.getItem() as TDrag;
             const type = monitor.getItemType();
             const { data: { id } } = props;
-            return type === itemType && id != undefined && id === itemId;
+            return type === itemType && id !== undefined && id === itemId;
         }
     };
 

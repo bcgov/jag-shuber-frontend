@@ -6,6 +6,9 @@ import {
   getAssignments,
   getAssignmentDuties,
   getCourtrooms,
+  getCourtRoles,
+  getJailRoles,
+  getAlternateAssignmentTypes,
   getRuns
 } from '../assignments/actions';
 import { getShifts } from '../shifts/actions';
@@ -64,6 +67,9 @@ export const updateCurrentLocation: ThunkAction<string> =
       await Promise.all([
           dispatch(getRuns()),
           dispatch(getCourtrooms()),
+          dispatch(getCourtRoles()),
+          dispatch(getJailRoles()),
+          dispatch(getAlternateAssignmentTypes()),
           dispatch(getSheriffList()),
           dispatch(getUsers()),
           dispatch(getAssignments()),

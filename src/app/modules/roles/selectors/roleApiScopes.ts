@@ -2,6 +2,9 @@ import { createSelector } from 'reselect';
 import * as roleApiScopeRequests from '../requests/roleApiScopes';
 import mapToArray from '../../../infrastructure/mapToArray';
 import { RootState } from '../../../store';
+
+import { func as selectorFunctions } from '../../common';
+
 import { IdType } from '../../../api';
 import { groupByKey } from './index';
 
@@ -32,7 +35,7 @@ export const getAllRoleApiScopes = (state: RootState) => {
 };
 
 export const getRoleApiScopesById = (id?: IdType) => (state: RootState) => {
-   if (state && id !== null) {
+   if (state && id) {
        const result = getRoleApiScopes(state).filter((i: any) => i.id === id);
        return result;
    }

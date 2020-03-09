@@ -23,18 +23,21 @@ const DateColumn = (label: string, fieldName: string, options?: Types.FieldColum
         filterable: filterable,
         // TODO: Finish me!
         filterComponent: (filterable) ? DateColumn(label, fieldName, filterComponentOptions) : undefined,
-        FormRenderer: ({ fieldInstanceName }) => (
+        FormRenderer: ({ fieldInstanceName , disabled}) => (
             <Field
                 name={`${fieldInstanceName}.${fieldName}`}
                 component={DateField as any}
                 label={label}
             />
         ),
-        CanceledRender: ({ model }) => (
-            <span>
-                {moment(model[fieldName]).format('MMM D, YYYY')}
-            </span>
-        )
+        CanceledRender: ({ model }) => {
+            if (!model) return null;
+            return (
+                <span>
+                    {moment(model[fieldName]).format('MMM D, YYYY')}
+                </span>
+            );
+        }
     };
 };
 

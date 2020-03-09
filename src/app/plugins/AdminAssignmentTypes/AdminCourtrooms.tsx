@@ -26,7 +26,7 @@ import {
 
 import { RootState } from '../../store';
 
-import { Courtroom, IdType } from '../../api';
+import { Courtroom, IdType, JailRoleCode } from '../../api';
 
 import {
     FormContainerBase,
@@ -127,6 +127,7 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
                 // DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false }),
                 // DataTable.DateColumn('Date Created', 'createdDtm'),
                 // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
+                DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false })
             ]
             : [
                 // DataTable.SelectorFieldColumn('Location', { fieldName: 'locationId', selectorComponent: LocationSelector, displayInfo: false, filterable: true, filterColumn: onFilterLocation }),
@@ -135,6 +136,7 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
                 // DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false }),
                 // DataTable.DateColumn('Date Created', 'createdDtm'),
                 // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
+                DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false })
             ];
 
         return (
@@ -152,7 +154,7 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
                     actionsColumn={DataTable.ActionsColumn({
                         actions: [
                             ({ fields, index, model }) => {
-                                return (model && !model.id || model.id === '')
+                                return (model && !model.id || model && model.id === '')
                                     ? (<RemoveRow fields={fields} index={index} model={model} />)
                                     : null;
                             },
@@ -200,8 +202,8 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
 
         // Get form data
         const courtrooms = (filters && filters.courtrooms)
-            ? findAllCourtrooms(filters.courtrooms)(state) || undefined
-            : getAllCourtrooms(state);
+            ? findAllCourtrooms(filters.courtrooms)(state) || []
+            : getAllCourtrooms(state) || [];
 
         const currentLocation = getCurrentLocation(state);
 
@@ -236,37 +238,38 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
         };
     }
 
-    async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any[]> {
+    async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>) {
         const data: any = this.getDataFromFormValues(formValues, initialValues);
         const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
 
         // Delete records before saving new ones!
         const deletedCourtrooms: IdType[] = dataToDelete.courtrooms as IdType[];
 
-        const { currentLocation } = initialValues.assignments;
+        // Grab the currentLocation off of the formValues.assignments object
+        const { currentLocation } = formValues.assignments;
+
         let courtrooms: Partial<Courtroom>[];
-        if (currentLocation === 'ALL_LOCATIONS' || currentLocation === '') {
-            courtrooms = data.courtrooms.map((c: Courtroom) => ({
+        courtrooms = data.courtrooms.map((c: Partial<Courtroom>) => ({
+            ...c,
+            createdBy: 'DEV - FRONTEND',
+            updatedBy: 'DEV - FRONTEND',
+            createdDtm: new Date().toISOString(),
+            updatedDtm: new Date().toISOString()
+        }));
+
+        if (!(currentLocation === 'ALL_LOCATIONS' || currentLocation === '')) {
+            courtrooms = courtrooms.map((c: Partial<Courtroom>) => ({
                 ...c,
-                createdBy: 'DEV - FRONTEND',
-                updatedBy: 'DEV - FRONTEND',
-                createdDtm: new Date().toISOString(),
-                updatedDtm: new Date().toISOString()
-            }));
-        } else {
-            courtrooms = data.courtrooms.map((c: Courtroom) => ({
-                ...c,
-                locationId: currentLocation,
-                createdBy: 'DEV - FRONTEND',
-                updatedBy: 'DEV - FRONTEND',
-                createdDtm: new Date().toISOString(),
-                updatedDtm: new Date().toISOString()
+                locationId: currentLocation
             }));
         }
 
-        return Promise.all([
-            dispatch(deleteCourtrooms(deletedCourtrooms)),
-            dispatch(createOrUpdateCourtrooms(courtrooms))
-        ]);
+        if (deletedCourtrooms.length > 0) {
+            await dispatch(deleteCourtrooms(deletedCourtrooms));
+        }
+
+        if (courtrooms.length > 0) {
+            await dispatch(createOrUpdateCourtrooms(courtrooms));
+        }
     }
 }

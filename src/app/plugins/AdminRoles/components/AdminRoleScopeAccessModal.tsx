@@ -19,6 +19,7 @@ export interface AdminRoleScopeAccessModalProps {
     roleId?: any;
     parentModel?: any;
     parentModelId?: any;
+    onClose?: () => void;
 }
 
 export default class AdminRoleScopeAccessModal extends React.Component<AdminRoleScopeAccessModalProps>{
@@ -31,13 +32,16 @@ export default class AdminRoleScopeAccessModal extends React.Component<AdminRole
     handleClose = (e: React.SyntheticEvent<any>) => {
         e.preventDefault();
         e.stopPropagation();
-        return (this.modalWrapper) ? this.modalWrapper.handleClose() : undefined;
+
+        const { onClose } = this.props;
+
+        return (this.modalWrapper) ? this.modalWrapper.handleClose(onClose) : undefined;
     }
 
     // @ts-ignore
     render() {
         const { isDefaultTemplate = false, isOpen, roleId, parentModel, parentModelId } = this.props;
-        const title = `Edit ${isDefaultTemplate === true ? 'Default ' : ''}Component Access`;
+        const title = `Edit ${isDefaultTemplate === true ? 'Default ' : ''}Application Access`;
 
         return (
             <div>
@@ -51,7 +55,7 @@ export default class AdminRoleScopeAccessModal extends React.Component<AdminRole
                         <>
                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                                    <Field
+                                    {/* <Field
                                         name={`component`}
                                         component={(p) => <SelectorField
                                             {...p}
@@ -59,13 +63,12 @@ export default class AdminRoleScopeAccessModal extends React.Component<AdminRole
                                             // TODO: Provide this via props or something so we can use custom codes...
                                             SelectorComponent={
                                                 (sp) =>
-                                                    // TODO: Actually make this work
-                                                    <FrontendScopeSelector {...sp} value={parentModel.scopeId} />
+                                                    {parentModel.scopeId} />
                                                 }
                                         />}
                                         label={'Choose Scope (Component / API)'}
                                     >
-                                    </Field>
+                                    </Field> */}
                                     {/* This wrapper just adds equal spacing to the previous form group */}
                                     {/* TODO: Where are the spacing utils? */}
                                     <div className="form-group" style={{ marginLeft: '0.5rem' }}>

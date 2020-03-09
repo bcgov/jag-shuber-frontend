@@ -12,6 +12,7 @@ import AdminRolesGridPlugin from '../plugins/AdminRoles/AdminRoles';
 import SheriffProfileCreateModal from '../containers/SheriffProfileCreateModal';
 import HeaderSaveButton from '../plugins/AdminRoles/containers/HeaderSaveButton';
 import HeaderCancelButton from '../plugins/AdminRoles/containers/HeaderCancelButton';
+import PageTitle from '../containers/PageTitle';
 
 export interface ManageRolesProps extends RouteComponentProps<any>{}
 
@@ -66,16 +67,14 @@ class ManageRoles extends React.PureComponent<AdminFormProps & Partial<ManageRol
                         backgroundColor: 'white',
                         flexDirection: 'column',
                         flex: '1 1',
-                        maxWidth: '100%',
+                        maxWidth: '95%',
                         minWidth: 800,
                         height: 'max-content',
                         margin: '0 auto',
                         borderRadius: 0
                     }}
                 >
-                    <div className="container-fluid" style={{ width: '100%' }}>
-                        <h3 style={{ marginBottom: '15px', paddingBottom: '10px', borderBottom: '1px dotted grey', color: '#003366' }}>Manage System Roles & Access</h3>
-                    </div>
+                    <PageTitle title={() => `Manage System Roles and Access`} />
                     <AdminForm
                         key={'admin-roles-grid'}
                         plugins={[

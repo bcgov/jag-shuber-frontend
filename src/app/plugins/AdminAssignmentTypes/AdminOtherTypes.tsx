@@ -17,12 +17,14 @@ import {
 
 import {
     getAllOtherTypes,
-    findAllOtherTypes
+    getAllEffectiveOtherTypes,
+    findAllOtherTypes,
+    findAllEffectiveOtherTypes
 } from '../../modules/assignments/selectors';
 
 import { RootState } from '../../store';
 
-import { AlternateAssignment as OtherType, IdType } from '../../api';
+import { AlternateAssignment as OtherType, IdType, JailRoleCode } from '../../api';
 
 import {
     FormContainerBase,
@@ -36,6 +38,8 @@ import RemoveRow from '../../components/TableColumnActions/RemoveRow';
 import ExpireRow from '../../components/TableColumnActions/ExpireRow';
 import DeleteRow from '../../components/TableColumnActions/DeleteRow';
 import { setAdminRolesPluginFilters } from '../../modules/roles/actions';
+import CodeScopeSelector from '../../containers/CodeScopeSelector';
+import { currentLocation as getCurrentLocation } from '../../modules/user/selectors';
 // import { createOrUpdateAlternateAssignmentTypes } from '../../modules/assignments/actions';
 
 export interface AdminOtherTypesProps extends FormContainerProps {
@@ -88,7 +92,7 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
             if (setPluginFilters) {
                 setPluginFilters({
                     otherTypes: {
-                        name: newValue
+                        description: newValue
                     }
                 }, setAdminOtherTypesPluginFilters);
             }
@@ -105,21 +109,33 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
             }
         };
 
+        const onFilterOtherTypeScope = (event: Event, newValue: any, previousValue: any, name: string) => {
+            const { setPluginFilters } = props;
+            if (setPluginFilters) {
+                setPluginFilters({
+                    otherTypes: {
+                        locationId: (parseInt(newValue, 10) === 1) ? null : null // TODO: This needs to be the current location ID
+                    }
+                }, setAdminOtherTypesPluginFilters);
+            }
+        };
+
         const onResetFilters = () => {
             const { setPluginFilters } = props;
             if (setPluginFilters) {
                 // console.log('reset plugin filters');
                 setPluginFilters({
                     otherTypess: {}
-                }, setAdminRolesPluginFilters);
+                }, setAdminOtherTypesPluginFilters);
             }
         };
 
         const assignmentTypeColumns = [
             DataTable.TextFieldColumn('Assignment Type', { fieldName: 'description', displayInfo: false, filterable: true, filterColumn: onFilterOtherType }),
             DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, filterable: true, filterColumn: onFilterOtherTypeCode }),
-            DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false, filterable: false }),
+            DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, filterSelectorComponent: CodeScopeSelector, displayInfo: false, filterable: true, filterColumn: onFilterOtherTypeScope }),
             // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
+            DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false })
         ];
 
         return (
@@ -137,7 +153,7 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
                     actionsColumn={DataTable.ActionsColumn({
                         actions: [
                             ({ fields, index, model }) => {
-                                return (model && !model.id || model.id === '')
+                                return (model && !model.id || model && model.id === '')
                                     ? (<RemoveRow fields={fields} index={index} model={model} />)
                                     : null;
                             },
@@ -157,6 +173,34 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
                     filterable={true}
                     expandable={false}
                     // expandedRows={[1, 2]}
+                    groupBy={{
+                        groupByKey: 'isProvincialCode',
+                        valueMapLabels: {
+                            0: {
+                                label: 'Custom Roles',
+                                style: {
+                                    width: '3rem',
+                                    backgroundColor: '#327AB7',
+                                    color: 'white',
+                                    border: '1px solid #327AB7'
+                                }
+                            },
+                            1: {
+                                label: 'Default Roles',
+                                style: {
+                                    width: '3rem',
+                                    backgroundColor: '#999',
+                                    color: 'white',
+                                    border: '1px solid #999'
+                                }
+                            }
+                        }
+                    }}
+                    shouldDisableRow={(model) => {
+                        // TODO: Only disable if the user doesn't have permission to edit provincial codes
+                        // return (!model) ? false : (model && model.id) ? model.isProvincialCode : false;
+                        return false;
+                    }}
                     rowComponent={EmptyDetailRow}
                     modalComponent={EmptyDetailRow}
                 />
@@ -184,15 +228,20 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
         const filterData = this.getFilterData(filters);
 
         // Get form data
-        const otherTypes = (filters && filters.otherTypes)
-            ? findAllOtherTypes(filters.otherTypes)(state) || []
-            : getAllOtherTypes(state) || [];
+        const otherTypes = (filters && filters.otherTypes !== undefined)
+            ? findAllEffectiveOtherTypes(filters.otherTypes)(state) || []
+            : getAllEffectiveOtherTypes(state) || [];
 
-        const otherTypesArray: any[] = otherTypes.map(type => Object.assign({ id: type.code }, type));
+        const otherTypesArray: any[] = otherTypes.map((type: any) => {
+            return Object.assign({ isProvincialCode: (type.locationId === null) ? 1 : 0 }, type);
+        });
+
+        const currentLocation = getCurrentLocation(state);
 
         return {
             ...filterData,
-            otherTypes: otherTypesArray
+            otherTypes: otherTypesArray,
+            currentLocation
         };
     }
 
@@ -220,14 +269,18 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
         };
     }
 
-    async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any[]> {
+    async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>) {
         const data: any = this.getDataFromFormValues(formValues, initialValues);
         const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
+
+        // Grab the currentLocation off of the formValues.assignments object
+        const { currentLocation } = formValues.assignments;
 
         // Delete records before saving new ones!
         const deletedOtherTypes: IdType[] = dataToDelete.otherTypes as IdType[];
 
-        const otherTypes: Partial<OtherType>[] = data.otherTypes.map((c: OtherType) => ({
+        let otherTypes: Partial<OtherType>[];
+        otherTypes = data.otherTypes.map((c: Partial<OtherType>) => ({
             ...c,
             createdBy: 'DEV - FRONTEND',
             updatedBy: 'DEV - FRONTEND',
@@ -235,9 +288,24 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
             updatedDtm: new Date().toISOString()
         }));
 
-        return Promise.all([
-            dispatch(deleteAlternateAssignmentTypes(deletedOtherTypes)),
-            dispatch(createOrUpdateAlternateAssignmentTypes(otherTypes))
-        ]);
+        if (!(currentLocation === 'ALL_LOCATIONS' || currentLocation === '')) {
+            otherTypes = otherTypes.map((c: Partial<OtherType>) => {
+                const isNewRow = !c.id;
+                if (isNewRow) {
+                    const locationId = (c.isProvincialCode !== '1') ? currentLocation : null;
+                    return { ...c, locationId: locationId };
+                } else {
+                    return { ...c };
+                }
+            });
+        }
+
+        if (deletedOtherTypes.length > 0) {
+            await dispatch(deleteAlternateAssignmentTypes(deletedOtherTypes));
+        }
+
+        if (otherTypes.length > 0) {
+            await dispatch(createOrUpdateAlternateAssignmentTypes(otherTypes));
+        }
     }
 }

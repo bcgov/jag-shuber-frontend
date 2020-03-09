@@ -33,6 +33,7 @@ import {
     Role,
     RolePermission,
     FrontendScope,
+    FrontendScopeApi,
     FrontendScopePermission,
     ApiScope,
     RoleFrontendScope,
@@ -104,7 +105,7 @@ export default class Client implements API {
     }
 
     get isLocationSet() {
-        return this._locationId != undefined;
+        return this._locationId !== undefined;
     }
 
     setCurrentLocation(id: IdType) {
@@ -543,7 +544,13 @@ export default class Client implements API {
     }
 
     async getCourtRoles(): Promise<CourtRoleCode[]> {
-        const list = await this._client.GetCourtRoleCodes();
+        // TODO: Not sure if this is the best solution, but it gets things working they way we want to for now...
+        //  ALL_LOCATIONS key is added to selectorValues in LocationSelector.
+        const currentLocation = (this.currentLocation && this.currentLocation !== 'ALL_LOCATIONS')
+            ? this.currentLocation
+            : undefined;
+
+        const list = await this._client.GetCourtRoleCodes(currentLocation);
         return list as CourtRoleCode[];
     }
 
@@ -579,7 +586,13 @@ export default class Client implements API {
     }
 
     async getJailRoles(): Promise<JailRoleCode[]> {
-        const list = await this._client.GetJailRoleCodes();
+        // TODO: Not sure if this is the best solution, but it gets things working they way we want to for now...
+        //  ALL_LOCATIONS key is added to selectorValues in LocationSelector.
+        const currentLocation = (this.currentLocation && this.currentLocation !== 'ALL_LOCATIONS')
+            ? this.currentLocation
+            : undefined;
+
+        const list = await this._client.GetJailRoleCodes(currentLocation);
         return list as JailRoleCode[];
     }
 
@@ -614,8 +627,15 @@ export default class Client implements API {
         return Promise.resolve();
     }
 
+    // TODO: Calling these alternate assignments here and other assignments in the API is kind of weird we should rename these if we can
     async getAlternateAssignmentTypes(): Promise<AlternateAssignment[]> {
-        const list = await this._client.GetOtherAssignCodes();
+        // TODO: Not sure if this is the best solution, but it gets things working they way we want to for now...
+        //  ALL_LOCATIONS key is added to selectorValues in LocationSelector.
+        const currentLocation = (this.currentLocation && this.currentLocation !== 'ALL_LOCATIONS')
+            ? this.currentLocation
+            : undefined;
+
+        const list = await this._client.GetOtherAssignCodes(currentLocation);
         return list as AlternateAssignment[];
     }
 
@@ -802,6 +822,39 @@ export default class Client implements API {
     async deleteFrontendScopes(ids: IdType[]): Promise<void> {
         if (ids.length > 0) {
              ids.forEach(id => this._client.DeleteFrontendScope(id));
+        }
+
+        return Promise.resolve();
+    }
+
+    async getFrontendScopeApis(): Promise<FrontendScopeApi[]> {
+        const list = await this._client.GetFrontendScopeApis();
+        return list as FrontendScopeApi[];
+    }
+
+    async getFrontendScopeApi(): Promise<FrontendScopeApi> {
+        return {} as FrontendScopeApi;
+    }
+
+    async createFrontendScopeApi(permission: FrontendScopeApi): Promise<FrontendScopeApi> {
+        return await this._client.CreateFrontendScopeApi(permission) as FrontendScopeApi;
+    }
+
+    async updateFrontendScopeApi(permission: FrontendScopeApi): Promise<FrontendScopeApi> {
+        const { id } = permission;
+        if (!id) {
+            throw 'No Id included in the frontendScopeApi to update';
+        }
+        return await this._client.UpdateFrontendScopeApi(id, permission) as FrontendScopeApi;
+    }
+
+    async deleteFrontendScopeApi(permissionId: IdType): Promise<void> {
+        return await this._client.DeleteFrontendScopeApi(permissionId);
+    }
+
+     async deleteFrontendScopeApis(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.DeleteFrontendScopeApi(id));
         }
 
         return Promise.resolve();

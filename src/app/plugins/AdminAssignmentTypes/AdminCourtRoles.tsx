@@ -17,7 +17,9 @@ import {
 
 import {
     getAllCourtRoles,
-    findAllCourtRoles
+    getAllEffectiveCourtRoles,
+    findAllCourtRoles,
+    findAllEffectiveCourtRoles
 } from '../../modules/assignments/selectors';
 
 import { RootState } from '../../store';
@@ -31,12 +33,13 @@ import {
 
 import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../components/Table/DataTable';
 import { AdminCourtRolesProps } from './AdminCourtRoles';
-import LocationSelector from '../../containers/LocationSelector';
+
 import RemoveRow from '../../components/TableColumnActions/RemoveRow';
 import ExpireRow from '../../components/TableColumnActions/ExpireRow';
 import DeleteRow from '../../components/TableColumnActions/DeleteRow';
-import { setAdminRolesPluginFilters } from '../../modules/roles/actions';
-// import { createOrUpdateCourtRoles } from '../../modules/assignments/actions';
+
+import CodeScopeSelector from '../../containers/CodeScopeSelector';
+import { currentLocation as getCurrentLocation } from '../../modules/user/selectors';
 
 export interface AdminCourtRolesProps extends FormContainerProps {
     courtRoles?: any[];
@@ -88,7 +91,7 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
             if (setPluginFilters) {
                 setPluginFilters({
                     courtRoles: {
-                        name: newValue
+                        description: newValue
                     }
                 }, setAdminCourtRolesPluginFilters);
             }
@@ -105,13 +108,24 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
             }
         };
 
+        const onFilterCourtRoleScope = (event: Event, newValue: any, previousValue: any, name: string) => {
+            const { setPluginFilters } = props;
+            if (setPluginFilters) {
+                setPluginFilters({
+                    courtRoles: {
+                        locationId: (parseInt(newValue, 10) === 1) ? null : null // TODO: This needs to be the current location ID
+                    }
+                }, setAdminCourtRolesPluginFilters);
+            }
+        };
+
         const onResetFilters = () => {
             const { setPluginFilters } = props;
             if (setPluginFilters) {
                 // console.log('reset plugin filters');
                 setPluginFilters({
                     courtRoles: {}
-                }, setAdminRolesPluginFilters);
+                }, setAdminCourtRolesPluginFilters);
             }
         };
 
@@ -130,7 +144,7 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
                     actionsColumn={DataTable.ActionsColumn({
                         actions: [
                             ({ fields, index, model }) => {
-                                return (model && !model.id || model.id === '')
+                                return (model && !model.id || model && model.id === '')
                                     ? (<RemoveRow fields={fields} index={index} model={model} />)
                                     : null;
                             },
@@ -148,16 +162,45 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
                     })}
                     columns={[
                         // DataTable.SelectorFieldColumn('Location', { fieldName: 'locationId', selectorComponent: LocationSelector, displayInfo: false, filterable: true, filterColumn: onFilterLocation }),
-                        DataTable.TextFieldColumn('Court Role', { fieldName: 'description', displayInfo: false, filterable: true, filterColumn: onFilterCourtRole }),
+                        DataTable.TextFieldColumn('Type', { fieldName: 'description', displayInfo: false, filterable: true, filterColumn: onFilterCourtRole }),
                         DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, filterable: true, filterColumn: onFilterCourtRoleCode }),
                         // DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false }),
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
                         // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
-
+                        DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, filterSelectorComponent: CodeScopeSelector, displayInfo: false, filterable: true, filterColumn: onFilterCourtRoleScope }),
+                        DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false }),
                     ]}
                     filterable={true}
                     expandable={false}
                     // expandedRows={[1, 2]}
+                    groupBy={{
+                        groupByKey: 'isProvincialCode',
+                        valueMapLabels: {
+                            0: {
+                                label: 'Custom Roles',
+                                style: {
+                                    width: '3rem',
+                                    backgroundColor: '#327AB7',
+                                    color: 'white',
+                                    border: '1px solid #327AB7'
+                                }
+                            },
+                            1: {
+                                label: 'Default Roles',
+                                style: {
+                                    width: '3rem',
+                                    backgroundColor: '#999',
+                                    color: 'white',
+                                    border: '1px solid #999'
+                                }
+                            }
+                        }
+                    }}
+                    shouldDisableRow={(model) => {
+                        // TODO: Only disable if the user doesn't have permission to edit provincial codes
+                        // return (!model) ? false : (model && model.id) ? model.isProvincialCode : false;
+                        return false;
+                    }}
                     rowComponent={EmptyDetailRow}
                     modalComponent={EmptyDetailRow}
                 />
@@ -185,15 +228,20 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
         const filterData = this.getFilterData(filters);
 
         // Get form data
-        const courtRoles = (filters && filters.courtRoles)
-            ? findAllCourtRoles(filters.courtRoles)(state) || []
-            : getAllCourtRoles(state) || [];
+        const courtRoles = (filters && filters.courtRoles !== undefined)
+            ? findAllEffectiveCourtRoles(filters.courtRoles)(state) || []
+            : getAllEffectiveCourtRoles(state) || [];
 
-        const courtRolesArray: any[] = courtRoles.map(role => Object.assign({ id: role.code }, role));
+        const courtRolesArray: any[] = courtRoles.map((role: any) => {
+            return Object.assign({ isProvincialCode: (role.locationId === null) ? 1 : 0 }, role);
+        });
+
+        const currentLocation = getCurrentLocation(state);
 
         return {
             ...filterData,
-            courtRoles: courtRolesArray
+            courtRoles: courtRolesArray,
+            currentLocation
         };
     }
 
@@ -221,14 +269,18 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
         };
     }
 
-    async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any[]> {
+    async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>) {
         const data: any = this.getDataFromFormValues(formValues, initialValues);
         const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
+
+        // Grab the currentLocation off of the formValues.assignments object
+        const { currentLocation } = formValues.assignments;
 
         // Delete records before saving new ones!
         const deletedCourtRoles: IdType[] = dataToDelete.courtRoles as IdType[];
 
-        const courtRoles: Partial<CourtRoleCode>[] = data.courtRoles.map((c: CourtRoleCode) => ({
+        let courtRoles: Partial<CourtRoleCode>[];
+        courtRoles = data.courtRoles.map((c: Partial<CourtRoleCode>) => ({
             ...c,
             createdBy: 'DEV - FRONTEND',
             updatedBy: 'DEV - FRONTEND',
@@ -236,9 +288,24 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
             updatedDtm: new Date().toISOString()
         }));
 
-        return Promise.all([
-            dispatch(deleteCourtRoles(deletedCourtRoles)),
-            dispatch(createOrUpdateCourtRoles(courtRoles))
-        ]);
+        if (!(currentLocation === 'ALL_LOCATIONS' || currentLocation === '')) {
+            courtRoles = courtRoles.map((c: Partial<CourtRoleCode>) => {
+                const isNewRow = !c.id;
+                if (isNewRow) {
+                    const locationId = (c.isProvincialCode !== '1') ? currentLocation : null;
+                    return { ...c, locationId: locationId };
+                } else {
+                    return { ...c };
+                }
+            });
+        }
+
+        if (deletedCourtRoles.length > 0) {
+            await dispatch(deleteCourtRoles(deletedCourtRoles));
+        }
+
+        if (courtRoles.length > 0) {
+            await dispatch(createOrUpdateCourtRoles(courtRoles));
+        }
     }
 }

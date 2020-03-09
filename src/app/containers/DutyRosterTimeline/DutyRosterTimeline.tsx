@@ -131,7 +131,7 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
             // tslint:disable:no-unused-expression
             fetchAssignments && fetchAssignments(dateRange);
             fetchAssignmentDuties && fetchAssignmentDuties(dateRange);
-            // tslint:enable:no-unused-expression           
+            // tslint:enable:no-unused-expression
         }
     }
 
@@ -201,9 +201,9 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
         .filter(shift => visibleStartMoment.isSame(moment(shift.startDateTime), 'day'))
         .forEach(shift => {
             sheriffUnassignedTimeRanges[shift.sheriffId!] = sheriffUnassignedTimeRanges[shift.sheriffId!] || [];
-            sheriffUnassignedTimeRanges[shift.sheriffId!].push({ 
+            sheriffUnassignedTimeRanges[shift.sheriffId!].push({
                 sheriffId: shift.sheriffId!,
-                startDateTime: shift.startDateTime, 
+                startDateTime: shift.startDateTime,
                 endDateTime: shift.endDateTime
             });
         });
@@ -228,18 +228,18 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
                     removedIndexes.push(index);
                     if (unassignedRange.startTime < dutyTimeRange.startTime)
                     {
-                        addedUnassignedTimeRanges.push({ 
+                        addedUnassignedTimeRanges.push({
                             sheriffId: sheriffDuty.sheriffId!,
-                            startDateTime: unassignedRange.startTime, 
+                            startDateTime: unassignedRange.startTime,
                             endDateTime: dutyTimeRange.startTime
                         });
-                    } 
-                    
+                    }
+
                     if (unassignedRange.endTime > dutyTimeRange.endTime)
                     {
-                        addedUnassignedTimeRanges.push({ 
+                        addedUnassignedTimeRanges.push({
                             sheriffId: sheriffDuty.sheriffId!,
-                            startDateTime: dutyTimeRange.endTime, 
+                            startDateTime: dutyTimeRange.endTime,
                             endDateTime: unassignedRange.endTime
                         });
                     }
@@ -249,7 +249,7 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
 
             removedIndexes.forEach(i => unassignedTimeRanges.splice(i, 1));
             addedUnassignedTimeRanges.forEach(add => unassignedTimeRanges.push(add));
-            
+
         });
 
         return sheriffUnassignedTimeRanges;
@@ -266,7 +266,7 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
         const isOverlapping = this.getOverlappingSheriffDutiesForSheriff(sheriffId, sheriffDutyToAssign).length > 0;
         const isOutsideOfShift = this.isSheriffDutyOutsideOfShift(sheriffId, sheriffDutyToAssign);
 
-        if ((isOutsideOfShift || isOverlapping) && sheriffDutyToAssign.sheriffId != sheriffId)
+        if ((isOutsideOfShift || isOverlapping) && sheriffDutyToAssign.sheriffId !== sheriffId)
         {
             showConfirmationModal(
                 {
@@ -308,11 +308,11 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
             {});
 
         // filter assignment groups by the current day
-        const groups = assignments.filter(a => 
+        const groups = assignments.filter(a =>
             !a.dutyRecurrences || // if the assignment has no recurrence display it always
             !a.endDateTime || // if its a default assignment display it always
             assignmentDuties.some(ad => ad.assignmentId == a.id && moment(ad.startDateTime).isSame(moment(visibleTimeStart), "day") ) || // if the assignment has duties display it always
-            a.dutyRecurrences.some(dr => 
+            a.dutyRecurrences.some(dr =>
                 DaysOfWeek.getWeekdayNumbers(dr.daysBitmap).indexOf(moment(visibleTimeStart).weekday()) >= 0))
         const unassignedTime = this.getUnassignedTimeRanges();
         return (
@@ -342,7 +342,7 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
                                             const isAssignedToDraggingSheriff =
                                                 draggingSheriffId && sheriffDuty.sheriffId === draggingSheriffId;
                                             // tslint:disable-next-line:max-line-length
-                                            const isOpen = 
+                                            const isOpen =
                                                 this.getOverlappingSheriffDutiesForSheriff(draggingSheriffId, sheriffDuty).length <= 0 &&
                                                 this.isSheriffDutyOutsideOfShift(draggingSheriffId, sheriffDuty) == false;
 
@@ -355,7 +355,7 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
                                             return (
                                                 <SheriffDutyDragSource
                                                     sheriffDuty={sheriffDuty}
-                                                    canDrag={sd => sd.sheriffId != undefined}
+                                                    canDrag={sd => sd.sheriffId !== undefined}
                                                     beginDrag={() => setDraggingSheriff(sheriffDuty.sheriffId)}
                                                     endDrag={() => setDraggingSheriff()}
                                                 >

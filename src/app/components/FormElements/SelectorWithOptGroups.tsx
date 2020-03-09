@@ -1,8 +1,9 @@
 import React from 'react';
 import { FormControl } from 'react-bootstrap';
+import { IdType } from '../../api';
 
 export interface SelectorWithOptGroupProps {
-    data?: { optGroupLabel: string, options: { key: string | number, value: string }[] }[];
+    data?: { optGroupLabel: string, options: { key: IdType | string | number, value: string | undefined }[] }[];
     label?: string;
     value?: string;
     onChange?: (val: string) => void;

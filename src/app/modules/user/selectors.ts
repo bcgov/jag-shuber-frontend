@@ -12,7 +12,7 @@ export const isLocationSet = createSelector(
     currentLocation,
     (location) => {
         // tslint:disable-next-line:triple-equals
-        return location != undefined && location !== '';
+        return location !== undefined && location !== '';
     }
 );
 
@@ -60,5 +60,5 @@ export const currentUserScopes = createSelector(
 
 export const isLoggedIn = createSelector(
     currentUserGuid,
-    (guid) => guid != undefined
+    (guid) => guid !== undefined
 );

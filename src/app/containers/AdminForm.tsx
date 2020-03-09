@@ -13,7 +13,6 @@ import {
     reset
 } from 'redux-form';
 
-// TODO: Rewire dispatches
 import { connect, Dispatch } from 'react-redux';
 
 import { Alert } from 'react-bootstrap';
@@ -146,7 +145,25 @@ const formConfig: ConfigProps<{}, AdminFormProps> = {
         try {
             // Filter out unchanged values so we're not making unnecessary requests
             // https://github.com/redux-form/redux-form/issues/701
-            await submitPlugins(values, initialValues, dispatch, plugins);
+            const { selectedSection } = props;
+
+            if (selectedSection) {
+                // Not the most elegant way to do things but it's easy, and it works
+                // If you decide to override the default renderer and use a custom layout
+                // that displays multiple plugins in the same form, you may have to save
+                // more than one form... if so, when setting the AdminForm's 'selectedSection'
+                // set the value to the name of whatever plugins are used by the currently
+                // selected section, separated by a colon (:) delimiter.
+                // TODO: Pass this in as a function-type prop? (It's a good idea, and idiomatic!)
+                const pluginNames = selectedSection.split(':');
+                await Promise.all(pluginNames.map(async pluginName => {
+                    return await submitPlugins(values, initialValues, dispatch, plugins.filter(plugin => {
+                        return plugin.name === pluginName;
+                    }));
+                }));
+            } else {
+                return await submitPlugins(values, initialValues, dispatch, plugins);
+            }
         } catch (e) {
             toast.warn('An issue occurred with one of the sections');
             throw e;
@@ -257,7 +274,7 @@ const combineMerge = (target, source, options) => {
 export default class extends
     connect<AdminFormContainerStateProps, AdminFormContainerDispatchProps, AdminFormProps, RootState>(
         // TODO: Type this?
-        (state, { plugins }) => {
+        (state, { plugins, selectedSection }) => {
             let initialValues: any = {};
 
             // Filter out any plugins that the user doesn't have permission to access
@@ -274,7 +291,7 @@ export default class extends
                         return Object.keys(appScopes)
                             .indexOf(s.name) > -1;
                     })
-                    .filter(s => s != undefined)
+                    .filter(s => s !== undefined)
                 : [];
 
             // console.log('configured plugins');
@@ -310,11 +327,22 @@ export default class extends
                 isLocationSet: isLocationSetSelector(state),
                 initialValues,
                 pluginState: { ...initialValues },
-                selectedSection: selectedAdminFormSection(state),
+                selectedSection: selectedAdminFormSection(state) || selectedSection,
                 ...collectPluginErrors(state, formConfig.form, plugins)
             };
         },
-        (dispatch, { plugins = [] }) => {
+        (dispatch, { plugins = [], onSelectSection }) => {
+            if (onSelectSection !== undefined) {
+                console.log('onSelectSection custom function - test me!');
+                // @ts-ignore Ignore the warning, we're checking to see if onSelectSection is defined
+                onSelectSection = (sectionName: string) => onSelectSection(sectionName)(dispatch);
+            } else {
+                console.log('onSelectSection default function');
+                onSelectSection = (sectionName) => {
+                    dispatch(selectAdminFormSection(sectionName));
+                };
+            }
+
             return {
                 dispatch, // Just pass dispatch through so we can use it in plugins
                 initialize: () => {
@@ -326,7 +354,7 @@ export default class extends
                         p.dispatch = dispatch;
                     });
                 },
-                onSelectSection: (sectionName) => dispatch(selectAdminFormSection(sectionName)),
+                onSelectSection: onSelectSection,
                 // TODO: Restrict scope to the current section / plugin, live with onSelectSection!
                 setPluginFilters: (filters: {}, action: any) => {
                     // TODO: Can we type this action better?

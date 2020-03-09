@@ -7,7 +7,7 @@ const ExpandableTableRowColumns = (props: any) => {
         {
             columns
                 .map((col: any, colIndex: any) => {
-                    const Column = cancelDate != undefined
+                    const Column = cancelDate !== undefined
                         ? col.CanceledRender
                         : col.FormRenderer;
 

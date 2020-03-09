@@ -25,7 +25,7 @@ const LeaveSubCodeColumn = (isPersonal: boolean, options?: Types.FieldColumnOpti
         colStyle: colStyle,
         filterable: filterable,
         filterComponent: (filterable) ? LeaveSubCodeColumn(isPersonal, filterComponentOptions) : undefined,
-        FormRenderer: ({ fieldInstanceName }) => (
+        FormRenderer: ({ fieldInstanceName , disabled}) => (
             <Field
                 name={`${fieldInstanceName}.leaveSubCode`}
                 component={(p) => <SelectorField
@@ -41,9 +41,12 @@ const LeaveSubCodeColumn = (isPersonal: boolean, options?: Types.FieldColumnOpti
                 label="Type"
             />
         ),
-        CanceledRender: ({ model }) => (
-            <LeaveSubCodeDisplay subCode={model.leaveSubCode} />
-        )
+        CanceledRender: ({ model }) => {
+            if (!model) return null;
+            return (
+                <LeaveSubCodeDisplay subCode={model.leaveSubCode} />
+            );
+        }
     };
 };
 

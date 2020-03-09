@@ -11,7 +11,7 @@ import arrayToMap from '../../infrastructure/arrayToMap';
 function shiftCompareString(shift: Shift) {
     // We are just using the native string sorting algorithm, the hacky 'z' at the end of this
     // just pushes unassigned shifts below assigned ones
-    return (        
+    return (
         `${WorkSection.getWorkSectionSortCode(shift.workSectionId)}:${shift.assignmentId}:${shift.startDateTime}${shift.sheriffId ? '' : 'z'}`
     );
 }
@@ -25,7 +25,7 @@ export const allShifts = createSelector(
 export const shiftMap = shiftRequests.shiftMapRequest.getData;
 
 export const getShift = (id?: IdType) => (state: RootState) => {
-    if (state && id != null) {
+    if (state && id) {
         const map = shiftRequests.shiftMapRequest.getData(state);
         return map[id];
     }

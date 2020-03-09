@@ -1,15 +1,18 @@
 import React from 'react';
 import { Col, Nav, NavItem, Row, Tab } from 'react-bootstrap';
 
-import AdminFormSectionNav from '../../components/AdminForm/AdminFormSectionNav';
+import PageTitle from '../../containers/PageTitle';
 
 export default (props: any) => {
     const {
-        selectedSection,
         sectionPlugins,
         pluginsWithErrors,
         handleSelectSection,
         renderPlugin
+    } = props;
+
+    let {
+       selectedSection
     } = props;
 
     const courtroomsPlugin = sectionPlugins
@@ -30,46 +33,54 @@ export default (props: any) => {
     const otherTypesPlugin = sectionPlugins
         .find((p: any) => p.name === 'ADMIN_PLUGIN_OTHER_TYPES');
 
+    // TODO: Fix me! This console log should explain exactly what's going on...
+    // console.log('WorkSectionsLayout selectedSection: ' + selectedSection);
+
+    const validSections = ['ADMIN_PLUGIN_COURTROOMS:ADMIN_PLUGIN_COURT_ROLES', 'ADMIN_PLUGIN_JAIL_ROLES', 'ADMIN_PLUGIN_ESCORT_TYPES', 'ADMIN_PLUGIN_OTHER_TYPES'];
+    selectedSection = (validSections.indexOf(selectedSection) > -1) ? selectedSection : 'ADMIN_PLUGIN_COURTROOMS:ADMIN_PLUGIN_COURT_ROLES';
+
     return (
         <Tab.Container
             id="profile-sections" // TODO: Change this ID!
             onSelect={(key: any) => handleSelectSection(key)}
-            // activeKey={selectedSection}
-            activeKey={'courts'}
+            activeKey={selectedSection}
+            key={selectedSection}
         >
             <Row className="clearfix">
                 <Col sm={12}>
                     <Tab.Content animation={false}>
-                        <Tab.Pane key={'courts'} eventKey={'courts'}>
+                        <Tab.Pane key={'ADMIN_PLUGIN_COURTROOMS:ADMIN_PLUGIN_COURT_ROLES'} eventKey={'ADMIN_PLUGIN_COURTROOMS:ADMIN_PLUGIN_COURT_ROLES'}>
                             <Row className="clearfix">
                                 <Col sm={12} md={7}>
-                                    {courtroomsPlugin && renderPlugin(courtroomsPlugin)}
+                                    <PageTitle title={({ currentLocationName }: any) => `${currentLocationName} Court Roles`} />
+                                    {courtRolesPlugin && renderPlugin(courtRolesPlugin)}
                                 </Col>
                                 <Col sm={12} md={5}>
-                                    {courtRolesPlugin && renderPlugin(courtRolesPlugin)}
+                                    <PageTitle title={({ currentLocationName }: any) => `${currentLocationName} Courtrooms`} />
+                                    {courtroomsPlugin && renderPlugin(courtroomsPlugin)}
                                 </Col>
                             </Row>
                         </Tab.Pane>
-                        <Tab.Pane key={'jails'} eventKey={'jails'}>
+                        <Tab.Pane key={'ADMIN_PLUGIN_JAIL_ROLES'} eventKey={'ADMIN_PLUGIN_JAIL_ROLES'}>
                             <Row className="clearfix">
-                                <Col sm={12} md={7}>
-                                    {jailroomsPlugin && renderPlugin(jailroomsPlugin)}
-                                </Col>
-                                <Col sm={12} md={5}>
+                                <Col sm={12} md={8} mdPush={2}>
+                                    <PageTitle title={({ currentLocationName }: any) => `${currentLocationName} Jail Roles`} />
                                     {jailRolesPlugin && renderPlugin(jailRolesPlugin)}
                                 </Col>
                             </Row>
                         </Tab.Pane>
-                        <Tab.Pane key={'escortRuns'} eventKey={'escortRuns'}>
+                        <Tab.Pane key={'ADMIN_PLUGIN_ESCORT_TYPES'} eventKey={'ADMIN_PLUGIN_ESCORT_TYPES'}>
                             <Row className="clearfix">
-                                <Col sm={12}>
+                                <Col sm={12} md={8} mdPush={2}>
+                                    <PageTitle title={({ currentLocationName }: any) => `${currentLocationName} Escort Runs`} />
                                     {escortTypesPlugin && renderPlugin(escortTypesPlugin)}
                                 </Col>
                             </Row>
                         </Tab.Pane>
-                        <Tab.Pane key={'other'} eventKey={'other'}>
+                        <Tab.Pane key={'ADMIN_PLUGIN_OTHER_TYPES'} eventKey={'ADMIN_PLUGIN_OTHER_TYPES'}>
                             <Row className="clearfix">
-                                <Col sm={12}>
+                                <Col sm={12}  md={8} mdPush={2}>
+                                    <PageTitle title={({ currentLocationName }: any) => `${currentLocationName} Other Assignments`} />
                                     {otherTypesPlugin && renderPlugin(otherTypesPlugin)}
                                 </Col>
                             </Row>

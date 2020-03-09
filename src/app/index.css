@@ -501,15 +501,6 @@ fieldset.with-border {
   top: -15px;
 }
 
-/* Override user agent styling */
-input,
-select,
-textarea {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-}
-
 select.form-control {
   border-radius: 5px;
 }
@@ -615,4 +606,53 @@ h6.modal-title {
 .action-buttons > button,
 .action-buttons .action-button {
   margin-left: 5px;
+}
+
+/* Custom tabs */
+.admin-form-page-tab.is-active {
+  background-color: white;
+  color: black;
+}
+
+/* More custom table stuff */
+.group-label-vert {
+  transform: rotate(-90deg);
+  display: flex; width: 100%;
+  height: 100%;
+  white-space: nowrap;
+  position: relative;
+  bottom: -25px;
+  font-weight: bold;
+}
+
+.btn-transparent,
+.btn-transparent:hover,
+.btn-transparent:focus,
+.btn-transparent:active {
+  background-color: transparent !important;
+  border: none;
+}
+
+.sort-order-field .btn-xs {
+  padding: 0px 10px;
+  margin-left: 5px;
+}
+
+#user-profile-menu + .dropdown-menu {
+  border-radius: 0 0 4px 4px !important;
+  transform: translateY(-2px);
+  min-width: 250px;
+}
+
+.user-profile-menu-toggle,
+.user-profile-menu-toggle:hover,
+.user-profile-menu-toggle:active,
+.user-profile-menu-toggle:focus {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+.user-profile-menu-toggle .caret {
+  color: white;
 }
