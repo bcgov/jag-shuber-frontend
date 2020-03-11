@@ -145,10 +145,8 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
               <Route path={NavigationComponent.Routes.team.children.roles.path} component={ManageRolesPage} />
               <Route path={NavigationComponent.Routes.team.children.users.path} component={ManageUsersPage} />
               <Route path={NavigationComponent.Routes.team.children.userRoles.path} component={ManageUserRolesPage} />
-              {/* <Route path={NavigationComponent.Routes.system.children.courtrooms.path} component={ManageCourtroomsPage} /> */}
-              <Route path={NavigationComponent.Routes.system.children.workSectionRoles.path} component={ManageWorkSectionRolesPage} />
-              <Route path={NavigationComponent.Routes.system.children.leaveTypes.path} component={ManageLeaveTypesPage} />
-              <Route path={NavigationComponent.Routes.system.children.assignmentTypes.path} component={ManageAssignmentTypesPage} />
+              <Route path={NavigationComponent.Routes.types.children.leaveTypes.path} component={ManageLeaveTypesPage} />
+              <Route path={NavigationComponent.Routes.types.children.assignmentTypes.path} component={ManageAssignmentTypesPage} />
               <Route path={NavigationComponent.Routes.system.children.components.path} component={ManageComponentsPage} />
               <Route path={NavigationComponent.Routes.audit.path} component={AuditPage} />
               <Route path={NavigationComponent.Routes.system.children.apis.path} component={ManageApisPage} />

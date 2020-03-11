@@ -87,26 +87,24 @@ export default class Navigation extends React.Component<NavigationProps & Naviga
                 }
             }
         },
-        system: {
+        types: {
             path: '#',
-            label: 'System',
+            label: 'Manage Types',
             children: {
-                /* courtrooms: {
-                    path: '/courtrooms/manage',
-                    label: 'Add / Remove Courtrooms'
-                }, */
                 leaveTypes: {
                     path: '/codes/manage',
                     label: 'Leave & Training Types'
                 },
-                workSectionRoles: {
-                    path: '/workSectionRoles/manage',
-                    label: 'Court & Jail Roles'
-                },
                 assignmentTypes: {
                     path: '/assignmentTypes/manage',
                     label: 'Assignment Types'
-                },
+                }
+            }
+        },
+        system: {
+            path: '#',
+            label: 'System',
+            children: {
                 components: {
                     path: '/components/manage',
                     label: 'Define Components'
@@ -164,14 +162,16 @@ export default class Navigation extends React.Component<NavigationProps & Naviga
                             <NavigationLink {...Navigation.Routes.schedule.manage} />
                             <NavigationLink {...Navigation.Routes.schedule.distribute} />
                         </NavigationDropDown>
-                        <NavigationLink {...Navigation.Routes.system.children.assignmentTypes} />
                         <NavigationDropDown title={Navigation.Routes.team.label} id="admin_dropdown">
                             <NavigationLink {...Navigation.Routes.team.children.users} />
                             <NavigationLink {...Navigation.Routes.team.children.userRoles} />
                             <NavigationLink {...Navigation.Routes.team.children.roles} />
                         </NavigationDropDown>
+                        <NavigationDropDown title={Navigation.Routes.types.label} id="types_dropdown">
+                            <NavigationLink {...Navigation.Routes.types.children.assignmentTypes} />
+                            <NavigationLink {...Navigation.Routes.types.children.leaveTypes} />
+                        </NavigationDropDown>
                         <NavigationDropDown title={Navigation.Routes.system.label} id="system_dropdown">
-                            <NavigationLink {...Navigation.Routes.system.children.leaveTypes} />
                             <NavigationLink {...Navigation.Routes.system.children.components} />
                             <NavigationLink {...Navigation.Routes.system.children.apis} />
                         </NavigationDropDown>
