@@ -29,6 +29,7 @@ import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../component
 import { AdminTrainingTypesProps } from './AdminTrainingTypes';
 import DeleteRow from '../../components/TableColumnActions/DeleteRow';
 import ExpireRow from '../../components/TableColumnActions/ExpireRow';
+import { ActionProps } from '../../components/TableColumnCell/Actions';
 
 export interface AdminTrainingTypesProps extends FormContainerProps {
     leaveTypes?: any[];
@@ -62,6 +63,14 @@ export default class AdminTrainingTypes extends FormContainerBase<AdminTrainingT
     title: string = ' Training Leave Types';
 
     FormComponent = (props: FormContainerProps<AdminTrainingTypesProps>) => {
+        const { getPluginPermissions } = props;
+        let grantAll = false;
+        const formPermissions = (getPluginPermissions)
+            ? getPluginPermissions()
+            : [];
+
+        grantAll = formPermissions === true;
+
         const onFilterSubCode = (event: Event, newValue: any, previousValue: any, name: string) => {
             const { setPluginFilters } = props;
             if (setPluginFilters) {
@@ -95,6 +104,11 @@ export default class AdminTrainingTypes extends FormContainerBase<AdminTrainingT
             }
         };
 
+        const trainingTypeActions = [
+            ({ fields, index, model }) => { return (model && model.id) ? (<ExpireRow fields={fields} index={index} model={model} showComponent={true} />) : null; },
+            ({ fields, index, model }) => <DeleteRow fields={fields} index={index} model={model} showComponent={grantAll} />,
+        ] as React.ReactType<ActionProps>[];
+
         return (
             <div>
                 <DataTable
@@ -103,10 +117,7 @@ export default class AdminTrainingTypes extends FormContainerBase<AdminTrainingT
                     title={''} // Leave this blank
                     buttonLabel={'Add Training Type'}
                     actionsColumn={DataTable.ActionsColumn({
-                        actions: [
-                            ({ fields, index, model }) => <DeleteRow fields={fields} index={index} model={model} />,
-                            ({ fields, index, model }) => { return (model && model.id) ? (<ExpireRow fields={fields} index={index} model={model} />) : null; },
-                        ]
+                        actions: trainingTypeActions
                     })}
                     columns={[
                         // DataTable.TextFieldColumn('Leave Type', { fieldName: 'code', displayInfo: true }),

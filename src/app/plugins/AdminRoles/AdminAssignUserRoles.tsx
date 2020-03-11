@@ -77,6 +77,7 @@ import SheriffRankDisplay from './containers/SheriffRankDisplay';
 import SheriffRankCodeSelector from '../../containers/SheriffRankCodeSelector';
 import GenderDisplay from './containers/GenderDisplay';
 import GenderSelector from './containers/GenderSelector';
+import { ActionProps } from '../../components/TableColumnCell/Actions';
 
 // TODO: There already is a SheriffRankDisplay, but it doesn't work for our tables...
 //  It selects a single item using a code...
@@ -151,7 +152,14 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
         // roles: 'roles.roles'
     };
     title: string = 'Assign User Roles';
-    DetailComponent: React.SFC<DetailComponentProps> = ({ parentModelId }) => {
+    DetailComponent: React.SFC<DetailComponentProps> = ({ parentModelId, getPluginPermissions }) => {
+        let grantAll = false;
+        const formPermissions = (getPluginPermissions)
+            ? getPluginPermissions()
+            : [];
+
+        grantAll = formPermissions === true;
+
         const onButtonClicked = (ev: React.SyntheticEvent<any>, context: any, model: any) => {
             context.setActiveRow(model.id);
         };
@@ -159,6 +167,24 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
         // If parentModelId is not supplied, the parent component is in a 'new' state, and its data has not been saved
         // Don't render the detail component
         if (!parentModelId) return null;
+
+        const userRoleActions = [
+            ({ fields, index, model }) => {
+                return (model && !model.id || model && model.id === '')
+                    ? (<RemoveRow fields={fields} index={index} model={model} showComponent={true} />)
+                    : null;
+            },
+            ({ fields, index, model }) => {
+                return (model && model.id && model.id !== '')
+                    ? (<ExpireRow fields={fields} index={index} model={model} showComponent={true} />)
+                    : null;
+            },
+            ({ fields, index, model }) => {
+                return (model && model.id && model.id !== '')
+                    ? (<DeleteRow fields={fields} index={index} model={model} showComponent={grantAll} />)
+                    : null;
+            }
+        ] as React.ReactType<ActionProps>[];
 
         return (
             <DataTable
@@ -168,23 +194,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                 displayHeaderActions={true}
                 displayHeaderSave={false}
                 actionsColumn={DataTable.ActionsColumn({
-                    actions: [
-                        ({ fields, index, model }) => {
-                            return (model && !model.id || model && model.id === '')
-                                ? (<RemoveRow fields={fields} index={index} model={model} />)
-                                : null;
-                        },
-                        ({ fields, index, model }) => {
-                            return (model && model.id && model.id !== '')
-                                ? (<ExpireRow fields={fields} index={index} model={model} />)
-                                : null;
-                        },
-                        ({ fields, index, model }) => {
-                            return (model && model.id && model.id !== '')
-                                ? (<DeleteRow fields={fields} index={index} model={model} />)
-                                : null;
-                        }
-                    ]
+                    actions: userRoleActions
                 })}
                 columns={[
                     DataTable.SelectorFieldColumn('Assigned Role', { fieldName: 'roleId', colStyle: { width: '275px' }, selectorComponent: RoleSelector, displayInfo: true }),
@@ -308,6 +318,43 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
             }
         };
 
+        const userActions = [
+            ({ fields, index, model }) => {
+                return (model && model.id)
+                    ? (
+                        <EditRow
+                            fields={fields}
+                            index={index}
+                            model={model}
+                            onClick={(userModel: Partial<User>) => {
+                                const { sheriffId } = userModel;
+                                if (typeof showSheriffProfileModal === 'function' && sheriffId) {
+                                    // TODO: See if this works....
+                                    showSheriffProfileModal(sheriffId, true, 'leaves');
+                                    // showModal('SheriffProfileModal', { sheriffId, isEditing: true, show: true });
+                                }
+                            }}
+                        />
+                    )
+                    : null;
+            },
+            ({ fields, index, model }) => {
+            return (model && !model.id || model && model.id === '')
+                    ? (<RemoveRow fields={fields} index={index} model={model} />)
+                    : null;
+            },
+            /*({ fields, index, model }) => {
+                return (model && model.id && model.id !== '')
+                    ? (<ExpireRow fields={fields} index={index} model={model} />)
+                    : null;
+            },*/
+            ({ fields, index, model }) => {
+                return (model && model.id && model.id !== '')
+                    ? (<DeleteRow fields={fields} index={index} model={model} />)
+                    : null;
+            }
+        ] as React.ReactType<ActionProps>[];
+
         return (
             <div>
                 <DataTable
@@ -319,42 +366,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                     onResetClicked={onResetFilters}
                     displayActionsColumn={true}
                     actionsColumn={DataTable.ActionsColumn({
-                        actions: [
-                            ({ fields, index, model }) => {
-                                return (model && model.id)
-                                    ? (
-                                        <EditRow
-                                            fields={fields}
-                                            index={index}
-                                            model={model}
-                                            onClick={(userModel: Partial<User>) => {
-                                                const { sheriffId } = userModel;
-                                                if (typeof showSheriffProfileModal === 'function' && sheriffId) {
-                                                    // TODO: See if this works....
-                                                    showSheriffProfileModal(sheriffId, true, 'leaves');
-                                                    // showModal('SheriffProfileModal', { sheriffId, isEditing: true, show: true });
-                                                }
-                                            }}
-                                        />
-                                    )
-                                    : null;
-                            },
-                            ({ fields, index, model }) => {
-                            return (model && !model.id || model && model.id === '')
-                                    ? (<RemoveRow fields={fields} index={index} model={model} />)
-                                    : null;
-                            },
-                            /*({ fields, index, model }) => {
-                                return (model && model.id && model.id !== '')
-                                    ? (<ExpireRow fields={fields} index={index} model={model} />)
-                                    : null;
-                            },*/
-                            ({ fields, index, model }) => {
-                                return (model && model.id && model.id !== '')
-                                    ? (<DeleteRow fields={fields} index={index} model={model} />)
-                                    : null;
-                            }
-                        ]
+                        actions: userActions
                     })}
                     columns={[
                         DataTable.StaticTextColumn('Full Name', {
@@ -416,7 +428,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                     filterable={true}
                     expandable={true}
                     // expandedRows={[1, 2]}
-                    rowComponent={this.DetailComponent}
+                    rowComponent={this.renderDetail()}
                     modalComponent={EmptyDetailRow}
                 />
             </div>

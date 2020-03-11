@@ -307,7 +307,7 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
                     filterable={true}
                     expandable={true}
                     // expandedRows={[1, 2]}
-                    rowComponent={this.DetailComponent}
+                    rowComponent={this.renderDetail()}
                     modalComponent={AdminScopePermissionsModal}
                 />
             </div>

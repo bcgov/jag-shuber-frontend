@@ -19,6 +19,8 @@ export interface AdminFormProps {
     setPluginFilters?: Function;
     showSheriffProfileModal?: (sheriffId: IdType, isEditing: boolean, sectionName?: string) => {};
     onSubmitSuccess?: () => void;
+    pluginPermissions?: any;
+    pluginAuth?: any[];
     initialValues?: any;
     currentLocation?: string;
     showTabs?: boolean;
@@ -38,15 +40,28 @@ export default class AdminForm extends React.PureComponent<InjectedFormProps<any
     }*/
 
     renderPlugin(plugin: FormContainer) {
-        const { initialValues = {}, isEditing = false, setPluginFilters, showSheriffProfileModal, currentLocation } = this.props;
+        const {
+            initialValues = {},
+            isEditing = false,
+            pluginPermissions,
+            pluginAuth,
+            setPluginFilters,
+            showSheriffProfileModal,
+            currentLocation
+        } = this.props;
 
         const pluginProps: FormContainerProps = {
             // sheriffId,
             currentLocation: currentLocation,
             data: initialValues[plugin.reduxFormKey],
+            pluginPermissions: pluginPermissions[plugin.name],
+            pluginAuth: pluginAuth,
             setPluginFilters,
             showSheriffProfileModal
         };
+
+        // Set the plugin's permissions
+        plugin.pluginPermissions = pluginPermissions[plugin.name];
 
         return isEditing
             ? plugin.renderFormFields(pluginProps)

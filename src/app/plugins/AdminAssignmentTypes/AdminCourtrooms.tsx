@@ -40,6 +40,7 @@ import RemoveRow from '../../components/TableColumnActions/RemoveRow';
 import ExpireRow from '../../components/TableColumnActions/ExpireRow';
 import DeleteRow from '../../components/TableColumnActions/DeleteRow';
 import { setAdminRolesPluginFilters } from '../../modules/roles/actions';
+import { ActionProps } from '../../components/TableColumnCell/Actions';
 // import { createOrUpdateCourtrooms } from '../../modules/assignments/actions';
 
 export interface AdminCourtroomsProps extends FormContainerProps {
@@ -73,6 +74,14 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
     title: string = ' Courtrooms';
 
     FormComponent = (props: FormContainerProps<AdminCourtroomsProps>) => {
+        const { getPluginPermissions } = props;
+        let grantAll = false;
+        const formPermissions = (getPluginPermissions)
+            ? getPluginPermissions()
+            : [];
+
+        grantAll = formPermissions === true;
+
         const { currentLocation, isLocationSet } = props;
         const loc = currentLocation;
 
@@ -139,6 +148,24 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
                 DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false })
             ];
 
+        const courtroomActions = [
+            ({ fields, index, model }) => {
+                return (model && !model.id || model && model.id === '')
+                    ? (<RemoveRow fields={fields} index={index} model={model} showComponent={true} />)
+                    : null;
+            },
+            ({ fields, index, model }) => {
+                return (model && model.id && model.id !== '')
+                    ? (<ExpireRow fields={fields} index={index} model={model} showComponent={true} />)
+                    : null;
+            },
+            ({ fields, index, model }) => {
+                return (model && model.id && model.id !== '')
+                    ? (<DeleteRow fields={fields} index={index} model={model} showComponent={grantAll} />)
+                    : null;
+            }
+        ] as React.ReactType<ActionProps>[];
+
         return (
             <div className="col-sm-12">
             {/* Only use fixed if configured as a standalone page */}
@@ -152,23 +179,7 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
                     onResetClicked={onResetFilters}
                     displayActionsColumn={true}
                     actionsColumn={DataTable.ActionsColumn({
-                        actions: [
-                            ({ fields, index, model }) => {
-                                return (model && !model.id || model && model.id === '')
-                                    ? (<RemoveRow fields={fields} index={index} model={model} />)
-                                    : null;
-                            },
-                            ({ fields, index, model }) => {
-                                return (model && model.id && model.id !== '')
-                                    ? (<ExpireRow fields={fields} index={index} model={model} />)
-                                    : null;
-                            },
-                            ({ fields, index, model }) => {
-                                return (model && model.id && model.id !== '')
-                                    ? (<DeleteRow fields={fields} index={index} model={model} />)
-                                    : null;
-                            }
-                        ]
+                        actions: courtroomActions
                     })}
                     columns={courtroomColumns}
                     filterable={true}

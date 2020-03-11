@@ -4,6 +4,7 @@ import { RootState } from '../../store';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { deletedDiff, detailedDiff } from 'deep-object-diff';
+import { DetailComponentProps } from '../Table/DataTable';
 
 export interface FormContainerProps<T = any> {
     // TODO: We aren't really using objectId anymore, we should remove it...
@@ -11,6 +12,10 @@ export interface FormContainerProps<T = any> {
     //  forms implementation...
     objectId?: IdType;
     data?: T;
+    // TODO: We have proper types for permissions and auth now, use them!
+    pluginPermissions?: any;
+    pluginAuth?: any;
+    getPluginPermissions?: Function;
     setPluginFilters?: Function;
     // TODO: It would be nice if we could somehow pass in showSheriffProfileModal some other way that was more declarative, and from the plugin...
     //  This is easy and works for now though.
@@ -20,6 +25,10 @@ export interface FormContainerProps<T = any> {
     currentLocation?: string;
     isLocationSet?: boolean;
 }
+
+type AuthPermissions = string[];
+type PluginPermissions = { [key: string]: string[] };
+
 export interface FormContainer<T = any> {
     /**
      * A unique plugin name, no spaces please eg. /[A-Za-z0-9_-]+/
@@ -33,6 +42,7 @@ export interface FormContainer<T = any> {
      * @memberof Form
      */
     reduxFormKey: string;
+    pluginPermissions: any; // TODO: We can type this better
     renderDisplay(props: FormContainerProps<T>): React.ReactNode;
     renderFormFields(props: FormContainerProps<T>): React.ReactNode;
     hasErrors(errors: any): boolean;
@@ -69,6 +79,26 @@ export abstract class FormContainerBase<T = any> implements FormContainer<T> {
         this._dispatch = dispatch;
     }
 
+    protected _pluginPermissions?: string[];
+
+    public get pluginPermissions(): string[] | undefined {
+        return this._pluginPermissions;
+    }
+
+    public set pluginPermissions(config: string[] | undefined) {
+        this._pluginPermissions = config;
+    }
+
+    protected _pluginAuth?: AuthPermissions;
+
+    public get pluginAuth(): AuthPermissions | undefined {
+        return this._pluginAuth;
+    }
+
+    public set pluginAuth(config: AuthPermissions | undefined) {
+        this._pluginAuth = config;
+    }
+
     /**
      * The formFieldNames are used to enhance to experience
      * when submitting / saving the profile.  These fields
@@ -95,6 +125,11 @@ export abstract class FormContainerBase<T = any> implements FormContainer<T> {
 
     DisplayComponent?: React.ReactType<FormContainerProps<T>>;
     FormComponent?: React.ReactType<FormContainerProps<T>>;
+    DetailComponent: React.SFC<any>;
+
+    protected getPluginPermissions(): string[] {
+        return this.pluginPermissions || [];
+    }
 
     protected getDataFromFormValues(formValues: any, initialValues?: any) {
         if (!initialValues) return formValues[this.reduxFormKey];
@@ -195,9 +230,16 @@ export abstract class FormContainerBase<T = any> implements FormContainer<T> {
 
     renderFormFields(props: FormContainerProps<T>): React.ReactNode {
         const { FormComponent } = this;
+        const getPluginPermissions = this.getPluginPermissions.bind(this);
         return (
-            FormComponent && <FormComponent key={this.name} {...props} />
+            FormComponent && <FormComponent key={this.name} {...props} getPluginPermissions={getPluginPermissions} />
         );
+    }
+
+    renderDetail(): React.SFC {
+        const { DetailComponent } = this;
+        const getPluginPermissions = this.getPluginPermissions.bind(this);
+        return (detailProps: any) => (<DetailComponent {...detailProps}  getPluginPermissions={getPluginPermissions} />);
     }
 
     // async onSubmit(objectId: IdType | undefined, formValues: any, dispatch: Dispatch<any>): Promise<any | void> {

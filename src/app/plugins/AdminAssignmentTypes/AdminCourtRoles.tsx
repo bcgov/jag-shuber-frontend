@@ -40,6 +40,7 @@ import DeleteRow from '../../components/TableColumnActions/DeleteRow';
 
 import CodeScopeSelector from '../../containers/CodeScopeSelector';
 import { currentLocation as getCurrentLocation } from '../../modules/user/selectors';
+import { ActionProps } from '../../components/TableColumnCell/Actions';
 
 export interface AdminCourtRolesProps extends FormContainerProps {
     courtRoles?: any[];
@@ -72,6 +73,14 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
     title: string = ' Court Roles';
 
     FormComponent = (props: FormContainerProps<AdminCourtRolesProps>) => {
+        const { getPluginPermissions } = props;
+        let grantAll = false;
+        const formPermissions = (getPluginPermissions)
+            ? getPluginPermissions()
+            : [];
+
+        grantAll = formPermissions === true;
+
         const { currentLocation, isLocationSet } = props;
         const loc = currentLocation;
 
@@ -129,6 +138,24 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
             }
         };
 
+        const courtRoleActions = [
+            ({ fields, index, model }) => {
+                return (model && !model.id || model && model.id === '')
+                    ? (<RemoveRow fields={fields} index={index} model={model} showComponent={true} />)
+                    : null;
+            },
+            ({ fields, index, model }) => {
+                return (model && model.id && model.id !== '')
+                    ? (<ExpireRow fields={fields} index={index} model={model} showComponent={true} />)
+                    : null;
+            },
+            ({ fields, index, model }) => {
+                return (model && model.id && model.id !== '')
+                    ? (<DeleteRow fields={fields} index={index} model={model} showComponent={grantAll} />)
+                    : null;
+            }
+        ] as React.ReactType<ActionProps>[];
+
         return (
             <div>
             {/* Only use fixed if configured as a standalone page */}
@@ -138,27 +165,12 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
                     filterFieldName={(this.filterFieldNames) ? `${this.filterFieldNames.courtRoles}` : undefined}
                     title={''} // Leave this blank
                     buttonLabel={'Add Court Role'}
+                    // TODO: Only display if the user has appropriate permissions
                     displayHeaderActions={true}
                     onResetClicked={onResetFilters}
                     displayActionsColumn={true}
                     actionsColumn={DataTable.ActionsColumn({
-                        actions: [
-                            ({ fields, index, model }) => {
-                                return (model && !model.id || model && model.id === '')
-                                    ? (<RemoveRow fields={fields} index={index} model={model} />)
-                                    : null;
-                            },
-                            ({ fields, index, model }) => {
-                                return (model && model.id && model.id !== '')
-                                    ? (<ExpireRow fields={fields} index={index} model={model} />)
-                                    : null;
-                            },
-                            ({ fields, index, model }) => {
-                                return (model && model.id && model.id !== '')
-                                    ? (<DeleteRow fields={fields} index={index} model={model} />)
-                                    : null;
-                            }
-                        ]
+                        actions: courtRoleActions
                     })}
                     columns={[
                         // DataTable.SelectorFieldColumn('Location', { fieldName: 'locationId', selectorComponent: LocationSelector, displayInfo: false, filterable: true, filterColumn: onFilterLocation }),
@@ -196,6 +208,7 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
                             }
                         }
                     }}
+                    // TODO: Only display if the user has appropriate permissions
                     shouldDisableRow={(model) => {
                         // TODO: Only disable if the user doesn't have permission to edit provincial codes
                         // return (!model) ? false : (model && model.id) ? model.isProvincialCode : false;
