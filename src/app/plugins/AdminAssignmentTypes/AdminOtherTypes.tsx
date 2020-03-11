@@ -40,6 +40,7 @@ import DeleteRow from '../../components/TableColumnActions/DeleteRow';
 import { setAdminRolesPluginFilters } from '../../modules/roles/actions';
 import CodeScopeSelector from '../../containers/CodeScopeSelector';
 import { currentLocation as getCurrentLocation } from '../../modules/user/selectors';
+import { ActionProps } from '../../components/TableColumnCell/Actions';
 // import { createOrUpdateAlternateAssignmentTypes } from '../../modules/assignments/actions';
 
 export interface AdminOtherTypesProps extends FormContainerProps {
@@ -73,6 +74,14 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
     title: string = ' Other Assignments';
 
     FormComponent = (props: FormContainerProps<AdminOtherTypesProps>) => {
+        const { getPluginPermissions } = props;
+        let grantAll = false;
+        const formPermissions = (getPluginPermissions)
+            ? getPluginPermissions()
+            : [];
+
+        grantAll = formPermissions === true;
+
         const { currentLocation, isLocationSet } = props;
         const loc = currentLocation;
 
@@ -139,6 +148,24 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
             DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false })
         ];
 
+        const otherTypeActions = [
+            ({ fields, index, model }) => {
+                return (model && !model.id || model && model.id === '')
+                    ? (<RemoveRow fields={fields} index={index} model={model} showComponent={true} />)
+                    : null;
+            },
+            ({ fields, index, model }) => {
+                return (model && model.id && model.id !== '')
+                    ? (<ExpireRow fields={fields} index={index} model={model} showComponent={true} />)
+                    : null;
+            },
+            ({ fields, index, model }) => {
+                return (model && model.id && model.id !== '')
+                    ? (<DeleteRow fields={fields} index={index} model={model} showComponent={grantAll} />)
+                    : null;
+            }
+        ] as React.ReactType<ActionProps>[];
+
         return (
             <div>
             {/* Only use fixed if configured as a standalone page */}
@@ -152,23 +179,7 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
                     onResetClicked={onResetFilters}
                     displayActionsColumn={true}
                     actionsColumn={DataTable.ActionsColumn({
-                        actions: [
-                            ({ fields, index, model }) => {
-                                return (model && !model.id || model && model.id === '')
-                                    ? (<RemoveRow fields={fields} index={index} model={model} />)
-                                    : null;
-                            },
-                            ({ fields, index, model }) => {
-                                return (model && model.id && model.id !== '')
-                                    ? (<ExpireRow fields={fields} index={index} model={model} />)
-                                    : null;
-                            },
-                            ({ fields, index, model }) => {
-                                return (model && model.id && model.id !== '')
-                                    ? (<DeleteRow fields={fields} index={index} model={model} />)
-                                    : null;
-                            }
-                        ]
+                        actions: otherTypeActions
                     })}
                     columns={assignmentTypeColumns}
                     filterable={true}
@@ -199,7 +210,8 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
                     }}
                     shouldDisableRow={(model) => {
                         // TODO: Only disable if the user doesn't have permission to edit provincial codes
-                        return (!model) ? false : (model && model.id) ? model.isProvincialCode : false;
+                        return false;
+                        // return (!model) ? false : (model && model.id) ? model.isProvincialCode : false;
                     }}
                     rowComponent={EmptyDetailRow}
                     modalComponent={EmptyDetailRow}

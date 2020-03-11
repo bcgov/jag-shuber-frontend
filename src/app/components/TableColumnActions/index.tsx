@@ -14,6 +14,7 @@ export interface TableColumnActionProps {
     index: number;
     model?: Partial<any>;
     onClick?: (ev: any) => void;
+    showComponent?: boolean;
 }
 
 export { ApproveRow, CancelRow, DeclineRow, DeleteRow, EditRow, ExpireRow, RemoveRow, SaveRow };

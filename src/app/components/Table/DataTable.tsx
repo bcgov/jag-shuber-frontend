@@ -14,6 +14,7 @@ import DataTableGroupBy from './DataTableGroupBy';
 export interface DetailComponentProps {
     parentModel?: any;
     parentModelId?: any;
+    getPluginPermissions?: Function;
 }
 
 export interface ModalComponentProps {}
@@ -37,7 +38,7 @@ export interface DataTableProps {
     expandedRows?: Set<number>;
     modalProps?: any;
     modalComponent: React.ReactType<ModalComponentProps>;
-    rowComponent: React.ReactType<DetailComponentProps>;
+    rowComponent: React.SFC<DetailComponentProps>;
     shouldRenderRow?: (model: any) => boolean;
     shouldDisableRow?: (model: any) => boolean;
     initialValue?: any;

@@ -43,6 +43,7 @@ import ExpireRow from '../../components/TableColumnActions/ExpireRow';
 import DeleteRow from '../../components/TableColumnActions/DeleteRow';
 import { setAdminRolesPluginFilters } from '../../modules/roles/actions';
 import CodeScopeSelector from '../../containers/CodeScopeSelector';
+import { ActionProps } from '../../components/TableColumnCell/Actions';
 // import { createOrUpdateEscortTypes } from '../../modules/assignments/actions';
 
 export interface AdminEscortTypesProps extends FormContainerProps {
@@ -76,6 +77,14 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
     title: string = ' Escort Runs';
 
     FormComponent = (props: FormContainerProps<AdminEscortTypesProps>) => {
+        const { getPluginPermissions } = props;
+        let grantAll = false;
+        const formPermissions = (getPluginPermissions)
+            ? getPluginPermissions()
+            : [];
+
+        grantAll = formPermissions === true;
+
         const { currentLocation, isLocationSet } = props;
         const loc = currentLocation;
 
@@ -150,6 +159,24 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
                 DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false })
             ];
 
+        const escortTypeActions = [
+            ({ fields, index, model }) => {
+                return (model && !model.id || model && model.id === '')
+                    ? (<RemoveRow fields={fields} index={index} model={model} showComponent={true} />)
+                    : null;
+            },
+            ({ fields, index, model }) => {
+                return (model && model.id && model.id !== '')
+                    ? (<ExpireRow fields={fields} index={index} model={model} showComponent={true} />)
+                    : null;
+            },
+            ({ fields, index, model }) => {
+                return (model && model.id && model.id !== '')
+                    ? (<DeleteRow fields={fields} index={index} model={model} showComponent={grantAll} />)
+                    : null;
+            }
+        ] as React.ReactType<ActionProps>[];
+
         return (
             <div>
             {/* Only use fixed if configured as a standalone page */}
@@ -163,23 +190,7 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
                     onResetClicked={onResetFilters}
                     displayActionsColumn={true}
                     actionsColumn={DataTable.ActionsColumn({
-                        actions: [
-                            ({ fields, index, model }) => {
-                                return (model && !model.id || model && model.id === '')
-                                    ? (<RemoveRow fields={fields} index={index} model={model} />)
-                                    : null;
-                            },
-                            ({ fields, index, model }) => {
-                                return (model && model.id && model.id !== '')
-                                    ? (<ExpireRow fields={fields} index={index} model={model} />)
-                                    : null;
-                            },
-                            ({ fields, index, model }) => {
-                                return (model && model.id && model.id !== '')
-                                    ? (<DeleteRow fields={fields} index={index} model={model} />)
-                                    : null;
-                            }
-                        ]
+                        actions: escortTypeActions
                     })}
                     columns={escortTypeColumns}
                     filterable={true}

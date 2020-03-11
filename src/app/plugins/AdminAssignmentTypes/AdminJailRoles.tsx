@@ -40,6 +40,7 @@ import DeleteRow from '../../components/TableColumnActions/DeleteRow';
 import { setAdminRolesPluginFilters } from '../../modules/roles/actions';
 import CodeScopeSelector from '../../containers/CodeScopeSelector';
 import { currentLocation as getCurrentLocation } from '../../modules/user/selectors';
+import { ActionProps } from '../../components/TableColumnCell/Actions';
 // import { createOrUpdateJailRoles } from '../../modules/assignments/actions';
 
 export interface AdminJailRolesProps extends FormContainerProps {
@@ -73,6 +74,14 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
     title: string = ' Jail Roles';
 
     FormComponent = (props: FormContainerProps<AdminJailRolesProps>) => {
+        const { getPluginPermissions } = props;
+        let grantAll = false;
+        const formPermissions = (getPluginPermissions)
+            ? getPluginPermissions()
+            : [];
+
+        grantAll = formPermissions === true;
+
         const { currentLocation, isLocationSet } = props;
         const loc = currentLocation;
 
@@ -130,6 +139,24 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
             }
         };
 
+        const jailRoleActions = [
+            ({ fields, index, model }) => {
+                return (model && !model.id || model && model.id === '')
+                    ? (<RemoveRow fields={fields} index={index} model={model} showComponent={true} />)
+                    : null;
+            },
+            ({ fields, index, model }) => {
+                return (model && model.id && model.id !== '')
+                    ? (<ExpireRow fields={fields} index={index} model={model} showComponent={true} />)
+                    : null;
+            },
+            ({ fields, index, model }) => {
+                return (model && model.id && model.id !== '')
+                    ? (<DeleteRow fields={fields} index={index} model={model} showComponent={grantAll} />)
+                    : null;
+            }
+        ] as React.ReactType<ActionProps>[];
+
         return (
             <div>
             {/* Only use fixed if configured as a standalone page */}
@@ -143,23 +170,7 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
                     onResetClicked={onResetFilters}
                     displayActionsColumn={true}
                     actionsColumn={DataTable.ActionsColumn({
-                        actions: [
-                            ({ fields, index, model }) => {
-                                return (model && !model.id || model && model.id === '')
-                                    ? (<RemoveRow fields={fields} index={index} model={model} />)
-                                    : null;
-                            },
-                            ({ fields, index, model }) => {
-                                return (model && model.id && model.id !== '')
-                                    ? (<ExpireRow fields={fields} index={index} model={model} />)
-                                    : null;
-                            },
-                            ({ fields, index, model }) => {
-                                return (model && model.id && model.id !== '')
-                                    ? (<DeleteRow fields={fields} index={index} model={model} />)
-                                    : null;
-                            }
-                        ]
+                        actions: jailRoleActions
                     })}
                     columns={[
                         // DataTable.SelectorFieldColumn('Location', { fieldName: 'locationId', selectorComponent: LocationSelector, displayInfo: false, filterable: true, filterColumn: onFilterLocation }),
@@ -200,7 +211,8 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
                     }}
                     shouldDisableRow={(model) => {
                         // TODO: Only disable if the user doesn't have permission to edit provincial codes
-                        return (!model) ? false : (model && model.id) ? model.isProvincialCode : false;
+                        return false;
+                        // return (!model) ? false : (model && model.id) ? model.isProvincialCode : false;
                     }}
                     rowComponent={EmptyDetailRow}
                     modalComponent={EmptyDetailRow}

@@ -280,6 +280,7 @@ export default class extends
             // Filter out any plugins that the user doesn't have permission to access
             // TODO: A cleaner way to get the data off the token?
             const { appScopes = {}, authScopes } = currentUserRoleScopes(state);
+            // if (appScopes) debugger;
 
             // console.log(appScopes);
             // console.log(authScopes);
@@ -326,6 +327,8 @@ export default class extends
                 currentLocation: currentLocationSelector(state),
                 isLocationSet: isLocationSetSelector(state),
                 initialValues,
+                pluginPermissions: { ...appScopes },
+                pluginAuth: authScopes,
                 pluginState: { ...initialValues },
                 selectedSection: selectedAdminFormSection(state) || selectedSection,
                 ...collectPluginErrors(state, formConfig.form, plugins)

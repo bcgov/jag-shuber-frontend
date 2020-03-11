@@ -3,7 +3,8 @@ import { Button, Glyphicon, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 import { TableColumnActionProps } from './index';
 
-const ExpireRow = ({ fields, index }: TableColumnActionProps) => {
+const ExpireRow = ({ fields, index , showComponent = false }: TableColumnActionProps) => {
+    if (!showComponent) return null;
     return (
         <OverlayTrigger overlay={(<Tooltip>Expire</Tooltip>)} placement={'left'}>
             <Button bsStyle="warning">
