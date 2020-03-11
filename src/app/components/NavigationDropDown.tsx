@@ -10,16 +10,16 @@ interface NavigationDropDownProps {
 }
 
 class NavigationDropDown extends React.Component<NavigationDropDownProps, {}> {
-    
+
     getActive() {
         const { children = [] } = this.props;
-        const childRouteIsActive = children.find(
-            element => window.location.pathname.endsWith(element.props.path)
-        )
-        if (childRouteIsActive) {
-            return true
-        }
-        return false;
+        const childRouteIsActive = children.find((element) => {
+            return (element)
+                ? window.location.pathname.endsWith(element.props.path)
+                : false;
+        });
+
+        return childRouteIsActive;
     }
 
     render() {
