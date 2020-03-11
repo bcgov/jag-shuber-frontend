@@ -44,6 +44,7 @@ import DeleteRow from '../../components/TableColumnActions/DeleteRow';
 import { setAdminRolesPluginFilters } from '../../modules/roles/actions';
 import CodeScopeSelector from '../../containers/CodeScopeSelector';
 import { ActionProps } from '../../components/TableColumnCell/Actions';
+import { buildPluginPermissions } from '../permissionUtils';
 // import { createOrUpdateEscortTypes } from '../../modules/assignments/actions';
 
 export interface AdminEscortTypesProps extends FormContainerProps {
@@ -78,12 +79,7 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
 
     FormComponent = (props: FormContainerProps<AdminEscortTypesProps>) => {
         const { getPluginPermissions } = props;
-        let grantAll = false;
-        const formPermissions = (getPluginPermissions)
-            ? getPluginPermissions()
-            : [];
-
-        grantAll = formPermissions === true;
+        const { grantAll, permissions } = buildPluginPermissions(getPluginPermissions);
 
         const { currentLocation, isLocationSet } = props;
         const loc = currentLocation;

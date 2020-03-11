@@ -93,6 +93,7 @@ import RemoveRow from '../../components/TableColumnActions/RemoveRow';
 import ExpireRow from '../../components/TableColumnActions/ExpireRow';
 import PageTitle from '../../containers/PageTitle';
 import { ActionProps } from '../../components/TableColumnCell/Actions';
+import { buildPluginPermissions } from '../permissionUtils';
 
 export interface AdminRolesProps extends FormContainerProps {
     roles?: {}[];
@@ -182,12 +183,7 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
     };
     title: string = ' Manage Roles & Access';
     DetailComponent: React.SFC<DetailComponentProps> = ({ parentModelId, parentModel, getPluginPermissions }) => {
-        let grantAll = false;
-        const formPermissions = (getPluginPermissions)
-            ? getPluginPermissions()
-            : [];
-
-        grantAll = formPermissions === true;
+        const { grantAll, permissions } = buildPluginPermissions(getPluginPermissions);
 
         // We can't use React hooks yet, and not sure if this project will ever be upgraded to 16.8
         // This is a quick n' dirty way to achieve the same thing
@@ -249,12 +245,7 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
 
     FormComponent = (props: FormContainerProps<AdminRolesProps>) => {
         const { getPluginPermissions } = props;
-        let grantAll = false;
-        const formPermissions = (getPluginPermissions)
-            ? getPluginPermissions()
-            : [];
-
-        grantAll = formPermissions === true;
+        const { grantAll, permissions } = buildPluginPermissions(getPluginPermissions);
 
         // We can't use React hooks yet, and not sure if this project will ever be upgraded to 16.8
         // This is a quick n' dirty way to achieve the same thing

@@ -30,6 +30,7 @@ import { AdminTrainingTypesProps } from './AdminTrainingTypes';
 import DeleteRow from '../../components/TableColumnActions/DeleteRow';
 import ExpireRow from '../../components/TableColumnActions/ExpireRow';
 import { ActionProps } from '../../components/TableColumnCell/Actions';
+import { buildPluginPermissions } from '../permissionUtils';
 
 export interface AdminTrainingTypesProps extends FormContainerProps {
     leaveTypes?: any[];
@@ -64,12 +65,7 @@ export default class AdminTrainingTypes extends FormContainerBase<AdminTrainingT
 
     FormComponent = (props: FormContainerProps<AdminTrainingTypesProps>) => {
         const { getPluginPermissions } = props;
-        let grantAll = false;
-        const formPermissions = (getPluginPermissions)
-            ? getPluginPermissions()
-            : [];
-
-        grantAll = formPermissions === true;
+        const { grantAll, permissions } = buildPluginPermissions(getPluginPermissions);
 
         const onFilterSubCode = (event: Event, newValue: any, previousValue: any, name: string) => {
             const { setPluginFilters } = props;

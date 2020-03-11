@@ -41,6 +41,7 @@ import ExpireRow from '../../components/TableColumnActions/ExpireRow';
 import DeleteRow from '../../components/TableColumnActions/DeleteRow';
 import { setAdminRolesPluginFilters } from '../../modules/roles/actions';
 import { ActionProps } from '../../components/TableColumnCell/Actions';
+import { buildPluginPermissions } from '../permissionUtils';
 // import { createOrUpdateCourtrooms } from '../../modules/assignments/actions';
 
 export interface AdminCourtroomsProps extends FormContainerProps {
@@ -75,12 +76,7 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
 
     FormComponent = (props: FormContainerProps<AdminCourtroomsProps>) => {
         const { getPluginPermissions } = props;
-        let grantAll = false;
-        const formPermissions = (getPluginPermissions)
-            ? getPluginPermissions()
-            : [];
-
-        grantAll = formPermissions === true;
+        const { grantAll, permissions } = buildPluginPermissions(getPluginPermissions);
 
         const { currentLocation, isLocationSet } = props;
         const loc = currentLocation;

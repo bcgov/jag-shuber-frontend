@@ -41,6 +41,7 @@ import DeleteRow from '../../components/TableColumnActions/DeleteRow';
 import CodeScopeSelector from '../../containers/CodeScopeSelector';
 import { currentLocation as getCurrentLocation } from '../../modules/user/selectors';
 import { ActionProps } from '../../components/TableColumnCell/Actions';
+import { buildPluginPermissions } from '../permissionUtils';
 
 export interface AdminCourtRolesProps extends FormContainerProps {
     courtRoles?: any[];
@@ -74,12 +75,7 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
 
     FormComponent = (props: FormContainerProps<AdminCourtRolesProps>) => {
         const { getPluginPermissions } = props;
-        let grantAll = false;
-        const formPermissions = (getPluginPermissions)
-            ? getPluginPermissions()
-            : [];
-
-        grantAll = formPermissions === true;
+        const { grantAll, permissions } = buildPluginPermissions(getPluginPermissions);
 
         const { currentLocation, isLocationSet } = props;
         const loc = currentLocation;

@@ -79,6 +79,8 @@ import GenderDisplay from './containers/GenderDisplay';
 import GenderSelector from './containers/GenderSelector';
 import { ActionProps } from '../../components/TableColumnCell/Actions';
 
+import { buildPluginPermissions } from '../index';
+
 // TODO: There already is a SheriffRankDisplay, but it doesn't work for our tables...
 //  It selects a single item using a code...
 
@@ -153,12 +155,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
     };
     title: string = 'Assign User Roles';
     DetailComponent: React.SFC<DetailComponentProps> = ({ parentModelId, getPluginPermissions }) => {
-        let grantAll = false;
-        const formPermissions = (getPluginPermissions)
-            ? getPluginPermissions()
-            : [];
-
-        grantAll = formPermissions === true;
+        const { grantAll, permissions } = buildPluginPermissions(getPluginPermissions);
 
         const onButtonClicked = (ev: React.SyntheticEvent<any>, context: any, model: any) => {
             context.setActiveRow(model.id);
