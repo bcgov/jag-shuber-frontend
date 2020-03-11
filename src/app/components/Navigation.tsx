@@ -1,3 +1,8 @@
+/**
+ * TODO: We're using hard coded app and auth scopes in here! Not really any way around that for now (unless we implement a menu builder)
+ * so if you update the plugins or the app and auth scopes make sure you update this file!
+ */
+
 import React from 'react';
 import { Dispatch } from 'redux';
 import {
@@ -25,7 +30,6 @@ import { TokenPayload } from 'jag-shuber-api';
 import { IdType, User, Sheriff } from '../api';
 
 import { getCurrentUser } from '../modules/user/actions';
-import { sheriffLeaves } from '../api/Mock/MockData';
 
 export interface NavigationStateProps {
     getUserByAuthId?: (userAuthId: IdType) => any;
@@ -36,6 +40,7 @@ export interface NavigationDispatchProps {
 }
 
 export interface NavigationProps extends NavigationDispatchProps {
+    currentUserRoleScopes?: any;
     currentUserToken?: TokenPayload;
     currentUser?: User;
 }
@@ -133,6 +138,11 @@ export default class Navigation extends React.Component<NavigationProps & Naviga
 
     render() {
         const {
+            // tslint:disable-next-line:no-shadowed-variable
+            currentUserRoleScopes = {
+                appScopes: {},
+                authScopes: []
+            },
             currentUser = {
                 firstName: '',
                 lastName: '',
@@ -162,19 +172,33 @@ export default class Navigation extends React.Component<NavigationProps & Naviga
                             <NavigationLink {...Navigation.Routes.schedule.manage} />
                             <NavigationLink {...Navigation.Routes.schedule.distribute} />
                         </NavigationDropDown>
+
                         <NavigationDropDown title={Navigation.Routes.team.label} id="admin_dropdown">
                             <NavigationLink {...Navigation.Routes.team.children.users} />
-                            <NavigationLink {...Navigation.Routes.team.children.userRoles} />
-                            <NavigationLink {...Navigation.Routes.team.children.roles} />
+                            {currentUserRoleScopes.authScopes
+                            && currentUserRoleScopes.authScopes.indexOf('roles:manage') > -1 && (
+                            <>
+                                <NavigationLink {...Navigation.Routes.team.children.userRoles} />
+                                <NavigationLink {...Navigation.Routes.team.children.roles} />
+                            </>
+                            )}
                         </NavigationDropDown>
+
+                        {currentUserRoleScopes.authScopes
+                        && currentUserRoleScopes.authScopes.indexOf('system:types') > -1 && (
                         <NavigationDropDown title={Navigation.Routes.types.label} id="types_dropdown">
                             <NavigationLink {...Navigation.Routes.types.children.assignmentTypes} />
                             <NavigationLink {...Navigation.Routes.types.children.leaveTypes} />
                         </NavigationDropDown>
+                        )}
+
+                        {currentUserRoleScopes.authScopes
+                        && currentUserRoleScopes.authScopes.indexOf('system:scopes') > -1 && (
                         <NavigationDropDown title={Navigation.Routes.system.label} id="system_dropdown">
                             <NavigationLink {...Navigation.Routes.system.children.components} />
                             <NavigationLink {...Navigation.Routes.system.children.apis} />
                         </NavigationDropDown>
+                        )}
                         {/*<NavigationLink {...Navigation.Routes.audit} />*/}
                     </Nav>
                     <Nav pullRight={true} style={{ paddingTop: 13, paddingRight: 15 }}>
