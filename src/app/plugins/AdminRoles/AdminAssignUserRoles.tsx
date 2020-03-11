@@ -371,7 +371,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                     columns={[
                         DataTable.StaticTextColumn('Full Name', {
                             fieldName: 'displayName',
-                            colStyle: { width: '300px' },
+                            colStyle: { width: '15%' },
                             displayInfo: false,
                             filterable: true,
                             filterColumn: onFilterDisplayName
@@ -380,14 +380,14 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                         // TODO: We temporarily disabled filtering on badgeNo, it's tied to the sheriff, not sure how to handle that case yet...
                         DataTable.StaticTextColumn('Badge No.', {
                             fieldName: 'sheriff.badgeNo',
-                            colStyle: { width: '175px' },
+                            colStyle: { width: '15%' },
                             displayInfo: false,
                             filterable: true,
                             filterColumn: onFilterBadgeNo
                         }),
                         DataTable.MappedTextColumn('Rank', {
                             fieldName: 'sheriff.rankCode',
-                            colStyle: { width: '175px' },
+                            colStyle: { width: '10%' },
                             selectorComponent: SheriffRankDisplay,
                             filterSelectorComponent: SheriffRankCodeSelector,
                             displayInfo: false,
@@ -396,7 +396,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                         }),
                         DataTable.MappedTextColumn('Gender', {
                             fieldName: 'sheriff.genderCode',
-                            colStyle: { width: '175px' },
+                            colStyle: { width: '10%' },
                             selectorComponent: GenderDisplay,
                             filterSelectorComponent: GenderSelector,
                             displayInfo: false,
@@ -405,7 +405,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                         }),
                         DataTable.MappedTextColumn('Home Location', {
                             fieldName: 'sheriff.homeLocationId',
-                            colStyle: { width: '225px' },
+                            colStyle: { width: '10%' },
                             selectorComponent: LocationDisplay,
                             filterSelectorComponent: LocationSelector,
                             displayInfo: false,
@@ -414,7 +414,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                         }),
                         DataTable.MappedTextColumn('Current Location', {
                             fieldName: 'sheriff.currentLocationId',
-                            colStyle: { width: '250px' },
+                            colStyle: { width: '10%' },
                             selectorComponent: LocationDisplay,
                             filterSelectorComponent: LocationSelector,
                             displayInfo: false,

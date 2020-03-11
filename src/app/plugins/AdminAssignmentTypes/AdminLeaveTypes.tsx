@@ -120,15 +120,10 @@ export default class AdminLeaveTypes extends FormContainerBase<AdminLeaveTypesPr
                         actions: leaveTypeActions
                     })}
                     columns={[
-                        // DataTable.TextFieldColumn('Leave Type', { fieldName: 'code', displayInfo: true }),
-                        DataTable.TextFieldColumn('Personal Leave Sub Code', { fieldName: 'subCode', colStyle: { width: '200px' }, displayInfo: true, filterable: true, filterColumn: onFilterSubCode }),
-                        DataTable.TextFieldColumn('Description', { fieldName: 'description', colStyle: { width: '300px' }, displayInfo: false }),
-                        DataTable.DateColumn('Effective Date', 'effectiveDate', { colStyle: { width: '175px'}, displayInfo: true, filterable: true, filterColumn: onFilterEffectiveDate }),
-                        DataTable.DateColumn('Expiry Date', 'expiryDate', { colStyle: { width: '175px'}, displayInfo: true, filterable: true, filterColumn: onFilterExpiryDate }),
-                        // DataTable.StaticTextColumn('Created By', { fieldName: 'createdBy', colStyle: { width: '175px' }, displayInfo: false }),
-                        // DataTable.StaticDateColumn('Date Created', { fieldName: 'createdDtm', colStyle: { width: '175px' }, displayInfo: false }),
-                        // DataTable.SelectorFieldColumn('Status', { displayInfo: true }),
-
+                        DataTable.TextFieldColumn('Personal Leave Sub Code', { fieldName: 'subCode', colStyle: { width: '15%' }, displayInfo: true, filterable: true, filterColumn: onFilterSubCode }),
+                        DataTable.TextFieldColumn('Description', { fieldName: 'description', colStyle: { width: '25%' }, displayInfo: false }),
+                        DataTable.DateColumn('Effective Date', 'effectiveDate', { colStyle: { width: '15%'}, displayInfo: true, filterable: true, filterColumn: onFilterEffectiveDate }),
+                        DataTable.DateColumn('Expiry Date', 'expiryDate', { colStyle: { width: '15%'}, displayInfo: true, filterable: true, filterColumn: onFilterExpiryDate })
                     ]}
                     filterable={false}
                     expandable={false}

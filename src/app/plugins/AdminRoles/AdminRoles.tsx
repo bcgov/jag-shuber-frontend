@@ -361,14 +361,11 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
                         actions: roleActions
                     })}
                     columns={[
-                        DataTable.TextFieldColumn('Role Name', { fieldName: 'roleName', colStyle: { width: '300px' }, displayInfo: true, filterable: true, filterColumn: onFilterRoleName }),
-                        DataTable.TextFieldColumn('Role Code', { fieldName: 'roleCode', colStyle: { width: '300px' }, displayInfo: true, filterable: true, filterColumn: onFilterRoleCode }),
-                        DataTable.TextFieldColumn('Description', { fieldName: 'description', colStyle: { width: '300px' }, displayInfo: true }),
-                        // DataTable.DateColumn('Date Created', 'createdDtm'),
-                        DataTable.StaticTextColumn('Created By', { fieldName: 'createdBy', colStyle: { width: '200px' }, displayInfo: false, filterable: true, filterColumn: onFilterCreatedBy }),
-                        DataTable.StaticDateColumn('Date Created', { fieldName: 'createdDtm', colStyle: { width: '200px' }, displayInfo: false, filterable: true, filterColumn: onFilterCreatedDate }),
-                        // DataTable.ButtonColumn('Effective Permissions', 'list', { displayInfo: true }, onButtonClicked),
-                        // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
+                        DataTable.TextFieldColumn('Role Name', { fieldName: 'roleName', colStyle: { width: '15%' }, displayInfo: true, filterable: true, filterColumn: onFilterRoleName }),
+                        DataTable.TextFieldColumn('Role Code', { fieldName: 'roleCode', colStyle: { width: '10%' }, displayInfo: true, filterable: true, filterColumn: onFilterRoleCode }),
+                        DataTable.TextFieldColumn('Description', { fieldName: 'description', colStyle: { width: '20%' }, displayInfo: true }),
+                        DataTable.StaticTextColumn('Created By', { fieldName: 'createdBy', colStyle: { width: '15%' }, displayInfo: false, filterable: true, filterColumn: onFilterCreatedBy }),
+                        DataTable.StaticDateColumn('Date Created', { fieldName: 'createdDtm', colStyle: { width: '15%' }, displayInfo: false, filterable: true, filterColumn: onFilterCreatedDate })
 
                     ]}
                     filterable={true}
