@@ -55,20 +55,22 @@ export default class AdminRoleScopeAccessModal extends React.Component<AdminRole
                         <>
                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                                    {/* <Field
+                                    <Field
                                         name={`component`}
-                                        component={(p) => <SelectorField
-                                            {...p}
-                                            showLabel={true}
-                                            // TODO: Provide this via props or something so we can use custom codes...
-                                            SelectorComponent={
-                                                (sp) =>
-                                                    {parentModel.scopeId} />
-                                                }
-                                        />}
-                                        label={'Choose Scope (Component / API)'}
-                                    >
-                                    </Field> */}
+                                        component={(p) =>
+                                            <SelectorField
+                                                {...p}
+                                                style={{ minWidth: '100%' }}
+                                                showLabel={true}
+                                                // TODO: Provide this via props or something so we can use custom codes...
+                                                SelectorComponent={
+                                                    (sp) =>
+                                                        <FrontendScopeSelector {...sp} value={parentModel.id} />
+                                                    }
+                                            />
+                                        }
+                                        label={'Component / API Scope'}
+                                    />
                                     {/* This wrapper just adds equal spacing to the previous form group */}
                                     {/* TODO: Where are the spacing utils? */}
                                     <div className="form-group" style={{ marginLeft: '0.5rem' }}>

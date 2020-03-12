@@ -89,6 +89,8 @@ import AdminRoleScopeAccessModal from './components/AdminRoleScopeAccessModal';
 import FrontendScopeCodeDisplay from './containers/FrontendScopeCodeDisplay';
 import FrontendScopeDescriptionDisplay from './containers/FrontendScopeDescriptionDisplay';
 import { RoleFrontendScopePermission } from '../../api/Api';
+import { buildPluginPermissions } from '../permissionUtils';
+import { ActionProps } from '../../components/TableColumnCell/Actions';
 
 // THESE ROLES ARE REQUIRED BY THE SYSTEM FOR BASIC API ACCESS, THEY APPLY TO ALL USERS
 // TODO: Make this configurable in OpenShift!
@@ -182,7 +184,9 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
     };
     title: string = 'Register Components';
 
-    DetailComponent: React.SFC<DetailComponentProps> = ({ parentModelId }) => {
+    DetailComponent: React.SFC<DetailComponentProps> = ({ parentModelId, getPluginPermissions }) => {
+        const { grantAll, permissions } = buildPluginPermissions(getPluginPermissions);
+
         // TODO: Add this to a README!
         // Effective Permissions for any user are at a minimum the SYSTEM_ROLES required for basic application usage
         // The application will not function without these roles as it will not be able to read any data
@@ -193,6 +197,19 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
         // Don't render the detail component
         if (!parentModelId) return null;
 
+        const frontendScopeApiActions = [
+            ({ fields, index, model }) => {
+                return (model && model.id && model.id !== '')
+                    ? (<DeleteRow fields={fields} index={index} model={model} showComponent={grantAll} />)
+                    : null;
+            },
+            ({ fields, index, model }) => {
+            return (model && !model.id || model && model.id === '')
+                    ? (<RemoveRow fields={fields} index={index} model={model} showComponent={grantAll} />)
+                    : null;
+            }
+        ] as React.ReactType<ActionProps>[];
+
         return (
             <FrontendScopeApisDataTable
                 fieldName={`${this.formFieldNames.frontendScopeApisGrouped}['${parentModelId}']`}
@@ -201,18 +218,7 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
                 displayHeaderActions={true}
                 displayHeaderSave={false}
                 actionsColumn={DataTable.ActionsColumn({
-                    actions: [
-                        ({ fields, index, model }) => {
-                            return (model && model.id && model.id !== '')
-                                ? (<DeleteRow fields={fields} index={index} model={model} />)
-                                : null;
-                        },
-                        ({ fields, index, model }) => {
-                        return (model && !model.id || model && model.id === '')
-                                ? (<RemoveRow fields={fields} index={index} model={model} />)
-                                : null;
-                        }
-                    ]
+                    actions: frontendScopeApiActions
                 })}
                 columns={[
                     DataTable.SelectorFieldColumn('Api Scope', { fieldName: 'apiScopeId', colStyle: { width: '300px' }, selectorComponent: ApiScopeSelector, displayInfo: true }),
@@ -232,6 +238,9 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
     }
 
     FormComponent = (props: FormContainerProps<AdminFrontendScopesProps>) => {
+        const { getPluginPermissions } = props;
+        const { grantAll, permissions } = buildPluginPermissions(getPluginPermissions);
+
         // We can't use React hooks yet, and not sure if this project will ever be upgraded to 16.8
         // This is a quick n' dirty way to achieve the same thing
         let dataTableInstance: any;
@@ -273,6 +282,20 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
             }
         };
 
+        const frontendScopeActions = [
+            ({ fields, index, model }) => {
+                return (model && model.id && model.id !== '')
+                    ? (
+                        <Button bsStyle="primary" onClick={(ev) => onButtonClicked(ev, dataTableInstance, model)}>
+                            <Glyphicon glyph="lock" />
+                        </Button>
+                    )
+                    : null;
+            },
+            ({ fields, index, model }) => <DeleteRow fields={fields} index={index} model={model} showComponent={grantAll} />,
+            // ({ fields, index, model }) => { return (model && model.id) ? (<ExpireRow fields={fields} index={index} model={model} />) : null; }
+        ] as React.ReactType<ActionProps>[];
+
         return (
             <div>
                 <DataTable
@@ -284,19 +307,7 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
                     displayHeaderActions={true}
                     onResetClicked={onResetFilters}
                     actionsColumn={DataTable.ActionsColumn({
-                        actions: [
-                            ({ fields, index, model }) => {
-                                return (model && model.id && model.id !== '')
-                                    ? (
-                                        <Button bsStyle="primary" onClick={(ev) => onButtonClicked(ev, dataTableInstance, model)}>
-                                            <Glyphicon glyph="lock" />
-                                        </Button>
-                                    )
-                                    : null;
-                            },
-                            ({ fields, index, model }) => <DeleteRow fields={fields} index={index} model={model} />,
-                            // ({ fields, index, model }) => { return (model && model.id) ? (<ExpireRow fields={fields} index={index} model={model} />) : null; }
-                        ]
+                        actions: frontendScopeActions
                     })}
                     columns={[
                         DataTable.TextFieldColumn('Component', { fieldName: 'scopeName', displayInfo: true, filterable: true, filterColumn: onFilterName }),

@@ -31,6 +31,8 @@ import {
 import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
 import DeleteRow from '../../components/TableColumnActions/DeleteRow';
 import ExpireRow from '../../components/TableColumnActions/ExpireRow';
+import { buildPluginPermissions } from '../permissionUtils';
+import { ActionProps } from '../../components/TableColumnCell/Actions';
 
 // import ApiScopeSelector from './ApiScopeSelector';
 // import AdminScopePermissionsModal from './AdminScopePermissionsModal';
@@ -96,6 +98,9 @@ export default class AdminApiScopes extends FormContainerBase<AdminApiScopesProp
     title: string = 'Manage API Scopes';
 
     FormComponent = (props: FormContainerProps<AdminApiScopesProps>) => {
+        const { getPluginPermissions } = props;
+        const { grantAll, permissions } = buildPluginPermissions(getPluginPermissions);
+
         const onFilterName = (event: Event, newValue: any, previousValue: any, name: string) => {
             const { setPluginFilters } = props;
             if (setPluginFilters) {
@@ -128,6 +133,12 @@ export default class AdminApiScopes extends FormContainerBase<AdminApiScopesProp
             }
         };
 
+        const apiScopeActions = [
+            ({ fields, index, model }) => {
+                return (<DeleteRow fields={fields} index={index} model={model} showComponent={grantAll} />);
+            }
+        ] as React.ReactType<ActionProps>[];
+
         return (
             <div>
                 <DataTable
@@ -138,12 +149,7 @@ export default class AdminApiScopes extends FormContainerBase<AdminApiScopesProp
                     displayHeaderActions={true}
                     onResetClicked={onResetFilters}
                     actionsColumn={DataTable.ActionsColumn({
-                        actions: [
-                            ({ fields, index, model }) => {
-                                return (<DeleteRow fields={fields} index={index} model={model} />);
-                            },
-                            // ({ fields, index, model }) => { return (model && model.id) ? (<ExpireRow fields={fields} index={index} model={model} />) : null; }
-                        ]
+                        actions: apiScopeActions
                     })}
                     columns={[
                         DataTable.TextFieldColumn('Scope Name', { fieldName: 'scopeName', displayInfo: true, filterable: true, filterColumn: onFilterName }),
