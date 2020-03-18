@@ -154,7 +154,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
         // roles: 'roles.roles'
     };
     title: string = 'Assign User Roles';
-    DetailComponent: React.SFC<DetailComponentProps> = ({ parentModelId, getPluginPermissions }) => {
+    DetailComponent: React.SFC<DetailComponentProps> = ({ parentModelId, parentModel, getPluginPermissions }) => {
         const { grantAll, permissions } = buildPluginPermissions(getPluginPermissions);
 
         const onButtonClicked = (ev: React.SyntheticEvent<any>, context: any, model: any) => {
@@ -206,6 +206,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                 ]}
                 expandable={false}
                 rowComponent={EmptyDetailRow}
+                shouldDisableRow={() => parentModel.systemAccountInd === 1}
                 initialValue={{
                     userId: parentModelId
                 }}
