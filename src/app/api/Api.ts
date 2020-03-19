@@ -305,6 +305,7 @@ export interface JailRoleCode {
     locationId?: IdType;
     description: string;
     expiryDate?: DateType;
+    isExpired?: boolean; // Only used on the client-side
     isProvincialCode?: any; // Only used on client-side
 }
 
@@ -314,6 +315,7 @@ export interface CourtRoleCode {
     locationId?: IdType;
     description: string;
     expiryDate?: DateType;
+    isExpired?: boolean; // Only used on the client-side
     isProvincialCode?: any; // Only used on client-side
 }
 
@@ -322,6 +324,7 @@ export interface EscortRun {
     // code?: IdType; // This isn't being used, just keep it in here so code type interfaces are all the same
     locationId?: IdType;
     title: string;
+    isExpired?: boolean; // Only used on the client-side
     isProvincialCode?: any; // Only used on client-side
 }
 
@@ -332,6 +335,7 @@ export interface AlternateAssignment {
     locationId?: IdType;
     description: string;
     expiryDate?: DateType;
+    isExpired?: boolean; // Only used on the client-side
     isProvincialCode?: any; // Only used on client-side
 }
 

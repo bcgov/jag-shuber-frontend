@@ -12,7 +12,7 @@ import {
     deleteAlternateAssignmentTypes,
     selectAdminOtherTypesPluginSection,
     setAdminOtherTypesPluginSubmitErrors,
-    setAdminOtherTypesPluginFilters
+    setAdminOtherTypesPluginFilters, setAdminCourtRolesPluginFilters
 } from '../../modules/assignments/actions';
 
 import {
@@ -36,6 +36,7 @@ import { AdminOtherTypesProps } from './AdminOtherTypes';
 import LocationSelector from '../../containers/LocationSelector';
 import RemoveRow from '../../components/TableColumnActions/RemoveRow';
 import ExpireRow from '../../components/TableColumnActions/ExpireRow';
+import UnexpireRow from '../../components/TableColumnActions/UnexpireRow';
 import DeleteRow from '../../components/TableColumnActions/DeleteRow';
 import { setAdminRolesPluginFilters } from '../../modules/roles/actions';
 import CodeScopeSelector from '../../containers/CodeScopeSelector';
@@ -125,12 +126,28 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
             }
         };
 
+        const onToggleExpiredClicked = () => {
+            const { setPluginFilters, pluginFilters } = props;
+            if (setPluginFilters) {
+                // console.log('reset plugin filters');
+                const isExpired = (pluginFilters)
+                    ? pluginFilters.isExpired
+                    : false;
+
+                setPluginFilters({
+                    otherTypes: {
+                        isExpired: isExpired || false
+                    }
+                }, setAdminOtherTypesPluginFilters);
+            }
+        };
+
         const onResetFilters = () => {
             const { setPluginFilters } = props;
             if (setPluginFilters) {
                 // console.log('reset plugin filters');
                 setPluginFilters({
-                    otherTypess: {}
+                    otherTypes: {}
                 }, setAdminOtherTypesPluginFilters);
             }
         };
@@ -150,8 +167,10 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
                     : null;
             },
             ({ fields, index, model }) => {
-                return (model && model.id && model.id !== '')
+                return (model && model.id && model.id !== '' && !model.isExpired)
                     ? (<ExpireRow fields={fields} index={index} model={model} showComponent={true} />)
+                    : (model && model.isExpired)
+                    ? (<UnexpireRow fields={fields} index={index} model={model} showComponent={true} />)
                     : null;
             },
             ({ fields, index, model }) => {
@@ -172,6 +191,7 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
                     buttonLabel={'Add Assignment Type'}
                     displayHeaderActions={true}
                     onResetClicked={onResetFilters}
+                    onToggleExpiredClicked={onToggleExpiredClicked}
                     displayActionsColumn={true}
                     actionsColumn={DataTable.ActionsColumn({
                         actions: otherTypeActions
@@ -208,6 +228,9 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
                         return false;
                         // return (!model) ? false : (model && model.id) ? model.isProvincialCode : false;
                     }}
+                    shouldMarkRowAsDeleted={(model) => {
+                        return model.isExpired;
+                    }}
                     rowComponent={EmptyDetailRow}
                     modalComponent={EmptyDetailRow}
                 />
@@ -235,9 +258,12 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
         const filterData = this.getFilterData(filters);
 
         // Get form data
-        const otherTypes = (filters && filters.otherTypes !== undefined)
+        /* const otherTypes = (filters && filters.otherTypes !== undefined)
             ? findAllEffectiveOtherTypes(filters.otherTypes)(state) || []
-            : getAllEffectiveOtherTypes(state) || [];
+            : getAllEffectiveOtherTypes(state) || []; */
+        const otherTypes = (filters && filters.otherTypes !== undefined)
+            ? findAllOtherTypes(filters.otherTypes)(state) || []
+            : getAllOtherTypes(state) || [];
 
         const otherTypesArray: any[] = otherTypes.map((type: any) => {
             return Object.assign({ isProvincialCode: (type.locationId === null) ? 1 : 0 }, type);

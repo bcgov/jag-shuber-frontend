@@ -12,7 +12,7 @@ import {
     deleteCourtrooms,
     selectAdminCourtroomsPluginSection,
     setAdminCourtroomsPluginSubmitErrors,
-    setAdminCourtroomsPluginFilters
+    setAdminCourtroomsPluginFilters, setAdminCourtRolesPluginFilters
 } from '../../modules/assignments/actions';
 
 import {
@@ -38,6 +38,7 @@ import { AdminCourtroomsProps } from './AdminCourtrooms';
 import LocationSelector from '../../containers/LocationSelector';
 import RemoveRow from '../../components/TableColumnActions/RemoveRow';
 import ExpireRow from '../../components/TableColumnActions/ExpireRow';
+import UnexpireRow from '../../components/TableColumnActions/UnexpireRow';
 import DeleteRow from '../../components/TableColumnActions/DeleteRow';
 import { setAdminRolesPluginFilters } from '../../modules/roles/actions';
 import { ActionProps } from '../../components/TableColumnCell/Actions';
@@ -114,6 +115,22 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
             }
         };
 
+        const onToggleExpiredClicked = () => {
+            const { setPluginFilters, pluginFilters } = props;
+            if (setPluginFilters) {
+                // console.log('reset plugin filters');
+                const isExpired = (pluginFilters)
+                    ? pluginFilters.isExpired
+                    : false;
+
+                setPluginFilters({
+                    courtrooms: {
+                        isExpired: isExpired || false
+                    }
+                }, setAdminCourtroomsPluginFilters);
+            }
+        };
+
         const onResetFilters = () => {
             const { setPluginFilters } = props;
             if (setPluginFilters) {
@@ -151,8 +168,10 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
                     : null;
             },
             ({ fields, index, model }) => {
-                return (model && model.id && model.id !== '')
+                return (model && model.id && model.id !== '' && !model.isExpired)
                     ? (<ExpireRow fields={fields} index={index} model={model} showComponent={true} />)
+                    : (model && model.isExpired)
+                    ? (<UnexpireRow fields={fields} index={index} model={model} showComponent={true} />)
                     : null;
             },
             ({ fields, index, model }) => {
@@ -173,6 +192,7 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
                     buttonLabel={'Add Courtroom'}
                     displayHeaderActions={true}
                     onResetClicked={onResetFilters}
+                    onToggleExpiredClicked={onToggleExpiredClicked}
                     displayActionsColumn={true}
                     actionsColumn={DataTable.ActionsColumn({
                         actions: courtroomActions
@@ -181,6 +201,9 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
                     filterable={true}
                     expandable={false}
                     // expandedRows={[1, 2]}
+                    shouldMarkRowAsDeleted={(model) => {
+                        return model.isExpired;
+                    }}
                     rowComponent={EmptyDetailRow}
                     modalComponent={EmptyDetailRow}
                 />

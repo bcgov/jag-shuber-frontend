@@ -12,7 +12,7 @@ import {
     deleteEscortRuns as deleteEscortTypes,
     selectAdminEscortTypesPluginSection,
     setAdminEscortTypesPluginSubmitErrors,
-    setAdminEscortTypesPluginFilters, setAdminJailRolesPluginFilters
+    setAdminEscortTypesPluginFilters, setAdminJailRolesPluginFilters, setAdminCourtRolesPluginFilters
 } from '../../modules/assignments/actions';
 
 import {
@@ -40,6 +40,7 @@ import { AdminEscortTypesProps } from './AdminEscortTypes';
 import LocationSelector from '../../containers/LocationSelector';
 import RemoveRow from '../../components/TableColumnActions/RemoveRow';
 import ExpireRow from '../../components/TableColumnActions/ExpireRow';
+import UnexpireRow from '../../components/TableColumnActions/UnexpireRow';
 import DeleteRow from '../../components/TableColumnActions/DeleteRow';
 import { setAdminRolesPluginFilters } from '../../modules/roles/actions';
 import CodeScopeSelector from '../../containers/CodeScopeSelector';
@@ -128,6 +129,22 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
             }
         };
 
+        const onToggleExpiredClicked = () => {
+            const { setPluginFilters, pluginFilters } = props;
+            if (setPluginFilters) {
+                // console.log('reset plugin filters');
+                const isExpired = (pluginFilters)
+                    ? pluginFilters.isExpired
+                    : false;
+
+                setPluginFilters({
+                    escortTypes: {
+                        isExpired: isExpired || false
+                    }
+                }, setAdminEscortTypesPluginFilters);
+            }
+        };
+
         const onResetFilters = () => {
             const { setPluginFilters } = props;
             if (setPluginFilters) {
@@ -163,8 +180,10 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
                     : null;
             },
             ({ fields, index, model }) => {
-                return (model && model.id && model.id !== '')
+                return (model && model.id && model.id !== '' && !model.isExpired)
                     ? (<ExpireRow fields={fields} index={index} model={model} showComponent={true} />)
+                    : (model && model.isExpired)
+                    ? (<UnexpireRow fields={fields} index={index} model={model} showComponent={true} />)
                     : null;
             },
             ({ fields, index, model }) => {
@@ -185,6 +204,7 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
                     buttonLabel={'Add Escort Runs'}
                     displayHeaderActions={true}
                     onResetClicked={onResetFilters}
+                    onToggleExpiredClicked={onToggleExpiredClicked}
                     displayActionsColumn={true}
                     actionsColumn={DataTable.ActionsColumn({
                         actions: escortTypeActions
@@ -216,6 +236,9 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
                             }
                         }
                     }}
+                    shouldMarkRowAsDeleted={(model) => {
+                        return model.isExpired;
+                    }}
                     rowComponent={EmptyDetailRow}
                     modalComponent={EmptyDetailRow}
                 />
@@ -243,9 +266,12 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
         const filterData = this.getFilterData(filters);
 
         // Get form data
-        const escortTypes = (filters && filters.escortTypes !== undefined)
+        /* const escortTypes = (filters && filters.escortTypes !== undefined)
             ? findAllEffectiveEscortRunTypes(filters.escortTypes)(state) || []
-            : getAllEffectiveEscortRunTypes(state) || [];
+            : getAllEffectiveEscortRunTypes(state) || []; */
+        const escortTypes = (filters && filters.escortTypes !== undefined)
+            ? findAllEscortRunTypes(filters.escortTypes)(state) || []
+            : getAllEscortRunTypes(state) || [];
 
         const escortTypesArray: any[] = escortTypes.map((type: any) => {
             return Object.assign({ isProvincialCode: (type.locationId === null) ? 1 : 0 }, type);

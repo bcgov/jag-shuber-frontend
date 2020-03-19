@@ -656,3 +656,36 @@ h6.modal-title {
 .user-profile-menu-toggle .caret {
   color: white;
 }
+
+/* Deleted table rows */
+.mark-as-deleted-strike {
+  width: 100%;
+  height: 0 !important;
+  border: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
+}
+
+.mark-as-deleted-strike td {
+  height: 0 !important;
+  border: 0 !important;
+  padding: 0 !important;
+  position: relative;
+}
+
+.mark-as-deleted-strike .strike-through {
+    position: absolute;
+    border: 1px solid red;
+    width: 100%;
+    box-sizing: border-box;
+    top: 5px;
+    opacity: 0.5;
+}
+
+tr.mark-as-deleted,
+tr.mark-as-deleted td:not(:first-child) {
+  background-color: #fff4f5 !important;
+  border-color: #fff4f5 !important;
+}

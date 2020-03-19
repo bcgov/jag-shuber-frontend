@@ -36,6 +36,7 @@ import { AdminCourtRolesProps } from './AdminCourtRoles';
 
 import RemoveRow from '../../components/TableColumnActions/RemoveRow';
 import ExpireRow from '../../components/TableColumnActions/ExpireRow';
+import UnexpireRow from '../../components/TableColumnActions/UnexpireRow';
 import DeleteRow from '../../components/TableColumnActions/DeleteRow';
 
 import CodeScopeSelector from '../../containers/CodeScopeSelector';
@@ -124,6 +125,22 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
             }
         };
 
+        const onToggleExpiredClicked = () => {
+            const { setPluginFilters, pluginFilters } = props;
+            if (setPluginFilters) {
+                // console.log('reset plugin filters');
+                const isExpired = (pluginFilters)
+                    ? pluginFilters.isExpired
+                    : false;
+
+                setPluginFilters({
+                    courtRoles: {
+                        isExpired: isExpired || false
+                    }
+                }, setAdminCourtRolesPluginFilters);
+            }
+        };
+
         const onResetFilters = () => {
             const { setPluginFilters } = props;
             if (setPluginFilters) {
@@ -141,8 +158,10 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
                     : null;
             },
             ({ fields, index, model }) => {
-                return (model && model.id && model.id !== '')
+                return (model && model.id && model.id !== '' && !model.isExpired)
                     ? (<ExpireRow fields={fields} index={index} model={model} showComponent={true} />)
+                    : (model && model.isExpired)
+                    ? (<UnexpireRow fields={fields} index={index} model={model} showComponent={true} />)
                     : null;
             },
             ({ fields, index, model }) => {
@@ -164,6 +183,7 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
                     // TODO: Only display if the user has appropriate permissions
                     displayHeaderActions={true}
                     onResetClicked={onResetFilters}
+                    onToggleExpiredClicked={onToggleExpiredClicked}
                     displayActionsColumn={true}
                     actionsColumn={DataTable.ActionsColumn({
                         actions: courtRoleActions
@@ -210,6 +230,9 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
                         return false;
                         // return (!model) ? false : (model && model.id) ? model.isProvincialCode : false;
                     }}
+                    shouldMarkRowAsDeleted={(model) => {
+                        return model.isExpired;
+                    }}
                     rowComponent={EmptyDetailRow}
                     modalComponent={EmptyDetailRow}
                 />
@@ -237,9 +260,12 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
         const filterData = this.getFilterData(filters);
 
         // Get form data
-        const courtRoles = (filters && filters.courtRoles !== undefined)
+        /* const courtRoles = (filters && filters.courtRoles !== undefined)
             ? findAllEffectiveCourtRoles(filters.courtRoles)(state) || []
-            : getAllEffectiveCourtRoles(state) || [];
+            : getAllEffectiveCourtRoles(state) || []; */
+        const courtRoles = (filters && filters.courtRoles !== undefined)
+            ? findAllCourtRoles(filters.courtRoles)(state) || []
+            : getAllCourtRoles(state) || [];
 
         const courtRolesArray: any[] = courtRoles.map((role: any) => {
             return Object.assign({ isProvincialCode: (role.locationId === null) ? 1 : 0 }, role);

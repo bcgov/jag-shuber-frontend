@@ -14,6 +14,7 @@ export interface FormContainerProps<T = any> {
     data?: T;
     // TODO: We have proper types for permissions and auth now, use them!
     pluginPermissions?: any;
+    pluginFilters?: any;
     pluginAuth?: any;
     getPluginPermissions?: Function;
     setPluginFilters?: Function;

@@ -6,6 +6,7 @@ import DeclineRow from './DeclineRow';
 import DeleteRow from './DeleteRow';
 import EditRow from './EditRow';
 import ExpireRow from './ExpireRow';
+import UnexpireRow from './UnexpireRow';
 import RemoveRow from './RemoveRow';
 import SaveRow from './SaveRow';
 
@@ -17,4 +18,4 @@ export interface TableColumnActionProps {
     showComponent?: boolean;
 }
 
-export { ApproveRow, CancelRow, DeclineRow, DeleteRow, EditRow, ExpireRow, RemoveRow, SaveRow };
+export { ApproveRow, CancelRow, DeclineRow, DeleteRow, EditRow, ExpireRow, UnexpireRow, RemoveRow, SaveRow };

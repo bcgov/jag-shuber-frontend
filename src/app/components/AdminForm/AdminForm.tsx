@@ -21,6 +21,7 @@ export interface AdminFormProps {
     onSubmitSuccess?: () => void;
     pluginPermissions?: any;
     pluginAuth?: any[];
+    pluginFilters?: any;
     initialValues?: any;
     currentLocation?: string;
     showTabs?: boolean;
@@ -42,6 +43,7 @@ export default class AdminForm extends React.PureComponent<InjectedFormProps<any
     renderPlugin(plugin: FormContainer) {
         const {
             initialValues = {},
+            pluginFilters = {},
             isEditing = false,
             pluginPermissions,
             pluginAuth,
@@ -54,6 +56,7 @@ export default class AdminForm extends React.PureComponent<InjectedFormProps<any
             // sheriffId,
             currentLocation: currentLocation,
             data: initialValues[plugin.reduxFormKey],
+            pluginFilters: pluginFilters[plugin.reduxFormKey],
             pluginPermissions: pluginPermissions[plugin.name],
             pluginAuth: pluginAuth,
             setPluginFilters,

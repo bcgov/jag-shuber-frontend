@@ -12,6 +12,7 @@ export interface DataTableFilterRowProps {
     displayHeaderActions?: boolean;
     displayHeaderSave?: boolean;
     onResetClicked?: Function,
+    onToggleExpiredClicked?: Function,
     displayActionsColumn?: boolean;
     expandable?: boolean;
     buttonLabel?: React.ReactNode;
@@ -26,6 +27,7 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
         displayHeaderActions: false,
         displayHeaderSave: true,
         onResetClicked: () => {},
+        onToggleExpiredClicked: () => {},
         displayActionsColumn: true,
         expandable: false,
         // expandedRows: false,
@@ -49,6 +51,7 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
             displayActionsColumn = true,
             expandable = false,
             onResetClicked,
+            onToggleExpiredClicked,
             groupBy = false
         } = this.props;
 
@@ -109,6 +112,11 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
                                     <FormGroup style={{ flex: '0', marginLeft: '5px', marginRight: '5px' }}>
                                         <Button bsStyle="default" onClick={onResetClicked as any}>
                                             <Glyphicon glyph="remove-sign" /> Clear Filters
+                                        </Button>
+                                    </FormGroup>
+                                    <FormGroup style={{ flex: '0', marginLeft: '5px', marginRight: '5px' }}>
+                                        <Button bsStyle="default" onClick={onToggleExpiredClicked as any}>
+                                            <Glyphicon glyph="time" /> Toggle Expired
                                         </Button>
                                     </FormGroup>
                                 </div>

@@ -15,7 +15,23 @@ export class EffectiveSelector<T> {
                 createSelector(
                     this.mapSelector,
                     (items) => {
-                        const array = mapToArray(items);
+                        const array = mapToArray(items)
+                            .map((item) => {
+                                // @ts-ignore
+                                if (item.hasOwnProperty('expiryDate') && item.expiryDate !== null) {
+                                    const date: DateType = moment();
+                                    const expiryDate = this.getExpiryDate(item);
+                                    // @ts-ignore
+                                    item.isExpired = !!expiryDate || moment(expiryDate).isSameOrBefore(moment(date));
+                                    // @ts-ignore
+                                } else if (item.hasOwnProperty('expiryDate') && item.expiryDate === null) {
+                                    // @ts-ignore
+                                    item.isExpired = false;
+                                }
+
+                                return item;
+                            });
+
                         if (this.sort) {
                             return array.sort(this.sort);
                         }
@@ -25,8 +41,8 @@ export class EffectiveSelector<T> {
 
             this._getEffective = (date: DateType = moment()) => (state: any) => {
                 const effectiveItems = this.all(state)
-                    .filter(c => {
-                        const expiryDate = this.getExpiryDate(c);
+                    .filter((item) => {
+                        const expiryDate = this.getExpiryDate(item);
                         return !expiryDate || moment(expiryDate).isAfter(moment(date));
                     });
                 return effectiveItems;

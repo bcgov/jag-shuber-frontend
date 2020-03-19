@@ -300,6 +300,8 @@ export default class extends
             // console.log('plugins to render');
             // console.log(pluginsToRender);
 
+            const pluginFilters = {};
+
             // @ts-ignore
             initialValues = pluginsToRender
                 .map(p => {
@@ -311,6 +313,7 @@ export default class extends
                     if (data !== undefined) {
                         const pluginState = {};
                         pluginState[p.reduxFormKey] = data;
+                        pluginFilters[p.reduxFormKey] = filters;
                         return pluginState;
                     }
                     return undefined;
@@ -330,6 +333,7 @@ export default class extends
                 pluginPermissions: { ...appScopes },
                 pluginAuth: authScopes,
                 pluginState: { ...initialValues },
+                pluginFilters: pluginFilters,
                 selectedSection: selectedAdminFormSection(state) || selectedSection,
                 ...collectPluginErrors(state, formConfig.form, plugins)
             };
