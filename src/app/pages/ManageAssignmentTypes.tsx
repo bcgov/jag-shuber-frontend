@@ -87,7 +87,7 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps & ManageAssignm
                                     </div>
                                     &nbsp;&nbsp;
                                     <div className={`admin-form-filters-toggle admin-form-page-tab${selectedSection === 'ADMIN_PLUGIN_ESCORT_TYPES' ? ' is-active' : ''}`} onClick={() => selectAdminFormSection('ADMIN_PLUGIN_ESCORT_TYPES')}>
-                                        {/* <Glyphicon glyph="chevron-down" /> */}Escort Runs
+                                        {/* <Glyphicon glyph="chevron-down" /> */}Escort<span className="visible-lg"> Runs</span>
                                     </div>
                                     &nbsp;&nbsp;
                                     <div className={`admin-form-filters-toggle admin-form-page-tab${selectedSection === 'ADMIN_PLUGIN_OTHER_TYPES' ? ' is-active' : ''}`} onClick={() => selectAdminFormSection('ADMIN_PLUGIN_OTHER_TYPES')}>
