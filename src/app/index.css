@@ -470,6 +470,11 @@ fieldset.with-border {
   color: white;
 }
 
+#header-main .navbar-static-top > .container-fluid {
+    display: flex;
+    justify-content: space-between;
+}
+
 #header-main .nav-tabs {
   border-bottom: none;
 }
