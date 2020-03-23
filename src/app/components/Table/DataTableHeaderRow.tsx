@@ -30,11 +30,20 @@ export interface DataTableHeaderRowProps {
     filterRows?: Function;
     groupBy?: boolean;
     sortBy?: string[];
+    sortDir?: string;
     shouldSortBy?: (col: any, colIndex: number) => boolean;
 }
 
 const shouldSortByFunc = (col: any, colIndex: number) => {
     return (colIndex === 0);
+};
+
+const sortAsc = () => {
+    alert('Coming soon!');
+};
+
+const sortDesc = () => {
+    alert('Coming soon!');
 };
 
 export default class DataTableHeaderRow<T> extends React.Component<DataTableHeaderRowProps> {
@@ -48,7 +57,8 @@ export default class DataTableHeaderRow<T> extends React.Component<DataTableHead
         initialValue: {},
         filterable: false,
         filterRows: () => true,
-        shouldSortBy: shouldSortByFunc
+        shouldSortBy: shouldSortByFunc,
+        sortDir: 'ASC'
     };
 
     // @ts-ignore
@@ -64,6 +74,7 @@ export default class DataTableHeaderRow<T> extends React.Component<DataTableHead
             initialValue,
             groupBy = false,
             sortBy = [],
+            sortDir = 'ASC',
             shouldSortBy = shouldSortByFunc
         } = this.props;
 
@@ -89,7 +100,10 @@ export default class DataTableHeaderRow<T> extends React.Component<DataTableHead
                 )}
                 {columns.map((col, colIndex) => (
                     <th className="text-left" key={colIndex} style={col.colStyle}>
-                        {col.title}&nbsp;{col.displayInfo && (
+                        <a onClick={() => sortDir === 'ASC' ? sortDesc() : sortAsc()} style={{ cursor: 'pointer' }}>
+                            {col.title}
+                        </a>
+                        &nbsp;{col.displayInfo && (
                             <OverlayTrigger
                                 overlay={(<Tooltip>This field is for...</Tooltip>)}
                                 placement={'top'}>
@@ -99,12 +113,12 @@ export default class DataTableHeaderRow<T> extends React.Component<DataTableHead
                         <div style={{ display: 'inline-flex', flexDirection: 'row' }}>
                             {shouldSortBy(col, colIndex) && (
                                 <>
-                                    <Button bsStyle="default" className="btn-xs btn-transparent">
+                                    <Button bsStyle="default" className="btn-xs btn-transparent" onClick={sortDesc}>
                                         <Glyphicon glyph="triangle-bottom" />
                                     </Button>
                                     {/* TODO: Only one button should display at a time */}
                                     {/* <Button bsStyle="transparent" className="btn-xs btn-transparent">
-                                        <Glyphicon glyph="triangle-top" />
+                                        <Glyphicon glyph="triangle-top" onClick={sortAsc} />
                                     </Button> */}
                                 </>
                             )}
