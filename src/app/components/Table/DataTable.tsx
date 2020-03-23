@@ -46,7 +46,8 @@ export interface DataTableProps {
     initialValue?: any;
     filterable?: boolean;
     filterRows?: Function;
-    groupBy?: any; // TODO: Not sure what this should be yet, just trying something out, see if it works
+    groupBy?: any;
+    sortBy?: string[]; // TODO: Not implemented yet
 }
 
 // let RENDER_COUNT = 0;
@@ -156,7 +157,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
             filterable,
             filterRows,
             groupBy,
-
+            sortBy
         } = this.props;
 
         const {
@@ -243,6 +244,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                             expandable={expandable}
                                             filterable={filterable}
                                             groupBy={!!groupBy}
+                                            sortBy={sortBy}
                                             displayHeaderActions={displayHeaderActions}
                                             displayHeaderSave={displayHeaderSave}
                                             displayActionsColumn={displayActionsColumn}

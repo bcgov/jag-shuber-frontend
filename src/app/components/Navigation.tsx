@@ -151,13 +151,14 @@ export default class Navigation extends React.Component<NavigationProps & Naviga
         } = this.props;
 
         return (
-            <div id="header-main" >
-                <Navbar staticTop={true} fluid={true} style={{ maxWidth: '93%' }}>
-                    <Navbar.Header color="#003366">s
+            <div id="header-main">
+                <Navbar staticTop={true} fluid={true} style={{maxWidth: '93%'}}>
+                    <Navbar.Header color="#003366">
+
                         <NavbarBrand color="#003366">
                             <span className="logo">
-                                <img className="hidden-xs" src={bcLogo} />
-                                <img className="visible-xs" src={bcLogoDark} />
+                                <img className="hidden-xs" src={bcLogo}/>
+                                <img className="visible-xs" src={bcLogoDark}/>
                             </span>
                             Sheriff Scheduling System
                         </NavbarBrand>
@@ -177,75 +178,78 @@ export default class Navigation extends React.Component<NavigationProps & Naviga
                             <NavigationLink {...Navigation.Routes.team.children.users} />
                             {currentUserRoleScopes.authScopes
                             && currentUserRoleScopes.authScopes.indexOf('roles:manage') > -1 && (
-                            <>
-                                <NavigationLink {...Navigation.Routes.team.children.userRoles} />
-                                <NavigationLink {...Navigation.Routes.team.children.roles} />
-                            </>
+                                <>
+                                    <NavigationLink {...Navigation.Routes.team.children.userRoles} />
+                                    <NavigationLink {...Navigation.Routes.team.children.roles} />
+                                </>
                             )}
                         </NavigationDropDown>
 
                         {currentUserRoleScopes.authScopes
                         && currentUserRoleScopes.authScopes.indexOf('system:types') > -1 && (
-                        <NavigationDropDown title={Navigation.Routes.types.label} id="types_dropdown">
-                            <NavigationLink {...Navigation.Routes.types.children.assignmentTypes} />
-                            <NavigationLink {...Navigation.Routes.types.children.leaveTypes} />
-                        </NavigationDropDown>
+                            <NavigationDropDown title={Navigation.Routes.types.label} id="types_dropdown">
+                                <NavigationLink {...Navigation.Routes.types.children.assignmentTypes} />
+                                <NavigationLink {...Navigation.Routes.types.children.leaveTypes} />
+                            </NavigationDropDown>
                         )}
 
                         {currentUserRoleScopes.authScopes
                         && currentUserRoleScopes.authScopes.indexOf('system:scopes') > -1 && (
-                        <NavigationDropDown title={Navigation.Routes.system.label} id="system_dropdown">
-                            <NavigationLink {...Navigation.Routes.system.children.components} />
-                            <NavigationLink {...Navigation.Routes.system.children.apis} />
-                        </NavigationDropDown>
+                            <NavigationDropDown title={Navigation.Routes.system.label} id="system_dropdown">
+                                <NavigationLink {...Navigation.Routes.system.children.components} />
+                                <NavigationLink {...Navigation.Routes.system.children.apis} />
+                            </NavigationDropDown>
                         )}
                         {/*<NavigationLink {...Navigation.Routes.audit} />*/}
                     </Nav>
-                    <Nav pullRight={true} style={{ paddingTop: 13, paddingRight: 15 }}>
+                    <Nav pullRight={true} style={{paddingTop: 13, paddingRight: 15}}>
                         <div className="flex-row-wrap">
-                            <LocationSelector.Current />
+                            <LocationSelector.Current/>
                             <Dropdown id="user-profile-menu" className="">
                                 <Dropdown.Toggle className="user-profile-menu-toggle btn-transparent">
-                                     <Image
-                                        style={{ marginLeft: '30px' }}
+                                    <Image
+                                        style={{marginLeft: '30px'}}
                                         src={avatarImg}
                                         circle={true}
                                         width="32"
                                         height="32"
-                                     />
+                                    />
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
                                     {currentUser && currentUser.sheriff && (
-                                    <SheriffDisplay
-                                        sheriffId={currentUser.sheriffId}
-                                        RenderComponent={({ sheriff: {
-                                            firstName = '',
-                                            lastName = '',
-                                            imageUrl = '',
-                                            badgeNo = '',
-                                            rankCode = ''
-                                        } = currentUser.sheriff as Sheriff }) => {
-                                            return (
-                                                <div className="sheriff-profile-header">
-                                                    {/* <Image
+                                        <SheriffDisplay
+                                            sheriffId={currentUser.sheriffId}
+                                            RenderComponent={({
+                                                                  sheriff: {
+                                                                      firstName = '',
+                                                                      lastName = '',
+                                                                      imageUrl = '',
+                                                                      badgeNo = '',
+                                                                      rankCode = ''
+                                                                  } = currentUser.sheriff as Sheriff
+                                                              }) => {
+                                                return (
+                                                    <div className="sheriff-profile-header">
+                                                        {/* <Image
                                                         src={imageUrl ? imageUrl : avatarImg}
                                                         circle={true}
                                                         width="115"
                                                         height="115"
                                                     /> */}
-                                                    <div style={{ marginTop: 30, fontSize: 14 }}>#{badgeNo}</div>
-                                                    <div style={{ fontWeight: 'bold', fontSize: 18 }}>
-                                                        {firstName.toUpperCase()} {lastName.toUpperCase()}
+                                                        <div style={{marginTop: 30, fontSize: 14}}>#{badgeNo}</div>
+                                                        <div style={{fontWeight: 'bold', fontSize: 18}}>
+                                                            {firstName.toUpperCase()} {lastName.toUpperCase()}
+                                                        </div>
+                                                        <div style={{fontSize: 14}}><SheriffRankDisplay
+                                                            code={rankCode}/></div>
                                                     </div>
-                                                    <div style={{ fontSize: 14 }}><SheriffRankDisplay code={rankCode} /></div>
-                                                </div>
-                                            );
-                                        }}
-                                    />
+                                                );
+                                            }}
+                                        />
                                     )}
-                                    <hr />
+                                    <hr/>
                                     <MenuItem
-                                        style={{ textAlign: 'center' }}
+                                        style={{textAlign: 'center'}}
                                         onClick={() => {
                                             // tslint:disable-next-line:max-line-length
                                             window.location.href = `https://logon.gov.bc.ca/clp-cgi/logoff.cgi?returl=${window.location.href}`;
@@ -258,7 +262,8 @@ export default class Navigation extends React.Component<NavigationProps & Naviga
                         </div>
                     </Nav>
                 </Navbar>
-            </div >
+            </div>
         );
+
     }
 }

@@ -23,6 +23,7 @@ const FieldRenderer = (props: any) => {
                 placeholder={props.placeholder}
                 showLabel={false}
             />
+            {/* TODO: Turn this into an SFC */}
             <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <Button bsStyle="transparent" className="btn-xs btn-transparent">
                     <Glyphicon glyph="triangle-top" />

@@ -29,7 +29,13 @@ export interface DataTableHeaderRowProps {
     filterable?: boolean;
     filterRows?: Function;
     groupBy?: boolean;
+    sortBy?: string[];
+    shouldSortBy?: (col: any, colIndex: number) => boolean;
 }
+
+const shouldSortByFunc = (col: any, colIndex: number) => {
+    return (colIndex === 0);
+};
 
 export default class DataTableHeaderRow<T> extends React.Component<DataTableHeaderRowProps> {
     static defaultProps = {
@@ -41,7 +47,8 @@ export default class DataTableHeaderRow<T> extends React.Component<DataTableHead
         buttonLabel: 'Create',
         initialValue: {},
         filterable: false,
-        filterRows: () => true
+        filterRows: () => true,
+        shouldSortBy: shouldSortByFunc
     };
 
     // @ts-ignore
@@ -56,6 +63,8 @@ export default class DataTableHeaderRow<T> extends React.Component<DataTableHead
             expandable = false,
             initialValue,
             groupBy = false,
+            sortBy = [],
+            shouldSortBy = shouldSortByFunc
         } = this.props;
 
         return (
@@ -84,9 +93,22 @@ export default class DataTableHeaderRow<T> extends React.Component<DataTableHead
                             <OverlayTrigger
                                 overlay={(<Tooltip>This field is for...</Tooltip>)}
                                 placement={'top'}>
-                                <Glyphicon glyph="info-sign"/>
+                                <Glyphicon glyph="info-sign" />
                             </OverlayTrigger>
                         )}
+                        <div style={{ display: 'inline-flex', flexDirection: 'row' }}>
+                            {shouldSortBy(col, colIndex) && (
+                                <>
+                                    <Button bsStyle="default" className="btn-xs btn-transparent">
+                                        <Glyphicon glyph="triangle-bottom" />
+                                    </Button>
+                                    {/* TODO: Only one button should display at a time */}
+                                    {/* <Button bsStyle="transparent" className="btn-xs btn-transparent">
+                                        <Glyphicon glyph="triangle-top" />
+                                    </Button> */}
+                                </>
+                            )}
+                        </div>
                     </th>
                 ))}
 
