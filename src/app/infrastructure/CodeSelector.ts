@@ -5,7 +5,7 @@ export interface Code {
     id?: IdType; // TODO: This has to be optional for now
     code?: IdType; // TODO: This has to be optional for now
     locationId?: IdType;
-    description: string;
+    description?: string;
     expiryDate?: DateType;
 }
 

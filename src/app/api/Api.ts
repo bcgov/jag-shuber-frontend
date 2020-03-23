@@ -294,41 +294,58 @@ export interface Region {
 
 export interface Courtroom {
     id?: IdType;
-    code: IdType;
     locationId?: IdType;
-    name: string;
+    code: IdType;
+    name?: string;
+    description?: string;
+    effectiveDate?: string;
+    expiryDate?: string;
+    sortOrder?: number;
+    isExpired?: boolean; // Only used on the client-side
 }
 
 export interface JailRoleCode {
     id?: IdType;
-    code?: IdType;
     locationId?: IdType;
-    description: string;
-    expiryDate?: DateType;
+    code: IdType;
+    name?: string;
+    description?: string;
+    effectiveDate?: string;
+    expiryDate?: string;
+    sortOrder?: number;
     isExpired?: boolean; // Only used on the client-side
     isProvincialCode?: any; // Only used on client-side
 }
 
 export interface CourtRoleCode {
     id?: IdType;
-    code?: IdType;
     locationId?: IdType;
-    description: string;
-    expiryDate?: DateType;
+    code: IdType;
+    name?: string;
+    description?: string;
+    effectiveDate?: string;
+    expiryDate?: string;
+    sortOrder?: number;
     isExpired?: boolean; // Only used on the client-side
     isProvincialCode?: any; // Only used on client-side
 }
 
 export interface EscortRun {
-    id: IdType;
-    // code?: IdType; // This isn't being used, just keep it in here so code type interfaces are all the same
+    id?: IdType;
     locationId?: IdType;
-    title: string;
+    code: IdType;
+    title: string; // TODO: Deprecate this in favor of the unused name property
+    name?: string;
+    description?: string;
+    effectiveDate?: string;
+    expiryDate?: string;
+    sortOrder?: number;
     isExpired?: boolean; // Only used on the client-side
     isProvincialCode?: any; // Only used on client-side
 }
 
 // TODO: Rename this OtherAssignment if we can...
+// Also, we need to update this to match other assignment type models
 export interface AlternateAssignment {
     id: IdType;
     code: IdType;
@@ -381,8 +398,13 @@ export interface LeaveSubCode {
     id?: IdType; // Used on client-side only
     code: string;
     subCode: string;
-    description: string;
+    name?: string; // TODO: For future use...
+    description?: string;
+    effectiveDate?: string;
     expiryDate?: string;
+    sortOrder?: number;
+    isExpired?: boolean; // Only used on the client-side
+    isProvincialCode?: any; // Only used on client-side
 }
 
 export interface LeaveCancelCode {
