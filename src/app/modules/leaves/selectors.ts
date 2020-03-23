@@ -12,6 +12,7 @@ import mapToArray from '../../infrastructure/mapToArray';
 import arrayToMap from '../../infrastructure/arrayToMap';
 import moment from 'moment';
 import { CodeSelector } from '../../infrastructure/CodeSelector';
+import { LeaveSubCode } from '../../components/TableColumnCell';
 // import { SubCodeSelector } from '../../infrastructure/SubCodeSelector';
 
 export const cancelReasonCodesMap = leaveRequests.leaveCancelCodeMapRequest.getData;
@@ -149,7 +150,8 @@ export const allLeavesSubCodeMap = createSelector(
 export const getAllPersonalLeaveSubCodes = createSelector(
     leaveRequests.leaveTypeMapRequest.getData,
     (leaveTypes) => {
-        return leaveTypes[LEAVE_CODE_PERSONAL].sort((a, b) => `${a.description}`
+        const personalLeaveTypes = leaveTypes[LEAVE_CODE_PERSONAL] || [];
+        return personalLeaveTypes.sort((a, b) => `${a.description}`
             .localeCompare(`${b.description}`)) || [];
     }
 );
@@ -158,7 +160,7 @@ export const allEffectivePersonalLeaveSubCodes = (date?: DateType) => (state: Ro
     const allPersonalLeaveCodes = getAllPersonalLeaveSubCodes(state);
     if (allPersonalLeaveCodes) {
         return allPersonalLeaveCodes
-            .filter(pl => pl.expiryDate == undefined || moment(pl.expiryDate).isAfter(moment(date)));
+            .filter(pl => pl.expiryDate === undefined || moment(pl.expiryDate).isAfter(moment(date)));
     }
     return [];
 };
@@ -166,7 +168,8 @@ export const allEffectivePersonalLeaveSubCodes = (date?: DateType) => (state: Ro
 export const getAllTrainingLeaveSubCodes = createSelector(
     leaveRequests.leaveTypeMapRequest.getData,
     (leaveTypes) => {
-        return leaveTypes[LEAVE_CODE_TRAINING].sort((a, b) => `${a.description}`
+        const trainingLeaveTypes = leaveTypes[LEAVE_CODE_TRAINING] || [];
+        return trainingLeaveTypes.sort((a, b) => `${a.description}`
             .localeCompare(`${b.description}`)) || [];
     }
 );

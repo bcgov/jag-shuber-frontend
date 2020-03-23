@@ -215,7 +215,9 @@ export default class AdminTrainingTypes extends FormContainerBase<AdminTrainingT
             code: 'TRAINING', // TODO: Use API value
             subCode: c.subCode,
             description: c.description,
+            effectiveDate: c.effectiveDate,
             expiryDate: c.expiryDate,
+            sortOrder: c.sortOrder,
             createdBy: 'DEV - FRONTEND',
             updatedBy: 'DEV - FRONTEND',
             createdDtm: new Date().toISOString(),
