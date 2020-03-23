@@ -498,6 +498,7 @@ fieldset.with-border {
   width: 120px;
   z-index: 100;
   position: relative;
+  display: block;
   top: -15px;
 }
 
