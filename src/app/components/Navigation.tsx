@@ -158,7 +158,7 @@ export default class Navigation extends React.Component<NavigationProps & Naviga
                         <NavbarBrand color="#003366">
                             <span className="logo">
                                 <img className="hidden-xs" src={bcLogo}/>
-                                <img className="visible-xs" src={bcLogoDark}/>
+                                <img className="visible-xs" src={bcLogo}/>
                             </span>
                             Sheriff Scheduling System
                         </NavbarBrand>

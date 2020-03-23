@@ -568,11 +568,6 @@ table .form-group {
   border-bottom: 1px solid white;
   border-color: #FDB815; /* BC Gov Gold */
 }
-@media screen and (max-width: 1440px) {
-  .navbar-header {
-      display: none;
-  }
-}
 
 /* Override weird bootstrap style */
 .modal-header .close {
@@ -688,4 +683,98 @@ tr.mark-as-deleted,
 tr.mark-as-deleted td:not(:first-child) {
   background-color: #fff4f5 !important;
   border-color: #fff4f5 !important;
+}
+
+@media screen and (max-width: 1024px) {
+  /* Mobile / Responsive Nav Menu */
+  /* Just override bootstrap tabs */
+  #header-main.active {
+    position: relative;
+    max-width: none !important;
+    width: 100% !important;
+    height: 4rem;
+    background-color: #327AB7;
+    z-index: 500;
+  }
+
+  #header-main.active {
+    position: absolute;
+    max-width: none !important;
+    width: 100% !important;
+    height: 100% !important;
+    background-color: #327AB7;
+    z-index: 500;
+  }
+
+  #header-main .navbar-static-top > .container-fluid {
+    width: 100% !important;
+    display: flex;
+    flex-direction: row;
+  }
+
+  #header-main .navbar-nav.nav-tabs {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #header-main .navbar-nav.nav-tabs {
+    display: none;
+  }
+
+  #header-main .navbar-nav.navbar-right {
+    display: flex;
+    padding: 15px !important;
+  }
+
+  #header-main .navbar-nav.navbar-right .flex-row-wrap {
+    flex-wrap: nowrap !important;
+  }
+
+  #header-main .nav > li > a,
+  #header-main .nav > li > a:hover,
+  #header-main .nav > li > a:active,
+  #header-main .nav > li > a:focus {
+    border: 1px dotted white !important;
+    border-width: 0 0 1px 0 !important;
+    font-weight: bold;
+    background-color: transparent;
+    color: white !important;
+  }
+
+  #header-main .navbar-nav > li ul > li a {
+    color: white !important;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .navbar-brand {
+    top: 0;
+    float: none;
+    display: block;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  #header-main .logo {
+    text-align: center;
+    width: 100% !important;
+    z-index: 100;
+    position: relative;
+    top: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Mobile / Responsive Nav Menu */
+  /* Just override bootstrap tabs */
+  #header-main .navbar-static-top > .container-fluid {
+    width: 100% !important;
+    flex-direction: column;
+  }
+
+  #user-profile-menu + .dropdown-menu {
+    position: absolute;
+  }
 }

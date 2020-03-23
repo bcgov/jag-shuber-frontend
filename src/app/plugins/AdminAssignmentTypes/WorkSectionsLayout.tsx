@@ -51,11 +51,11 @@ export default (props: any) => {
                     <Tab.Content animation={false}>
                         <Tab.Pane key={'ADMIN_PLUGIN_COURTROOMS:ADMIN_PLUGIN_COURT_ROLES'} eventKey={'ADMIN_PLUGIN_COURTROOMS:ADMIN_PLUGIN_COURT_ROLES'}>
                             <Row className="clearfix">
-                                <Col sm={12} md={7}>
+                                <Col sm={12} lg={7}>
                                     <PageTitle title={({ currentLocationName }: any) => `${currentLocationName} Court Roles`} />
                                     {courtRolesPlugin && renderPlugin(courtRolesPlugin)}
                                 </Col>
-                                <Col sm={12} md={5}>
+                                <Col sm={12} lg={5}>
                                     <PageTitle title={({ currentLocationName }: any) => `${currentLocationName} Courtrooms`} />
                                     {courtroomsPlugin && renderPlugin(courtroomsPlugin)}
                                 </Col>
@@ -63,7 +63,7 @@ export default (props: any) => {
                         </Tab.Pane>
                         <Tab.Pane key={'ADMIN_PLUGIN_JAIL_ROLES'} eventKey={'ADMIN_PLUGIN_JAIL_ROLES'}>
                             <Row className="clearfix">
-                                <Col sm={12} md={8} mdPush={2}>
+                                <Col sm={12} lg={8} lgPush={2}>
                                     <PageTitle title={({ currentLocationName }: any) => `${currentLocationName} Jail Roles`} />
                                     {jailRolesPlugin && renderPlugin(jailRolesPlugin)}
                                 </Col>
@@ -71,7 +71,7 @@ export default (props: any) => {
                         </Tab.Pane>
                         <Tab.Pane key={'ADMIN_PLUGIN_ESCORT_TYPES'} eventKey={'ADMIN_PLUGIN_ESCORT_TYPES'}>
                             <Row className="clearfix">
-                                <Col sm={12} md={8} mdPush={2}>
+                                <Col sm={12} lg={8} lgPush={2}>
                                     <PageTitle title={({ currentLocationName }: any) => `${currentLocationName} Escort Runs`} />
                                     {escortTypesPlugin && renderPlugin(escortTypesPlugin)}
                                 </Col>
@@ -79,7 +79,7 @@ export default (props: any) => {
                         </Tab.Pane>
                         <Tab.Pane key={'ADMIN_PLUGIN_OTHER_TYPES'} eventKey={'ADMIN_PLUGIN_OTHER_TYPES'}>
                             <Row className="clearfix">
-                                <Col sm={12}  md={8} mdPush={2}>
+                                <Col sm={12} lg={8} lgPush={2}>
                                     <PageTitle title={({ currentLocationName }: any) => `${currentLocationName} Other Assignments`} />
                                     {otherTypesPlugin && renderPlugin(otherTypesPlugin)}
                                 </Col>
