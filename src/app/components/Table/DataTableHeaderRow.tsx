@@ -129,7 +129,7 @@ export default class DataTableHeaderRow<T> extends React.Component<DataTableHead
                 {displayActionsColumn && (
                     <th
                         style={{
-                            width: '250px'
+                            width: 'auto'
                         }}
                     >
                         {displayHeaderActions && (

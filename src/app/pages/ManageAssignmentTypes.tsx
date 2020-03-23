@@ -79,19 +79,19 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps & ManageAssignm
                                         <h6 style={{ color: 'white', fontWeight: 'bold', marginBottom: '3px' }}>Choose Work Section: </h6>
                                     </div>
                                     <div className={`admin-form-filters-toggle admin-form-page-tab${selectedSection === 'ADMIN_PLUGIN_COURTROOMS:ADMIN_PLUGIN_COURT_ROLES' ? ' is-active' : ''}`} onClick={() => selectAdminFormSection('ADMIN_PLUGIN_COURTROOMS:ADMIN_PLUGIN_COURT_ROLES')}>
-                                        {/* <Glyphicon glyph="chevron-down" /> */}Court<span className="visible-lg"> Assignments</span>
+                                        {/* <Glyphicon glyph="chevron-down" /> */}Court<span className="visible-lg">&nbsp;Assignments</span>
                                     </div>
                                     &nbsp;&nbsp;
                                     <div className={`admin-form-filters-toggle admin-form-page-tab${selectedSection === 'ADMIN_PLUGIN_JAIL_ROLES' ? ' is-active' : ''}`} onClick={() => selectAdminFormSection('ADMIN_PLUGIN_JAIL_ROLES')}>
-                                        {/* <Glyphicon glyph="chevron-down" /> */}Jail<span className="visible-lg"> Assignments</span>
+                                        {/* <Glyphicon glyph="chevron-down" /> */}Jail<span className="visible-lg">&nbsp;Assignments</span>
                                     </div>
                                     &nbsp;&nbsp;
                                     <div className={`admin-form-filters-toggle admin-form-page-tab${selectedSection === 'ADMIN_PLUGIN_ESCORT_TYPES' ? ' is-active' : ''}`} onClick={() => selectAdminFormSection('ADMIN_PLUGIN_ESCORT_TYPES')}>
-                                        {/* <Glyphicon glyph="chevron-down" /> */}Escort<span className="visible-lg"> Runs</span>
+                                        {/* <Glyphicon glyph="chevron-down" /> */}Escort<span className="visible-lg">&nbsp;Runs</span>
                                     </div>
                                     &nbsp;&nbsp;
                                     <div className={`admin-form-filters-toggle admin-form-page-tab${selectedSection === 'ADMIN_PLUGIN_OTHER_TYPES' ? ' is-active' : ''}`} onClick={() => selectAdminFormSection('ADMIN_PLUGIN_OTHER_TYPES')}>
-                                        {/* <Glyphicon glyph="chevron-down" /> */}Other<span className="visible-lg"> Assignments</span>
+                                        {/* <Glyphicon glyph="chevron-down" /> */}Other<span className="visible-lg">&nbsp;Assignments</span>
                                     </div>
                                 </div>
                             </>
