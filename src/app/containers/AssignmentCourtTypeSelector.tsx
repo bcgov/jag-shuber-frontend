@@ -17,6 +17,19 @@ interface CourtAssignmentSelectorStateProps {
     courtRoles: CourtRoleCode[];
 }
 
+// Sort by sort order, we can make this configurable later if necessary
+const sortByOrder = (a: any, b: any) => {
+    if (a.hasOwnProperty('sortOrder') && b.hasOwnProperty('sortOrder')) {
+        if (a.sortOrder < b.sortOrder) {
+            return -1;
+        } else if (b.sortOrder < a.sortOrder) {
+            return 1;
+        }
+    }
+
+    return 0;
+};
+
 class CourtAssignmentList extends React.PureComponent<
     SelectorWithOptGroupProps & CourtAssignmentSelectorStateProps> {
 
@@ -26,6 +39,9 @@ class CourtAssignmentList extends React.PureComponent<
             courtRoles = [],
             ...restProps
         } = this.props;
+
+        courtrooms.sort(sortByOrder);
+        courtRoles.sort(sortByOrder);
 
         const courtroomSelectorValues = courtrooms
             .map(courtroom => ({ key: `${COURT_ASSIGNMENT_ROOM}:${courtroom.id as string}`, value: courtroom.code as string }));
