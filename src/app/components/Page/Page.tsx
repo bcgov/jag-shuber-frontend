@@ -26,7 +26,6 @@ export class PageToolbar extends React.PureComponent<PageToolbarProps>{
                 style={{
                     flex: 1,
                     maxWidth: '93%',
-                    minWidth: 800,
                     margin: '0 auto',
                     height: 56,
                     borderRadius: 0,

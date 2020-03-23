@@ -120,7 +120,6 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
                 style={{
                   backgroundColor: 'white',
                   maxWidth: '85%',
-                  minWidth: 800,
                   height: '100%',
                   margin: 'auto',
                   borderRadius: 0

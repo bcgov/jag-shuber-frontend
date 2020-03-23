@@ -28,7 +28,6 @@ class DefaultAssignments extends React.PureComponent {
                         flexDirection: 'column',
                         flex: '1 1',
                         maxWidth: '85%',
-                        minWidth: 800,
                         height: 'max-content',
                         margin: '0 auto',
                         borderRadius: 0

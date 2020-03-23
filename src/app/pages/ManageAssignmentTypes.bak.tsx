@@ -42,7 +42,6 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps> {
                         flexDirection: 'column',
                         flex: '1 1',
                         maxWidth: '100%',
-                        minWidth: 800,
                         height: 'max-content',
                         margin: '0 auto',
                         borderRadius: 0
