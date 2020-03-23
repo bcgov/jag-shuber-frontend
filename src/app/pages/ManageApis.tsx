@@ -40,7 +40,6 @@ class ManageApis extends React.PureComponent<AdminFormProps> {
                         flexDirection: 'column',
                         flex: '1 1',
                         maxWidth: '85%',
-                        minWidth: 800,
                         height: 'max-content',
                         margin: '0 auto'
                     }}

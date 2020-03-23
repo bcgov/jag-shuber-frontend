@@ -64,7 +64,6 @@ class ManageCourtrooms extends React.PureComponent<AdminFormProps & Partial<Mana
                         flexDirection: 'column',
                         flex: '1 1',
                         maxWidth: '93%',
-                        minWidth: 800,
                         height: 'max-content',
                         margin: '0 auto',
                         borderRadius: 0
