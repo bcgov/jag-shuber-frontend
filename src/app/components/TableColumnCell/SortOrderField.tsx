@@ -8,6 +8,14 @@ import * as Types from './types';
 import TextField from '../../components/FormElements/TextField';
 import { on } from 'cluster';
 
+const doIncrement = () => {
+    alert('Coming soon!');
+};
+
+const doDecrement = () => {
+    alert('Coming soon!');
+};
+
 // let RENDER_COUNT = 0;
 const FieldRenderer = (props: any) => {
     /*if (props.label === 'Role Name') {
@@ -25,10 +33,10 @@ const FieldRenderer = (props: any) => {
             />
             {/* TODO: Turn this into an SFC */}
             <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <Button bsStyle="transparent" className="btn-xs btn-transparent">
+                <Button bsStyle="transparent" className="btn-xs btn-transparent" onClick={doIncrement}>
                     <Glyphicon glyph="triangle-top" />
                 </Button>
-                <Button bsStyle="default" className="btn-xs btn-transparent">
+                <Button bsStyle="default" className="btn-xs btn-transparent" onClick={doDecrement}>
                     <Glyphicon glyph="triangle-bottom" />
                 </Button>
             </div>
