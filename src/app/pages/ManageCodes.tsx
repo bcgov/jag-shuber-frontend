@@ -3,7 +3,7 @@
  * It will be removed as soon as we're done moving things to their new places.
  */
 import React from 'react';
-import { Well } from 'react-bootstrap';
+import { Col, Well } from 'react-bootstrap';
 
 import Page from '../components/Page/Page';
 
@@ -49,14 +49,16 @@ class ManageAssignmentTypes extends React.PureComponent<AdminFormProps> {
                         borderRadius: 0
                     }}
                 >
-                    <AdminForm
-                        key={'admin-code-types-grid'}
-                        plugins={[
-                            new AdminLeaveTypesPlugin(),
-                            new AdminTrainingTypesPlugin()
-                        ]}
-                        isEditing={isEditing}
-                    />
+                    <Col sm={12} md={8} mdPush={2}>
+                        <AdminForm
+                            key={'admin-code-types-grid'}
+                            plugins={[
+                                new AdminLeaveTypesPlugin(),
+                                new AdminTrainingTypesPlugin()
+                            ]}
+                            isEditing={isEditing}
+                        />
+                    </Col>
                 </Well>
             </Page>
         );
