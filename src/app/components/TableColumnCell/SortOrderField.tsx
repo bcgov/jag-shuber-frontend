@@ -9,11 +9,11 @@ import TextField from '../../components/FormElements/TextField';
 import { on } from 'cluster';
 
 const doIncrement = () => {
-    alert('Coming soon!');
+    alert('Coming soon! Please use the input box to change sort order.');
 };
 
 const doDecrement = () => {
-    alert('Coming soon!');
+    alert('Coming soon! Please use the input box to change sort order.');
 };
 
 // let RENDER_COUNT = 0;
