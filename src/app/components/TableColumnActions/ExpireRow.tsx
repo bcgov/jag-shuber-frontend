@@ -11,7 +11,7 @@ const ExpireRow = ({ model, onClick, fields, index , showComponent = false }: Ta
         const row: any = fields.get(index);
         if (row.hasOwnProperty('isExpired')) {
             row.isExpired = true;
-            row.expiryDate = undefined;
+            row.expiryDate = Date.now();
         }
 
         fields.remove(index);
