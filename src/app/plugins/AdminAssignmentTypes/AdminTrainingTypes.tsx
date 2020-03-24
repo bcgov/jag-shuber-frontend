@@ -116,11 +116,11 @@ export default class AdminTrainingTypes extends FormContainerBase<AdminTrainingT
                         actions: trainingTypeActions
                     })}
                     columns={[
+                        DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false }),
                         DataTable.TextFieldColumn('Code', { fieldName: 'subCode', colStyle: { width: '15%' }, displayInfo: true, filterable: true, filterColumn: onFilterSubCode }),
                         DataTable.TextFieldColumn('Description', { fieldName: 'description', colStyle: { width: '25%' }, displayInfo: false }),
                         DataTable.DateColumn('Effective Date', 'effectiveDate', { colStyle: { width: '15%'}, displayInfo: true, filterable: true, filterColumn: onFilterEffectiveDate }),
-                        DataTable.DateColumn('Expiry Date', 'expiryDate', { colStyle: { width: '15%'}, displayInfo: true, filterable: true, filterColumn: onFilterExpiryDate }),
-                        DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false }),
+                        DataTable.DateColumn('Expiry Date', 'expiryDate', { colStyle: { width: '15%'}, displayInfo: true, filterable: true, filterColumn: onFilterExpiryDate })
                     ]}
                     filterable={false}
                     expandable={false}

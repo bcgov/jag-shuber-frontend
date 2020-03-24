@@ -196,15 +196,10 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
                         actions: jailRoleActions
                     })}
                     columns={[
-                        // DataTable.SelectorFieldColumn('Location', { fieldName: 'locationId', selectorComponent: LocationSelector, displayInfo: false, filterable: true, filterColumn: onFilterLocation }),
+                        DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false }),
                         DataTable.TextFieldColumn('Type', { fieldName: 'description', displayInfo: false, filterable: true, filterColumn: onFilterJailRole }),
                         DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, filterable: true, filterColumn: onFilterJailRoleCode }),
-                        // DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false }),
-                        // DataTable.DateColumn('Date Created', 'createdDtm'),
-                        // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
-                        DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, filterSelectorComponent: CodeScopeSelector, displayInfo: false, filterable: true, filterColumn: onFilterJailRoleScope }),
-                        DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false })
-
+                        DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, filterSelectorComponent: CodeScopeSelector, displayInfo: false, filterable: true, filterColumn: onFilterJailRoleScope })
                     ]}
                     filterable={true}
                     expandable={false}
