@@ -315,11 +315,9 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
 
         if (map.jailRoles) {
             const initialValues = map.jailRoles.initialValues;
-            const existingIds = map.jailRoles.values.map((val: any) => val.id);
 
             const jailRoleIds = initialValues
-                .filter((val: any) => (existingIds.indexOf(val.id) === -1))
-                .map((val: any) => val.id);
+                .filter((val: any) => val.isExpired);
 
             expiredJailRoleIds.push(...jailRoleIds);
         }
