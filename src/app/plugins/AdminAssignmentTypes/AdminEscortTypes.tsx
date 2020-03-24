@@ -164,19 +164,16 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
         const escortTypeColumns = (currentLocation === 'ALL_LOCATIONS')
             ? [
                 DataTable.SelectorFieldColumn('Location', { fieldName: 'locationId', selectorComponent: LocationSelector, displayInfo: false, filterable: true, filterColumn: onFilterLocation }),
+                DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false }),
                 DataTable.TextFieldColumn('Type', { fieldName: 'title', displayInfo: false, filterable: true, filterColumn: onFilterEscortType }),
                 DataTable.TextFieldColumn('Code', { fieldName: 'title', displayInfo: false, filterable: false }),
-                // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true })
                 DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, displayInfo: false, filterable: false }),
-                DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false })
             ]
             : [
+                DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false }),
                 DataTable.TextFieldColumn('Type', { fieldName: 'title', displayInfo: false, filterable: true, filterColumn: onFilterEscortTypeScope }),
                 DataTable.TextFieldColumn('Code', { fieldName: 'title', displayInfo: false, filterable: true, filterColumn: onFilterEscortTypeScope }),
-                // DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false, filterable: false }),
-                // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true })
                 DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, filterSelectorComponent: CodeScopeSelector, displayInfo: false, filterable: false }),
-                DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false })
             ];
 
         const escortTypeActions = [
