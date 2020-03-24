@@ -281,7 +281,8 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
             const initialValues = map.courtrooms.initialValues;
 
             const courtroomIds = initialValues
-                .filter((val: any) => val.isExpired);
+                .filter((val: any) => val.isExpired)
+                .map((val: any) => val.id);
 
             expiredCourtroomIds.push(...courtroomIds);
         }

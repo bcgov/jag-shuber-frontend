@@ -11,6 +11,7 @@ const UnexpireRow = ({ model, onClick, fields, index , showComponent = false }: 
         const row: any = fields.get(index);
         if (row.hasOwnProperty('isExpired')) {
             row.isExpired = false;
+            row.expiryDate = null;
         }
 
         fields.remove(index);
