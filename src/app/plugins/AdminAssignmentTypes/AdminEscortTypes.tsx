@@ -258,6 +258,11 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
     )
 
     validate(values: AdminEscortTypesProps = {}): FormErrors | undefined {
+        const escortTypeValues = values.escortTypes;
+        if (escortTypeValues) {
+            // Validate that sort orders are unique
+        }
+
         return undefined;
     }
 
