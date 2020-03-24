@@ -19,6 +19,10 @@ export const defaultSortByCode = <P>(a: any, b: any): number => {
     return (a.code < b.code) ? -1 : (a.code > b.code) ? 1 : 0;
 };
 
+export const defaultSortBySortOrder = <P>(a: any, b: any): number => {
+    return (a.sortOrder < b.sortOrder) ? -1 : (a.sortOrder > b.sortOrder) ? 1 : 0;
+};
+
 // This is the new code type sorting function for the revised code types implementation (JIRA SS_15, SS-71)
 export const customSortByLocationIsNull = (customSortFn: <P>(a: any, b: any) => number) =>
     <P>(a: any, b: any): number => {
@@ -39,7 +43,10 @@ export const customSortByLocationIsNull = (customSortFn: <P>(a: any, b: any) => 
 export class CodeSelector<P extends Code> extends EffectiveSelector<P> {
     constructor(
         mapSelector: ((state: any) => { [key: string]: P }),
-        sort: ((a: P, b: P) => number) = customSortByLocationIsNull(defaultSortByCode) // Curry this
+        // Sort by code
+        // sort: ((a: P, b: P) => number) = customSortByLocationIsNull(defaultSortByCode) // Curry this
+        // Sort by sort order
+        sort: ((a: P, b: P) => number) = customSortByLocationIsNull(defaultSortBySortOrder) // Curry this
     ) {
         super(mapSelector, (c) => c.expiryDate, sort);
     }
