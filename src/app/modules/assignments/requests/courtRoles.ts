@@ -68,12 +68,37 @@ class ExpireCourtRolesRequest extends RequestAction<IdType[], IdType[], Assignme
 
     setRequestData(moduleState: AssignmentModuleState, courtRoleIds: IdType[]) {
         const newMap = { ...courtRoleMapRequest.getRequestData(moduleState) };
-        courtRoleIds.forEach(id => delete newMap[id]);
+        courtRoleIds.forEach(id => newMap[id]);
         return courtRoleMapRequest.setRequestData(moduleState, newMap);
     }
 }
 
 export const expireCourtRolesRequest = new ExpireCourtRolesRequest();
+
+class UnexpireCourtRolesRequest extends RequestAction<IdType[], IdType[], AssignmentModuleState> {
+    constructor() {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'unexpireCourtRoles',
+            toasts: {
+                success: (ids) => `${ids.length} court role(s) un-expired`,
+                error: (err) => `Problem encountered while un-expiring court role: ${err ? err.toString() : 'Unknown Error'}`
+            }
+        });
+    }
+    public async doWork(request: IdType[], { api }: ThunkExtra): Promise<IdType[]> {
+        await api.unexpireCourtRoles(request);
+        return request;
+    }
+
+    setRequestData(moduleState: AssignmentModuleState, courtRoleIds: IdType[]) {
+        const newMap = { ...courtRoleMapRequest.getRequestData(moduleState) };
+        courtRoleIds.forEach(id => newMap[id]);
+        return courtRoleMapRequest.setRequestData(moduleState, newMap);
+    }
+}
+
+export const unexpireCourtRolesRequest = new UnexpireCourtRolesRequest();
 
 class DeleteCourtRolesRequest extends RequestAction<IdType[], IdType[], AssignmentModuleState> {
     constructor() {

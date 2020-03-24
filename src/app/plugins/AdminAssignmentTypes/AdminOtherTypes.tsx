@@ -11,6 +11,7 @@ import {
     createOrUpdateAlternateAssignmentTypes,
     deleteAlternateAssignmentTypes,
     expireAlternateAssignmentTypes,
+    unexpireAlternateAssignmentTypes,
     selectAdminOtherTypesPluginSection,
     setAdminOtherTypesPluginSubmitErrors,
     setAdminOtherTypesPluginFilters, setAdminCourtRolesPluginFilters
@@ -308,7 +309,8 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
         };
     }
 
-    mapExpiredFromFormValues(map: any) {
+    mapExpiredFromFormValues(map: any, isExpired?: boolean) {
+        isExpired = isExpired || false;
         const expiredOtherTypeIds: IdType[] = [];
 
         if (map.otherTypes) {
@@ -328,7 +330,8 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
 
     async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>) {
         const data: any = this.getDataFromFormValues(formValues, initialValues);
-        const dataToExpire: any = this.getDataToExpireFromFormValues(formValues, initialValues) || {};
+        const dataToExpire: any = this.getDataToExpireFromFormValues(formValues, initialValues, true) || {};
+        const dataToUnexpire: any = this.getDataToExpireFromFormValues(formValues, initialValues, false) || {};
         const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
 
         // Grab the currentLocation off of the formValues.assignments object
@@ -339,6 +342,7 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
 
         // Expire records before saving new ones!
         const expiredOtherTypes: IdType[] = dataToExpire.otherTypes as IdType[];
+        const unexpiredOtherTypes: IdType[] = dataToUnexpire.otherTypes as IdType[];
 
         let otherTypes: Partial<OtherType>[];
         otherTypes = data.otherTypes.map((c: Partial<OtherType>) => ({
@@ -367,6 +371,10 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
 
         if (expiredOtherTypes.length > 0) {
             await dispatch(expireAlternateAssignmentTypes(expiredOtherTypes));
+        }
+
+        if (unexpiredOtherTypes.length > 0) {
+            await dispatch(unexpireAlternateAssignmentTypes(unexpiredOtherTypes));
         }
 
         if (otherTypes.length > 0) {

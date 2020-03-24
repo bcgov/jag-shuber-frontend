@@ -69,12 +69,37 @@ class ExpireAlternateAssignmentTypesRequest extends RequestAction<IdType[], IdTy
 
     setRequestData(moduleState: AssignmentModuleState, otherAssignmentTypeIds: IdType[]) {
         const newMap = { ...alternateAssignmentTypeMapRequest.getRequestData(moduleState) };
-        otherAssignmentTypeIds.forEach(id => delete newMap[id]);
+        otherAssignmentTypeIds.forEach(id => newMap[id]);
         return alternateAssignmentTypeMapRequest.setRequestData(moduleState, newMap);
     }
 }
 
 export const expireAlternateAssignmentTypesRequest = new ExpireAlternateAssignmentTypesRequest();
+
+class UnexpireAlternateAssignmentTypesRequest extends RequestAction<IdType[], IdType[], AssignmentModuleState> {
+    constructor() {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'unexpireAlternateAssignmentTypes',
+            toasts: {
+                success: (ids) => `${ids.length} other assignment type(s) un-expired`,
+                error: (err) => `Problem encountered while un-expiring other assignment types: ${err ? err.toString() : 'Unknown Error'}`
+            }
+        });
+    }
+    public async doWork(request: IdType[], { api }: ThunkExtra): Promise<IdType[]> {
+        await api.unexpireAlternateAssignmentTypes(request);
+        return request;
+    }
+
+    setRequestData(moduleState: AssignmentModuleState, otherAssignmentTypeIds: IdType[]) {
+        const newMap = { ...alternateAssignmentTypeMapRequest.getRequestData(moduleState) };
+        otherAssignmentTypeIds.forEach(id => newMap[id]);
+        return alternateAssignmentTypeMapRequest.setRequestData(moduleState, newMap);
+    }
+}
+
+export const unexpireAlternateAssignmentTypesRequest = new UnexpireAlternateAssignmentTypesRequest();
 
 class DeleteAlternateAssignmentTypesRequest extends RequestAction<IdType[], IdType[], AssignmentModuleState> {
     constructor() {
