@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 import * as React from 'react';
 import { Button, Glyphicon, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
@@ -11,7 +13,7 @@ const ExpireRow = ({ model, onClick, fields, index , showComponent = false }: Ta
         const row: any = fields.get(index);
         if (row.hasOwnProperty('isExpired')) {
             row.isExpired = true;
-            row.expiryDate = Date.now();
+            row.expiryDate = moment(Date.now()).toISOString();
         }
 
         fields.remove(index);
