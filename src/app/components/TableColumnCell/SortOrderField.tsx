@@ -26,11 +26,6 @@ const FieldRenderer = (props: any) => {
 
     return (
         <div className="sort-order-field" style={{ display: 'flex' }}>
-            <TextField
-                {...props}
-                placeholder={props.placeholder}
-                showLabel={false}
-            />
             {/* TODO: Turn this into an SFC */}
             <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <Button bsStyle="transparent" className="btn-xs btn-transparent" onClick={doIncrement}>
@@ -40,6 +35,11 @@ const FieldRenderer = (props: any) => {
                     <Glyphicon glyph="triangle-bottom" />
                 </Button>
             </div>
+            <TextField
+                {...props}
+                placeholder={props.placeholder}
+                showLabel={false}
+            />
         </div>
 
     );
