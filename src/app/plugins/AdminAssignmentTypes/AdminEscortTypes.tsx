@@ -321,11 +321,9 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
 
         if (map.escortTypes) {
             const initialValues = map.escortTypes.initialValues;
-            const existingIds = map.escortTypes.values.map((val: any) => val.id);
 
             const escortTypeIds = initialValues
-                .filter((val: any) => (existingIds.indexOf(val.id) === -1))
-                .map((val: any) => val.id);
+                .filter((val: any) => val.isExpired);
 
             expiredEscortTypeIds.push(...escortTypeIds);
         }

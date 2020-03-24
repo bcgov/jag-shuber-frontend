@@ -315,11 +315,9 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
 
         if (map.courtRoles) {
             const initialValues = map.courtRoles.initialValues;
-            const existingIds = map.courtRoles.values.map((val: any) => val.id);
 
             const courtRoleIds = initialValues
-                .filter((val: any) => (existingIds.indexOf(val.id) === -1))
-                .map((val: any) => val.id);
+                .filter((val: any) => val.isExpired);
 
             expiredCourtRoleIds.push(...courtRoleIds);
         }

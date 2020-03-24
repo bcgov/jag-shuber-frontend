@@ -199,6 +199,7 @@ export abstract class FormContainerBase<T = any> implements FormContainer<T> {
         return this.mapDeletesFromFormValues(map);
     }
 
+    // TODO: Use a const or something to set the expired key, or make it configurable
     protected getDataToExpireFromFormValues(formValues: any, initialValues?: any) {
         if (!initialValues) return formValues[this.reduxFormKey];
 
@@ -210,10 +211,15 @@ export abstract class FormContainerBase<T = any> implements FormContainer<T> {
         // TODO: Use value, instead of key - redux-form is bound using the value
         // We can check the path using containsPropertyPath which is on this class
         const formKeys = Object.keys(this.formFieldNames);
+        // detailedDiff will return a diff object with added, deleted, and updated keys
+        // https://www.npmjs.com/package/deep-object-diff
+        const diffKeys = ['added', 'deleted', 'updated'];
         formKeys.forEach(key => {
             let isDirty = false;
-            const diff = deletedDiff(initial[key], values[key]);
-            if (Object.keys(diff).length > 0) isDirty = true;
+            const diff = detailedDiff(initial[key], values[key]);
+            diffKeys.forEach(diffKey => {
+                if (Object.keys(diff[diffKey]).length > 0) isDirty = true;
+            });
 
             if (isDirty) map[key] = { initialValues: initial[key], values: values[key] };
         });
