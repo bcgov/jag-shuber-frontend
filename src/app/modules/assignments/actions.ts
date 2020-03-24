@@ -31,24 +31,29 @@ export const deleteAlternateAssignmentTypes =
     alternateAssignmentTypeRequests.deleteAlternateAssignmentTypesRequest.actionCreator;
 export const expireAlternateAssignmentTypes =
     alternateAssignmentTypeRequests.expireAlternateAssignmentTypesRequest.actionCreator;
+export const unexpireAlternateAssignmentTypes =
+    alternateAssignmentTypeRequests.unexpireAlternateAssignmentTypesRequest.actionCreator;
 
 // Courtrooms
 export const getCourtrooms = courtroomRequests.courtroomMapRequest.actionCreator;
 export const createOrUpdateCourtrooms = courtroomRequests.createOrUpdateCourtroomsRequest.actionCreator;
 export const deleteCourtrooms = courtroomRequests.deleteCourtroomsRequest.actionCreator;
 export const expireCourtrooms = courtroomRequests.expireCourtroomsRequest.actionCreator;
+export const unexpireCourtrooms = courtroomRequests.unexpireCourtroomsRequest.actionCreator;
 
 // Court Roles
 export const getCourtRoles = courtRoleRequest.courtRoleMapRequest.actionCreator;
 export const createOrUpdateCourtRoles = courtRoleRequest.createOrUpdateCourtRolesRequest.actionCreator;
 export const deleteCourtRoles = courtRoleRequest.deleteCourtRolesRequest.actionCreator;
 export const expireCourtRoles = courtRoleRequest.expireCourtRolesRequest.actionCreator;
+export const unexpireCourtRoles = courtRoleRequest.unexpireCourtRolesRequest.actionCreator;
 
 // Jail Roles
 export const getJailRoles = jailRoleRequests.jailRoleMapRequest.actionCreator;
 export const createOrUpdateJailRoles = jailRoleRequests.createOrUpdateJailRolesRequest.actionCreator;
 export const deleteJailRoles = jailRoleRequests.deleteJailRolesRequest.actionCreator;
 export const expireJailRoles = jailRoleRequests.expireJailRolesRequest.actionCreator;
+export const unexpireJailRoles = jailRoleRequests.unexpireJailRolesRequest.actionCreator;
 
 // Escort Runs
 export const getRuns = runRequests.runMapRequest.actionCreator; // Just in here for pre-existing stuff
@@ -56,6 +61,7 @@ export const getEscortRuns = runRequests.runMapRequest.actionCreator; // In here
 export const createOrUpdateEscortRuns = runRequests.createOrUpdateEscortRunsRequest.actionCreator;
 export const deleteEscortRuns = runRequests.deleteEscortRunsRequest.actionCreator;
 export const expireEscortRuns = runRequests.expireEscortRunsRequest.actionCreator;
+export const unexpireEscortRuns = runRequests.unexpireEscortRunsRequest.actionCreator;
 
 // Assignment Duties
 export const getAssignmentDuties = assignmentDutyRequests.assignmentDutyMapRequest.actionCreator;

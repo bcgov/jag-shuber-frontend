@@ -11,6 +11,7 @@ import {
     createOrUpdateCourtrooms,
     deleteCourtrooms,
     expireCourtrooms,
+    unexpireCourtrooms,
     selectAdminCourtroomsPluginSection,
     setAdminCourtroomsPluginSubmitErrors,
     setAdminCourtroomsPluginFilters, setAdminCourtRolesPluginFilters
@@ -274,7 +275,8 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
         };
     }
 
-    mapExpiredFromFormValues(map: any) {
+    mapExpiredFromFormValues(map: any, isExpired?: boolean) {
+        isExpired = isExpired || false;
         const expiredCourtroomIds: IdType[] = [];
 
         if (map.courtrooms) {
@@ -294,7 +296,8 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
 
     async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>) {
         const data: any = this.getDataFromFormValues(formValues, initialValues);
-        const dataToExpire: any = this.getDataToExpireFromFormValues(formValues, initialValues) || {};
+        const dataToExpire: any = this.getDataToExpireFromFormValues(formValues, initialValues, true) || {};
+        const dataToUnexpire: any = this.getDataToExpireFromFormValues(formValues, initialValues, false) || {};
         const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
 
         // Delete records before saving new ones!
@@ -302,6 +305,7 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
 
         // Expire records before saving new ones!
         const expiredCourtrooms: IdType[] = dataToExpire.courtrooms as IdType[];
+        const unexpiredCourtrooms: IdType[] = dataToUnexpire.courtrooms as IdType[];
 
         // Grab the currentLocation off of the formValues.assignments object
         const { currentLocation } = formValues.assignments;
@@ -328,6 +332,10 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
 
         if (expiredCourtrooms.length > 0) {
             await dispatch(expireCourtrooms(expiredCourtrooms));
+        }
+
+        if (unexpiredCourtrooms.length > 0) {
+            await dispatch(unexpireCourtrooms(unexpiredCourtrooms));
         }
 
         if (courtrooms.length > 0) {

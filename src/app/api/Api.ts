@@ -702,6 +702,8 @@ export interface API {
     deleteCourtrooms(courtroomIds: IdType[]): Promise<void>;
     expireCourtroom(courtroomId: IdType): Promise<void>;
     expireCourtrooms(courtroomIds: IdType[]): Promise<void>;
+    unexpireCourtroom(courtroomId: IdType): Promise<void>;
+    unexpireCourtrooms(courtroomIds: IdType[]): Promise<void>;
 
     // Court Roles
     getCourtRoles(): Promise<CourtRoleCode[]>;
@@ -711,6 +713,8 @@ export interface API {
     deleteCourtRoles(courtRoleIds: IdType[]): Promise<void>;
     expireCourtRole(courtRoleId: IdType): Promise<void>;
     expireCourtRoles(courtRoleIds: IdType[]): Promise<void>;
+    unexpireCourtRole(courtRoleId: IdType): Promise<void>;
+    unexpireCourtRoles(courtRoleIds: IdType[]): Promise<void>;
 
     // Jail Roles
     getJailRoles(): Promise<JailRoleCode[]>;
@@ -720,6 +724,8 @@ export interface API {
     deleteJailRoles(jailRoleIds: IdType[]): Promise<void>;
     expireJailRole(jailRoleId: IdType): Promise<void>;
     expireJailRoles(jailRoleIds: IdType[]): Promise<void>;
+    unexpireJailRole(jailRoleId: IdType): Promise<void>;
+    unexpireJailRoles(jailRoleIds: IdType[]): Promise<void>;
 
     // Escort Runs Types
     getEscortRuns(): Promise<EscortRun[]>;
@@ -729,6 +735,8 @@ export interface API {
     deleteEscortRuns(runIds: IdType[]): Promise<void>;
     expireEscortRun(runId: IdType): Promise<void>;
     expireEscortRuns(runIds: IdType[]): Promise<void>;
+    unexpireEscortRun(runId: IdType): Promise<void>;
+    unexpireEscortRuns(runIds: IdType[]): Promise<void>;
 
     // Alternate Assignment Types
     getAlternateAssignmentTypes(): Promise<AlternateAssignment[]>;
@@ -738,6 +746,8 @@ export interface API {
     deleteAlternateAssignmentTypes(typeIds: IdType[]): Promise<void>;
     expireAlternateAssignmentType(typeId: IdType): Promise<void>;
     expireAlternateAssignmentTypes(typeIds: IdType[]): Promise<void>;
+    unexpireAlternateAssignmentType(typeId: IdType): Promise<void>;
+    unexpireAlternateAssignmentTypes(typeIds: IdType[]): Promise<void>;
 
     getSheriffRankCodes(): Promise<SheriffRank[]>;
     getGenderCodes(): Promise<GenderCode[]>;

@@ -74,12 +74,37 @@ class ExpireCourtroomsRequest extends RequestAction<IdType[], IdType[], Assignme
 
     setRequestData(moduleState: AssignmentModuleState, courtroomIds: IdType[]) {
         const newMap = { ...courtroomMapRequest.getRequestData(moduleState) };
-        courtroomIds.forEach(id => delete newMap[id]);
+        courtroomIds.forEach(id => newMap[id]);
         return courtroomMapRequest.setRequestData(moduleState, newMap);
     }
 }
 
 export const expireCourtroomsRequest = new ExpireCourtroomsRequest();
+
+class UnexpireCourtroomsRequest extends RequestAction<IdType[], IdType[], AssignmentModuleState> {
+    constructor() {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'unexpireCourtrooms',
+            toasts: {
+                success: (ids) => `${ids.length} courtroom(s) un-expired`,
+                error: (err) => `Problem encountered while un-expiring courtroom: ${err ? err.toString() : 'Unknown Error'}`
+            }
+        });
+    }
+    public async doWork(request: IdType[], { api }: ThunkExtra): Promise<IdType[]> {
+        await api.unexpireCourtrooms(request);
+        return request;
+    }
+
+    setRequestData(moduleState: AssignmentModuleState, courtroomIds: IdType[]) {
+        const newMap = { ...courtroomMapRequest.getRequestData(moduleState) };
+        courtroomIds.forEach(id => newMap[id]);
+        return courtroomMapRequest.setRequestData(moduleState, newMap);
+    }
+}
+
+export const unexpireCourtroomsRequest = new UnexpireCourtroomsRequest();
 
 class DeleteCourtroomsRequest extends RequestAction<IdType[], IdType[], AssignmentModuleState> {
     constructor() {
