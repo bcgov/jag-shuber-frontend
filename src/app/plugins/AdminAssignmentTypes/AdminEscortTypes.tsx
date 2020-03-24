@@ -83,6 +83,10 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
         const { getPluginPermissions } = props;
         const { grantAll, permissions } = buildPluginPermissions(getPluginPermissions);
 
+        // We can't use React hooks yet, and not sure if this project will ever be upgraded to 16.8
+        // This is a quick n' dirty way to achieve the same thing
+        let dataTableInstance: any;
+
         const { currentLocation, isLocationSet } = props;
         const loc = currentLocation;
 
@@ -182,9 +186,9 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
             },
             ({ fields, index, model }) => {
                 return (model && model.id && model.id !== '' && !model.isExpired)
-                    ? (<ExpireRow fields={fields} index={index} model={model} showComponent={true} />)
+                    ? (<ExpireRow fields={fields} index={index} model={model} showComponent={true} onClick={() => dataTableInstance.forceUpdate()} />)
                     : (model && model.isExpired)
-                    ? (<UnexpireRow fields={fields} index={index} model={model} showComponent={true} />)
+                    ? (<UnexpireRow fields={fields} index={index} model={model} showComponent={true} onClick={() => dataTableInstance.forceUpdate()} />)
                     : null;
             },
             ({ fields, index, model }) => {
@@ -199,6 +203,7 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
             {/* Only use fixed if configured as a standalone page */}
             {/* <div className="fixed-filters-data-table"> */}
                 <DataTable
+                    ref={(dt) => dataTableInstance = dt}
                     fieldName={this.formFieldNames.escortTypes}
                     filterFieldName={(this.filterFieldNames) ? `${this.filterFieldNames.escortTypes}` : undefined}
                     title={''} // Leave this blank
