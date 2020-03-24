@@ -11,6 +11,7 @@ import {
     createOrUpdateJailRoles,
     deleteJailRoles,
     expireJailRoles,
+    unexpireJailRoles,
     selectAdminJailRolesPluginSection,
     setAdminJailRolesPluginSubmitErrors,
     setAdminJailRolesPluginFilters, setAdminCourtRolesPluginFilters
@@ -310,7 +311,8 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
         };
     }
 
-    mapExpiredFromFormValues(map: any) {
+    mapExpiredFromFormValues(map: any, isExpired?: boolean) {
+        isExpired = isExpired || false;
         const expiredJailRoleIds: IdType[] = [];
 
         if (map.jailRoles) {
@@ -330,7 +332,8 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
 
     async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>) {
         const data: any = this.getDataFromFormValues(formValues, initialValues);
-        const dataToExpire: any = this.getDataToExpireFromFormValues(formValues, initialValues) || {};
+        const dataToExpire: any = this.getDataToExpireFromFormValues(formValues, initialValues, true) || {};
+        const dataToUnexpire: any = this.getDataToExpireFromFormValues(formValues, initialValues, false) || {};
         const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
 
         // Grab the currentLocation off of the formValues.assignments object
@@ -341,6 +344,7 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
 
         // Expire records before saving new ones!
         const expiredJailRoles: IdType[] = dataToExpire.jailRoles as IdType[];
+        const unexpiredJailRoles: IdType[] = dataToUnexpire.jailRoles as IdType[];
 
         let jailRoles: Partial<JailRoleCode>[];
         jailRoles = data.jailRoles.map((c: Partial<JailRoleCode>) => ({
@@ -369,6 +373,10 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
 
         if (expiredJailRoles.length > 0) {
             await dispatch(expireJailRoles(expiredJailRoles));
+        }
+
+        if (unexpiredJailRoles.length > 0) {
+            await dispatch(unexpireJailRoles(unexpiredJailRoles));
         }
 
         if (jailRoles.length > 0) {

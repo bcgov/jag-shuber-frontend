@@ -161,7 +161,7 @@ export abstract class FormContainerBase<T = any> implements FormContainer<T> {
         return {};
     }
 
-    protected mapExpiredFromFormValues(map: {}) {
+    protected mapExpiredFromFormValues(map: {}, isExpired?: boolean) {
         return {};
     }
 
@@ -200,7 +200,8 @@ export abstract class FormContainerBase<T = any> implements FormContainer<T> {
     }
 
     // TODO: Use a const or something to set the expired key, or make it configurable
-    protected getDataToExpireFromFormValues(formValues: any, initialValues?: any) {
+    protected getDataToExpireFromFormValues(formValues: any, initialValues?: any, isExpired?: boolean) {
+        isExpired = isExpired || false;
         if (!initialValues) return formValues[this.reduxFormKey];
 
         const initial = initialValues[this.reduxFormKey];
@@ -224,7 +225,7 @@ export abstract class FormContainerBase<T = any> implements FormContainer<T> {
             if (isDirty) map[key] = { initialValues: initial[key], values: values[key] };
         });
 
-        return this.mapExpiredFromFormValues(map);
+        return this.mapExpiredFromFormValues(map, isExpired);
     }
 
     containsPropertyPath(errors: Object = {}, propertyPath: string = '') {

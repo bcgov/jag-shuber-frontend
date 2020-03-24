@@ -11,6 +11,7 @@ import {
     createOrUpdateEscortRuns as createOrUpdateEscortTypes,
     deleteEscortRuns as deleteEscortTypes,
     expireEscortRuns as expireEscortTypes,
+    unexpireEscortRuns as unexpireEscortTypes,
     selectAdminEscortTypesPluginSection,
     setAdminEscortTypesPluginSubmitErrors,
     setAdminEscortTypesPluginFilters, setAdminJailRolesPluginFilters, setAdminCourtRolesPluginFilters
@@ -316,7 +317,8 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
         };
     }
 
-    mapExpiredFromFormValues(map: any) {
+    mapExpiredFromFormValues(map: any, isExpired?: boolean) {
+        isExpired = isExpired || false;
         const expiredEscortTypeIds: IdType[] = [];
 
         if (map.escortTypes) {
@@ -336,7 +338,8 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
 
     async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>) {
         const data: any = this.getDataFromFormValues(formValues, initialValues);
-        const dataToExpire: any = this.getDataToExpireFromFormValues(formValues, initialValues) || {};
+        const dataToExpire: any = this.getDataToExpireFromFormValues(formValues, initialValues, true) || {};
+        const dataToUnexpire: any = this.getDataToExpireFromFormValues(formValues, initialValues, false) || {};
         const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
 
         // Grab the currentLocation off of the formValues.assignments object
@@ -347,6 +350,7 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
 
         // Expire records before saving new ones!
         const expiredEscortTypes: IdType[] = dataToExpire.escortTypes as IdType[];
+        const unexpiredEscortTypes: IdType[] = dataToUnexpire.escortTypes as IdType[];
 
         let escortTypes: Partial<EscortType>[];
         escortTypes = data.escortTypes.map((c: Partial<EscortType>) => ({
@@ -375,6 +379,10 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
 
         if (expiredEscortTypes.length > 0) {
             await dispatch(expireEscortTypes(expiredEscortTypes));
+        }
+
+        if (unexpiredEscortTypes.length > 0) {
+            await dispatch(unexpireEscortTypes(unexpiredEscortTypes));
         }
 
         if (escortTypes.length > 0) {

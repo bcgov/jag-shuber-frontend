@@ -11,6 +11,7 @@ import {
     createOrUpdateCourtRoles,
     deleteCourtRoles,
     expireCourtRoles,
+    unexpireCourtRoles,
     selectAdminCourtRolesPluginSection,
     setAdminCourtRolesPluginSubmitErrors,
     setAdminCourtRolesPluginFilters
@@ -310,14 +311,15 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
         };
     }
 
-    mapExpiredFromFormValues(map: any) {
+    mapExpiredFromFormValues(map: any, isExpired?: boolean) {
+        isExpired = isExpired || false;
         const expiredCourtRoleIds: IdType[] = [];
 
         if (map.courtRoles) {
             const initialValues = map.courtRoles.initialValues;
 
             const courtRoleIds = initialValues
-                .filter((val: any) => val.isExpired)
+                .filter((val: any) => val.isExpired === isExpired)
                 .map((val: any) => val.id);
 
             expiredCourtRoleIds.push(...courtRoleIds);
@@ -330,7 +332,8 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
 
     async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>) {
         const data: any = this.getDataFromFormValues(formValues, initialValues);
-        const dataToExpire: any = this.getDataToExpireFromFormValues(formValues, initialValues) || {};
+        const dataToExpire: any = this.getDataToExpireFromFormValues(formValues, initialValues, true) || {};
+        const dataToUnexpire: any = this.getDataToExpireFromFormValues(formValues, initialValues, false) || {};
         const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
 
         // Grab the currentLocation off of the formValues.assignments object
@@ -341,6 +344,7 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
 
         // Expire records before saving new ones!
         const expiredCourtRoles: IdType[] = dataToExpire.courtRoles as IdType[];
+        const unexpiredCourtRoles: IdType[] = dataToUnexpire.courtRoles as IdType[];
 
         let courtRoles: Partial<CourtRoleCode>[];
         courtRoles = data.courtRoles.map((c: Partial<CourtRoleCode>) => ({
@@ -370,6 +374,11 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
         if (expiredCourtRoles.length > 0) {
             // await dispatch(deleteCourtRoles(deletedCourtRoles));
             await dispatch(expireCourtRoles(expiredCourtRoles));
+        }
+
+        if (unexpiredCourtRoles.length > 0) {
+            // await dispatch(deleteCourtRoles(deletedCourtRoles));
+            await dispatch(unexpireCourtRoles(unexpiredCourtRoles));
         }
 
         if (courtRoles.length > 0) {
