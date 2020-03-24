@@ -10,6 +10,7 @@ import {
     getJailRoles,
     createOrUpdateJailRoles,
     deleteJailRoles,
+    expireJailRoles,
     selectAdminJailRolesPluginSection,
     setAdminJailRolesPluginSubmitErrors,
     setAdminJailRolesPluginFilters, setAdminCourtRolesPluginFilters
@@ -336,8 +337,12 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
         }
 
         if (deletedJailRoles.length > 0) {
-            await dispatch(deleteJailRoles(deletedJailRoles));
+            await dispatch(expireJailRoles(deletedJailRoles));
         }
+
+        /* if (deletedJailRoles.length > 0) {
+            await dispatch(deleteJailRoles(deletedJailRoles));
+        } */
 
         if (jailRoles.length > 0) {
             await dispatch(createOrUpdateJailRoles(jailRoles));

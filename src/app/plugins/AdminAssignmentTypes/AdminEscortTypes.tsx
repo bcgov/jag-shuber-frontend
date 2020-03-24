@@ -10,6 +10,7 @@ import {
     getEscortRuns as getEscortTypes,
     createOrUpdateEscortRuns as createOrUpdateEscortTypes,
     deleteEscortRuns as deleteEscortTypes,
+    expireEscortRuns as expireEscortTypes,
     selectAdminEscortTypesPluginSection,
     setAdminEscortTypesPluginSubmitErrors,
     setAdminEscortTypesPluginFilters, setAdminJailRolesPluginFilters, setAdminCourtRolesPluginFilters
@@ -342,8 +343,12 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
         }
 
         if (deletedEscortTypes.length > 0) {
-            await dispatch(deleteEscortTypes(deletedEscortTypes));
+            await dispatch(expireEscortTypes(deletedEscortTypes));
         }
+
+        /* if (deletedEscortTypes.length > 0) {
+            await dispatch(deleteEscortTypes(deletedEscortTypes));
+        } */
 
         if (escortTypes.length > 0) {
             await dispatch(createOrUpdateEscortTypes(escortTypes));

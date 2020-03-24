@@ -51,6 +51,31 @@ class CreateOrUpdateAlternateAssignmentTypesRequest extends CreateOrUpdateEntiti
 
 export const createOrUpdateAlternateAssignmentTypesRequest = new CreateOrUpdateAlternateAssignmentTypesRequest();
 
+class ExpireAlternateAssignmentTypesRequest extends RequestAction<IdType[], IdType[], AssignmentModuleState> {
+    constructor() {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'expireAlternateAssignmentTypes',
+            toasts: {
+                success: (ids) => `${ids.length} other assignment type(s) expired`,
+                error: (err) => `Problem encountered while expiring other assignment types: ${err ? err.toString() : 'Unknown Error'}`
+            }
+        });
+    }
+    public async doWork(request: IdType[], { api }: ThunkExtra): Promise<IdType[]> {
+        await api.expireAlternateAssignmentTypes(request);
+        return request;
+    }
+
+    setRequestData(moduleState: AssignmentModuleState, otherAssignmentTypeIds: IdType[]) {
+        const newMap = { ...alternateAssignmentTypeMapRequest.getRequestData(moduleState) };
+        otherAssignmentTypeIds.forEach(id => delete newMap[id]);
+        return alternateAssignmentTypeMapRequest.setRequestData(moduleState, newMap);
+    }
+}
+
+export const expireAlternateAssignmentTypesRequest = new ExpireAlternateAssignmentTypesRequest();
+
 class DeleteAlternateAssignmentTypesRequest extends RequestAction<IdType[], IdType[], AssignmentModuleState> {
     constructor() {
         super({

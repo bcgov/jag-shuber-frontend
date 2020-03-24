@@ -50,6 +50,31 @@ class CreateOrUpdateCourtRolesRequest extends CreateOrUpdateEntitiesRequest<Cour
 
 export const createOrUpdateCourtRolesRequest = new CreateOrUpdateCourtRolesRequest();
 
+class ExpireCourtRolesRequest extends RequestAction<IdType[], IdType[], AssignmentModuleState> {
+    constructor() {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'expireCourtRoles',
+            toasts: {
+                success: (ids) => `${ids.length} court role(s) expired`,
+                error: (err) => `Problem encountered while expiring court role: ${err ? err.toString() : 'Unknown Error'}`
+            }
+        });
+    }
+    public async doWork(request: IdType[], { api }: ThunkExtra): Promise<IdType[]> {
+        await api.expireCourtRoles(request);
+        return request;
+    }
+
+    setRequestData(moduleState: AssignmentModuleState, courtRoleIds: IdType[]) {
+        const newMap = { ...courtRoleMapRequest.getRequestData(moduleState) };
+        courtRoleIds.forEach(id => delete newMap[id]);
+        return courtRoleMapRequest.setRequestData(moduleState, newMap);
+    }
+}
+
+export const expireCourtRolesRequest = new ExpireCourtRolesRequest();
+
 class DeleteCourtRolesRequest extends RequestAction<IdType[], IdType[], AssignmentModuleState> {
     constructor() {
         super({

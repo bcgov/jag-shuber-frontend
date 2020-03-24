@@ -506,6 +506,22 @@ export default class Client implements API {
         return Promise.resolve();
     }
 
+    async expireCourtroom(courtroomId: string): Promise<void> {
+        return await this._client.ExpireCourtroom(courtroomId);
+    }
+
+    /**
+     * TODO: We need a proper endpoint to deal with this this loop isn't gonna do it...
+     * @param ids
+     */
+    async expireCourtrooms(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.ExpireCourtroom(id));
+        }
+
+        return Promise.resolve();
+    }
+
     async getEscortRuns(): Promise<EscortRun[]> {
         const currentLocation = (this.currentLocation && this.currentLocation !== 'ALL_LOCATIONS')
             ? this.currentLocation
@@ -538,6 +554,22 @@ export default class Client implements API {
     async deleteEscortRuns(ids: IdType[]): Promise<void> {
         if (ids.length > 0) {
              ids.forEach(id => this._client.DeleteEscortRun(id));
+        }
+
+        return Promise.resolve();
+    }
+
+    async expireEscortRun(runId: string): Promise<void> {
+        return await this._client.ExpireEscortRun(runId);
+    }
+
+    /**
+     * TODO: We need a proper endpoint to deal with this this loop isn't gonna do it...
+     * @param ids
+     */
+    async expireEscortRuns(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.ExpireEscortRun(id));
         }
 
         return Promise.resolve();
@@ -585,6 +617,23 @@ export default class Client implements API {
         return Promise.resolve();
     }
 
+    async expireCourtRole(courtRoleId: string): Promise<void> {
+        return await this._client.ExpireCourtRoleCode(courtRoleId);
+        // return Promise.resolve();
+    }
+
+    /**
+     * TODO: We need a proper endpoint to deal with this this loop isn't gonna do it...
+     * @param ids
+     */
+    async expireCourtRoles(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.ExpireCourtRoleCode(id));
+        }
+
+        return Promise.resolve();
+    }
+
     async getJailRoles(): Promise<JailRoleCode[]> {
         // TODO: Not sure if this is the best solution, but it gets things working they way we want to for now...
         //  ALL_LOCATIONS key is added to selectorValues in LocationSelector.
@@ -622,6 +671,23 @@ export default class Client implements API {
     async deleteJailRoles(ids: IdType[]): Promise<void> {
         if (ids.length > 0) {
              ids.forEach(id => this._client.DeleteJailRoleCode(id));
+        }
+
+        return Promise.resolve();
+    }
+
+    async expireJailRole(jailRoleId: string): Promise<void> {
+        return await this._client.ExpireJailRoleCode(jailRoleId);
+        // return Promise.resolve();
+    }
+
+    /**
+     * TODO: We need a proper endpoint to deal with this this loop isn't gonna do it...
+     * @param ids
+     */
+    async expireJailRoles(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.ExpireJailRoleCode(id));
         }
 
         return Promise.resolve();
@@ -665,6 +731,23 @@ export default class Client implements API {
     async deleteAlternateAssignmentTypes(ids: IdType[]): Promise<void> {
         if (ids.length > 0) {
              ids.forEach(id => this._client.DeleteOtherAssignCode(id));
+        }
+
+        return Promise.resolve();
+    }
+
+    async expireAlternateAssignmentType(assignmentTypeId: string): Promise<void> {
+        return await this._client.ExpireOtherAssignCode(assignmentTypeId);
+        // return Promise.resolve();
+    }
+
+    /**
+     * TODO: We need a proper endpoint to deal with this this loop isn't gonna do it...
+     * @param ids
+     */
+    async expireAlternateAssignmentTypes(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.ExpireOtherAssignCode(id));
         }
 
         return Promise.resolve();

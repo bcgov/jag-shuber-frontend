@@ -700,6 +700,8 @@ export interface API {
     updateCourtroom(updatedCourtroom: Partial<Courtroom>): Promise<Courtroom>;
     deleteCourtroom(courtroomId: IdType): Promise<void>;
     deleteCourtrooms(courtroomIds: IdType[]): Promise<void>;
+    expireCourtroom(courtroomId: IdType): Promise<void>;
+    expireCourtrooms(courtroomIds: IdType[]): Promise<void>;
 
     // Court Roles
     getCourtRoles(): Promise<CourtRoleCode[]>;
@@ -707,6 +709,8 @@ export interface API {
     updateCourtRole(updatedCourtRole: Partial<CourtRoleCode>): Promise<CourtRoleCode>;
     deleteCourtRole(courtRoleId: IdType): Promise<void>;
     deleteCourtRoles(courtRoleIds: IdType[]): Promise<void>;
+    expireCourtRole(courtRoleId: IdType): Promise<void>;
+    expireCourtRoles(courtRoleIds: IdType[]): Promise<void>;
 
     // Jail Roles
     getJailRoles(): Promise<JailRoleCode[]>;
@@ -714,6 +718,8 @@ export interface API {
     updateJailRole(updatedJailRole: Partial<JailRoleCode>): Promise<JailRoleCode>;
     deleteJailRole(jailRoleId: IdType): Promise<void>;
     deleteJailRoles(jailRoleIds: IdType[]): Promise<void>;
+    expireJailRole(jailRoleId: IdType): Promise<void>;
+    expireJailRoles(jailRoleIds: IdType[]): Promise<void>;
 
     // Escort Runs Types
     getEscortRuns(): Promise<EscortRun[]>;
@@ -721,6 +727,8 @@ export interface API {
     updateEscortRun(updatedRun: Partial<EscortRun>): Promise<EscortRun>;
     deleteEscortRun(runId: IdType): Promise<void>;
     deleteEscortRuns(runIds: IdType[]): Promise<void>;
+    expireEscortRun(runId: IdType): Promise<void>;
+    expireEscortRuns(runIds: IdType[]): Promise<void>;
 
     // Alternate Assignment Types
     getAlternateAssignmentTypes(): Promise<AlternateAssignment[]>;
@@ -728,6 +736,8 @@ export interface API {
     updateAlternateAssignmentType(updatedType: Partial<AlternateAssignment>): Promise<AlternateAssignment>;
     deleteAlternateAssignmentType(typeId: IdType): Promise<void>;
     deleteAlternateAssignmentTypes(typeIds: IdType[]): Promise<void>;
+    expireAlternateAssignmentType(typeId: IdType): Promise<void>;
+    expireAlternateAssignmentTypes(typeIds: IdType[]): Promise<void>;
 
     getSheriffRankCodes(): Promise<SheriffRank[]>;
     getGenderCodes(): Promise<GenderCode[]>;

@@ -104,23 +104,27 @@ const nestedReducer = new NestedReducer([
   alternateAssignmentTypeRequests.alternateAssignmentTypeMapRequest.reducer,
   alternateAssignmentTypeRequests.createOrUpdateAlternateAssignmentTypesRequest.reducer,
   alternateAssignmentTypeRequests.deleteAlternateAssignmentTypesRequest.reducer,
+  alternateAssignmentTypeRequests.expireAlternateAssignmentTypesRequest.reducer,
   // Assignment Types - Court Roles
   courtRoleRequests.courtRoleMapRequest.reducer,
   courtRoleRequests.createOrUpdateCourtRolesRequest.reducer,
   courtRoleRequests.deleteCourtRolesRequest.reducer,
+  courtRoleRequests.expireCourtRolesRequest.reducer,
   // Assignment Types - Courtrooms
   courtroomRequests.courtroomMapRequest.reducer,
   courtroomRequests.createOrUpdateCourtroomsRequest.reducer,
   courtroomRequests.deleteCourtroomsRequest.reducer,
+  courtroomRequests.expireCourtroomsRequest.reducer,
   // Assignment Types - Jail Roles
   jailRoleRequests.jailRoleMapRequest.reducer,
   jailRoleRequests.createOrUpdateJailRolesRequest.reducer,
   jailRoleRequests.deleteJailRolesRequest.reducer,
+  jailRoleRequests.expireJailRolesRequest.reducer,
   // Assignment Types - Escort Runs
   runRequests.runMapRequest.reducer,
-  // TODO: Make sure these don't operate on the escort run...
   runRequests.createOrUpdateEscortRunsRequest.reducer,
   runRequests.deleteEscortRunsRequest.reducer,
+  runRequests.expireEscortRunsRequest.reducer,
   // Assignment Duties
   assignmentDutyRequests.assignmentDutyMapRequest.reducer,
   assignmentDutyRequests.createAssignmentDutyRequest.reducer,

@@ -169,22 +169,29 @@ export const findAllEffectiveCourtRoles = (filters: any) => (state: RootState) =
 };
 
 // Courtrooms
-export const allCourtrooms = createSelector(
-    courtroomRequests.courtroomMapRequest.getData,
-    (courtrooms) => mapToArray(courtrooms).sort((a, b) => a.code.localeCompare(b.code))
+const courtroomSelector = new CodeSelector(
+    courtroomRequests.courtroomMapRequest.getData
 );
+
+export const allCourtrooms = courtroomSelector.all;
+
+export const allEffectiveCourtrooms = courtroomSelector.effective;
 
 export const getAllCourtrooms = (state: RootState) => {
     if (state) {
-        return allCourtrooms(state);
+        return allCourtrooms(state)
+            .sort((a, b) => a.code.localeCompare(b.code));
     }
     return undefined;
 };
 
 export const findAllCourtrooms = (filters: any) => (state: RootState) => {
     if (state) {
-        let courtrooms = allCourtrooms(state);
+        let courtrooms = allCourtrooms(state)
+            .sort((a, b) => a.code.localeCompare(b.code));
+
         return selectorFunctions.filterByKeys(courtrooms, filters);
+
     }
     return undefined;
 };
@@ -229,21 +236,26 @@ export const findAllEffectiveJailRoles = (filters: any) => (state: RootState) =>
 };
 
 // Runs
-export const allRuns = createSelector(
-    runRequests.runMapRequest.getData,
-    (runs) => mapToArray(runs).sort((a, b) => a.title.localeCompare(b.title))
+const allRunSelector = new CodeSelector(
+    runRequests.runMapRequest.getData
 );
+
+export const allRuns = allRunSelector.all;
+
+export const allEffectiveRuns = allRunSelector.effective;
 
 export const getAllEscortRunTypes = (state: RootState) => {
     if (state) {
-        return allRuns(state);
+        return allRuns(state)
+            .sort((a, b) => a.title.localeCompare(b.title));
     }
     return undefined;
 };
 
 export const getAllEffectiveEscortRunTypes = (state: RootState) => {
     if (state) {
-        return allRuns(state);
+        return allRuns(state)
+            .sort((a, b) => a.title.localeCompare(b.title));
     }
     return undefined;
 };
