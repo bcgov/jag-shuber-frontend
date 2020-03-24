@@ -269,12 +269,35 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
         };
     }
 
+    mapExpiredFromFormValues(map: any) {
+        const expiredCourtroomIds: IdType[] = [];
+
+        if (map.courtrooms) {
+            const initialValues = map.courtrooms.initialValues;
+            const existingIds = map.courtrooms.values.map((val: any) => val.id);
+
+            const courtroomIds = initialValues
+                .filter((val: any) => (existingIds.indexOf(val.id) === -1))
+                .map((val: any) => val.id);
+
+            expiredCourtroomIds.push(...courtroomIds);
+        }
+
+        return {
+            courtrooms: expiredCourtroomIds
+        };
+    }
+
     async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>) {
         const data: any = this.getDataFromFormValues(formValues, initialValues);
+        const dataToExpire: any = this.getDataToExpireFromFormValues(formValues, initialValues) || {};
         const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
 
         // Delete records before saving new ones!
         const deletedCourtrooms: IdType[] = dataToDelete.courtrooms as IdType[];
+
+        // Expire records before saving new ones!
+        const expiredCourtrooms: IdType[] = dataToExpire.courtrooms as IdType[];
 
         // Grab the currentLocation off of the formValues.assignments object
         const { currentLocation } = formValues.assignments;
@@ -296,11 +319,12 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
         }
 
         if (deletedCourtrooms.length > 0) {
-            await dispatch(expireCourtrooms(deletedCourtrooms));
-        }
-        /* if (deletedCourtrooms.length > 0) {
             await dispatch(deleteCourtrooms(deletedCourtrooms));
-        } */
+        }
+
+        if (expiredCourtrooms.length > 0) {
+            await dispatch(expireCourtrooms(expiredCourtrooms));
+        }
 
         if (courtrooms.length > 0) {
             await dispatch(createOrUpdateCourtrooms(courtrooms));

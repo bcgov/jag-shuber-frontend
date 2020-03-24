@@ -303,8 +303,28 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
         };
     }
 
+    mapExpiredFromFormValues(map: any) {
+        const expiredOtherTypeIds: IdType[] = [];
+
+        if (map.otherTypes) {
+            const initialValues = map.otherTypes.initialValues;
+            const existingIds = map.otherTypes.values.map((val: any) => val.id);
+
+            const otherTypeIds = initialValues
+                .filter((val: any) => (existingIds.indexOf(val.id) === -1))
+                .map((val: any) => val.id);
+
+            expiredOtherTypeIds.push(...otherTypeIds);
+        }
+
+        return {
+            otherTypes: expiredOtherTypeIds
+        };
+    }
+
     async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>) {
         const data: any = this.getDataFromFormValues(formValues, initialValues);
+        const dataToExpire: any = this.getDataToExpireFromFormValues(formValues, initialValues) || {};
         const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
 
         // Grab the currentLocation off of the formValues.assignments object
@@ -312,6 +332,9 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
 
         // Delete records before saving new ones!
         const deletedOtherTypes: IdType[] = dataToDelete.otherTypes as IdType[];
+
+        // Expire records before saving new ones!
+        const expiredOtherTypes: IdType[] = dataToExpire.otherTypes as IdType[];
 
         let otherTypes: Partial<OtherType>[];
         otherTypes = data.otherTypes.map((c: Partial<OtherType>) => ({
@@ -335,12 +358,12 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
         }
 
         if (deletedOtherTypes.length > 0) {
-            await dispatch(expireAlternateAssignmentTypes(deletedOtherTypes));
+            await dispatch(deleteAlternateAssignmentTypes(deletedOtherTypes));
         }
 
-        /* if (deletedOtherTypes.length > 0) {
-            await dispatch(deleteAlternateAssignmentTypes(deletedOtherTypes));
-        } */
+        if (expiredOtherTypes.length > 0) {
+            await dispatch(expireAlternateAssignmentTypes(expiredOtherTypes));
+        }
 
         if (otherTypes.length > 0) {
             await dispatch(createOrUpdateAlternateAssignmentTypes(otherTypes));

@@ -305,8 +305,28 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
         };
     }
 
+    mapExpiredFromFormValues(map: any) {
+        const expiredCourtRoleIds: IdType[] = [];
+
+        if (map.courtRoles) {
+            const initialValues = map.courtRoles.initialValues;
+            const existingIds = map.courtRoles.values.map((val: any) => val.id);
+
+            const courtRoleIds = initialValues
+                .filter((val: any) => (existingIds.indexOf(val.id) === -1))
+                .map((val: any) => val.id);
+
+            expiredCourtRoleIds.push(...courtRoleIds);
+        }
+
+        return {
+            courtRoles: expiredCourtRoleIds
+        };
+    }
+
     async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>) {
         const data: any = this.getDataFromFormValues(formValues, initialValues);
+        const dataToExpire: any = this.getDataToExpireFromFormValues(formValues, initialValues) || {};
         const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
 
         // Grab the currentLocation off of the formValues.assignments object
@@ -314,6 +334,9 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
 
         // Delete records before saving new ones!
         const deletedCourtRoles: IdType[] = dataToDelete.courtRoles as IdType[];
+
+        // Expire records before saving new ones!
+        const expiredCourtRoles: IdType[] = dataToExpire.courtRoles as IdType[];
 
         let courtRoles: Partial<CourtRoleCode>[];
         courtRoles = data.courtRoles.map((c: Partial<CourtRoleCode>) => ({
@@ -337,13 +360,13 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
         }
 
         if (deletedCourtRoles.length > 0) {
-            // await dispatch(deleteCourtRoles(deletedCourtRoles));
-            await dispatch(expireCourtRoles(deletedCourtRoles));
+            await dispatch(deleteCourtRoles(deletedCourtRoles));
         }
 
-        /* if (deletedCourtRoles.length > 0) {
-            await dispatch(deleteCourtRoles(deletedCourtRoles));
-        } */
+        if (expiredCourtRoles.length > 0) {
+            // await dispatch(deleteCourtRoles(deletedCourtRoles));
+            await dispatch(expireCourtRoles(expiredCourtRoles));
+        }
 
         if (courtRoles.length > 0) {
             await dispatch(createOrUpdateCourtRoles(courtRoles));
