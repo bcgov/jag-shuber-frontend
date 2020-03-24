@@ -39,12 +39,35 @@ export const customSortByLocationIsNull = (customSortFn: <P>(a: any, b: any) => 
     return (!aHasLocation && bHasLocation) ? -1 : (aHasLocation && !bHasLocation) ? 1 : 0;
 };
 
+export const customSortByFields = (fields: string[]) => {
+    return (a: any, b: any) => {
+        // tslint:disable-next-line:forin
+        for (let x in fields) {
+            let ax = a[fields[x].substring(1)];
+            let bx = b[fields[x].substring(1)];
+            let cx;
+
+            ax = typeof ax === 'string' ? ax.toLowerCase() : ax / 1;
+            bx = typeof bx === 'string' ? bx.toLowerCase() : bx / 1;
+
+            if (fields[x].substring(0, 1) === '-') { cx = ax; ax = bx; bx = cx; }
+            if (ax !== bx) {
+                return ax < bx ? -1 : 1;
+            }
+        }
+
+        return -1;
+    };
+};
+
 // Use this for default sort operations on codes (JIRA SS_15, SS-71)
 export class CodeSelector<P extends Code> extends EffectiveSelector<P> {
     constructor(
         mapSelector: ((state: any) => { [key: string]: P }),
         // Sort by code
         // sort: ((a: P, b: P) => number) = customSortByLocationIsNull(defaultSortByCode) // Curry this
+        // Sort by sort order
+        // sort: ((a: P, b: P) => number) = customSortByFields(['-locationId', '+sortOrder']) // Curry this
         // Sort by sort order
         sort: ((a: P, b: P) => number) = customSortByLocationIsNull(defaultSortBySortOrder) // Curry this
     ) {

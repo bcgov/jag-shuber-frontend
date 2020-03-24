@@ -246,16 +246,16 @@ export const allEffectiveRuns = allRunSelector.effective;
 
 export const getAllEscortRunTypes = (state: RootState) => {
     if (state) {
-        return allRuns(state)
-            .sort((a, b) => a.title.localeCompare(b.title));
+        return allRuns(state);
+            // .sort((a, b) => a.title.localeCompare(b.title));
     }
     return undefined;
 };
 
 export const getAllEffectiveEscortRunTypes = (state: RootState) => {
     if (state) {
-        return allRuns(state)
-            .sort((a, b) => a.title.localeCompare(b.title));
+        return allRuns(state);
+            // .sort((a, b) => a.title.localeCompare(b.title));
     }
     return undefined;
 };
