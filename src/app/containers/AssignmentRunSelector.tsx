@@ -30,9 +30,7 @@ class RunList extends React.PureComponent<
 
         runs.sort(sortByOrder);
 
-        const selectorValues = runs.map(run => ({
-            key: run.id, value: run.title
-        }));
+        const selectorValues = runs.map(run => ({ key: run.id, value: run.title }));
         return (
             <Selector {...restProps} data={selectorValues} />
         );

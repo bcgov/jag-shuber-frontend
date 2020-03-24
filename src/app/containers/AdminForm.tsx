@@ -122,7 +122,7 @@ const formConfig: ConfigProps<{}, AdminFormProps> = {
     enableReinitialize: true,
     validate: (values: any, { plugins = [] }) => {
         const validationErrors = plugins.reduce((errors, plugin) => {
-            const pluginValues = values[plugin.name];
+            const pluginValues = values[plugin.reduxFormKey];
             const pluginErrors = plugin.validate(pluginValues);
             if (pluginErrors) {
                 errors[plugin.name] = {...pluginErrors};
