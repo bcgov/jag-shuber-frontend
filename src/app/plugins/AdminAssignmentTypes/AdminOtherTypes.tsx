@@ -10,6 +10,7 @@ import {
     getAlternateAssignmentTypes,
     createOrUpdateAlternateAssignmentTypes,
     deleteAlternateAssignmentTypes,
+    expireAlternateAssignmentTypes,
     selectAdminOtherTypesPluginSection,
     setAdminOtherTypesPluginSubmitErrors,
     setAdminOtherTypesPluginFilters, setAdminCourtRolesPluginFilters
@@ -334,8 +335,12 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
         }
 
         if (deletedOtherTypes.length > 0) {
-            await dispatch(deleteAlternateAssignmentTypes(deletedOtherTypes));
+            await dispatch(expireAlternateAssignmentTypes(deletedOtherTypes));
         }
+
+        /* if (deletedOtherTypes.length > 0) {
+            await dispatch(deleteAlternateAssignmentTypes(deletedOtherTypes));
+        } */
 
         if (otherTypes.length > 0) {
             await dispatch(createOrUpdateAlternateAssignmentTypes(otherTypes));

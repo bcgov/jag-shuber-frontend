@@ -50,6 +50,31 @@ class CreateOrUpdateEscortRunsRequest extends CreateOrUpdateEntitiesRequest<Esco
 
 export const createOrUpdateEscortRunsRequest = new CreateOrUpdateEscortRunsRequest();
 
+class ExpireEscortRunsRequest extends RequestAction<IdType[], IdType[], AssignmentModuleState> {
+    constructor() {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'expireEscortRuns',
+            toasts: {
+                success: (ids) => `${ids.length} escort run type(s) expired`,
+                error: (err) => `Problem encountered while expiring escort run types: ${err ? err.toString() : 'Unknown Error'}`
+            }
+        });
+    }
+    public async doWork(request: IdType[], { api }: ThunkExtra): Promise<IdType[]> {
+        await api.expireEscortRuns(request);
+        return request;
+    }
+
+    setRequestData(moduleState: AssignmentModuleState, escortRunIds: IdType[]) {
+        const newMap = { ...runMapRequest.getRequestData(moduleState) };
+        escortRunIds.forEach(id => delete newMap[id]);
+        return runMapRequest.setRequestData(moduleState, newMap);
+    }
+}
+
+export const expireEscortRunsRequest = new ExpireEscortRunsRequest();
+
 class DeleteEscortRunsRequest extends RequestAction<IdType[], IdType[], AssignmentModuleState> {
     constructor() {
         super({

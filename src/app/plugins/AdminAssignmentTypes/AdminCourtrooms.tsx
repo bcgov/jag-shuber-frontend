@@ -10,6 +10,7 @@ import {
     getCourtrooms,
     createOrUpdateCourtrooms,
     deleteCourtrooms,
+    expireCourtrooms,
     selectAdminCourtroomsPluginSection,
     setAdminCourtroomsPluginSubmitErrors,
     setAdminCourtroomsPluginFilters, setAdminCourtRolesPluginFilters
@@ -136,8 +137,8 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
             if (setPluginFilters) {
                 // console.log('reset plugin filters');
                 setPluginFilters({
-                    courtroomss: {}
-                }, setAdminRolesPluginFilters);
+                    courtrooms: {}
+                }, setAdminCourtroomsPluginFilters);
             }
         };
 
@@ -295,8 +296,11 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
         }
 
         if (deletedCourtrooms.length > 0) {
-            await dispatch(deleteCourtrooms(deletedCourtrooms));
+            await dispatch(expireCourtrooms(deletedCourtrooms));
         }
+        /* if (deletedCourtrooms.length > 0) {
+            await dispatch(deleteCourtrooms(deletedCourtrooms));
+        } */
 
         if (courtrooms.length > 0) {
             await dispatch(createOrUpdateCourtrooms(courtrooms));

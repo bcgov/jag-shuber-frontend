@@ -50,6 +50,31 @@ class CreateOrUpdateJailRolesRequest extends CreateOrUpdateEntitiesRequest<JailR
 
 export const createOrUpdateJailRolesRequest = new CreateOrUpdateJailRolesRequest();
 
+class ExpireJailRolesRequest extends RequestAction<IdType[], IdType[], AssignmentModuleState> {
+    constructor() {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'expireJailRoles',
+            toasts: {
+                success: (ids) => `${ids.length} jail role(s) expired`,
+                error: (err) => `Problem encountered while expiring jail roles: ${err ? err.toString() : 'Unknown Error'}`
+            }
+        });
+    }
+    public async doWork(request: IdType[], { api }: ThunkExtra): Promise<IdType[]> {
+        await api.expireJailRoles(request);
+        return request;
+    }
+
+    setRequestData(moduleState: AssignmentModuleState, jailRoleIds: IdType[]) {
+        const newMap = { ...jailRoleMapRequest.getRequestData(moduleState) };
+        jailRoleIds.forEach(id => delete newMap[id]);
+        return jailRoleMapRequest.setRequestData(moduleState, newMap);
+    }
+}
+
+export const expireJailRolesRequest = new ExpireJailRolesRequest();
+
 class DeleteJailRolesRequest extends RequestAction<IdType[], IdType[], AssignmentModuleState> {
     constructor() {
         super({

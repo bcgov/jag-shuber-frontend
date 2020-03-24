@@ -10,6 +10,7 @@ import {
     getCourtRoles,
     createOrUpdateCourtRoles,
     deleteCourtRoles,
+    expireCourtRoles,
     selectAdminCourtRolesPluginSection,
     setAdminCourtRolesPluginSubmitErrors,
     setAdminCourtRolesPluginFilters
@@ -336,8 +337,13 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
         }
 
         if (deletedCourtRoles.length > 0) {
-            await dispatch(deleteCourtRoles(deletedCourtRoles));
+            // await dispatch(deleteCourtRoles(deletedCourtRoles));
+            await dispatch(expireCourtRoles(deletedCourtRoles));
         }
+
+        /* if (deletedCourtRoles.length > 0) {
+            await dispatch(deleteCourtRoles(deletedCourtRoles));
+        } */
 
         if (courtRoles.length > 0) {
             await dispatch(createOrUpdateCourtRoles(courtRoles));
