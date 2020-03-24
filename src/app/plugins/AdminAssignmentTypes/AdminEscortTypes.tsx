@@ -311,8 +311,28 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
         };
     }
 
+    mapExpiredFromFormValues(map: any) {
+        const expiredEscortTypeIds: IdType[] = [];
+
+        if (map.escortTypes) {
+            const initialValues = map.escortTypes.initialValues;
+            const existingIds = map.escortTypes.values.map((val: any) => val.id);
+
+            const escortTypeIds = initialValues
+                .filter((val: any) => (existingIds.indexOf(val.id) === -1))
+                .map((val: any) => val.id);
+
+            expiredEscortTypeIds.push(...escortTypeIds);
+        }
+
+        return {
+            escortTypes: expiredEscortTypeIds
+        };
+    }
+
     async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>) {
         const data: any = this.getDataFromFormValues(formValues, initialValues);
+        const dataToExpire: any = this.getDataToExpireFromFormValues(formValues, initialValues) || {};
         const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
 
         // Grab the currentLocation off of the formValues.assignments object
@@ -320,6 +340,9 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
 
         // Delete records before saving new ones!
         const deletedEscortTypes: IdType[] = dataToDelete.escortTypes as IdType[];
+
+        // Expire records before saving new ones!
+        const expiredEscortTypes: IdType[] = dataToExpire.escortTypes as IdType[];
 
         let escortTypes: Partial<EscortType>[];
         escortTypes = data.escortTypes.map((c: Partial<EscortType>) => ({
@@ -343,12 +366,12 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
         }
 
         if (deletedEscortTypes.length > 0) {
-            await dispatch(expireEscortTypes(deletedEscortTypes));
+            await dispatch(deleteEscortTypes(deletedEscortTypes));
         }
 
-        /* if (deletedEscortTypes.length > 0) {
-            await dispatch(deleteEscortTypes(deletedEscortTypes));
-        } */
+        if (expiredEscortTypes.length > 0) {
+            await dispatch(expireEscortTypes(expiredEscortTypes));
+        }
 
         if (escortTypes.length > 0) {
             await dispatch(createOrUpdateEscortTypes(escortTypes));
