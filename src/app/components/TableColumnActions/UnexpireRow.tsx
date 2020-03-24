@@ -3,10 +3,22 @@ import { Button, Glyphicon } from 'react-bootstrap';
 
 import { TableColumnActionProps } from './index';
 
-const UnexpireRow = ({ fields, index , showComponent = false }: TableColumnActionProps) => {
+const UnexpireRow = ({ model, onClick, fields, index , showComponent = false }: TableColumnActionProps) => {
     if (!showComponent) return null;
+    const handleClick = () => {
+        if (onClick && model) onClick(model);
+
+        const row: any = fields.get(index);
+        if (row.hasOwnProperty('isExpired')) {
+            row.isExpired = false;
+        }
+
+        fields.remove(index);
+        fields.insert(index, row);
+    };
+
     return (
-        <Button bsStyle="info" onClick={() => null}>
+        <Button bsStyle="info" onClick={handleClick}>
             <Glyphicon glyph="repeat" />
         </Button>
     );
