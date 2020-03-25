@@ -51,11 +51,12 @@ export default (props: any) => {
                     <Tab.Content animation={false}>
                         <Tab.Pane key={'ADMIN_PLUGIN_COURTROOMS:ADMIN_PLUGIN_COURT_ROLES'} eventKey={'ADMIN_PLUGIN_COURTROOMS:ADMIN_PLUGIN_COURT_ROLES'}>
                             <Row className="clearfix">
-                                <Col sm={12} lg={7}>
+                                {/* Use className, react-bootstrap doesn't support xl cols */}
+                                <Col sm={12} className="col-xl-7">
                                     <PageTitle title={({ currentLocationName }: any) => `${currentLocationName} Court Roles`} />
                                     {courtRolesPlugin && renderPlugin(courtRolesPlugin)}
                                 </Col>
-                                <Col sm={12} lg={5}>
+                                <Col sm={12} className="col-xl-5">
                                     <PageTitle title={({ currentLocationName }: any) => `${currentLocationName} Courtrooms`} />
                                     {courtroomsPlugin && renderPlugin(courtroomsPlugin)}
                                 </Col>
