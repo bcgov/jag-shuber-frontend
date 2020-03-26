@@ -1066,3 +1066,9 @@ tr.mark-as-deleted td:not(:first-child) {
     position: absolute;
   }
 }
+
+/* Toggle */
+.react-toggle-track {
+    color: white;
+}
+

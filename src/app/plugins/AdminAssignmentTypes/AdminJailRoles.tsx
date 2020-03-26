@@ -76,9 +76,11 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
         jailRoles: 'assignments.jailRoles'
     };
     title: string = ' Jail Roles';
+    pluginFiltersAreSet = false;
+    showExpired = false;
 
     FormComponent = (props: FormContainerProps<AdminJailRolesProps>) => {
-        const { getPluginPermissions } = props;
+        const { getPluginPermissions, setPluginFilters } = props;
         const { grantAll, permissions } = buildPluginPermissions(getPluginPermissions);
 
         // We can't use React hooks yet, and not sure if this project will ever be upgraded to 16.8
@@ -89,7 +91,6 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
         const loc = currentLocation;
 
         const onFilterLocation = (event: Event, newValue: any) => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
                 setPluginFilters({
                     jailRoles: {
@@ -100,7 +101,6 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
         };
 
         const onFilterJailRole = (event: Event, newValue: any, previousValue: any, name: string) => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
                 setPluginFilters({
                     jailRoles: {
@@ -111,7 +111,6 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
         };
 
         const onFilterJailRoleCode = (event: Event, newValue: any, previousValue: any, name: string) => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
                 setPluginFilters({
                     jailRoles: {
@@ -122,7 +121,6 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
         };
 
         const onFilterJailRoleScope = (event: Event, newValue: any, previousValue: any, name: string) => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
                 setPluginFilters({
                     jailRoles: {
@@ -133,25 +131,19 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
         };
 
         const onToggleExpiredClicked = () => {
-            const { setPluginFilters, pluginFilters } = props;
             if (setPluginFilters) {
-                // console.log('reset plugin filters');
-                const isExpired = (pluginFilters)
-                    ? pluginFilters.isExpired
-                    : false;
+                this.showExpired = !this.showExpired;
 
                 setPluginFilters({
                     jailRoles: {
-                        isExpired: isExpired || false
+                        isExpired: this.showExpired
                     }
                 }, setAdminJailRolesPluginFilters);
             }
         };
 
         const onResetFilters = () => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
-                // console.log('reset plugin filters');
                 setPluginFilters({
                     jailRoles: {}
                 }, setAdminJailRolesPluginFilters);
@@ -267,7 +259,7 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
             : getAllEffectiveJailRoles(state) || []; */
         const jailRoles = (filters && filters.jailRoles !== undefined)
             ? findAllJailRoles(filters.jailRoles)(state) || []
-            : getAllJailRoles(state) || [];
+            : getAllEffectiveJailRoles(state) || [];
 
         const jailRolesArray: any[] = jailRoles.map((role: any) => {
             return Object.assign({ isProvincialCode: (role.locationId === null) ? 1 : 0 }, role);
