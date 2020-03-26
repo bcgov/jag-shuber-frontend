@@ -79,7 +79,7 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
         escortTypes: 'assignments.escortTypes'
     };
     title: string = ' Escort Runs';
-    pluginFiltersAreSet = false;
+    // pluginFiltersAreSet = false;
     showExpired = false;
 
     FormComponent = (props: FormContainerProps<AdminEscortTypesProps>) => {

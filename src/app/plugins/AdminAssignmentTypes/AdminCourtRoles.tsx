@@ -75,7 +75,7 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
         courtRoles: 'assignments.courtRoles'
     };
     title: string = ' Court Roles';
-    pluginFiltersAreSet = false;
+    // pluginFiltersAreSet = false;
     showExpired = false;
 
     FormComponent = (props: FormContainerProps<AdminCourtRolesProps>) => {
@@ -360,12 +360,10 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
         }
 
         if (expiredCourtRoles.length > 0) {
-            // await dispatch(deleteCourtRoles(deletedCourtRoles));
             await dispatch(expireCourtRoles(expiredCourtRoles));
         }
 
         if (unexpiredCourtRoles.length > 0) {
-            // await dispatch(deleteCourtRoles(deletedCourtRoles));
             await dispatch(unexpireCourtRoles(unexpiredCourtRoles));
         }
 
