@@ -179,16 +179,24 @@ export const allEffectiveCourtrooms = courtroomSelector.effective;
 
 export const getAllCourtrooms = (state: RootState) => {
     if (state) {
-        return allCourtrooms(state)
-            .sort((a, b) => a.code.localeCompare(b.code));
+        return allCourtrooms(state);
+            // .sort((a, b) => a.code.localeCompare(b.code));
+    }
+    return undefined;
+};
+
+export const getAllEffectiveCourtrooms = (state: RootState) => {
+    if (state) {
+        return allEffectiveCourtrooms()(state);
+            // .sort((a, b) => a.code.localeCompare(b.code));
     }
     return undefined;
 };
 
 export const findAllCourtrooms = (filters: any) => (state: RootState) => {
     if (state) {
-        let courtrooms = allCourtrooms(state)
-            .sort((a, b) => a.code.localeCompare(b.code));
+        let courtrooms = allCourtrooms(state);
+            // .sort((a, b) => a.code.localeCompare(b.code));
 
         return selectorFunctions.filterByKeys(courtrooms, filters);
 

@@ -79,9 +79,11 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
         escortTypes: 'assignments.escortTypes'
     };
     title: string = ' Escort Runs';
+    pluginFiltersAreSet = false;
+    showExpired = false;
 
     FormComponent = (props: FormContainerProps<AdminEscortTypesProps>) => {
-        const { getPluginPermissions } = props;
+        const { getPluginPermissions, setPluginFilters } = props;
         const { grantAll, permissions } = buildPluginPermissions(getPluginPermissions);
 
         // We can't use React hooks yet, and not sure if this project will ever be upgraded to 16.8
@@ -92,7 +94,6 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
         const loc = currentLocation;
 
         const onFilterLocation = (event: Event, newValue: any) => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
                 setPluginFilters({
                     escortTypes: {
@@ -103,7 +104,6 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
         };
 
         const onFilterEscortType = (event: Event, newValue: any, previousValue: any, name: string) => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
                 setPluginFilters({
                     escortTypes: {
@@ -114,7 +114,6 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
         };
 
         const onFilterEscortTypeCode = (event: Event, newValue: any, previousValue: any, name: string) => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
                 setPluginFilters({
                     escortTypes: {
@@ -125,7 +124,6 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
         };
 
         const onFilterEscortTypeScope = (event: Event, newValue: any, previousValue: any, name: string) => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
                 setPluginFilters({
                     escortTypes: {
@@ -136,23 +134,18 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
         };
 
         const onToggleExpiredClicked = () => {
-            const { setPluginFilters, pluginFilters } = props;
             if (setPluginFilters) {
-                // console.log('reset plugin filters');
-                const isExpired = (pluginFilters)
-                    ? pluginFilters.isExpired
-                    : false;
+                this.showExpired = !this.showExpired;
 
                 setPluginFilters({
                     escortTypes: {
-                        isExpired: isExpired || false
+                        isExpired: this.showExpired
                     }
                 }, setAdminEscortTypesPluginFilters);
             }
         };
 
         const onResetFilters = () => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
                 // console.log('reset plugin filters');
                 setPluginFilters({
@@ -280,7 +273,7 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
             : getAllEffectiveEscortRunTypes(state) || []; */
         const escortTypes = (filters && filters.escortTypes !== undefined)
             ? findAllEscortRunTypes(filters.escortTypes)(state) || []
-            : getAllEscortRunTypes(state) || [];
+            : getAllEffectiveEscortRunTypes(state) || [];
 
         const escortTypesArray: any[] = escortTypes.map((type: any) => {
             return Object.assign({ isProvincialCode: (type.locationId === null) ? 1 : 0 }, type);

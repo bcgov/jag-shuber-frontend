@@ -75,9 +75,11 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
         courtRoles: 'assignments.courtRoles'
     };
     title: string = ' Court Roles';
+    pluginFiltersAreSet = false;
+    showExpired = false;
 
     FormComponent = (props: FormContainerProps<AdminCourtRolesProps>) => {
-        const { getPluginPermissions } = props;
+        const { getPluginPermissions, setPluginFilters } = props;
         const { grantAll, permissions } = buildPluginPermissions(getPluginPermissions);
 
         // We can't use React hooks yet, and not sure if this project will ever be upgraded to 16.8
@@ -88,7 +90,6 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
         const loc = currentLocation;
 
         const onFilterLocation = (event: Event, newValue: any) => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
                 setPluginFilters({
                     courtRoles: {
@@ -99,7 +100,6 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
         };
 
         const onFilterCourtRole = (event: Event, newValue: any, previousValue: any, name: string) => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
                 setPluginFilters({
                     courtRoles: {
@@ -110,7 +110,6 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
         };
 
         const onFilterCourtRoleCode = (event: Event, newValue: any, previousValue: any, name: string) => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
                 setPluginFilters({
                     courtRoles: {
@@ -121,7 +120,6 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
         };
 
         const onFilterCourtRoleScope = (event: Event, newValue: any, previousValue: any, name: string) => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
                 setPluginFilters({
                     courtRoles: {
@@ -132,25 +130,19 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
         };
 
         const onToggleExpiredClicked = () => {
-            const { setPluginFilters, pluginFilters } = props;
             if (setPluginFilters) {
-                // console.log('reset plugin filters');
-                const isExpired = (pluginFilters)
-                    ? pluginFilters.isExpired
-                    : false;
+                this.showExpired = !this.showExpired;
 
                 setPluginFilters({
                     courtRoles: {
-                        isExpired: isExpired || false
+                        isExpired: this.showExpired
                     }
                 }, setAdminCourtRolesPluginFilters);
             }
         };
 
         const onResetFilters = () => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
-                // console.log('reset plugin filters');
                 setPluginFilters({
                     courtRoles: {}
                 }, setAdminCourtRolesPluginFilters);
@@ -268,7 +260,7 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
             : getAllEffectiveCourtRoles(state) || []; */
         const courtRoles = (filters && filters.courtRoles !== undefined)
             ? findAllCourtRoles(filters.courtRoles)(state) || []
-            : getAllCourtRoles(state) || [];
+            : getAllEffectiveCourtRoles(state) || [];
 
         const courtRolesArray: any[] = courtRoles.map((role: any) => {
             return Object.assign({ isProvincialCode: (role.locationId === null) ? 1 : 0 }, role);
