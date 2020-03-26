@@ -76,7 +76,7 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
         otherTypes: 'assignments.otherTypes'
     };
     title: string = ' Other Assignments';
-    pluginFiltersAreSet = false;
+    // pluginFiltersAreSet = false;
     showExpired = false;
 
     FormComponent = (props: FormContainerProps<AdminOtherTypesProps>) => {

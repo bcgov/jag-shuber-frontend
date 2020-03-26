@@ -122,11 +122,11 @@ export const getSheriffFullDayTrainingLeaves = (sheriffId?: IdType) => (state: R
 };
 
 export const getActiveSheriffPartialLeaves = (sheriffId?: IdType) => (state: RootState) => {
-    return getAllSheriffPartialLeaves(sheriffId)(state).filter(l => l.cancelDate == undefined);
+    return getAllSheriffPartialLeaves(sheriffId)(state).filter(l => !l.cancelDate);
 };
 
 export const getActiveSheriffFullDayLeaves = (sheriffId?: IdType) => (state: RootState) => {
-    return getAllSheriffFullDayLeaves(sheriffId)(state).filter(l => l.cancelDate == undefined);
+    return getAllSheriffFullDayLeaves(sheriffId)(state).filter(l => !l.cancelDate);
 };
 
 // Leave Cancel Reason Codes
@@ -156,11 +156,11 @@ export const getAllPersonalLeaveSubCodes = createSelector(
     }
 );
 
-export const allEffectivePersonalLeaveSubCodes = (date?: DateType) => (state: RootState) => {
+export const getAllEffectivePersonalLeaveSubCodes = (date?: DateType) => (state: RootState) => {
     const allPersonalLeaveCodes = getAllPersonalLeaveSubCodes(state);
     if (allPersonalLeaveCodes) {
         return allPersonalLeaveCodes
-            .filter(pl => pl.expiryDate === undefined || moment(pl.expiryDate).isAfter(moment(date)));
+            .filter(pl => !pl.expiryDate || moment(pl.expiryDate).isAfter(moment(date)));
     }
     return [];
 };
@@ -174,11 +174,11 @@ export const getAllTrainingLeaveSubCodes = createSelector(
     }
 );
 
-export const allEffectiveTrainingLeaveSubCodes = (date?: DateType) => (state: RootState) => {
+export const getAllEffectiveTrainingLeaveSubCodes = (date?: DateType) => (state: RootState) => {
     const allTrainingLeaveCodes = getAllTrainingLeaveSubCodes(state);
     if (allTrainingLeaveCodes) {
         return allTrainingLeaveCodes
-            .filter(pl => pl.expiryDate == undefined || moment(pl.expiryDate).isAfter(moment(date)));
+            .filter(pl => !pl.expiryDate || moment(pl.expiryDate).isAfter(moment(date)));
     }
     return [];
 };

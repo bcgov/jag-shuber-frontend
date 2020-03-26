@@ -11,11 +11,13 @@ import { RootState } from '../../store';
 import {
     getLeaveSubCodes,
     createOrUpdateLeaveSubCodes,
-    deleteLeaveSubCodes
+    deleteLeaveSubCodes,
+    setAdminTrainingTypesPluginFilters
 } from '../../modules/leaves/actions';
 
 import {
-    getAllTrainingLeaveSubCodes as getAllLeaveSubCodes
+    getAllTrainingLeaveSubCodes,
+    getAllEffectiveTrainingLeaveSubCodes
 } from '../../modules/leaves/selectors';
 
 import { IdType, LeaveSubCode } from '../../api';
@@ -31,6 +33,8 @@ import DeleteRow from '../../components/TableColumnActions/DeleteRow';
 import ExpireRow from '../../components/TableColumnActions/ExpireRow';
 import { ActionProps } from '../../components/TableColumnCell/Actions';
 import { buildPluginPermissions } from '../permissionUtils';
+import RemoveRow from '../../components/TableColumnActions/RemoveRow';
+import UnexpireRow from '../../components/TableColumnActions/UnexpireRow';
 
 export interface AdminTrainingTypesProps extends FormContainerProps {
     leaveTypes?: any[];
@@ -62,72 +66,134 @@ export default class AdminTrainingTypes extends FormContainerBase<AdminTrainingT
         trainingLeaveTypes: 'leaves.trainingLeaveTypes'
     };
     title: string = ' Training Leave Types';
+    // pluginFiltersAreSet = false;
+    showExpired = false;
 
     FormComponent = (props: FormContainerProps<AdminTrainingTypesProps>) => {
-        const { getPluginPermissions } = props;
+        const { getPluginPermissions, setPluginFilters } = props;
         const { grantAll, permissions } = buildPluginPermissions(getPluginPermissions);
 
+        // We can't use React hooks yet, and not sure if this project will ever be upgraded to 16.8
+        // This is a quick n' dirty way to achieve the same thing
+        let dataTableInstance: any;
+
         const onFilterSubCode = (event: Event, newValue: any, previousValue: any, name: string) => {
-            const { setPluginFilters } = props;
+            if (setPluginFilters) {
+                setPluginFilters({
+                    leaves: {
+                        description: newValue
+                    }
+                }, setAdminTrainingTypesPluginFilters);
+            }
+        };
+
+        const onFilterSubCodeCode = (event: Event, newValue: any, previousValue: any, name: string) => {
             if (setPluginFilters) {
                 setPluginFilters({
                     leaves: {
                         subCode: newValue
                     }
-                });
+                }, setAdminTrainingTypesPluginFilters);
             }
         };
 
-        const onFilterEffectiveDate = (event: Event, newValue: any, previousValue: any, name: string) => {
-            const { setPluginFilters } = props;
+        /* const onFilterEffectiveDate = (event: Event, newValue: any, previousValue: any, name: string) => {
             if (setPluginFilters) {
                 setPluginFilters({
                     leaves: {
                         effectiveDate: newValue
                     }
-                });
+                }, setAdminTrainingTypesPluginFilters;
             }
         };
 
         const onFilterExpiryDate = (event: Event, newValue: any, previousValue: any, name: string) => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
                 setPluginFilters({
                     leaves: {
                         expiryDate: newValue
                     }
-                });
+                }, setAdminTrainingTypesPluginFilters);
+            }
+        }; */
+
+        const onToggleExpiredClicked = () => {
+            if (setPluginFilters) {
+                this.showExpired = !this.showExpired;
+
+                setPluginFilters({
+                    leaves: {
+                        isExpired: this.showExpired
+                    }
+                }, setAdminTrainingTypesPluginFilters);
+            }
+        };
+
+        const onResetFilters = () => {
+            if (setPluginFilters) {
+                setPluginFilters({
+                    leaves: {}
+                }, setAdminTrainingTypesPluginFilters);
             }
         };
 
         const trainingTypeActions = [
-            ({ fields, index, model }) => { return (model && model.id) ? (<ExpireRow fields={fields} index={index} model={model} showComponent={true} />) : null; },
-            ({ fields, index, model }) => <DeleteRow fields={fields} index={index} model={model} showComponent={grantAll} />,
+            ({ fields, index, model }) => {
+                return (model && !model.id || model && model.id === '')
+                    ? (<RemoveRow fields={fields} index={index} model={model} showComponent={true} />)
+                    : null;
+            },
+            ({ fields, index, model }) => {
+                return (model && model.id && model.id !== '' && !model.isExpired)
+                    ? (<ExpireRow fields={fields} index={index} model={model} showComponent={true} onClick={() => dataTableInstance.forceUpdate()} />)
+                    : (model && model.isExpired)
+                    ? (<UnexpireRow fields={fields} index={index} model={model} showComponent={true} onClick={() => dataTableInstance.forceUpdate()} />)
+                    : null;
+            },
+            ({ fields, index, model }) => {
+                return (model && model.id && model.id !== '')
+                    ? (<DeleteRow fields={fields} index={index} model={model} showComponent={grantAll} />)
+                    : null;
+            }
         ] as React.ReactType<ActionProps>[];
 
         return (
             <div>
                 <DataTable
+                    ref={(dt) => dataTableInstance = dt}
                     fieldName={this.formFieldNames.trainingLeaveTypes}
                     filterFieldName={(this.filterFieldNames) ? `${this.filterFieldNames.trainingLeaveTypes}` : undefined}
                     title={''} // Leave this blank
                     buttonLabel={'Add Training Type'}
+                    // TODO: Only display if the user has appropriate permissions
+                    displayHeaderActions={true}
+                    onResetClicked={onResetFilters}
+                    onToggleExpiredClicked={onToggleExpiredClicked}
+                    displayActionsColumn={true}
                     actionsColumn={DataTable.ActionsColumn({
                         actions: trainingTypeActions
                     })}
                     columns={[
                         DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false }),
-                        DataTable.TextFieldColumn('Code', { fieldName: 'subCode', colStyle: { width: '15%' }, displayInfo: true, filterable: true, filterColumn: onFilterSubCode }),
-                        DataTable.TextFieldColumn('Description', { fieldName: 'description', colStyle: { width: '25%' }, displayInfo: false }),
-                        DataTable.DateColumn('Effective Date', 'effectiveDate', { colStyle: { width: '15%'}, displayInfo: true, filterable: true, filterColumn: onFilterEffectiveDate }),
-                        DataTable.DateColumn('Expiry Date', 'expiryDate', { colStyle: { width: '15%'}, displayInfo: true, filterable: true, filterColumn: onFilterExpiryDate })
+                        DataTable.TextFieldColumn('Type', { fieldName: 'description', colStyle: { width: '25%' }, displayInfo: false, filterable: true, filterColumn: onFilterSubCode }),
+                        DataTable.TextFieldColumn('Code', { fieldName: 'subCode', colStyle: { width: '15%' }, displayInfo: true, filterable: true, filterColumn: onFilterSubCodeCode }),
+                        // DataTable.DateColumn('Effective Date', 'effectiveDate', { colStyle: { width: '15%'}, displayInfo: true, filterable: true, filterColumn: onFilterEffectiveDate }),
+                        // DataTable.DateColumn('Expiry Date', 'expiryDate', { colStyle: { width: '15%'}, displayInfo: true, filterable: true, filterColumn: onFilterExpiryDate })
                     ]}
-                    filterable={false}
+                    filterable={true}
                     expandable={false}
                     // expandedRows={[1, 2]}
+                    // TODO: Only display if the user has appropriate permissions
+                    shouldDisableRow={(model) => {
+                        // TODO: Only disable if the user doesn't have permission to edit provincial codes
+                        return false;
+                        // return (!model) ? false : (model && model.id) ? model.isProvincialCode : false;
+                    }}
+                    shouldMarkRowAsDeleted={(model) => {
+                        return model.isExpired;
+                    }}
                     rowComponent={EmptyDetailRow}
                     modalComponent={EmptyDetailRow}
-                    displayHeaderActions={true}
                 />
             </div>
         );
@@ -154,8 +220,10 @@ export default class AdminTrainingTypes extends FormContainerBase<AdminTrainingT
         // console.log(filterData);
 
         // Get form data
-        // TODO: Depending on component state, some of these calls will need to be filtered!
-        const leaveTypes = getAllLeaveSubCodes(state) || undefined;
+        const leaveTypes = (filters && filters.leaveTypes !== undefined)
+            // ? getAllTrainingLeaveSubCodes(filters.leaveTypes)(state) || []
+            ? getAllTrainingLeaveSubCodes(state) || []
+            : getAllEffectiveTrainingLeaveSubCodes()(state) || [];
 
         const leaveTypesArray: any[] = [];
         // TODO: Maybe this should go in the selector or something instead? Not sure...
@@ -200,12 +268,37 @@ export default class AdminTrainingTypes extends FormContainerBase<AdminTrainingT
         };
     }
 
+    mapExpiredFromFormValues(map: any, isExpired?: boolean) {
+        isExpired = isExpired || false;
+        const expiredLeaveTypeIds: IdType[] = [];
+
+        if (map.trainingLeaveTypes) {
+            const initialValues = map.trainingLeaveTypes.initialValues;
+
+            const courtRoleIds = initialValues
+                .filter((val: any) => val.isExpired === isExpired)
+                .map((val: any) => val.id);
+
+            expiredLeaveTypeIds.push(...courtRoleIds);
+        }
+
+        return {
+            trainingLeaveTypes: expiredLeaveTypeIds
+        };
+    }
+
     async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>) {
         const data: any = this.getDataFromFormValues(formValues, initialValues);
+        const dataToExpire: any = this.getDataToExpireFromFormValues(formValues, initialValues, true) || {};
+        const dataToUnexpire: any = this.getDataToExpireFromFormValues(formValues, initialValues, false) || {};
         const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
 
         // Delete records before saving new ones!
         const deletedLeaveTypes: IdType[] = dataToDelete.trainingLeaveTypes as IdType[];
+
+        // Expire records before saving new ones!
+        const expiredLeaveTypes: IdType[] = dataToExpire.trainingLeaveTypes as IdType[];
+        const unexpiredLeaveTypes: IdType[] = dataToUnexpire.trainingLeaveTypes as IdType[];
 
         const leaveTypes: Partial<LeaveSubCode>[] = data.trainingLeaveTypes.map((c: LeaveSubCode) => ({
             // ...c, // Don't just spread the operator, we need to replace the id GUID used on client side with a code
@@ -226,6 +319,14 @@ export default class AdminTrainingTypes extends FormContainerBase<AdminTrainingT
 
         if (deletedLeaveTypes.length > 0) {
             await dispatch(deleteLeaveSubCodes(deletedLeaveTypes));
+        }
+
+        if (expiredLeaveTypes.length > 0) {
+            await dispatch(deleteLeaveSubCodes(expiredLeaveTypes));
+        }
+
+        if (unexpiredLeaveTypes.length > 0) {
+            await dispatch(deleteLeaveSubCodes(unexpiredLeaveTypes));
         }
 
         if (leaveTypes.length > 0) {

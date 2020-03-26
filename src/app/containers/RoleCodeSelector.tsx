@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
-import { allEffectiveTrainingLeaveSubCodes } from '../modules/leaves/selectors';
+import { getAllEffectiveTrainingLeaveSubCodes } from '../modules/leaves/selectors';
 import Selector, { SelectorProps } from '../components/FormElements/Selector';
 import { LeaveSubCode } from '../api/Api';
 
@@ -27,7 +27,7 @@ class RoleCodeSelector extends React.PureComponent<
 
 const mapStateToProps = (state: RootState) => {
     return {
-        roleCodes: allEffectiveTrainingLeaveSubCodes()(state)
+        roleCodes: getAllEffectiveTrainingLeaveSubCodes()(state)
     };
 };
 
