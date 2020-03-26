@@ -14,7 +14,7 @@ import {
     unexpireAlternateAssignmentTypes,
     selectAdminOtherTypesPluginSection,
     setAdminOtherTypesPluginSubmitErrors,
-    setAdminOtherTypesPluginFilters, setAdminCourtRolesPluginFilters
+    setAdminOtherTypesPluginFilters, setAdminCourtRolesPluginFilters, setAdminCourtroomsPluginFilters
 } from '../../modules/assignments/actions';
 
 import {
@@ -76,9 +76,11 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
         otherTypes: 'assignments.otherTypes'
     };
     title: string = ' Other Assignments';
+    pluginFiltersAreSet = false;
+    showExpired = false;
 
     FormComponent = (props: FormContainerProps<AdminOtherTypesProps>) => {
-        const { getPluginPermissions } = props;
+        const { getPluginPermissions, setPluginFilters } = props;
         const { grantAll, permissions } = buildPluginPermissions(getPluginPermissions);
 
         // We can't use React hooks yet, and not sure if this project will ever be upgraded to 16.8
@@ -89,7 +91,6 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
         const loc = currentLocation;
 
         const onFilterLocation = (event: Event, newValue: any) => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
                 setPluginFilters({
                     otherTypes: {
@@ -100,7 +101,6 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
         };
 
         const onFilterOtherType = (event: Event, newValue: any, previousValue: any, name: string) => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
                 setPluginFilters({
                     otherTypes: {
@@ -111,7 +111,6 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
         };
 
         const onFilterOtherTypeCode = (event: Event, newValue: any, previousValue: any, name: string) => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
                 setPluginFilters({
                     otherTypes: {
@@ -122,7 +121,6 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
         };
 
         const onFilterOtherTypeScope = (event: Event, newValue: any, previousValue: any, name: string) => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
                 setPluginFilters({
                     otherTypes: {
@@ -133,23 +131,18 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
         };
 
         const onToggleExpiredClicked = () => {
-            const { setPluginFilters, pluginFilters } = props;
             if (setPluginFilters) {
-                // console.log('reset plugin filters');
-                const isExpired = (pluginFilters)
-                    ? pluginFilters.isExpired
-                    : false;
+                this.showExpired = !this.showExpired;
 
                 setPluginFilters({
                     otherTypes: {
-                        isExpired: isExpired || false
+                        isExpired: this.showExpired
                     }
                 }, setAdminOtherTypesPluginFilters);
             }
         };
 
         const onResetFilters = () => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
                 // console.log('reset plugin filters');
                 setPluginFilters({
@@ -269,7 +262,7 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
             : getAllEffectiveOtherTypes(state) || []; */
         const otherTypes = (filters && filters.otherTypes !== undefined)
             ? findAllOtherTypes(filters.otherTypes)(state) || []
-            : getAllOtherTypes(state) || [];
+            : getAllEffectiveOtherTypes(state) || [];
 
         const otherTypesArray: any[] = otherTypes.map((type: any) => {
             return Object.assign({ isProvincialCode: (type.locationId === null) ? 1 : 0 }, type);

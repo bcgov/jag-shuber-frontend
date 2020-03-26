@@ -14,11 +14,12 @@ import {
     unexpireCourtrooms,
     selectAdminCourtroomsPluginSection,
     setAdminCourtroomsPluginSubmitErrors,
-    setAdminCourtroomsPluginFilters, setAdminCourtRolesPluginFilters
+    setAdminCourtroomsPluginFilters
 } from '../../modules/assignments/actions';
 
 import {
     getAllCourtrooms,
+    getAllEffectiveCourtrooms,
     findAllCourtrooms
 } from '../../modules/assignments/selectors';
 
@@ -76,9 +77,11 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
         courtrooms: 'assignments.courtrooms'
     };
     title: string = ' Courtrooms';
+    pluginFiltersAreSet = false;
+    showExpired = false;
 
     FormComponent = (props: FormContainerProps<AdminCourtroomsProps>) => {
-        const { getPluginPermissions } = props;
+        const { getPluginPermissions, setPluginFilters } = props;
         const { grantAll, permissions } = buildPluginPermissions(getPluginPermissions);
 
         // We can't use React hooks yet, and not sure if this project will ever be upgraded to 16.8
@@ -89,7 +92,6 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
         const loc = currentLocation;
 
         const onFilterLocation = (event: Event, newValue: any) => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
                 setPluginFilters({
                     courtrooms: {
@@ -100,7 +102,6 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
         };
 
         const onFilterCourtroom = (event: Event, newValue: any, previousValue: any, name: string) => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
                 setPluginFilters({
                     courtrooms: {
@@ -111,7 +112,6 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
         };
 
         const onFilterCourtroomCode = (event: Event, newValue: any, previousValue: any, name: string) => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
                 setPluginFilters({
                     courtrooms: {
@@ -122,25 +122,19 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
         };
 
         const onToggleExpiredClicked = () => {
-            const { setPluginFilters, pluginFilters } = props;
             if (setPluginFilters) {
-                // console.log('reset plugin filters');
-                const isExpired = (pluginFilters)
-                    ? pluginFilters.isExpired
-                    : false;
+                this.showExpired = !this.showExpired;
 
                 setPluginFilters({
                     courtrooms: {
-                        isExpired: isExpired || false
+                        isExpired: this.showExpired
                     }
                 }, setAdminCourtroomsPluginFilters);
             }
         };
 
         const onResetFilters = () => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
-                // console.log('reset plugin filters');
                 setPluginFilters({
                     courtrooms: {}
                 }, setAdminCourtroomsPluginFilters);
@@ -233,7 +227,7 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
         // Get form data
         const courtrooms = (filters && filters.courtrooms)
             ? findAllCourtrooms(filters.courtrooms)(state) || []
-            : getAllCourtrooms(state) || [];
+            : getAllEffectiveCourtrooms(state) || [];
 
         const currentLocation = getCurrentLocation(state);
 

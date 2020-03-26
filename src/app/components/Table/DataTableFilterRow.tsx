@@ -4,6 +4,8 @@ import { Fields, FieldArray, FieldsProps } from 'redux-form';
 import { Button, FormGroup, Glyphicon } from 'react-bootstrap';
 
 import * as CellTypes from '../../components/TableColumnCell';
+import ToggleField from '../FormElements/ToggleField';
+import Toggle from '../Toggle/Toggle';
 
 export interface DataTableFilterRowProps {
     fieldName: string;
@@ -59,6 +61,8 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
             return (col.fieldName && col.filterable) ? `${fieldName}.${col.fieldName}` : undefined;
         }).filter(col => col) as string[];
 
+        let showExpired = false;
+
         return (
             <Fields<Partial<any & T>>
                 names={filterFieldNames}
@@ -109,16 +113,24 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
                                 }}
                             >
                                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+                                    <FormGroup style={{ position: 'relative', top: '-4px', flex: '0', marginLeft: '5px', marginRight: '5px', display: 'flex', flexDirection: 'column' }}>
+                                        {/* <Button bsStyle="default" onClick={onToggleExpiredClicked as any}>
+                                            <Glyphicon glyph="time" /> Toggle Expired
+                                        </Button> */}
+                                        <label style={{ fontSize: '0.8rem', marginBottom: '0' }}>Show Expired</label>
+                                        <Toggle
+                                            defaultChecked={showExpired}
+                                            onChange={() => onToggleExpiredClicked && onToggleExpiredClicked()}
+                                            checkedLabel={'Yes'}
+                                            uncheckedLabel={'No'}
+                                        />
+                                    </FormGroup>
                                     <FormGroup style={{ flex: '0', marginLeft: '5px', marginRight: '5px' }}>
                                         <Button bsStyle="default" onClick={onResetClicked as any}>
-                                            <Glyphicon glyph="remove-sign" /> Clear Filters
+                                            <Glyphicon glyph="remove-sign" /> Clear
                                         </Button>
                                     </FormGroup>
-                                    <FormGroup style={{ flex: '0', marginLeft: '5px', marginRight: '5px' }}>
-                                        <Button bsStyle="default" onClick={onToggleExpiredClicked as any}>
-                                            <Glyphicon glyph="time" /> Toggle Expired
-                                        </Button>
-                                    </FormGroup>
+
                                 </div>
                             </th>
                         )}
