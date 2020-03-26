@@ -76,7 +76,7 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
         jailRoles: 'assignments.jailRoles'
     };
     title: string = ' Jail Roles';
-    pluginFiltersAreSet = false;
+    // pluginFiltersAreSet = false;
     showExpired = false;
 
     FormComponent = (props: FormContainerProps<AdminJailRolesProps>) => {

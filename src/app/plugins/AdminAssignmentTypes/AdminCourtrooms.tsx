@@ -77,7 +77,7 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
         courtrooms: 'assignments.courtrooms'
     };
     title: string = ' Courtrooms';
-    pluginFiltersAreSet = false;
+    // pluginFiltersAreSet = false;
     showExpired = false;
 
     FormComponent = (props: FormContainerProps<AdminCourtroomsProps>) => {
