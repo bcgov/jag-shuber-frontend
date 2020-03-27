@@ -221,8 +221,8 @@ export default class AdminLeaveTypes extends FormContainerBase<AdminLeaveTypesPr
         // console.log(filterData);
 
         // Get form data
-        const leaveTypes = (filters && filters.leaveTypes !== undefined)
-            ? findAllPersonalLeaveSubCodes(filters.leaveTypes)(state) || []
+        const leaveTypes = (filters && filters.personalLeaveTypes !== undefined)
+            ? findAllPersonalLeaveSubCodes(filters.personalLeaveTypes)(state) || []
             : getAllEffectivePersonalLeaveSubCodes()(state) || [];
 
         const leaveTypesArray: any[] = [];
