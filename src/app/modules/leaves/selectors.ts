@@ -1,19 +1,25 @@
+import moment from 'moment';
+
 import { RootState } from '../../store';
 import { createSelector } from 'reselect';
 import * as leaveRequests from './requests';
+
 import {
     LeaveMap,
+    LeaveSubCode,
     IdType,
     LEAVE_CODE_PERSONAL,
     LEAVE_CODE_TRAINING,
     DateType
 } from '../../api/Api';
+
 import mapToArray from '../../infrastructure/mapToArray';
 import arrayToMap from '../../infrastructure/arrayToMap';
-import moment from 'moment';
+
 import { CodeSelector } from '../../infrastructure/CodeSelector';
-import { LeaveSubCode } from '../../components/TableColumnCell';
-// import { SubCodeSelector } from '../../infrastructure/SubCodeSelector';
+import { mapExpiry } from '../../infrastructure/EffectiveSelector';
+import { func as selectorFunctions } from '../common';
+import { allCourtRoles, allEffectiveCourtRoles } from '../assignments/selectors';
 
 export const cancelReasonCodesMap = leaveRequests.leaveCancelCodeMapRequest.getData;
 
@@ -142,7 +148,8 @@ export const allEffectiveLeaveCancelCodes = leaveCancelCodeSelector.effective;
 export const allLeavesSubCodeMap = createSelector(
     leaveRequests.leaveTypeMapRequest.getData,
     (leaveTypes) => {
-        const allSubCodes = leaveTypes[LEAVE_CODE_PERSONAL].concat(leaveTypes[LEAVE_CODE_TRAINING]);
+        let allSubCodes = leaveTypes[LEAVE_CODE_PERSONAL].concat(leaveTypes[LEAVE_CODE_TRAINING]);
+
         return arrayToMap(allSubCodes, lt => lt.subCode);
     }
 );
@@ -150,19 +157,39 @@ export const allLeavesSubCodeMap = createSelector(
 export const getAllPersonalLeaveSubCodes = createSelector(
     leaveRequests.leaveTypeMapRequest.getData,
     (leaveTypes) => {
-        const personalLeaveTypes = leaveTypes[LEAVE_CODE_PERSONAL] || [];
+        let personalLeaveTypes = leaveTypes[LEAVE_CODE_PERSONAL] || [];
+
         return personalLeaveTypes.sort((a, b) => `${a.description}`
             .localeCompare(`${b.description}`)) || [];
     }
 );
 
 export const getAllEffectivePersonalLeaveSubCodes = (date?: DateType) => (state: RootState) => {
-    const allPersonalLeaveCodes = getAllPersonalLeaveSubCodes(state);
+    let allPersonalLeaveCodes = getAllPersonalLeaveSubCodes(state);
+
+    allPersonalLeaveCodes = mapExpiry(allPersonalLeaveCodes) as LeaveSubCode[];
+
     if (allPersonalLeaveCodes) {
         return allPersonalLeaveCodes
             .filter(pl => !pl.expiryDate || moment(pl.expiryDate).isAfter(moment(date)));
     }
     return [];
+};
+
+export const findAllPersonalLeaveSubCodes = (filters: any) => (state: RootState) => {
+    if (state) {
+        let allPersonalLeaveCodes = getAllPersonalLeaveSubCodes(state);
+        return selectorFunctions.filterByKeys(allPersonalLeaveCodes, filters);
+    }
+    return undefined;
+};
+
+export const findAllEffectivePersonalLeaveSubCodes = (filters: any) => (state: RootState) => {
+    if (state) {
+        let allPersonalLeaveCodes = getAllEffectivePersonalLeaveSubCodes()(state);
+        return selectorFunctions.filterByKeys(allPersonalLeaveCodes, filters);
+    }
+    return undefined;
 };
 
 export const getAllTrainingLeaveSubCodes = createSelector(
@@ -175,10 +202,29 @@ export const getAllTrainingLeaveSubCodes = createSelector(
 );
 
 export const getAllEffectiveTrainingLeaveSubCodes = (date?: DateType) => (state: RootState) => {
-    const allTrainingLeaveCodes = getAllTrainingLeaveSubCodes(state);
+    let allTrainingLeaveCodes = getAllTrainingLeaveSubCodes(state);
+
+    allTrainingLeaveCodes = mapExpiry(allTrainingLeaveCodes) as LeaveSubCode[];
+
     if (allTrainingLeaveCodes) {
         return allTrainingLeaveCodes
             .filter(pl => !pl.expiryDate || moment(pl.expiryDate).isAfter(moment(date)));
     }
     return [];
+};
+
+export const findAllTrainingLeaveSubCodes = (filters: any) => (state: RootState) => {
+    if (state) {
+        let allTrainingLeaveCodes = getAllTrainingLeaveSubCodes(state);
+        return selectorFunctions.filterByKeys(allTrainingLeaveCodes, filters);
+    }
+    return undefined;
+};
+
+export const findAllEffectiveTrainingLeaveSubCodes = (filters: any) => (state: RootState) => {
+    if (state) {
+        let allTrainingLeaveCodes = getAllEffectiveTrainingLeaveSubCodes()(state);
+        return selectorFunctions.filterByKeys(allTrainingLeaveCodes, filters);
+    }
+    return undefined;
 };

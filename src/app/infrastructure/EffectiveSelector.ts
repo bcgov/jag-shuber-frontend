@@ -3,6 +3,27 @@ import { createSelector } from 'reselect';
 import mapToArray from './mapToArray';
 import moment from 'moment';
 
+const getExpiryDateFunc = (c: any) => c.expiryDate;
+
+export const mapExpiry = (items: any) => {
+    return mapToArray(items)
+        .map((item) => {
+            // @ts-ignore
+            if (item.hasOwnProperty('expiryDate') && item.expiryDate !== null) {
+                const date: DateType = moment();
+                const expiryDate = getExpiryDateFunc(item);
+                // @ts-ignore
+                item.isExpired = !!expiryDate || moment(expiryDate).isSameOrBefore(moment(date));
+                // @ts-ignore
+            } else if (item.hasOwnProperty('expiryDate') && item.expiryDate === null) {
+                // @ts-ignore
+                item.isExpired = false;
+            }
+
+            return item;
+        });
+};
+
 export class EffectiveSelector<T> {
     private _getAll: (state: any) => T[];
     private _getEffective: (date?: DateType) => (state: any) => T[];
@@ -15,22 +36,7 @@ export class EffectiveSelector<T> {
                 createSelector(
                     this.mapSelector,
                     (items) => {
-                        const array = mapToArray(items)
-                            .map((item) => {
-                                // @ts-ignore
-                                if (item.hasOwnProperty('expiryDate') && item.expiryDate !== null) {
-                                    const date: DateType = moment();
-                                    const expiryDate = this.getExpiryDate(item);
-                                    // @ts-ignore
-                                    item.isExpired = !!expiryDate || moment(expiryDate).isSameOrBefore(moment(date));
-                                    // @ts-ignore
-                                } else if (item.hasOwnProperty('expiryDate') && item.expiryDate === null) {
-                                    // @ts-ignore
-                                    item.isExpired = false;
-                                }
-
-                                return item;
-                            });
+                        const array = mapExpiry(items) as T[];
 
                         if (this.sort) {
                             return array.sort(this.sort);
