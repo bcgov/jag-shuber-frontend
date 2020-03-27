@@ -223,8 +223,8 @@ export default class AdminTrainingTypes extends FormContainerBase<AdminTrainingT
         // console.log(filterData);
 
         // Get form data
-        const leaveTypes = (filters && filters.leaveTypes !== undefined)
-            ? findAllTrainingLeaveSubCodes(filters.leaveTypes)(state) || []
+        const leaveTypes = (filters && filters.trainingLeaveTypes !== undefined)
+            ? findAllTrainingLeaveSubCodes(filters.trainingLeaveTypes)(state) || []
             : getAllEffectiveTrainingLeaveSubCodes()(state) || [];
 
         const leaveTypesArray: any[] = [];
