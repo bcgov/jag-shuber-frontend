@@ -17,7 +17,8 @@ import {
 
 import {
     getAllPersonalLeaveSubCodes,
-    getAllEffectivePersonalLeaveSubCodes
+    getAllEffectivePersonalLeaveSubCodes,
+    findAllPersonalLeaveSubCodes
 } from '../../modules/leaves/selectors';
 
 import { LeaveSubCode, IdType } from '../../api';
@@ -80,7 +81,7 @@ export default class AdminLeaveTypes extends FormContainerBase<AdminLeaveTypesPr
         const onFilterSubCode = (event: Event, newValue: any, previousValue: any, name: string) => {
             if (setPluginFilters) {
                 setPluginFilters({
-                    leaves: {
+                    personalLeaveTypes: {
                         description: newValue
                     }
                 }, setAdminLeaveTypesPluginFilters);
@@ -90,7 +91,7 @@ export default class AdminLeaveTypes extends FormContainerBase<AdminLeaveTypesPr
         const onFilterSubCodeCode = (event: Event, newValue: any, previousValue: any, name: string) => {
             if (setPluginFilters) {
                 setPluginFilters({
-                    leaves: {
+                    personalLeaveTypes: {
                         subCode: newValue
                     }
                 }, setAdminLeaveTypesPluginFilters);
@@ -122,7 +123,7 @@ export default class AdminLeaveTypes extends FormContainerBase<AdminLeaveTypesPr
                 this.showExpired = !this.showExpired;
 
                 setPluginFilters({
-                    leaves: {
+                    personalLeaveTypes: {
                         isExpired: this.showExpired
                     }
                 }, setAdminLeaveTypesPluginFilters);
@@ -132,7 +133,7 @@ export default class AdminLeaveTypes extends FormContainerBase<AdminLeaveTypesPr
         const onResetFilters = () => {
             if (setPluginFilters) {
                 setPluginFilters({
-                    leaves: {}
+                    personalLeaveTypes: {}
                 }, setAdminLeaveTypesPluginFilters);
             }
         };
@@ -221,8 +222,7 @@ export default class AdminLeaveTypes extends FormContainerBase<AdminLeaveTypesPr
 
         // Get form data
         const leaveTypes = (filters && filters.leaveTypes !== undefined)
-            // ? getAllPersonalLeaveSubCodes(filters.leaveTypes)(state) || []
-            ? getAllPersonalLeaveSubCodes(state) || []
+            ? findAllPersonalLeaveSubCodes(filters.leaveTypes)(state) || []
             : getAllEffectivePersonalLeaveSubCodes()(state) || [];
 
         const leaveTypesArray: any[] = [];
