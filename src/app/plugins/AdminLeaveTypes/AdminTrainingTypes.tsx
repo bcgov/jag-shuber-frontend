@@ -12,12 +12,15 @@ import {
     getLeaveSubCodes,
     createOrUpdateLeaveSubCodes,
     deleteLeaveSubCodes,
+    expireLeaveSubCodes,
+    unexpireLeaveSubCodes,
     setAdminTrainingTypesPluginFilters
 } from '../../modules/leaves/actions';
 
 import {
     getAllTrainingLeaveSubCodes,
-    getAllEffectiveTrainingLeaveSubCodes
+    getAllEffectiveTrainingLeaveSubCodes,
+    findAllTrainingLeaveSubCodes
 } from '../../modules/leaves/selectors';
 
 import { IdType, LeaveSubCode } from '../../api';
@@ -80,7 +83,7 @@ export default class AdminTrainingTypes extends FormContainerBase<AdminTrainingT
         const onFilterSubCode = (event: Event, newValue: any, previousValue: any, name: string) => {
             if (setPluginFilters) {
                 setPluginFilters({
-                    leaves: {
+                    trainingLeaveTypes: {
                         description: newValue
                     }
                 }, setAdminTrainingTypesPluginFilters);
@@ -90,7 +93,7 @@ export default class AdminTrainingTypes extends FormContainerBase<AdminTrainingT
         const onFilterSubCodeCode = (event: Event, newValue: any, previousValue: any, name: string) => {
             if (setPluginFilters) {
                 setPluginFilters({
-                    leaves: {
+                    trainingLeaveTypes: {
                         subCode: newValue
                     }
                 }, setAdminTrainingTypesPluginFilters);
@@ -122,7 +125,7 @@ export default class AdminTrainingTypes extends FormContainerBase<AdminTrainingT
                 this.showExpired = !this.showExpired;
 
                 setPluginFilters({
-                    leaves: {
+                    trainingLeaveTypes: {
                         isExpired: this.showExpired
                     }
                 }, setAdminTrainingTypesPluginFilters);
@@ -132,7 +135,7 @@ export default class AdminTrainingTypes extends FormContainerBase<AdminTrainingT
         const onResetFilters = () => {
             if (setPluginFilters) {
                 setPluginFilters({
-                    leaves: {}
+                    trainingLeaveTypes: {}
                 }, setAdminTrainingTypesPluginFilters);
             }
         };
@@ -221,8 +224,7 @@ export default class AdminTrainingTypes extends FormContainerBase<AdminTrainingT
 
         // Get form data
         const leaveTypes = (filters && filters.leaveTypes !== undefined)
-            // ? getAllTrainingLeaveSubCodes(filters.leaveTypes)(state) || []
-            ? getAllTrainingLeaveSubCodes(state) || []
+            ? findAllTrainingLeaveSubCodes(filters.leaveTypes)(state) || []
             : getAllEffectiveTrainingLeaveSubCodes()(state) || [];
 
         const leaveTypesArray: any[] = [];
@@ -322,11 +324,11 @@ export default class AdminTrainingTypes extends FormContainerBase<AdminTrainingT
         }
 
         if (expiredLeaveTypes.length > 0) {
-            await dispatch(deleteLeaveSubCodes(expiredLeaveTypes));
+            await dispatch(expireLeaveSubCodes(expiredLeaveTypes));
         }
 
         if (unexpiredLeaveTypes.length > 0) {
-            await dispatch(deleteLeaveSubCodes(unexpiredLeaveTypes));
+            await dispatch(unexpireLeaveSubCodes(unexpiredLeaveTypes));
         }
 
         if (leaveTypes.length > 0) {
