@@ -136,7 +136,9 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
         const onResetFilters = () => {
             if (setPluginFilters) {
                 setPluginFilters({
-                    courtrooms: {}
+                    courtrooms: {
+                        isExpired: false
+                    }
                 }, setAdminCourtroomsPluginFilters);
             }
         };

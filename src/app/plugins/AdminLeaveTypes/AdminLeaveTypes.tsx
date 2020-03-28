@@ -133,7 +133,9 @@ export default class AdminLeaveTypes extends FormContainerBase<AdminLeaveTypesPr
         const onResetFilters = () => {
             if (setPluginFilters) {
                 setPluginFilters({
-                    personalLeaveTypes: {}
+                    personalLeaveTypes: {
+                        isExpired: false
+                    }
                 }, setAdminLeaveTypesPluginFilters);
             }
         };

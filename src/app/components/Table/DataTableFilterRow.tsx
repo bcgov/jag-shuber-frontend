@@ -113,6 +113,11 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
                                 }}
                             >
                                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+                                    <FormGroup style={{ flex: '0', marginLeft: '5px', marginRight: '5px' }}>
+                                        <Button bsStyle="default" onClick={onResetClicked as any}>
+                                            <Glyphicon glyph="remove-sign" /> Clear
+                                        </Button>
+                                    </FormGroup>
                                     <FormGroup style={{ position: 'relative', top: '-4px', flex: '0', marginLeft: '5px', marginRight: '5px', display: 'flex', flexDirection: 'column' }}>
                                         {/* <Button bsStyle="default" onClick={onToggleExpiredClicked as any}>
                                             <Glyphicon glyph="time" /> Toggle Expired
@@ -125,12 +130,6 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
                                             uncheckedLabel={'No'}
                                         />
                                     </FormGroup>
-                                    <FormGroup style={{ flex: '0', marginLeft: '5px', marginRight: '5px' }}>
-                                        <Button bsStyle="default" onClick={onResetClicked as any}>
-                                            <Glyphicon glyph="remove-sign" /> Clear
-                                        </Button>
-                                    </FormGroup>
-
                                 </div>
                             </th>
                         )}
