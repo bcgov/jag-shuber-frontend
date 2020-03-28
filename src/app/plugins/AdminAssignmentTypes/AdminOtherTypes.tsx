@@ -146,7 +146,9 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
             if (setPluginFilters) {
                 // console.log('reset plugin filters');
                 setPluginFilters({
-                    otherTypes: {}
+                    otherTypes: {
+                        isExpired: false
+                    }
                 }, setAdminOtherTypesPluginFilters);
             }
         };
