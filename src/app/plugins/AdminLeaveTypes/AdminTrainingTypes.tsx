@@ -135,7 +135,9 @@ export default class AdminTrainingTypes extends FormContainerBase<AdminTrainingT
         const onResetFilters = () => {
             if (setPluginFilters) {
                 setPluginFilters({
-                    trainingLeaveTypes: {}
+                    trainingLeaveTypes: {
+                        isExpired: false
+                    }
                 }, setAdminTrainingTypesPluginFilters);
             }
         };

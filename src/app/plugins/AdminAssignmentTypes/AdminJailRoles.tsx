@@ -145,7 +145,9 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
         const onResetFilters = () => {
             if (setPluginFilters) {
                 setPluginFilters({
-                    jailRoles: {}
+                    jailRoles: {
+                        isExpired: false
+                    }
                 }, setAdminJailRolesPluginFilters);
             }
         };
