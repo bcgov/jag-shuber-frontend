@@ -123,7 +123,7 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
             if (setPluginFilters) {
                 setPluginFilters({
                     courtRoles: {
-                        locationId: (parseInt(newValue, 10) === 1) ? null : null // TODO: This needs to be the current location ID
+                        locationId: (parseInt(newValue, 10) !== 1) ? loc : null
                     }
                 }, setAdminCourtRolesPluginFilters);
             }

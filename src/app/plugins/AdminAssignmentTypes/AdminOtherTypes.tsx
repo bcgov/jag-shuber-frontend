@@ -124,7 +124,7 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
             if (setPluginFilters) {
                 setPluginFilters({
                     otherTypes: {
-                        locationId: (parseInt(newValue, 10) === 1) ? null : null // TODO: This needs to be the current location ID
+                        locationId: (parseInt(newValue, 10) !== 1) ? loc : null
                     }
                 }, setAdminOtherTypesPluginFilters);
             }
