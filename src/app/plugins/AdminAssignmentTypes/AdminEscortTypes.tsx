@@ -151,7 +151,7 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
                 setPluginFilters({
                     escortTypes: {
                         code: '',
-                        description: ''
+                        name: ''
                     }
                 }, setAdminEscortTypesPluginFilters);
             }
