@@ -3,16 +3,17 @@ export const mergeFilters = (stateFilters: any, filters: any, filterKey: string,
     if (!filterKey) return stateFilters;
 
     let mergedFilters;
-    const expireFilters = isExpirable
+    let expireFilters = {};
+
+    if (stateFilters) {
+        expireFilters = isExpirable
             ? {
                 isExpired: filters[filterKey] && filters[filterKey].isExpired !== undefined
                     ? filters[filterKey].isExpired
-                    : false
-
+                    : !!(filters[filterKey] && filters[filterKey].isExpired === undefined && stateFilters[filterKey] && stateFilters[filterKey].isExpired)
             }
-            : {};
+            : expireFilters;
 
-    if (stateFilters) {
         const stateTrainingLeaveTypes = stateFilters[filterKey];
 
         mergedFilters = {
@@ -24,6 +25,14 @@ export const mergeFilters = (stateFilters: any, filters: any, filterKey: string,
             }
         };
     } else {
+        expireFilters = isExpirable
+            ? {
+                isExpired: filters[filterKey] && filters[filterKey].isExpired !== undefined
+                    ? filters[filterKey].isExpired
+                    : false
+            }
+            : expireFilters;
+
         mergedFilters = {
             ...expireFilters,
             ...filters[filterKey]
