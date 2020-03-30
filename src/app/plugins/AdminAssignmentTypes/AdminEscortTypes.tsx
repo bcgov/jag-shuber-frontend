@@ -150,7 +150,8 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
                 // console.log('reset plugin filters');
                 setPluginFilters({
                     escortTypes: {
-                        isExpired: false
+                        code: '',
+                        description: ''
                     }
                 }, setAdminEscortTypesPluginFilters);
             }

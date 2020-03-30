@@ -134,7 +134,8 @@ export default class AdminLeaveTypes extends FormContainerBase<AdminLeaveTypesPr
             if (setPluginFilters) {
                 setPluginFilters({
                     personalLeaveTypes: {
-                        isExpired: false
+                        subCode: '',
+                        description: ''
                     }
                 }, setAdminLeaveTypesPluginFilters);
             }

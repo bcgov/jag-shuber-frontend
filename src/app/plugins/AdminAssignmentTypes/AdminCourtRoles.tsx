@@ -145,7 +145,8 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
             if (setPluginFilters) {
                 setPluginFilters({
                     courtRoles: {
-                        isExpired: false
+                        code: '',
+                        description: ''
                     }
                 }, setAdminCourtRolesPluginFilters);
             }

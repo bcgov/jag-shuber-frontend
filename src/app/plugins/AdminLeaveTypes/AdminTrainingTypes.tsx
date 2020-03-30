@@ -136,7 +136,8 @@ export default class AdminTrainingTypes extends FormContainerBase<AdminTrainingT
             if (setPluginFilters) {
                 setPluginFilters({
                     trainingLeaveTypes: {
-                        isExpired: false
+                        subCode: '',
+                        description: ''
                     }
                 }, setAdminTrainingTypesPluginFilters);
             }
