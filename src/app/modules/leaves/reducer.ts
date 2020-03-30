@@ -3,6 +3,8 @@ import { ReducersMapObject } from 'redux';
 import NestedReducer from '../../infrastructure/NestedReducer';
 import { addReducerToMap } from '../../infrastructure/reduxUtils';
 
+import { mergeFilters } from '../../infrastructure/filterUtils';
+
 import {
   LeaveModuleState,
   STATE_KEY
@@ -46,8 +48,9 @@ const actionReducer = createReducer<LeaveModuleState>({
   ADMIN_LEAVE_TYPES_SET_PLUGIN_SUBMIT_ERRORS: (state, pluginErrors) => {
     return {...state, pluginSubmitErrors: pluginErrors};
   },
-  ADMIN_LEAVE_TYPES_SET_PLUGIN_FILTERS: (state, filters) => {
-    return {...state, pluginFilters: filters};
+  ADMIN_LEAVE_TYPES_SET_PLUGIN_FILTERS: (state, filters: { personalLeaveTypes: {} }) => {
+    const mergedFilters = mergeFilters(state.pluginFilters, filters, 'personalLeaveTypes');
+    return {...state, pluginFilters: mergedFilters};
   },
   ADMIN_TRAINING_TYPES_SELECT_SECTION: (state, sectionName) => {
     return {...state, selectedProfileSection: sectionName};
@@ -55,8 +58,9 @@ const actionReducer = createReducer<LeaveModuleState>({
   ADMIN_TRAINING_TYPES_SET_PLUGIN_SUBMIT_ERRORS: (state, pluginErrors) => {
     return {...state, pluginSubmitErrors: pluginErrors};
   },
-  ADMIN_TRAINING_TYPES_SET_PLUGIN_FILTERS: (state, filters) => {
-    return {...state, pluginFilters: filters};
+  ADMIN_TRAINING_TYPES_SET_PLUGIN_FILTERS: (state, filters: { trainingLeaveTypes: {} }) => {
+    const mergedFilters = mergeFilters(state.pluginFilters, filters, 'trainingLeaveTypes');
+    return {...state, pluginFilters: mergedFilters};
   }
 });
 
