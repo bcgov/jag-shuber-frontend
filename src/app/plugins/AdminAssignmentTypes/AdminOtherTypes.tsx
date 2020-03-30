@@ -147,6 +147,7 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
                 // console.log('reset plugin filters');
                 setPluginFilters({
                     otherTypes: {
+                        locationId: undefined,
                         code: '',
                         description: ''
                     }

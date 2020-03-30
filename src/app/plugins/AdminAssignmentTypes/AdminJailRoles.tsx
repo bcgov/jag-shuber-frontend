@@ -146,6 +146,7 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
             if (setPluginFilters) {
                 setPluginFilters({
                     jailRoles: {
+                        locationId: undefined,
                         code: '',
                         description: ''
                     }
