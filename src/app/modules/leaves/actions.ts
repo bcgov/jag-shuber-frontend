@@ -58,6 +58,8 @@ export const setAdminTrainingTypesPluginSubmitErrors = (errors?: ErrorMap) => (
     actionCreator('ADMIN_TRAINING_TYPES_SET_PLUGIN_SUBMIT_ERRORS')(errors)
 );
 
-export const setAdminTrainingTypesPluginFilters = (filters: {}) => (
-    actionCreator('ADMIN_TRAINING_TYPES_SET_PLUGIN_FILTERS')(filters)
-);
+export const setAdminTrainingTypesPluginFilters = (filters: {}) => {
+    return (
+        actionCreator('ADMIN_TRAINING_TYPES_SET_PLUGIN_FILTERS')(filters)
+    );
+}
