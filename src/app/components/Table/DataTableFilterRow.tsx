@@ -122,7 +122,7 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
                                         {/* <Button bsStyle="default" onClick={onToggleExpiredClicked as any}>
                                             <Glyphicon glyph="time" /> Toggle Expired
                                         </Button> */}
-                                        <label style={{ fontSize: '0.8rem', marginBottom: '0' }}>Show Expired</label>
+                                        <label style={{ fontSize: '0.8rem', marginBottom: '0' }}>View Expired</label>
                                         <Toggle
                                             defaultChecked={showExpired}
                                             onChange={() => onToggleExpiredClicked && onToggleExpiredClicked()}
