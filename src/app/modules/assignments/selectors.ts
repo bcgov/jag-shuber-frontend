@@ -262,7 +262,7 @@ export const getAllEscortRunTypes = (state: RootState) => {
 
 export const getAllEffectiveEscortRunTypes = (state: RootState) => {
     if (state) {
-        return allRuns(state);
+        return allEffectiveRuns()(state);
             // .sort((a, b) => a.title.localeCompare(b.title));
     }
     return undefined;
