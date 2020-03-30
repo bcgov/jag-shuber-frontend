@@ -16,7 +16,7 @@ import {
 import mapToArray from '../../infrastructure/mapToArray';
 import arrayToMap from '../../infrastructure/arrayToMap';
 
-import { CodeSelector } from '../../infrastructure/CodeSelector';
+import { CodeSelector, defaultSortBySortOrder } from '../../infrastructure/CodeSelector';
 import { mapExpiry } from '../../infrastructure/EffectiveSelector';
 import { func as selectorFunctions } from '../common';
 import { allCourtRoles, allEffectiveCourtRoles } from '../assignments/selectors';
@@ -36,14 +36,18 @@ export const allLeaves = createSelector(
 
 export const getAllPersonalLeaves = (state: RootState) => {
     if (state) {
-        return allLeaves(state).filter(l => l.leaveCode === LEAVE_CODE_PERSONAL);
+        return allLeaves(state)
+            .filter(l => l.leaveCode === LEAVE_CODE_PERSONAL)
+            .sort(defaultSortBySortOrder);
     }
     return undefined;
 };
 
 export const getAllTrainingLeaves = (state: RootState) => {
     if (state) {
-        return allLeaves(state).filter(l => l.leaveCode === LEAVE_CODE_TRAINING);
+        return allLeaves(state)
+            .filter(l => l.leaveCode === LEAVE_CODE_TRAINING)
+            .sort(defaultSortBySortOrder);
     }
     return undefined;
 };
@@ -159,8 +163,10 @@ export const getAllPersonalLeaveSubCodes = createSelector(
     (leaveTypes) => {
         let personalLeaveTypes = leaveTypes[LEAVE_CODE_PERSONAL] || [];
 
-        return personalLeaveTypes.sort((a, b) => `${a.description}`
-            .localeCompare(`${b.description}`)) || [];
+        return personalLeaveTypes
+            .sort(defaultSortBySortOrder) || [];
+            // .sort((a, b) => `${a.description}`
+            // .localeCompare(`${b.description}`)) || [];
     }
 );
 
@@ -195,9 +201,12 @@ export const findAllEffectivePersonalLeaveSubCodes = (filters: any) => (state: R
 export const getAllTrainingLeaveSubCodes = createSelector(
     leaveRequests.leaveTypeMapRequest.getData,
     (leaveTypes) => {
-        const trainingLeaveTypes = leaveTypes[LEAVE_CODE_TRAINING] || [];
-        return trainingLeaveTypes.sort((a, b) => `${a.description}`
-            .localeCompare(`${b.description}`)) || [];
+        let trainingLeaveTypes = leaveTypes[LEAVE_CODE_TRAINING] || [];
+
+        return trainingLeaveTypes
+            .sort(defaultSortBySortOrder) || [];
+            // .sort((a, b) => `${a.description}`
+            // .localeCompare(`${b.description}`)) || [];
     }
 );
 
