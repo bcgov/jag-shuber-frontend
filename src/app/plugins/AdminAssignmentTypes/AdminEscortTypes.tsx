@@ -107,7 +107,7 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
             if (setPluginFilters) {
                 setPluginFilters({
                     escortTypes: {
-                        name: newValue
+                        title: newValue
                     }
                 }, setAdminEscortTypesPluginFilters);
             }
@@ -150,8 +150,9 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
                 // console.log('reset plugin filters');
                 setPluginFilters({
                     escortTypes: {
-                        code: '',
-                        name: ''
+                        locationId: undefined,
+                        code: undefined,
+                        title: ''
                     }
                 }, setAdminEscortTypesPluginFilters);
             }
@@ -159,17 +160,17 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
 
         const escortTypeColumns = (currentLocation === 'ALL_LOCATIONS')
             ? [
-                DataTable.SelectorFieldColumn('Location', { fieldName: 'locationId', selectorComponent: LocationSelector, displayInfo: false, filterable: true, filterColumn: onFilterLocation }),
+                // DataTable.SelectorFieldColumn('Location', { fieldName: 'locationId', selectorComponent: LocationSelector, displayInfo: false, filterable: true, filterColumn: onFilterLocation }),
                 DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false }),
                 DataTable.TextFieldColumn('Type', { fieldName: 'title', displayInfo: false, filterable: true, filterColumn: onFilterEscortType }),
-                DataTable.TextFieldColumn('Code', { fieldName: 'title', displayInfo: false, filterable: false }),
-                DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, displayInfo: false, filterable: false }),
+                DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: false, filterable: true, filterColumn: onFilterEscortTypeCode }),
+                DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, filterSelectorComponent: CodeScopeSelector, displayInfo: false, filterable: false })
             ]
             : [
                 DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false }),
-                DataTable.TextFieldColumn('Type', { fieldName: 'title', displayInfo: false, filterable: true, filterColumn: onFilterEscortTypeScope }),
-                DataTable.TextFieldColumn('Code', { fieldName: 'title', displayInfo: false, filterable: true, filterColumn: onFilterEscortTypeScope }),
-                DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, filterSelectorComponent: CodeScopeSelector, displayInfo: false, filterable: false }),
+                DataTable.TextFieldColumn('Type', { fieldName: 'title', displayInfo: false, filterable: true, filterColumn: onFilterEscortType }),
+                DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: false, filterable: true, filterColumn: onFilterEscortTypeCode }),
+                DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, filterSelectorComponent: CodeScopeSelector, displayInfo: false, filterable: false })
             ];
 
         const escortTypeActions = [
