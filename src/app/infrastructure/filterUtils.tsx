@@ -34,8 +34,10 @@ export const mergeFilters = (stateFilters: any, filters: any, filterKey: string,
             : expireFilters;
 
         mergedFilters = {
-            ...expireFilters,
-            ...filters[filterKey]
+            [filterKey]: {
+                ...expireFilters,
+                ...filters[filterKey]
+            }
         };
     }
 
