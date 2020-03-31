@@ -79,12 +79,12 @@ export default class SheriffProfilePluginHeader extends SheriffProfilePluginBase
                       }) => {
                         const updateImagePreview = async (filePreview: any) => {
                             if (!filePreview) return;
-                            console.log('log file preview');
-                            const imageSource = await filePreview.getBase64Img();
-                            console.log(this.profileImage);
-                            // TODO: This is kind of nasty, but there really isn't any other simple way with react-bootstrap image
-                            this.profileImage.src = imageSource;
-                            console.log(this.profileImage.src);
+                            const imageSource = (filePreview.getBase64Img && typeof filePreview.getBase64Img === 'function')
+                                ? await filePreview.getBase64Img() : undefined;
+
+                            if (imageSource) {
+                                this.profileImage.src = imageSource;
+                            }
                         };
 
                         // @ts-ignore
