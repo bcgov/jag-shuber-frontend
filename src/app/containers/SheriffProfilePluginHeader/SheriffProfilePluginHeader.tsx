@@ -18,14 +18,13 @@ import UploadField from '../../components/FormElements/UploadField';
 import './SheriffProfilePluginHeader.css';
 import avatarImg from '../../assets/images/avatar.png';
 import { Dispatch } from 'redux';
-import { LEAVE_CODE_PERSONAL } from '../../api/Api';
-import { toTimeString } from 'jag-shuber-api';
-import { createOrUpdateLeaves } from '../../modules/leaves/actions';
+
+import { uploadUserImage } from '../../modules/users/actions';
 
 export default class SheriffProfilePluginHeader extends SheriffProfilePluginBase<Sheriff> {
     name = 'header';
     formFieldNames = {
-        imageData: 'sheriff.imageData'
+        imageData: 'header.imageData'
     };
     profileImage: any = null;
     // getBase64Preview: any = null;
@@ -136,7 +135,11 @@ export default class SheriffProfilePluginHeader extends SheriffProfilePluginBase
 
     async onSubmit(sheriffId: IdType, formValues: any, dispatch: Dispatch<any>): Promise<any> {
         const data = this.getDataFromFormValues(formValues);
-        console.log('dumping plugin data');
-        console.log(data);
+
+        if (data && data.imageData) {
+            console.log('dumping upload data');
+            console.log(data.imageData);
+            await dispatch(uploadUserImage(data.imageData));
+        }
     }
 }

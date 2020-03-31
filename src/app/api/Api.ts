@@ -759,6 +759,7 @@ export interface API {
     getCurrentUser(): Promise<User>;
     getUser(id: IdType): Promise<User>;
     createUser(newUser: Partial<User>): Promise<User>;
+    uploadUserImage(userImage: any): Promise<void>;
     updateUser(updatedUser: User): Promise<User>;
     deleteUser(userId: IdType): Promise<void>;
     getUsers(): Promise<User[]>;
