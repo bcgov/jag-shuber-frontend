@@ -62,6 +62,12 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
         }).filter(col => col) as string[];
 
         let showExpired = false;
+        const onResetClickedHandler = function() {
+            if (onResetClicked) {
+                onResetClicked(arguments);
+                showExpired = false;
+            }
+        }
 
         return (
             <Fields<Partial<any & T>>
@@ -114,7 +120,7 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
                             >
                                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
                                     <FormGroup style={{ flex: '0', marginLeft: '5px', marginRight: '5px' }}>
-                                        <Button bsStyle="default" onClick={onResetClicked as any}>
+                                        <Button bsStyle="default" onClick={onResetClickedHandler as any}>
                                             <Glyphicon glyph="remove-sign" /> Clear
                                         </Button>
                                     </FormGroup>
@@ -124,6 +130,7 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
                                         </Button> */}
                                         <label style={{ fontSize: '0.8rem', marginBottom: '0' }}>View Expired</label>
                                         <Toggle
+                                            key={showExpired.toString()}
                                             defaultChecked={showExpired}
                                             onChange={() => onToggleExpiredClicked && onToggleExpiredClicked()}
                                             checkedLabel={'Yes'}
