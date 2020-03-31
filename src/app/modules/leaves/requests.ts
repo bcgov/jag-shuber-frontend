@@ -152,7 +152,6 @@ class DeleteLeaveSubCodesRequest extends RequestAction<IdType[], IdType[], Leave
         return request;
     }
 
-    // TODO: How does this all work?
     setRequestData(moduleState: LeaveModuleState, leaveSubCodeIds: IdType[]) {
         const newMap = { ...leaveSubCodeMapRequest.getRequestData(moduleState) };
         leaveSubCodeIds.forEach(id => delete newMap[id]);
@@ -178,7 +177,6 @@ class ExpireLeaveSubCodesRequest extends RequestAction<IdType[], IdType[], Leave
         return request;
     }
 
-    // TODO: How does this all work?
     setRequestData(moduleState: LeaveModuleState, leaveSubCodeIds: IdType[]) {
         const newMap = { ...leaveSubCodeMapRequest.getRequestData(moduleState) };
         leaveSubCodeIds.forEach(id => newMap[id]);
@@ -200,11 +198,10 @@ class UnexpireLeaveSubCodesRequest extends RequestAction<IdType[], IdType[], Lea
         });
     }
     public async doWork(request: IdType[], { api }: ThunkExtra): Promise<IdType[]> {
-        await api.deleteLeaveSubCodes(request);
+        await api.unexpireLeaveSubCodes(request);
         return request;
     }
 
-    // TODO: How does this all work?
     setRequestData(moduleState: LeaveModuleState, leaveSubCodeIds: IdType[]) {
         const newMap = { ...leaveSubCodeMapRequest.getRequestData(moduleState) };
         leaveSubCodeIds.forEach(id => newMap[id]);

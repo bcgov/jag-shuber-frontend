@@ -6022,9 +6022,9 @@ istanbul@^0.4.5:
     which "^1.1.1"
     wordwrap "^1.0.0"
 
-"jag-shuber-api@github:bcgov/jag-shuber-api#feature/roles-and-access":
+"jag-shuber-api@github:bcgov/jag-shuber-api":
   version "2.0.0"
-  resolved "https://codeload.github.com/bcgov/jag-shuber-api/tar.gz/9eaf46392456b853cfb5b6ff86a5a584dfd0ced0"
+  resolved "https://codeload.github.com/bcgov/jag-shuber-api/tar.gz/3dd94b187096028300dbf065df29a7dfe61c1e85"
   dependencies:
     "@koa/multer" "^2.0.2"
     jsonwebtoken "^8.3.0"

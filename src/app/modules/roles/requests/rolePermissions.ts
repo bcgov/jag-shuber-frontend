@@ -124,7 +124,6 @@ class DeleteRolePermissionsRequest extends RequestAction<IdType[], IdType[], Rol
         return request;
     }
 
-    // TODO: How does this all work?
     setRequestData(moduleState: RoleModuleState, permissionIds: IdType[]) {
         const newMap = { ...rolePermissionMapRequest.getRequestData(moduleState) };
         permissionIds.forEach(id => delete newMap[id]);
