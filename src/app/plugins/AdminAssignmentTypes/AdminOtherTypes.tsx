@@ -310,10 +310,10 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
         const expiredOtherTypeIds: IdType[] = [];
 
         if (map.otherTypes) {
-            const initialValues = map.otherTypes.initialValues;
+            const values = map.otherTypes.values;
 
-            const otherTypeIds = initialValues
-                .filter((val: any) => val.isExpired)
+            const otherTypeIds = values
+                .filter((val: any) => val.isExpired === isExpired)
                 .map((val: any) => val.id);
 
             expiredOtherTypeIds.push(...otherTypeIds);
