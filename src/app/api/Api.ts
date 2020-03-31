@@ -689,12 +689,18 @@ export interface API {
     getLeaves(): Promise<Leave[]>;
     createLeave(newLeave: Partial<Leave>): Promise<Leave>;
     updateLeave(updatedLeave: Leave): Promise<Leave>;
+
+    // Leave Codes and Sub-Codes
     getLeaveSubCodes(): Promise<LeaveSubCode[]>;
     createLeaveSubCode(newLeaveSubCode: Partial<LeaveSubCode>): Promise<LeaveSubCode>;
     updateLeaveSubCode(updatedLeaveSubCode: LeaveSubCode): Promise<LeaveSubCode>;
     deleteLeaveSubCode(subCodeId: IdType): Promise<void>;
     deleteLeaveSubCodes(ids: IdType[]): Promise<void>;
     getLeaveCancelCodes(): Promise<LeaveCancelCode[]>;
+    expireLeaveSubCode(subCodeId: IdType): Promise<void>;
+    expireLeaveSubCodes(ids: IdType[]): Promise<void>;
+    unexpireLeaveSubCode(subCodeId: IdType): Promise<void>;
+    unexpireLeaveSubCodes(ids: IdType[]): Promise<void>;
 
     // Courtrooms
     getCourtrooms(): Promise<Courtroom[]>;
