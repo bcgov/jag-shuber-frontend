@@ -8,7 +8,8 @@ import {
     SheriffProfilePluginBase,
     SheriffProfilePluginProps
 } from '../../components/SheriffProfile/SheriffProfilePlugin';
-import { IdType, Leave, Sheriff } from '../../api';
+
+import { IdType, User, Sheriff } from '../../api';
 
 import SheriffRankDisplay from '../SheriffRankDisplay';
 
@@ -133,13 +134,36 @@ export default class SheriffProfilePluginHeader extends SheriffProfilePluginBase
         );
     }
 
-    async onSubmit(sheriffId: IdType, formValues: any, dispatch: Dispatch<any>): Promise<any> {
-        const data = this.getDataFromFormValues(formValues);
+    protected getDataFromFormValues(formValues: any): any {
+        // We need the Identification plugin stuff too!
+        return {
+            header: { ...formValues[this.name] },
+            sheriff: { ...formValues.sheriff }
+        };
+    }
 
-        if (data && data.imageData) {
-            console.log('dumping upload data');
-            console.log(data.imageData);
-            await dispatch(uploadUserImage(data.imageData));
+    // We eventually want to move the image to the user... for now this will do
+    getSheriffUser = (sheriff: Partial<Sheriff>): User | null => {
+        return sheriff.user ? sheriff.user as User : null;
+    }
+
+    async onSubmit(sheriffId: IdType, formValues: any, dispatch: Dispatch<any>): Promise<any> {
+        const data  = this.getDataFromFormValues(formValues);
+
+        const { header, sheriff } = data;
+
+        let user = undefined;
+        let userId = undefined;
+        let imageData = undefined;
+        if (sheriff) {
+            user = this.getSheriffUser(sheriff) as Partial<User>;
+            userId = user.id as IdType;
+            imageData = header.imageData;
+        }
+
+        if (userId && imageData) {
+            // @ts-ignore
+            await dispatch(uploadUserImage({ id: userId, image: imageData }));
         }
     }
 }

@@ -181,12 +181,13 @@ export interface Sheriff {
     lastName: string;
     badgeNo: string;
     imageUrl?: string;
-    imageData?: any; /* Used for posting images back to the server */
+    imageData?: any; // Used for posting images back to the server, only used on the client-side
     alias?: string;
     genderCode?: string;
     rankCode?: string;
     homeLocationId?: IdType;
     currentLocationId?: IdType;
+    user?: Partial<User>; // Only used on client-side
 }
 
 export interface GenderCode {
@@ -759,7 +760,7 @@ export interface API {
     getCurrentUser(): Promise<User>;
     getUser(id: IdType): Promise<User>;
     createUser(newUser: Partial<User>): Promise<User>;
-    uploadUserImage(userImage: any): Promise<void>;
+    uploadUserImage(id: IdType, image: any): Promise<void>;
     updateUser(updatedUser: User): Promise<User>;
     deleteUser(userId: IdType): Promise<void>;
     getUsers(): Promise<User[]>;
