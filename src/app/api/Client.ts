@@ -862,26 +862,25 @@ export default class Client implements API {
         return await this._client.GetCurrentUser() as User;
     }
 
-    async getUser(id: IdType): Promise<User> {
-        if (!id) {
+    async getUser(userId: IdType): Promise<User> {
+        if (!userId) {
             throw 'No Id to request';
         }
-        return await this._client.GetUserById(id) as User;
+        return await this._client.GetUserById(userId) as User;
     }
 
     async createUser(user: Partial<User>): Promise<User> {
         return await this._client.CreateUser(user) as User;
     }
 
-    async uploadUserImage(id: IdType, image: Partial<any>): Promise<any> {
-        if (!id) {
+    async uploadUserImage(userId: IdType, image: Partial<any>): Promise<void> {
+        if (!userId) {
             throw 'No Id to request';
         }
 
-        console.log('dump user image upload request');
+        console.log('dump user image upload request, we still need to post the payload');
         console.log(image);
-        // return await this._client.callFunction(id) as User;
-        return Promise.resolve();
+        return await this._client.UploadUserImage(userId);
     }
 
     async updateUser(user: Partial<User>): Promise<User> {
