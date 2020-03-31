@@ -173,7 +173,7 @@ class ExpireLeaveSubCodesRequest extends RequestAction<IdType[], IdType[], Leave
         });
     }
     public async doWork(request: IdType[], { api }: ThunkExtra): Promise<IdType[]> {
-        await api.deleteLeaveSubCodes(request);
+        await api.expireLeaveSubCodes(request);
         return request;
     }
 
