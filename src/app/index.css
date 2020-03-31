@@ -1072,3 +1072,9 @@ tr.mark-as-deleted td:not(:first-child) {
     color: white;
 }
 
+/* Sheriff Profile Image */
+.profile-image {
+    width: 115px;
+    height: 115px;
+    border-radius: 50%;
+}

@@ -181,6 +181,7 @@ export interface Sheriff {
     lastName: string;
     badgeNo: string;
     imageUrl?: string;
+    imageData?: any; /* Used for posting images back to the server */
     alias?: string;
     genderCode?: string;
     rankCode?: string;
