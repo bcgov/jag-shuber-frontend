@@ -68,6 +68,33 @@ class CreateUserRequest extends CreateEntityRequest<User, UserModuleState> {
 
 export const createUserRequest = new CreateUserRequest();
 
+// Upload User Image
+class UploadUserImageRequest extends CreateEntityRequest<User, UserModuleState> {
+    constructor() {
+        super(
+            {
+                namespace: STATE_KEY,
+                actionName: 'uploadUserImage',
+                toasts: {
+                    success: (s) => (
+                        `${toTitleCase(s.displayName)}'s profile image has been uploaded`
+                    ),
+                    error: (err) => (
+                        `Problem encountered while adding new user profile image: ${err ? err.toString() : 'Unknown Error'}`
+                    )
+                }
+            },
+            userMapRequest
+        );
+    }
+    public async doWork(userImage: Partial<any>, { api }: ThunkExtra): Promise<any> {
+        let newUserImage = await api.uploadUserImage(userImage);
+        return newUserImage;
+    }
+}
+
+export const uploadUserImageRequest = new UploadUserImageRequest();
+
 // User Edit
 class UpdateUserRequest extends UpdateEntityRequest<User, UserModuleState> {
     constructor() {
