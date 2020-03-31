@@ -92,7 +92,7 @@ class LeaveSubCodeMapRequest extends GetEntityMapRequest<void, LeaveSubCode, Lea
     constructor(config?: RequestConfig<MapType<LeaveSubCode>>) {
         super({
             namespace: STATE_KEY,
-            actionName: 'leaveSubCodeMap',
+            actionName: 'leaveTypeMap',
             ...config
         });
     }
@@ -153,9 +153,9 @@ class DeleteLeaveSubCodesRequest extends RequestAction<IdType[], IdType[], Leave
     }
 
     setRequestData(moduleState: LeaveModuleState, leaveSubCodeIds: IdType[]) {
-        const newMap = { ...leaveSubCodeMapRequest.getRequestData(moduleState) };
+        const newMap = { ...leaveTypeMapRequest.getRequestData(moduleState) };
         leaveSubCodeIds.forEach(id => delete newMap[id]);
-        return  leaveSubCodeMapRequest.setRequestData(moduleState, newMap);
+        return leaveTypeMapRequest.setRequestData(moduleState, newMap);
     }
 }
 
@@ -178,9 +178,9 @@ class ExpireLeaveSubCodesRequest extends RequestAction<IdType[], IdType[], Leave
     }
 
     setRequestData(moduleState: LeaveModuleState, leaveSubCodeIds: IdType[]) {
-        const newMap = { ...leaveSubCodeMapRequest.getRequestData(moduleState) };
+        const newMap = { ...leaveTypeMapRequest.getRequestData(moduleState) };
         leaveSubCodeIds.forEach(id => newMap[id]);
-        return  leaveSubCodeMapRequest.setRequestData(moduleState, newMap);
+        return leaveTypeMapRequest.setRequestData(moduleState, newMap);
     }
 }
 
@@ -203,9 +203,9 @@ class UnexpireLeaveSubCodesRequest extends RequestAction<IdType[], IdType[], Lea
     }
 
     setRequestData(moduleState: LeaveModuleState, leaveSubCodeIds: IdType[]) {
-        const newMap = { ...leaveSubCodeMapRequest.getRequestData(moduleState) };
+        const newMap = { ...leaveTypeMapRequest.getRequestData(moduleState) };
         leaveSubCodeIds.forEach(id => newMap[id]);
-        return  leaveSubCodeMapRequest.setRequestData(moduleState, newMap);
+        return leaveTypeMapRequest.setRequestData(moduleState, newMap);
     }
 }
 

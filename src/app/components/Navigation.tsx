@@ -14,7 +14,7 @@ import {
     MenuItem,
     Badge,
     Glyphicon,
-    Image
+    Image, Button
 } from 'react-bootstrap';
 
 import NavigationLink from './NavigationLink';
@@ -27,9 +27,10 @@ import SheriffRankDisplay from '../containers/SheriffRankDisplay';
 import SheriffDisplay from '../containers/SheriffDisplay';
 
 import { TokenPayload } from 'jag-shuber-api';
-import { IdType, User, Sheriff } from '../api';
+import { IdType, User, Sheriff, DaysOfWeek } from '../api';
 
 import { getCurrentUser } from '../modules/user/actions';
+import * as TimeUtils from '../infrastructure/TimeRangeUtils';
 
 export interface NavigationStateProps {
     getUserByAuthId?: (userAuthId: IdType) => any;
@@ -46,6 +47,7 @@ export interface NavigationProps extends NavigationDispatchProps {
 }
 
 interface NavigationState {
+    menuIsActive?: boolean;
 }
 
 export default class Navigation extends React.Component<NavigationProps & NavigationStateProps> {
@@ -127,7 +129,14 @@ export default class Navigation extends React.Component<NavigationProps & Naviga
     };
 
     state: NavigationState = {
+        menuIsActive: false
     };
+
+    constructor(props: NavigationProps & NavigationStateProps) {
+        super(props);
+
+        this.toggleMenu.bind(this);
+    }
 
     componentDidMount(): void {
         const { dispatch } = this.props;
@@ -136,7 +145,14 @@ export default class Navigation extends React.Component<NavigationProps & Naviga
         }
     }
 
+    toggleMenu = (e: any) => {
+        const { menuIsActive } = this.state;
+        this.setState({ menuIsActive: !menuIsActive });
+    }
+
     render() {
+        const { menuIsActive } = this.state;
+
         const {
             // tslint:disable-next-line:no-shadowed-variable
             currentUserRoleScopes = {
@@ -151,14 +167,13 @@ export default class Navigation extends React.Component<NavigationProps & Naviga
         } = this.props;
 
         return (
-            <div id="header-main">
+            <div id="header-main" className={menuIsActive ? `menu-is-active` : ``}>
                 <Navbar staticTop={true} fluid={true} style={{maxWidth: '93%'}}>
                     <Navbar.Header color="#003366">
 
                         <NavbarBrand color="#003366">
-                            <span className="logo">
-                                <img className="hidden-xs" src={bcLogo}/>
-                                <img className="visible-xs" src={bcLogo}/>
+                            <span className="logo desktop-logo">
+                                <img src={bcLogo}/>
                             </span>
                             Sheriff Scheduling System
                         </NavbarBrand>
@@ -204,6 +219,9 @@ export default class Navigation extends React.Component<NavigationProps & Naviga
                     </Nav>
                     <Nav pullRight={true} style={{paddingTop: 13, paddingRight: 15}}>
                         <div className="flex-row-wrap">
+                            <span className="logo mobile-logo">
+                                <img src={bcLogo}/>
+                            </span>
                             <LocationSelector.Current/>
                             <Dropdown id="user-profile-menu" className="">
                                 <Dropdown.Toggle className="user-profile-menu-toggle btn-transparent">
@@ -259,6 +277,18 @@ export default class Navigation extends React.Component<NavigationProps & Naviga
                                     </MenuItem>
                                 </Dropdown.Menu>
                             </Dropdown>
+                            <div>
+                                {/* Just a flex container so we don't stretch the button */}
+                                <Button
+                                    className={`menu-toggle`}
+                                    bsStyle="transparent"
+                                    bsSize="large"
+                                    onClick={this.toggleMenu}
+                                >
+                                    <Glyphicon glyph="nav" />
+                                </Button>
+                            </div>
+
                         </div>
                     </Nav>
                 </Navbar>
