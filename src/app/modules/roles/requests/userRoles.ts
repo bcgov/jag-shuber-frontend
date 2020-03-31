@@ -125,7 +125,6 @@ class ExpireUserRolesRequest extends RequestAction<IdType[], IdType[], RoleModul
         return request;
     }
 
-    // TODO: How does this all work?
     setRequestData(moduleState: RoleModuleState, roleScopeIds: IdType[]) {
         const newMap = { ...userRoleMapRequest.getRequestData(moduleState) };
         roleScopeIds.forEach(id => delete newMap[id]);
@@ -151,7 +150,6 @@ class DeleteUserRolesRequest extends RequestAction<IdType[], IdType[], RoleModul
         return request;
     }
 
-    // TODO: How does this all work?
     setRequestData(moduleState: RoleModuleState, roleScopeIds: IdType[]) {
         const newMap = { ...userRoleMapRequest.getRequestData(moduleState) };
         roleScopeIds.forEach(id => delete newMap[id]);

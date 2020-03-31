@@ -121,7 +121,6 @@ class DeleteFrontendScopeApisRequest extends RequestAction<IdType[], IdType[], R
         return request;
     }
 
-    // TODO: How does this all work?
     setRequestData(moduleState: RoleModuleState, apiIds: IdType[]) {
         const newMap = { ...frontendScopeApiMapRequest.getRequestData(moduleState) };
         apiIds.forEach(id => delete newMap[id]);
