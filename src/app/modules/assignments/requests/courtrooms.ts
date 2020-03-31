@@ -11,8 +11,6 @@ import {
 import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRequest';
 import RequestAction, { RequestConfig } from '../../../infrastructure/Requests/RequestActionBase';
 import CreateOrUpdateEntitiesRequest from '../../../infrastructure/Requests/CreateOrUpdateEntitiesRequest';
-import { roleMapRequest } from '../../roles/requests/roles';
-import { roleFrontendScopeMapRequest } from '../../roles/requests/roleFrontendScopes';
 
 class CourtroomMapRequest extends GetEntityMapRequest<void, Courtroom, AssignmentModuleState> {
     constructor() {
