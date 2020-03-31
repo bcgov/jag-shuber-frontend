@@ -60,6 +60,7 @@ class CreateUserRequest extends CreateEntityRequest<User, UserModuleState> {
             userMapRequest
         );
     }
+
     public async doWork(user: Partial<User>, { api }: ThunkExtra): Promise<User> {
         let newUser = await api.createUser(user as User);
         return newUser;
@@ -84,11 +85,13 @@ class UploadUserImageRequest extends CreateEntityRequest<User, UserModuleState> 
                     )
                 }
             },
-            userMapRequest
+            {} as RequestAction<any, any, any>
         );
     }
-    public async doWork(userImage: Partial<any>, { api }: ThunkExtra): Promise<any> {
-        let newUserImage = await api.uploadUserImage(userImage);
+
+    public async doWork(request: { id: IdType, image: any }, { api }: ThunkExtra): Promise<any> {
+        const { id, image } = request;
+        let newUserImage = await api.uploadUserImage(id, image);
         return newUserImage;
     }
 }
@@ -111,6 +114,7 @@ class UpdateUserRequest extends UpdateEntityRequest<User, UserModuleState> {
             userMapRequest
         );
     }
+
     public async doWork(user: Partial<User>, { api }: ThunkExtra): Promise<User> {
         let newUser = await api.updateUser(user);
         return newUser;
@@ -134,6 +138,7 @@ class DeleteUserRequest extends DeleteEntityRequest<User, UserModuleState> {
             userMapRequest
         );
     }
+
     public async doWork(request: IdType, { api }: ThunkExtra): Promise<IdType> {
         await api.deleteUser(request);
         return request;
@@ -147,6 +152,7 @@ class CreateOrUpdateUsersRequest extends CreateOrUpdateEntitiesRequest<User, Use
     createEntity(entity: Partial<User>, { api}: ThunkExtra): Promise<User> {
         return api.createUser(entity);
     }
+
     updateEntity(entity: User, { api }: ThunkExtra): Promise<User> {
         return api.updateUser(entity);
     }
@@ -180,6 +186,7 @@ class DeleteUsersRequest extends RequestAction<IdType[], IdType[], UserModuleSta
             }
         });
     }
+
     public async doWork(request: IdType[], { api }: ThunkExtra): Promise<IdType[]> {
         await api.deleteRoles(request);
         return request;

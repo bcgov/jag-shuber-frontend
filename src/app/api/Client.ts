@@ -873,11 +873,13 @@ export default class Client implements API {
         return await this._client.CreateUser(user) as User;
     }
 
-    async uploadUserImage(userImage: Partial<any>): Promise<any> {
-        const { id } = userImage;
+    async uploadUserImage(id: IdType, image: Partial<any>): Promise<any> {
         if (!id) {
             throw 'No Id to request';
         }
+
+        console.log('dump user image upload request');
+        console.log(image);
         // return await this._client.callFunction(id) as User;
         return Promise.resolve();
     }
