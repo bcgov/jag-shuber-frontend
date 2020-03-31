@@ -321,10 +321,10 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
         const expiredEscortTypeIds: IdType[] = [];
 
         if (map.escortTypes) {
-            const initialValues = map.escortTypes.initialValues;
+            const values = map.escortTypes.values;
 
-            const escortTypeIds = initialValues
-                .filter((val: any) => val.isExpired)
+            const escortTypeIds = values
+                .filter((val: any) => val.isExpired === isExpired)
                 .map((val: any) => val.id);
 
             expiredEscortTypeIds.push(...escortTypeIds);

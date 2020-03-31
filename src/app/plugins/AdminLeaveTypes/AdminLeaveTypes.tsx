@@ -278,9 +278,9 @@ export default class AdminLeaveTypes extends FormContainerBase<AdminLeaveTypesPr
         const expiredLeaveTypeIds: IdType[] = [];
 
         if (map.personalLeaveTypes) {
-            const initialValues = map.personalLeaveTypes.initialValues;
+            const values = map.personalLeaveTypes.values;
 
-            const courtRoleIds = initialValues
+            const courtRoleIds = values
                 .filter((val: any) => val.isExpired === isExpired)
                 .map((val: any) => val.id);
 
