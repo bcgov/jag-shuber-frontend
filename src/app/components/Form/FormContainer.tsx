@@ -143,7 +143,7 @@ export abstract class FormContainerBase<T = any> implements FormContainer<T> {
         const formKeys = Object.keys(this.formFieldNames);
         // detailedDiff will return a diff object with added, deleted, and updated keys
         // https://www.npmjs.com/package/deep-object-diff
-        const diffKeys = ['added', 'deleted', 'updated'];
+        const diffKeys = ['added', 'updated'];
         formKeys.forEach(key => {
             let isDirty = false;
             const diff = detailedDiff(initial[key], values[key]);
@@ -214,7 +214,7 @@ export abstract class FormContainerBase<T = any> implements FormContainer<T> {
         const formKeys = Object.keys(this.formFieldNames);
         // detailedDiff will return a diff object with added, deleted, and updated keys
         // https://www.npmjs.com/package/deep-object-diff
-        const diffKeys = ['added', 'deleted', 'updated'];
+        const diffKeys = ['updated'];
         formKeys.forEach(key => {
             let isDirty = false;
             const diff = detailedDiff(initial[key], values[key]);

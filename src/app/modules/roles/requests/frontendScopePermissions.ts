@@ -121,7 +121,6 @@ class DeleteFrontendScopePermissionsRequest extends RequestAction<IdType[], IdTy
         return request;
     }
 
-    // TODO: How does this all work?
     setRequestData(moduleState: RoleModuleState, permissionIds: IdType[]) {
         const newMap = { ...frontendScopePermissionMapRequest.getRequestData(moduleState) };
         permissionIds.forEach(id => delete newMap[id]);

@@ -458,6 +458,30 @@ export default class Client implements API {
         return Promise.resolve();
     }
 
+    async expireLeaveSubCode(code: IdType): Promise<void> {
+        return await this._client.ExpireLeaveSubCode(code);
+    }
+
+    async expireLeaveSubCodes(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.ExpireLeaveSubCode(id));
+        }
+
+        return Promise.resolve();
+    }
+
+    async unexpireLeaveSubCode(code: IdType): Promise<void> {
+        return await this._client.UnexpireLeaveSubCode(code);
+    }
+
+    async unexpireLeaveSubCodes(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.UnexpireLeaveSubCode(id));
+        }
+
+        return Promise.resolve();
+    }
+
     async getLeaveCancelCodes(): Promise<LeaveCancelCode[]> {
         return await this._client.GetLeaveCancelReasonCodes() as LeaveCancelCode[];
     }

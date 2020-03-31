@@ -12,6 +12,8 @@ import {
     getLeaveSubCodes,
     createOrUpdateLeaveSubCodes,
     deleteLeaveSubCodes,
+    expireLeaveSubCodes,
+    unexpireLeaveSubCodes,
     setAdminLeaveTypesPluginFilters
 } from '../../modules/leaves/actions';
 
@@ -325,13 +327,12 @@ export default class AdminLeaveTypes extends FormContainerBase<AdminLeaveTypesPr
         }
 
         if (expiredLeaveTypes.length > 0) {
-            await dispatch(deleteLeaveSubCodes(expiredLeaveTypes));
+            await dispatch(expireLeaveSubCodes(expiredLeaveTypes));
         }
 
         if (unexpiredLeaveTypes.length > 0) {
-            await dispatch(deleteLeaveSubCodes(unexpiredLeaveTypes));
+            await dispatch(unexpireLeaveSubCodes(unexpiredLeaveTypes));
         }
-
 
         if (leaveTypes.length > 0) {
             await dispatch(createOrUpdateLeaveSubCodes(leaveTypes));
