@@ -72,6 +72,8 @@ const nestedReducer = new NestedReducer([
   leaveRequests.createOrUpdateLeavesRequest.reducer,
   leaveRequests.createOrUpdateLeaveSubCodesRequest.reducer,
   leaveRequests.deleteLeaveSubCodesRequest.reducer,
+  leaveRequests.expireLeaveSubCodesRequest.reducer,
+  leaveRequests.unexpireLeaveSubCodesRequest.reducer,
   // Actions
   actionReducer
 ]);
