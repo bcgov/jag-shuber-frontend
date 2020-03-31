@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { default as FormFieldWrapper, FormFieldWrapperProps } from './FormFieldWrapper';
-import { FormControl } from 'react-bootstrap';
+import { FormControl, FormGroup, InputGroup } from 'react-bootstrap';
+import { Flip } from 'react-toastify';
 
 export default class UploadField extends React.PureComponent<FormFieldWrapperProps> {
     input: any;
@@ -49,15 +50,21 @@ export default class UploadField extends React.PureComponent<FormFieldWrapperPro
 
         return (
             <FormFieldWrapper {...this.props}>
-                <FormControl
-                    className={'form-control-file'}
-                    ref={(input) => this.input = input}
-                    type="file"
-                    placeholder={placeholderValue}
-                    // value={value}
-                    onChange={this.onFileChange}
-                    disabled={disabled}
-                />
+                <label className="file-upload btn btn-default">
+                    <span className="file-upload-text">
+                        Browse for File
+                    </span>
+                    <FormControl
+                        className="form-control-file"
+                        ref={(input) => this.input = input}
+                        type="file"
+                        placeholder={placeholderValue}
+                        // value={value}
+                        onChange={this.onFileChange}
+                        disabled={disabled}
+                        label="Upload"
+                    />
+                </label>
             </FormFieldWrapper>
         );
     }
