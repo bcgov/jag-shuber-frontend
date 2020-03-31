@@ -307,10 +307,10 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
         const expiredJailRoleIds: IdType[] = [];
 
         if (map.jailRoles) {
-            const initialValues = map.jailRoles.initialValues;
+            const values = map.jailRoles.values;
 
-            const jailRoleIds = initialValues
-                .filter((val: any) => val.isExpired)
+            const jailRoleIds = values
+                .filter((val: any) => val.isExpired === isExpired)
                 .map((val: any) => val.id);
 
             expiredJailRoleIds.push(...jailRoleIds);

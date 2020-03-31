@@ -278,9 +278,9 @@ export default class AdminTrainingTypes extends FormContainerBase<AdminTrainingT
         const expiredLeaveTypeIds: IdType[] = [];
 
         if (map.trainingLeaveTypes) {
-            const initialValues = map.trainingLeaveTypes.initialValues;
+            const values = map.trainingLeaveTypes.values;
 
-            const courtRoleIds = initialValues
+            const courtRoleIds = values
                 .filter((val: any) => val.isExpired === isExpired)
                 .map((val: any) => val.id);
 
