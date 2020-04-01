@@ -1254,3 +1254,10 @@ label.file-upload {
     cursor: inherit;
     display: block;
 }
+
+/* Align top for data tables TODO: Be more selective! */
+.table > tbody > tr > td, .table > tbody > tr > th,
+.table > tfoot > tr > td, .table > tfoot > tr > th,
+.table > thead > tr > td, .table > thead > tr > th {
+    vertical-align: top;
+}

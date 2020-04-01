@@ -120,13 +120,16 @@ function collectPluginErrors(state: any, formName: string, plugins: FormContaine
 const formConfig: ConfigProps<{}, AdminFormProps> = {
     form: 'AdminForm',
     enableReinitialize: true,
-    validate: (values: any, { plugins = [] }) => {
+    validate: (values: any, { plugins = [], selectedSection }) => {
+        console.log(`selected section: ${selectedSection}`);
         const validationErrors = plugins.reduce((errors, plugin) => {
             const pluginValues = values[plugin.reduxFormKey];
             const pluginErrors = plugin.validate(pluginValues);
             if (pluginErrors) {
-                errors[plugin.name] = {...pluginErrors};
+                errors[plugin.reduxFormKey] = {...errors[plugin.reduxFormKey], ...pluginErrors};
             }
+            // console.log('dump admin form errors');
+            // console.log(errors);
             return errors;
         }, {} as FormErrors);
         return {...validationErrors};
