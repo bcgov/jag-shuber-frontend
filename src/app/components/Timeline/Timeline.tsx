@@ -58,7 +58,7 @@ export default class Timeline<TItem, TGroup> extends React.PureComponent<Timelin
 
         const subHeaderLabelFormats: Partial<HeaderLabelFormats> = {
             ...ReactTimeline.defaultProps.subHeaderLabelFormats,
-            dayLong: 'ddd D'
+            dayLong: 'ddd MMM DD `YY'
         };
 
         const {
