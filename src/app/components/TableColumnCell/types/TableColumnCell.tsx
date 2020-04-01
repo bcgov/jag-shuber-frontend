@@ -12,6 +12,8 @@ export default interface TableColumnCell {
     colStyle?: any;
     filterable?: boolean;
     displayInfo?: boolean;
+    required?: boolean;
+    validators?: any[];
     filterComponent?: Types.TableColumnCell;
     filterColumn?: (event: Event, newValue: any, previousValue: any, name: string) => void;
     onChange?: (event: Event, newValue: any, previousValue: any, name: string) => void;
@@ -30,6 +32,8 @@ export interface FieldColumnOptions {
     filterComponent?: TableColumnCell;
     filterColumn?: (event: Event, newValue: any, previousValue: any, name: string) => void;
     onChange?: (event: Event, newValue: any, previousValue: any, name: string) => void;
+    required?: boolean;
+    validators?: any[];
     filterSelectorComponent?: React.ReactType<any>;
     selectorComponent?: React.ReactType<any>;
     colStyle?: any;

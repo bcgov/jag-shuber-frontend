@@ -36,17 +36,17 @@ import {
     FormContainerProps,
 } from '../../components/Form/FormContainer';
 
-import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../components/Table/DataTable';
+import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
 import { AdminCourtroomsProps } from './AdminCourtrooms';
 import LocationSelector from '../../containers/LocationSelector';
 import RemoveRow from '../../components/TableColumnActions/RemoveRow';
 import ExpireRow from '../../components/TableColumnActions/ExpireRow';
 import UnexpireRow from '../../components/TableColumnActions/UnexpireRow';
 import DeleteRow from '../../components/TableColumnActions/DeleteRow';
-import { setAdminRolesPluginFilters } from '../../modules/roles/actions';
 import { ActionProps } from '../../components/TableColumnCell/Actions';
 import { buildPluginPermissions } from '../permissionUtils';
-// import { createOrUpdateCourtrooms } from '../../modules/assignments/actions';
+
+import * as Validators from '../../infrastructure/Validators';
 
 export interface AdminCourtroomsProps extends FormContainerProps {
     courtrooms?: any[];
@@ -148,13 +148,13 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
             ? [
                 DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false }),
                 DataTable.SelectorFieldColumn('Location', { fieldName: 'locationId', selectorComponent: LocationSelector, displayInfo: false, filterable: true, filterColumn: onFilterLocation }),
-                DataTable.TextFieldColumn('Courtroom', { fieldName: 'name', displayInfo: false, filterable: true, filterColumn: onFilterCourtroom }),
-                DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, filterable: true, filterColumn: onFilterCourtroomCode })
+                DataTable.TextFieldColumn('Courtroom', { fieldName: 'name', displayInfo: false, filterable: true, filterColumn: onFilterCourtroom, required: true }),
+                DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, filterable: true, filterColumn: onFilterCourtroomCode, required: true })
             ]
             : [
                 DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false }),
-                DataTable.TextFieldColumn('Courtroom', { fieldName: 'name', displayInfo: false, filterable: true, filterColumn: onFilterCourtroom }),
-                DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, filterable: true, filterColumn: onFilterCourtroomCode })
+                DataTable.TextFieldColumn('Courtroom', { fieldName: 'name', displayInfo: false, filterable: true, filterColumn: onFilterCourtroom, required: true }),
+                DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, filterable: true, filterColumn: onFilterCourtroomCode, required: true })
             ];
 
         const courtroomActions = [
@@ -216,7 +216,26 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
     )
 
     validate(values: AdminCourtroomsProps = {}): FormErrors | undefined {
-        return undefined;
+        let errors: any = {};
+
+        const formKeys = Object.keys(this.formFieldNames);
+
+        if (formKeys) {
+            formKeys.forEach((key) => {
+                errors[key] = values[key].map((row: any) => (
+                    {
+                        name: Validators.validateWith(
+                            Validators.required
+                        )(row.name),
+                        code: Validators.validateWith(
+                            Validators.required
+                        )(row.code)
+                    }
+                ));
+            });
+        }
+
+        return (errors && Object.keys(errors).length > 0) ? errors : undefined;
     }
 
     fetchData(dispatch: Dispatch<{}>, filters: {} | undefined) {

@@ -128,6 +128,8 @@ const formConfig: ConfigProps<any, SheriffProfileProps> = {
             if (pluginErrors) {
                 errors[plugin.name] = {...pluginErrors};
             }
+            // console.log('dump sheriff profile form errors');
+            // console.log(errors);
             return errors;
         }, {} as FormErrors);
         return {...validationErrors};

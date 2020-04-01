@@ -48,6 +48,7 @@ import { setAdminRolesPluginFilters } from '../../modules/roles/actions';
 import CodeScopeSelector from '../../containers/CodeScopeSelector';
 import { ActionProps } from '../../components/TableColumnCell/Actions';
 import { buildPluginPermissions } from '../permissionUtils';
+import * as Validators from '../../infrastructure/Validators';
 // import { createOrUpdateEscortTypes } from '../../modules/assignments/actions';
 
 export interface AdminEscortTypesProps extends FormContainerProps {
@@ -162,15 +163,15 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
             ? [
                 // DataTable.SelectorFieldColumn('Location', { fieldName: 'locationId', selectorComponent: LocationSelector, displayInfo: false, filterable: true, filterColumn: onFilterLocation }),
                 DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false }),
-                DataTable.TextFieldColumn('Type', { fieldName: 'title', displayInfo: false, filterable: true, filterColumn: onFilterEscortType }),
-                DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: false, filterable: true, filterColumn: onFilterEscortTypeCode }),
-                DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, filterSelectorComponent: CodeScopeSelector, displayInfo: false, filterable: false })
+                DataTable.TextFieldColumn('Type', { fieldName: 'title', displayInfo: false, filterable: true, filterColumn: onFilterEscortType, required: true }),
+                DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: false, filterable: true, filterColumn: onFilterEscortTypeCode, required: true }),
+                DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, filterSelectorComponent: CodeScopeSelector, displayInfo: false, filterable: true })
             ]
             : [
                 DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false }),
-                DataTable.TextFieldColumn('Type', { fieldName: 'title', displayInfo: false, filterable: true, filterColumn: onFilterEscortType }),
-                DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: false, filterable: true, filterColumn: onFilterEscortTypeCode }),
-                DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, filterSelectorComponent: CodeScopeSelector, displayInfo: false, filterable: false })
+                DataTable.TextFieldColumn('Type', { fieldName: 'title', displayInfo: false, filterable: true, filterColumn: onFilterEscortType, required: true }),
+                DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: false, filterable: true, filterColumn: onFilterEscortTypeCode, required: true }),
+                DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, filterSelectorComponent: CodeScopeSelector, displayInfo: false, filterable: true })
             ];
 
         const escortTypeActions = [
@@ -250,17 +251,31 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
     DisplayComponent = (props: FormContainerProps<AdminEscortTypesDisplayProps>) => (
         <div>
             {/*<Alert>No roles exist</Alert>*/}
-            <AdminEscortTypesDisplay {...props} />
+            <AdminEscortTypesDisplay {...props} />DATA
         </div>
     )
 
     validate(values: AdminEscortTypesProps = {}): FormErrors | undefined {
-        const escortTypeValues = values.escortTypes;
-        if (escortTypeValues) {
-            // Validate that sort orders are unique
+        let errors: any = {};
+
+        const formKeys = Object.keys(this.formFieldNames);
+
+        if (formKeys) {
+            formKeys.forEach((key) => {
+                errors[key] = values[key].map((row: any) => (
+                    {
+                        title: Validators.validateWith(
+                            Validators.required
+                        )(row.title),
+                        /* code: Validators.validateWith(
+                            Validators.required
+                        )(row.code) */
+                    }
+                ));
+            });
         }
 
-        return undefined;
+        return (errors && Object.keys(errors).length > 0) ? errors : undefined;
     }
 
     fetchData(dispatch: Dispatch<{}>, filters: {} | undefined) {

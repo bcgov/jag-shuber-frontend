@@ -45,6 +45,7 @@ import CodeScopeSelector from '../../containers/CodeScopeSelector';
 import { currentLocation as getCurrentLocation } from '../../modules/user/selectors';
 import { ActionProps } from '../../components/TableColumnCell/Actions';
 import { buildPluginPermissions } from '../permissionUtils';
+import * as Validators from '../../infrastructure/Validators';
 
 export interface AdminCourtRolesProps extends FormContainerProps {
     courtRoles?: any[];
@@ -193,8 +194,8 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
                     })}
                     columns={[
                         DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false }),
-                        DataTable.TextFieldColumn('Type', { fieldName: 'description', displayInfo: false, filterable: true, filterColumn: onFilterCourtRole }),
-                        DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, filterable: true, filterColumn: onFilterCourtRoleCode }),
+                        DataTable.TextFieldColumn('Type', { fieldName: 'description', displayInfo: false, filterable: true, filterColumn: onFilterCourtRole, required: true }),
+                        DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, filterable: true, filterColumn: onFilterCourtRoleCode, required: true }),
                         DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, filterSelectorComponent: CodeScopeSelector, displayInfo: false, filterable: true, filterColumn: onFilterCourtRoleScope })
                     ]}
                     filterable={true}
@@ -247,7 +248,26 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
     )
 
     validate(values: AdminCourtRolesProps = {}): FormErrors | undefined {
-        return undefined;
+        let errors: any = {};
+
+        const formKeys = Object.keys(this.formFieldNames);
+
+        if (formKeys) {
+            formKeys.forEach((key) => {
+                errors[key] = values[key].map((row: any) => (
+                    {
+                        description: Validators.validateWith(
+                            Validators.required
+                        )(row.description),
+                        code: Validators.validateWith(
+                            Validators.required
+                        )(row.code)
+                    }
+                ));
+            });
+        }
+
+        return (errors && Object.keys(errors).length > 0) ? errors : undefined;
     }
 
     fetchData(dispatch: Dispatch<{}>, filters: {} | undefined) {
