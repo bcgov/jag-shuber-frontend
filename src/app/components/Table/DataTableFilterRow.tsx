@@ -115,7 +115,7 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
                         {displayActionsColumn && (
                             <th
                                 style={{
-                                    width: '250px'
+                                    width: 'auto'
                                 }}
                             >
                                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
