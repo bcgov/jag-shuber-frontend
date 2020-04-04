@@ -16,6 +16,7 @@ export interface AdminFormProps {
     selectedSection?: string;
     onSelectSection?: (sectionName: string) => any;
     // onSelectSection?: (sectionName: string) => void;
+    displayFilters?: boolean;
     setPluginFilters?: Function;
     showSheriffProfileModal?: (sheriffId: IdType, isEditing: boolean, sectionName?: string) => {};
     onSubmitSuccess?: () => void;
@@ -48,6 +49,7 @@ export default class AdminForm extends React.PureComponent<InjectedFormProps<any
             pluginPermissions,
             pluginAuth,
             setPluginFilters,
+            displayFilters,
             showSheriffProfileModal,
             currentLocation
         } = this.props;
@@ -60,6 +62,7 @@ export default class AdminForm extends React.PureComponent<InjectedFormProps<any
             pluginPermissions: pluginPermissions[plugin.name],
             pluginAuth: pluginAuth,
             setPluginFilters,
+            displayFilters,
             showSheriffProfileModal
         };
 

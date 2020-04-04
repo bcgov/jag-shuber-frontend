@@ -25,6 +25,7 @@ export interface FormContainerProps<T = any> {
     // TODO: Not my fav having location coupled here, but it gets the job done
     currentLocation?: string;
     isLocationSet?: boolean;
+    displayFilters?: boolean;
 }
 
 type AuthPermissions = string[];

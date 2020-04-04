@@ -238,7 +238,7 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
     }
 
     FormComponent = (props: FormContainerProps<AdminFrontendScopesProps>) => {
-        const { getPluginPermissions } = props;
+        const { getPluginPermissions, setPluginFilters } = props;
         const { grantAll, permissions } = buildPluginPermissions(getPluginPermissions);
 
         // We can't use React hooks yet, and not sure if this project will ever be upgraded to 16.8
@@ -251,7 +251,6 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
         };
 
         const onFilterName = (event: Event, newValue: any, previousValue: any, name: string) => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
                 setPluginFilters({
                     frontendScopes: {
@@ -262,7 +261,6 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
         };
 
         const onFilterCode = (event: Event, newValue: any, previousValue: any, name: string) => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
                 setPluginFilters({
                     frontendScopes: {
@@ -273,7 +271,6 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
         };
 
         const onResetFilters = () => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
                 // console.log('reset plugin filters');
                 setPluginFilters({

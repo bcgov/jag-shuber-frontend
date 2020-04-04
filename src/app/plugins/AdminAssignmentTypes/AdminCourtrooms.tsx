@@ -222,6 +222,7 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
 
         if (formKeys) {
             formKeys.forEach((key) => {
+                if (!values[key]) return;
                 errors[key] = values[key].map((row: any) => (
                     {
                         name: Validators.validateWith(
