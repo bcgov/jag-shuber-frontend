@@ -57,11 +57,11 @@ class ManageUsers extends React.PureComponent<AdminFormProps & Partial<ManageUse
 
     render() {
         const { history, location } = this.props;
-        const { isEditing, displayMode, displayFilters } = this.state;
+        const { isEditing, displayMode, displayFilters = true } = this.state;
 
         return (
             <Page
-                disableLocations={false}
+                disableLocations={true}
                 toolbar={
                     <PageToolbar
                         left={(

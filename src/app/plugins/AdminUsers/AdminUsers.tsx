@@ -306,7 +306,8 @@ export default class AdminUsers extends FormContainerBase<AdminUsersProps> {
         // Note: Current Location is on the sheriff, values will not be filtered for regular users
         const onFilterCurrentLocation = (event: Event, newValue: any, previousValue: any, name: string) => {
             if (setPluginFilters) {
-                // console.log('setting plugin filters');
+                console.log('setting plugin filters');
+                console.log(newValue);
                 setPluginFilters({
                     users: {
                         sheriff: {
@@ -401,14 +402,15 @@ export default class AdminUsers extends FormContainerBase<AdminUsersProps> {
                         }),
                         DataTable.StaticTextColumn('Full Name', {
                             fieldName: 'displayName',
-                            colStyle: { width: '15%' },
+                            colStyle: { width: '22%' },
                             displayInfo: false,
                             filterable: true,
                             filterColumn: onFilterDisplayName
                         }),
-                        DataTable.MappedTextColumn('Current Location', {
-                            fieldName: 'sheriff.currentLocationId',
-                            colStyle: { width: '10%' },
+                        // TODO: Searcg by all locations
+                        DataTable.MappedTextColumn('Location', {
+                            fieldName: 'sheriff.homeLocationId',
+                            colStyle: { width: '15%' },
                             selectorComponent: LocationDisplay,
                             filterSelectorComponent: LocationSelector,
                             displayInfo: false,

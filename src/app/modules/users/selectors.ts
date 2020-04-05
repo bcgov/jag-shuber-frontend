@@ -30,7 +30,16 @@ export const usersForCurrentLocation = createSelector(
 
 export const getAllUsers = (state: RootState) => {
     if (state) {
-        return getUsers(state); /*.sort((a: any, b: any) =>
+        const users = getUsers(state);
+
+        // Don't return ALL users, just a slice or we can blow up the DOM if we render too many elements
+        let { min = 0, max = 10 } = { min: 0, max: 25 };
+        if (users && users.length <= max ) {
+            max = users.length;
+        }
+
+        return users.slice(min, max);
+            /*.sort((a: any, b: any) =>
             (a.lastName < b.lastName) ? -1 : (a.lastName > b.lastName) ? 1 : 0);*/
     }
     return undefined;
