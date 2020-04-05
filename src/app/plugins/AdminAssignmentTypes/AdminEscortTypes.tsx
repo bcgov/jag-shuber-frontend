@@ -262,6 +262,7 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
 
         if (formKeys) {
             formKeys.forEach((key) => {
+                if (!values[key]) return;
                 errors[key] = values[key].map((row: any) => (
                     {
                         title: Validators.validateWith(

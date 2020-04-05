@@ -254,6 +254,7 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
 
         if (formKeys) {
             formKeys.forEach((key) => {
+                if (!values[key]) return;
                 errors[key] = values[key].map((row: any) => (
                     {
                         description: Validators.validateWith(
