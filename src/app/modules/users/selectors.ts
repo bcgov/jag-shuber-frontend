@@ -78,6 +78,9 @@ export const findAllUsers = (filters: any) => (state: RootState) => {
         // console.log('finding all users (findAllUsers) using filters');
         // console.log(filters);
         let users = getUsers(state);
+            /*.sort((a: any, b: any) =>
+            (a.lastName < b.lastName) ? -1 : (a.lastName > b.lastName) ? 1 : 0);*/
+
         // User contains a sheriff reference, break into two sets of filters
         // eg: user: { sheriff: {...} }
         if (filters.displayName) {
@@ -100,6 +103,14 @@ export const findAllUsers = (filters: any) => (state: RootState) => {
                 }
             });
         }
+
+        // Don't return ALL users, just a slice or we can blow up the DOM if we render too many elements
+        let { min = 0, max = 10 } = { min: 0, max: 25 };
+        if (users && users.length <= max ) {
+            max = users.length;
+        }
+
+        users = users.slice(min, max);
 
         users = users.sort((a: any, b: any) => (a.displayName < b.displayName) ? -1 : (a.displayName > b.displayName) ? 1 : 0);
         return users;
