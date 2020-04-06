@@ -80,9 +80,13 @@ export default class Navigation extends React.Component<NavigationProps & Naviga
             path: '/sheriffs/manage',
             label: 'My Team', // TODO: Switch between 'Manage' and 'My' prefix depending on the role...
             children: {
+                team: {
+                    path: '/team',
+                    label: 'My Team Members'
+                },
                 users: {
                     path: '/users/manage',
-                    label: 'Manage Users'
+                    label: 'Find / Manage Users'
                 },
                 roles: {
                     path: '/roles/manage',
@@ -190,7 +194,11 @@ export default class Navigation extends React.Component<NavigationProps & Naviga
                         </NavigationDropDown>
 
                         <NavigationDropDown title={Navigation.Routes.team.label} id="admin_dropdown">
-                            <NavigationLink {...Navigation.Routes.team.children.users} />
+                            <NavigationLink {...Navigation.Routes.team.children.team} />
+                            {currentUserRoleScopes.authScopes
+                            && currentUserRoleScopes.authScopes.indexOf('users:manage') > -1 && (
+                                <NavigationLink {...Navigation.Routes.team.children.users} />
+                            )}
                             {currentUserRoleScopes.authScopes
                             && currentUserRoleScopes.authScopes.indexOf('roles:manage') > -1 && (
                                 <>

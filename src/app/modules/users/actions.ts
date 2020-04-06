@@ -6,3 +6,5 @@ export const uploadUserImage = userRequests.uploadUserImageRequest.actionCreator
 export const updateUser = userRequests.updateUserRequest.actionCreator;
 export const createOrUpdateUsers = userRequests.createOrUpdateUsersRequest.actionCreator;
 export const deleteUsers = userRequests.deleteUsersRequest.actionCreator;
+export const expireUsers = userRequests.expireUsersRequest.actionCreator;
+export const unexpireUsers = userRequests.unexpireUsersRequest.actionCreator;

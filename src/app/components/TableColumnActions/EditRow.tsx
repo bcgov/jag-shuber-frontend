@@ -10,7 +10,7 @@ const EditRow = ({ model, onClick, showComponent = false }: TableColumnActionPro
 
     return (
         <OverlayTrigger overlay={(<Tooltip>Edit</Tooltip>)} placement={'left'}>
-            <Button bsStyle="info" onClick={handleClick}>
+            <Button bsStyle="primary" onClick={handleClick}>
                 <Glyphicon glyph="edit" />
             </Button>
         </OverlayTrigger>

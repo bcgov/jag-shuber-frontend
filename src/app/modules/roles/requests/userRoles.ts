@@ -127,12 +127,37 @@ class ExpireUserRolesRequest extends RequestAction<IdType[], IdType[], RoleModul
 
     setRequestData(moduleState: RoleModuleState, roleScopeIds: IdType[]) {
         const newMap = { ...userRoleMapRequest.getRequestData(moduleState) };
-        roleScopeIds.forEach(id => delete newMap[id]);
+        roleScopeIds.forEach(id => newMap[id]);
         return userRoleMapRequest.setRequestData(moduleState, newMap);
     }
 }
 
 export const expireUserRolesRequest = new ExpireUserRolesRequest();
+
+class UnexpireUserRolesRequest extends RequestAction<IdType[], IdType[], RoleModuleState> {
+    constructor() {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'unexpireUserRoles',
+            toasts: {
+                success: (ids) => `${ids.length} user role(s) un-expired`,
+                error: (err) => `Problem encountered while un-expiring user roles: ${err ? err.toString() : 'Unknown Error'}`
+            }
+        });
+    }
+    public async doWork(request: IdType[], { api }: ThunkExtra): Promise<IdType[]> {
+        await api.unexpireUserRoles(request);
+        return request;
+    }
+
+    setRequestData(moduleState: RoleModuleState, roleScopeIds: IdType[]) {
+        const newMap = { ...userRoleMapRequest.getRequestData(moduleState) };
+        roleScopeIds.forEach(id => newMap[id]);
+        return userRoleMapRequest.setRequestData(moduleState, newMap);
+    }
+}
+
+export const unexpireUserRolesRequest = new UnexpireUserRolesRequest();
 
 class DeleteUserRolesRequest extends RequestAction<IdType[], IdType[], RoleModuleState> {
     constructor() {

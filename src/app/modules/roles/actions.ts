@@ -72,6 +72,7 @@ export const updateUserRole = userRoleRequests.updateUserRoleRequest.actionCreat
 export const createOrUpdateUserRoles = userRoleRequests.createOrUpdateUserRolesRequest.actionCreator;
 export const deleteUserRoles = userRoleRequests.deleteUserRolesRequest.actionCreator;
 export const expireUserRoles = userRoleRequests.expireUserRolesRequest.actionCreator;
+export const unexpireUserRoles = userRoleRequests.unexpireUserRolesRequest.actionCreator;
 
 type IActionMap = {
     'ADMIN_ROLES_SELECT_SECTION': string | undefined;

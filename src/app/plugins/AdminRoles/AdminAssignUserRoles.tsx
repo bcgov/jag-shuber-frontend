@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+    Button, Glyphicon,
     Table
 } from 'react-bootstrap';
 import {
@@ -11,7 +12,9 @@ import { Dispatch } from 'redux';
 import {
     getUsers,
     createOrUpdateUsers,
-    deleteUsers
+    deleteUsers,
+    expireUsers,
+    unexpireUsers
 } from '../../modules/users/actions';
 
 import {
@@ -36,6 +39,7 @@ import {
     createOrUpdateUserRoles,
     deleteUserRoles,
     expireUserRoles,
+    unexpireUserRoles,
     setAdminRolesPluginFilters
 } from '../../modules/roles/actions';
 
@@ -80,6 +84,9 @@ import GenderSelector from './containers/GenderSelector';
 import { ActionProps } from '../../components/TableColumnCell/Actions';
 
 import { buildPluginPermissions } from '../index';
+import UnexpireRow from '../../components/TableColumnActions/UnexpireRow';
+
+import avatarImg from '../../assets/images/avatar.png';
 
 // TODO: There already is a SheriffRankDisplay, but it doesn't work for our tables...
 //  It selects a single item using a code...
@@ -139,6 +146,10 @@ class AdminAssignUserRolesDisplay extends React.PureComponent<AdminAssignUserRol
     }
 }
 
+const shouldSortByFunc = (col: any, colIndex: number) => {
+    return (colIndex === 1);
+};
+
 export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignUserRolesProps> {
     // NOTICE!
     // This key maps to the [appScope: FrontendScope] (in the token)
@@ -154,8 +165,15 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
         // roles: 'roles.roles'
     };
     title: string = 'Assign User Roles';
+    // pluginFiltersAreSet = false;
+    showExpired = false;
+
     DetailComponent: React.SFC<DetailComponentProps> = ({ parentModelId, parentModel, getPluginPermissions }) => {
         const { grantAll, permissions } = buildPluginPermissions(getPluginPermissions);
+
+        // We can't use React hooks yet, and not sure if this project will ever be upgraded to 16.8
+        // This is a quick n' dirty way to achieve the same thing
+        let dataTableInstance: any;
 
         const onButtonClicked = (ev: React.SyntheticEvent<any>, context: any, model: any) => {
             context.setActiveRow(model.id);
@@ -172,8 +190,10 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                     : null;
             },
             ({ fields, index, model }) => {
-                return (model && model.id && model.id !== '')
-                    ? (<ExpireRow fields={fields} index={index} model={model} showComponent={true} />)
+                return (model && model.id && model.id !== '' && !model.isExpired)
+                    ? (<ExpireRow fields={fields} index={index} model={model} showComponent={true} onClick={() => dataTableInstance.forceUpdate()} />)
+                    : (model && model.isExpired)
+                    ? (<UnexpireRow fields={fields} index={index} model={model} showComponent={true} onClick={() => dataTableInstance.forceUpdate()} />)
                     : null;
             },
             ({ fields, index, model }) => {
@@ -185,28 +205,29 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
 
         return (
             <DataTable
+                ref={(dt) => dataTableInstance = dt}
                 fieldName={`${this.formFieldNames.userRolesGrouped}['${parentModelId}']`}
                 title={''} // Leave this blank
-                buttonLabel={'Assign New Role'}
+                // TODO: Button action to forward to user roles page and expand row
+                buttonLabel={'Assign User Roles'}
                 displayHeaderActions={true}
                 displayHeaderSave={false}
                 actionsColumn={DataTable.ActionsColumn({
                     actions: userRoleActions
                 })}
                 columns={[
-                    DataTable.SelectorFieldColumn('Assigned Role', { fieldName: 'roleId', colStyle: { width: '275px' }, selectorComponent: RoleSelector, displayInfo: true }),
-                    // DataTable.StaticTextColumn('Description', { fieldName: 'description', colStyle: { width: '350px' }, displayInfo: false }),
-                    // DataTable.StaticTextColumn('Role Code', { fieldName: 'roleCode', colStyle: { width: '180px' }, displayInfo: false }),
-                    DataTable.DateColumn('Effective Date', 'effectiveDate', { colStyle: { width: '150px'}, displayInfo: true }),
-                    // DataTable.DateColumn('Date Created', 'createdDtm'),
-                    DataTable.DateColumn('Expiry Date', 'expiryDate', { colStyle: { width: '150px'}, displayInfo: true }),
-                    DataTable.SelectorFieldColumn('Status', { colStyle: { width: '175px' }, displayInfo: true }),
-                    DataTable.StaticTextColumn('Assigned By', { fieldName: 'createdBy', colStyle: { width: '200px' }, displayInfo: false }),
-                    DataTable.StaticDateColumn('Date Assigned', { fieldName: 'createdDtm', colStyle: { width: '200px' }, displayInfo: false }),
+                    DataTable.SelectorFieldColumn('Assigned Role', { fieldName: 'roleId', colStyle: { width: '18%' }, selectorComponent: RoleSelector, displayInfo: true }),
+                    DataTable.DateColumn('Effective Date', 'effectiveDate', { colStyle: { width: '15%'}, displayInfo: true }),
+                    DataTable.DateColumn('Expiry Date', 'expiryDate', { colStyle: { width: '15%'}, displayInfo: true }),
+                    DataTable.StaticTextColumn('Assigned By', { fieldName: 'createdBy', colStyle: { width: '15%' }, displayInfo: false }),
+                    DataTable.StaticDateColumn('Date Assigned', { fieldName: 'createdDtm', colStyle: { width: '15%' }, displayInfo: false }),
                 ]}
                 expandable={false}
-                rowComponent={EmptyDetailRow}
                 shouldDisableRow={() => parentModel.systemAccountInd === 1}
+                shouldMarkRowAsDeleted={(model) => {
+                    return model.isExpired;
+                }}
+                rowComponent={EmptyDetailRow}
                 initialValue={{
                     userId: parentModelId
                 }}
@@ -218,10 +239,20 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
 
     FormComponent = (props: FormContainerProps<AdminAssignUserRolesProps>) => {
         const { showSheriffProfileModal } = props;
+        const { getPluginPermissions, setPluginFilters, displayFilters } = props;
+        const { grantAll, permissions } = buildPluginPermissions(getPluginPermissions);
+
+        // We can't use React hooks yet, and not sure if this project will ever be upgraded to 16.8
+        // This is a quick n' dirty way to achieve the same thing
+        let dataTableInstance: any;
+
+        const onButtonClicked = (ev: React.SyntheticEvent<{}>, context?: any, model?: any) => {
+            // Executes in DataTable's context
+            if (model) context.setActiveRow(model.id);
+        };
 
         // TODO: We need to find a way to make sorting on multiple columns work, which probably involves figuring how to grab all the field values at once...
         const onFilterDisplayName = (event: Event, newValue: any, previousValue: any, name: string) => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
                 // console.log('setting plugin filters');
                 setPluginFilters({
@@ -233,7 +264,6 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
         };
 
         const onFilterBadgeNo = (event: Event, newValue: any, previousValue: any, name: string) => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
                 // console.log('setting plugin filters');
                 setPluginFilters({
@@ -248,7 +278,6 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
 
         // Note: Rank is on the sheriff, values will not be filtered for regular users
         const onFilterRank = (event: Event, newValue: any, previousValue: any, name: string) => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
                 // console.log('setting plugin filters');
                 setPluginFilters({
@@ -263,7 +292,6 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
 
         // Note: Gender is on the sheriff, values will not be filtered for regular users
         const onFilterGender = (event: Event, newValue: any, previousValue: any, name: string) => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
                 // console.log('setting plugin filters');
                 setPluginFilters({
@@ -278,7 +306,6 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
 
         // Note: Home Location is on the sheriff, values will not be filtered for regular users
         const onFilterHomeLocation = (event: Event, newValue: any, previousValue: any, name: string) => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
                 // console.log('setting plugin filters');
                 setPluginFilters({
@@ -293,9 +320,9 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
 
         // Note: Current Location is on the sheriff, values will not be filtered for regular users
         const onFilterCurrentLocation = (event: Event, newValue: any, previousValue: any, name: string) => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
-                // console.log('setting plugin filters');
+                console.log('setting plugin filters');
+                console.log(newValue);
                 setPluginFilters({
                     users: {
                         sheriff: {
@@ -307,7 +334,6 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
         };
 
         const onResetFilters = () => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
                 // console.log('reset plugin filters');
                 setPluginFilters({
@@ -318,9 +344,19 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
 
         const userActions = [
             ({ fields, index, model }) => {
+                return (model && model.id && model.id !== '')
+                    ? (
+                        <Button bsStyle="default" onClick={(ev) => onButtonClicked(ev, dataTableInstance, model)}>
+                            <Glyphicon glyph="lock" />
+                        </Button>
+                    )
+                    : null;
+            },
+            /* ({ fields, index, model }) => {
                 return (model && model.id)
                     ? (
                         <EditRow
+                            showComponent={true}
                             fields={fields}
                             index={index}
                             model={model}
@@ -338,50 +374,90 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
             },
             ({ fields, index, model }) => {
             return (model && !model.id || model && model.id === '')
-                    ? (<RemoveRow fields={fields} index={index} model={model} />)
+                    ? (<RemoveRow fields={fields} index={index} model={model} showComponent={true} />)
                     : null;
             },
-            /*({ fields, index, model }) => {
-                return (model && model.id && model.id !== '')
-                    ? (<ExpireRow fields={fields} index={index} model={model} />)
+            ({ fields, index, model }) => {
+                return (model && model.id && model.id !== '' && !model.isExpired)
+                    ? (<ExpireRow fields={fields} index={index} model={model} showComponent={true} onClick={() => dataTableInstance.forceUpdate()} />)
+                    : (model && model.isExpired)
+                    ? (<UnexpireRow fields={fields} index={index} model={model} showComponent={true} onClick={() => dataTableInstance.forceUpdate()} />)
                     : null;
-            },*/
+            },
             ({ fields, index, model }) => {
                 return (model && model.id && model.id !== '')
-                    ? (<DeleteRow fields={fields} index={index} model={model} />)
+                    ? (<DeleteRow fields={fields} index={index} model={model} showComponent={grantAll} />)
                     : null;
-            }
+            } */
         ] as React.ReactType<ActionProps>[];
+
+        const imageUrl = null;
+
+        // @ts-ignore
+        let imageSrc = (imageUrl)
+            ? imageUrl
+            : avatarImg;
 
         return (
             <div>
                 <DataTable
+                    ref={(dt) => dataTableInstance = dt}
                     fieldName={this.formFieldNames.users}
                     filterFieldName={(this.filterFieldNames) ? `${this.filterFieldNames.users}` : undefined}
                     title={''} // Leave this blank
                     buttonLabel={'Add User'}
                     displayHeaderActions={false}
+                    displayHeaderSave={false}
                     onResetClicked={onResetFilters}
                     displayActionsColumn={true}
                     actionsColumn={DataTable.ActionsColumn({
                         actions: userActions
                     })}
                     columns={[
+                        // TODO: We temporarily disabled filtering on badgeNo, it's tied to the sheriff, not sure how to handle that case yet...
+                        DataTable.HtmlColumn('', {
+                            colStyle: { width: '32px' },
+                            component: (
+                                <div style={{padding: '0 5px 10px', textAlign: 'center'}}>
+                                    <img
+                                        className="profile-image"
+                                        alt={'Profile Image'}
+                                        ref={el => false}
+                                        src={imageSrc}
+                                        width="24"
+                                        height="24"
+                                        style={{
+                                            width: '24px',
+                                            height: '24px'
+                                        }}
+                                    />
+                                </div>
+                            )
+                        }),
+                        // TODO: We temporarily disabled filtering on badgeNo, it's tied to the sheriff, not sure how to handle that case yet...
+                        DataTable.StaticTextColumn('Badge No.', {
+                            fieldName: 'sheriff.badgeNo',
+                            colStyle: { width: '8%' },
+                            displayInfo: false,
+                            filterable: true,
+                            filterColumn: onFilterBadgeNo
+                        }),
                         DataTable.StaticTextColumn('Full Name', {
                             fieldName: 'displayName',
-                            colStyle: { width: '15%' },
+                            colStyle: { width: '22%' },
                             displayInfo: false,
                             filterable: true,
                             filterColumn: onFilterDisplayName
                         }),
-                        // DataTable.StaticTextColumn('Last Name', { fieldName: 'lastName', colStyle: { width: '175px' }, displayInfo: false, filterable: true }),
-                        // TODO: We temporarily disabled filtering on badgeNo, it's tied to the sheriff, not sure how to handle that case yet...
-                        DataTable.StaticTextColumn('Badge No.', {
-                            fieldName: 'sheriff.badgeNo',
+                        // TODO: Searcg by all locations
+                        DataTable.MappedTextColumn('Location', {
+                            fieldName: 'sheriff.homeLocationId',
                             colStyle: { width: '15%' },
+                            selectorComponent: LocationDisplay,
+                            filterSelectorComponent: LocationSelector,
                             displayInfo: false,
                             filterable: true,
-                            filterColumn: onFilterBadgeNo
+                            filterColumn: onFilterCurrentLocation
                         }),
                         DataTable.MappedTextColumn('Rank', {
                             fieldName: 'sheriff.rankCode',
@@ -392,6 +468,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                             filterable: true,
                             filterColumn: onFilterRank
                         }),
+                        // DataTable.StaticTextColumn('Last Name', { fieldName: 'lastName', colStyle: { width: '175px' }, displayInfo: false, filterable: true }),
                         DataTable.MappedTextColumn('Gender', {
                             fieldName: 'sheriff.genderCode',
                             colStyle: { width: '10%' },
@@ -401,7 +478,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                             filterable: true,
                             filterColumn: onFilterGender
                         }),
-                        DataTable.MappedTextColumn('Home Location', {
+                        /* DataTable.MappedTextColumn('Home Location', {
                             fieldName: 'sheriff.homeLocationId',
                             colStyle: { width: '10%' },
                             selectorComponent: LocationDisplay,
@@ -409,25 +486,20 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                             displayInfo: false,
                             filterable: true,
                             filterColumn: onFilterHomeLocation
-                        }),
-                        DataTable.MappedTextColumn('Current Location', {
-                            fieldName: 'sheriff.currentLocationId',
-                            colStyle: { width: '10%' },
-                            selectorComponent: LocationDisplay,
-                            filterSelectorComponent: LocationSelector,
-                            displayInfo: false,
-                            filterable: true,
-                            filterColumn: onFilterCurrentLocation
-                        }),
+                        }), */
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
                         // DataTable.SelectorFieldColumn('Status', { displayInfo: true }), // No point really in setting the status here
-
                     ]}
-                    filterable={true}
+                    filterable={displayFilters}
                     expandable={true}
                     // expandedRows={[1, 2]}
+                    shouldMarkRowAsDeleted={(model) => {
+                        return model.isExpired;
+                    }}
                     rowComponent={this.renderDetail()}
                     modalComponent={EmptyDetailRow}
+                    shouldSortBy={shouldSortByFunc}
+
                 />
             </div>
         );
@@ -499,6 +571,11 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
         };
     }
 
+    getDataFromFormValues(formValues: {}, initialValues: {}): FormContainerProps {
+        return super.getDataFromFormValues(formValues) || {
+        };
+    }
+
     mapDeletesFromFormValues(map: any) {
         const deletedUserIds: IdType[] = [];
         const deletedUserRoleIds: IdType[] = [];
@@ -537,18 +614,60 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
         };
     }
 
-    getDataFromFormValues(formValues: {}, initialValues: {}): FormContainerProps {
-        return super.getDataFromFormValues(formValues) || {
+    mapExpiredFromFormValues(map: any, isExpired?: boolean) {
+        isExpired = isExpired || false;
+        const expiredUserIds: IdType[] = [];
+
+        if (map.users) {
+            const values = map.users.values;
+
+            const userIds = values
+                .filter((val: any) => val.isExpired === isExpired)
+                .map((val: any) => val.id);
+
+            expiredUserIds.push(...userIds);
+        }
+
+        const expiredUserRoleIds: IdType[] = [];
+
+        if (map.userRolesGrouped) {
+            const values = map.userRolesGrouped.values;
+
+            const expireUserRoleIds = Object.keys(values).reduce((acc: any, cur: any) => {
+                const userRoleIds = values[cur]
+                    .filter((val: any) => val.isExpired === isExpired)
+                    .map((val: any) => val.id);
+
+                return acc.concat(userRoleIds);
+            }, []);
+
+            expiredUserRoleIds.push(...expireUserRoleIds);
+        }
+
+        console.log('expired user role ids');
+        console.log(expiredUserRoleIds);
+
+        return {
+            users: expiredUserIds,
+            userRoles: expiredUserRoleIds
         };
     }
 
     async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>) {
         const data: any = this.getDataFromFormValues(formValues, initialValues) || {};
+        const dataToExpire: any = this.getDataToExpireFromFormValues(formValues, initialValues, true) || {};
+        const dataToUnexpire: any = this.getDataToExpireFromFormValues(formValues, initialValues, false) || {};
         const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
 
         // Delete records before saving new ones!
         const deletedUsers: IdType[] = dataToDelete.users as IdType[];
         const deletedUserRoles: IdType[] = dataToDelete.userRoles as IdType[];
+
+        // Expire records before saving new ones!
+        const expiredUsers: IdType[] = dataToExpire.users as IdType[];
+        const expiredUserRoles: IdType[] = dataToExpire.userRoles as IdType[];
+        const unexpiredUsers: IdType[] = dataToUnexpire.users as IdType[];
+        const unexpiredUserRoles: IdType[] = dataToUnexpire.userRoles as IdType[];
 
         const users: Partial<User>[] = (data.users) ? data.users.map((u: User) => ({
             ...u,
@@ -587,12 +706,24 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
             await dispatch(deleteUsers(deletedUsers));
         }
 
-        if (deletedUserRoles.length > 0) {
-            // await dispatch(deleteUserRoles(deletedUserRoles));
+        if (expiredUsers.length > 0) {
+            await dispatch(expireUsers(expiredUsers));
+        }
+
+        if (unexpiredUsers.length > 0) {
+            await dispatch(unexpireUsers(unexpiredUsers));
         }
 
         if (deletedUserRoles.length > 0) {
-            await dispatch(expireUserRoles(deletedUserRoles));
+            await dispatch(deleteUserRoles(deletedUserRoles));
+        }
+
+        if (expiredUserRoles.length > 0) {
+            await dispatch(expireUserRoles(expiredUserRoles));
+        }
+
+        if (unexpiredUserRoles.length > 0) {
+            await dispatch(unexpireUserRoles(unexpiredUserRoles));
         }
 
         // We don't update users here, unless we're deleting them...

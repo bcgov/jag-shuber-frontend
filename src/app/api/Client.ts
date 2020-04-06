@@ -927,6 +927,30 @@ export default class Client implements API {
         return Promise.resolve();
     }
 
+    async expireUser(userId: IdType): Promise<void> {
+        return await this._client.ExpireUser(userId);
+    }
+
+    async expireUsers(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.ExpireUser(id));
+        }
+
+        return Promise.resolve();
+    }
+
+    async unexpireUser(userId: IdType): Promise<void> {
+        return await this._client.ExpireUser(userId);
+    }
+
+    async unexpireUsers(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.UnexpireUser(id));
+        }
+
+        return Promise.resolve();
+    }
+
     // Methods for roles
     async getRoles(): Promise<Role[]> {
         const list = await this._client.GetRoles();
@@ -1244,6 +1268,22 @@ export default class Client implements API {
     async expireUserRoles(ids: IdType[]): Promise<void> {
         if (ids.length > 0) {
              ids.forEach(id => this._client.ExpireUserRole(id));
+        }
+
+        return Promise.resolve();
+    }
+
+    async unexpireUserRole(userRoleId: IdType): Promise<void> {
+        if (userRoleId === undefined) {
+            return;
+        }
+
+        return await this._client.UnexpireUserRole(userRoleId);
+    }
+
+    async unexpireUserRoles(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.UnexpireUserRole(id));
         }
 
         return Promise.resolve();

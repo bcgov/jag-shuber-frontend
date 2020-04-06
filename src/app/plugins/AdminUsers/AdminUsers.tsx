@@ -12,7 +12,9 @@ import { Dispatch } from 'redux';
 import {
     getUsers,
     createOrUpdateUsers,
-    deleteUsers
+    deleteUsers,
+    expireUsers,
+    unexpireUsers
 } from '../../modules/users/actions';
 
 import {
@@ -37,6 +39,7 @@ import {
     createOrUpdateUserRoles,
     deleteUserRoles,
     expireUserRoles,
+    unexpireUserRoles,
     setAdminRolesPluginFilters
 } from '../../modules/roles/actions';
 
@@ -168,6 +171,10 @@ export default class AdminUsers extends FormContainerBase<AdminUsersProps> {
     DetailComponent: React.SFC<DetailComponentProps> = ({ parentModelId, parentModel, getPluginPermissions }) => {
         const { grantAll, permissions } = buildPluginPermissions(getPluginPermissions);
 
+        // We can't use React hooks yet, and not sure if this project will ever be upgraded to 16.8
+        // This is a quick n' dirty way to achieve the same thing
+        let dataTableInstance: any;
+
         const onButtonClicked = (ev: React.SyntheticEvent<any>, context: any, model: any) => {
             context.setActiveRow(model.id);
         };
@@ -183,8 +190,10 @@ export default class AdminUsers extends FormContainerBase<AdminUsersProps> {
                     : null;
             },
             ({ fields, index, model }) => {
-                return (model && model.id && model.id !== '')
-                    ? (<ExpireRow fields={fields} index={index} model={model} showComponent={true} />)
+                return (model && model.id && model.id !== '' && !model.isExpired)
+                    ? (<ExpireRow fields={fields} index={index} model={model} showComponent={true} onClick={() => dataTableInstance.forceUpdate()} />)
+                    : (model && model.isExpired)
+                    ? (<UnexpireRow fields={fields} index={index} model={model} showComponent={true} onClick={() => dataTableInstance.forceUpdate()} />)
                     : null;
             },
             ({ fields, index, model }) => {
@@ -196,29 +205,29 @@ export default class AdminUsers extends FormContainerBase<AdminUsersProps> {
 
         return (
             <DataTable
+                ref={(dt) => dataTableInstance = dt}
                 fieldName={`${this.formFieldNames.userRolesGrouped}['${parentModelId}']`}
                 title={''} // Leave this blank
                 // TODO: Button action to forward to user roles page and expand row
                 buttonLabel={'Assign User Roles'}
                 displayHeaderActions={true}
-                displayHeaderSave={true}
+                displayHeaderSave={false}
                 actionsColumn={DataTable.ActionsColumn({
                     actions: userRoleActions
                 })}
                 columns={[
-                    DataTable.SelectorFieldColumn('Assigned Role', { fieldName: 'roleId', colStyle: { width: '275px' }, selectorComponent: RoleSelector, displayInfo: true }),
-                    // DataTable.StaticTextColumn('Description', { fieldName: 'description', colStyle: { width: '350px' }, displayInfo: false }),
-                    // DataTable.StaticTextColumn('Role Code', { fieldName: 'roleCode', colStyle: { width: '180px' }, displayInfo: false }),
-                    DataTable.DateColumn('Effective Date', 'effectiveDate', { colStyle: { width: '150px'}, displayInfo: true }),
-                    // DataTable.DateColumn('Date Created', 'createdDtm'),
-                    DataTable.DateColumn('Expiry Date', 'expiryDate', { colStyle: { width: '150px'}, displayInfo: true }),
-                    DataTable.SelectorFieldColumn('Status', { colStyle: { width: '175px' }, displayInfo: true }),
-                    DataTable.StaticTextColumn('Assigned By', { fieldName: 'createdBy', colStyle: { width: '200px' }, displayInfo: false }),
-                    DataTable.StaticDateColumn('Date Assigned', { fieldName: 'createdDtm', colStyle: { width: '200px' }, displayInfo: false }),
+                    DataTable.SelectorFieldColumn('Assigned Role', { fieldName: 'roleId', colStyle: { width: '18%' }, selectorComponent: RoleSelector, displayInfo: true }),
+                    DataTable.DateColumn('Effective Date', 'effectiveDate', { colStyle: { width: '15%'}, displayInfo: true }),
+                    DataTable.DateColumn('Expiry Date', 'expiryDate', { colStyle: { width: '15%'}, displayInfo: true }),
+                    DataTable.StaticTextColumn('Assigned By', { fieldName: 'createdBy', colStyle: { width: '15%' }, displayInfo: false }),
+                    DataTable.StaticDateColumn('Date Assigned', { fieldName: 'createdDtm', colStyle: { width: '15%' }, displayInfo: false }),
                 ]}
                 expandable={false}
-                rowComponent={EmptyDetailRow}
                 shouldDisableRow={() => parentModel.systemAccountInd === 1}
+                shouldMarkRowAsDeleted={(model) => {
+                    return model.isExpired;
+                }}
+                rowComponent={EmptyDetailRow}
                 initialValue={{
                     userId: parentModelId
                 }}
@@ -334,15 +343,15 @@ export default class AdminUsers extends FormContainerBase<AdminUsersProps> {
         };
 
         const userActions = [
-            ({ fields, index, model }) => {
+            /* ({ fields, index, model }) => {
                 return (model && model.id && model.id !== '')
                     ? (
-                        <Button bsStyle="primary" onClick={(ev) => onButtonClicked(ev, dataTableInstance, model)}>
+                        <Button bsStyle="default" onClick={(ev) => onButtonClicked(ev, dataTableInstance, model)}>
                             <Glyphicon glyph="lock" />
                         </Button>
                     )
                     : null;
-            },
+            }, */
             ({ fields, index, model }) => {
                 return (model && model.id)
                     ? (
@@ -480,14 +489,17 @@ export default class AdminUsers extends FormContainerBase<AdminUsersProps> {
                         }), */
                         // DataTable.DateColumn('Date Created', 'createdDtm'),
                         // DataTable.SelectorFieldColumn('Status', { displayInfo: true }), // No point really in setting the status here
-
                     ]}
                     filterable={displayFilters}
                     expandable={true}
                     // expandedRows={[1, 2]}
+                    shouldMarkRowAsDeleted={(model) => {
+                        return model.isExpired;
+                    }}
                     rowComponent={this.renderDetail()}
                     modalComponent={EmptyDetailRow}
                     shouldSortBy={shouldSortByFunc}
+
                 />
             </div>
         );
@@ -604,30 +616,58 @@ export default class AdminUsers extends FormContainerBase<AdminUsersProps> {
 
     mapExpiredFromFormValues(map: any, isExpired?: boolean) {
         isExpired = isExpired || false;
-        const expiredCourtroomIds: IdType[] = [];
+        const expiredUserIds: IdType[] = [];
 
-        if (map.courtrooms) {
-            const values = map.courtrooms.values;
+        if (map.users) {
+            const values = map.users.values;
 
-            const courtroomIds = values
+            const userIds = values
                 .filter((val: any) => val.isExpired === isExpired)
                 .map((val: any) => val.id);
 
-            expiredCourtroomIds.push(...courtroomIds);
+            expiredUserIds.push(...userIds);
         }
 
+        const expiredUserRoleIds: IdType[] = [];
+
+        if (map.userRolesGrouped) {
+            const values = map.userRolesGrouped.values;
+
+            const expireUserRoleIds = Object.keys(values).reduce((acc: any, cur: any) => {
+                const userRoleIds = values[cur]
+                    .filter((val: any) => val.isExpired === isExpired)
+                    .map((val: any) => val.id);
+
+                return acc.concat(userRoleIds);
+            }, []);
+
+            expiredUserRoleIds.push(...expireUserRoleIds);
+        }
+
+        console.log('expired user role ids');
+        console.log(expiredUserRoleIds);
+
         return {
-            courtrooms: expiredCourtroomIds
+            users: expiredUserIds,
+            userRoles: expiredUserRoleIds
         };
     }
 
     async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>) {
         const data: any = this.getDataFromFormValues(formValues, initialValues) || {};
+        const dataToExpire: any = this.getDataToExpireFromFormValues(formValues, initialValues, true) || {};
+        const dataToUnexpire: any = this.getDataToExpireFromFormValues(formValues, initialValues, false) || {};
         const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
 
         // Delete records before saving new ones!
         const deletedUsers: IdType[] = dataToDelete.users as IdType[];
         const deletedUserRoles: IdType[] = dataToDelete.userRoles as IdType[];
+
+        // Expire records before saving new ones!
+        const expiredUsers: IdType[] = dataToExpire.users as IdType[];
+        const expiredUserRoles: IdType[] = dataToExpire.userRoles as IdType[];
+        const unexpiredUsers: IdType[] = dataToUnexpire.users as IdType[];
+        const unexpiredUserRoles: IdType[] = dataToUnexpire.userRoles as IdType[];
 
         const users: Partial<User>[] = (data.users) ? data.users.map((u: User) => ({
             ...u,
@@ -666,12 +706,24 @@ export default class AdminUsers extends FormContainerBase<AdminUsersProps> {
             await dispatch(deleteUsers(deletedUsers));
         }
 
-        if (deletedUserRoles.length > 0) {
-            // await dispatch(deleteUserRoles(deletedUserRoles));
+        if (expiredUsers.length > 0) {
+            await dispatch(expireUsers(expiredUsers));
+        }
+
+        if (unexpiredUsers.length > 0) {
+            await dispatch(unexpireUsers(unexpiredUsers));
         }
 
         if (deletedUserRoles.length > 0) {
-            await dispatch(expireUserRoles(deletedUserRoles));
+            await dispatch(deleteUserRoles(deletedUserRoles));
+        }
+
+        if (expiredUserRoles.length > 0) {
+            await dispatch(expireUserRoles(expiredUserRoles));
+        }
+
+        if (unexpiredUserRoles.length > 0) {
+            await dispatch(unexpireUserRoles(unexpiredUserRoles));
         }
 
         // We don't update users here, unless we're deleting them...

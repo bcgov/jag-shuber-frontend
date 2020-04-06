@@ -3,15 +3,12 @@ import * as requests from './requests';
 import { RootState } from '../../store';
 import {
     IdType, MapType, User
-} from '../../api/Api';
+} from '../../api';
 
 import mapToArray from '../../infrastructure/mapToArray';
 import { currentLocation as currentLocationSelector } from '../user/selectors';
 import { getUserRoles } from '../roles/selectors';
-// TODO: Leaving these in here cause they could be useful
-// import { ErrorMap } from './common';
-// import { CodeSelector } from '../../infrastructure/CodeSelector';
-// import { getLocationById } from '../system/selectors';
+import { EffectiveSelector } from '../../infrastructure/EffectiveSelector';
 
 export const getUsers = createSelector(
     requests.userMapRequest.getData,
@@ -19,6 +16,15 @@ export const getUsers = createSelector(
         return mapToArray(map) || [];
     }
 );
+
+const userSelector = new EffectiveSelector<User>(
+    requests.userMapRequest.getData,
+    (u) => u.expiryDate
+);
+
+export const allUsers = userSelector.all;
+
+export const allEffectiveUsers = userSelector.effective;
 
 export const usersForCurrentLocation = createSelector(
     getUsers,
@@ -30,7 +36,7 @@ export const usersForCurrentLocation = createSelector(
 
 export const getAllUsers = (state: RootState) => {
     if (state) {
-        const users = getUsers(state);
+        const users = allEffectiveUsers()(state);
 
         // Don't return ALL users, just a slice or we can blow up the DOM if we render too many elements
         let { min = 0, max = 10 } = { min: 0, max: 25 };
@@ -77,7 +83,7 @@ export const findAllUsers = (filters: any) => (state: RootState) => {
     if (state) {
         // console.log('finding all users (findAllUsers) using filters');
         // console.log(filters);
-        let users = getUsers(state);
+        let users = allUsers(state);
             /*.sort((a: any, b: any) =>
             (a.lastName < b.lastName) ? -1 : (a.lastName > b.lastName) ? 1 : 0);*/
 
@@ -141,14 +147,14 @@ export const findUserRolesGroupedByUserId = (filters: any) => (state: RootState)
 
 export const getUser = (id?: IdType) => (state: RootState) => {
     if (state && id !== undefined) {
-        return getUsers(state).find((user: User) => user.id === id as string);
+        return allUsers(state).find((user: User) => user.id === id as string);
     }
     return undefined;
 };
 
 export const getUserByAuthId = (userAuthId?: IdType) => (state: RootState) => {
     if (state && userAuthId !== undefined) {
-        const users = getUsers(state);
+        const users = allUsers(state);
         if (users && users.length > 0) {
             console.log('we have users');
         }

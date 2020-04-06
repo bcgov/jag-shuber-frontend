@@ -17,12 +17,12 @@ import SheriffProfileCreateModal from '../containers/SheriffProfileCreateModal';
 import HeaderSaveButton from '../plugins/AdminRoles/containers/HeaderSaveButton';
 import HeaderCancelButton from '../plugins/AdminRoles/containers/HeaderCancelButton';
 
-export interface ManageUsersProps extends RouteComponentProps<any>{}
+export interface ManageTeamProps extends RouteComponentProps<any>{}
 
 const DISPLAY_CARDS = 'CARDS';
 const DISPLAY_LIST = 'LIST';
 
-class ManageUsers extends React.PureComponent<AdminFormProps & Partial<ManageUsersProps>> {
+class ManageTeam extends React.PureComponent<AdminFormProps & Partial<ManageTeamProps>> {
     state = {
         isEditing: true,
         displayMode: DISPLAY_LIST,
@@ -63,43 +63,19 @@ class ManageUsers extends React.PureComponent<AdminFormProps & Partial<ManageUse
 
         return (
             <Page
-                disableLocations={true}
+                disableLocations={false}
                 toolbar={
                     <PageToolbar
-                        left={(
-                            <div style={{ flex: 1, display: 'flex', position: 'relative', justifyContent: 'center', paddingTop: '10px' }}>
-                                <div className="admin-form-filters-toggle" onClick={this.toggleFilters}>
-                                    {!displayFilters && (
-                                    <><Glyphicon glyph="chevron-right" />&nbsp;&nbsp;Display User Search Filters</>
-                                    )}
-                                    {displayFilters && (
-                                    <><Glyphicon glyph="chevron-down" />&nbsp;&nbsp;Display User Search Filters</>
-                                    )}
-                                </div>
-                            </div>
-                        )}
                         right={(
                             <div style={{ marginTop: 3, paddingTop: '10px' }}>
                                 &nbsp;
-                                {/* <Button
-                                    bsStyle="secondary"
-                                    onClick={this.toggleDisplayMode}
-                                >
-                                    <Glyphicon glyph="th-list" /> View as {displayMode === DISPLAY_LIST ? 'List' : displayMode === DISPLAY_CARDS ? 'Grid' : ''}
-                                </Button> */}
-                                &nbsp;&nbsp;
                                 <SheriffProfileCreateModal.ShowButton />
-                                &nbsp;&nbsp;
-                                <HeaderSaveButton formName={'AdminForm'} />
-                                &nbsp;&nbsp;
-                                <HeaderCancelButton formName={'AdminForm'} />
                             </div>
                         )}
                     />
                 }
             >
                 <Well
-                    className={displayFilters ? `fixed-filters-data-table` : ``}
                     style={{
                         display: 'flex',
                         backgroundColor: 'white',
@@ -111,18 +87,7 @@ class ManageUsers extends React.PureComponent<AdminFormProps & Partial<ManageUse
                         borderRadius: 0
                     }}
                 >
-                    <PageTitle title={({ currentLocationName }: any) => `Manage ${currentLocationName} Users`} />
-                    {displayMode === DISPLAY_LIST && (
-                    <AdminForm
-                        key={'admin-users-grid'}
-                        plugins={[
-                            new AdminUsersPlugin(),
-                        ]}
-                        isEditing={isEditing}
-                        displayFilters={displayFilters}
-                    />
-                    )}
-                    {displayMode === DISPLAY_CARDS && (
+                    <PageTitle title={({ currentLocationName }: any) => `My Team - ${currentLocationName}`} />
                     <SheriffListComposable />
                     )}
                 </Well>
@@ -131,4 +96,4 @@ class ManageUsers extends React.PureComponent<AdminFormProps & Partial<ManageUse
     }
 }
 
-export default reduxForm({ form: 'UsersGrid' })(withRouter(ManageUsers) as any);
+export default reduxForm({ form: 'UsersGrid' })(withRouter(ManageTeam) as any);

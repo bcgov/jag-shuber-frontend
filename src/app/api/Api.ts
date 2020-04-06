@@ -433,6 +433,9 @@ export interface User {
     systemAccountInd?: number;
     sheriffId?: IdType;
     sheriff?: Sheriff;
+    effectiveDate?: string;
+    expiryDate?: string;
+    isExpired?: boolean; // Only used on the client-side
     createdBy?: string;
     updatedBy?: string;
     createdDtm?: string;
@@ -457,9 +460,10 @@ export interface UserRole {
     id?: IdType;
     userId?: IdType;
     roleId?: IdType;
+    locationId?: IdType;
     effectiveDate?: string;
     expiryDate?: string;
-    locationId?: IdType;
+    isExpired?: boolean; // Only used on the client-side
     createdBy?: string;
     updatedBy?: string;
     createdDtm?: string;
@@ -771,15 +775,19 @@ export interface API {
     deleteUser(userId: IdType): Promise<void>;
     getUsers(): Promise<User[]>;
     deleteUsers(ids: IdType[]): Promise<void>;
+    expireUsers(ids: IdType[]): Promise<void>;
+    unexpireUsers(ids: IdType[]): Promise<void>;
 
     getUserRole(): Promise<UserRole>;
     createUserRole(newUserRole: Partial<UserRole>): Promise<UserRole>;
     updateUserRole(updatedUserRole: UserRole): Promise<UserRole>;
     deleteUserRole(id: IdType): Promise<void>;
     expireUserRole(id: IdType): Promise<void>;
+    unexpireUserRole(id: IdType): Promise<void>;
     getUserRoles(): Promise<UserRole[]>;
     deleteUserRoles(ids: IdType[]): Promise<void>;
     expireUserRoles(ids: IdType[]): Promise<void>;
+    unexpireUserRoles(ids: IdType[]): Promise<void>;
 
     getRole(): Promise<Role>;
     createRole(newRole: Partial<Role>): Promise<Role>;
