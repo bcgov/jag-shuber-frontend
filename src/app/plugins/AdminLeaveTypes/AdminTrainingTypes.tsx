@@ -187,6 +187,7 @@ export default class AdminTrainingTypes extends FormContainerBase<AdminTrainingT
                         // DataTable.DateColumn('Expiry Date', 'expiryDate', { colStyle: { width: '15%'}, displayInfo: true, filterable: true, filterColumn: onFilterExpiryDate })
                     ]}
                     filterable={true}
+                    showExpiredFilter={true}
                     expandable={false}
                     // expandedRows={[1, 2]}
                     // TODO: Only display if the user has appropriate permissions

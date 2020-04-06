@@ -196,6 +196,7 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
                     })}
                     columns={courtroomColumns}
                     filterable={true}
+                    showExpiredFilter={true}
                     expandable={false}
                     // expandedRows={[1, 2]}
                     shouldMarkRowAsDeleted={(model) => {

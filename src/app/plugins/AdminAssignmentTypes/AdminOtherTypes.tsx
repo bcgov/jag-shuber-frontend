@@ -202,6 +202,7 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
                     })}
                     columns={assignmentTypeColumns}
                     filterable={true}
+                    showExpiredFilter={true}
                     expandable={false}
                     // expandedRows={[1, 2]}
                     groupBy={{

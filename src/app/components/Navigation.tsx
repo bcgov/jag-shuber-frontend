@@ -266,8 +266,9 @@ export default class Navigation extends React.Component<NavigationProps & Naviga
                                                         <div style={{fontWeight: 'bold', fontSize: 18}}>
                                                             {firstName.toUpperCase()} {lastName.toUpperCase()}
                                                         </div>
-                                                        <div style={{fontSize: 14}}><SheriffRankDisplay
-                                                            code={rankCode}/></div>
+                                                        <div style={{fontSize: 14}}>
+                                                            <SheriffRankDisplay code={rankCode} />
+                                                        </div>
                                                     </div>
                                                 );
                                             }}

@@ -491,6 +491,7 @@ export default class AdminUsers extends FormContainerBase<AdminUsersProps> {
                         // DataTable.SelectorFieldColumn('Status', { displayInfo: true }), // No point really in setting the status here
                     ]}
                     filterable={displayFilters}
+                    showExpiredFilter={false}
                     expandable={true}
                     // expandedRows={[1, 2]}
                     shouldMarkRowAsDeleted={(model) => {

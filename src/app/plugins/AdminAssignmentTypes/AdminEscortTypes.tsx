@@ -213,6 +213,7 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
                     })}
                     columns={escortTypeColumns}
                     filterable={true}
+                    showExpiredFilter={true}
                     expandable={false}
                     // expandedRows={[1, 2]}
                     groupBy={{

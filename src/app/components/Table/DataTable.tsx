@@ -45,6 +45,7 @@ export interface DataTableProps {
     shouldMarkRowAsDeleted?: (model: any) => boolean;
     initialValue?: any;
     filterable?: boolean;
+    showExpiredFilter?: boolean;
     filterRows?: Function;
     groupBy?: any;
     sortBy?: string[]; // TODO: Not implemented yet
@@ -75,6 +76,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
         buttonLabel: 'Create',
         initialValue: {},
         filterable: false,
+        showExpiredFilter: false,
         filterRows: () => true
     };
 
@@ -157,6 +159,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
             modalComponent,
             initialValue,
             filterable,
+            showExpiredFilter,
             filterRows,
             groupBy,
             shouldSortBy,
@@ -194,6 +197,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                     columns={columns}
                                     expandable={expandable}
                                     filterable={filterable}
+                                    showExpiredFilter={showExpiredFilter}
                                     groupBy={!!groupBy}
                                     displayActionsColumn={displayActionsColumn}
                                 />

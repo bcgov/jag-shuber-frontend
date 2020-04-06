@@ -360,6 +360,7 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
 
                     ]}
                     filterable={true}
+
                     expandable={true}
                     // expandedRows={[1, 2]}
                     rowComponent={this.renderDetail()}

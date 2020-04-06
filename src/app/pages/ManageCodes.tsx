@@ -67,7 +67,7 @@ class ManageLeaveTypes extends React.PureComponent<AdminFormProps & ManageLeaveT
 
         return (
             <Page
-                disableLocations={false}
+                disableLocations={true}
                 toolbar={
                     <PageToolbar
                         left={(

@@ -13,8 +13,9 @@ export interface DataTableFilterRowProps {
     actionsColumn?: CellTypes.Types.TableColumnCell;
     displayHeaderActions?: boolean;
     displayHeaderSave?: boolean;
-    onResetClicked?: Function,
-    onToggleExpiredClicked?: Function,
+    onResetClicked?: Function;
+    onToggleExpiredClicked?: Function;
+    showExpiredFilter?: boolean;
     displayActionsColumn?: boolean;
     expandable?: boolean;
     buttonLabel?: React.ReactNode;
@@ -30,6 +31,7 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
         displayHeaderSave: true,
         onResetClicked: () => {},
         onToggleExpiredClicked: () => {},
+        showExpiredFilter: false,
         displayActionsColumn: true,
         expandable: false,
         // expandedRows: false,
@@ -54,6 +56,7 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
             expandable = false,
             onResetClicked,
             onToggleExpiredClicked,
+            showExpiredFilter = true, // TODO: Switch this to false
             groupBy = false
         } = this.props;
 
@@ -124,11 +127,13 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
                                             <Glyphicon glyph="remove-sign" /> Clear
                                         </Button>
                                     </FormGroup>
+                                    {showExpiredFilter && (
                                     <FormGroup style={{ position: 'relative', top: '-4px', flex: '0', marginLeft: '5px', marginRight: '5px', display: 'flex', flexDirection: 'column' }}>
                                         {/* <Button bsStyle="default" onClick={onToggleExpiredClicked as any}>
                                             <Glyphicon glyph="time" /> Toggle Expired
                                         </Button> */}
                                         <label style={{ fontSize: '0.8rem', marginBottom: '0' }}>View Expired</label>
+
                                         <Toggle
                                             key={showExpired.toString()}
                                             defaultChecked={showExpired}
@@ -137,6 +142,7 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
                                             uncheckedLabel={'No'}
                                         />
                                     </FormGroup>
+                                    )}
                                 </div>
                             </th>
                         )}
