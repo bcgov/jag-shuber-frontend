@@ -19,8 +19,12 @@ import {
   isLocationSet as isCurrentLocationSet,
   isLoggedIn as isUserLoggedIn,
   isLoadingToken as isLoadingUserToken,
-  loadingTokenError
+  loadingTokenError,
 } from './modules/user/selectors';
+
+import {
+  doLogout
+} from './modules/user/actions';
 
 // Import core layout components
 // import Navigation from './components/Navigation';
@@ -74,6 +78,7 @@ export interface LayoutStateProps {
 }
 
 export interface LayoutDispatchProps {
+  logout?: Function; // TODO: Type this better...
 }
 
 class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
@@ -81,7 +86,7 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
   componentWillReceiveProps(nextProps: LayoutStateProps) {
     const { isLoadingToken: wasLoadingToken } = nextProps;
     const { isLoadingToken = true, isLoggedIn = false, tokenLoadingError } = this.props;
-    if (wasLoadingToken && !isLoadingToken && isLoggedIn && tokenLoadingError == undefined) {
+    if (wasLoadingToken && !isLoadingToken && isLoggedIn && tokenLoadingError === undefined) {
       window.location.reload();
     }
   }
@@ -91,7 +96,8 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
       isLocationSet = false,
       tokenLoadingError,
       isLoggedIn,
-      isLoadingToken = true
+      isLoadingToken = true,
+      logout
     } = this.props;
     if (isLoadingToken) {
       return null;
@@ -113,7 +119,11 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
           <CustomDragLayer/>
           <ToastManager />
           <div className="headerArea">
-            <Navigation />
+            <Navigation
+                onLogoutClicked={() => {
+                  if (logout) logout();
+                }}
+            />
           </div>
           {!isLocationSet && (
             <div className="mainArea">
@@ -182,7 +192,9 @@ const mapStateToProps = (state: RootState) => {
   };
 };
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  logout: doLogout
+};
 
 const connectedLayout = connect<LayoutStateProps, LayoutDispatchProps, {}>(
   mapStateToProps,

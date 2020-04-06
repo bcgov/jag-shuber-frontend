@@ -44,6 +44,7 @@ export interface NavigationProps extends NavigationDispatchProps {
     currentUserRoleScopes?: any;
     currentUserToken?: TokenPayload;
     currentUser?: User;
+    onLogoutClicked?: any;
 }
 
 interface NavigationState {
@@ -167,7 +168,10 @@ export default class Navigation extends React.Component<NavigationProps & Naviga
                 firstName: '',
                 lastName: '',
                 sheriffId: undefined
-            } as User
+            } as User,
+            onLogoutClicked = () => {
+                console.log('No logout handler specified');
+            }
         } = this.props;
 
         return (
@@ -277,9 +281,8 @@ export default class Navigation extends React.Component<NavigationProps & Naviga
                                     <hr/>
                                     <MenuItem
                                         style={{textAlign: 'center'}}
-                                        onClick={() => {
-                                            // tslint:disable-next-line:max-line-length
-                                            window.location.href = `https://logon.gov.bc.ca/clp-cgi/logoff.cgi?returl=${window.location.href}`;
+                                        onClick={(e) => {
+                                            onLogoutClicked();
                                         }}
                                     >
                                         Logout
