@@ -1,4 +1,5 @@
 import * as Types from './types';
+import Html from './Html';
 import StaticText from './StaticText';
 import MappedText from './MappedText';
 import StaticDate from './StaticDate';
@@ -16,6 +17,7 @@ import LeaveSubCode from './LeaveSubCode';
 import RoleCode from './RoleCode';
 export {
     Types,
+    Html,
     StaticText, MappedText, StaticDate, TextField, TextArea, SelectorField, Checkbox, Date, Time,
     SortOrder, Cancel, Actions, Button, LeaveSubCode, RoleCode
 };

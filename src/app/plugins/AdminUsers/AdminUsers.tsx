@@ -83,6 +83,8 @@ import { ActionProps } from '../../components/TableColumnCell/Actions';
 import { buildPluginPermissions } from '../index';
 import UnexpireRow from '../../components/TableColumnActions/UnexpireRow';
 
+import avatarImg from '../../assets/images/avatar.png';
+
 // TODO: There already is a SheriffRankDisplay, but it doesn't work for our tables...
 //  It selects a single item using a code...
 
@@ -140,6 +142,10 @@ class AdminUsersDisplay extends React.PureComponent<AdminUsersDisplayProps, any>
         );
     }
 }
+
+const shouldSortByFunc = (col: any, colIndex: number) => {
+    return (colIndex === 1);
+};
 
 export default class AdminUsers extends FormContainerBase<AdminUsersProps> {
     // NOTICE!
@@ -376,6 +382,13 @@ export default class AdminUsers extends FormContainerBase<AdminUsersProps> {
             }
         ] as React.ReactType<ActionProps>[];
 
+        const imageUrl = null;
+
+        // @ts-ignore
+        let imageSrc = (imageUrl)
+            ? imageUrl
+            : avatarImg;
+
         return (
             <div>
                 <DataTable
@@ -392,6 +405,26 @@ export default class AdminUsers extends FormContainerBase<AdminUsersProps> {
                         actions: userActions
                     })}
                     columns={[
+                        // TODO: We temporarily disabled filtering on badgeNo, it's tied to the sheriff, not sure how to handle that case yet...
+                        DataTable.HtmlColumn('', {
+                            colStyle: { width: '32px' },
+                            component: (
+                                <div style={{padding: '0 5px 10px', textAlign: 'center'}}>
+                                    <img
+                                        className="profile-image"
+                                        alt={'Profile Image'}
+                                        ref={el => false}
+                                        src={imageSrc}
+                                        width="24"
+                                        height="24"
+                                        style={{
+                                            width: '24px',
+                                            height: '24px'
+                                        }}
+                                    />
+                                </div>
+                            )
+                        }),
                         // TODO: We temporarily disabled filtering on badgeNo, it's tied to the sheriff, not sure how to handle that case yet...
                         DataTable.StaticTextColumn('Badge No.', {
                             fieldName: 'sheriff.badgeNo',
@@ -454,6 +487,7 @@ export default class AdminUsers extends FormContainerBase<AdminUsersProps> {
                     // expandedRows={[1, 2]}
                     rowComponent={this.renderDetail()}
                     modalComponent={EmptyDetailRow}
+                    shouldSortBy={shouldSortByFunc}
                 />
             </div>
         );
@@ -525,6 +559,11 @@ export default class AdminUsers extends FormContainerBase<AdminUsersProps> {
         };
     }
 
+    getDataFromFormValues(formValues: {}, initialValues: {}): FormContainerProps {
+        return super.getDataFromFormValues(formValues) || {
+        };
+    }
+
     mapDeletesFromFormValues(map: any) {
         const deletedUserIds: IdType[] = [];
         const deletedUserRoleIds: IdType[] = [];
@@ -563,8 +602,22 @@ export default class AdminUsers extends FormContainerBase<AdminUsersProps> {
         };
     }
 
-    getDataFromFormValues(formValues: {}, initialValues: {}): FormContainerProps {
-        return super.getDataFromFormValues(formValues) || {
+    mapExpiredFromFormValues(map: any, isExpired?: boolean) {
+        isExpired = isExpired || false;
+        const expiredCourtroomIds: IdType[] = [];
+
+        if (map.courtrooms) {
+            const values = map.courtrooms.values;
+
+            const courtroomIds = values
+                .filter((val: any) => val.isExpired === isExpired)
+                .map((val: any) => val.id);
+
+            expiredCourtroomIds.push(...courtroomIds);
+        }
+
+        return {
+            courtrooms: expiredCourtroomIds
         };
     }
 

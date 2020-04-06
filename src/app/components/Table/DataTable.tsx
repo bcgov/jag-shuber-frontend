@@ -48,6 +48,7 @@ export interface DataTableProps {
     filterRows?: Function;
     groupBy?: any;
     sortBy?: string[]; // TODO: Not implemented yet
+    shouldSortBy?: (col: any, colIndex: number) => boolean; // TODO: Not implemented yet
 }
 
 // let RENDER_COUNT = 0;
@@ -78,6 +79,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
     };
 
     // TODO: It would be cool if we could dynamically supply at least some of these types...
+    static HtmlColumn = CellTypes.Html;
     static MappedTextColumn = CellTypes.MappedText;
     static StaticTextColumn = CellTypes.StaticText;
     static StaticDateColumn = CellTypes.StaticDate;
@@ -157,6 +159,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
             filterable,
             filterRows,
             groupBy,
+            shouldSortBy,
             sortBy
         } = this.props;
 
@@ -239,6 +242,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                 <Table striped={true} >
                                     <thead>
                                         <DataTableHeaderRow
+                                            shouldSortBy={shouldSortBy}
                                             fields={fields}
                                             columns={columns}
                                             expandable={expandable}
