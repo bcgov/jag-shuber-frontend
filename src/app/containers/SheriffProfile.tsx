@@ -299,7 +299,6 @@ export default class extends
                     dispatch(setSheriffProfilePluginSubmitErrors());
                     plugins.forEach(p => {
                         p.fetchData(sheriffId, dispatch);
-                        p.fetchData(sheriffId, dispatch);
                     });
                 },
                 onSelectSection: (sectionName) => dispatch(selectSheriffProfileSection(sectionName))
