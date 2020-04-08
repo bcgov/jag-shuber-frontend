@@ -225,11 +225,11 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
                     actions: roleFrontendScopeActions
                 })}
                 columns={[
-                    DataTable.SelectorFieldColumn('Application Access', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: FrontendScopeSelector, displayInfo: true, disabled: true }),
-                    DataTable.MappedTextColumn('Component Code', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: FrontendScopeCodeDisplay, displayInfo: false }),
-                    DataTable.MappedTextColumn('Description', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: FrontendScopeDescriptionDisplay, displayInfo: false }),
-                    DataTable.StaticTextColumn('Assigned By', { fieldName: 'createdBy', colStyle: { width: '200px' }, displayInfo: false }),
-                    DataTable.StaticDateColumn('Date Assigned', { fieldName: 'createdDtm', colStyle: { width: '200px' }, displayInfo: false }),
+                    DataTable.SelectorFieldColumn('Application Access', { fieldName: 'scopeId', colStyle: { width: '16%' }, selectorComponent: FrontendScopeSelector, displayInfo: true, disabled: true }),
+                    // DataTable.MappedTextColumn('Component Code', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: FrontendScopeCodeDisplay, displayInfo: false }),
+                    DataTable.MappedTextColumn('Description', { fieldName: 'scopeId', colStyle: { width: '30%' }, selectorComponent: FrontendScopeDescriptionDisplay, displayInfo: false }),
+                    DataTable.StaticTextColumn('Assigned By', { fieldName: 'createdBy', colStyle: { width: '16%' }, displayInfo: false }),
+                    DataTable.StaticDateColumn('Date Assigned', { fieldName: 'createdDtm', colStyle: { width: '15%' }, displayInfo: false }),
                     // DataTable.ButtonColumn('Configure Access', 'list', { displayInfo: true }, onButtonClicked)
                 ]}
                 rowComponent={EmptyDetailRow}
