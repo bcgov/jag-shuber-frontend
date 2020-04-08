@@ -38,10 +38,14 @@ class SheriffProfileModal extends React.PureComponent<CompositeProps> {
             // sheriff,
             show,
             handleHide,
-            isEditing = false,
+            // TODO: Turn off forced editing if we implement a read-only view for DataTables
+            // isEditing = false,
             showSheriffProfileModal,
             sheriffId
         } = this.props;
+
+        // TODO: Turn off forced editing if we implement a read-only view for DataTables
+        let isEditing = false;
 
         return (
             <Modal
@@ -54,7 +58,8 @@ class SheriffProfileModal extends React.PureComponent<CompositeProps> {
                     {isEditing && 'Updating'} User Profile
                 </Modal.Header>
                 <Modal.Body>
-                    {!isEditing && <Button
+                    {/* TODO: We temp disable button we only want edit mode for now */}
+                    {/* !isEditing && <Button
                         bsStyle="primary"
                         style={{ position: 'absolute', right: 15, zIndex: 100 }}
                         onClick={() => {
@@ -63,9 +68,11 @@ class SheriffProfileModal extends React.PureComponent<CompositeProps> {
                         }}
                     >
                         <Glyphicon glyph="pencil" />
-                    </Button>}
+                    </Button> */}
                     <SheriffProfile
-                        isEditing={isEditing}
+                        // isEditing={isEditing}
+                        // TODO: We temp disable button we only want edit mode for now
+                        isEditing={true}
                         sheriffId={sheriffId}
                         onSubmitSuccess={() => showSheriffProfileModal(sheriffId, false, 'leaves')}
                     />
