@@ -89,7 +89,6 @@ class ManageTeam extends React.PureComponent<AdminFormProps & Partial<ManageTeam
                 >
                     <PageTitle title={({ currentLocationName }: any) => `My Team - ${currentLocationName}`} />
                     <SheriffListComposable />
-                    )}
                 </Well>
             </Page>
         );
