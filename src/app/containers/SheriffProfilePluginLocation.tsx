@@ -13,7 +13,13 @@ import LocationDisplay from './LocationDisplay';
 import SelectorField from '../components/FormElements/SelectorField';
 
 export default class SheriffProfilePluginLocation extends SheriffProfileSectionPlugin<Sheriff> {
-    name = 'location';
+    // NOTICE!
+    // This key maps to the [appScope: FrontendScope] (in the token)
+    // To set permissions for a new plugin, add a corresponding entry under System Settings > Components
+    // with the name as defined as the plugin's name.
+    name = 'SHERIFF_PROFILE_PLUGIN_LOCATION';
+    // END NOTICE
+    reduxFormKey = 'location';
     formFieldNames = {
         currentLocation: 'sheriff.currentLocationId',
         homeLocation: 'sheriff.homeLocationId'

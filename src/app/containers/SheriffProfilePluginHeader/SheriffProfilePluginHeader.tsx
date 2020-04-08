@@ -23,7 +23,14 @@ import { Dispatch } from 'redux';
 import { uploadUserImage } from '../../modules/users/actions';
 
 export default class SheriffProfilePluginHeader extends SheriffProfilePluginBase<Sheriff> {
-    name = 'header';
+    // NOTICE!
+    // This key maps to the [appScope: FrontendScope] (in the token)
+    // To set permissions for a new plugin, add a corresponding entry under System Settings > Components
+    // with the name as defined as the plugin's name.
+    name = 'PLUGIN_HEADER';
+    // END NOTICE
+    useAuth = false;
+    reduxFormKey = 'header';
     formFieldNames = {
         imageData: 'header.imageData'
     };

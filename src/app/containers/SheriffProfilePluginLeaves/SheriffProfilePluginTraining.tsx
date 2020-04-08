@@ -29,8 +29,13 @@ export interface SheriffProfilePluginTrainingProps {
 
 export default class SheriffProfilePluginTraining
     extends SheriffProfileSectionPlugin<SheriffProfilePluginTrainingProps> {
-
-    name = 'training';
+    // NOTICE!
+    // This key maps to the [appScope: FrontendScope] (in the token)
+    // To set permissions for a new plugin, add a corresponding entry under System Settings > Components
+    // with the name as defined as the plugin's name.
+    name = 'SHERIFF_PROFILE_PLUGIN_TRAINING';
+    // END NOTICE
+    reduxFormKey = 'training';
     formFieldNames = {
         fullDay: 'training.fullDay',
         partialDay: 'training.partialDay'

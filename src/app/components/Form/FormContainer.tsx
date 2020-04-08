@@ -12,11 +12,10 @@ export interface FormContainerProps<T = any> {
     //  forms implementation...
     objectId?: IdType;
     data?: T;
-    // TODO: We have proper types for permissions and auth now, use them!
-    pluginPermissions?: any;
-    pluginFilters?: any;
     pluginAuth?: any;
+    pluginPermissions?: any;
     getPluginPermissions?: Function;
+    pluginFilters?: any;
     setPluginFilters?: Function;
     // TODO: It would be nice if we could somehow pass in showSheriffProfileModal some other way that was more declarative, and from the plugin...
     //  This is easy and works for now though.
@@ -44,6 +43,7 @@ export interface FormContainer<T = any> {
      * @memberof Form
      */
     reduxFormKey: string;
+    useAuth?: boolean;
     pluginPermissions: any; // TODO: We can type this better
     renderDisplay(props: FormContainerProps<T>): React.ReactNode;
     renderFormFields(props: FormContainerProps<T>): React.ReactNode;
@@ -71,15 +71,7 @@ export abstract class FormContainerBase<T = any> implements FormContainer<T> {
 
     abstract get title(): string;
 
-    protected _dispatch?: Dispatch<any>;
-
-    public get dispatch(): Dispatch<any> | undefined {
-        return this._dispatch;
-    }
-
-    public set dispatch(dispatch: Dispatch<any> | undefined) {
-        this._dispatch = dispatch;
-    }
+    public useAuth?: boolean;
 
     protected _pluginPermissions?: string[];
 
@@ -99,6 +91,16 @@ export abstract class FormContainerBase<T = any> implements FormContainer<T> {
 
     public set pluginAuth(config: AuthPermissions | undefined) {
         this._pluginAuth = config;
+    }
+
+    protected _dispatch?: Dispatch<any>;
+
+    public get dispatch(): Dispatch<any> | undefined {
+        return this._dispatch;
+    }
+
+    public set dispatch(dispatch: Dispatch<any> | undefined) {
+        this._dispatch = dispatch;
     }
 
     /**

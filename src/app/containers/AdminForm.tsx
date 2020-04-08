@@ -291,9 +291,10 @@ export default class extends
             // Filter out plugins that don't have scopes assigned
             const pluginsToRender = (plugins)
                 ? plugins
-                    .filter((s: any) => {
-                        return Object.keys(appScopes)
-                            .indexOf(s.name) > -1;
+                    .filter((plugin: any) => {
+                        return plugin.useAuth !== false
+                            ? Object.keys(appScopes).indexOf(plugin.name) > -1
+                            : true;
                     })
                     .filter(s => s !== undefined)
                 : [];

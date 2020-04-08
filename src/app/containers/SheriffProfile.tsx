@@ -19,7 +19,7 @@ import { toast } from '../components/ToastManager/ToastManager';
 import { RequestActionConfig } from '../infrastructure/Requests/RequestActionBase';
 import { default as FormSubmitButton, SubmitButtonProps } from '../components/FormElements/SubmitButton';
 
-import { currentLocation } from '../modules/user/selectors';
+import { currentLocation, currentUserRoleScopes } from '../modules/user/selectors';
 import toTitleCase from '../infrastructure/toTitleCase';
 
 import { RootState } from '../store';
@@ -231,8 +231,30 @@ export default class extends
     connect<SheriffProfileContainerStateProps, SheriffProfileContainerDispatchProps, SheriffProfileProps, RootState>(
         (state, { sheriffId, plugins = [] }) => {
             let initialValues: any = {};
+
+            // Filter out any plugins that the user doesn't have permission to access
+            // TODO: A cleaner way to get the data off the token?
+            const { appScopes = {}, authScopes } = currentUserRoleScopes(state);
+            // if (appScopes) debugger;
+
+            // console.log(appScopes);
+            // console.log(authScopes);
+
+            // Filter out plugins that don't have scopes assigned
+            const pluginsToRender = (plugins)
+                ? plugins
+                    .filter((plugin: any) => {
+                        console.log('------');
+                        console.log(plugin);
+                        return plugin.useAuth !== false
+                            ? Object.keys(appScopes).indexOf(plugin.name) > -1
+                            : true;
+                    })
+                    .filter(s => s !== undefined)
+                : [];
+
             if (sheriffId) {
-                initialValues = plugins
+                initialValues = pluginsToRender
                     .map(p => {
                         const data = p.getData(sheriffId, state);
                         if (data !== undefined) {
@@ -261,7 +283,10 @@ export default class extends
             }
 
             return {
+                plugins: pluginsToRender,
                 initialValues,
+                pluginPermissions: { ...appScopes },
+                pluginAuth: authScopes,
                 pluginState: { ...initialValues },
                 selectedSection: selectedSheriffProfileSection(state),
                 ...collectPluginErrors(state, formConfig.form, plugins)

@@ -28,7 +28,13 @@ export interface SheriffProfilePluginLeavesProps {
 }
 
 export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlugin<SheriffProfilePluginLeavesProps> {
-    name = 'leaves';
+    // NOTICE!
+    // This key maps to the [appScope: FrontendScope] (in the token)
+    // To set permissions for a new plugin, add a corresponding entry under System Settings > Components
+    // with the name as defined as the plugin's name.
+    name = 'SHERIFF_PROFILE_PLUGIN_LEAVES';
+    // END NOTICE
+    reduxFormKey = 'leaves';
     formFieldNames = {
         fullDay: 'leaves.fullDay',
         partialDay: 'leaves.partialDay'

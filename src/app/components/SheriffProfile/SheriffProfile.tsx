@@ -14,6 +14,8 @@ export interface SheriffProfileProps {
     selectedSection?: string;
     onSelectSection?: (sectionName: string) => void;
     onSubmitSuccess?: () => void;
+    pluginPermissions?: any;
+    pluginAuth?: any[];
     initialValues?: any;
 }
 
@@ -50,11 +52,24 @@ export default class SheriffProfile extends React.Component<InjectedFormProps<an
     }
 
     renderPlugin(plugin: SheriffProfilePlugin) {
-        const { sheriffId, initialValues = {}, isEditing = false } = this.props;
+        const {
+            sheriffId,
+            initialValues = {},
+            isEditing = false,
+            pluginPermissions,
+            pluginAuth,
+        } = this.props;
+
         const pluginProps: SheriffProfilePluginProps = {
             sheriffId,
-            data: initialValues[plugin.name]
+            data: initialValues[plugin.name],
+            pluginPermissions: pluginPermissions[plugin.name],
+            pluginAuth: pluginAuth,
         };
+
+        // Set the plugin's permissions
+        plugin.pluginPermissions = pluginPermissions[plugin.name];
+
         return isEditing
             ? plugin.renderFormFields(pluginProps)
             : plugin.renderDisplay(pluginProps);
@@ -66,10 +81,17 @@ export default class SheriffProfile extends React.Component<InjectedFormProps<an
             pluginsWithErrors = {},
         } = this.props;
         let { selectedSection } = this.props;
+
         const nonSectionPlugins = plugins.filter(p => !(p instanceof SheriffProfileSectionPlugin));
         // tslint:disable-next-line:max-line-length
         const sectionPlugins = plugins.filter(p => p instanceof SheriffProfileSectionPlugin) as SheriffProfileSectionPlugin<any>[];
-        selectedSection = selectedSection ? selectedSection : sectionPlugins[0].name;
+
+        selectedSection = selectedSection
+            ? selectedSection
+            : sectionPlugins[0] && sectionPlugins[0]
+                ? sectionPlugins[0].name
+                : undefined;
+
         return (
             <div>
 

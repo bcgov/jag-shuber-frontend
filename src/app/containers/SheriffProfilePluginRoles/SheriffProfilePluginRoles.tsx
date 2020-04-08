@@ -35,7 +35,13 @@ export interface SheriffProfilePluginRolesProps {
 }
 
 export default class SheriffProfilePluginRoles extends SheriffProfileSectionPlugin<SheriffProfilePluginRolesProps> {
-    name = 'roles';
+    // NOTICE!
+    // This key maps to the [appScope: FrontendScope] (in the token)
+    // To set permissions for a new plugin, add a corresponding entry under System Settings > Components
+    // with the name as defined as the plugin's name.
+    name = 'SHERIFF_PROFILE_PLUGIN_ROLES';
+    // END NOTICE
+    reduxFormKey = 'roles';
     formFieldNames = {
         fullDay: 'leaves.fullDay'
     };
