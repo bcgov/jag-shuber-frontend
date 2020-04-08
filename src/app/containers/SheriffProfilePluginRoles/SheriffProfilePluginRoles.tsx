@@ -141,7 +141,7 @@ export default class SheriffProfilePluginRoles extends SheriffProfileSectionPlug
         };
     }
 
-    async onSubmit(sheriffId: IdType, formValues: any, dispatch: Dispatch<any>): Promise<Leave[]> {
+    async onSubmit(sheriffId: IdType, formValues: any, initialValues: any, dispatch: Dispatch<any>) {
         const data = this.getDataFromFormValues(formValues);
         const partialLeaves = data.partialDay.map(pl => ({ ...pl, sheriffId, isPartial: true }));
         const fullLeaves = data.fullDay.map(fl => ({ ...fl, sheriffId, isPartial: false }));

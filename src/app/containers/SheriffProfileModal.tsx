@@ -49,9 +49,6 @@ class SheriffProfileModal extends React.PureComponent<CompositeProps> {
                 onHide={handleHide}
                 // TODO: Accept a prop for dialogClassName...
                 dialogClassName="modal-medium"
-                style={{
-                    maxSize: '70%'
-                }}
             >
                 <Modal.Header closeButton={true}>
                     {isEditing && 'Updating'} User Profile

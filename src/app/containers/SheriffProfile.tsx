@@ -52,6 +52,7 @@ import SheriffProfilePluginRoles from './SheriffProfilePluginRoles/SheriffProfil
 async function submitPlugins(
     sheriffId: string,
     values: any,
+    initialValues: any,
     dispatch: Dispatch<any>,
     plugins: SheriffProfilePlugin<any>[] = []
 ) {
@@ -60,7 +61,7 @@ async function submitPlugins(
         const pluginErrors: FormErrors = {};
         await Promise.all(plugins.map(async p => {
             try {
-                await p.onSubmit(sheriffId, values, dispatch);
+                await p.onSubmit(sheriffId, values, initialValues, dispatch);
             } catch (e) {
                 pluginErrors[p.name] = e;
             }
@@ -80,6 +81,8 @@ async function submitPlugins(
                     Object.keys(restErrors).forEach(fieldKey => {
                         formErrors[fieldKey] = restErrors[fieldKey];
                     });
+                } else {
+                    console.warn('Caught SheriffProfilePlugin error', err);
                 }
             });
             dispatch(setSheriffProfilePluginSubmitErrors(pluginErrorMessages));
@@ -123,18 +126,19 @@ const formConfig: ConfigProps<any, SheriffProfileProps> = {
     enableReinitialize: true,
     validate: (values: any, { plugins = [] }) => {
         const validationErrors = plugins.reduce((errors, plugin) => {
-            const pluginValues = values[plugin.name];
+            const pluginValues = values[plugin.reduxFormKey];
             const pluginErrors = plugin.validate(pluginValues);
             if (pluginErrors) {
-                errors[plugin.name] = {...pluginErrors};
+                errors[plugin.reduxFormKey] = {...pluginErrors};
             }
             // console.log('dump sheriff profile form errors');
             // console.log(errors);
             return errors;
         }, {} as FormErrors);
+
         return {...validationErrors};
     },
-    onSubmit: async (values: any, dispatch, { sheriffId, plugins = [] }: SheriffProfileProps) => {
+    onSubmit: async (values: any, dispatch, { sheriffId, plugins = [], initialValues }: SheriffProfileProps) => {
         const { sheriff }: { sheriff: Partial<Sheriff> } = values;
         let sheriffEntityId: string;
         const profileUpdateConfig: RequestActionConfig<Sheriff> = {
@@ -154,7 +158,7 @@ const formConfig: ConfigProps<any, SheriffProfileProps> = {
         }
 
         try {
-            await submitPlugins(sheriffEntityId, values, dispatch, plugins);
+            await submitPlugins(sheriffEntityId, values, initialValues, dispatch, plugins);
         } catch (e) {
             toast.warn('An issue occured with one of the sections');
             throw e;
@@ -244,8 +248,6 @@ export default class extends
             const pluginsToRender = (plugins)
                 ? plugins
                     .filter((plugin: any) => {
-                        console.log('------');
-                        console.log(plugin);
                         return plugin.useAuth !== false
                             ? Object.keys(appScopes).indexOf(plugin.name) > -1
                             : true;
@@ -259,7 +261,7 @@ export default class extends
                         const data = p.getData(sheriffId, state);
                         if (data !== undefined) {
                             const pluginState = {};
-                            pluginState[p.name] = data;
+                            pluginState[p.reduxFormKey] = data;
                             return pluginState;
                         }
                         return undefined;

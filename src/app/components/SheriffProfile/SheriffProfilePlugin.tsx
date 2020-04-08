@@ -35,7 +35,7 @@ export interface SheriffProfilePlugin<T = any> {
     renderDisplay(props: SheriffProfilePluginProps<T>): React.ReactNode;
     renderFormFields(props: SheriffProfilePluginProps<T>): React.ReactNode;
     hasErrors(errors: any): boolean;
-    onSubmit(sheriffid: IdType | undefined, formValues: any, dispatch: Dispatch<any>): Promise<any | void>;
+    onSubmit(sheriffId: IdType | undefined, formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any | void>;
     fetchData(sheriffId: IdType | undefined, dispatch: Dispatch<any>): void;
     getData(sheriffId: IdType | undefined, state: RootState): T | undefined;
     validate(values: T): FormErrors<T> | undefined;
@@ -145,7 +145,7 @@ export abstract class SheriffProfilePluginBase<T = any> implements SheriffProfil
         );
     }
 
-    async onSubmit(sheriffid: IdType | undefined, formValues: any, dispatch: Dispatch<any>): Promise<any | void> {
+    async onSubmit(sheriffid: IdType | undefined, formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any | void> {
         // does nothing
     }
 

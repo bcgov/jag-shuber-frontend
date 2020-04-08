@@ -154,7 +154,7 @@ export default class SheriffProfilePluginHeader extends SheriffProfilePluginBase
         return sheriff.user ? sheriff.user as User : null;
     }
 
-    async onSubmit(sheriffId: IdType, formValues: any, dispatch: Dispatch<any>): Promise<any> {
+    async onSubmit(sheriffId: IdType, formValues: any, initialValues: any, dispatch: Dispatch<any>) {
         const data  = this.getDataFromFormValues(formValues);
 
         const { header, sheriff } = data;

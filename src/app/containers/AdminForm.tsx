@@ -80,6 +80,8 @@ async function submitPlugins(
                 Object.keys(restErrors).forEach(fieldKey => {
                     formErrors[fieldKey] = restErrors[fieldKey];
                 });
+            } else {
+                console.warn('Caught AdminForm error', err);
             }
         });
         dispatch(setAdminFormPluginSubmitErrors(pluginErrorMessages));

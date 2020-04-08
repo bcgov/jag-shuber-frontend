@@ -279,7 +279,6 @@ export abstract class FormContainerBase<T = any> implements FormContainer<T> {
         return (detailProps: any) => (<DetailComponent {...detailProps}  getPluginPermissions={getPluginPermissions} />);
     }
 
-    // async onSubmit(objectId: IdType | undefined, formValues: any, dispatch: Dispatch<any>): Promise<any | void> {
     async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any | void> {
         // does nothing
     }
