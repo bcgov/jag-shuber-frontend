@@ -45,7 +45,7 @@ class SheriffProfileModal extends React.PureComponent<CompositeProps> {
         } = this.props;
 
         // TODO: Turn off forced editing if we implement a read-only view for DataTables
-        let isEditing = false;
+        let isEditing = true;
 
         return (
             <Modal
