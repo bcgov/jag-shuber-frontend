@@ -1,16 +1,16 @@
 import React from 'react';
-import { Sheriff } from '../api/Api';
+import { Sheriff } from '../../api/Api';
 import {
     SheriffProfilePluginProps,
     SheriffProfileSectionPlugin
-} from '../components/SheriffProfile/SheriffProfilePlugin';
-import SheriffDisplay from './SheriffDisplay';
+} from '../../components/SheriffProfile/SheriffProfilePlugin';
+import SheriffDisplay from '../SheriffDisplay';
 import { Table } from 'react-bootstrap';
 import { Field } from 'redux-form';
-import * as Validators from '../infrastructure/Validators';
-import LocationSelector from './LocationSelector';
-import LocationDisplay from './LocationDisplay';
-import SelectorField from '../components/FormElements/SelectorField';
+import * as Validators from '../../infrastructure/Validators';
+import LocationSelector from '../LocationSelector';
+import LocationDisplay from '../LocationDisplay';
+import SelectorField from '../../components/FormElements/SelectorField';
 
 export default class SheriffProfilePluginLocation extends SheriffProfileSectionPlugin<Sheriff> {
     name = 'location';
@@ -37,6 +37,10 @@ export default class SheriffProfilePluginLocation extends SheriffProfileSectionP
                             </tr>
                             <tr>
                                 <td><strong>Current Location</strong></td>
+                                <td><LocationDisplay id={currentLocationId} /></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Effective</strong></td>
                                 <td><LocationDisplay id={currentLocationId} /></td>
                             </tr>
                         </tbody>
@@ -68,6 +72,16 @@ export default class SheriffProfilePluginLocation extends SheriffProfileSectionP
                             (sp) => <LocationSelector label="Current Location" {...sp} />}
                     /> }
                 label="Current Location"
+            />
+            <Field
+                name={this.formFieldNames.currentLocation}
+                component={
+                    (p) => <SelectorField
+                        {...p}
+                        SelectorComponent={
+                            (sp) => <LocationSelector label="Effective" {...sp} />}
+                    /> }
+                label="Effective"
             />
         </div>
     )

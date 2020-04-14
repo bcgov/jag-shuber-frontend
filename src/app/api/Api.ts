@@ -10,6 +10,7 @@ export type IdType = string;
 export type ShiftMap = MapType<Shift>;
 export type LeaveMap = MapType<Leave>;
 export type SheriffMap = MapType<Sheriff>;
+export type SheriffLocationMap = MapType<SheriffLocation>;
 export type AssignmentMap = MapType<Assignment>;
 export type AssignmentDutyMap = MapType<AssignmentDuty>;
 export type WorkSectionCode = 'COURTS' | 'JAIL' | 'ESCORTS' | 'OTHER';
@@ -608,6 +609,19 @@ export interface SheriffQuery extends RecordMetaQuery {
     genderCode?: string;
 }
 
+export interface SheriffLocation {
+    id?: IdType;
+    sheriffId?: string;
+    locationId?: string;
+    startDate?: string;
+    endDate?: string;
+    startTime?: string;
+    endTime?: string;
+    isPartial?: number;
+    comment?: string;
+    cancelDate?: string;
+}
+
 // TODO: Or should it be the other way around - SheriffQuery extends UserQuery?
 export interface UserQuery extends SheriffQuery {
     displayName?: string;
@@ -666,6 +680,12 @@ export interface API {
     deleteLeaveSubCode(subCodeId: IdType): Promise<void>;
     deleteLeaveSubCodes(ids: IdType[]): Promise<void>;
     getLeaveCancelCodes(): Promise<LeaveCancelCode[]>;
+
+    // Sheriff Locations
+    getSheriffLocation(id: IdType): Promise<SheriffLocation>;
+    createSheriffLocation(sheriffLocation: Partial<SheriffLocation>): Promise<SheriffLocation>;
+    updateSheriffLocation(sheriffLocation: Partial<SheriffLocation>): Promise<SheriffLocation>;
+    deleteSheriffLocation(sheriffLocationId: IdType): Promise<void>;
 
     // Courtrooms
     getCourtrooms(): Promise<Courtroom[]>;

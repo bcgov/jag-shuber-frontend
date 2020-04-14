@@ -44,7 +44,7 @@ import { SheriffProfilePlugin } from '../components/SheriffProfile/SheriffProfil
 // Import Sheriff Profile plugins
 import SheriffProfilePluginIdentification from './SheriffProfilePluginIdentification';
 import SheriffProfilePluginHeader from './SheriffProfilePluginHeader/SheriffProfilePluginHeader';
-import SheriffProfilePluginLocation from './SheriffProfilePluginLocation';
+import SheriffProfilePluginLocation from './SheriffProfilePluginLocation/SheriffProfilePluginLocation';
 import SheriffProfilePluginLeaves from './SheriffProfilePluginLeaves/SheriffProfilePluginLeaves';
 import SheriffProfilePluginTraining from './SheriffProfilePluginLeaves/SheriffProfilePluginTraining';
 import SheriffProfilePluginRoles from './SheriffProfilePluginRoles/SheriffProfilePluginRoles';

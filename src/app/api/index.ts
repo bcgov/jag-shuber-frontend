@@ -23,6 +23,7 @@ export {
     Leave,
     LeaveSubCode,
     SheriffDuty,
+    SheriffLocation,
     TimeType,
     WorkSectionCode,
     CourtRoleCode,

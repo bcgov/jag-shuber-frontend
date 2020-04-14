@@ -19,6 +19,7 @@ import {
     EscortRun,
     Sheriff,
     SheriffDuty,
+    SheriffLocation,
     Shift,
     ShiftCopyOptions,
     WorkSectionCode,
@@ -147,6 +148,35 @@ export default class Client implements API {
         }
         return await this._client.UpdateSheriff(id, sheriffToUpdate) as Sheriff;
     }
+
+    // SherifLocations
+    async getSheriffLocation(): Promise<SheriffLocation> {
+        // TODO: Not sure if this is the best solution, but it gets things working they way we want to for now...
+        //  ALL_LOCATIONS key is added to selectorValues in LocationSelector.
+        const currentLocation = (this.currentLocation && this.currentLocation !== 'ALL_LOCATIONS')
+            ? this.currentLocation
+            : undefined;
+
+        const list = await this._client.GetCourtrooms(currentLocation);
+        return sheriffLocation as SheriffLocation;
+    }
+
+    async createSheriffLocation(sheriffLocation: Partial<SheriffLocation>): Promise<SheriffLocation> {
+        return await this._client.CreateSheriffLocation(sheriffLocation) as SheriffLocation;
+    }
+
+    async updateSheriffLocation(sheriffLocation: Partial<SheriffLocation>): Promise<SheriffLocation> {
+        const { id } = sheriffLocation;
+        if (!id) {
+            throw 'No Id included in the sheriffLocation to update';
+        }
+        return await this._client.UpdateSheriffLocation(id, sheriffLocation) as SheriffLocation;
+    }
+
+    async deleteSheriffLocation(sheriffLocationId: string): Promise<void> {
+        return await this._client.DeleteSheriffLocation(sheriffLocationId);
+    }
+    // end SherifLocations
 
     async getAssignments(dateRange: DateRange = {}): Promise<(CourtAssignment | JailAssignment | EscortAssignment | OtherAssignment)[]> {
         const { startDate, endDate } = dateRange;
