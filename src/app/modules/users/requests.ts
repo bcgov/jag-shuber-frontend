@@ -91,9 +91,9 @@ class UploadUserImageRequest extends CreateEntityRequest<User, UserModuleState> 
         );
     }
 
-    public async doWork(request: { id: IdType, image: any }, { api }: ThunkExtra): Promise<any> {
+    public async doWork(request: { id: IdType, image: any }, { uploadApi }: ThunkExtra): Promise<any> {
         const { id, image } = request;
-        let newUserImage = await api.uploadUserImage(id, image);
+        let newUserImage = await uploadApi.uploadImage(id, image);
         return newUserImage;
     }
 }
