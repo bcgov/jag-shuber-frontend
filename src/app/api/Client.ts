@@ -150,15 +150,12 @@ export default class Client implements API {
     }
 
     // SherifLocations
-    async getSheriffLocation(): Promise<SheriffLocation> {
-        // TODO: Not sure if this is the best solution, but it gets things working they way we want to for now...
-        //  ALL_LOCATIONS key is added to selectorValues in LocationSelector.
-        const currentLocation = (this.currentLocation && this.currentLocation !== 'ALL_LOCATIONS')
-            ? this.currentLocation
-            : undefined;
+    async getSheriffLocation(id: IdType): Promise<SheriffLocation> {
+        return await this._client.GetSheriffLocationById(id) as SheriffLocation;
+    }
 
-        const list = await this._client.GetCourtrooms(currentLocation);
-        return sheriffLocation as SheriffLocation;
+    async getSheriffLocations(): Promise<SheriffLocation[]> {
+        return await this._client.GetSheriffLocations() as SheriffLocation[];
     }
 
     async createSheriffLocation(sheriffLocation: Partial<SheriffLocation>): Promise<SheriffLocation> {

@@ -2,12 +2,13 @@ import { ThunkExtra } from '../../store';
 import arrayToMap from '../../infrastructure/arrayToMap';
 import {
     STATE_KEY,
-    SheriffLocationModuleState
+    SheriffLocationModuleState,
 } from './common';
 
 import {
     SheriffLocation,
-    IdType
+    IdType,
+    SheriffLocationMap
 } from '../../api/Api';
 
 import GetEntityMapRequest from '../../infrastructure/Requests/GetEntityMapRequest';
@@ -18,7 +19,7 @@ import { roleMapRequest } from '../roles/requests/roles';
 
 // Get the Map
 class SheriffLocationMapRequest extends GetEntityMapRequest<void, SheriffLocation, SheriffLocationModuleState> {
-    constructor(config?: RequestConfig<MapType<SheriffLocation>>) {
+    constructor(config?: RequestConfig<SheriffLocationMap>) {
         super({
             namespace: STATE_KEY,
             actionName: 'sheriffLocationMap',
