@@ -59,7 +59,6 @@ class SheriffList extends React.Component<CompositeProps> {
           <div
             key={sheriff.badgeNo}
           >
-            Test
             {SheriffRenderer && <SheriffRenderer {...sheriff} />}
             {!SheriffRenderer &&
               <ListGroup>
