@@ -359,7 +359,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                     )
                     : null;
             },
-            /* ({ fields, index, model }) => {
+            ({ fields, index, model }) => {
                 return (model && model.id)
                     ? (
                         <EditRow
@@ -381,21 +381,21 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
             },
             ({ fields, index, model }) => {
             return (model && !model.id || model && model.id === '')
-                    ? (<RemoveRow fields={fields} index={index} model={model} showComponent={true} />)
+                    ? (<RemoveRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage || canDelete)} />)
                     : null;
             },
             ({ fields, index, model }) => {
                 return (model && model.id && model.id !== '' && !model.isExpired)
-                    ? (<ExpireRow fields={fields} index={index} model={model} showComponent={true} onClick={() => dataTableInstance.forceUpdate()} />)
+                    ? (<ExpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance.forceUpdate()} />)
                     : (model && model.isExpired)
-                    ? (<UnexpireRow fields={fields} index={index} model={model} showComponent={true} onClick={() => dataTableInstance.forceUpdate()} />)
+                    ? (<UnexpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance.forceUpdate()} />)
                     : null;
             },
             ({ fields, index, model }) => {
                 return (model && model.id && model.id !== '')
-                    ? (<DeleteRow fields={fields} index={index} model={model} showComponent={grantAll} />)
+                    ? (<DeleteRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage || canDelete)} />)
                     : null;
-            } */
+            }
         ] as React.ReactType<ActionProps>[];
 
         const imageUrl = null;

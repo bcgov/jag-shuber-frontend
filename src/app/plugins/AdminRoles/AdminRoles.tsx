@@ -250,6 +250,9 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
         const { getPluginPermissions } = props;
         const { grantAll, permissions = [] } = buildPluginPermissions(getPluginPermissions);
 
+        const canManage = userCan(permissions, 'MANAGE');
+        const canDelete = userCan(permissions, 'DELETE');
+
         // We can't use React hooks yet, and not sure if this project will ever be upgraded to 16.8
         // This is a quick n' dirty way to achieve the same thing
         let dataTableInstance: any;
@@ -329,12 +332,12 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
             },
             ({ fields, index, model }) => {
             return (model && !model.id || model && model.id === '')
-                    ? (<RemoveRow fields={fields} index={index} model={model} showComponent={true} />)
+                    ? (<RemoveRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage || canDelete)} />)
                     : null;
             },
             ({ fields, index, model }) => {
                 return (model && model.id && model.id !== '')
-                    ? (<DeleteRow fields={fields} index={index} model={model} showComponent={grantAll} />)
+                    ? (<DeleteRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage || canDelete)} />)
                     : null;
             }
         ] as React.ReactType<ActionProps>[];
