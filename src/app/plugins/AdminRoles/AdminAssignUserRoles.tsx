@@ -74,6 +74,7 @@ import EditRow from '../../components/TableColumnActions/EditRow';
 import RemoveRow from '../../components/TableColumnActions/RemoveRow';
 import DeleteRow from '../../components/TableColumnActions/DeleteRow';
 import ExpireRow from '../../components/TableColumnActions/ExpireRow';
+import UnexpireRow from '../../components/TableColumnActions/UnexpireRow';
 import RoleSelector from './containers/RoleSelector';
 import LocationDisplay from './containers/LocationDisplay';
 import LocationSelector from '../../containers/LocationSelector';
@@ -83,8 +84,7 @@ import GenderDisplay from './containers/GenderDisplay';
 import GenderSelector from './containers/GenderSelector';
 import { ActionProps } from '../../components/TableColumnCell/Actions';
 
-import { buildPluginPermissions } from '../index';
-import UnexpireRow from '../../components/TableColumnActions/UnexpireRow';
+import { buildPluginPermissions, userCan } from '../permissionUtils';
 
 import avatarImg from '../../assets/images/avatar.png';
 
@@ -169,10 +169,10 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
     showExpired = false;
 
     DetailComponent: React.SFC<DetailComponentProps> = ({ parentModelId, parentModel, getPluginPermissions }) => {
-        const { grantAll, permissions } = buildPluginPermissions(getPluginPermissions);
+        const { grantAll, permissions = [] } = buildPluginPermissions(getPluginPermissions);
 
-        const canManage = permissions.indexOf('MANAGE') > -1;
-        const canDelete = permissions.indexOf('DELETE') > -1;
+        const canManage = userCan(permissions, 'MANAGE');
+        const canDelete = userCan(permissions, 'DELETE');
 
         // We can't use React hooks yet, and not sure if this project will ever be upgraded to 16.8
         // This is a quick n' dirty way to achieve the same thing
@@ -243,7 +243,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
     FormComponent = (props: FormContainerProps<AdminAssignUserRolesProps>) => {
         const { showSheriffProfileModal } = props;
         const { getPluginPermissions, setPluginFilters, displayFilters } = props;
-        const { grantAll, permissions } = buildPluginPermissions(getPluginPermissions);
+        const { grantAll, permissions = [] } = buildPluginPermissions(getPluginPermissions);
 
         const canManage = permissions.indexOf('MANAGE') > -1;
         const canExpire = permissions.indexOf('EXPIRE_USER_ROLE') > -1;

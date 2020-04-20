@@ -169,7 +169,7 @@ export default class AdminUsers extends FormContainerBase<AdminUsersProps> {
     showExpired = false;
 
     DetailComponent: React.SFC<DetailComponentProps> = ({ parentModelId, parentModel, getPluginPermissions }) => {
-        const { grantAll, permissions } = buildPluginPermissions(getPluginPermissions);
+        const { grantAll, permissions = [] } = buildPluginPermissions(getPluginPermissions);
 
         // We can't use React hooks yet, and not sure if this project will ever be upgraded to 16.8
         // This is a quick n' dirty way to achieve the same thing
@@ -240,7 +240,7 @@ export default class AdminUsers extends FormContainerBase<AdminUsersProps> {
     FormComponent = (props: FormContainerProps<AdminUsersProps>) => {
         const { showSheriffProfileModal } = props;
         const { getPluginPermissions, setPluginFilters, displayFilters } = props;
-        const { grantAll, permissions } = buildPluginPermissions(getPluginPermissions);
+        const { grantAll, permissions = [] } = buildPluginPermissions(getPluginPermissions);
 
         // We can't use React hooks yet, and not sure if this project will ever be upgraded to 16.8
         // This is a quick n' dirty way to achieve the same thing

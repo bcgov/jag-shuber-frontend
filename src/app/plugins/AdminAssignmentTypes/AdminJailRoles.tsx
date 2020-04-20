@@ -44,7 +44,9 @@ import { setAdminRolesPluginFilters } from '../../modules/roles/actions';
 import CodeScopeSelector from '../../containers/CodeScopeSelector';
 import { currentLocation as getCurrentLocation } from '../../modules/user/selectors';
 import { ActionProps } from '../../components/TableColumnCell/Actions';
-import { buildPluginPermissions } from '../permissionUtils';
+
+import { buildPluginPermissions, userCan } from '../permissionUtils';
+
 import * as Validators from '../../infrastructure/Validators';
 // import { createOrUpdateJailRoles } from '../../modules/assignments/actions';
 
@@ -82,10 +84,10 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
 
     FormComponent = (props: FormContainerProps<AdminJailRolesProps>) => {
         const { getPluginPermissions, setPluginFilters } = props;
-        const { grantAll, permissions } = buildPluginPermissions(getPluginPermissions);
+        const { grantAll, permissions = [] } = buildPluginPermissions(getPluginPermissions);
 
-        const canManage = permissions.indexOf('MANAGE_ALL') > -1;
-        const canDelete = permissions.indexOf('DELETE') > -1;
+        const canManage = userCan(permissions, 'MANAGE_ALL');
+        const canDelete = userCan(permissions, 'DELETE');
 
         // We can't use React hooks yet, and not sure if this project will ever be upgraded to 16.8
         // This is a quick n' dirty way to achieve the same thing
