@@ -128,19 +128,8 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
             }
         }
 
-        if (currentUserRoleScopes.appScopes) {
-            const userAppScopes = (Object.keys(currentUserRoleScopes.appScopes) || [])
-                .filter((key, idx, arr) => {
-                    return arr.indexOf(key) === idx;
-                });
-
-            if (userAppScopes.length > 0) {
-                userHasAppScopes = true;
-            }
-        }
-
-        return (userHasAuthScopes || userHasAppScopes);
-    }
+    // TODO: Force this for now... dropping in a not auth screen here doesn't work...
+    const userHasRoles = true;
 
     render() {
         const {
@@ -285,16 +274,16 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
 }
 
 const mapStateToProps = (state: RootState) => {
-    return {
-        isLocationSet: isCurrentLocationSet(state),
-        isLoggedIn: isUserLoggedIn(state),
-        isLoadingToken: isLoadingUserToken(state),
-        tokenLoadingError: loadingTokenError(state),
-        currentUserRoleScopes: currentUserRoleScopes(state),
-        currentUserToken: getCurrentUserToken(state),
-        currentUser: getCurrentUser(state),
-        // getUserByAuthId: (userAuthId: IdType) => getUserByAuthId(userAuthId)(state)
-    };
+  return {
+    isLocationSet: isCurrentLocationSet(state),
+    isLoggedIn: isUserLoggedIn(state),
+    isLoadingToken: isLoadingUserToken(state),
+    tokenLoadingError: loadingTokenError(state),
+    // currentUserRoleScopes: currentUserRoleScopes(state),
+    // currentUserToken: getCurrentUserToken(state),
+    // currentUser: getCurrentUser(state),
+    // getUserByAuthId: (userAuthId: IdType) => getUserByAuthId(userAuthId)(state)
+  };
 };
 
 const mapDispatchToProps = {
