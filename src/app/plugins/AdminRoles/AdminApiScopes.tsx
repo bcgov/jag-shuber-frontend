@@ -31,7 +31,7 @@ import {
 import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
 import DeleteRow from '../../components/TableColumnActions/DeleteRow';
 import ExpireRow from '../../components/TableColumnActions/ExpireRow';
-import { buildPluginPermissions } from '../permissionUtils';
+import { buildPluginPermissions, userCan } from '../permissionUtils';
 import { ActionProps } from '../../components/TableColumnCell/Actions';
 
 // import ApiScopeSelector from './ApiScopeSelector';
@@ -99,7 +99,7 @@ export default class AdminApiScopes extends FormContainerBase<AdminApiScopesProp
 
     FormComponent = (props: FormContainerProps<AdminApiScopesProps>) => {
         const { getPluginPermissions } = props;
-        const { grantAll, permissions } = buildPluginPermissions(getPluginPermissions);
+        const { grantAll, permissions = [] } = buildPluginPermissions(getPluginPermissions);
 
         const onFilterName = (event: Event, newValue: any, previousValue: any, name: string) => {
             const { setPluginFilters } = props;

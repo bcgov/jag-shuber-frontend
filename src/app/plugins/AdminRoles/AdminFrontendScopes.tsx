@@ -89,7 +89,7 @@ import AdminRoleScopeAccessModal from './components/AdminRoleScopeAccessModal';
 import FrontendScopeCodeDisplay from './containers/FrontendScopeCodeDisplay';
 import FrontendScopeDescriptionDisplay from './containers/FrontendScopeDescriptionDisplay';
 import { RoleFrontendScopePermission } from '../../api/Api';
-import { buildPluginPermissions } from '../permissionUtils';
+import { buildPluginPermissions, userCan } from '../permissionUtils';
 import { ActionProps } from '../../components/TableColumnCell/Actions';
 
 // THESE ROLES ARE REQUIRED BY THE SYSTEM FOR BASIC API ACCESS, THEY APPLY TO ALL USERS
@@ -185,7 +185,7 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
     title: string = 'Register Components';
 
     DetailComponent: React.SFC<DetailComponentProps> = ({ parentModelId, getPluginPermissions }) => {
-        const { grantAll, permissions } = buildPluginPermissions(getPluginPermissions);
+        const { grantAll, permissions = [] } = buildPluginPermissions(getPluginPermissions);
 
         // TODO: Add this to a README!
         // Effective Permissions for any user are at a minimum the SYSTEM_ROLES required for basic application usage
@@ -239,7 +239,7 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
 
     FormComponent = (props: FormContainerProps<AdminFrontendScopesProps>) => {
         const { getPluginPermissions, setPluginFilters } = props;
-        const { grantAll, permissions } = buildPluginPermissions(getPluginPermissions);
+        const { grantAll, permissions = [] } = buildPluginPermissions(getPluginPermissions);
 
         // We can't use React hooks yet, and not sure if this project will ever be upgraded to 16.8
         // This is a quick n' dirty way to achieve the same thing

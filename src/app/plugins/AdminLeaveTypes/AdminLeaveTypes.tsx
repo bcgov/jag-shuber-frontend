@@ -34,10 +34,11 @@ import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../component
 import { AdminLeaveTypesProps } from './AdminLeaveTypes';
 import DeleteRow from '../../components/TableColumnActions/DeleteRow';
 import ExpireRow from '../../components/TableColumnActions/ExpireRow';
-import { ActionProps } from '../../components/TableColumnCell/Actions';
-import { buildPluginPermissions } from '../permissionUtils';
 import RemoveRow from '../../components/TableColumnActions/RemoveRow';
 import UnexpireRow from '../../components/TableColumnActions/UnexpireRow';
+
+import { ActionProps } from '../../components/TableColumnCell/Actions';
+import { buildPluginPermissions, userCan } from '../permissionUtils';
 
 export interface AdminLeaveTypesProps extends FormContainerProps {
     leaveTypes?: any[];
@@ -74,10 +75,10 @@ export default class AdminLeaveTypes extends FormContainerBase<AdminLeaveTypesPr
 
     FormComponent = (props: FormContainerProps<AdminLeaveTypesProps>) => {
         const { getPluginPermissions, setPluginFilters } = props;
-        const { grantAll, permissions } = buildPluginPermissions(getPluginPermissions);
+        const { grantAll, permissions = [] } = buildPluginPermissions(getPluginPermissions);
 
-        const canManage = permissions.indexOf('MANAGE_ALL') > -1;
-        const canDelete = permissions.indexOf('DELETE') > -1;
+        const canManage = userCan(permissions, 'MANAGE_ALL');
+        const canDelete = userCan(permissions, 'DELETE');
 
         // We can't use React hooks yet, and not sure if this project will ever be upgraded to 16.8
         // This is a quick n' dirty way to achieve the same thing
