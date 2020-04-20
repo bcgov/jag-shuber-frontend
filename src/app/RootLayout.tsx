@@ -128,37 +128,29 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
             }
         }
 
-    // TODO: Force this for now... dropping in a not auth screen here doesn't work...
-    const userHasRoles = true;
+    // This will check for 'default'
+    /* let userHasRoles = false;
+    if (currentUserRoleScopes.appScopes) {
+      const userAppScopes = Object.keys(currentUserRoleScopes.appScopes);
+      if (userAppScopes.length > 0) {
+        userHasRoles = true;
+      }
+    } */
 
-    render() {
-        const {
-            isLocationSet = false,
-            tokenLoadingError,
-            isLoggedIn,
-            isLoadingToken = true,
-            logout
-        } = this.props;
+    return (
+        <Router basename={resolveAppUrl('')}>
+          <div className="App">
+            <CustomDragLayer/>
+            <ToastManager />
+            <div className="headerArea">
+              <Navigation
+                  onLogoutClicked={() => {
+                    if (logout) logout();
+                  }}
+              />
+            </div>
 
-        if (isLoadingToken) {
-            return null;
-        }
-
-        const userHasBasicAuth = this.userHasBasicAuth();
-
-        if (!isLoggedIn && tokenLoadingError) {
-            return (
-                <div style={{ width: 300, margin: 'auto', marginTop: 200, position: 'absolute', top: 0, bottom: 0, right: 0, left: 0 }}>
-                    <Alert bsStyle="danger">
-                        Looks like your session may have expired, please reload the page.
-                        <br/>
-                        <Button style={{marginTop: 10}} onClick={() => window.location.reload()} >Click to reload</Button>
-                    </Alert>
-                </div>
-            );
-        } // Use this if you want to ONLY show the unauthorized message
-        /* else if (!userHasBasicAuth) {
-            return (
+            {/* !userHasRoles && (
                 <div className="mainArea">
                     <Well
                         style={{
@@ -177,96 +169,53 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
                         </div>
                     </Well>
                 </div>
-            );
-        } */
+            ) */}
 
-        return (
-            <Router basename={resolveAppUrl('')}>
-                <div className="App">
-                    <CustomDragLayer/>
-                    <ToastManager />
-                    <div className="headerArea">
-                        <Navigation
-                            onLogoutClicked={() => {
-                                if (logout) logout();
-                            }}
-                        />
+            {!isLocationSet && (
+                <div className="mainArea">
+                  <Well
+                      style={{
+                        backgroundColor: 'white',
+                        maxWidth: '85%',
+                        height: '100%',
+                        margin: 'auto',
+                        borderRadius: 0,
+                        border: '1px solid grey'
+                      }}
+                  >
+                    <div style={{ paddingTop: 10 }}>
+                      <h1>Select your Location</h1>
+                      <LocationSelector.Current />
                     </div>
 
-                    {!userHasBasicAuth && (
-                        <div className="mainArea">
-                            <Well
-                                style={{
-                                    backgroundColor: 'white',
-                                    maxWidth: '85%',
-                                    height: '100%',
-                                    margin: 'auto',
-                                    borderRadius: 0
-                                }}
-                            >
-                                <div style={{ paddingTop: 10 }}>
-                                    <Alert bsStyle="danger">
-                                        <h3 style={{ color: '#d2322d' }}>Unauthorized</h3>
-                                        <p>Sorry, you do not have the required access to view this content. Please contact your system administrator.</p>
-                                    </Alert>
-                                </div>
-                            </Well>
-                        </div>
-                    )}
-
-                    {!isLocationSet && userHasBasicAuth && (
-                        <div className="mainArea">
-                            <Well
-                                style={{
-                                    backgroundColor: 'white',
-                                    maxWidth: '85%',
-                                    height: '100%',
-                                    margin: 'auto',
-                                    borderRadius: 0,
-                                    border: '1px solid grey'
-                                }}
-                            >
-                                <div style={{ paddingTop: 10 }}>
-                                    <h1>Select your Location</h1>
-                                    <LocationSelector.Current />
-                                </div>
-                            </Well>
-                        </div>
-                    )}
-
-                    {isLocationSet && userHasBasicAuth && (
-                        <div className="mainArea">
-                            <Route exact={true} path={NavigationComponent.Routes.dutyRoster.timeline.path} component={DutyRosterPage} />
-                            <Route path={NavigationComponent.Routes.schedule.manage.path} component={SchedulingPage} />
-                            <Route path={NavigationComponent.Routes.schedule.distribute.path} component={PublishSchedulePage} />
-                            <Route path={NavigationComponent.Routes.dutyRoster.setup.path} component={DefaultAssignmentsPage} />
-                            <Route path={NavigationComponent.Routes.assignment.path} component={AssignmentPage} />
-                            <Route path={NavigationComponent.Routes.team.path} component={ManageSheriffsPage} />
-                            <Route path={NavigationComponent.Routes.team.children.roles.path} component={ManageRolesPage} />
-                            <Route path={NavigationComponent.Routes.team.children.team.path} component={ManageTeamPage} />
-                            <Route path={NavigationComponent.Routes.team.children.users.path} component={ManageUsersPage} />
-                            <Route path={NavigationComponent.Routes.team.children.userRoles.path} component={ManageUserRolesPage} />
-                            <Route path={NavigationComponent.Routes.types.children.leaveTypes.path} component={ManageLeaveTypesPage} />
-                            <Route path={NavigationComponent.Routes.types.children.assignmentTypes.path} component={ManageAssignmentTypesPage} />
-                            <Route path={NavigationComponent.Routes.system.children.components.path} component={ManageComponentsPage} />
-                            <Route path={NavigationComponent.Routes.audit.path} component={AuditPage} />
-                            <Route path={NavigationComponent.Routes.system.children.apis.path} component={ManageApisPage} />
-                            <DutyRosterToolsModal />
-                            <AssignmentDutyEditModal />
-                            <SheriffProfileModal />
-                            <SheriffProfileCreateModal />
-                            <ScheduleShiftCopyModal />
-                            <ScheduleShiftAddModal />
-                            <AssignmentScheduleAddModal />
-                            <AssignmentScheduleEditModal />
-                            <ConnectedConfirmationModal />
-                            <AssignmentSheriffDutyReassignmentModal />
-                            <ScheduleShiftMultiEditModal />
-                        </div>
-                    )}
-                    <div className="footerArea">
-                        <Footer />
-                    </div>
+            {isLocationSet && (
+                <div className="mainArea">
+                  <Route exact={true} path={NavigationComponent.Routes.dutyRoster.timeline.path} component={DutyRosterPage} />
+                  <Route path={NavigationComponent.Routes.schedule.manage.path} component={SchedulingPage} />
+                  <Route path={NavigationComponent.Routes.schedule.distribute.path} component={PublishSchedulePage} />
+                  <Route path={NavigationComponent.Routes.dutyRoster.setup.path} component={DefaultAssignmentsPage} />
+                  <Route path={NavigationComponent.Routes.assignment.path} component={AssignmentPage} />
+                  <Route path={NavigationComponent.Routes.team.path} component={ManageSheriffsPage} />
+                  <Route path={NavigationComponent.Routes.team.children.roles.path} component={ManageRolesPage} />
+                  <Route path={NavigationComponent.Routes.team.children.team.path} component={ManageTeamPage} />
+                  <Route path={NavigationComponent.Routes.team.children.users.path} component={ManageUsersPage} />
+                  <Route path={NavigationComponent.Routes.team.children.userRoles.path} component={ManageUserRolesPage} />
+                  <Route path={NavigationComponent.Routes.types.children.leaveTypes.path} component={ManageLeaveTypesPage} />
+                  <Route path={NavigationComponent.Routes.types.children.assignmentTypes.path} component={ManageAssignmentTypesPage} />
+                  <Route path={NavigationComponent.Routes.system.children.components.path} component={ManageComponentsPage} />
+                  <Route path={NavigationComponent.Routes.audit.path} component={AuditPage} />
+                  <Route path={NavigationComponent.Routes.system.children.apis.path} component={ManageApisPage} />
+                  <DutyRosterToolsModal />
+                  <AssignmentDutyEditModal />
+                  <SheriffProfileModal />
+                  <SheriffProfileCreateModal />
+                  <ScheduleShiftCopyModal />
+                  <ScheduleShiftAddModal />
+                  <AssignmentScheduleAddModal />
+                  <AssignmentScheduleEditModal />
+                  <ConnectedConfirmationModal />
+                  <AssignmentSheriffDutyReassignmentModal />
+                  <ScheduleShiftMultiEditModal />
                 </div>
             </Router>
         );
