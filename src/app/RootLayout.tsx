@@ -132,14 +132,8 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
       );
     }
 
-    // This will check for 'default'
-    let userHasRoles = false;
-    if (currentUserRoleScopes.appScopes) {
-      const userAppScopes = Object.keys(currentUserRoleScopes.appScopes);
-      if (userAppScopes.length > 0) {
-        userHasRoles = true;
-      }
-    }
+    // TODO: Force this for now... dropping in a not auth screen here doesn't work...
+    const userHasRoles = true;
 
     return (
         <Router basename={resolveAppUrl('')}>
@@ -240,10 +234,10 @@ const mapStateToProps = (state: RootState) => {
     isLoggedIn: isUserLoggedIn(state),
     isLoadingToken: isLoadingUserToken(state),
     tokenLoadingError: loadingTokenError(state),
-    currentUserRoleScopes: currentUserRoleScopes(state),
-    currentUserToken: getCurrentUserToken(state),
-    currentUser: getCurrentUser(state),
-    getUserByAuthId: (userAuthId: IdType) => getUserByAuthId(userAuthId)(state)
+    // currentUserRoleScopes: currentUserRoleScopes(state),
+    // currentUserToken: getCurrentUserToken(state),
+    // currentUser: getCurrentUser(state),
+    // getUserByAuthId: (userAuthId: IdType) => getUserByAuthId(userAuthId)(state)
   };
 };
 
