@@ -245,9 +245,9 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
         const { getPluginPermissions, setPluginFilters, displayFilters } = props;
         const { grantAll, permissions = [] } = buildPluginPermissions(getPluginPermissions);
 
-        const canManage = permissions.indexOf('MANAGE') > -1;
-        const canExpire = permissions.indexOf('EXPIRE_USER_ROLE') > -1;
-        const canDelete = permissions.indexOf('DELETE') > -1;
+        const canManage = userCan(permissions, 'MANAGE');
+        const canManage = userCan(permissions, 'EXPIRE_USER_ROLE');
+        const canDelete = userCan(permissions, 'DELETE');
 
         // We can't use React hooks yet, and not sure if this project will ever be upgraded to 16.8
         // This is a quick n' dirty way to achieve the same thing
