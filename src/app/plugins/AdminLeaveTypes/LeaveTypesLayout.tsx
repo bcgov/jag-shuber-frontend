@@ -30,7 +30,10 @@ export default (props: any) => {
     return (
         <Tab.Container
             id="profile-sections" // TODO: Change this ID!
-            onSelect={(key: any) => handleSelectSection(key)}
+            onSelect={(key: any) => {
+                console.log('LeaveTypesLayout handleSelectSection');
+                handleSelectSection(key);
+            }}
             activeKey={selectedSection}
             key={selectedSection}
         >

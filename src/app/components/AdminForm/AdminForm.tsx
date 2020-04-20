@@ -31,6 +31,7 @@ export interface AdminFormProps {
 
 export default class AdminForm extends React.PureComponent<InjectedFormProps<any, AdminFormProps> & AdminFormProps>{
     private handleSelectSection(sectionName: string) {
+        console.log('I am running like a million times');
         const { onSelectSection } = this.props;
         if (onSelectSection) {
             onSelectSection(sectionName);

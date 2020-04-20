@@ -97,7 +97,10 @@ export default class SheriffProfile extends React.Component<InjectedFormProps<an
 
                 <Tab.Container
                     id="profile-sections"
-                    onSelect={(key: any) => this.handleSelectSection(key)}
+                    onSelect={(key: any) => {
+                        console.log('SheriffProfile handleSelectSection');
+                        this.handleSelectSection(key);
+                    }}
                     activeKey={selectedSection}
                 >
                     <Row className="clearfix">

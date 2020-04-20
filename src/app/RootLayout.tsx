@@ -132,8 +132,14 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
       );
     }
 
-    // TODO: Force this for now... dropping in a not auth screen here doesn't work...
-    const userHasRoles = true;
+    // This will check for 'default'
+    /* let userHasRoles = false;
+    if (currentUserRoleScopes.appScopes) {
+      const userAppScopes = Object.keys(currentUserRoleScopes.appScopes);
+      if (userAppScopes.length > 0) {
+        userHasRoles = true;
+      }
+    } */
 
     return (
         <Router basename={resolveAppUrl('')}>
@@ -148,7 +154,7 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
               />
             </div>
 
-            {!userHasRoles && (
+            {/* !userHasRoles && (
                 <div className="mainArea">
                   <Well
                       style={{
@@ -167,9 +173,9 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
                     </div>
                   </Well>
                 </div>
-            )}
+            ) */}
 
-            {!isLocationSet && userHasRoles && (
+            {!isLocationSet && (
                 <div className="mainArea">
                   <Well
                       style={{
@@ -189,7 +195,7 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
                 </div>
             )}
 
-            {isLocationSet && userHasRoles && (
+            {isLocationSet && (
                 <div className="mainArea">
                   <Route exact={true} path={NavigationComponent.Routes.dutyRoster.timeline.path} component={DutyRosterPage} />
                   <Route path={NavigationComponent.Routes.schedule.manage.path} component={SchedulingPage} />

@@ -15,7 +15,10 @@ export default (props: any) => {
     return (
         <Tab.Container
             id="profile-sections" // TODO: Change this ID!
-            onSelect={(key: any) => handleSelectSection(key)}
+            onSelect={(key: any) => {
+                console.log('AdminFormTabs handleSelectSection');
+                handleSelectSection(key);
+            }}
             activeKey={selectedSection}
         >
             <Row className="clearfix">
