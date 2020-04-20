@@ -12,8 +12,8 @@ import LeavePersonalSubCodeSelector from '../LeavePersonalSubCodeSelector';
 import LeaveCancelledPopover from '../../components/LeaveCancelledPopover';
 import TimePickerDropDownField from '../../components/FormElements/TimePickerDropDownField';
 import { fromTimeString, toTimeString } from 'jag-shuber-api';
-import LeaveSubCodeDisplay from '../LeaveSubCodeDisplay';
-import LeaveTrainingSubCodeSelector from '../LeaveTrainingSubCodeSelector';
+import LocationDisplay from '../LocationDisplay';
+import LocationSelector from '../LocationSelector';
 
 import { ColumnRendererProps } from '../../components/TableColumn';
 
@@ -48,6 +48,27 @@ export default class SheriffLocationFieldTable extends React.Component<SheriffLo
             null // CanceledRender not needed
         )
     };
+
+    static LocationColumn(): SheriffLocationFieldTableColumn {
+        return {
+            title: 'Location',
+            FormRenderer: ({ fieldInstanceName }) => (
+                <Field
+                    name={`${fieldInstanceName}.locationId`}
+                    component={(p) => <SelectorField
+                        {...p}
+                        showLabel={false}
+                        SelectorComponent={
+                            (sp) => <LocationSelector {...sp} />}
+                    />}
+                    label="Type"
+                />
+            ),
+            CanceledRender: ({ location }) => (
+                <LocationDisplay id={location.locationId} />
+            )
+        };
+    }
 
     static DateColumn(label: string, fieldName: string): SheriffLocationFieldTableColumn {
         return {
