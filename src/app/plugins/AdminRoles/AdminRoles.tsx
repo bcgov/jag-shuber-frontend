@@ -129,7 +129,7 @@ class AdminRolesDisplay extends React.PureComponent<AdminRolesDisplayProps, {}> 
                             <th className="text-left">Role Name</th>
                             <th className="text-left">Role Code</th>
                             <th className="text-left">Description</th>
-                            <th className="text-left">Date Created</th>
+                            <th className="text-left">Last Modified</th>
                             <th className="text-left">Status</th>
                             <th />
                         </tr>
@@ -231,8 +231,8 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
                     DataTable.SelectorFieldColumn('Application Access', { fieldName: 'scopeId', colStyle: { width: '16%' }, selectorComponent: FrontendScopeSelector, displayInfo: true, disabled: true }),
                     // DataTable.MappedTextColumn('Component Code', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: FrontendScopeCodeDisplay, displayInfo: false }),
                     DataTable.MappedTextColumn('Description', { fieldName: 'scopeId', colStyle: { width: '30%' }, selectorComponent: FrontendScopeDescriptionDisplay, displayInfo: false }),
-                    DataTable.StaticTextColumn('Assigned By', { fieldName: 'createdBy', colStyle: { width: '16%' }, displayInfo: false }),
-                    DataTable.StaticDateColumn('Date Assigned', { fieldName: 'createdDtm', colStyle: { width: '15%' }, displayInfo: false }),
+                    DataTable.StaticDateColumn('Last Modified', { fieldName: 'updatedDtm', colStyle: { width: '16%' }, displayInfo: false }),
+                    DataTable.StaticTextColumn('Assigned By', { fieldName: 'updatedBy', colStyle: { width: '15%' }, displayInfo: false }),
                     // DataTable.ButtonColumn('Configure Access', 'list', { displayInfo: true }, onButtonClicked)
                 ]}
                 rowComponent={EmptyDetailRow}
@@ -358,9 +358,8 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
                         DataTable.TextFieldColumn('Role Name', { fieldName: 'roleName', colStyle: { width: '15%' }, displayInfo: true, filterable: true, filterColumn: onFilterRoleName }),
                         DataTable.TextFieldColumn('Role Code', { fieldName: 'roleCode', colStyle: { width: '10%' }, displayInfo: true, filterable: true, filterColumn: onFilterRoleCode }),
                         DataTable.TextFieldColumn('Description', { fieldName: 'description', colStyle: { width: '20%' }, displayInfo: true }),
-                        DataTable.StaticTextColumn('Created By', { fieldName: 'createdBy', colStyle: { width: '15%' }, displayInfo: false, filterable: true, filterColumn: onFilterCreatedBy }),
-                        DataTable.StaticDateColumn('Date Created', { fieldName: 'createdDtm', colStyle: { width: '15%' }, displayInfo: false, filterable: true, filterColumn: onFilterCreatedDate })
-
+                        DataTable.StaticDateColumn('Last Modified', { fieldName: 'updatedDtm', colStyle: { width: '15%' }, displayInfo: false, filterable: true, filterColumn: onFilterCreatedDate }),
+                        DataTable.StaticTextColumn('Assigned By', { fieldName: 'updatedBy', colStyle: { width: '15%' }, displayInfo: false, filterable: true, filterColumn: onFilterCreatedBy })
                     ]}
                     filterable={true}
 

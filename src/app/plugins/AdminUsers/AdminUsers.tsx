@@ -119,7 +119,7 @@ class AdminUsersDisplay extends React.PureComponent<AdminUsersDisplayProps, any>
                             <th className="text-left">Role Name</th>
                             <th className="text-left">Role Code</th>
                             <th className="text-left">Description</th>
-                            <th className="text-left">Date Created</th>
+                            <th className="text-left">Last Modified</th>
                             <th className="text-left">Status</th>
                             <th />
                         </tr>
@@ -219,8 +219,8 @@ export default class AdminUsers extends FormContainerBase<AdminUsersProps> {
                     DataTable.SelectorFieldColumn('Assigned Role', { fieldName: 'roleId', colStyle: { width: '18%' }, selectorComponent: RoleSelector, displayInfo: true }),
                     DataTable.DateColumn('Effective Date', 'effectiveDate', { colStyle: { width: '15%'}, displayInfo: true }),
                     DataTable.DateColumn('Expiry Date', 'expiryDate', { colStyle: { width: '15%'}, displayInfo: true }),
-                    DataTable.StaticTextColumn('Assigned By', { fieldName: 'createdBy', colStyle: { width: '15%' }, displayInfo: false }),
-                    DataTable.StaticDateColumn('Date Assigned', { fieldName: 'createdDtm', colStyle: { width: '15%' }, displayInfo: false }),
+                    DataTable.StaticDateColumn('Last Modified', { fieldName: 'updatedDtm', colStyle: { width: '15%' }, displayInfo: false }),
+                    DataTable.StaticTextColumn('Assigned By', { fieldName: 'updatedBy', colStyle: { width: '15%' }, displayInfo: false })
                 ]}
                 expandable={false}
                 shouldDisableRow={() => parentModel.systemAccountInd === 1}
@@ -487,7 +487,7 @@ export default class AdminUsers extends FormContainerBase<AdminUsersProps> {
                             filterable: true,
                             filterColumn: onFilterHomeLocation
                         }), */
-                        // DataTable.DateColumn('Date Created', 'createdDtm'),
+                        // DataTable.DateColumn('Last Modified', 'createdDtm'),
                         // DataTable.SelectorFieldColumn('Status', { displayInfo: true }), // No point really in setting the status here
                     ]}
                     filterable={displayFilters}
