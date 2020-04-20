@@ -57,7 +57,7 @@ class AdminApiScopesDisplay extends React.PureComponent<AdminApiScopesDisplayPro
                             <th className="text-left">Role Name</th>
                             <th className="text-left">Role Code</th>
                             <th className="text-left">Description</th>
-                            <th className="text-left">Date Created</th>
+                            <th className="text-left">Last Modified</th>
                             <th className="text-left">Status</th>
                             <th />
                         </tr>

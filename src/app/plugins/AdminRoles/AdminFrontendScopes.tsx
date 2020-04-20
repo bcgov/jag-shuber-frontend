@@ -131,7 +131,7 @@ class AdminFrontendScopesDisplay extends React.PureComponent<AdminFrontendScopes
                             <th className="text-left">Role Name</th>
                             <th className="text-left">Role Code</th>
                             <th className="text-left">Description</th>
-                            <th className="text-left">Date Created</th>
+                            <th className="text-left">Last Modified</th>
                             <th className="text-left">Status</th>
                             <th />
                         </tr>
@@ -223,8 +223,8 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
                 columns={[
                     DataTable.SelectorFieldColumn('Api Scope', { fieldName: 'apiScopeId', colStyle: { width: '300px' }, selectorComponent: ApiScopeSelector, displayInfo: true }),
                     DataTable.MappedTextColumn('Scope Code', { fieldName: 'apiScopeId', colStyle: { width: '300px' }, selectorComponent: ApiScopeCodeDisplay, displayInfo: false }),
-                    DataTable.StaticTextColumn('Assigned By', { fieldName: 'createdBy', colStyle: { width: '200px' }, displayInfo: false }),
-                    DataTable.StaticDateColumn('Date Assigned', { fieldName: 'createdDtm', colStyle: { width: '350px' }, displayInfo: false }),
+                    DataTable.StaticDateColumn('Last Modified', { fieldName: 'updatedDtm', colStyle: { width: '350px' }, displayInfo: false }),
+                    DataTable.StaticTextColumn('Assigned By', { fieldName: 'updatedBy', colStyle: { width: '200px' }, displayInfo: false }),
                     // DataTable.ButtonColumn('Configure Access', 'eye-open', { displayInfo: true }, onButtonClicked),
                 ]}
                 rowComponent={EmptyDetailRow}
