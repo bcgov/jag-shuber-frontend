@@ -184,6 +184,8 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
     title: string = ' Manage Roles & Access';
     DetailComponent: React.SFC<DetailComponentProps> = ({ parentModelId, parentModel, getPluginPermissions }) => {
         const { grantAll, permissions } = buildPluginPermissions(getPluginPermissions);
+        const canManage = permissions.indexOf('MANAGE') > -1;
+        const canDelete = permissions.indexOf('DELETE') > -1;
 
         // We can't use React hooks yet, and not sure if this project will ever be upgraded to 16.8
         // This is a quick n' dirty way to achieve the same thing
@@ -209,7 +211,7 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
                     )
                     : null;
             },
-            ({ fields, index, model }) => <DeleteRow fields={fields} index={index} model={model} showComponent={grantAll} />,
+            ({ fields, index, model }) => <DeleteRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage || canDelete)} />,
             // ({ fields, index, model }) => { return (model && model.id) ? (<ExpireRow fields={fields} index={index} model={model} />) : null; }
         ] as React.ReactType<ActionProps>[];
 
@@ -364,6 +366,8 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
                     expandable={true}
                     // expandedRows={[1, 2]}
                     rowComponent={this.renderDetail()}
+                    // Don't render or show system roles unless user is a Super Administrator
+                    shouldRenderRow={(model) => model.systemRoleInd !== 1}
                     shouldDisableRow={(model) => {
                         // TODO: Only disable if the user doesn't have permission to edit provincial codes
                         return (!model) ? false : (model && model.id) ? model.systemRoleInd === 1 : false;

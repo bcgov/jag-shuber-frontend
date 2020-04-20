@@ -5989,7 +5989,7 @@ istanbul@^0.4.5:
 
 "jag-shuber-api@github:bcgov/jag-shuber-api":
   version "2.0.0"
-  resolved "https://codeload.github.com/bcgov/jag-shuber-api/tar.gz/d296fbaefd083ac6ceda8542b9dc7b40cffd4112"
+  resolved "https://codeload.github.com/bcgov/jag-shuber-api/tar.gz/8d2a7264dcce450c7bffa27b0953ca48303b9326"
   dependencies:
     jsonwebtoken "^8.3.0"
     jwt-decode "^2.2.0"
@@ -8403,9 +8403,9 @@ postgres-bytea@~1.0.0:
   integrity sha1-AntTPAqokOJtFy1Hz5zOzFIazTU=
 
 postgres-date@~1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/postgres-date/-/postgres-date-1.0.4.tgz#1c2728d62ef1bff49abdd35c1f86d4bdf118a728"
-  integrity sha512-bESRvKVuTrjoBluEcpv2346+6kgB7UlnqWZsnbnCccTNq/pqfj1j6oBaN5+b/NrDXepYUT/HKadqv3iS9lJuVA==
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/postgres-date/-/postgres-date-1.0.5.tgz#710b27de5f27d550f6e80b5d34f7ba189213c2ee"
+  integrity sha512-pdau6GRPERdAYUQwkBnGKxEfPyhVZXG/JiS44iZWiNdSOWE09N2lUgN6yshuq6fVSon4Pm0VMXd1srUUkLe9iA==
 
 postgres-interval@^1.1.0:
   version "1.2.0"
@@ -11045,9 +11045,9 @@ tslint@^5.7.0:
     tsutils "^2.12.1"
 
 tsoa@^2.1.8:
-  version "2.5.13"
-  resolved "https://registry.yarnpkg.com/tsoa/-/tsoa-2.5.13.tgz#d76b4637fa3786833fdbb0b72ff0e7cd99131abd"
-  integrity sha512-JDptbzaES7vyIX1QnV8L0RZGbaQ2GunhoDfVbl3O3OOYP3j031jhYGguyL+jgJrH5rU98+v+KQlfKHG5bUUb9g==
+  version "2.5.14"
+  resolved "https://registry.yarnpkg.com/tsoa/-/tsoa-2.5.14.tgz#1cdcb1b315c3882d61b82ad887c9a5e25550be64"
+  integrity sha512-wBqUCgsWaypR3J5oWsp7AnOHoD4Yfa6g9CnZ+5ImHdXg3VGjBj8BKCO+k3u5gGj5xf3/rjpuAAihAAWV0wHBhw==
   dependencies:
     fs-extra "^8.1.0"
     handlebars "^4.5.3"
@@ -11193,12 +11193,11 @@ uglify-js@^3.0.13:
     source-map "~0.6.1"
 
 uglify-js@^3.1.4:
-  version "3.8.1"
-  resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.8.1.tgz#43bb15ce6f545eaa0a64c49fd29375ea09fa0f93"
-  integrity sha512-W7KxyzeaQmZvUFbGj4+YFshhVrMBGSg2IbcYAjGWGvx8DHvJMclbTDMpffdxFUGPBHjIytk7KJUR/KUXstUGDw==
+  version "3.9.1"
+  resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.9.1.tgz#a56a71c8caa2d36b5556cc1fd57df01ae3491539"
+  integrity sha512-JUPoL1jHsc9fOjVFHdQIhqEEJsQvfKDjlubcCilu8U26uZ73qOg8VsN8O1jbuei44ZPlwL7kmbAdM4tzaUvqnA==
   dependencies:
     commander "~2.20.3"
-    source-map "~0.6.1"
 
 uglify-to-browserify@~1.0.0:
   version "1.0.2"
