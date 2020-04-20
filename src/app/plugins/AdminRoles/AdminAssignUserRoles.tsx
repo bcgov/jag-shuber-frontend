@@ -171,6 +171,9 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
     DetailComponent: React.SFC<DetailComponentProps> = ({ parentModelId, parentModel, getPluginPermissions }) => {
         const { grantAll, permissions } = buildPluginPermissions(getPluginPermissions);
 
+        const canManage = permissions.indexOf('MANAGE') > -1;
+        const canDelete = permissions.indexOf('DELETE') > -1;
+
         // We can't use React hooks yet, and not sure if this project will ever be upgraded to 16.8
         // This is a quick n' dirty way to achieve the same thing
         let dataTableInstance: any;
@@ -186,19 +189,19 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
         const userRoleActions = [
             ({ fields, index, model }) => {
                 return (model && !model.id || model && model.id === '')
-                    ? (<RemoveRow fields={fields} index={index} model={model} showComponent={true} />)
+                    ? (<RemoveRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage || canDelete)} />)
                     : null;
             },
             ({ fields, index, model }) => {
                 return (model && model.id && model.id !== '' && !model.isExpired)
-                    ? (<ExpireRow fields={fields} index={index} model={model} showComponent={true} onClick={() => dataTableInstance.forceUpdate()} />)
+                    ? (<ExpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance.forceUpdate()} />)
                     : (model && model.isExpired)
-                    ? (<UnexpireRow fields={fields} index={index} model={model} showComponent={true} onClick={() => dataTableInstance.forceUpdate()} />)
+                    ? (<UnexpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance.forceUpdate()} />)
                     : null;
             },
             ({ fields, index, model }) => {
                 return (model && model.id && model.id !== '')
-                    ? (<DeleteRow fields={fields} index={index} model={model} showComponent={grantAll} />)
+                    ? (<DeleteRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage || canDelete)} />)
                     : null;
             }
         ] as React.ReactType<ActionProps>[];
@@ -241,6 +244,10 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
         const { showSheriffProfileModal } = props;
         const { getPluginPermissions, setPluginFilters, displayFilters } = props;
         const { grantAll, permissions } = buildPluginPermissions(getPluginPermissions);
+
+        const canManage = permissions.indexOf('MANAGE') > -1;
+        const canExpire = permissions.indexOf('EXPIRE_USER_ROLE') > -1;
+        const canDelete = permissions.indexOf('DELETE') > -1;
 
         // We can't use React hooks yet, and not sure if this project will ever be upgraded to 16.8
         // This is a quick n' dirty way to achieve the same thing
