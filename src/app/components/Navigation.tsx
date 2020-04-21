@@ -30,7 +30,9 @@ import { TokenPayload } from 'jag-shuber-api';
 import { IdType, User, Sheriff, DaysOfWeek } from '../api';
 
 import { getCurrentUser } from '../modules/user/actions';
-import * as TimeUtils from '../infrastructure/TimeRangeUtils';
+// import * as TimeUtils from '../infrastructure/TimeRangeUtils';
+
+import { userHasBasicAuth } from '../plugins/permissionUtils';
 
 export interface NavigationStateProps {
     getUserByAuthId?: (userAuthId: IdType) => any;
@@ -174,6 +176,8 @@ export default class Navigation extends React.Component<NavigationProps & Naviga
             }
         } = this.props;
 
+        const userHasBasicAuthorization = userHasBasicAuth(currentUserRoleScopes);
+
         return (
             <div id="header-main" className={menuIsActive ? `menu-is-active` : ``}>
                 <Navbar staticTop={true} fluid={true} style={{maxWidth: '93%'}}>
@@ -187,47 +191,51 @@ export default class Navigation extends React.Component<NavigationProps & Naviga
                         </NavbarBrand>
                     </Navbar.Header>
                     <Nav bsStyle="tabs">
-                        <NavigationDropDown title="Duty Roster" id="duty_roster_dropdown">
-                            <NavigationLink exactMatch={true} {...Navigation.Routes.dutyRoster.timeline} />
-                            <NavigationLink {...Navigation.Routes.dutyRoster.setup} />
-                        </NavigationDropDown>
-                        <NavigationLink {...Navigation.Routes.assignment} />
-                        <NavigationDropDown title="Shift Schedule" id="schedule_dropdown">
-                            <NavigationLink {...Navigation.Routes.schedule.manage} />
-                            <NavigationLink {...Navigation.Routes.schedule.distribute} />
-                        </NavigationDropDown>
-
-                        <NavigationDropDown title={Navigation.Routes.team.label} id="admin_dropdown">
-                            <NavigationLink {...Navigation.Routes.team.children.team} />
-                            {currentUserRoleScopes.authScopes
-                            && currentUserRoleScopes.authScopes.indexOf('users:manage') > -1 && (
-                                <NavigationLink {...Navigation.Routes.team.children.users} />
-                            )}
-                            {currentUserRoleScopes.authScopes
-                            && currentUserRoleScopes.authScopes.indexOf('roles:manage') > -1 && (
-                                <>
-                                    <NavigationLink {...Navigation.Routes.team.children.userRoles} />
-                                    <NavigationLink {...Navigation.Routes.team.children.roles} />
-                                </>
-                            )}
-                        </NavigationDropDown>
-
-                        {currentUserRoleScopes.authScopes
-                        && currentUserRoleScopes.authScopes.indexOf('system:types') > -1 && (
-                            <NavigationDropDown title={Navigation.Routes.types.label} id="types_dropdown">
-                                <NavigationLink {...Navigation.Routes.types.children.assignmentTypes} />
-                                <NavigationLink {...Navigation.Routes.types.children.leaveTypes} />
+                        {userHasBasicAuthorization && (
+                        <>
+                            <NavigationDropDown title="Duty Roster" id="duty_roster_dropdown">
+                                <NavigationLink exactMatch={true} {...Navigation.Routes.dutyRoster.timeline} />
+                                <NavigationLink {...Navigation.Routes.dutyRoster.setup} />
                             </NavigationDropDown>
-                        )}
-
-                        {currentUserRoleScopes.authScopes
-                        && currentUserRoleScopes.authScopes.indexOf('system:scopes') > -1 && (
-                            <NavigationDropDown title={Navigation.Routes.system.label} id="system_dropdown">
-                                <NavigationLink {...Navigation.Routes.system.children.components} />
-                                <NavigationLink {...Navigation.Routes.system.children.apis} />
+                            <NavigationLink {...Navigation.Routes.assignment} />
+                            <NavigationDropDown title="Shift Schedule" id="schedule_dropdown">
+                                <NavigationLink {...Navigation.Routes.schedule.manage} />
+                                <NavigationLink {...Navigation.Routes.schedule.distribute} />
                             </NavigationDropDown>
+
+                            <NavigationDropDown title={Navigation.Routes.team.label} id="admin_dropdown">
+                                <NavigationLink {...Navigation.Routes.team.children.team} />
+                                {currentUserRoleScopes.authScopes
+                                && currentUserRoleScopes.authScopes.indexOf('users:manage') > -1 && (
+                                    <NavigationLink {...Navigation.Routes.team.children.users} />
+                                )}
+                                {currentUserRoleScopes.authScopes
+                                && currentUserRoleScopes.authScopes.indexOf('roles:manage') > -1 && (
+                                    <>
+                                        <NavigationLink {...Navigation.Routes.team.children.userRoles} />
+                                        <NavigationLink {...Navigation.Routes.team.children.roles} />
+                                    </>
+                                )}
+                            </NavigationDropDown>
+
+                            {currentUserRoleScopes.authScopes
+                            && currentUserRoleScopes.authScopes.indexOf('system:types') > -1 && (
+                                <NavigationDropDown title={Navigation.Routes.types.label} id="types_dropdown">
+                                    <NavigationLink {...Navigation.Routes.types.children.assignmentTypes} />
+                                    <NavigationLink {...Navigation.Routes.types.children.leaveTypes} />
+                                </NavigationDropDown>
+                            )}
+
+                            {currentUserRoleScopes.authScopes
+                            && currentUserRoleScopes.authScopes.indexOf('system:scopes') > -1 && (
+                                <NavigationDropDown title={Navigation.Routes.system.label} id="system_dropdown">
+                                    <NavigationLink {...Navigation.Routes.system.children.components} />
+                                    <NavigationLink {...Navigation.Routes.system.children.apis} />
+                                </NavigationDropDown>
+                            )}
+                            {/*<NavigationLink {...Navigation.Routes.audit} />*/}
+                        </>
                         )}
-                        {/*<NavigationLink {...Navigation.Routes.audit} />*/}
                     </Nav>
                     <Nav pullRight={true} style={{paddingTop: 13, paddingRight: 15}}>
                         <div className="flex-row-wrap">

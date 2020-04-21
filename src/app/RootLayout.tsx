@@ -15,6 +15,9 @@ import { Well, Alert, Button } from 'react-bootstrap';
 // Import generic infrastructure constructs and modules
 import resolveAppUrl from './infrastructure/resolveAppUrl';
 import CustomDragLayer from './infrastructure/DragDrop/CustomDragLayer';
+
+import { userHasBasicAuth } from './plugins/permissionUtils';
+
 import {
     isLocationSet as isCurrentLocationSet,
     isLoggedIn as isUserLoggedIn,
@@ -99,63 +102,25 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
         }
     }
 
-    userHasBasicAuth(): boolean {
-        const {
-            // tslint:disable-next-line:no-shadowed-variable
-            currentUserRoleScopes = {
-                appScopes: {},
-                authScopes: []
-            },
-            currentUser = {
-                firstName: '',
-                lastName: '',
-                sheriffId: undefined
-            } as User
-        } = this.props;
-
-        let userHasAuthScopes = false;
-        let userHasAppScopes = false;
-
-        if (currentUserRoleScopes.authScopes) {
-            const userAuthScopes = (currentUserRoleScopes.authScopes || [])
-                .filter((key: string, idx: number, arr: any[]) => {
-                    if (key === 'default') return false; // Ignore default OAuth role
-                    return arr.indexOf(key) === idx;
-                });
-
-            if (userAuthScopes.length > 0) {
-                userHasAuthScopes = true;
-            }
-        }
-
-        if (currentUserRoleScopes.appScopes) {
-            const userAppScopes = (Object.keys(currentUserRoleScopes.appScopes) || [])
-                .filter((key, idx, arr) => {
-                    return arr.indexOf(key) === idx;
-                });
-
-            if (userAppScopes.length > 0) {
-                userHasAppScopes = true;
-            }
-        }
-
-        return (userHasAuthScopes || userHasAppScopes);
-    }
-
     render() {
         const {
             isLocationSet = false,
             tokenLoadingError,
             isLoggedIn,
             isLoadingToken = true,
-            logout
+            logout,
+            // tslint:disable-next-line:no-shadowed-variable
+            currentUserRoleScopes = {
+                appScopes: {},
+                authScopes: []
+            }
         } = this.props;
 
         if (isLoadingToken) {
             return null;
         }
 
-        const userHasBasicAuth = this.userHasBasicAuth();
+        const userHasBasicAuthorization = userHasBasicAuth(currentUserRoleScopes);
 
         if (!isLoggedIn && tokenLoadingError) {
             return (
@@ -168,7 +133,7 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
                 </div>
             );
         } // Use this if you want to ONLY show the unauthorized message
-        /* else if (!userHasBasicAuth) {
+        /* else if (!userHasBasicAuthorization) {
             return (
                 <div className="mainArea">
                     <Well
@@ -204,7 +169,7 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
                         />
                     </div>
 
-                    {!userHasBasicAuth && (
+                    {!userHasBasicAuthorization && (
                         <div className="mainArea">
                             <Well
                                 style={{
@@ -225,7 +190,7 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
                         </div>
                     )}
 
-                    {!isLocationSet && userHasBasicAuth && (
+                    {!isLocationSet && userHasBasicAuthorization && (
                         <div className="mainArea">
                             <Well
                                 style={{
@@ -245,7 +210,7 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
                         </div>
                     )}
 
-                    {isLocationSet && userHasBasicAuth && (
+                    {isLocationSet && userHasBasicAuthorization && (
                         <div className="mainArea">
                             <Route exact={true} path={NavigationComponent.Routes.dutyRoster.timeline.path} component={DutyRosterPage} />
                             <Route path={NavigationComponent.Routes.schedule.manage.path} component={SchedulingPage} />
