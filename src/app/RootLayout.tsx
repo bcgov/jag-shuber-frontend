@@ -2,11 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { RootState } from './store';
 import {
-  Route,
-  BrowserRouter as Router
+    Route,
+    BrowserRouter as Router
 } from 'react-router-dom';
 import {
-  DragDropContext
+    DragDropContext
 } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
@@ -16,14 +16,14 @@ import { Well, Alert, Button } from 'react-bootstrap';
 import resolveAppUrl from './infrastructure/resolveAppUrl';
 import CustomDragLayer from './infrastructure/DragDrop/CustomDragLayer';
 import {
-  isLocationSet as isCurrentLocationSet,
-  isLoggedIn as isUserLoggedIn,
-  isLoadingToken as isLoadingUserToken,
-  loadingTokenError, currentUserRoleScopes, getCurrentUserToken, getCurrentUser,
+    isLocationSet as isCurrentLocationSet,
+    isLoggedIn as isUserLoggedIn,
+    isLoadingToken as isLoadingUserToken,
+    loadingTokenError, currentUserRoleScopes, getCurrentUserToken, getCurrentUser,
 } from './modules/user/selectors';
 
 import {
-  doLogout
+    doLogout
 } from './modules/user/actions';
 
 // Import core layout components
@@ -74,181 +74,231 @@ import { getUserByAuthId } from './modules/users/selectors';
 import { TokenPayload } from 'jag-shuber-api';
 
 export interface LayoutStateProps {
-  isLocationSet?: boolean;
-  isLoggedIn?: boolean;
-  isLoadingToken?: boolean;
-  tokenLoadingError?: any;
-  currentUserRoleScopes?: any;
-  currentUserToken?: TokenPayload;
-  currentUser?: User;
+    isLocationSet?: boolean;
+    isLoggedIn?: boolean;
+    isLoadingToken?: boolean;
+    tokenLoadingError?: any;
+    currentUserRoleScopes?: any;
+    currentUserToken?: TokenPayload;
+    currentUser?: User;
 }
 
 export interface LayoutDispatchProps {
-  logout?: Function; // TODO: Type this better...
-  getUserByAuthId?: (userAuthId: IdType) => any;
+    logout?: Function; // TODO: Type this better...
+    getUserByAuthId?: (userAuthId: IdType) => any;
 }
 
 class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
-
-  componentWillReceiveProps(nextProps: LayoutStateProps) {
-    const { isLoadingToken: wasLoadingToken } = nextProps;
-    const { isLoadingToken = true, isLoggedIn = false, tokenLoadingError } = this.props;
-    if (wasLoadingToken && !isLoadingToken && isLoggedIn && tokenLoadingError === undefined) {
-      window.location.reload();
-    }
-  }
-
-  render() {
-    const {
-      isLocationSet = false,
-      tokenLoadingError,
-      isLoggedIn,
-      isLoadingToken = true,
-      logout,
-      // tslint:disable-next-line:no-shadowed-variable
-      currentUserRoleScopes = {
-          appScopes: {},
-          authScopes: []
-      },
-      currentUser = {
-          firstName: '',
-          lastName: '',
-          sheriffId: undefined
-      } as User
-    } = this.props;
-    if (isLoadingToken) {
-      return null;
+    componentWillReceiveProps(nextProps: LayoutStateProps) {
+        if (nextProps !== this.props) {
+            const { isLoadingToken: wasLoadingToken } = nextProps;
+            const { isLoadingToken = true, isLoggedIn = false, tokenLoadingError } = this.props;
+            if (wasLoadingToken && !isLoadingToken && isLoggedIn && tokenLoadingError === undefined) {
+                window.location.reload();
+            }
+        }
     }
 
-    if (!isLoggedIn && tokenLoadingError) {
-      return (
-          <div style={{ width: 300, margin: 'auto', marginTop: 200, position: 'absolute', top: 0, bottom: 0, right: 0, left: 0 }}>
-            <Alert bsStyle="danger">
-              Looks like your session may have expired, please reload the page.
-              <br/>
-              <Button style={{marginTop:10}} onClick={() => window.location.reload()} >Click to reload</Button>
-            </Alert>
-          </div>
-      );
+    userHasBasicAuth(): boolean {
+        const {
+            // tslint:disable-next-line:no-shadowed-variable
+            currentUserRoleScopes = {
+                appScopes: {},
+                authScopes: []
+            },
+            currentUser = {
+                firstName: '',
+                lastName: '',
+                sheriffId: undefined
+            } as User
+        } = this.props;
+
+        let userHasAuthScopes = false;
+        let userHasAppScopes = false;
+
+        if (currentUserRoleScopes.authScopes) {
+            const userAuthScopes = (currentUserRoleScopes.authScopes || [])
+                .filter((key: string, idx: number, arr: any[]) => {
+                    if (key === 'default') return false; // Ignore default OAuth role
+                    return arr.indexOf(key) === idx;
+                });
+
+            if (userAuthScopes.length > 0) {
+                userHasAuthScopes = true;
+            }
+        }
+
+        if (currentUserRoleScopes.appScopes) {
+            const userAppScopes = (Object.keys(currentUserRoleScopes.appScopes) || [])
+                .filter((key, idx, arr) => {
+                    return arr.indexOf(key) === idx;
+                });
+
+            if (userAppScopes.length > 0) {
+                userHasAppScopes = true;
+            }
+        }
+
+        return (userHasAuthScopes || userHasAppScopes);
     }
 
-    // This will check for 'default'
-    /* let userHasRoles = false;
-    if (currentUserRoleScopes.appScopes) {
-      const userAppScopes = Object.keys(currentUserRoleScopes.appScopes);
-      if (userAppScopes.length > 0) {
-        userHasRoles = true;
-      }
-    } */
+    render() {
+        const {
+            isLocationSet = false,
+            tokenLoadingError,
+            isLoggedIn,
+            isLoadingToken = true,
+            logout
+        } = this.props;
 
-    return (
-        <Router basename={resolveAppUrl('')}>
-          <div className="App">
-            <CustomDragLayer/>
-            <ToastManager />
-            <div className="headerArea">
-              <Navigation
-                  onLogoutClicked={() => {
-                    if (logout) logout();
-                  }}
-              />
-            </div>
+        if (isLoadingToken) {
+            return null;
+        }
 
-            {/* !userHasRoles && (
+        const userHasBasicAuth = this.userHasBasicAuth();
+
+        if (!isLoggedIn && tokenLoadingError) {
+            return (
+                <div style={{ width: 300, margin: 'auto', marginTop: 200, position: 'absolute', top: 0, bottom: 0, right: 0, left: 0 }}>
+                    <Alert bsStyle="danger">
+                        Looks like your session may have expired, please reload the page.
+                        <br/>
+                        <Button style={{marginTop: 10}} onClick={() => window.location.reload()} >Click to reload</Button>
+                    </Alert>
+                </div>
+            );
+        } // Use this if you want to ONLY show the unauthorized message
+        /* else if (!userHasBasicAuth) {
+            return (
                 <div className="mainArea">
-                  <Well
-                      style={{
-                        backgroundColor: 'white',
-                        maxWidth: '85%',
-                        height: '100%',
-                        margin: 'auto',
-                        borderRadius: 0
-                      }}
-                  >
-                    <div style={{ paddingTop: 10 }}>
-                      <Alert bsStyle="danger">
-                        <h3 style={{ color: '#d2322d' }}>Unauthorized</h3>
-                        <p>Sorry, you do not have the required access to view this content. Please contact your system administrator.</p>
-                      </Alert>
+                    <Well
+                        style={{
+                            backgroundColor: 'white',
+                            maxWidth: '85%',
+                            height: '100%',
+                            margin: 'auto',
+                            borderRadius: 0
+                        }}
+                    >
+                        <div style={{ paddingTop: 10 }}>
+                            <Alert bsStyle="danger">
+                                <h3 style={{ color: '#d2322d' }}>Unauthorized</h3>
+                                <p>Sorry, you do not have the required access to view this content. Please contact your system administrator.</p>
+                            </Alert>
+                        </div>
+                    </Well>
+                </div>
+            );
+        } */
+
+        return (
+            <Router basename={resolveAppUrl('')}>
+                <div className="App">
+                    <CustomDragLayer/>
+                    <ToastManager />
+                    <div className="headerArea">
+                        <Navigation
+                            onLogoutClicked={() => {
+                                if (logout) logout();
+                            }}
+                        />
                     </div>
-                  </Well>
-                </div>
-            ) */}
 
-            {!isLocationSet && (
-                <div className="mainArea">
-                  <Well
-                      style={{
-                        backgroundColor: 'white',
-                        maxWidth: '85%',
-                        height: '100%',
-                        margin: 'auto',
-                        borderRadius: 0,
-                        border: '1px solid grey'
-                      }}
-                  >
-                    <div style={{ paddingTop: 10 }}>
-                      <h1>Select your Location</h1>
-                      <LocationSelector.Current />
+                    {!userHasBasicAuth && (
+                        <div className="mainArea">
+                            <Well
+                                style={{
+                                    backgroundColor: 'white',
+                                    maxWidth: '85%',
+                                    height: '100%',
+                                    margin: 'auto',
+                                    borderRadius: 0
+                                }}
+                            >
+                                <div style={{ paddingTop: 10 }}>
+                                    <Alert bsStyle="danger">
+                                        <h3 style={{ color: '#d2322d' }}>Unauthorized</h3>
+                                        <p>Sorry, you do not have the required access to view this content. Please contact your system administrator.</p>
+                                    </Alert>
+                                </div>
+                            </Well>
+                        </div>
+                    )}
+
+                    {!isLocationSet && userHasBasicAuth && (
+                        <div className="mainArea">
+                            <Well
+                                style={{
+                                    backgroundColor: 'white',
+                                    maxWidth: '85%',
+                                    height: '100%',
+                                    margin: 'auto',
+                                    borderRadius: 0,
+                                    border: '1px solid grey'
+                                }}
+                            >
+                                <div style={{ paddingTop: 10 }}>
+                                    <h1>Select your Location</h1>
+                                    <LocationSelector.Current />
+                                </div>
+                            </Well>
+                        </div>
+                    )}
+
+                    {isLocationSet && userHasBasicAuth && (
+                        <div className="mainArea">
+                            <Route exact={true} path={NavigationComponent.Routes.dutyRoster.timeline.path} component={DutyRosterPage} />
+                            <Route path={NavigationComponent.Routes.schedule.manage.path} component={SchedulingPage} />
+                            <Route path={NavigationComponent.Routes.schedule.distribute.path} component={PublishSchedulePage} />
+                            <Route path={NavigationComponent.Routes.dutyRoster.setup.path} component={DefaultAssignmentsPage} />
+                            <Route path={NavigationComponent.Routes.assignment.path} component={AssignmentPage} />
+                            <Route path={NavigationComponent.Routes.team.path} component={ManageSheriffsPage} />
+                            <Route path={NavigationComponent.Routes.team.children.roles.path} component={ManageRolesPage} />
+                            <Route path={NavigationComponent.Routes.team.children.team.path} component={ManageTeamPage} />
+                            <Route path={NavigationComponent.Routes.team.children.users.path} component={ManageUsersPage} />
+                            <Route path={NavigationComponent.Routes.team.children.userRoles.path} component={ManageUserRolesPage} />
+                            <Route path={NavigationComponent.Routes.types.children.leaveTypes.path} component={ManageLeaveTypesPage} />
+                            <Route path={NavigationComponent.Routes.types.children.assignmentTypes.path} component={ManageAssignmentTypesPage} />
+                            <Route path={NavigationComponent.Routes.system.children.components.path} component={ManageComponentsPage} />
+                            <Route path={NavigationComponent.Routes.audit.path} component={AuditPage} />
+                            <Route path={NavigationComponent.Routes.system.children.apis.path} component={ManageApisPage} />
+                            <DutyRosterToolsModal />
+                            <AssignmentDutyEditModal />
+                            <SheriffProfileModal />
+                            <SheriffProfileCreateModal />
+                            <ScheduleShiftCopyModal />
+                            <ScheduleShiftAddModal />
+                            <AssignmentScheduleAddModal />
+                            <AssignmentScheduleEditModal />
+                            <ConnectedConfirmationModal />
+                            <AssignmentSheriffDutyReassignmentModal />
+                            <ScheduleShiftMultiEditModal />
+                        </div>
+                    )}
+                    <div className="footerArea">
+                        <Footer />
                     </div>
-                  </Well>
                 </div>
-            )}
-
-            {isLocationSet && (
-                <div className="mainArea">
-                  <Route exact={true} path={NavigationComponent.Routes.dutyRoster.timeline.path} component={DutyRosterPage} />
-                  <Route path={NavigationComponent.Routes.schedule.manage.path} component={SchedulingPage} />
-                  <Route path={NavigationComponent.Routes.schedule.distribute.path} component={PublishSchedulePage} />
-                  <Route path={NavigationComponent.Routes.dutyRoster.setup.path} component={DefaultAssignmentsPage} />
-                  <Route path={NavigationComponent.Routes.assignment.path} component={AssignmentPage} />
-                  <Route path={NavigationComponent.Routes.team.path} component={ManageSheriffsPage} />
-                  <Route path={NavigationComponent.Routes.team.children.roles.path} component={ManageRolesPage} />
-                  <Route path={NavigationComponent.Routes.team.children.team.path} component={ManageTeamPage} />
-                  <Route path={NavigationComponent.Routes.team.children.users.path} component={ManageUsersPage} />
-                  <Route path={NavigationComponent.Routes.team.children.userRoles.path} component={ManageUserRolesPage} />
-                  <Route path={NavigationComponent.Routes.types.children.leaveTypes.path} component={ManageLeaveTypesPage} />
-                  <Route path={NavigationComponent.Routes.types.children.assignmentTypes.path} component={ManageAssignmentTypesPage} />
-                  <Route path={NavigationComponent.Routes.system.children.components.path} component={ManageComponentsPage} />
-                  <Route path={NavigationComponent.Routes.audit.path} component={AuditPage} />
-                  <Route path={NavigationComponent.Routes.system.children.apis.path} component={ManageApisPage} />
-                  <DutyRosterToolsModal />
-                  <AssignmentDutyEditModal />
-                  <SheriffProfileModal />
-                  <SheriffProfileCreateModal />
-                  <ScheduleShiftCopyModal />
-                  <ScheduleShiftAddModal />
-                  <AssignmentScheduleAddModal />
-                  <AssignmentScheduleEditModal />
-                  <ConnectedConfirmationModal />
-                  <AssignmentSheriffDutyReassignmentModal />
-                  <ScheduleShiftMultiEditModal />
-                </div>
-            )}
-            <div className="footerArea">
-              <Footer />
-            </div>
-          </div>
-        </Router>
-    );
-  }
+            </Router>
+        );
+    }
 }
 
 const mapStateToProps = (state: RootState) => {
-  return {
-    isLocationSet: isCurrentLocationSet(state),
-    isLoggedIn: isUserLoggedIn(state),
-    isLoadingToken: isLoadingUserToken(state),
-    tokenLoadingError: loadingTokenError(state),
-    // currentUserRoleScopes: currentUserRoleScopes(state),
-    // currentUserToken: getCurrentUserToken(state),
-    // currentUser: getCurrentUser(state),
-    // getUserByAuthId: (userAuthId: IdType) => getUserByAuthId(userAuthId)(state)
-  };
+    return {
+        isLocationSet: isCurrentLocationSet(state),
+        isLoggedIn: isUserLoggedIn(state),
+        isLoadingToken: isLoadingUserToken(state),
+        tokenLoadingError: loadingTokenError(state),
+        currentUserRoleScopes: currentUserRoleScopes(state),
+        currentUserToken: getCurrentUserToken(state),
+        currentUser: getCurrentUser(state),
+        // getUserByAuthId: (userAuthId: IdType) => getUserByAuthId(userAuthId)(state)
+    };
 };
 
 const mapDispatchToProps = {
-  logout: doLogout
+    logout: doLogout
 };
 
 const connectedLayout = connect<LayoutStateProps, LayoutDispatchProps, {}>(
