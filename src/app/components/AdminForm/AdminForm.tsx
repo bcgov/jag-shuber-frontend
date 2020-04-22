@@ -16,9 +16,13 @@ export interface AdminFormProps {
     selectedSection?: string;
     onSelectSection?: (sectionName: string) => any;
     // onSelectSection?: (sectionName: string) => void;
+    displayFilters?: boolean;
     setPluginFilters?: Function;
     showSheriffProfileModal?: (sheriffId: IdType, isEditing: boolean, sectionName?: string) => {};
     onSubmitSuccess?: () => void;
+    pluginPermissions?: any;
+    pluginAuth?: any[];
+    pluginFilters?: any;
     initialValues?: any;
     currentLocation?: string;
     showTabs?: boolean;
@@ -27,6 +31,7 @@ export interface AdminFormProps {
 
 export default class AdminForm extends React.PureComponent<InjectedFormProps<any, AdminFormProps> & AdminFormProps>{
     private handleSelectSection(sectionName: string) {
+        console.log('I am running like a million times');
         const { onSelectSection } = this.props;
         if (onSelectSection) {
             onSelectSection(sectionName);
@@ -38,15 +43,32 @@ export default class AdminForm extends React.PureComponent<InjectedFormProps<any
     }*/
 
     renderPlugin(plugin: FormContainer) {
-        const { initialValues = {}, isEditing = false, setPluginFilters, showSheriffProfileModal, currentLocation } = this.props;
+        const {
+            initialValues = {},
+            pluginFilters = {},
+            isEditing = false,
+            pluginPermissions,
+            pluginAuth,
+            setPluginFilters,
+            displayFilters,
+            showSheriffProfileModal,
+            currentLocation
+        } = this.props;
 
         const pluginProps: FormContainerProps = {
             // sheriffId,
             currentLocation: currentLocation,
             data: initialValues[plugin.reduxFormKey],
+            pluginFilters: pluginFilters[plugin.reduxFormKey],
+            pluginPermissions: pluginPermissions[plugin.name],
+            pluginAuth: pluginAuth,
             setPluginFilters,
+            displayFilters,
             showSheriffProfileModal
         };
+
+        // Set the plugin's permissions
+        plugin.pluginPermissions = pluginPermissions[plugin.name];
 
         return isEditing
             ? plugin.renderFormFields(pluginProps)

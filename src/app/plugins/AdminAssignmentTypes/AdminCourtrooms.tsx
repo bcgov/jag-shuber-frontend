@@ -10,6 +10,8 @@ import {
     getCourtrooms,
     createOrUpdateCourtrooms,
     deleteCourtrooms,
+    expireCourtrooms,
+    unexpireCourtrooms,
     selectAdminCourtroomsPluginSection,
     setAdminCourtroomsPluginSubmitErrors,
     setAdminCourtroomsPluginFilters
@@ -17,6 +19,7 @@ import {
 
 import {
     getAllCourtrooms,
+    getAllEffectiveCourtrooms,
     findAllCourtrooms
 } from '../../modules/assignments/selectors';
 
@@ -33,14 +36,17 @@ import {
     FormContainerProps,
 } from '../../components/Form/FormContainer';
 
-import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../components/Table/DataTable';
+import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
 import { AdminCourtroomsProps } from './AdminCourtrooms';
 import LocationSelector from '../../containers/LocationSelector';
 import RemoveRow from '../../components/TableColumnActions/RemoveRow';
 import ExpireRow from '../../components/TableColumnActions/ExpireRow';
+import UnexpireRow from '../../components/TableColumnActions/UnexpireRow';
 import DeleteRow from '../../components/TableColumnActions/DeleteRow';
-import { setAdminRolesPluginFilters } from '../../modules/roles/actions';
-// import { createOrUpdateCourtrooms } from '../../modules/assignments/actions';
+import { ActionProps } from '../../components/TableColumnCell/Actions';
+import { buildPluginPermissions, userCan } from '../permissionUtils';
+
+import * as Validators from '../../infrastructure/Validators';
 
 export interface AdminCourtroomsProps extends FormContainerProps {
     courtrooms?: any[];
@@ -71,13 +77,24 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
         courtrooms: 'assignments.courtrooms'
     };
     title: string = ' Courtrooms';
+    // pluginFiltersAreSet = false;
+    showExpired = false;
 
     FormComponent = (props: FormContainerProps<AdminCourtroomsProps>) => {
+        const { getPluginPermissions, setPluginFilters } = props;
+        const { grantAll, permissions = [] } = buildPluginPermissions(getPluginPermissions);
+
+        const canManage = userCan(permissions, 'MANAGE_ALL');
+        const canDelete = userCan(permissions, 'DELETE');
+
+        // We can't use React hooks yet, and not sure if this project will ever be upgraded to 16.8
+        // This is a quick n' dirty way to achieve the same thing
+        let dataTableInstance: any;
+
         const { currentLocation, isLocationSet } = props;
         const loc = currentLocation;
 
         const onFilterLocation = (event: Event, newValue: any) => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
                 setPluginFilters({
                     courtrooms: {
@@ -88,7 +105,6 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
         };
 
         const onFilterCourtroom = (event: Event, newValue: any, previousValue: any, name: string) => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
                 setPluginFilters({
                     courtrooms: {
@@ -99,7 +115,6 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
         };
 
         const onFilterCourtroomCode = (event: Event, newValue: any, previousValue: any, name: string) => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
                 setPluginFilters({
                     courtrooms: {
@@ -109,71 +124,87 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
             }
         };
 
-        const onResetFilters = () => {
-            const { setPluginFilters } = props;
+        const onToggleExpiredClicked = () => {
             if (setPluginFilters) {
-                // console.log('reset plugin filters');
+                this.showExpired = !this.showExpired;
+
                 setPluginFilters({
-                    courtroomss: {}
-                }, setAdminRolesPluginFilters);
+                    courtrooms: {
+                        isExpired: this.showExpired
+                    }
+                }, setAdminCourtroomsPluginFilters);
+            }
+        };
+
+        const onResetFilters = () => {
+            if (setPluginFilters) {
+                setPluginFilters({
+                    courtrooms: {
+                        code: '',
+                        name: ''
+                    }
+                }, setAdminCourtroomsPluginFilters);
             }
         };
 
         const courtroomColumns = (currentLocation === 'ALL_LOCATIONS')
             ? [
+                DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false }),
                 DataTable.SelectorFieldColumn('Location', { fieldName: 'locationId', selectorComponent: LocationSelector, displayInfo: false, filterable: true, filterColumn: onFilterLocation }),
-                DataTable.TextFieldColumn('Courtroom', { fieldName: 'name', displayInfo: false, filterable: true, filterColumn: onFilterCourtroom }),
-                DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, filterable: true, filterColumn: onFilterCourtroomCode }),
-                // DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false }),
-                // DataTable.DateColumn('Date Created', 'createdDtm'),
-                // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
-                DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false })
+                DataTable.TextFieldColumn('Courtroom', { fieldName: 'name', displayInfo: false, filterable: true, filterColumn: onFilterCourtroom, required: true }),
+                DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, filterable: true, filterColumn: onFilterCourtroomCode, required: true })
             ]
             : [
-                // DataTable.SelectorFieldColumn('Location', { fieldName: 'locationId', selectorComponent: LocationSelector, displayInfo: false, filterable: true, filterColumn: onFilterLocation }),
-                DataTable.TextFieldColumn('Courtroom', { fieldName: 'name', displayInfo: false, filterable: true, filterColumn: onFilterCourtroom }),
-                DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, filterable: true, filterColumn: onFilterCourtroomCode }),
-                // DataTable.TextFieldColumn('Description', { fieldName: 'description', displayInfo: false }),
-                // DataTable.DateColumn('Date Created', 'createdDtm'),
-                // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
-                DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false })
+                DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false }),
+                DataTable.TextFieldColumn('Courtroom', { fieldName: 'name', displayInfo: false, filterable: true, filterColumn: onFilterCourtroom, required: true }),
+                DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, filterable: true, filterColumn: onFilterCourtroomCode, required: true })
             ];
+
+        const courtroomActions = [
+            ({ fields, index, model }) => {
+                return (model && !model.id || model && model.id === '')
+                    ? (<RemoveRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage || canDelete)} />)
+                    : null;
+            },
+            ({ fields, index, model }) => {
+                return (model && model.id && model.id !== '' && !model.isExpired)
+                    ? (<ExpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance.forceUpdate()} />)
+                    : (model && model.isExpired)
+                    ? (<UnexpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance.forceUpdate()} />)
+                    : null;
+            },
+            ({ fields, index, model }) => {
+                return (model && model.id && model.id !== '')
+                    ? (<DeleteRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage || canDelete)} />)
+                    : null;
+            }
+        ] as React.ReactType<ActionProps>[];
 
         return (
             <div className="col-sm-12">
             {/* Only use fixed if configured as a standalone page */}
             {/* <div className="fixed-filters-data-table"> */}
                 <DataTable
+                    ref={(dt) => dataTableInstance = dt}
                     fieldName={this.formFieldNames.courtrooms}
                     filterFieldName={(this.filterFieldNames) ? `${this.filterFieldNames.courtrooms}` : undefined}
                     title={''} // Leave this blank
                     buttonLabel={'Add Courtroom'}
                     displayHeaderActions={true}
                     onResetClicked={onResetFilters}
+                    onToggleExpiredClicked={onToggleExpiredClicked}
                     displayActionsColumn={true}
                     actionsColumn={DataTable.ActionsColumn({
-                        actions: [
-                            ({ fields, index, model }) => {
-                                return (model && !model.id || model && model.id === '')
-                                    ? (<RemoveRow fields={fields} index={index} model={model} />)
-                                    : null;
-                            },
-                            ({ fields, index, model }) => {
-                                return (model && model.id && model.id !== '')
-                                    ? (<ExpireRow fields={fields} index={index} model={model} />)
-                                    : null;
-                            },
-                            ({ fields, index, model }) => {
-                                return (model && model.id && model.id !== '')
-                                    ? (<DeleteRow fields={fields} index={index} model={model} />)
-                                    : null;
-                            }
-                        ]
+                        actions: courtroomActions
                     })}
                     columns={courtroomColumns}
                     filterable={true}
+                    showExpiredFilter={true}
                     expandable={false}
                     // expandedRows={[1, 2]}
+                    shouldMarkRowAsDeleted={(model) => {
+                        return model.isExpired;
+                    }}
                     rowComponent={EmptyDetailRow}
                     modalComponent={EmptyDetailRow}
                 />
@@ -189,7 +220,27 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
     )
 
     validate(values: AdminCourtroomsProps = {}): FormErrors | undefined {
-        return undefined;
+        let errors: any = {};
+
+        const formKeys = Object.keys(this.formFieldNames);
+
+        if (formKeys) {
+            formKeys.forEach((key) => {
+                if (!values[key]) return;
+                errors[key] = values[key].map((row: any) => (
+                    {
+                        name: Validators.validateWith(
+                            Validators.required
+                        )(row.name),
+                        code: Validators.validateWith(
+                            Validators.required
+                        )(row.code)
+                    }
+                ));
+            });
+        }
+
+        return (errors && Object.keys(errors).length > 0) ? errors : undefined;
     }
 
     fetchData(dispatch: Dispatch<{}>, filters: {} | undefined) {
@@ -203,7 +254,7 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
         // Get form data
         const courtrooms = (filters && filters.courtrooms)
             ? findAllCourtrooms(filters.courtrooms)(state) || []
-            : getAllCourtrooms(state) || [];
+            : getAllEffectiveCourtrooms(state) || [];
 
         const currentLocation = getCurrentLocation(state);
 
@@ -238,12 +289,37 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
         };
     }
 
+    mapExpiredFromFormValues(map: any, isExpired?: boolean) {
+        isExpired = isExpired || false;
+        const expiredCourtroomIds: IdType[] = [];
+
+        if (map.courtrooms) {
+            const values = map.courtrooms.values;
+
+            const courtroomIds = values
+                .filter((val: any) => val.isExpired === isExpired)
+                .map((val: any) => val.id);
+
+            expiredCourtroomIds.push(...courtroomIds);
+        }
+
+        return {
+            courtrooms: expiredCourtroomIds
+        };
+    }
+
     async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>) {
         const data: any = this.getDataFromFormValues(formValues, initialValues);
+        const dataToExpire: any = this.getDataToExpireFromFormValues(formValues, initialValues, true) || {};
+        const dataToUnexpire: any = this.getDataToExpireFromFormValues(formValues, initialValues, false) || {};
         const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
 
         // Delete records before saving new ones!
         const deletedCourtrooms: IdType[] = dataToDelete.courtrooms as IdType[];
+
+        // Expire records before saving new ones!
+        const expiredCourtrooms: IdType[] = dataToExpire.courtrooms as IdType[];
+        const unexpiredCourtrooms: IdType[] = dataToUnexpire.courtrooms as IdType[];
 
         // Grab the currentLocation off of the formValues.assignments object
         const { currentLocation } = formValues.assignments;
@@ -266,6 +342,14 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
 
         if (deletedCourtrooms.length > 0) {
             await dispatch(deleteCourtrooms(deletedCourtrooms));
+        }
+
+        if (expiredCourtrooms.length > 0) {
+            await dispatch(expireCourtrooms(expiredCourtrooms));
+        }
+
+        if (unexpiredCourtrooms.length > 0) {
+            await dispatch(unexpireCourtrooms(unexpiredCourtrooms));
         }
 
         if (courtrooms.length > 0) {

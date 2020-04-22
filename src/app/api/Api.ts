@@ -182,11 +182,13 @@ export interface Sheriff {
     lastName: string;
     badgeNo: string;
     imageUrl?: string;
+    imageData?: any; // Used for posting images back to the server, only used on the client-side
     alias?: string;
     genderCode?: string;
     rankCode?: string;
     homeLocationId?: IdType;
     currentLocationId?: IdType;
+    user?: Partial<User>; // Only used on client-side
 }
 
 export interface GenderCode {
@@ -295,44 +297,65 @@ export interface Region {
 
 export interface Courtroom {
     id?: IdType;
-    code: IdType;
     locationId?: IdType;
-    name: string;
+    code: IdType;
+    name?: string;
+    description?: string;
+    effectiveDate?: string;
+    expiryDate?: string;
+    sortOrder?: number;
+    isExpired?: boolean; // Only used on the client-side
 }
 
 export interface JailRoleCode {
     id?: IdType;
-    code?: IdType;
     locationId?: IdType;
-    description: string;
-    expiryDate?: DateType;
+    code: IdType;
+    name?: string;
+    description?: string;
+    effectiveDate?: string;
+    expiryDate?: string;
+    sortOrder?: number;
+    isExpired?: boolean; // Only used on the client-side
     isProvincialCode?: any; // Only used on client-side
 }
 
 export interface CourtRoleCode {
     id?: IdType;
-    code?: IdType;
     locationId?: IdType;
-    description: string;
-    expiryDate?: DateType;
+    code: IdType;
+    name?: string;
+    description?: string;
+    effectiveDate?: string;
+    expiryDate?: string;
+    sortOrder?: number;
+    isExpired?: boolean; // Only used on the client-side
     isProvincialCode?: any; // Only used on client-side
 }
 
 export interface EscortRun {
-    id: IdType;
-    // code?: IdType; // This isn't being used, just keep it in here so code type interfaces are all the same
+    id?: IdType;
     locationId?: IdType;
-    title: string;
+    code: IdType;
+    title: string; // TODO: Deprecate this in favor of the unused name property
+    name?: string;
+    description?: string;
+    effectiveDate?: string;
+    expiryDate?: string;
+    sortOrder?: number;
+    isExpired?: boolean; // Only used on the client-side
     isProvincialCode?: any; // Only used on client-side
 }
 
 // TODO: Rename this OtherAssignment if we can...
+// Also, we need to update this to match other assignment type models
 export interface AlternateAssignment {
     id: IdType;
     code: IdType;
     locationId?: IdType;
     description: string;
     expiryDate?: DateType;
+    isExpired?: boolean; // Only used on the client-side
     isProvincialCode?: any; // Only used on client-side
 }
 
@@ -378,8 +401,13 @@ export interface LeaveSubCode {
     id?: IdType; // Used on client-side only
     code: string;
     subCode: string;
-    description: string;
+    name?: string; // TODO: For future use...
+    description?: string;
+    effectiveDate?: string;
     expiryDate?: string;
+    sortOrder?: number;
+    isExpired?: boolean; // Only used on the client-side
+    isProvincialCode?: any; // Only used on client-side
 }
 
 export interface LeaveCancelCode {
@@ -400,11 +428,15 @@ export interface AssignmentScheduleItem {
 // Users, roles & permissions
 export interface User {
     id?: IdType;
+    userAuthId?: string;
     displayName?: string;
     defaultLocationId?: IdType;
     systemAccountInd?: number;
     sheriffId?: IdType;
     sheriff?: Sheriff;
+    effectiveDate?: string;
+    expiryDate?: string;
+    isExpired?: boolean; // Only used on the client-side
     createdBy?: string;
     updatedBy?: string;
     createdDtm?: string;
@@ -429,9 +461,10 @@ export interface UserRole {
     id?: IdType;
     userId?: IdType;
     roleId?: IdType;
+    locationId?: IdType;
     effectiveDate?: string;
     expiryDate?: string;
-    locationId?: IdType;
+    isExpired?: boolean; // Only used on the client-side
     createdBy?: string;
     updatedBy?: string;
     createdDtm?: string;
@@ -674,12 +707,18 @@ export interface API {
     getLeaves(): Promise<Leave[]>;
     createLeave(newLeave: Partial<Leave>): Promise<Leave>;
     updateLeave(updatedLeave: Leave): Promise<Leave>;
+
+    // Leave Codes and Sub-Codes
     getLeaveSubCodes(): Promise<LeaveSubCode[]>;
     createLeaveSubCode(newLeaveSubCode: Partial<LeaveSubCode>): Promise<LeaveSubCode>;
     updateLeaveSubCode(updatedLeaveSubCode: LeaveSubCode): Promise<LeaveSubCode>;
     deleteLeaveSubCode(subCodeId: IdType): Promise<void>;
     deleteLeaveSubCodes(ids: IdType[]): Promise<void>;
     getLeaveCancelCodes(): Promise<LeaveCancelCode[]>;
+    expireLeaveSubCode(subCodeId: IdType): Promise<void>;
+    expireLeaveSubCodes(ids: IdType[]): Promise<void>;
+    unexpireLeaveSubCode(subCodeId: IdType): Promise<void>;
+    unexpireLeaveSubCodes(ids: IdType[]): Promise<void>;
 
     // Sheriff Locations
     getSheriffLocation(id: IdType): Promise<SheriffLocation>;
@@ -694,6 +733,10 @@ export interface API {
     updateCourtroom(updatedCourtroom: Partial<Courtroom>): Promise<Courtroom>;
     deleteCourtroom(courtroomId: IdType): Promise<void>;
     deleteCourtrooms(courtroomIds: IdType[]): Promise<void>;
+    expireCourtroom(courtroomId: IdType): Promise<void>;
+    expireCourtrooms(courtroomIds: IdType[]): Promise<void>;
+    unexpireCourtroom(courtroomId: IdType): Promise<void>;
+    unexpireCourtrooms(courtroomIds: IdType[]): Promise<void>;
 
     // Court Roles
     getCourtRoles(): Promise<CourtRoleCode[]>;
@@ -701,6 +744,10 @@ export interface API {
     updateCourtRole(updatedCourtRole: Partial<CourtRoleCode>): Promise<CourtRoleCode>;
     deleteCourtRole(courtRoleId: IdType): Promise<void>;
     deleteCourtRoles(courtRoleIds: IdType[]): Promise<void>;
+    expireCourtRole(courtRoleId: IdType): Promise<void>;
+    expireCourtRoles(courtRoleIds: IdType[]): Promise<void>;
+    unexpireCourtRole(courtRoleId: IdType): Promise<void>;
+    unexpireCourtRoles(courtRoleIds: IdType[]): Promise<void>;
 
     // Jail Roles
     getJailRoles(): Promise<JailRoleCode[]>;
@@ -708,6 +755,10 @@ export interface API {
     updateJailRole(updatedJailRole: Partial<JailRoleCode>): Promise<JailRoleCode>;
     deleteJailRole(jailRoleId: IdType): Promise<void>;
     deleteJailRoles(jailRoleIds: IdType[]): Promise<void>;
+    expireJailRole(jailRoleId: IdType): Promise<void>;
+    expireJailRoles(jailRoleIds: IdType[]): Promise<void>;
+    unexpireJailRole(jailRoleId: IdType): Promise<void>;
+    unexpireJailRoles(jailRoleIds: IdType[]): Promise<void>;
 
     // Escort Runs Types
     getEscortRuns(): Promise<EscortRun[]>;
@@ -715,6 +766,10 @@ export interface API {
     updateEscortRun(updatedRun: Partial<EscortRun>): Promise<EscortRun>;
     deleteEscortRun(runId: IdType): Promise<void>;
     deleteEscortRuns(runIds: IdType[]): Promise<void>;
+    expireEscortRun(runId: IdType): Promise<void>;
+    expireEscortRuns(runIds: IdType[]): Promise<void>;
+    unexpireEscortRun(runId: IdType): Promise<void>;
+    unexpireEscortRuns(runIds: IdType[]): Promise<void>;
 
     // Alternate Assignment Types
     getAlternateAssignmentTypes(): Promise<AlternateAssignment[]>;
@@ -722,6 +777,10 @@ export interface API {
     updateAlternateAssignmentType(updatedType: Partial<AlternateAssignment>): Promise<AlternateAssignment>;
     deleteAlternateAssignmentType(typeId: IdType): Promise<void>;
     deleteAlternateAssignmentTypes(typeIds: IdType[]): Promise<void>;
+    expireAlternateAssignmentType(typeId: IdType): Promise<void>;
+    expireAlternateAssignmentTypes(typeIds: IdType[]): Promise<void>;
+    unexpireAlternateAssignmentType(typeId: IdType): Promise<void>;
+    unexpireAlternateAssignmentTypes(typeIds: IdType[]): Promise<void>;
 
     getSheriffRankCodes(): Promise<SheriffRank[]>;
     getGenderCodes(): Promise<GenderCode[]>;
@@ -729,21 +788,27 @@ export interface API {
     getLocations(): Promise<Location[]>;
 
     // Users, roles & permissions
+    getCurrentUser(): Promise<User>;
     getUser(id: IdType): Promise<User>;
     createUser(newUser: Partial<User>): Promise<User>;
+    uploadUserImage(id: IdType, image: any): Promise<void>;
     updateUser(updatedUser: User): Promise<User>;
     deleteUser(userId: IdType): Promise<void>;
     getUsers(): Promise<User[]>;
     deleteUsers(ids: IdType[]): Promise<void>;
+    expireUsers(ids: IdType[]): Promise<void>;
+    unexpireUsers(ids: IdType[]): Promise<void>;
 
     getUserRole(): Promise<UserRole>;
     createUserRole(newUserRole: Partial<UserRole>): Promise<UserRole>;
     updateUserRole(updatedUserRole: UserRole): Promise<UserRole>;
     deleteUserRole(id: IdType): Promise<void>;
     expireUserRole(id: IdType): Promise<void>;
+    unexpireUserRole(id: IdType): Promise<void>;
     getUserRoles(): Promise<UserRole[]>;
     deleteUserRoles(ids: IdType[]): Promise<void>;
     expireUserRoles(ids: IdType[]): Promise<void>;
+    unexpireUserRoles(ids: IdType[]): Promise<void>;
 
     getRole(): Promise<Role>;
     createRole(newRole: Partial<Role>): Promise<Role>;

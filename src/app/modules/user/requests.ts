@@ -28,3 +28,42 @@ class UserTokenRequest extends RequestActionBase<void, TokenPayload | undefined,
 }
 
 export const userTokenRequest = new UserTokenRequest();
+
+class LogoutRequest extends RequestActionBase<void, TokenPayload | undefined, UserState> {
+    constructor() {
+        super({ namespace: STATE_KEY, actionName: 'logout', toasts: {} });
+    }
+    public async doWork(request: void, { api }: ThunkExtra) {
+        await api.logout();
+        // Clear the token
+        return undefined;
+    }
+
+    dispatchSuccess(dispatch: Dispatch<any>, response: TokenPayload | undefined, actionConfig: RequestActionConfig<TokenPayload | undefined> = {}) {
+        if (window) {
+            // Re-direct to logout page
+            window.location.href = `https://logon.gov.bc.ca/clp-cgi/logoff.cgi?returl=${window.location.href}`;
+        }
+    }
+}
+
+export const logoutRequest = new LogoutRequest();
+
+class CurrentUserRequest extends RequestActionBase<void, TokenPayload | undefined, UserState> {
+    constructor() {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'currentUser',
+            toasts: {
+                // tslint:disable-next-line:max-line-length
+                error: (err) => `Problem encountered while retrieving the current user: ${err ? err.toString() : 'Unknown Error'}`
+            }
+        });
+    }
+    public async doWork(request: void, { api }: ThunkExtra) {
+        let data = await api.getCurrentUser();
+        return data;
+    }
+}
+
+export const currentUserRequest = new CurrentUserRequest();

@@ -35,7 +35,13 @@ export interface SheriffProfilePluginRolesProps {
 }
 
 export default class SheriffProfilePluginRoles extends SheriffProfileSectionPlugin<SheriffProfilePluginRolesProps> {
-    name = 'roles';
+    // NOTICE!
+    // This key maps to the [appScope: FrontendScope] (in the token)
+    // To set permissions for a new plugin, add a corresponding entry under System Settings > Components
+    // with the name as defined as the plugin's name.
+    name = 'SHERIFF_PROFILE_PLUGIN_ROLES';
+    // END NOTICE
+    reduxFormKey = 'roles';
     formFieldNames = {
         fullDay: 'leaves.fullDay'
     };
@@ -135,7 +141,7 @@ export default class SheriffProfilePluginRoles extends SheriffProfileSectionPlug
         };
     }
 
-    async onSubmit(sheriffId: IdType, formValues: any, dispatch: Dispatch<any>): Promise<Leave[]> {
+    async onSubmit(sheriffId: IdType, formValues: any, initialValues: any, dispatch: Dispatch<any>) {
         const data = this.getDataFromFormValues(formValues);
         const partialLeaves = data.partialDay.map(pl => ({ ...pl, sheriffId, isPartial: true }));
         const fullLeaves = data.fullDay.map(fl => ({ ...fl, sheriffId, isPartial: false }));

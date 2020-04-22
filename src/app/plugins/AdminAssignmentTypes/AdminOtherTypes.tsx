@@ -10,9 +10,11 @@ import {
     getAlternateAssignmentTypes,
     createOrUpdateAlternateAssignmentTypes,
     deleteAlternateAssignmentTypes,
+    expireAlternateAssignmentTypes,
+    unexpireAlternateAssignmentTypes,
     selectAdminOtherTypesPluginSection,
     setAdminOtherTypesPluginSubmitErrors,
-    setAdminOtherTypesPluginFilters
+    setAdminOtherTypesPluginFilters, setAdminCourtRolesPluginFilters, setAdminCourtroomsPluginFilters
 } from '../../modules/assignments/actions';
 
 import {
@@ -36,10 +38,14 @@ import { AdminOtherTypesProps } from './AdminOtherTypes';
 import LocationSelector from '../../containers/LocationSelector';
 import RemoveRow from '../../components/TableColumnActions/RemoveRow';
 import ExpireRow from '../../components/TableColumnActions/ExpireRow';
+import UnexpireRow from '../../components/TableColumnActions/UnexpireRow';
 import DeleteRow from '../../components/TableColumnActions/DeleteRow';
 import { setAdminRolesPluginFilters } from '../../modules/roles/actions';
 import CodeScopeSelector from '../../containers/CodeScopeSelector';
 import { currentLocation as getCurrentLocation } from '../../modules/user/selectors';
+import { ActionProps } from '../../components/TableColumnCell/Actions';
+import { buildPluginPermissions, userCan } from '../permissionUtils';
+import * as Validators from '../../infrastructure/Validators';
 // import { createOrUpdateAlternateAssignmentTypes } from '../../modules/assignments/actions';
 
 export interface AdminOtherTypesProps extends FormContainerProps {
@@ -71,13 +77,24 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
         otherTypes: 'assignments.otherTypes'
     };
     title: string = ' Other Assignments';
+    // pluginFiltersAreSet = false;
+    showExpired = false;
 
     FormComponent = (props: FormContainerProps<AdminOtherTypesProps>) => {
+        const { getPluginPermissions, setPluginFilters } = props;
+        const { grantAll, permissions = [] } = buildPluginPermissions(getPluginPermissions);
+
+        const canManage = userCan(permissions, 'MANAGE_ALL');
+        const canDelete = userCan(permissions, 'DELETE');
+
+        // We can't use React hooks yet, and not sure if this project will ever be upgraded to 16.8
+        // This is a quick n' dirty way to achieve the same thing
+        let dataTableInstance: any;
+
         const { currentLocation, isLocationSet } = props;
         const loc = currentLocation;
 
         const onFilterLocation = (event: Event, newValue: any) => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
                 setPluginFilters({
                     otherTypes: {
@@ -88,7 +105,6 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
         };
 
         const onFilterOtherType = (event: Event, newValue: any, previousValue: any, name: string) => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
                 setPluginFilters({
                     otherTypes: {
@@ -99,7 +115,6 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
         };
 
         const onFilterOtherTypeCode = (event: Event, newValue: any, previousValue: any, name: string) => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
                 setPluginFilters({
                     otherTypes: {
@@ -110,67 +125,87 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
         };
 
         const onFilterOtherTypeScope = (event: Event, newValue: any, previousValue: any, name: string) => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
                 setPluginFilters({
                     otherTypes: {
-                        locationId: (parseInt(newValue, 10) === 1) ? null : null // TODO: This needs to be the current location ID
+                        locationId: (parseInt(newValue, 10) !== 1) ? loc : null
+                    }
+                }, setAdminOtherTypesPluginFilters);
+            }
+        };
+
+        const onToggleExpiredClicked = () => {
+            if (setPluginFilters) {
+                this.showExpired = !this.showExpired;
+
+                setPluginFilters({
+                    otherTypes: {
+                        isExpired: this.showExpired
                     }
                 }, setAdminOtherTypesPluginFilters);
             }
         };
 
         const onResetFilters = () => {
-            const { setPluginFilters } = props;
             if (setPluginFilters) {
                 // console.log('reset plugin filters');
                 setPluginFilters({
-                    otherTypess: {}
+                    otherTypes: {
+                        locationId: undefined,
+                        code: '',
+                        description: ''
+                    }
                 }, setAdminOtherTypesPluginFilters);
             }
         };
 
         const assignmentTypeColumns = [
-            DataTable.TextFieldColumn('Assignment Type', { fieldName: 'description', displayInfo: false, filterable: true, filterColumn: onFilterOtherType }),
-            DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, filterable: true, filterColumn: onFilterOtherTypeCode }),
-            DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, filterSelectorComponent: CodeScopeSelector, displayInfo: false, filterable: true, filterColumn: onFilterOtherTypeScope }),
-            // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
-            DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false })
+            DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false }),
+            DataTable.TextFieldColumn('Assignment Type', { fieldName: 'description', displayInfo: false, filterable: true, filterColumn: onFilterOtherType, required: true }),
+            DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: true, filterable: true, filterColumn: onFilterOtherTypeCode, required: true }),
+            DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, filterSelectorComponent: CodeScopeSelector, displayInfo: false, filterable: true, filterColumn: onFilterOtherTypeScope })
         ];
+
+        const otherTypeActions = [
+            ({ fields, index, model }) => {
+                return (model && !model.id || model && model.id === '')
+                    ? (<RemoveRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage || canDelete)} />)
+                    : null;
+            },
+            ({ fields, index, model }) => {
+                return (model && model.id && model.id !== '' && !model.isExpired)
+                    ? (<ExpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance.forceUpdate()} />)
+                    : (model && model.isExpired)
+                    ? (<UnexpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance.forceUpdate()} />)
+                    : null;
+            },
+            ({ fields, index, model }) => {
+                return (model && model.id && model.id !== '')
+                    ? (<DeleteRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage || canDelete)} />)
+                    : null;
+            }
+        ] as React.ReactType<ActionProps>[];
 
         return (
             <div>
             {/* Only use fixed if configured as a standalone page */}
             {/* <div className="fixed-filters-data-table"> */}
                 <DataTable
+                    ref={(dt) => dataTableInstance = dt}
                     fieldName={this.formFieldNames.otherTypes}
                     filterFieldName={(this.filterFieldNames) ? `${this.filterFieldNames.otherTypes}` : undefined}
                     title={''} // Leave this blank
                     buttonLabel={'Add Assignment Type'}
                     displayHeaderActions={true}
                     onResetClicked={onResetFilters}
+                    onToggleExpiredClicked={onToggleExpiredClicked}
                     displayActionsColumn={true}
                     actionsColumn={DataTable.ActionsColumn({
-                        actions: [
-                            ({ fields, index, model }) => {
-                                return (model && !model.id || model && model.id === '')
-                                    ? (<RemoveRow fields={fields} index={index} model={model} />)
-                                    : null;
-                            },
-                            ({ fields, index, model }) => {
-                                return (model && model.id && model.id !== '')
-                                    ? (<ExpireRow fields={fields} index={index} model={model} />)
-                                    : null;
-                            },
-                            ({ fields, index, model }) => {
-                                return (model && model.id && model.id !== '')
-                                    ? (<DeleteRow fields={fields} index={index} model={model} />)
-                                    : null;
-                            }
-                        ]
+                        actions: otherTypeActions
                     })}
                     columns={assignmentTypeColumns}
                     filterable={true}
+                    showExpiredFilter={true}
                     expandable={false}
                     // expandedRows={[1, 2]}
                     groupBy={{
@@ -198,8 +233,11 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
                     }}
                     shouldDisableRow={(model) => {
                         // TODO: Only disable if the user doesn't have permission to edit provincial codes
-                        // return (!model) ? false : (model && model.id) ? model.isProvincialCode : false;
                         return false;
+                        // return (!model) ? false : (model && model.id) ? model.isProvincialCode : false;
+                    }}
+                    shouldMarkRowAsDeleted={(model) => {
+                        return model.isExpired;
                     }}
                     rowComponent={EmptyDetailRow}
                     modalComponent={EmptyDetailRow}
@@ -216,7 +254,27 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
     )
 
     validate(values: AdminOtherTypesProps = {}): FormErrors | undefined {
-        return undefined;
+        let errors: any = {};
+
+        const formKeys = Object.keys(this.formFieldNames);
+
+        if (formKeys) {
+            formKeys.forEach((key) => {
+                if (!values[key]) return;
+                errors[key] = values[key].map((row: any) => (
+                    {
+                        description: Validators.validateWith(
+                            Validators.required
+                        )(row.description),
+                        code: Validators.validateWith(
+                            Validators.required
+                        )(row.code)
+                    }
+                ));
+            });
+        }
+
+        return (errors && Object.keys(errors).length > 0) ? errors : undefined;
     }
 
     fetchData(dispatch: Dispatch<{}>, filters: {} | undefined) {
@@ -228,8 +286,11 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
         const filterData = this.getFilterData(filters);
 
         // Get form data
-        const otherTypes = (filters && filters.otherTypes !== undefined)
+        /* const otherTypes = (filters && filters.otherTypes !== undefined)
             ? findAllEffectiveOtherTypes(filters.otherTypes)(state) || []
+            : getAllEffectiveOtherTypes(state) || []; */
+        const otherTypes = (filters && filters.otherTypes !== undefined)
+            ? findAllOtherTypes(filters.otherTypes)(state) || []
             : getAllEffectiveOtherTypes(state) || [];
 
         const otherTypesArray: any[] = otherTypes.map((type: any) => {
@@ -269,8 +330,29 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
         };
     }
 
+    mapExpiredFromFormValues(map: any, isExpired?: boolean) {
+        isExpired = isExpired || false;
+        const expiredOtherTypeIds: IdType[] = [];
+
+        if (map.otherTypes) {
+            const values = map.otherTypes.values;
+
+            const otherTypeIds = values
+                .filter((val: any) => val.isExpired === isExpired)
+                .map((val: any) => val.id);
+
+            expiredOtherTypeIds.push(...otherTypeIds);
+        }
+
+        return {
+            otherTypes: expiredOtherTypeIds
+        };
+    }
+
     async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>) {
         const data: any = this.getDataFromFormValues(formValues, initialValues);
+        const dataToExpire: any = this.getDataToExpireFromFormValues(formValues, initialValues, true) || {};
+        const dataToUnexpire: any = this.getDataToExpireFromFormValues(formValues, initialValues, false) || {};
         const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
 
         // Grab the currentLocation off of the formValues.assignments object
@@ -278,6 +360,10 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
 
         // Delete records before saving new ones!
         const deletedOtherTypes: IdType[] = dataToDelete.otherTypes as IdType[];
+
+        // Expire records before saving new ones!
+        const expiredOtherTypes: IdType[] = dataToExpire.otherTypes as IdType[];
+        const unexpiredOtherTypes: IdType[] = dataToUnexpire.otherTypes as IdType[];
 
         let otherTypes: Partial<OtherType>[];
         otherTypes = data.otherTypes.map((c: Partial<OtherType>) => ({
@@ -302,6 +388,14 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
 
         if (deletedOtherTypes.length > 0) {
             await dispatch(deleteAlternateAssignmentTypes(deletedOtherTypes));
+        }
+
+        if (expiredOtherTypes.length > 0) {
+            await dispatch(expireAlternateAssignmentTypes(expiredOtherTypes));
+        }
+
+        if (unexpiredOtherTypes.length > 0) {
+            await dispatch(unexpireAlternateAssignmentTypes(unexpiredOtherTypes));
         }
 
         if (otherTypes.length > 0) {

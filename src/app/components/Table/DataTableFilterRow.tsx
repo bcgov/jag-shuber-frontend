@@ -4,6 +4,8 @@ import { Fields, FieldArray, FieldsProps } from 'redux-form';
 import { Button, FormGroup, Glyphicon } from 'react-bootstrap';
 
 import * as CellTypes from '../../components/TableColumnCell';
+import ToggleField from '../FormElements/ToggleField';
+import Toggle from '../Toggle/Toggle';
 
 export interface DataTableFilterRowProps {
     fieldName: string;
@@ -11,7 +13,9 @@ export interface DataTableFilterRowProps {
     actionsColumn?: CellTypes.Types.TableColumnCell;
     displayHeaderActions?: boolean;
     displayHeaderSave?: boolean;
-    onResetClicked?: Function,
+    onResetClicked?: Function;
+    onToggleExpiredClicked?: Function;
+    showExpiredFilter?: boolean;
     displayActionsColumn?: boolean;
     expandable?: boolean;
     buttonLabel?: React.ReactNode;
@@ -26,6 +30,8 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
         displayHeaderActions: false,
         displayHeaderSave: true,
         onResetClicked: () => {},
+        onToggleExpiredClicked: () => {},
+        showExpiredFilter: false,
         displayActionsColumn: true,
         expandable: false,
         // expandedRows: false,
@@ -49,12 +55,22 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
             displayActionsColumn = true,
             expandable = false,
             onResetClicked,
+            onToggleExpiredClicked,
+            showExpiredFilter = true, // TODO: Switch this to false
             groupBy = false
         } = this.props;
 
         const filterFieldNames = columns.map((col, index) => {
             return (col.fieldName && col.filterable) ? `${fieldName}.${col.fieldName}` : undefined;
         }).filter(col => col) as string[];
+
+        let showExpired = false;
+        const onResetClickedHandler = function() {
+            if (onResetClicked) {
+                onResetClicked(arguments);
+                showExpired = false;
+            }
+        }
 
         return (
             <Fields<Partial<any & T>>
@@ -102,15 +118,31 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
                         {displayActionsColumn && (
                             <th
                                 style={{
-                                    width: '250px'
+                                    width: 'auto'
                                 }}
                             >
                                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
                                     <FormGroup style={{ flex: '0', marginLeft: '5px', marginRight: '5px' }}>
-                                        <Button bsStyle="default" onClick={onResetClicked as any}>
-                                            <Glyphicon glyph="remove-sign" /> Clear Filters
+                                        <Button bsStyle="default" onClick={onResetClickedHandler as any}>
+                                            <Glyphicon glyph="remove-sign" /> Clear
                                         </Button>
                                     </FormGroup>
+                                    {showExpiredFilter && (
+                                    <FormGroup style={{ position: 'relative', top: '-4px', flex: '0', marginLeft: '5px', marginRight: '5px', display: 'flex', flexDirection: 'column' }}>
+                                        {/* <Button bsStyle="default" onClick={onToggleExpiredClicked as any}>
+                                            <Glyphicon glyph="time" /> Toggle Expired
+                                        </Button> */}
+                                        <label style={{ fontSize: '0.8rem', marginBottom: '0' }}>View Expired</label>
+
+                                        <Toggle
+                                            key={showExpired.toString()}
+                                            defaultChecked={showExpired}
+                                            onChange={() => onToggleExpiredClicked && onToggleExpiredClicked()}
+                                            checkedLabel={'Yes'}
+                                            uncheckedLabel={'No'}
+                                        />
+                                    </FormGroup>
+                                    )}
                                 </div>
                             </th>
                         )}

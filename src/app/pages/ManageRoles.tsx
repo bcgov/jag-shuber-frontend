@@ -68,7 +68,6 @@ class ManageRoles extends React.PureComponent<AdminFormProps & Partial<ManageRol
                         flexDirection: 'column',
                         flex: '1 1',
                         maxWidth: '95%',
-                        minWidth: 800,
                         height: 'max-content',
                         margin: '0 auto',
                         borderRadius: 0

@@ -80,6 +80,8 @@ async function submitPlugins(
                 Object.keys(restErrors).forEach(fieldKey => {
                     formErrors[fieldKey] = restErrors[fieldKey];
                 });
+            } else {
+                console.warn('Caught AdminForm error', err);
             }
         });
         dispatch(setAdminFormPluginSubmitErrors(pluginErrorMessages));
@@ -120,13 +122,16 @@ function collectPluginErrors(state: any, formName: string, plugins: FormContaine
 const formConfig: ConfigProps<{}, AdminFormProps> = {
     form: 'AdminForm',
     enableReinitialize: true,
-    validate: (values: any, { plugins = [] }) => {
+    validate: (values: any, { plugins = [], selectedSection }) => {
+        console.log(`selected section: ${selectedSection}`);
         const validationErrors = plugins.reduce((errors, plugin) => {
-            const pluginValues = values[plugin.name];
+            const pluginValues = values[plugin.reduxFormKey];
             const pluginErrors = plugin.validate(pluginValues);
             if (pluginErrors) {
-                errors[plugin.name] = {...pluginErrors};
+                errors[plugin.reduxFormKey] = {...errors[plugin.reduxFormKey], ...pluginErrors};
             }
+            // console.log('dump admin form errors');
+            // console.log(errors);
             return errors;
         }, {} as FormErrors);
         return {...validationErrors};
@@ -280,6 +285,7 @@ export default class extends
             // Filter out any plugins that the user doesn't have permission to access
             // TODO: A cleaner way to get the data off the token?
             const { appScopes = {}, authScopes } = currentUserRoleScopes(state);
+            // if (appScopes) debugger;
 
             // console.log(appScopes);
             // console.log(authScopes);
@@ -287,9 +293,10 @@ export default class extends
             // Filter out plugins that don't have scopes assigned
             const pluginsToRender = (plugins)
                 ? plugins
-                    .filter((s: any) => {
-                        return Object.keys(appScopes)
-                            .indexOf(s.name) > -1;
+                    .filter((plugin: any) => {
+                        return plugin.useAuth !== false
+                            ? Object.keys(appScopes).indexOf(plugin.name) > -1
+                            : true;
                     })
                     .filter(s => s !== undefined)
                 : [];
@@ -298,6 +305,8 @@ export default class extends
             // console.log(plugins);
             // console.log('plugins to render');
             // console.log(pluginsToRender);
+
+            const pluginFilters = {};
 
             // @ts-ignore
             initialValues = pluginsToRender
@@ -310,6 +319,7 @@ export default class extends
                     if (data !== undefined) {
                         const pluginState = {};
                         pluginState[p.reduxFormKey] = data;
+                        pluginFilters[p.reduxFormKey] = filters;
                         return pluginState;
                     }
                     return undefined;
@@ -326,7 +336,10 @@ export default class extends
                 currentLocation: currentLocationSelector(state),
                 isLocationSet: isLocationSetSelector(state),
                 initialValues,
+                pluginPermissions: { ...appScopes },
+                pluginAuth: authScopes,
                 pluginState: { ...initialValues },
+                pluginFilters: pluginFilters,
                 selectedSection: selectedAdminFormSection(state) || selectedSection,
                 ...collectPluginErrors(state, formConfig.form, plugins)
             };

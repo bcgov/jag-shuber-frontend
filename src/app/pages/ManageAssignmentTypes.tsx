@@ -61,7 +61,7 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps & ManageAssignm
 
         const {
             selectAdminFormSection,
-            selectedSection = 'ADMIN_PLUGIN_COURTROOMS:ADMIN_PLUGIN_COURT_ROLES'
+            selectedSection = 'ADMIN_PLUGIN_COURTROOMS'
         } = this.props;
 
         return (
@@ -75,26 +75,28 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps & ManageAssignm
                         middle={(
                             <>
                                 <div style={{ flex: 1, display: 'flex', position: 'relative', justifyContent: 'center', paddingTop: '10px' }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', marginRight: '15px' }}>
+                                    <div className={`hidden-xs`} style={{ display: 'flex', alignItems: 'center', marginRight: '15px' }}>
                                         <h6 style={{ color: 'white', fontWeight: 'bold', marginBottom: '3px' }}>Choose Work Section: </h6>
                                     </div>
-                                    <div className={`admin-form-filters-toggle admin-form-page-tab${selectedSection === 'ADMIN_PLUGIN_COURTROOMS:ADMIN_PLUGIN_COURT_ROLES' ? ' is-active' : ''}`} onClick={() => selectAdminFormSection('ADMIN_PLUGIN_COURTROOMS:ADMIN_PLUGIN_COURT_ROLES')}>
-                                        {/* <Glyphicon glyph="chevron-down" /> */}Court Assignments
+                                    <div className={`admin-form-filters-toggle admin-form-page-tab${selectedSection === 'ADMIN_PLUGIN_COURTROOMS' ? ' is-active' : ''}`} onClick={() => selectAdminFormSection('ADMIN_PLUGIN_COURTROOMS')}>
+                                        {/* <Glyphicon glyph="chevron-down" /> */}Courtrooms<span className="visible-lg"></span>
+                                    </div>
+                                    &nbsp;&nbsp;
+                                    <div className={`admin-form-filters-toggle admin-form-page-tab${selectedSection === 'ADMIN_PLUGIN_COURT_ROLES' ? ' is-active' : ''}`} onClick={() => selectAdminFormSection('ADMIN_PLUGIN_COURT_ROLES')}>
+                                        {/* <Glyphicon glyph="chevron-down" /> */}Court<span className="hidden-lg">s</span><span className="visible-lg">&nbsp;Roles</span>
                                     </div>
                                     &nbsp;&nbsp;
                                     <div className={`admin-form-filters-toggle admin-form-page-tab${selectedSection === 'ADMIN_PLUGIN_JAIL_ROLES' ? ' is-active' : ''}`} onClick={() => selectAdminFormSection('ADMIN_PLUGIN_JAIL_ROLES')}>
-                                        {/* <Glyphicon glyph="chevron-down" /> */}Jail Assignments
+                                        {/* <Glyphicon glyph="chevron-down" /> */}Jail<span className="hidden-lg">s</span><span className="visible-lg">&nbsp;Roles</span>
                                     </div>
                                     &nbsp;&nbsp;
                                     <div className={`admin-form-filters-toggle admin-form-page-tab${selectedSection === 'ADMIN_PLUGIN_ESCORT_TYPES' ? ' is-active' : ''}`} onClick={() => selectAdminFormSection('ADMIN_PLUGIN_ESCORT_TYPES')}>
-                                        {/* <Glyphicon glyph="chevron-down" /> */}Escort Runs
+                                        {/* <Glyphicon glyph="chevron-down" /> */}Escort<span className="hidden-lg">s</span><span className="visible-lg">&nbsp;Runs</span>
                                     </div>
                                     &nbsp;&nbsp;
                                     <div className={`admin-form-filters-toggle admin-form-page-tab${selectedSection === 'ADMIN_PLUGIN_OTHER_TYPES' ? ' is-active' : ''}`} onClick={() => selectAdminFormSection('ADMIN_PLUGIN_OTHER_TYPES')}>
-                                        {/* <Glyphicon glyph="chevron-down" /> */}Other Assignments
+                                        {/* <Glyphicon glyph="chevron-down" /> */}Other<span className="visible-lg">&nbsp;Assignments</span>
                                     </div>
-
-                                    <div style={{ width: '160px' }} />
                                 </div>
                             </>
                         )}
@@ -115,7 +117,6 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps & ManageAssignm
                         flexDirection: 'column',
                         flex: '1 1',
                         maxWidth: '100%',
-                        minWidth: 800,
                         height: 'max-content',
                         margin: '0 auto',
                         borderRadius: 0

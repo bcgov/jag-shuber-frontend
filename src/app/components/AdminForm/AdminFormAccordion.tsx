@@ -17,7 +17,10 @@ export default (props: any) => {
         <div>
             <ExpandableTable.Table
                 id="profile-sections" // TODO: Change this ID!
-                onSelect={(key: any) => handleSelectSection(key)}
+                onSelect={(key: any) => {
+                    console.log('AdminFormAccordion handleSelectSection');
+                    handleSelectSection(key);
+                }}
                 activeKey={selectedSection}
             >
                 {/* <ExpandableTable.Header />

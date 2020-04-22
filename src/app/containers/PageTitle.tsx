@@ -33,9 +33,10 @@ class PageTitle extends React.PureComponent<PageTitleProps> {
             : title;
 
         return (
-            <div className="container-fluid" style={{width: '100%'}}>
+            <div className="container-fluid" style={{ minWidth: '100%'}}>
                 <h3
                     style={{
+                        // textAlign: 'center',
                         paddingBottom: '10px',
                         borderBottom: '1px dotted grey',
                         color: '#003366'

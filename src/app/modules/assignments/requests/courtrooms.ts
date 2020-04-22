@@ -11,8 +11,6 @@ import {
 import GetEntityMapRequest from '../../../infrastructure/Requests/GetEntityMapRequest';
 import RequestAction, { RequestConfig } from '../../../infrastructure/Requests/RequestActionBase';
 import CreateOrUpdateEntitiesRequest from '../../../infrastructure/Requests/CreateOrUpdateEntitiesRequest';
-import { roleMapRequest } from '../../roles/requests/roles';
-import { roleFrontendScopeMapRequest } from '../../roles/requests/roleFrontendScopes';
 
 class CourtroomMapRequest extends GetEntityMapRequest<void, Courtroom, AssignmentModuleState> {
     constructor() {
@@ -55,6 +53,56 @@ class CreateOrUpdateCourtroomsRequest extends CreateOrUpdateEntitiesRequest<Cour
 }
 
 export const createOrUpdateCourtroomsRequest = new CreateOrUpdateCourtroomsRequest();
+
+class ExpireCourtroomsRequest extends RequestAction<IdType[], IdType[], AssignmentModuleState> {
+    constructor() {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'expireCourtrooms',
+            toasts: {
+                success: (ids) => `${ids.length} courtroom(s) expired`,
+                error: (err) => `Problem encountered while expiring courtroom: ${err ? err.toString() : 'Unknown Error'}`
+            }
+        });
+    }
+    public async doWork(request: IdType[], { api }: ThunkExtra): Promise<IdType[]> {
+        await api.expireCourtrooms(request);
+        return request;
+    }
+
+    setRequestData(moduleState: AssignmentModuleState, courtroomIds: IdType[]) {
+        const newMap = { ...courtroomMapRequest.getRequestData(moduleState) };
+        courtroomIds.forEach(id => newMap[id]);
+        return courtroomMapRequest.setRequestData(moduleState, newMap);
+    }
+}
+
+export const expireCourtroomsRequest = new ExpireCourtroomsRequest();
+
+class UnexpireCourtroomsRequest extends RequestAction<IdType[], IdType[], AssignmentModuleState> {
+    constructor() {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'unexpireCourtrooms',
+            toasts: {
+                success: (ids) => `${ids.length} courtroom(s) un-expired`,
+                error: (err) => `Problem encountered while un-expiring courtroom: ${err ? err.toString() : 'Unknown Error'}`
+            }
+        });
+    }
+    public async doWork(request: IdType[], { api }: ThunkExtra): Promise<IdType[]> {
+        await api.unexpireCourtrooms(request);
+        return request;
+    }
+
+    setRequestData(moduleState: AssignmentModuleState, courtroomIds: IdType[]) {
+        const newMap = { ...courtroomMapRequest.getRequestData(moduleState) };
+        courtroomIds.forEach(id => newMap[id]);
+        return courtroomMapRequest.setRequestData(moduleState, newMap);
+    }
+}
+
+export const unexpireCourtroomsRequest = new UnexpireCourtroomsRequest();
 
 class DeleteCourtroomsRequest extends RequestAction<IdType[], IdType[], AssignmentModuleState> {
     constructor() {

@@ -17,7 +17,13 @@ import GenderCodeDisplay from './GenderCodeDisplay';
 import ToggleField from '../components/FormElements/ToggleField';
 
 export default class SheriffProfilePluginId extends SheriffProfileSectionPlugin<Sheriff> {
-    name = 'identification';
+    // NOTICE!
+    // This key maps to the [appScope: FrontendScope] (in the token)
+    // To set permissions for a new plugin, add a corresponding entry under System Settings > Components
+    // with the name as defined as the plugin's name.
+    name = 'SHERIFF_PROFILE_PLUGIN_IDENT';
+    // END NOTICE
+    reduxFormKey = 'identification';
     formFieldNames = {
         firstName: 'sheriff.firstName',
         lastName: 'sheriff.lastName',

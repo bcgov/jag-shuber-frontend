@@ -32,9 +32,9 @@ The development scripts for this application allow customization via an environm
 API_URL="https://frontend-jag-shuber-dev.pathfinder.gov.bc.ca/"
 # Fake Siteminder Header Overrides
 SMGOV_USERGUID='SOMEGUIDGOESHERE'
-SMGOV_USERDISPLAYNAME='Name, Your'
+SMGOV_USERDISPLAYNAME='Test, Joe'
 SMGOV_USERTYPE='user'
-SMGOV_USERIDENTIFIER='yname'
+SMGOV_USERIDENTIFIER='TESTUSR'
 ```
 
 if you had an instance of the api in minishift you can change your `API_URL` to point your development frontend at that instance instead of our running dev instance in pathfinder for instance your `.env.local` might contain:

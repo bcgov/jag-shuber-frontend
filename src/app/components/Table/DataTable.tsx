@@ -14,6 +14,7 @@ import DataTableGroupBy from './DataTableGroupBy';
 export interface DetailComponentProps {
     parentModel?: any;
     parentModelId?: any;
+    getPluginPermissions?: Function;
 }
 
 export interface ModalComponentProps {}
@@ -32,18 +33,23 @@ export interface DataTableProps {
     displayHeaderSave?: boolean;
     // TODO: It would be preferable to supply header actions the same way we use actionsColumn...
     onResetClicked?: Function;
+    onToggleExpiredClicked?: Function;
     displayActionsColumn?: boolean;
     expandable?: boolean;
     expandedRows?: Set<number>;
     modalProps?: any;
     modalComponent: React.ReactType<ModalComponentProps>;
-    rowComponent: React.ReactType<DetailComponentProps>;
+    rowComponent: React.SFC<DetailComponentProps>;
     shouldRenderRow?: (model: any) => boolean;
     shouldDisableRow?: (model: any) => boolean;
+    shouldMarkRowAsDeleted?: (model: any) => boolean;
     initialValue?: any;
     filterable?: boolean;
+    showExpiredFilter?: boolean;
     filterRows?: Function;
-    groupBy?: any; // TODO: Not sure what this should be yet, just trying something out, see if it works
+    groupBy?: any;
+    sortBy?: string[]; // TODO: Not implemented yet
+    shouldSortBy?: (col: any, colIndex: number) => boolean; // TODO: Not implemented yet
 }
 
 // let RENDER_COUNT = 0;
@@ -55,6 +61,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
         displayHeaderSave: true,
         // TODO: It would be preferable to supply header actions the same way we use actionsColumn...
         onResetClicked: () => {},
+        onToggleExpiredClicked: () => {},
         displayActionsColumn: true,
         expandable: false,
         // expandedRows: false,
@@ -62,16 +69,19 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
         rowComponent: <div />,
         shouldRenderRow: (model: any) => true,
         shouldDisableRow: (model: any) => false,
+        shouldMarkRowAsDeleted: (model: any) => false,
         modalProps: {},
         modalComponent: <div />,
         actionsColumn: null,
         buttonLabel: 'Create',
         initialValue: {},
         filterable: false,
+        showExpiredFilter: false,
         filterRows: () => true
     };
 
     // TODO: It would be cool if we could dynamically supply at least some of these types...
+    static HtmlColumn = CellTypes.Html;
     static MappedTextColumn = CellTypes.MappedText;
     static StaticTextColumn = CellTypes.StaticText;
     static StaticDateColumn = CellTypes.StaticDate;
@@ -138,18 +148,22 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
             displayHeaderActions = false,
             displayHeaderSave = true,
             onResetClicked,
+            onToggleExpiredClicked,
             displayActionsColumn = true,
             expandable = false,
             rowComponent,
             shouldRenderRow,
             shouldDisableRow,
+            shouldMarkRowAsDeleted,
             modalProps,
             modalComponent,
             initialValue,
             filterable,
+            showExpiredFilter,
             filterRows,
             groupBy,
-
+            shouldSortBy,
+            sortBy
         } = this.props;
 
         const {
@@ -178,10 +192,12 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                             <thead>
                                 <DataTableFilterRow<Partial<any & T>>
                                     onResetClicked={onResetClicked}
+                                    onToggleExpiredClicked={onToggleExpiredClicked}
                                     fieldName={filterFieldName}
                                     columns={columns}
                                     expandable={expandable}
                                     filterable={filterable}
+                                    showExpiredFilter={showExpiredFilter}
                                     groupBy={!!groupBy}
                                     displayActionsColumn={displayActionsColumn}
                                 />
@@ -230,11 +246,13 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                                 <Table striped={true} >
                                     <thead>
                                         <DataTableHeaderRow
+                                            shouldSortBy={shouldSortBy}
                                             fields={fields}
                                             columns={columns}
                                             expandable={expandable}
                                             filterable={filterable}
                                             groupBy={!!groupBy}
+                                            sortBy={sortBy}
                                             displayHeaderActions={displayHeaderActions}
                                             displayHeaderSave={displayHeaderSave}
                                             displayActionsColumn={displayActionsColumn}
@@ -257,13 +275,27 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
 
                                         if (shouldRenderRow && !shouldRenderRow(fieldModel)) return null;
                                         const disableRow = (shouldDisableRow && shouldDisableRow(fieldModel));
+                                        const markRowAsDeleted = (shouldMarkRowAsDeleted && shouldMarkRowAsDeleted(fieldModel));
 
                                         // We can do this because new rows are always at the top of the list
                                         if (!id) newRowCount++;
 
                                         return (
                                             <>
-                                                <tr key={index}>
+                                                {markRowAsDeleted && (
+                                                    <tr className={markRowAsDeleted ? 'mark-as-deleted-strike' : ''}>
+                                                        {expandable && (
+                                                        <td></td>
+                                                        )}
+                                                        {groupBy && (
+                                                        <td></td>
+                                                        )}
+                                                        <td colSpan={expandable ? columns.length + 1 : columns.length}>
+                                                            <hr className="strike-through" />
+                                                        </td>
+                                                    </tr>
+                                                )}
+                                                <tr key={index} className={markRowAsDeleted ? 'mark-as-deleted' : ''}>
                                                     {groupBy && (
                                                         <>
                                                         {/* <DataTableGroupBy fieldName={fieldName} newRowCount={newRowCount} rowIndex={index} params={groupByParams} /> */}

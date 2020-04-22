@@ -56,19 +56,21 @@ export default class AdminScopePermissionsModal extends React.Component<AdminSco
                                 <div style={{ display: 'flex', alignItems: 'center' }}>
                                     <Field
                                         name={`component`}
-                                        component={(p) => <SelectorField
-                                            {...p}
-                                            showLabel={true}
-                                            // TODO: Provide this via props or something so we can use custom codes...
-                                            SelectorComponent={
-                                                (sp) =>
-                                                    // TODO: Actually make this work
-                                                    <FrontendScopeSelector {...sp} value={parentModel.id} />
-                                                }
-                                        />}
-                                        label={'Choose Component'}
-                                    >
-                                    </Field>
+                                        component={(p) =>
+                                            <SelectorField
+                                                {...p}
+                                                style={{ minWidth: '100%' }}
+                                                showLabel={true}
+                                                // TODO: Provide this via props or something so we can use custom codes...
+                                                SelectorComponent={
+                                                    (sp) =>
+                                                        // TODO: Actually make this work
+                                                        <FrontendScopeSelector {...sp} value={parentModel.id} />
+                                                    }
+                                            />
+                                        }
+                                        label={'Component Permissions'}
+                                    />
                                     {/* This wrapper just adds equal spacing to the previous form group */}
                                     {/* TODO: Where are the spacing utils? */}
                                     <div className="form-group" style={{ marginLeft: '0.5rem' }}>

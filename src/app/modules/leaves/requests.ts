@@ -92,7 +92,7 @@ class LeaveSubCodeMapRequest extends GetEntityMapRequest<void, LeaveSubCode, Lea
     constructor(config?: RequestConfig<MapType<LeaveSubCode>>) {
         super({
             namespace: STATE_KEY,
-            actionName: 'leaveSubCodeMap',
+            actionName: 'leaveTypeMap',
             ...config
         });
     }
@@ -152,15 +152,64 @@ class DeleteLeaveSubCodesRequest extends RequestAction<IdType[], IdType[], Leave
         return request;
     }
 
-    // TODO: How does this all work?
     setRequestData(moduleState: LeaveModuleState, leaveSubCodeIds: IdType[]) {
-        const newMap = { ...leaveSubCodeMapRequest.getRequestData(moduleState) };
+        const newMap = { ...leaveTypeMapRequest.getRequestData(moduleState) };
         leaveSubCodeIds.forEach(id => delete newMap[id]);
-        return  leaveSubCodeMapRequest.setRequestData(moduleState, newMap);
+        return leaveTypeMapRequest.setRequestData(moduleState, newMap);
     }
 }
 
 export const deleteLeaveSubCodesRequest = new DeleteLeaveSubCodesRequest();
+
+class ExpireLeaveSubCodesRequest extends RequestAction<IdType[], IdType[], LeaveModuleState> {
+    constructor() {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'expireLeaveSubCodes',
+            toasts: {
+                success: (ids) => `${ids.length} leave sub code(s) expired`,
+                error: (err) => `Problem encountered while expiring sub codes: ${err ? err.toString() : 'Unknown Error'}`
+            }
+        });
+    }
+    public async doWork(request: IdType[], { api }: ThunkExtra): Promise<IdType[]> {
+        await api.expireLeaveSubCodes(request);
+        return request;
+    }
+
+    setRequestData(moduleState: LeaveModuleState, leaveSubCodeIds: IdType[]) {
+        const newMap = { ...leaveTypeMapRequest.getRequestData(moduleState) };
+        leaveSubCodeIds.forEach(id => newMap[id]);
+        return leaveTypeMapRequest.setRequestData(moduleState, newMap);
+    }
+}
+
+export const expireLeaveSubCodesRequest = new ExpireLeaveSubCodesRequest();
+
+class UnexpireLeaveSubCodesRequest extends RequestAction<IdType[], IdType[], LeaveModuleState> {
+    constructor() {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'unexpireLeaveSubCodes',
+            toasts: {
+                success: (ids) => `${ids.length} leave sub code(s) un-expired`,
+                error: (err) => `Problem encountered while un-expiring sub codes: ${err ? err.toString() : 'Unknown Error'}`
+            }
+        });
+    }
+    public async doWork(request: IdType[], { api }: ThunkExtra): Promise<IdType[]> {
+        await api.unexpireLeaveSubCodes(request);
+        return request;
+    }
+
+    setRequestData(moduleState: LeaveModuleState, leaveSubCodeIds: IdType[]) {
+        const newMap = { ...leaveTypeMapRequest.getRequestData(moduleState) };
+        leaveSubCodeIds.forEach(id => newMap[id]);
+        return leaveTypeMapRequest.setRequestData(moduleState, newMap);
+    }
+}
+
+export const unexpireLeaveSubCodesRequest = new UnexpireLeaveSubCodesRequest();
 
 class LeaveCancelCodeMapRequest extends GetEntityMapRequest<void, LeaveCancelCode, LeaveModuleState> {
 

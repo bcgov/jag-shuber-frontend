@@ -92,6 +92,9 @@ import DeleteRow from '../../components/TableColumnActions/DeleteRow';
 import RemoveRow from '../../components/TableColumnActions/RemoveRow';
 import ExpireRow from '../../components/TableColumnActions/ExpireRow';
 import PageTitle from '../../containers/PageTitle';
+import { ActionProps } from '../../components/TableColumnCell/Actions';
+
+import { buildPluginPermissions, userCan } from '../permissionUtils';
 
 export interface AdminRolesProps extends FormContainerProps {
     roles?: {}[];
@@ -126,7 +129,7 @@ class AdminRolesDisplay extends React.PureComponent<AdminRolesDisplayProps, {}> 
                             <th className="text-left">Role Name</th>
                             <th className="text-left">Role Code</th>
                             <th className="text-left">Description</th>
-                            <th className="text-left">Date Created</th>
+                            <th className="text-left">Last Modified</th>
                             <th className="text-left">Status</th>
                             <th />
                         </tr>
@@ -180,7 +183,11 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
         roleFrontendScopePermissionsGrouped: 'roles.roleFrontendScopePermissionsGrouped'
     };
     title: string = ' Manage Roles & Access';
-    DetailComponent: React.SFC<DetailComponentProps> = ({ parentModelId, parentModel }) => {
+    DetailComponent: React.SFC<DetailComponentProps> = ({ parentModelId, parentModel, getPluginPermissions }) => {
+        const { grantAll, permissions = [] } = buildPluginPermissions(getPluginPermissions);
+        const canManage = userCan(permissions, 'MANAGE');
+        const canDelete = userCan(permissions, 'DELETE');
+
         // We can't use React hooks yet, and not sure if this project will ever be upgraded to 16.8
         // This is a quick n' dirty way to achieve the same thing
         let dataTableInstance: any;
@@ -195,6 +202,20 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
         if (!parentModelId) return null;
         if (!parentModel) return null;
 
+        const roleFrontendScopeActions = [
+            ({ fields, index, model }) => {
+                return (model && model.id && model.id !== '')
+                    ? (
+                        <Button bsStyle="primary" onClick={(ev) => onButtonClicked(ev, dataTableInstance, model)}>
+                            <Glyphicon glyph="wrench" />
+                        </Button>
+                    )
+                    : null;
+            },
+            ({ fields, index, model }) => <DeleteRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage || canDelete)} />,
+            // ({ fields, index, model }) => { return (model && model.id) ? (<ExpireRow fields={fields} index={index} model={model} />) : null; }
+        ] as React.ReactType<ActionProps>[];
+
         return (
             <RoleFrontendScopesDataTable
                 ref={(dt) => dataTableInstance = dt}
@@ -204,26 +225,14 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
                 displayHeaderActions={!(parentModel.systemRoleInd === 1)}
                 displayHeaderSave={false}
                 actionsColumn={DataTable.ActionsColumn({
-                    actions: [
-                        ({ fields, index, model }) => {
-                            return (model && model.id && model.id !== '')
-                                ? (
-                                    <Button bsStyle="primary" onClick={(ev) => onButtonClicked(ev, dataTableInstance, model)}>
-                                        <Glyphicon glyph="wrench" />
-                                    </Button>
-                                )
-                                : null;
-                        },
-                        ({ fields, index, model }) => <DeleteRow fields={fields} index={index} model={model} />,
-                        // ({ fields, index, model }) => { return (model && model.id) ? (<ExpireRow fields={fields} index={index} model={model} />) : null; }
-                    ]
+                    actions: roleFrontendScopeActions
                 })}
                 columns={[
-                    DataTable.SelectorFieldColumn('Application Access', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: FrontendScopeSelector, displayInfo: true, disabled: true }),
-                    DataTable.MappedTextColumn('Component Code', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: FrontendScopeCodeDisplay, displayInfo: false }),
-                    DataTable.MappedTextColumn('Description', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: FrontendScopeDescriptionDisplay, displayInfo: false }),
-                    DataTable.StaticTextColumn('Assigned By', { fieldName: 'createdBy', colStyle: { width: '200px' }, displayInfo: false }),
-                    DataTable.StaticDateColumn('Date Assigned', { fieldName: 'createdDtm', colStyle: { width: '200px' }, displayInfo: false }),
+                    DataTable.SelectorFieldColumn('Application Access', { fieldName: 'scopeId', colStyle: { width: '16%' }, selectorComponent: FrontendScopeSelector, displayInfo: true, disabled: true }),
+                    // DataTable.MappedTextColumn('Component Code', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: FrontendScopeCodeDisplay, displayInfo: false }),
+                    DataTable.MappedTextColumn('Description', { fieldName: 'scopeId', colStyle: { width: '30%' }, selectorComponent: FrontendScopeDescriptionDisplay, displayInfo: false }),
+                    DataTable.StaticDateColumn('Last Modified', { fieldName: 'updatedDtm', colStyle: { width: '16%' }, displayInfo: false }),
+                    DataTable.StaticTextColumn('Assigned By', { fieldName: 'updatedBy', colStyle: { width: '15%' }, displayInfo: false }),
                     // DataTable.ButtonColumn('Configure Access', 'list', { displayInfo: true }, onButtonClicked)
                 ]}
                 rowComponent={EmptyDetailRow}
@@ -238,6 +247,12 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
     }
 
     FormComponent = (props: FormContainerProps<AdminRolesProps>) => {
+        const { getPluginPermissions } = props;
+        const { grantAll, permissions = [] } = buildPluginPermissions(getPluginPermissions);
+
+        const canManage = userCan(permissions, 'MANAGE');
+        const canDelete = userCan(permissions, 'DELETE');
+
         // We can't use React hooks yet, and not sure if this project will ever be upgraded to 16.8
         // This is a quick n' dirty way to achieve the same thing
         let dataTableInstance: any;
@@ -305,6 +320,28 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
         // RENDER_COUNT++;
         // console.log('ADMINROLESGRID RENDER COUNT: ' + RENDER_COUNT);
 
+        const roleActions = [
+            ({ fields, index, model }) => {
+                return (model && model.id && model.id !== '')
+                    ? (
+                        <Button bsStyle="default" onClick={(ev) => onButtonClicked(ev, dataTableInstance, model)}>
+                            <Glyphicon glyph="lock" />
+                        </Button>
+                    )
+                    : null;
+            },
+            ({ fields, index, model }) => {
+            return (model && !model.id || model && model.id === '')
+                    ? (<RemoveRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage || canDelete)} />)
+                    : null;
+            },
+            ({ fields, index, model }) => {
+                return (model && model.id && model.id !== '')
+                    ? (<DeleteRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage || canDelete)} />)
+                    : null;
+            }
+        ] as React.ReactType<ActionProps>[];
+
         return (
             <div>
                 <RolesDataTable
@@ -318,43 +355,22 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
                     onResetClicked={onResetFilters}
                     displayActionsColumn={true}
                     actionsColumn={DataTable.ActionsColumn({
-                        actions: [
-                            ({ fields, index, model }) => {
-                                return (model && model.id && model.id !== '')
-                                    ? (
-                                        <Button bsStyle="default" onClick={(ev) => onButtonClicked(ev, dataTableInstance, model)}>
-                                            <Glyphicon glyph="lock" />
-                                        </Button>
-                                    )
-                                    : null;
-                            },
-                            ({ fields, index, model }) => {
-                                return (model && model.id && model.id !== '')
-                                    ? (<DeleteRow fields={fields} index={index} model={model} />)
-                                    : null;
-                            },
-                            ({ fields, index, model }) => {
-                            return (model && !model.id || model && model.id === '')
-                                    ? (<RemoveRow fields={fields} index={index} model={model} />)
-                                    : null;
-                            }
-                        ]
+                        actions: roleActions
                     })}
                     columns={[
-                        DataTable.TextFieldColumn('Role Name', { fieldName: 'roleName', colStyle: { width: '300px' }, displayInfo: true, filterable: true, filterColumn: onFilterRoleName }),
-                        DataTable.TextFieldColumn('Role Code', { fieldName: 'roleCode', colStyle: { width: '300px' }, displayInfo: true, filterable: true, filterColumn: onFilterRoleCode }),
-                        DataTable.TextFieldColumn('Description', { fieldName: 'description', colStyle: { width: '300px' }, displayInfo: true }),
-                        // DataTable.DateColumn('Date Created', 'createdDtm'),
-                        DataTable.StaticTextColumn('Created By', { fieldName: 'createdBy', colStyle: { width: '200px' }, displayInfo: false, filterable: true, filterColumn: onFilterCreatedBy }),
-                        DataTable.StaticDateColumn('Date Created', { fieldName: 'createdDtm', colStyle: { width: '200px' }, displayInfo: false, filterable: true, filterColumn: onFilterCreatedDate }),
-                        // DataTable.ButtonColumn('Effective Permissions', 'list', { displayInfo: true }, onButtonClicked),
-                        // DataTable.SelectorFieldColumn('Status', { displayInfo: true, filterable: true }),
-
+                        DataTable.TextFieldColumn('Role Name', { fieldName: 'roleName', colStyle: { width: '15%' }, displayInfo: true, filterable: true, filterColumn: onFilterRoleName }),
+                        DataTable.TextFieldColumn('Role Code', { fieldName: 'roleCode', colStyle: { width: '10%' }, displayInfo: true, filterable: true, filterColumn: onFilterRoleCode }),
+                        DataTable.TextFieldColumn('Description', { fieldName: 'description', colStyle: { width: '20%' }, displayInfo: true }),
+                        DataTable.StaticDateColumn('Last Modified', { fieldName: 'updatedDtm', colStyle: { width: '15%' }, displayInfo: false, filterable: true, filterColumn: onFilterCreatedDate }),
+                        DataTable.StaticTextColumn('Assigned By', { fieldName: 'updatedBy', colStyle: { width: '15%' }, displayInfo: false, filterable: true, filterColumn: onFilterCreatedBy })
                     ]}
                     filterable={true}
+
                     expandable={true}
                     // expandedRows={[1, 2]}
-                    rowComponent={this.DetailComponent}
+                    rowComponent={this.renderDetail()}
+                    // Don't render or show system roles unless user is a Super Administrator
+                    shouldRenderRow={(model) => model.systemRoleInd !== 1}
                     shouldDisableRow={(model) => {
                         // TODO: Only disable if the user doesn't have permission to edit provincial codes
                         return (!model) ? false : (model && model.id) ? model.systemRoleInd === 1 : false;

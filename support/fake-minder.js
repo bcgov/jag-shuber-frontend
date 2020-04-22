@@ -16,9 +16,9 @@ function getSMHeaders(headers = {}) {
     // allow override from options
     return {
         SMGOV_USERGUID: process.env.SMGOV_USERGUID || 'SOMEGUIDGOESHERE',
-        SMGOV_USERDISPLAYNAME: process.env.SMGOV_USERDISPLAYNAME || 'Name, Your',
+        SMGOV_USERDISPLAYNAME: process.env.SMGOV_USERDISPLAYNAME || 'Test, Joe',
         SMGOV_USERTYPE: process.env.SMGOV_USERTYPE || 'user',
-        SMGOV_USERIDENTIFIER: process.env.SMGOV_USERIDENTIFIER || 'yname',
+        SMGOV_USERIDENTIFIER: process.env.SMGOV_USERIDENTIFIER || 'TESTUSR',
         ...headers,
     }
 }

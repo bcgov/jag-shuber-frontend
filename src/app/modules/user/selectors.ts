@@ -1,7 +1,7 @@
 import { RootState } from '../../store';
 import { createSelector } from 'reselect';
 import { TokenPayload } from 'jag-shuber-api';
-import { userTokenRequest } from './requests';
+import { userTokenRequest, currentUserRequest } from './requests';
 
 export const currentLocation = (state: RootState): string => {
     const { user: { currentLocation: location = '' } = {} } = state;
@@ -16,12 +16,16 @@ export const isLocationSet = createSelector(
     }
 );
 
-const currentUserToken = (state: RootState): TokenPayload | undefined => {
+export const getCurrentUserToken = (state: RootState): TokenPayload | undefined => {
     return userTokenRequest.getData(state);
 };
 
+export const getCurrentUser = (state: RootState): TokenPayload | undefined => {
+    return currentUserRequest.getData(state);
+};
+
 export const currentUserRoleScopes = (state: RootState): any => {
-    const token = currentUserToken(state);
+    const token = getCurrentUserToken(state);
 
     if (!token) return undefined;
 
@@ -35,15 +39,15 @@ export const isLoadingToken = userTokenRequest.getIsBusy;
 export const loadingTokenError = userTokenRequest.getError;
 
 export const currentUserGuid = createSelector(
-    currentUserToken,
+    getCurrentUserToken,
     (userToken) => {
         const { guid = undefined } = userToken || {};
         return guid;
     }
 );
 
-export const currentUserDisplayName = createSelector(
-    currentUserToken,
+export const getCurrentUserDisplayName = createSelector(
+    getCurrentUserToken,
     (userToken) => {
         const { displayName = '' } = userToken || {};
         return displayName;
@@ -51,7 +55,7 @@ export const currentUserDisplayName = createSelector(
 );
 
 export const currentUserScopes = createSelector(
-    currentUserToken,
+    getCurrentUserToken,
     (userToken) => {
         const { scopes = [] } = userToken || {};
         return scopes;

@@ -19,6 +19,8 @@ import CreateEntityRequest from '../../infrastructure/Requests/CreateEntityReque
 import UpdateEntityRequest from '../../infrastructure/Requests/UpdateEntityRequest';
 import toTitleCase from '../../infrastructure/toTitleCase';
 import DeleteEntityRequest from '../../infrastructure/Requests/DeleteEntityRequest';
+import { RoleModuleState } from '../roles/common';
+import { userRoleMapRequest } from '../roles/requests/userRoles';
 
 // User Map
 class UserMapRequest extends GetEntityMapRequest<void, User, UserModuleState> {
@@ -60,6 +62,7 @@ class CreateUserRequest extends CreateEntityRequest<User, UserModuleState> {
             userMapRequest
         );
     }
+
     public async doWork(user: Partial<User>, { api }: ThunkExtra): Promise<User> {
         let newUser = await api.createUser(user as User);
         return newUser;
@@ -67,6 +70,35 @@ class CreateUserRequest extends CreateEntityRequest<User, UserModuleState> {
 }
 
 export const createUserRequest = new CreateUserRequest();
+
+// Upload User Image
+class UploadUserImageRequest extends CreateEntityRequest<User, UserModuleState> {
+    constructor() {
+        super(
+            {
+                namespace: STATE_KEY,
+                actionName: 'uploadUserImage',
+                toasts: {
+                    success: (s) => (
+                        `${toTitleCase(s.displayName)}'s profile image has been uploaded`
+                    ),
+                    error: (err) => (
+                        `Problem encountered while adding new user profile image: ${err ? err.toString() : 'Unknown Error'}`
+                    )
+                }
+            },
+            {} as RequestAction<any, any, any>
+        );
+    }
+
+    public async doWork(request: { id: IdType, image: any }, { uploadApi }: ThunkExtra): Promise<any> {
+        const { id, image } = request;
+        let newUserImage = await uploadApi.uploadImage(id, image);
+        return newUserImage;
+    }
+}
+
+export const uploadUserImageRequest = new UploadUserImageRequest();
 
 // User Edit
 class UpdateUserRequest extends UpdateEntityRequest<User, UserModuleState> {
@@ -84,6 +116,7 @@ class UpdateUserRequest extends UpdateEntityRequest<User, UserModuleState> {
             userMapRequest
         );
     }
+
     public async doWork(user: Partial<User>, { api }: ThunkExtra): Promise<User> {
         let newUser = await api.updateUser(user);
         return newUser;
@@ -107,6 +140,7 @@ class DeleteUserRequest extends DeleteEntityRequest<User, UserModuleState> {
             userMapRequest
         );
     }
+
     public async doWork(request: IdType, { api }: ThunkExtra): Promise<IdType> {
         await api.deleteUser(request);
         return request;
@@ -120,6 +154,7 @@ class CreateOrUpdateUsersRequest extends CreateOrUpdateEntitiesRequest<User, Use
     createEntity(entity: Partial<User>, { api}: ThunkExtra): Promise<User> {
         return api.createUser(entity);
     }
+
     updateEntity(entity: User, { api }: ThunkExtra): Promise<User> {
         return api.updateUser(entity);
     }
@@ -142,6 +177,64 @@ class CreateOrUpdateUsersRequest extends CreateOrUpdateEntitiesRequest<User, Use
 
 export const createOrUpdateUsersRequest = new CreateOrUpdateUsersRequest();
 
+class ExpireUsersRequest extends RequestAction<IdType[], IdType[], UserModuleState> {
+    constructor() {
+        super(
+            {
+                namespace: STATE_KEY,
+                actionName: 'expireUsers',
+                toasts: {
+                    success: (ids) => `${ids.length} user(s) expired`,
+                    // tslint:disable-next-line:max-line-length
+                    error: (err) => `Problem encountered while expiring users: ${err ? err.toString() : 'Unknown Error'}`
+                }
+            }
+        );
+    }
+
+    public async doWork(request: IdType[], { api }: ThunkExtra): Promise<IdType[]> {
+        await api.expireUsers(request);
+        return request;
+    }
+
+    setRequestData(moduleState: UserModuleState, userIds: IdType[]) {
+        const newMap = { ...userMapRequest.getRequestData(moduleState) };
+        userIds.forEach(id => newMap[id]);
+        return userMapRequest.setRequestData(moduleState, newMap);
+    }
+}
+
+export const expireUsersRequest = new ExpireUsersRequest();
+
+class UnexpireUsersRequest extends RequestAction<IdType[], IdType[], UserModuleState> {
+    constructor() {
+        super(
+            {
+                namespace: STATE_KEY,
+                actionName: 'unexpireUsers',
+                toasts: {
+                    success: (ids) => `${ids.length} user(s) un-expired`,
+                    // tslint:disable-next-line:max-line-length
+                    error: (err) => `Problem encountered while un-expiring users: ${err ? err.toString() : 'Unknown Error'}`
+                }
+            }
+        );
+    }
+
+    public async doWork(request: IdType[], { api }: ThunkExtra): Promise<IdType[]> {
+        await api.unexpireUsers(request);
+        return request;
+    }
+
+    setRequestData(moduleState: UserModuleState, userIds: IdType[]) {
+        const newMap = { ...userMapRequest.getRequestData(moduleState) };
+        userIds.forEach(id => newMap[id]);
+        return userMapRequest.setRequestData(moduleState, newMap);
+    }
+}
+
+export const unexpireUsersRequest = new UnexpireUsersRequest();
+
 class DeleteUsersRequest extends RequestAction<IdType[], IdType[], UserModuleState> {
     constructor() {
         super({
@@ -153,9 +246,16 @@ class DeleteUsersRequest extends RequestAction<IdType[], IdType[], UserModuleSta
             }
         });
     }
+
     public async doWork(request: IdType[], { api }: ThunkExtra): Promise<IdType[]> {
-        await api.deleteRoles(request);
+        await api.deleteUsers(request);
         return request;
+    }
+
+    setRequestData(moduleState: RoleModuleState, userIds: IdType[]) {
+        const newMap = { ...userMapRequest.getRequestData(moduleState) };
+        userIds.forEach(id => delete newMap[id]);
+        return userMapRequest.setRequestData(moduleState, newMap);
     }
 }
 

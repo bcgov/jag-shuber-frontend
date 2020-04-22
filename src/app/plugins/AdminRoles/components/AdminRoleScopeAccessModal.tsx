@@ -55,40 +55,43 @@ export default class AdminRoleScopeAccessModal extends React.Component<AdminRole
                         <>
                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                 <div style={{ display: 'flex', alignItems: 'center' }}>
+                                    {/* TODO: Finish implementing this selector if we have time */}
                                     {/* <Field
                                         name={`component`}
-                                        component={(p) => <SelectorField
-                                            {...p}
-                                            showLabel={true}
-                                            // TODO: Provide this via props or something so we can use custom codes...
-                                            SelectorComponent={
-                                                (sp) =>
-                                                    {parentModel.scopeId} />
-                                                }
-                                        />}
-                                        label={'Choose Scope (Component / API)'}
-                                    >
-                                    </Field> */}
+                                        component={(p) =>
+                                            <SelectorField
+                                                {...p}
+                                                style={{ minWidth: '100%' }}
+                                                showLabel={true}
+                                                // TODO: Provide this via props or something so we can use custom codes...
+                                                SelectorComponent={
+                                                    (sp) =>
+                                                        <FrontendScopeSelector {...sp} value={parentModel.id} />
+                                                    }
+                                            />
+                                        }
+                                        label={'Component / API Scope'}
+                                    /> */}
                                     {/* This wrapper just adds equal spacing to the previous form group */}
                                     {/* TODO: Where are the spacing utils? */}
-                                    <div className="form-group" style={{ marginLeft: '0.5rem' }}>
+                                    {/* <div className="form-group" style={{ marginLeft: '0.5rem' }}>
                                         <Glyphicon glyph="info-sign" />
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                             {parentModelId && (
                             <DataTable
                                 fieldName={`roles.roleFrontendScopePermissionsGrouped['${roleId}']['${parentModel.id}']`}
-                                title={''} // Leave this blank
+                                title={parentModel.name} // Leave this blank
                                 expandable={false}
                                 displayHeaderActions={false}
                                 displayActionsColumn={false}
                                 // No actions necessary
                                 columns={[
-                                    DataTable.StaticTextColumn('Permission', { fieldName: 'displayName', colStyle: { width: '200px' }, displayInfo: false }),
-                                    // DataTable.StaticTextColumn('Code', { fieldName: 'displayName', displayInfo: false }),
-                                    DataTable.StaticTextColumn('Description', { fieldName: 'description', displayInfo: false }),
                                     DataTable.CheckboxColumn('Grant Permission', { fieldName: 'hasPermission', displayInfo: false }), // TODO: Use a checkbox
+                                    // DataTable.StaticTextColumn('Code', { fieldName: 'displayName', displayInfo: false }),
+                                    DataTable.StaticTextColumn('Permission Type', { fieldName: 'displayName', colStyle: { width: '200px' }, displayInfo: false }),
+                                    DataTable.StaticTextColumn('Description', { fieldName: 'description', displayInfo: false }),
                                 ]}
                                 rowComponent={EmptyDetailRow}
                                 modalComponent={EmptyDetailRow}

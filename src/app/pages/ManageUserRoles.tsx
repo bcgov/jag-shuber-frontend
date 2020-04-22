@@ -19,13 +19,21 @@ export interface ManageUserRolesProps extends RouteComponentProps<any>{};
 
 class ManageUserRoles extends React.PureComponent<AdminFormProps & Partial<ManageUserRolesProps>> {
     state = {
-      isEditing: true
+        isEditing: true,
+        displayFilters: true
     };
 
     constructor(props: AdminFormProps) {
         super(props);
 
+        this.toggleFilters = this.toggleFilters.bind(this);
         this.toggleEditMode = this.toggleEditMode.bind(this);
+    }
+
+    toggleFilters() {
+        this.setState({
+            displayFilters: !this.state.displayFilters
+        });
     }
 
     toggleEditMode() {
@@ -36,46 +44,28 @@ class ManageUserRoles extends React.PureComponent<AdminFormProps & Partial<Manag
 
     render() {
         const { history, location } = this.props;
-        const { isEditing } = this.state;
+        const { isEditing, displayFilters = true } = this.state;
 
         return (
             <Page
-                disableLocations={false}
+                disableLocations={true}
                 toolbar={
                     <PageToolbar
                         left={(
                             <div style={{ flex: 1, display: 'flex', position: 'relative', justifyContent: 'center', paddingTop: '10px' }}>
-                                <div className="admin-form-filters-toggle">
-                                    <Glyphicon glyph="chevron-down" />&nbsp;&nbsp;Display User Search Filters
+                                <div className="admin-form-filters-toggle" onClick={this.toggleFilters}>
+                                    {!displayFilters && (
+                                    <><Glyphicon glyph="chevron-right" />&nbsp;&nbsp;Display User Search Filters</>
+                                    )}
+                                    {displayFilters && (
+                                    <><Glyphicon glyph="chevron-down" />&nbsp;&nbsp;Display User Search Filters</>
+                                    )}
                                 </div>
                             </div>
                         )}
                         right={(
                             <div style={{ marginTop: 3, paddingTop: '10px' }}>
-                                {/* <Button
-                                    bsStyle="secondary"
-                                    onClick={(): void => {
-                                        if (history) history.push('/roles/assign');
-                                    }}
-                                >
-                                    <Glyphicon glyph="th-list" /> View as List
-                                </Button>
-                                &nbsp;&nbsp; */}
-                                <Button
-                                    bsStyle="secondary"
-                                    onClick={(): void => {
-                                        if (history) history.push('/users/manage');
-                                    }}
-                                >
-                                    <Glyphicon glyph="th" /> View as Grid
-                                </Button>
-                                &nbsp;&nbsp;
                                 <SheriffProfileCreateModal.ShowButton />
-                                {/* <SheriffProfileModal.ShowButton
-                                    sheriffId={'90b48bc8-5cc2-48f3-8b28-d7121298a449'}
-                                >
-                                    Try This
-                                </SheriffProfileModal.ShowButton>*/}
                                 &nbsp;&nbsp;
                                 <HeaderSaveButton formName={'AdminForm'} />
                                 &nbsp;&nbsp;
@@ -86,14 +76,13 @@ class ManageUserRoles extends React.PureComponent<AdminFormProps & Partial<Manag
                 }
             >
                 <Well
-                    className="fixed-filters-data-table"
+                    className={displayFilters ? `fixed-filters-data-table` : ``}
                     style={{
                         display: 'flex',
                         backgroundColor: 'white',
                         flexDirection: 'column',
                         flex: '1 1',
                         maxWidth: '95%',
-                        minWidth: 800,
                         height: 'max-content',
                         margin: '0 auto',
                         borderRadius: 0
@@ -101,11 +90,12 @@ class ManageUserRoles extends React.PureComponent<AdminFormProps & Partial<Manag
                 >
                     <PageTitle title={({ currentLocationName }: any) => `Assign ${currentLocationName} User Roles`} />
                     <AdminForm
-                        key={'admin-roles-grid'}
+                        key={'admin-user-roles-grid'}
                         plugins={[
                             new AdminAssignUserRolesPlugin(),
                         ]}
                         isEditing={isEditing}
+                        displayFilters={displayFilters}
                     />
                 </Well>
             </Page>

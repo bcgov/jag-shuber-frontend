@@ -4,163 +4,127 @@ import { Button, Glyphicon, Table, Well } from 'react-bootstrap';
 import { reduxForm } from 'redux-form';
 
 import Page, { PageToolbar } from '../components/Page/Page';
-
+import AdminForm from '../containers/AdminForm';
 import PageTitle from '../containers/PageTitle';
+
+import { AdminFormProps } from '../components/AdminForm/AdminForm';
+
+// Import plugins
+import AdminUsersPlugin from '../plugins/AdminUsers/AdminUsers';
 
 import SheriffListComposable from '../containers/SheriffListComposable';
 import SheriffProfileCreateModal from '../containers/SheriffProfileCreateModal';
-
-// Used for commented out filters, don't delete these we will need them later
-// import DataTableFilterRow from '../components/Table/DataTableFilterRow';
-// import DataTable from '../components/Table/DataTable';
-// import GenderCodeDisplay from '../containers/GenderCodeDisplay';
-// import LocationDisplay from '../plugins/AdminRoles/containers/LocationDisplay';
-// import LocationSelector from '../containers/LocationSelector';
-// import SheriffRankDisplay from '../plugins/AdminRoles/containers/SheriffRankDisplay';
-// import SheriffRankCodeSelector from '../containers/SheriffRankCodeSelector';
-// import GenderSelector from '../containers/GenderSelector';
-
-// import { User } from '../api';
+import HeaderSaveButton from '../plugins/AdminRoles/containers/HeaderSaveButton';
+import HeaderCancelButton from '../plugins/AdminRoles/containers/HeaderCancelButton';
 
 export interface ManageUsersProps extends RouteComponentProps<any>{}
 
-class ManageUsers extends React.PureComponent<Partial<ManageUsersProps>> {
+const DISPLAY_CARDS = 'CARDS';
+const DISPLAY_LIST = 'LIST';
+
+class ManageUsers extends React.PureComponent<AdminFormProps & Partial<ManageUsersProps>> {
+    state = {
+        isEditing: true,
+        displayMode: DISPLAY_LIST,
+        displayFilters: true
+    };
+
+    constructor(props: AdminFormProps) {
+        super(props);
+
+        this.toggleDisplayMode = this.toggleDisplayMode.bind(this);
+        this.toggleFilters = this.toggleFilters.bind(this);
+        this.toggleEditMode = this.toggleEditMode.bind(this);
+    }
+
+    toggleDisplayMode() {
+        const { displayMode } = this.state;
+        let mode = displayMode === DISPLAY_LIST ? DISPLAY_CARDS : displayMode === DISPLAY_CARDS ? DISPLAY_LIST : null;
+        this.setState({
+            displayMode: mode
+        });
+    }
+
+    toggleFilters() {
+        this.setState({
+            displayFilters: !this.state.displayFilters
+        });
+    }
+
+    toggleEditMode() {
+        this.setState({
+            isEditing: !this.state.isEditing
+        });
+    }
+
     render() {
         const { history, location } = this.props;
+        const { isEditing, displayMode, displayFilters = true } = this.state;
 
         return (
             <Page
-                disableLocations={false}
+                disableLocations={true}
                 toolbar={
                     <PageToolbar
                         left={(
                             <div style={{ flex: 1, display: 'flex', position: 'relative', justifyContent: 'center', paddingTop: '10px' }}>
-                                <div className="admin-form-filters-toggle">
-                                    <Glyphicon glyph="chevron-right" />&nbsp;&nbsp;Display User Search Filters
+                                <div className="admin-form-filters-toggle" onClick={this.toggleFilters}>
+                                    {!displayFilters && (
+                                    <><Glyphicon glyph="chevron-right" />&nbsp;&nbsp;Display User Search Filters</>
+                                    )}
+                                    {displayFilters && (
+                                    <><Glyphicon glyph="chevron-down" />&nbsp;&nbsp;Display User Search Filters</>
+                                    )}
                                 </div>
                             </div>
                         )}
                         right={(
                             <div style={{ marginTop: 3, paddingTop: '10px' }}>
                                 &nbsp;
-                                <Button
-                                    bsStyle="secondary"
-                                    onClick={(): void => {
-                                        if (history) history.push('/roles/assign');
-                                    }}
-                                >
-                                    <Glyphicon glyph="th-list" /> View as List
-                                </Button>
-                                &nbsp;&nbsp;
                                 {/* <Button
                                     bsStyle="secondary"
-                                    onClick={(): void => {
-                                        if (history) history.push('/users/manage');
-                                    }}
+                                    onClick={this.toggleDisplayMode}
                                 >
-                                    <Glyphicon glyph="th" /> View as Grid
-                                </Button>
-                                &nbsp;&nbsp; */}
+                                    <Glyphicon glyph="th-list" /> View as {displayMode === DISPLAY_LIST ? 'List' : displayMode === DISPLAY_CARDS ? 'Grid' : ''}
+                                </Button> */}
+                                &nbsp;&nbsp;
                                 <SheriffProfileCreateModal.ShowButton />
                                 &nbsp;&nbsp;
-                                {/* <SheriffProfileModal.ShowButton
-                                    sheriffId={'90b48bc8-5cc2-48f3-8b28-d7121298a449'}
-                                >
-                                    Try This
-                                </SheriffProfileModal.ShowButton> */}
+                                <HeaderSaveButton formName={'AdminForm'} />
+                                &nbsp;&nbsp;
+                                <HeaderCancelButton formName={'AdminForm'} />
                             </div>
                         )}
                     />
                 }
             >
-                {/* TODO: Note! This isn't a data table, just re-using some stuff that we'll refactor later... */}
-                {/* <div className="fixed-filters-data-table">
-                    <div className="data-table">
-                        <div className="data-table-filter-row">
-                            <Table striped={true}>
-                                <thead>
-                                    <DataTableFilterRow<Partial<User>>
-                                        fieldName={'userFilters'}
-                                        columns={[
-                                            DataTable.StaticTextColumn('Full Name', {
-                                                fieldName: 'displayName',
-                                                colStyle: { width: '300px' },
-                                                displayInfo: false,
-                                                filterable: true,
-                                                // filterColumn: onFilterDisplayName
-                                            }),
-                                            // DataTable.StaticTextColumn('Last Name', { fieldName: 'lastName', colStyle: { width: '175px' }, displayInfo: false, filterable: true }),
-                                            // TODO: We temporarily disabled filtering on badgeNo, it's tied to the sheriff, not sure how to handle that case yet...
-                                            DataTable.StaticTextColumn('Badge No.', {
-                                                fieldName: 'sheriff.badgeNo',
-                                                colStyle: { width: '175px' },
-                                                displayInfo: false,
-                                                filterable: true,
-                                                // filterColumn: onFilterBadgeNo
-                                            }),
-                                            DataTable.MappedTextColumn('Rank', {
-                                                fieldName: 'sheriff.rankCode',
-                                                colStyle: { width: '175px' },
-                                                selectorComponent: SheriffRankDisplay,
-                                                filterSelectorComponent: SheriffRankCodeSelector,
-                                                displayInfo: false,
-                                                filterable: true,
-                                                // filterColumn: onFilterRank
-                                            }),
-                                            DataTable.MappedTextColumn('Gender', {
-                                                fieldName: 'sheriff.genderCode',
-                                                colStyle: { width: '175px' },
-                                                selectorComponent: GenderCodeDisplay,
-                                                filterSelectorComponent: GenderSelector,
-                                                displayInfo: false,
-                                                filterable: true,
-                                                // filterColumn: onFilterGender
-                                            }),
-                                            DataTable.MappedTextColumn('Home Location', {
-                                                fieldName: 'sheriff.homeLocationId',
-                                                colStyle: { width: '225px' },
-                                                selectorComponent: LocationDisplay,
-                                                filterSelectorComponent: LocationSelector,
-                                                displayInfo: false,
-                                                filterable: true,
-                                                // filterColumn: onFilterHomeLocation
-                                            }),
-                                            DataTable.MappedTextColumn('Current Location', {
-                                                fieldName: 'sheriff.currentLocationId',
-                                                colStyle: { width: '250px' },
-                                                selectorComponent: LocationDisplay,
-                                                filterSelectorComponent: LocationSelector,
-                                                displayInfo: false,
-                                                filterable: true,
-                                                // filterColumn: onFilterCurrentLocation
-                                            }),
-                                            // DataTable.DateColumn('Date Created', 'createdDtm'),
-                                            // DataTable.SelectorFieldColumn('Status', { displayInfo: true }), // No point really in setting the status here
-
-                                        ]}
-                                        filterable={true}
-                                        expandable={true}
-                                    />
-                                </thead>
-                            </Table>
-                        </div>
-                    </div>
-                </div> */}
                 <Well
+                    className={displayFilters ? `fixed-filters-data-table` : ``}
                     style={{
                         display: 'flex',
                         backgroundColor: 'white',
                         flexDirection: 'column',
                         flex: '1 1',
                         maxWidth: '100%',
-                        minWidth: 800,
                         height: 'max-content',
                         margin: '0 auto',
                         borderRadius: 0
                     }}
                 >
                     <PageTitle title={({ currentLocationName }: any) => `Manage ${currentLocationName} Users`} />
+                    {displayMode === DISPLAY_LIST && (
+                    <AdminForm
+                        key={'admin-users-grid'}
+                        plugins={[
+                            new AdminUsersPlugin(),
+                        ]}
+                        isEditing={isEditing}
+                        displayFilters={displayFilters}
+                    />
+                    )}
+                    {displayMode === DISPLAY_CARDS && (
                     <SheriffListComposable />
+                    )}
                 </Well>
             </Page>
         );

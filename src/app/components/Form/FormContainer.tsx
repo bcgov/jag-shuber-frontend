@@ -4,6 +4,7 @@ import { RootState } from '../../store';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { deletedDiff, detailedDiff } from 'deep-object-diff';
+import { DetailComponentProps } from '../Table/DataTable';
 
 export interface FormContainerProps<T = any> {
     // TODO: We aren't really using objectId anymore, we should remove it...
@@ -11,6 +12,10 @@ export interface FormContainerProps<T = any> {
     //  forms implementation...
     objectId?: IdType;
     data?: T;
+    pluginAuth?: any;
+    pluginPermissions?: any;
+    getPluginPermissions?: Function;
+    pluginFilters?: any;
     setPluginFilters?: Function;
     // TODO: It would be nice if we could somehow pass in showSheriffProfileModal some other way that was more declarative, and from the plugin...
     //  This is easy and works for now though.
@@ -19,7 +24,12 @@ export interface FormContainerProps<T = any> {
     // TODO: Not my fav having location coupled here, but it gets the job done
     currentLocation?: string;
     isLocationSet?: boolean;
+    displayFilters?: boolean;
 }
+
+type AuthPermissions = string[];
+type PluginPermissions = { [key: string]: string[] };
+
 export interface FormContainer<T = any> {
     /**
      * A unique plugin name, no spaces please eg. /[A-Za-z0-9_-]+/
@@ -33,6 +43,8 @@ export interface FormContainer<T = any> {
      * @memberof Form
      */
     reduxFormKey: string;
+    useAuth?: boolean;
+    pluginPermissions: any; // TODO: We can type this better
     renderDisplay(props: FormContainerProps<T>): React.ReactNode;
     renderFormFields(props: FormContainerProps<T>): React.ReactNode;
     hasErrors(errors: any): boolean;
@@ -58,6 +70,28 @@ export abstract class FormContainerBase<T = any> implements FormContainer<T> {
     abstract reduxFormKey: string;
 
     abstract get title(): string;
+
+    public useAuth?: boolean;
+
+    protected _pluginPermissions?: string[];
+
+    public get pluginPermissions(): string[] | undefined {
+        return this._pluginPermissions;
+    }
+
+    public set pluginPermissions(config: string[] | undefined) {
+        this._pluginPermissions = config;
+    }
+
+    protected _pluginAuth?: AuthPermissions;
+
+    public get pluginAuth(): AuthPermissions | undefined {
+        return this._pluginAuth;
+    }
+
+    public set pluginAuth(config: AuthPermissions | undefined) {
+        this._pluginAuth = config;
+    }
 
     protected _dispatch?: Dispatch<any>;
 
@@ -95,6 +129,11 @@ export abstract class FormContainerBase<T = any> implements FormContainer<T> {
 
     DisplayComponent?: React.ReactType<FormContainerProps<T>>;
     FormComponent?: React.ReactType<FormContainerProps<T>>;
+    DetailComponent: React.SFC<any>;
+
+    protected getPluginPermissions(): string[] {
+        return this.pluginPermissions || [];
+    }
 
     protected getDataFromFormValues(formValues: any, initialValues?: any) {
         if (!initialValues) return formValues[this.reduxFormKey];
@@ -107,7 +146,7 @@ export abstract class FormContainerBase<T = any> implements FormContainer<T> {
         const formKeys = Object.keys(this.formFieldNames);
         // detailedDiff will return a diff object with added, deleted, and updated keys
         // https://www.npmjs.com/package/deep-object-diff
-        const diffKeys = ['added', 'deleted', 'updated'];
+        const diffKeys = ['added', 'updated'];
         formKeys.forEach(key => {
             let isDirty = false;
             const diff = detailedDiff(initial[key], values[key]);
@@ -122,6 +161,10 @@ export abstract class FormContainerBase<T = any> implements FormContainer<T> {
     }
 
     protected mapDeletesFromFormValues(map: {}) {
+        return {};
+    }
+
+    protected mapExpiredFromFormValues(map: {}, isExpired?: boolean) {
         return {};
     }
 
@@ -157,6 +200,35 @@ export abstract class FormContainerBase<T = any> implements FormContainer<T> {
         });
 
         return this.mapDeletesFromFormValues(map);
+    }
+
+    // TODO: Use a const or something to set the expired key, or make it configurable
+    protected getDataToExpireFromFormValues(formValues: any, initialValues?: any, isExpired?: boolean) {
+        isExpired = isExpired || false;
+        if (!initialValues) return formValues[this.reduxFormKey];
+
+        const initial = initialValues[this.reduxFormKey];
+        const values = formValues[this.reduxFormKey];
+
+        let map: any = {};
+
+        // TODO: Use value, instead of key - redux-form is bound using the value
+        // We can check the path using containsPropertyPath which is on this class
+        const formKeys = Object.keys(this.formFieldNames);
+        // detailedDiff will return a diff object with added, deleted, and updated keys
+        // https://www.npmjs.com/package/deep-object-diff
+        const diffKeys = ['updated'];
+        formKeys.forEach(key => {
+            let isDirty = false;
+            const diff = detailedDiff(initial[key], values[key]);
+            diffKeys.forEach(diffKey => {
+                if (Object.keys(diff[diffKey]).length > 0) isDirty = true;
+            });
+
+            if (isDirty) map[key] = { initialValues: initial[key], values: values[key] };
+        });
+
+        return this.mapExpiredFromFormValues(map, isExpired);
     }
 
     containsPropertyPath(errors: Object = {}, propertyPath: string = '') {
@@ -195,12 +267,18 @@ export abstract class FormContainerBase<T = any> implements FormContainer<T> {
 
     renderFormFields(props: FormContainerProps<T>): React.ReactNode {
         const { FormComponent } = this;
+        const getPluginPermissions = this.getPluginPermissions.bind(this);
         return (
-            FormComponent && <FormComponent key={this.name} {...props} />
+            FormComponent && <FormComponent key={this.name} {...props} getPluginPermissions={getPluginPermissions} />
         );
     }
 
-    // async onSubmit(objectId: IdType | undefined, formValues: any, dispatch: Dispatch<any>): Promise<any | void> {
+    renderDetail(): React.SFC {
+        const { DetailComponent } = this;
+        const getPluginPermissions = this.getPluginPermissions.bind(this);
+        return (detailProps: any) => (<DetailComponent {...detailProps}  getPluginPermissions={getPluginPermissions} />);
+    }
+
     async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any | void> {
         // does nothing
     }

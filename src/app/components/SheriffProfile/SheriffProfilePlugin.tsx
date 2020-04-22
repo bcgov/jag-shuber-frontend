@@ -7,7 +7,14 @@ import { FormErrors } from 'redux-form';
 export interface SheriffProfilePluginProps<T = any> {
     sheriffId?: IdType;
     data?: T;
+    pluginAuth?: any;
+    pluginPermissions?: any;
+    getPluginPermissions?: Function;
 }
+
+type AuthPermissions = string[];
+type PluginPermissions = { [key: string]: string[] };
+
 export interface SheriffProfilePlugin<T = any> {
     /**
      * This property is used for namespacing the form data,
@@ -17,10 +24,18 @@ export interface SheriffProfilePlugin<T = any> {
      * @memberof AdminFormPlugin
      */
     name: string;
+    /**
+     * The form key, used by redux-form, to bind the form instance to redux data slices
+     * @type {string}
+     * @memberof Form
+     */
+    reduxFormKey: string;
+    useAuth?: boolean;
+    pluginPermissions: any; // TODO: We can type this better
     renderDisplay(props: SheriffProfilePluginProps<T>): React.ReactNode;
     renderFormFields(props: SheriffProfilePluginProps<T>): React.ReactNode;
     hasErrors(errors: any): boolean;
-    onSubmit(sheriffid: IdType | undefined, formValues: any, dispatch: Dispatch<any>): Promise<any | void>;
+    onSubmit(sheriffId: IdType | undefined, formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any | void>;
     fetchData(sheriffId: IdType | undefined, dispatch: Dispatch<any>): void;
     getData(sheriffId: IdType | undefined, state: RootState): T | undefined;
     validate(values: T): FormErrors<T> | undefined;
@@ -35,6 +50,34 @@ export abstract class SheriffProfilePluginBase<T = any> implements SheriffProfil
      * @memberof AdminFormPlugin
      */
     abstract name: string;
+    /**
+     * The form key, used by redux-form, to bind the form instance to redux data slices
+     * @type {string}
+     * @memberof Form
+     */
+    abstract reduxFormKey: string;
+
+    public useAuth?: boolean;
+
+    protected _pluginPermissions?: string[];
+
+    public get pluginPermissions(): string[] | undefined {
+        return this._pluginPermissions;
+    }
+
+    public set pluginPermissions(config: string[] | undefined) {
+        this._pluginPermissions = config;
+    }
+
+    protected _pluginAuth?: AuthPermissions;
+
+    public get pluginAuth(): AuthPermissions | undefined {
+        return this._pluginAuth;
+    }
+
+    public set pluginAuth(config: AuthPermissions | undefined) {
+        this._pluginAuth = config;
+    }
 
     /**
      * The formFieldNames are used to enhance to experience
@@ -51,8 +94,13 @@ export abstract class SheriffProfilePluginBase<T = any> implements SheriffProfil
     abstract formFieldNames: { [key: string]: string };
     DisplayComponent?: React.ReactType<SheriffProfilePluginProps<T>>;
     FormComponent?: React.ReactType<SheriffProfilePluginProps<T>>;
+
+    protected getPluginPermissions(): string[] {
+        return this.pluginPermissions || [];
+    }
+
     protected getDataFromFormValues(formValues: any): T {
-        return formValues[this.name] as T;
+        return formValues[this.reduxFormKey] as T;
     }
 
     containsPropertyPath(errors: Object = {}, propertyPath: string = '') {
@@ -91,12 +139,13 @@ export abstract class SheriffProfilePluginBase<T = any> implements SheriffProfil
 
     renderFormFields(props: SheriffProfilePluginProps<T>): React.ReactNode {
         const { FormComponent } = this;
+        const getPluginPermissions = this.getPluginPermissions.bind(this);
         return (
-            FormComponent && <FormComponent key={this.name} {...props} />
+            FormComponent && <FormComponent key={this.name} {...props} getPluginPermissions={getPluginPermissions} />
         );
     }
 
-    async onSubmit(sheriffid: IdType | undefined, formValues: any, dispatch: Dispatch<any>): Promise<any | void> {
+    async onSubmit(sheriffid: IdType | undefined, formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any | void> {
         // does nothing
     }
 
@@ -122,7 +171,6 @@ export abstract class SheriffProfilePluginBase<T = any> implements SheriffProfil
         return undefined;
     }
 }
-
 
 export abstract class SheriffProfileSectionPlugin<T = any> extends SheriffProfilePluginBase<T> {
     abstract get title(): string;

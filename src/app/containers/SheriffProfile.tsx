@@ -19,7 +19,7 @@ import { toast } from '../components/ToastManager/ToastManager';
 import { RequestActionConfig } from '../infrastructure/Requests/RequestActionBase';
 import { default as FormSubmitButton, SubmitButtonProps } from '../components/FormElements/SubmitButton';
 
-import { currentLocation } from '../modules/user/selectors';
+import { currentLocation, currentUserRoleScopes } from '../modules/user/selectors';
 import toTitleCase from '../infrastructure/toTitleCase';
 
 import { RootState } from '../store';
@@ -52,6 +52,7 @@ import SheriffProfilePluginRoles from './SheriffProfilePluginRoles/SheriffProfil
 async function submitPlugins(
     sheriffId: string,
     values: any,
+    initialValues: any,
     dispatch: Dispatch<any>,
     plugins: SheriffProfilePlugin<any>[] = []
 ) {
@@ -60,7 +61,7 @@ async function submitPlugins(
         const pluginErrors: FormErrors = {};
         await Promise.all(plugins.map(async p => {
             try {
-                await p.onSubmit(sheriffId, values, dispatch);
+                await p.onSubmit(sheriffId, values, initialValues, dispatch);
             } catch (e) {
                 pluginErrors[p.name] = e;
             }
@@ -80,6 +81,8 @@ async function submitPlugins(
                     Object.keys(restErrors).forEach(fieldKey => {
                         formErrors[fieldKey] = restErrors[fieldKey];
                     });
+                } else {
+                    console.warn('Caught SheriffProfilePlugin error', err);
                 }
             });
             dispatch(setSheriffProfilePluginSubmitErrors(pluginErrorMessages));
@@ -123,16 +126,19 @@ const formConfig: ConfigProps<any, SheriffProfileProps> = {
     enableReinitialize: true,
     validate: (values: any, { plugins = [] }) => {
         const validationErrors = plugins.reduce((errors, plugin) => {
-            const pluginValues = values[plugin.name];
+            const pluginValues = values[plugin.reduxFormKey];
             const pluginErrors = plugin.validate(pluginValues);
             if (pluginErrors) {
-                errors[plugin.name] = {...pluginErrors};
+                errors[plugin.reduxFormKey] = {...pluginErrors};
             }
+            // console.log('dump sheriff profile form errors');
+            // console.log(errors);
             return errors;
         }, {} as FormErrors);
+
         return {...validationErrors};
     },
-    onSubmit: async (values: any, dispatch, { sheriffId, plugins = [] }: SheriffProfileProps) => {
+    onSubmit: async (values: any, dispatch, { sheriffId, plugins = [], initialValues }: SheriffProfileProps) => {
         const { sheriff }: { sheriff: Partial<Sheriff> } = values;
         let sheriffEntityId: string;
         const profileUpdateConfig: RequestActionConfig<Sheriff> = {
@@ -152,7 +158,7 @@ const formConfig: ConfigProps<any, SheriffProfileProps> = {
         }
 
         try {
-            await submitPlugins(sheriffEntityId, values, dispatch, plugins);
+            await submitPlugins(sheriffEntityId, values, initialValues, dispatch, plugins);
         } catch (e) {
             toast.warn('An issue occured with one of the sections');
             throw e;
@@ -229,13 +235,33 @@ export default class extends
     connect<SheriffProfileContainerStateProps, SheriffProfileContainerDispatchProps, SheriffProfileProps, RootState>(
         (state, { sheriffId, plugins = [] }) => {
             let initialValues: any = {};
+
+            // Filter out any plugins that the user doesn't have permission to access
+            // TODO: A cleaner way to get the data off the token?
+            const { appScopes = {}, authScopes } = currentUserRoleScopes(state);
+            // if (appScopes) debugger;
+
+            // console.log(appScopes);
+            // console.log(authScopes);
+
+            // Filter out plugins that don't have scopes assigned
+            const pluginsToRender = (plugins)
+                ? plugins
+                    .filter((plugin: any) => {
+                        return plugin.useAuth !== false
+                            ? Object.keys(appScopes).indexOf(plugin.name) > -1
+                            : true;
+                    })
+                    .filter(s => s !== undefined)
+                : [];
+
             if (sheriffId) {
-                initialValues = plugins
+                initialValues = pluginsToRender
                     .map(p => {
                         const data = p.getData(sheriffId, state);
                         if (data !== undefined) {
                             const pluginState = {};
-                            pluginState[p.name] = data;
+                            pluginState[p.reduxFormKey] = data;
                             return pluginState;
                         }
                         return undefined;
@@ -259,7 +285,10 @@ export default class extends
             }
 
             return {
+                plugins: pluginsToRender,
                 initialValues,
+                pluginPermissions: { ...appScopes },
+                pluginAuth: authScopes,
                 pluginState: { ...initialValues },
                 selectedSection: selectedSheriffProfileSection(state),
                 ...collectPluginErrors(state, formConfig.form, plugins)
@@ -271,7 +300,6 @@ export default class extends
                     dispatch(selectSheriffProfileSection());
                     dispatch(setSheriffProfilePluginSubmitErrors());
                     plugins.forEach(p => {
-                        p.fetchData(sheriffId, dispatch);
                         p.fetchData(sheriffId, dispatch);
                     });
                 },

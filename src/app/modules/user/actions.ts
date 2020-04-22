@@ -12,7 +12,7 @@ import {
   getRuns
 } from '../assignments/actions';
 import { getShifts } from '../shifts/actions';
-import { userTokenRequest } from './requests';
+import { userTokenRequest, currentUserRequest, logoutRequest } from './requests';
 import { decodeJwt } from 'jag-shuber-api';
 
 // The following gives us type-safe redux actions
@@ -84,4 +84,7 @@ export const updateUserToken: ThunkAction<string> = (token?: string) => async (d
   userTokenRequest.dispatchSuccess(dispatch, payload);
 };
 
-export const requestUserToken = userTokenRequest.actionCreator;
+export const getUserToken = userTokenRequest.actionCreator;
+export const getCurrentUser = currentUserRequest.actionCreator;
+
+export const doLogout = logoutRequest.actionCreator;

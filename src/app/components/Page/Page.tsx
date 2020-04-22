@@ -26,7 +26,6 @@ export class PageToolbar extends React.PureComponent<PageToolbarProps>{
                 style={{
                     flex: 1,
                     maxWidth: '93%',
-                    minWidth: 800,
                     margin: '0 auto',
                     height: 56,
                     borderRadius: 0,
@@ -87,6 +86,11 @@ export class Page extends React.PureComponent<PageProps & PageStateProps & PageD
         }
     }
 
+    shouldComponentUpdate(nextProps: Readonly<PageProps & PageStateProps & PageDispatchProps>, nextState: Readonly<{}>, nextContext: any): boolean {
+        // console.log(nextProps);
+        return false; // This prevents infinite loop on props change
+    }
+
     render() {
         const {
             style = {},
@@ -104,12 +108,12 @@ export class Page extends React.PureComponent<PageProps & PageStateProps & PageD
             currentLocation !== '');
 
         const shouldRenderChildren = ((disableLocations !== false) || (!disableLocations && isCurrentLocationSet));
-        console.log('should we render the page contents?');
-        console.log('current location is: ' + currentLocation);
-        console.log(shouldRenderChildren);
+        // console.log('should we render the page contents?');
+        // console.log('current location is: ' + currentLocation);
+        // console.log(shouldRenderChildren);
 
         return (
-            <div className="pageContainer" style={style}>
+            <div className="pageContainer" style={style} key={currentLocation}>
                 {toolbar && (
                     <div className="page-toolbar" style={toolbarStyle}>
                         {toolbar}

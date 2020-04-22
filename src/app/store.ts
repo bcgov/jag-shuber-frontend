@@ -18,12 +18,20 @@ import { default as scheduleReducer, ScheduleState } from './modules/schedule/re
 import { default as assignmentScheduleReducer, AssignmentScheduleState } from './modules/assignmentSchedule/reducer';
 
 import { default as api, API } from './api';
-import Client from './api/Client';
+import { default as uploadApi, UploadAPI } from './api/UploadApi';
 
-import { requestUserToken, updateUserToken } from './modules/user/actions';
+import Client from './api/Client';
+import UploadClient from './api/UploadClient';
+
+// TODO: Resolve URL not being used yet
+const uploadClient = new UploadClient(resolveAppUrl('/api/v1'));
+
+import { getUserToken, updateUserToken } from './modules/user/actions';
+import resolveAppUrl from './infrastructure/resolveAppUrl';
 
 export interface ThunkExtra {
     api: API;
+    uploadApi: UploadAPI;
 }
 
 export type Thunk<TResponse = void> = _ThunkAction<Promise<TResponse>, RootState, ThunkExtra>;
@@ -69,7 +77,7 @@ let thisWindow: any = window;
 const composeEnhancers = thisWindow.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const enhancers = composeEnhancers(
     applyMiddleware(
-        thunk.withExtraArgument({ api })
+        thunk.withExtraArgument({ api, uploadApi: uploadClient })
     )
 );
 
@@ -80,6 +88,6 @@ const store = createStore(rootReducer, enhancers);
     store.dispatch(updateUserToken(t));
 });
 // Request the initial token
-store.dispatch(requestUserToken());
+store.dispatch(getUserToken());
 
 export default store;

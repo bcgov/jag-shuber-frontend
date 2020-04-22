@@ -96,7 +96,7 @@ export default class Client implements API {
 
     constructor(baseUrl: string = '/') {
         this._client = new ShuberApiClient(baseUrl);
-        this._client.requestInterceptor = (req) => {
+        this._client.requestInterceptor = (req: any) => {
             return req;
         };
     }
@@ -485,6 +485,30 @@ export default class Client implements API {
         return Promise.resolve();
     }
 
+    async expireLeaveSubCode(code: IdType): Promise<void> {
+        return await this._client.ExpireLeaveSubCode(code);
+    }
+
+    async expireLeaveSubCodes(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.ExpireLeaveSubCode(id));
+        }
+
+        return Promise.resolve();
+    }
+
+    async unexpireLeaveSubCode(code: IdType): Promise<void> {
+        return await this._client.UnexpireLeaveSubCode(code);
+    }
+
+    async unexpireLeaveSubCodes(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.UnexpireLeaveSubCode(id));
+        }
+
+        return Promise.resolve();
+    }
+
     async getLeaveCancelCodes(): Promise<LeaveCancelCode[]> {
         return await this._client.GetLeaveCancelReasonCodes() as LeaveCancelCode[];
     }
@@ -533,6 +557,38 @@ export default class Client implements API {
         return Promise.resolve();
     }
 
+    async expireCourtroom(courtroomId: string): Promise<void> {
+        return await this._client.ExpireCourtroom(courtroomId);
+    }
+
+    /**
+     * TODO: We need a proper endpoint to deal with this this loop isn't gonna do it...
+     * @param ids
+     */
+    async expireCourtrooms(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.ExpireCourtroom(id));
+        }
+
+        return Promise.resolve();
+    }
+
+    async unexpireCourtroom(courtroomId: string): Promise<void> {
+        return await this._client.UnexpireCourtroom(courtroomId);
+    }
+
+    /**
+     * TODO: We need a proper endpoint to deal with this this loop isn't gonna do it...
+     * @param ids
+     */
+    async unexpireCourtrooms(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.UnexpireCourtroom(id));
+        }
+
+        return Promise.resolve();
+    }
+
     async getEscortRuns(): Promise<EscortRun[]> {
         const currentLocation = (this.currentLocation && this.currentLocation !== 'ALL_LOCATIONS')
             ? this.currentLocation
@@ -565,6 +621,38 @@ export default class Client implements API {
     async deleteEscortRuns(ids: IdType[]): Promise<void> {
         if (ids.length > 0) {
              ids.forEach(id => this._client.DeleteEscortRun(id));
+        }
+
+        return Promise.resolve();
+    }
+
+    async expireEscortRun(runId: string): Promise<void> {
+        return await this._client.ExpireEscortRun(runId);
+    }
+
+    /**
+     * TODO: We need a proper endpoint to deal with this this loop isn't gonna do it...
+     * @param ids
+     */
+    async expireEscortRuns(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.ExpireEscortRun(id));
+        }
+
+        return Promise.resolve();
+    }
+
+    async unexpireEscortRun(runId: string): Promise<void> {
+        return await this._client.UnexpireEscortRun(runId);
+    }
+
+    /**
+     * TODO: We need a proper endpoint to deal with this this loop isn't gonna do it...
+     * @param ids
+     */
+    async unexpireEscortRuns(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.UnexpireEscortRun(id));
         }
 
         return Promise.resolve();
@@ -612,6 +700,40 @@ export default class Client implements API {
         return Promise.resolve();
     }
 
+    async expireCourtRole(courtRoleId: string): Promise<void> {
+        return await this._client.ExpireCourtRoleCode(courtRoleId);
+        // return Promise.resolve();
+    }
+
+    /**
+     * TODO: We need a proper endpoint to deal with this this loop isn't gonna do it...
+     * @param ids
+     */
+    async expireCourtRoles(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.ExpireCourtRoleCode(id));
+        }
+
+        return Promise.resolve();
+    }
+
+    async unexpireCourtRole(courtRoleId: string): Promise<void> {
+        return await this._client.UnexpireCourtRoleCode(courtRoleId);
+        // return Promise.resolve();
+    }
+
+    /**
+     * TODO: We need a proper endpoint to deal with this this loop isn't gonna do it...
+     * @param ids
+     */
+    async unexpireCourtRoles(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.UnexpireCourtRoleCode(id));
+        }
+
+        return Promise.resolve();
+    }
+
     async getJailRoles(): Promise<JailRoleCode[]> {
         // TODO: Not sure if this is the best solution, but it gets things working they way we want to for now...
         //  ALL_LOCATIONS key is added to selectorValues in LocationSelector.
@@ -649,6 +771,40 @@ export default class Client implements API {
     async deleteJailRoles(ids: IdType[]): Promise<void> {
         if (ids.length > 0) {
              ids.forEach(id => this._client.DeleteJailRoleCode(id));
+        }
+
+        return Promise.resolve();
+    }
+
+    async expireJailRole(jailRoleId: string): Promise<void> {
+        return await this._client.ExpireJailRoleCode(jailRoleId);
+        // return Promise.resolve();
+    }
+
+    /**
+     * TODO: We need a proper endpoint to deal with this this loop isn't gonna do it...
+     * @param ids
+     */
+    async expireJailRoles(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.ExpireJailRoleCode(id));
+        }
+
+        return Promise.resolve();
+    }
+
+    async unexpireJailRole(jailRoleId: string): Promise<void> {
+        return await this._client.UnexpireJailRoleCode(jailRoleId);
+        // return Promise.resolve();
+    }
+
+    /**
+     * TODO: We need a proper endpoint to deal with this this loop isn't gonna do it...
+     * @param ids
+     */
+    async unexpireJailRoles(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.UnexpireJailRoleCode(id));
         }
 
         return Promise.resolve();
@@ -697,6 +853,40 @@ export default class Client implements API {
         return Promise.resolve();
     }
 
+    async expireAlternateAssignmentType(assignmentTypeId: string): Promise<void> {
+        return await this._client.ExpireOtherAssignCode(assignmentTypeId);
+        // return Promise.resolve();
+    }
+
+    /**
+     * TODO: We need a proper endpoint to deal with this this loop isn't gonna do it...
+     * @param ids
+     */
+    async expireAlternateAssignmentTypes(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.ExpireOtherAssignCode(id));
+        }
+
+        return Promise.resolve();
+    }
+
+    async unexpireAlternateAssignmentType(assignmentTypeId: string): Promise<void> {
+        return await this._client.UnexpireOtherAssignCode(assignmentTypeId);
+        // return Promise.resolve();
+    }
+
+    /**
+     * TODO: We need a proper endpoint to deal with this this loop isn't gonna do it...
+     * @param ids
+     */
+    async unexpireAlternateAssignmentTypes(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.UnexpireOtherAssignCode(id));
+        }
+
+        return Promise.resolve();
+    }
+
     async getSheriffRankCodes(): Promise<SheriffRank[]> {
         const list = await this._client.GetSheriffRankCodes();
         return list as SheriffRank[];
@@ -719,15 +909,29 @@ export default class Client implements API {
         return list as User[];
     }
 
-    async getUser(id: IdType): Promise<User> {
-        if (!id) {
+    async getCurrentUser(): Promise<User> {
+        return await this._client.GetCurrentUser() as User;
+    }
+
+    async getUser(userId: IdType): Promise<User> {
+        if (!userId) {
             throw 'No Id to request';
         }
-        return await this._client.GetUserById(id) as User;
+        return await this._client.GetUserById(userId) as User;
     }
 
     async createUser(user: Partial<User>): Promise<User> {
         return await this._client.CreateUser(user) as User;
+    }
+
+    async uploadUserImage(userId: IdType, image: Partial<any>): Promise<void> {
+        if (!userId) {
+            throw 'No Id to request';
+        }
+
+        console.log('dump user image upload request, we still need to post the payload');
+        console.log(image);
+        return await this._client.UploadUserImage(userId);
     }
 
     async updateUser(user: Partial<User>): Promise<User> {
@@ -745,6 +949,30 @@ export default class Client implements API {
     async deleteUsers(ids: IdType[]): Promise<void> {
         if (ids.length > 0) {
              ids.forEach(id => this._client.DeleteUser(id));
+        }
+
+        return Promise.resolve();
+    }
+
+    async expireUser(userId: IdType): Promise<void> {
+        return await this._client.ExpireUser(userId);
+    }
+
+    async expireUsers(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.ExpireUser(id));
+        }
+
+        return Promise.resolve();
+    }
+
+    async unexpireUser(userId: IdType): Promise<void> {
+        return await this._client.ExpireUser(userId);
+    }
+
+    async unexpireUsers(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.UnexpireUser(id));
         }
 
         return Promise.resolve();
@@ -1067,6 +1295,22 @@ export default class Client implements API {
     async expireUserRoles(ids: IdType[]): Promise<void> {
         if (ids.length > 0) {
              ids.forEach(id => this._client.ExpireUserRole(id));
+        }
+
+        return Promise.resolve();
+    }
+
+    async unexpireUserRole(userRoleId: IdType): Promise<void> {
+        if (userRoleId === undefined) {
+            return;
+        }
+
+        return await this._client.UnexpireUserRole(userRoleId);
+    }
+
+    async unexpireUserRoles(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.UnexpireUserRole(id));
         }
 
         return Promise.resolve();
