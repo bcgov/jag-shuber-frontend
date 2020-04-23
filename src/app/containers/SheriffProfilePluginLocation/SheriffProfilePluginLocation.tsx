@@ -5,7 +5,7 @@ import {
     SheriffProfileSectionPlugin
 } from '../../components/SheriffProfile/SheriffProfilePlugin';
 import {
-    Alert, Table
+    Alert, Col, Row, Table
 } from 'react-bootstrap';
 import {
     Field,
@@ -23,9 +23,12 @@ import LocationDisplay from '../LocationDisplay';
 import SheriffDisplay from '../SheriffDisplay';
 import SelectorField from '../../components/FormElements/SelectorField';
 import LocationSelector from '../LocationSelector';
+import LeavesFieldTable from '../SheriffProfilePluginLeaves/LeavesFieldTable';
 
 export interface SheriffProfilePluginLocationProps {
     locations: SheriffLocation[];
+    fullDayLocations: SheriffLocation[];
+    partialDayLocations: SheriffLocation[];
 }
 
 export default class SheriffProfilePluginLocation
@@ -40,51 +43,77 @@ export default class SheriffProfilePluginLocation
     formFieldNames = {
         currentLocation: 'sheriff.currentLocationId',
         homeLocation: 'sheriff.homeLocationId',
-        locations: 'locations'
+        locations: 'locations',
+        fullDayLocations: 'locations.fullDay',
+        partialDayLocations: 'locations.partialDay'
+
     };
     title: string = 'Locations';
     FormComponent = (props: SheriffProfilePluginProps<SheriffProfilePluginLocationProps>) => (
         <div>
-            <div className="flex-row-wrap">
-                <Field
-                    name={this.formFieldNames.homeLocation}
-                    component={
-                        (p) => <SelectorField
-                            {...p}
-                            SelectorComponent={
-                                (sp) => <LocationSelector label="Home Location" {...sp} />}
-                        /> }
-                    label="Home Location"
-                    validate={[Validators.required]}
+            <h3>Home Location</h3>
+            <fieldset className="with-border" style={{ background: '#fefefe', padding: 0 }}>
+                <Row>
+                    <Col xs={12} style={{ marginTop: '10px', marginBottom: '15px' }}>
+                        <div className="flex-row-wrap">
+                            <Field
+                                name={this.formFieldNames.homeLocation}
+                                component={
+                                    (p) => <SelectorField
+                                        {...p}
+                                        SelectorComponent={
+                                            (sp) => <LocationSelector label="Home Location" {...sp} />}
+                                    /> }
+                                label="Choose a Location"
+                                validate={[Validators.required]}
+                            />
+                            {/* <Field
+                                name={this.formFieldNames.currentLocation}
+                                component={
+                                    (p) => <SelectorField
+                                        {...p}
+                                        SelectorComponent={
+                                            (sp) => <LocationSelector label="Current Location" {...sp} />}
+                                    /> }
+                                label="Current Location"
+                            /> */}
+                        </div>
+                    </Col>
+                </Row>
+            </fieldset>
+            <div style={{ marginTop: '10px', marginBottom: '15px' }}>
+                <LocationFieldTable
+                    fieldName={this.formFieldNames.fullDayLocations}
+                    title={<h3>Full Day</h3>}
+                    columns={[
+                        LocationFieldTable.LocationColumn(),
+                        LocationFieldTable.DateColumn('Start Date', 'startDate'),
+                        LocationFieldTable.DateColumn('End Date', 'endDate'),
+                        LocationFieldTable.CancelColumn
+                    ]}
                 />
-                {/* <Field
-                    name={this.formFieldNames.currentLocation}
-                    component={
-                        (p) => <SelectorField
-                            {...p}
-                            SelectorComponent={
-                                (sp) => <LocationSelector label="Current Location" {...sp} />}
-                        /> }
-                    label="Current Location"
-                /> */}
+
+                <LocationFieldTable
+                    fieldName={this.formFieldNames.partialDayLocations}
+                    title={<h3>Partial Day</h3>}
+                    columns={[
+                        LocationFieldTable.LocationColumn(),
+                        LocationFieldTable.DateColumn('Start Date', 'startDate'),
+                        LocationFieldTable.DateColumn('End Date', 'endDate'),
+                        LocationFieldTable.CancelColumn
+                    ]}
+                />
             </div>
-            <LocationFieldTable
-                fieldName={this.formFieldNames.locations}
-                // title={<h3>Locations</h3>}
-                title={''}
-                columns={[
-                    LocationFieldTable.LocationColumn(),
-                    LocationFieldTable.DateColumn('Start Date', 'startDate'),
-                    LocationFieldTable.DateColumn('End Date', 'endDate'),
-                    LocationFieldTable.CancelColumn
-                ]}
-            />
         </div>
     )
     DisplayComponent = (
         {
             sheriffId,
-            data = { locations: [] }
+            data = {
+                locations: [],
+                fullDayLocations: [],
+                partialDayLocations: []
+            }
         }: SheriffProfilePluginProps<SheriffProfilePluginLocationProps>
     ) => {
         return (
@@ -121,7 +150,11 @@ export default class SheriffProfilePluginLocation
         );
     }
 
-    validate(values: SheriffProfilePluginLocationProps = { locations: [] }): FormErrors | undefined {
+    validate(values: SheriffProfilePluginLocationProps = {
+        locations: [],
+        fullDayLocations: [],
+        partialDayLocations: []
+    }): FormErrors | undefined {
         let locationErrors: any = [];
 
         if (values.locations) {
@@ -151,13 +184,17 @@ export default class SheriffProfilePluginLocation
     getData(sheriffId: IdType, state: RootState) {
         const sheriffLocations = getSheriffAllLocations(sheriffId)(state);
         return {
-            locations: sheriffLocations
+            locations: sheriffLocations,
+            fullDayLocations: sheriffLocations,
+            partialDayLocations: sheriffLocations
         };
     }
 
     getDataFromFormValues(formValues: any): SheriffProfilePluginLocationProps {
         return super.getDataFromFormValues(formValues) || {
-            locations: []
+            locations: [],
+            fullDayLocations: [],
+            partialDayLocations: []
         };
     }
 
