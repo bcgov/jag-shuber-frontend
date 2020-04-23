@@ -5,9 +5,10 @@ import {
     SheriffProfileSectionPlugin
 } from '../../components/SheriffProfile/SheriffProfilePlugin';
 import {
-    Alert
+    Alert, Table
 } from 'react-bootstrap';
 import {
+    Field,
     FormErrors
 } from 'redux-form';
 import { Dispatch } from 'redux';
@@ -18,6 +19,10 @@ import LocationsDisplay from '../../components/SheriffLocationsDisplay';
 import * as Validators from '../../infrastructure/Validators';
 import LocationFieldTable from './LocationFieldTable';
 import { toTimeString } from 'jag-shuber-api';
+import LocationDisplay from '../LocationDisplay';
+import SheriffDisplay from '../SheriffDisplay';
+import SelectorField from '../../components/FormElements/SelectorField';
+import LocationSelector from '../LocationSelector';
 
 export interface SheriffProfilePluginLocationProps {
     locations: SheriffLocation[];
@@ -33,14 +38,40 @@ export default class SheriffProfilePluginLocation
     // END NOTICE
     reduxFormKey = 'sheriffLocations';
     formFieldNames = {
+        currentLocation: 'sheriff.currentLocationId',
+        homeLocation: 'sheriff.homeLocationId',
         locations: 'locations'
     };
     title: string = 'Locations';
     FormComponent = (props: SheriffProfilePluginProps<SheriffProfilePluginLocationProps>) => (
         <div>
+            <div className="flex-row-wrap">
+                <Field
+                    name={this.formFieldNames.homeLocation}
+                    component={
+                        (p) => <SelectorField
+                            {...p}
+                            SelectorComponent={
+                                (sp) => <LocationSelector label="Home Location" {...sp} />}
+                        /> }
+                    label="Home Location"
+                    validate={[Validators.required]}
+                />
+                {/* <Field
+                    name={this.formFieldNames.currentLocation}
+                    component={
+                        (p) => <SelectorField
+                            {...p}
+                            SelectorComponent={
+                                (sp) => <LocationSelector label="Current Location" {...sp} />}
+                        /> }
+                    label="Current Location"
+                /> */}
+            </div>
             <LocationFieldTable
                 fieldName={this.formFieldNames.locations}
-                title={<h3>Locations</h3>}
+                // title={<h3>Locations</h3>}
+                title={''}
                 columns={[
                     LocationFieldTable.LocationColumn(),
                     LocationFieldTable.DateColumn('Start Date', 'startDate'),
@@ -51,12 +82,44 @@ export default class SheriffProfilePluginLocation
         </div>
     )
     DisplayComponent = (
-        { data = { locations: [] } }: SheriffProfilePluginProps<SheriffProfilePluginLocationProps>) => (
-
-            data && (data.locations.length > 0 )
-                ? <LocationsDisplay locations={data.locations} />
-                : <Alert> No Locations </Alert>
-        )
+        {
+            sheriffId,
+            data = { locations: [] }
+        }: SheriffProfilePluginProps<SheriffProfilePluginLocationProps>
+    ) => {
+        return (
+            <>
+                <SheriffDisplay
+                    sheriffId={sheriffId}
+                    RenderComponent={({ sheriff: {
+                        homeLocationId = '',
+                        currentLocationId = ''
+                    } = {} }) =>
+                        (
+                            <Table responsive={true} >
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Home Location</strong></td>
+                                        <td><LocationDisplay id={homeLocationId} /></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Current Location</strong></td>
+                                        <td><LocationDisplay id={currentLocationId} /></td>
+                                    </tr>
+                                </tbody>
+                            </Table>
+                        )
+                    }
+                />
+                {data && data.locations.length > 0 && (
+                    <LocationsDisplay locations={data.locations}/>
+                )}
+                {!data || data.locations.length > 0 && (
+                    <Alert> No Locations </Alert>
+                )}
+            </>
+        );
+    }
 
     validate(values: SheriffProfilePluginLocationProps = { locations: [] }): FormErrors | undefined {
         let locationErrors: any = [];
