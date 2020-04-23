@@ -13,6 +13,7 @@ import LocationDisplay from '../LocationDisplay';
 import LocationSelector from '../LocationSelector';
 
 import { ColumnRendererProps } from '../../components/TableColumn';
+import CancelLeaveButton from '../CancelLeaveButton';
 
 export type ColumnRenderer = React.ComponentType<ColumnRendererProps & { location: Partial<SheriffLocation> }>;
 
@@ -33,13 +34,26 @@ export default class SheriffLocationFieldTable extends React.Component<SheriffLo
     static CancelColumn: SheriffLocationFieldTableColumn = {
         title: '',
         FormRenderer: ({ fields, index, location: { id } }) => (
-            <Button
-                bsStyle="link"
-                onClick={() => fields.remove(index)}
-                style={{ color: '#666666' }}
-            >
-                <Glyphicon glyph="remove" />
-            </Button>
+            !id ?
+                (
+                    <Button
+                        bsStyle="danger"
+                        onClick={() => fields.remove(index)}
+                        style={{ color: 'white' }}
+                    >
+                        <Glyphicon glyph="remove" />
+                    </Button>
+                )
+                :
+                (
+                    <Button
+                        bsStyle="danger"
+                        onClick={() => fields.remove(index)}
+                        style={{ color: 'white' }}
+                    >
+                        <Glyphicon glyph="trash" />
+                    </Button>
+                )
         ),
         CanceledRender: ({ location }) => (
             null // CanceledRender not needed
