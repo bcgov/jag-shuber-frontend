@@ -4,7 +4,7 @@ import {
     FieldArray, Field, FieldsProps
 } from 'redux-form';
 import { Leave } from '../../api/Api';
-import { Table, Button, Glyphicon } from 'react-bootstrap';
+import { Table, Button, Glyphicon, Well } from 'react-bootstrap';
 import DateField from '../../components/FormElements/DateField';
 import SelectorField from '../../components/FormElements/SelectorField';
 import LeavePersonalSubCodeSelector from '../LeavePersonalSubCodeSelector';
@@ -148,7 +148,14 @@ export default class LeavesFieldTable extends React.Component<LeavesFieldTablePr
                                 </tr>
                             </thead>
                             <tbody>
-                                {fields.map((fieldInstanceName, index) => {
+                                {fields.length === 0 && (
+                                    <tr>
+                                        <td>
+                                            <Well style={{textAlign: 'center'}}>No records found.</Well>
+                                        </td>
+                                    </tr>
+                                )}
+                                {fields.length > 0 && fields.map((fieldInstanceName, index) => {
                                     const currentLeave: Partial<Leave> = fields.get(index);
                                     const { cancelDate = undefined } = currentLeave || {};
                                     return (

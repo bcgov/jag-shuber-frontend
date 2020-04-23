@@ -13,7 +13,7 @@ import {
 import { Dispatch } from 'redux';
 import { getSheriffLocations, createOrUpdateSheriffLocations } from '../../modules/sheriffLocations/actions';
 import { RootState } from '../../store';
-import { getSheriffLocationsSel } from '../../modules/sheriffLocations/selectors';
+import { getSheriffAllLocations } from '../../modules/sheriffLocations/selectors';
 import LocationsDisplay from '../../components/SheriffLocationsDisplay';
 import * as Validators from '../../infrastructure/Validators';
 import LocationFieldTable from './LocationFieldTable';
@@ -23,10 +23,17 @@ export interface SheriffProfilePluginLocationProps {
     locations: SheriffLocation[];
 }
 
-export default class SheriffProfilePluginLocation extends SheriffProfileSectionPlugin<SheriffProfilePluginLocationProps> {
-    name = 'locations';
+export default class SheriffProfilePluginLocation
+    extends SheriffProfileSectionPlugin<SheriffProfilePluginLocationProps> {
+    // NOTICE!
+    // This key maps to the [appScope: FrontendScope] (in the token)
+    // To set permissions for a new plugin, add a corresponding entry under System Settings > Components
+    // with the name as defined as the plugin's name.
+    name = 'SHERIFF_PROFILE_PLUGIN_LOCATION';
+    // END NOTICE
+    reduxFormKey = 'sheriffLocations';
     formFieldNames = {
-        locations: 'locations.locations'
+        locations: 'locations'
     };
     title: string = 'Locations';
     FormComponent = (props: SheriffProfilePluginProps<SheriffProfilePluginLocationProps>) => (
@@ -35,6 +42,7 @@ export default class SheriffProfilePluginLocation extends SheriffProfileSectionP
                 fieldName={this.formFieldNames.locations}
                 title={<h3>Locations</h3>}
                 columns={[
+                    LocationFieldTable.LocationColumn(),
                     LocationFieldTable.DateColumn('Start Date', 'startDate'),
                     LocationFieldTable.DateColumn('End Date', 'endDate'),
                     LocationFieldTable.CancelColumn
@@ -78,8 +86,9 @@ export default class SheriffProfilePluginLocation extends SheriffProfileSectionP
     }
 
     getData(sheriffId: IdType, state: RootState) {
+        const sheriffLocations = getSheriffAllLocations(sheriffId)(state);
         return {
-            locations: getSheriffLocationsSel(sheriffId)(state),
+            locations: sheriffLocations
         };
     }
 

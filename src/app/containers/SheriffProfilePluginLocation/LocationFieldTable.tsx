@@ -4,7 +4,7 @@ import {
     FieldArray, Field, FieldsProps
 } from 'redux-form';
 import { SheriffLocation } from '../../api/Api';
-import { Table, Button, Glyphicon } from 'react-bootstrap';
+import { Table, Button, Glyphicon, Well } from 'react-bootstrap';
 import DateField from '../../components/FormElements/DateField';
 import SelectorField from '../../components/FormElements/SelectorField';
 import TimePickerDropDownField from '../../components/FormElements/TimePickerDropDownField';
@@ -124,19 +124,27 @@ export default class SheriffLocationFieldTable extends React.Component<SheriffLo
         return (
             <FieldArray<Partial<SheriffLocation>>
                 name={fieldName}
-                component={({ fields }) => (
-                    <div>
-                        {title}
-                        <Table striped={true} >
-                            <thead>
+                component={({ fields }) => {
+                    return (
+                        <div>
+                            {title}
+                            <Table striped={true} >
+                                <thead>
                                 <tr>
                                     {columns.map((col, colIndex) => (
                                         <th className="text-left" key={colIndex}>{col.title}</th>
                                     ))}
                                 </tr>
-                            </thead>
-                            <tbody>
-                                {fields.map((fieldInstanceName, index) => {
+                                </thead>
+                                <tbody>
+                                {fields.length === 0 && (
+                                    <tr>
+                                        <td colSpan={5}>
+                                            <Well style={{textAlign: 'center'}}>No records found.</Well>
+                                        </td>
+                                    </tr>
+                                )}
+                                {fields.length > 0 && fields.map((fieldInstanceName, index) => {
                                     const currentLocation: Partial<SheriffLocation> = fields.get(index);
                                     const { cancelDate = undefined } = currentLocation || {};
                                     return (
@@ -162,8 +170,8 @@ export default class SheriffLocationFieldTable extends React.Component<SheriffLo
                                         </tr>
                                     );
                                 })}
-                            </tbody>
-                            <tfoot>
+                                </tbody>
+                                <tfoot>
                                 <tr>
                                     <td colSpan={5}>
                                         <Button onClick={() => fields.push({} as any)}>
@@ -171,10 +179,11 @@ export default class SheriffLocationFieldTable extends React.Component<SheriffLo
                                         </Button>
                                     </td>
                                 </tr>
-                            </tfoot>
-                        </Table>
-                    </div>
-                )}
+                                </tfoot>
+                            </Table>
+                        </div>
+                    );
+                }}
             />
         );
     }

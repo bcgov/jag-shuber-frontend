@@ -8,11 +8,12 @@ import { registerReducer as registerSystemReducer, SystemModuleState } from './m
 import { registerReducer as registerRolesReducer, RoleModuleState } from './modules/roles/reducer';
 import { registerReducer as registerUsersReducer, UserModuleState as UsersModuleState } from './modules/users/reducer';
 import { registerReducer as registerSheriffReducer, SheriffModuleState } from './modules/sheriffs/reducer';
+import { registerReducer as registerSheriffLocationsReducer, SheriffLocationModuleState } from './modules/sheriffLocations/reducer';
 import { registerReducer as registerAssignmentReducer, AssignmentModuleState } from './modules/assignments/reducer';
 import { registerReducer as registerShiftReducer, ShiftModuleState } from './modules/shifts/reducer';
 import { registerReducer as registerLeavesReducer, LeaveModuleState } from './modules/leaves/reducer';
-
 import { registerReducer as registerCurrentUserReducer, UserState as CurrentUserState } from './modules/user/reducer';
+
 import { default as dutyRosterReducer, DutyRosterState } from './modules/dutyRoster/reducer';
 import { default as scheduleReducer, ScheduleState } from './modules/schedule/reducer';
 import { default as assignmentScheduleReducer, AssignmentScheduleState } from './modules/assignmentSchedule/reducer';
@@ -39,6 +40,7 @@ export type ThunkAction<TRequest, TResponse = void> = (args?: TRequest) => Thunk
 
 export interface RootState {
     sheriffs: SheriffModuleState;
+    sheriffLocations: SheriffLocationModuleState;
     assignments: AssignmentModuleState;
     assignmentSchedule: AssignmentScheduleState;
     dutyRoster: DutyRosterState;
@@ -60,6 +62,7 @@ const reducers = {
 };
 
 registerSheriffReducer(reducers);
+registerSheriffLocationsReducer(reducers);
 registerShiftReducer(reducers);
 registerAssignmentReducer(reducers);
 

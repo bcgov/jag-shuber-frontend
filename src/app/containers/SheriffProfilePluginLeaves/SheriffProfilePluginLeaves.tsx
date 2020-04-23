@@ -27,7 +27,8 @@ export interface SheriffProfilePluginLeavesProps {
     fullDay: Leave[];
 }
 
-export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlugin<SheriffProfilePluginLeavesProps> {
+export default class SheriffProfilePluginLeaves
+    extends SheriffProfileSectionPlugin<SheriffProfilePluginLeavesProps> {
     // NOTICE!
     // This key maps to the [appScope: FrontendScope] (in the token)
     // To set permissions for a new plugin, add a corresponding entry under System Settings > Components

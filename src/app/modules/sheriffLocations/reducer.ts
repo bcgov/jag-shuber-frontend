@@ -12,7 +12,7 @@ export {
 const nestedReducer = new NestedReducer([
   // Leaves
   sheriffLocationRequests.sheriffLocationMapRequest.reducer,
-  sheriffLocationRequests.createOrUpdateSheriffLocationRequest.reducer,
+  sheriffLocationRequests.createOrUpdateSheriffLocationRequest.reducer
 ]);
 
 const reducer = nestedReducer.reducer;

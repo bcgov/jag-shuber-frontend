@@ -29,7 +29,7 @@ export const getSheriffLocation = (id?: IdType) => (state: RootState) => {
     return undefined;
 };
 
-export const getSheriffLocationsSel = (sheriffId?: IdType) => (state: RootState) => {
+export const getSheriffAllLocations = (sheriffId?: IdType) => (state: RootState) => {
     if (state && sheriffId !== null) {
         return allLocations(state).filter(l => l.sheriffId === sheriffId);
     }
