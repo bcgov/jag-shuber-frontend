@@ -160,15 +160,12 @@ export default class SheriffLocationFieldTable extends React.Component<SheriffLo
                                 )}
                                 {fields.length > 0 && fields.map((fieldInstanceName, index) => {
                                     const currentLocation: Partial<SheriffLocation> = fields.get(index);
-                                    const { cancelDate = undefined } = currentLocation || {};
                                     return (
                                         <tr key={index}>
                                             {
                                                 columns
                                                     .map((col, colIndex) => {
-                                                        const Column = cancelDate !== undefined
-                                                            ? col.CanceledRender
-                                                            : col.FormRenderer;
+                                                        const Column = col.FormRenderer;
                                                         return (
                                                             <td key={colIndex}>
                                                                 <Column

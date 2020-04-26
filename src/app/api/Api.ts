@@ -648,11 +648,11 @@ export interface SheriffLocation {
     locationId?: string;
     startDate?: string;
     endDate?: string;
-    startTime?: string;
-    endTime?: string;
+    // startTime?: string;
+    // endTime?: string;
     isPartial?: number;
-    comment?: string;
-    cancelDate?: string;
+    // comment?: string;
+    // cancelDate?: string;
 }
 
 // TODO: Or should it be the other way around - SheriffQuery extends UserQuery?

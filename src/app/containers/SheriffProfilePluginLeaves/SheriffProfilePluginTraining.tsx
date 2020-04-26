@@ -137,7 +137,7 @@ export default class SheriffProfilePluginTraining
         };
     }
 
-    async onSubmit(sheriffId: IdType, formValues: any, initialValues: any, dispatch: Dispatch<any>) {
+    async onSubmit(sheriffId: IdType, formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any> {
         const data = this.getDataFromFormValues(formValues);
         const partialLeaves = data.partialDay.map(pl => ({ ...pl, sheriffId, isPartial: true }));
         const fullLeaves = data.fullDay.map(fl => ({ ...fl, sheriffId, isPartial: false }));
@@ -149,7 +149,7 @@ export default class SheriffProfilePluginTraining
         }));
 
         if (allLeaves.length > 0) {
-            await dispatch(createOrUpdateLeaves(allLeaves, { toasts: {} }))
+            await dispatch(createOrUpdateLeaves(allLeaves, { toasts: {} }));
         }
     }
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { IdType, SheriffLocation } from '../../api/Api';
+import { DateType, IdType, SheriffLocation } from '../../api/Api';
 import {
     SheriffProfilePluginProps,
     SheriffProfileSectionPlugin
@@ -14,7 +14,7 @@ import {
 import { Dispatch } from 'redux';
 import { getSheriffLocations, createOrUpdateSheriffLocations } from '../../modules/sheriffLocations/actions';
 import { RootState } from '../../store';
-import { getSheriffAllLocations } from '../../modules/sheriffLocations/selectors';
+import { getSheriffFullDayLocations, getSheriffPartialDayLocations } from '../../modules/sheriffLocations/selectors';
 import LocationsDisplay from '../../components/SheriffLocationsDisplay';
 import * as Validators from '../../infrastructure/Validators';
 import LocationFieldTable from './LocationFieldTable';
@@ -23,12 +23,11 @@ import LocationDisplay from '../LocationDisplay';
 import SheriffDisplay from '../SheriffDisplay';
 import SelectorField from '../../components/FormElements/SelectorField';
 import LocationSelector from '../LocationSelector';
-import LeavesFieldTable from '../SheriffProfilePluginLeaves/LeavesFieldTable';
 
 export interface SheriffProfilePluginLocationProps {
     locations: SheriffLocation[];
-    fullDayLocations: SheriffLocation[];
-    partialDayLocations: SheriffLocation[];
+    fullDayLocations: SheriffLocation[],
+    partialDayLocations: SheriffLocation[]
 }
 
 export default class SheriffProfilePluginLocation
@@ -44,8 +43,8 @@ export default class SheriffProfilePluginLocation
         currentLocation: 'sheriff.currentLocationId',
         homeLocation: 'sheriff.homeLocationId',
         locations: 'locations',
-        fullDayLocations: 'locations.fullDay',
-        partialDayLocations: 'locations.partialDay'
+        fullDayLocations: 'sheriffLocations.fullDayLocations',
+        partialDayLocations: 'sheriffLocations.partialDayLocations'
 
     };
     title: string = 'Locations';
@@ -182,30 +181,42 @@ export default class SheriffProfilePluginLocation
     }
 
     getData(sheriffId: IdType, state: RootState) {
-        const sheriffLocations = getSheriffAllLocations(sheriffId)(state);
+        const sheriffFullDayLocations = getSheriffFullDayLocations(sheriffId)(state);
+        const sheriffPartialDayLocations = getSheriffPartialDayLocations(sheriffId)(state);
         return {
-            locations: sheriffLocations,
-            fullDayLocations: sheriffLocations,
-            partialDayLocations: sheriffLocations
+            locations: [...sheriffFullDayLocations, ...sheriffPartialDayLocations],
+            fullDayLocations: sheriffFullDayLocations,
+            partialDayLocations: sheriffPartialDayLocations
+            // fullDayLocations: sheriffFullDayLocations,
+            // partialDayLocations: sheriffPartialDayLocations
         };
     }
 
     getDataFromFormValues(formValues: any): SheriffProfilePluginLocationProps {
         return super.getDataFromFormValues(formValues) || {
-            locations: [],
+            // locations: [],
             fullDayLocations: [],
             partialDayLocations: []
         };
     }
 
-    async onSubmit(sheriffId: IdType, formValues: any, dispatch: Dispatch<any>): Promise<SheriffLocation[]> {
+    async onSubmit(sheriffId: IdType, formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any> {
         const data = this.getDataFromFormValues(formValues);
-        const locations = data.locations.map(pl => ({ ...pl, sheriffId }));
-        const allLocations = locations.map(l => ({
-            ...l,
-            startTime: toTimeString(l.startTime),
-            endTime: toTimeString(l.endTime)
+        const fullDayLocations = data.fullDayLocations.map(l => ({ ...l, sheriffId, isPartial: 0 }));
+        const partialDayLocations = data.partialDayLocations.map(l => ({ ...l, sheriffId, isPartial: 1 }));
+
+        let allLocations = [...fullDayLocations, ...partialDayLocations] as SheriffLocation[];
+
+        allLocations = allLocations.map(l => ({
+            ...l as SheriffLocation,
+            // startTime: toTimeString(l.startTime),
+            // endTime: toTimeString(l.endTime),
+            startDate: (l.startDate) ? l.startDate : new Date().toISOString(),
+            endDate: (l.endDate) ? l.endDate : new Date().toISOString()
         }));
-        return allLocations.length > 0 ? await dispatch(createOrUpdateSheriffLocations(allLocations, { toasts: {} })) : [];
+
+        if (allLocations.length > 0) {
+            await dispatch(createOrUpdateSheriffLocations(allLocations, { toasts: {} }));
+        }
     }
 }
