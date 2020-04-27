@@ -726,7 +726,11 @@ export interface API {
     createSheriffLocation(sheriffLocation: Partial<SheriffLocation>): Promise<SheriffLocation>;
     updateSheriffLocation(sheriffLocation: Partial<SheriffLocation>): Promise<SheriffLocation>;
     deleteSheriffLocation(sheriffLocationId: IdType): Promise<void>;
-    deleteSheriffLocations(ids: IdType[]): Promise<void>;
+    deleteSheriffLocations(sheriffLocationIds: IdType[]): Promise<void>;
+    expireSheriffLocation(sheriffLocationId: IdType): Promise<void>;
+    expireSheriffLocations(sheriffLocationIds: IdType[]): Promise<void>;
+    unexpireSheriffLocation(sheriffLocationId: IdType): Promise<void>;
+    unexpireSheriffLocations(sheriffLocationIds: IdType[]): Promise<void>;
 
     // Courtrooms
     getCourtrooms(): Promise<Courtroom[]>;

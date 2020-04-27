@@ -170,6 +170,38 @@ export default class Client implements API {
         return await this._client.UpdateSheriffLocation(id, sheriffLocation) as SheriffLocation;
     }
 
+    async expireSheriffLocation(sheriffLocationId: string): Promise<void> {
+        return await this._client.DeleteSheriffLocation(sheriffLocationId);
+    }
+
+    /**
+     * TODO: We need a proper endpoint to deal with this this loop isn't gonna do it...
+     * @param ids
+     */
+    async expireSheriffLocations(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.DeleteSheriffLocation(id));
+        }
+
+        return Promise.resolve();
+    }
+
+    async unexpireSheriffLocation(sheriffLocationId: string): Promise<void> {
+        return await this._client.DeleteSheriffLocation(sheriffLocationId);
+    }
+
+    /**
+     * TODO: We need a proper endpoint to deal with this this loop isn't gonna do it...
+     * @param ids
+     */
+    async unexpireSheriffLocations(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.DeleteSheriffLocation(id));
+        }
+
+        return Promise.resolve();
+    }
+
     async deleteSheriffLocation(sheriffLocationId: string): Promise<void> {
         return await this._client.DeleteSheriffLocation(sheriffLocationId);
     }

@@ -57,6 +57,56 @@ class CreateOrUpdateSheriffLocationsRequest extends CreateOrUpdateEntitiesReques
 
 export const createOrUpdateSheriffLocationsRequest = new CreateOrUpdateSheriffLocationsRequest();
 
+class ExpireSheriffLocationsRequest extends RequestAction<IdType[], IdType[], SheriffLocationModuleState> {
+    constructor() {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'expireSheriffLocations',
+            toasts: {
+                success: (ids) => `${ids.length} sheriff location(s) expired`,
+                error: (err) => `Problem encountered while expiring sheriff location(s): ${err ? err.toString() : 'Unknown Error'}`
+            }
+        });
+    }
+    public async doWork(request: IdType[], { api }: ThunkExtra): Promise<IdType[]> {
+        await api.expireSheriffLocations(request);
+        return request;
+    }
+
+    setRequestData(moduleState: SheriffLocationModuleState, sheriffLocationIds: IdType[]) {
+        const newMap = { ...sheriffLocationMapRequest.getRequestData(moduleState) };
+        sheriffLocationIds.forEach(id => delete newMap[id]);
+        return sheriffLocationMapRequest.setRequestData(moduleState, newMap);
+    }
+}
+
+export const expireSheriffLocationsRequest = new ExpireSheriffLocationsRequest();
+
+class UnexpireSheriffLocationsRequest extends RequestAction<IdType[], IdType[], SheriffLocationModuleState> {
+    constructor() {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'unexpireSheriffLocations',
+            toasts: {
+                success: (ids) => `${ids.length} sheriff location(s) un-expired`,
+                error: (err) => `Problem encountered while un-expiring sheriff location(s): ${err ? err.toString() : 'Unknown Error'}`
+            }
+        });
+    }
+    public async doWork(request: IdType[], { api }: ThunkExtra): Promise<IdType[]> {
+        await api.unexpireSheriffLocations(request);
+        return request;
+    }
+
+    setRequestData(moduleState: SheriffLocationModuleState, sheriffLocationIds: IdType[]) {
+        const newMap = { ...sheriffLocationMapRequest.getRequestData(moduleState) };
+        sheriffLocationIds.forEach(id => delete newMap[id]);
+        return sheriffLocationMapRequest.setRequestData(moduleState, newMap);
+    }
+}
+
+export const unexpireSheriffLocationsRequest = new UnexpireSheriffLocationsRequest();
+
 class DeleteSheriffLocationsRequest extends RequestAction<IdType[], IdType[], SheriffLocationModuleState> {
     constructor() {
         super({
