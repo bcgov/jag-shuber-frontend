@@ -3,83 +3,85 @@ import moment from 'moment';
 import {
     FieldArray, Field, FieldsProps
 } from 'redux-form';
-import { Leave } from '../../api/Api';
+import { SheriffLocation } from '../../api/Api';
 import { Table, Button, Glyphicon, Well } from 'react-bootstrap';
 import DateField from '../../components/FormElements/DateField';
 import SelectorField from '../../components/FormElements/SelectorField';
-import LeavePersonalSubCodeSelector from '../LeavePersonalSubCodeSelector';
-import CancelLeaveButton from '../CancelLeaveButton';
-import LeaveCancelledPopover from '../../components/LeaveCancelledPopover';
 import TimePickerDropDownField from '../../components/FormElements/TimePickerDropDownField';
 import { fromTimeString, toTimeString } from 'jag-shuber-api';
-import LeaveSubCodeDisplay from '../LeaveSubCodeDisplay';
-import LeaveTrainingSubCodeSelector from '../LeaveTrainingSubCodeSelector';
+import LocationDisplay from '../LocationDisplay';
+import LocationSelector from '../LocationSelector';
 
 import { ColumnRendererProps } from '../../components/TableColumn';
+import CancelLeaveButton from '../CancelLeaveButton';
 
-export type ColumnRenderer = React.ComponentType<ColumnRendererProps & { leave: Partial<Leave> }>;
+export type ColumnRenderer = React.ComponentType<ColumnRendererProps & { location: Partial<SheriffLocation> }>;
 
-export interface LeavesFieldTableColumn {
+export interface SheriffLocationFieldTableColumn {
     title: React.ReactNode;
     FormRenderer: ColumnRenderer;
     CanceledRender: ColumnRenderer;
 }
 
-export interface LeavesFieldTableProps {
+export interface SheriffLocationFieldTableProps {
     title: React.ReactNode;
     fieldName: string;
-    columns: LeavesFieldTableColumn[];
+    columns: SheriffLocationFieldTableColumn[];
 }
 
-export default class LeavesFieldTable extends React.Component<LeavesFieldTableProps>{
+export default class SheriffLocationFieldTable extends React.Component<SheriffLocationFieldTableProps>{
 
-    static CancelColumn: LeavesFieldTableColumn = {
+    static CancelColumn: SheriffLocationFieldTableColumn = {
         title: '',
-        FormRenderer: ({ fields, index, leave: { id } }) => (
+        FormRenderer: ({ fields, index, location: { id } }) => (
             !id ?
                 (
                     <Button
-                        bsStyle="link"
+                        bsStyle="danger"
                         onClick={() => fields.remove(index)}
-                        style={{ color: '#666666' }}
+                        style={{ color: 'white' }}
                     >
                         <Glyphicon glyph="remove" />
                     </Button>
                 )
                 :
-                <CancelLeaveButton leaveId={id} />
+                (
+                    <Button
+                        bsStyle="danger"
+                        onClick={() => fields.remove(index)}
+                        style={{ color: 'white' }}
+                    >
+                        <Glyphicon glyph="trash" />
+                    </Button>
+                )
         ),
-        CanceledRender: ({ leave }) => (
-            <LeaveCancelledPopover leave={leave} />
+        CanceledRender: ({ location }) => (
+            null // CanceledRender not needed
         )
     };
 
-    static LeaveSubCodeColumn(isPersonal: boolean): LeavesFieldTableColumn {
+    static LocationColumn(): SheriffLocationFieldTableColumn {
         return {
-            title: 'Type',
+            title: 'Location',
             FormRenderer: ({ fieldInstanceName }) => (
                 <Field
-                    name={`${fieldInstanceName}.leaveSubCode`}
+                    name={`${fieldInstanceName}.locationId`}
                     component={(p) => <SelectorField
                         {...p}
                         showLabel={false}
                         SelectorComponent={
-                            (sp) =>
-                                isPersonal
-                                ? <LeavePersonalSubCodeSelector {...sp} />
-                                : <LeaveTrainingSubCodeSelector {...sp} />
-                            }
+                            (sp) => <LocationSelector {...sp} />}
                     />}
                     label="Type"
                 />
             ),
-            CanceledRender: ({ leave }) => (
-                <LeaveSubCodeDisplay subCode={leave.leaveSubCode} />
+            CanceledRender: ({ location }) => (
+                <LocationDisplay id={location.locationId} />
             )
         };
     }
 
-    static DateColumn(label: string, fieldName: string): LeavesFieldTableColumn {
+    static DateColumn(label: string, fieldName: string): SheriffLocationFieldTableColumn {
         return {
             title: label,
             FormRenderer: ({ fieldInstanceName }) => (
@@ -89,15 +91,15 @@ export default class LeavesFieldTable extends React.Component<LeavesFieldTablePr
                     label={label}
                 />
             ),
-            CanceledRender: ({ leave }) => (
+            CanceledRender: ({ location }) => (
                 <span>
-                    {moment(leave[fieldName]).format('MMM D, YYYY')}
+                    {moment(location[fieldName]).format('MMM D, YYYY')}
                 </span>
             )
         };
     }
 
-    static TimeColumn(label: string, nullTimeLabel: string, fieldName: string): LeavesFieldTableColumn {
+    static TimeColumn(label: string, nullTimeLabel: string, fieldName: string): SheriffLocationFieldTableColumn {
         return {
             title: label,
             FormRenderer: ({ fieldInstanceName }) => (
@@ -119,9 +121,9 @@ export default class LeavesFieldTable extends React.Component<LeavesFieldTablePr
                     normalize={(val) => toTimeString(val)}
                 />
             ),
-            CanceledRender: ({ leave }) => (
+            CanceledRender: ({ location }) => (
                 <span>
-                    {fromTimeString(leave[fieldName]).format('HH:mm')}
+                    {fromTimeString(location[fieldName]).format('HH:mm')}
                 </span>
             )
         };
@@ -134,42 +136,40 @@ export default class LeavesFieldTable extends React.Component<LeavesFieldTablePr
             columns = []
         } = this.props;
         return (
-            <FieldArray<Partial<Leave>>
+            <FieldArray<Partial<SheriffLocation>>
                 name={fieldName}
-                component={({ fields }) => (
-                    <div>
-                        {title}
-                        <Table striped={true} >
-                            <thead>
+                component={({ fields }) => {
+                    return (
+                        <div>
+                            {title}
+                            <Table striped={true} >
+                                <thead>
                                 <tr>
                                     {columns.map((col, colIndex) => (
                                         <th className="text-left" key={colIndex}>{col.title}</th>
                                     ))}
                                 </tr>
-                            </thead>
-                            <tbody>
+                                </thead>
+                                <tbody>
                                 {fields.length === 0 && (
                                     <tr>
-                                        <td>
+                                        <td colSpan={5}>
                                             <Well style={{textAlign: 'center'}}>No records found.</Well>
                                         </td>
                                     </tr>
                                 )}
                                 {fields.length > 0 && fields.map((fieldInstanceName, index) => {
-                                    const currentLeave: Partial<Leave> = fields.get(index);
-                                    const { cancelDate = undefined } = currentLeave || {};
+                                    const currentLocation: Partial<SheriffLocation> = fields.get(index);
                                     return (
                                         <tr key={index}>
                                             {
                                                 columns
                                                     .map((col, colIndex) => {
-                                                        const Column = cancelDate !== undefined
-                                                            ? col.CanceledRender
-                                                            : col.FormRenderer;
+                                                        const Column = col.FormRenderer;
                                                         return (
                                                             <td key={colIndex}>
                                                                 <Column
-                                                                    leave={currentLeave}
+                                                                    location={currentLocation}
                                                                     fieldInstanceName={fieldInstanceName}
                                                                     fields={fields}
                                                                     index={index}
@@ -181,8 +181,8 @@ export default class LeavesFieldTable extends React.Component<LeavesFieldTablePr
                                         </tr>
                                     );
                                 })}
-                            </tbody>
-                            <tfoot>
+                                </tbody>
+                                <tfoot>
                                 <tr>
                                     <td colSpan={5}>
                                         <Button onClick={() => fields.push({} as any)}>
@@ -190,10 +190,11 @@ export default class LeavesFieldTable extends React.Component<LeavesFieldTablePr
                                         </Button>
                                     </td>
                                 </tr>
-                            </tfoot>
-                        </Table>
-                    </div>
-                )}
+                                </tfoot>
+                            </Table>
+                        </div>
+                    );
+                }}
             />
         );
     }

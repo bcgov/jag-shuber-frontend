@@ -5987,9 +5987,9 @@ istanbul@^0.4.5:
     which "^1.1.1"
     wordwrap "^1.0.0"
 
-"jag-shuber-api@github:bcgov/jag-shuber-api":
+"jag-shuber-api@github:bcgov/jag-shuber-api#feature/sheriff-locations":
   version "2.0.0"
-  resolved "https://codeload.github.com/bcgov/jag-shuber-api/tar.gz/8d2a7264dcce450c7bffa27b0953ca48303b9326"
+  resolved "https://codeload.github.com/bcgov/jag-shuber-api/tar.gz/885440385776e83ec04acaea00871ae932d3ca04"
   dependencies:
     jsonwebtoken "^8.3.0"
     jwt-decode "^2.2.0"

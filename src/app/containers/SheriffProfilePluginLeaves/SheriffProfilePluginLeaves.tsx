@@ -27,7 +27,8 @@ export interface SheriffProfilePluginLeavesProps {
     fullDay: Leave[];
 }
 
-export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlugin<SheriffProfilePluginLeavesProps> {
+export default class SheriffProfilePluginLeaves
+    extends SheriffProfileSectionPlugin<SheriffProfilePluginLeavesProps> {
     // NOTICE!
     // This key maps to the [appScope: FrontendScope] (in the token)
     // To set permissions for a new plugin, add a corresponding entry under System Settings > Components
@@ -136,7 +137,7 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
         };
     }
 
-    async onSubmit(sheriffId: IdType, formValues: any, initialValues: any, dispatch: Dispatch<any>) {
+    async onSubmit(sheriffId: IdType, formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any> {
         const data = this.getDataFromFormValues(formValues);
         const partialLeaves = data.partialDay.map(pl => ({ ...pl, sheriffId, isPartial: true }));
         const fullLeaves = data.fullDay.map(fl => ({ ...fl, sheriffId, isPartial: false }));
@@ -146,6 +147,7 @@ export default class SheriffProfilePluginLeaves extends SheriffProfileSectionPlu
             startTime: toTimeString(l.startTime),
             endTime: toTimeString(l.endTime)
         }));
+
         if (allLeaves.length > 0) {
             await dispatch(createOrUpdateLeaves(allLeaves));
         }

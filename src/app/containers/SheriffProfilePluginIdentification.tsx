@@ -16,7 +16,8 @@ import GenderSelector from './GenderSelector';
 import GenderCodeDisplay from './GenderCodeDisplay';
 import ToggleField from '../components/FormElements/ToggleField';
 
-export default class SheriffProfilePluginId extends SheriffProfileSectionPlugin<Sheriff> {
+export default class SheriffProfilePluginId
+    extends SheriffProfileSectionPlugin<Sheriff> {
     // NOTICE!
     // This key maps to the [appScope: FrontendScope] (in the token)
     // To set permissions for a new plugin, add a corresponding entry under System Settings > Components

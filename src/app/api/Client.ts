@@ -19,6 +19,7 @@ import {
     EscortRun,
     Sheriff,
     SheriffDuty,
+    SheriffLocation,
     Shift,
     ShiftCopyOptions,
     WorkSectionCode,
@@ -147,6 +148,76 @@ export default class Client implements API {
         }
         return await this._client.UpdateSheriff(id, sheriffToUpdate) as Sheriff;
     }
+
+    // Sheriff Locations
+    async getSheriffLocation(id: IdType): Promise<SheriffLocation> {
+        return await this._client.GetSheriffLocationById(id) as SheriffLocation;
+    }
+
+    async getSheriffLocations(): Promise<SheriffLocation[]> {
+        return await this._client.GetSheriffLocations() as SheriffLocation[];
+    }
+
+    async createSheriffLocation(sheriffLocation: Partial<SheriffLocation>): Promise<SheriffLocation> {
+        return await this._client.CreateSheriffLocation(sheriffLocation) as SheriffLocation;
+    }
+
+    async updateSheriffLocation(sheriffLocation: Partial<SheriffLocation>): Promise<SheriffLocation> {
+        const { id } = sheriffLocation;
+        if (!id) {
+            throw 'No Id included in the sheriffLocation to update';
+        }
+        return await this._client.UpdateSheriffLocation(id, sheriffLocation) as SheriffLocation;
+    }
+
+    async expireSheriffLocation(sheriffLocationId: string): Promise<void> {
+        return await this._client.DeleteSheriffLocation(sheriffLocationId);
+    }
+
+    /**
+     * TODO: We need a proper endpoint to deal with this this loop isn't gonna do it...
+     * @param ids
+     */
+    async expireSheriffLocations(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.DeleteSheriffLocation(id));
+        }
+
+        return Promise.resolve();
+    }
+
+    async unexpireSheriffLocation(sheriffLocationId: string): Promise<void> {
+        return await this._client.DeleteSheriffLocation(sheriffLocationId);
+    }
+
+    /**
+     * TODO: We need a proper endpoint to deal with this this loop isn't gonna do it...
+     * @param ids
+     */
+    async unexpireSheriffLocations(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.DeleteSheriffLocation(id));
+        }
+
+        return Promise.resolve();
+    }
+
+    async deleteSheriffLocation(sheriffLocationId: string): Promise<void> {
+        return await this._client.DeleteSheriffLocation(sheriffLocationId);
+    }
+
+    /**
+     * TODO: We need a proper endpoint to deal with this this loop isn't gonna do it...
+     * @param ids
+     */
+    async deleteSheriffLocations(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.DeleteSheriffLocation(id));
+        }
+
+        return Promise.resolve();
+    }
+    // END SheriffLocations
 
     async getAssignments(dateRange: DateRange = {}): Promise<(CourtAssignment | JailAssignment | EscortAssignment | OtherAssignment)[]> {
         const { startDate, endDate } = dateRange;
