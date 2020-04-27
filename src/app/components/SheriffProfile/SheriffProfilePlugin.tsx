@@ -3,6 +3,7 @@ import { IdType } from '../../api/Api';
 import { RootState } from '../../store';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
+import { deletedDiff, detailedDiff } from 'deep-object-diff';
 
 export interface SheriffProfilePluginProps<T = any> {
     sheriffId?: IdType;
@@ -99,8 +100,88 @@ export abstract class SheriffProfilePluginBase<T = any> implements SheriffProfil
         return this.pluginPermissions || [];
     }
 
-    protected getDataFromFormValues(formValues: any): T {
-        return formValues[this.reduxFormKey] as T;
+    protected getDataFromFormValues(formValues: any, initialValues?: any) {
+        if (!initialValues) return formValues[this.reduxFormKey] as T;
+
+        const initial = initialValues[this.reduxFormKey];
+        const values = formValues[this.reduxFormKey];
+
+        const data: any = {};
+
+        const formKeys = Object.keys(this.formFieldNames);
+        // detailedDiff will return a diff object with added, deleted, and updated keys
+        // https://www.npmjs.com/package/deep-object-diff
+        const diffKeys = ['added', 'updated'];
+        formKeys.forEach(key => {
+            let isDirty = false;
+            const diff = detailedDiff(initial[key], values[key]);
+            diffKeys.forEach(diffKey => {
+                if (Object.keys(diff[diffKey]).length > 0) isDirty = true;
+            });
+
+            if (isDirty) data[key] = values[key];
+        });
+
+        return data;
+    }
+
+    protected mapDeletesFromFormValues(map: {}) {
+        return {};
+    }
+
+    protected mapExpiredFromFormValues(map: {}, isExpired?: boolean) {
+        return {};
+    }
+
+    protected getDataToDeleteFromFormValues(formValues: any, initialValues?: any) {
+        if (!initialValues) return formValues[this.reduxFormKey];
+
+        const initial = initialValues[this.reduxFormKey];
+        const values = formValues[this.reduxFormKey];
+
+        let map: any = {};
+
+        // TODO: Use value, instead of key - redux-form is bound using the value
+        // We can check the path using containsPropertyPath which is on this class
+        const formKeys = Object.keys(this.formFieldNames);
+        formKeys.forEach(key => {
+            let isDirty = false;
+            const diff = deletedDiff(initial[key], values[key]);
+            if (Object.keys(diff).length > 0) isDirty = true;
+
+            if (isDirty) map[key] = { initialValues: initial[key], values: values[key] };
+        });
+
+        return this.mapDeletesFromFormValues(map);
+    }
+
+    // TODO: Use a const or something to set the expired key, or make it configurable
+    protected getDataToExpireFromFormValues(formValues: any, initialValues?: any, isExpired?: boolean) {
+        isExpired = isExpired || false;
+        if (!initialValues) return formValues[this.reduxFormKey];
+
+        const initial = initialValues[this.reduxFormKey];
+        const values = formValues[this.reduxFormKey];
+
+        let map: any = {};
+
+        // TODO: Use value, instead of key - redux-form is bound using the value
+        // We can check the path using containsPropertyPath which is on this class
+        const formKeys = Object.keys(this.formFieldNames);
+        // detailedDiff will return a diff object with added, deleted, and updated keys
+        // https://www.npmjs.com/package/deep-object-diff
+        const diffKeys = ['updated'];
+        formKeys.forEach(key => {
+            let isDirty = false;
+            const diff = detailedDiff(initial[key], values[key]);
+            diffKeys.forEach(diffKey => {
+                if (Object.keys(diff[diffKey]).length > 0) isDirty = true;
+            });
+
+            if (isDirty) map[key] = { initialValues: initial[key], values: values[key] };
+        });
+
+        return this.mapExpiredFromFormValues(map, isExpired);
     }
 
     containsPropertyPath(errors: Object = {}, propertyPath: string = '') {

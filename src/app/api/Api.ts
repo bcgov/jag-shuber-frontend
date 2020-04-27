@@ -726,6 +726,7 @@ export interface API {
     createSheriffLocation(sheriffLocation: Partial<SheriffLocation>): Promise<SheriffLocation>;
     updateSheriffLocation(sheriffLocation: Partial<SheriffLocation>): Promise<SheriffLocation>;
     deleteSheriffLocation(sheriffLocationId: IdType): Promise<void>;
+    deleteSheriffLocations(ids: IdType[]): Promise<void>;
 
     // Courtrooms
     getCourtrooms(): Promise<Courtroom[]>;

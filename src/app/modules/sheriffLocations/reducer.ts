@@ -10,9 +10,9 @@ export {
 } from './common';
 
 const nestedReducer = new NestedReducer([
-  // Leaves
   sheriffLocationRequests.sheriffLocationMapRequest.reducer,
-  sheriffLocationRequests.createOrUpdateSheriffLocationRequest.reducer
+  sheriffLocationRequests.createOrUpdateSheriffLocationsRequest.reducer,
+  sheriffLocationRequests.deleteSheriffLocationsRequest.reducer
 ]);
 
 const reducer = nestedReducer.reducer;

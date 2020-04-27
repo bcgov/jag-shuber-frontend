@@ -12,7 +12,12 @@ import {
     FormErrors
 } from 'redux-form';
 import { Dispatch } from 'redux';
-import { getSheriffLocations, createOrUpdateSheriffLocations } from '../../modules/sheriffLocations/actions';
+import {
+    getSheriffLocations,
+    createOrUpdateSheriffLocations,
+    deleteSheriffLocations
+} from '../../modules/sheriffLocations/actions';
+
 import { RootState } from '../../store';
 import { getSheriffFullDayLocations, getSheriffPartialDayLocations } from '../../modules/sheriffLocations/selectors';
 import LocationsDisplay from '../../components/SheriffLocationsDisplay';
@@ -200,8 +205,50 @@ export default class SheriffProfilePluginLocation
         };
     }
 
+    mapDeletesFromFormValues(map: any) {
+        const deletedFullDayLocationIds: IdType[] = [];
+
+        if (map.fullDayLocations) {
+            const fullDayInitialValues = map.fullDayLocations.initialValues;
+            const fullDayExistingIds = map.fullDayLocations.values.map((val: any) => val.id);
+
+            const removeFullDayLocationIds = fullDayInitialValues
+                .filter((val: any) => (fullDayExistingIds.indexOf(val.id) === -1))
+                .map((val: any) => val.id);
+
+            deletedFullDayLocationIds.push(...removeFullDayLocationIds);
+        }
+
+        const deletedPartialDayLocationIds: IdType[] = [];
+
+        if (map.partialDayLocations) {
+            const partialDayInitialValues = map.partialDayLocations.initialValues;
+            const partialDayExistingIds = map.partialDayLocations.values.map((val: any) => val.id);
+
+            const removePartialDayLocationIds = partialDayInitialValues
+                .filter((val: any) => (partialDayExistingIds.indexOf(val.id) === -1))
+                .map((val: any) => val.id);
+
+            deletedPartialDayLocationIds.push(...removePartialDayLocationIds);
+        }
+
+        return {
+            fullDayLocations: deletedFullDayLocationIds,
+            partialDayLocations: deletedPartialDayLocationIds
+        };
+    }
+
     async onSubmit(sheriffId: IdType, formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any> {
         const data = this.getDataFromFormValues(formValues);
+        const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
+
+        // Delete records before saving new ones!
+        const deletedFullDaySheriffLocations: IdType[] = dataToDelete.fullDayLocations as IdType[];
+        const deletedPartialDaySheriffLocations: IdType[] = dataToDelete.partialDayLocations as IdType[];
+        const deletedSheriffLocations: IdType[] = [
+            ...deletedFullDaySheriffLocations, ...deletedPartialDaySheriffLocations
+        ];
+
         const fullDayLocations = data.fullDayLocations.map(l => ({ ...l, sheriffId, isPartial: 0 }));
         const partialDayLocations = data.partialDayLocations.map(l => ({ ...l, sheriffId, isPartial: 1 }));
 
@@ -214,6 +261,10 @@ export default class SheriffProfilePluginLocation
             startDate: (l.startDate) ? l.startDate : new Date().toISOString(),
             endDate: (l.endDate) ? l.endDate : new Date().toISOString()
         }));
+
+        if (deletedSheriffLocations.length > 0) {
+            await dispatch(deleteSheriffLocations(deletedSheriffLocations));
+        }
 
         if (allLocations.length > 0) {
             await dispatch(createOrUpdateSheriffLocations(allLocations, { toasts: {} }));

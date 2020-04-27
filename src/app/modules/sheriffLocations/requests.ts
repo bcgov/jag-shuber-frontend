@@ -14,8 +14,6 @@ import {
 import GetEntityMapRequest from '../../infrastructure/Requests/GetEntityMapRequest';
 import RequestAction, { RequestConfig } from '../../infrastructure/Requests/RequestActionBase';
 import CreateOrUpdateEntitiesRequest from '../../infrastructure/Requests/CreateOrUpdateEntitiesRequest';
-import { RoleModuleState } from '../roles/common';
-import { roleMapRequest } from '../roles/requests/roles';
 
 // Get the Map
 class SheriffLocationMapRequest extends GetEntityMapRequest<void, SheriffLocation, SheriffLocationModuleState> {
@@ -34,7 +32,7 @@ class SheriffLocationMapRequest extends GetEntityMapRequest<void, SheriffLocatio
 
 export const sheriffLocationMapRequest = new SheriffLocationMapRequest();
 
-class CreateOrUpdateSheriffLocationRequest extends CreateOrUpdateEntitiesRequest<SheriffLocation, SheriffLocationModuleState>{
+class CreateOrUpdateSheriffLocationsRequest extends CreateOrUpdateEntitiesRequest<SheriffLocation, SheriffLocationModuleState>{
     createEntity(entity: Partial<SheriffLocation>, { api }: ThunkExtra): Promise<SheriffLocation> {
         return api.createSheriffLocation(entity);
     }
@@ -45,10 +43,10 @@ class CreateOrUpdateSheriffLocationRequest extends CreateOrUpdateEntitiesRequest
         super(
             {
                 namespace: STATE_KEY,
-                actionName: 'createOrUpdateSheriffLocation',
+                actionName: 'createOrUpdateSheriffLocations',
                 toasts: {
-                    success: (s) => `Created/updated SheriffLocation`,
-                    error: (err: any) => `Couldn't create/update SheriffLocation: ${err.message}`
+                    success: (s) => `Created/updated sheriff location(s)`,
+                    error: (err: any) => `Couldn't create/update sheriff location(s): ${err.message}`
                 },
                 ...config
             },
@@ -57,4 +55,29 @@ class CreateOrUpdateSheriffLocationRequest extends CreateOrUpdateEntitiesRequest
     }
 }
 
-export const createOrUpdateSheriffLocationRequest = new CreateOrUpdateSheriffLocationRequest();
+export const createOrUpdateSheriffLocationsRequest = new CreateOrUpdateSheriffLocationsRequest();
+
+class DeleteSheriffLocationsRequest extends RequestAction<IdType[], IdType[], SheriffLocationModuleState> {
+    constructor() {
+        super({
+            namespace: STATE_KEY,
+            actionName: 'deleteSheriffLocations',
+            toasts: {
+                success: (ids) => `${ids.length} sheriff location(s) deleted`,
+                error: (err) => `Problem encountered while deleting sheriff location(s): ${err ? err.toString() : 'Unknown Error'}`
+            }
+        });
+    }
+    public async doWork(request: IdType[], { api }: ThunkExtra): Promise<IdType[]> {
+        await api.deleteSheriffLocations(request);
+        return request;
+    }
+
+    setRequestData(moduleState: SheriffLocationModuleState, sheriffLocationIds: IdType[]) {
+        const newMap = { ...sheriffLocationMapRequest.getRequestData(moduleState) };
+        sheriffLocationIds.forEach(id => delete newMap[id]);
+        return sheriffLocationMapRequest.setRequestData(moduleState, newMap);
+    }
+}
+
+export const deleteSheriffLocationsRequest = new DeleteSheriffLocationsRequest();

@@ -149,7 +149,7 @@ export default class Client implements API {
         return await this._client.UpdateSheriff(id, sheriffToUpdate) as Sheriff;
     }
 
-    // SherifLocations
+    // Sheriff Locations
     async getSheriffLocation(id: IdType): Promise<SheriffLocation> {
         return await this._client.GetSheriffLocationById(id) as SheriffLocation;
     }
@@ -173,7 +173,19 @@ export default class Client implements API {
     async deleteSheriffLocation(sheriffLocationId: string): Promise<void> {
         return await this._client.DeleteSheriffLocation(sheriffLocationId);
     }
-    // end SherifLocations
+
+    /**
+     * TODO: We need a proper endpoint to deal with this this loop isn't gonna do it...
+     * @param ids
+     */
+    async deleteSheriffLocations(ids: IdType[]): Promise<void> {
+        if (ids.length > 0) {
+             ids.forEach(id => this._client.DeleteSheriffLocation(id));
+        }
+
+        return Promise.resolve();
+    }
+    // END SheriffLocations
 
     async getAssignments(dateRange: DateRange = {}): Promise<(CourtAssignment | JailAssignment | EscortAssignment | OtherAssignment)[]> {
         const { startDate, endDate } = dateRange;
