@@ -5989,7 +5989,7 @@ istanbul@^0.4.5:
 
 "jag-shuber-api@github:bcgov/jag-shuber-api":
   version "2.0.0"
-  resolved "https://codeload.github.com/bcgov/jag-shuber-api/tar.gz/f3f97c6204c935715edc56add810b0f034c1c67b"
+  resolved "https://codeload.github.com/bcgov/jag-shuber-api/tar.gz/58dd9da7d0c8929d24cd1834226722a583a70b4f"
   dependencies:
     jsonwebtoken "^8.3.0"
     jwt-decode "^2.2.0"
@@ -7176,10 +7176,10 @@ mkdirp@0.5.1, mkdirp@0.5.x, mkdirp@0.x.x, "mkdirp@>=0.5 0", mkdirp@^0.5.1, mkdir
   dependencies:
     minimist "0.0.8"
 
-moment-timezone@^0.5.17:
-  version "0.5.28"
-  resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.28.tgz#f093d789d091ed7b055d82aa81a82467f72e4338"
-  integrity sha512-TDJkZvAyKIVWg5EtVqRzU97w0Rb0YVbfpqyjgu6GwXCAohVRqwZjf4fOzDE6p1Ch98Sro/8hQQi65WDXW5STPw==
+moment-timezone@0.5.17:
+  version "0.5.17"
+  resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.17.tgz#3c8fef32051d84c3af174d91dc52977dcb0ad7e5"
+  integrity sha512-Y/JpVEWIOA9Gho4vO15MTnW1FCmHi3ypprrkUaxsZ1TKg3uqC8q/qMBjTddkHoiwwZN3qvZSr4zJP7x9V3LpXA==
   dependencies:
     moment ">= 2.9.0"
 
@@ -7187,14 +7187,15 @@ moment@*, moment@^2.20.1:
   version "2.20.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.20.1.tgz#d6eb1a46cbcc14a2b2f9434112c1ff8907f313fd"
 
-"moment@>= 2.9.0", moment@^2.22.1, moment@^2.24.0:
-  version "2.25.0"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.25.0.tgz#e961ab9a5848a1cf2c52b1af4e6c82a8401e7fe9"
-  integrity sha512-vbrf6kJGpevOxmDRvCCvGuCSXvRj93264WcFzjm3Z3pV4lfjrXll8rvSP+EbmCte64udj1LkJMILxQnjXAQBzg==
+moment@2.22.1:
+  version "2.22.1"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.1.tgz#529a2e9bf973f259c9643d237fda84de3a26e8ad"
+  integrity sha512-shJkRTSebXvsVqk56I+lkb2latjBs8I+pc2TzWc545y2iFnSjm7Wg0QMh+ZWcdSLQyGEau5jI8ocnmkyTgr9YQ==
 
-moment@^2.22.2:
-  version "2.22.2"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.2.tgz#3c257f9839fc0e93ff53149632239eb90783ff66"
+"moment@>= 2.9.0", moment@^2.24.0:
+  version "2.25.1"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.25.1.tgz#1cb546dca1eccdd607c9324747842200b683465d"
+  integrity sha512-nRKMf9wDS4Fkyd0C9LXh2FFXinD+iwbJ5p/lh3CHitW9kZbRbJ8hCruiadiIXZVbeAqKZzqcTvHnK3mRhFjb6w==
 
 morgan@^1.6.1:
   version "1.10.0"
@@ -10691,7 +10692,7 @@ superagent-prefix@^0.0.2:
   resolved "https://registry.yarnpkg.com/superagent-prefix/-/superagent-prefix-0.0.2.tgz#b15bbb1353f889b00d25af10b4f11b350d203b06"
   integrity sha1-sVu7E1P4ibANJa8QtPEbNQ0gOwY=
 
-superagent-use@^0.1.0:
+superagent-use@0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/superagent-use/-/superagent-use-0.1.0.tgz#d28dbbbf573ba980329b4645897608bc99501cff"
   integrity sha1-0o27v1c7qYAym0ZFiXYIvJlQHP8=
@@ -10699,7 +10700,7 @@ superagent-use@^0.1.0:
     extend "^3.0.0"
     methods "~1.1.2"
 
-superagent@^3.8.3:
+superagent@3.8.3, superagent@^3.8.3:
   version "3.8.3"
   resolved "https://registry.yarnpkg.com/superagent/-/superagent-3.8.3.tgz#460ea0dbdb7d5b11bc4f78deba565f86a178e128"
   dependencies:

@@ -42,7 +42,7 @@
     "jag-shuber-api": "github:bcgov/jag-shuber-api",
     "jest": "20.0.4",
     "map": "^1.0.1",
-    "moment": "^2.22.2",
+    "moment": "2.22.1",
     "object-assign": "4.1.1",
     "object-diff": "^0.0.4",
     "open-iconic": "^1.1.1",
