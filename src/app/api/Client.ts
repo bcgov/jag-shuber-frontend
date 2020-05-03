@@ -154,8 +154,8 @@ export default class Client implements API {
         return await this._client.GetSheriffLocationById(id) as SheriffLocation;
     }
 
-    async getSheriffLocations(): Promise<SheriffLocation[]> {
-        return await this._client.GetSheriffLocations() as SheriffLocation[];
+    async getSheriffLocations(locationId?: IdType): Promise<SheriffLocation[]> {
+        return await this._client.GetSheriffLocations(locationId) as SheriffLocation[];
     }
 
     async createSheriffLocation(sheriffLocation: Partial<SheriffLocation>): Promise<SheriffLocation> {

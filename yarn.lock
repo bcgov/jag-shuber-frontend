@@ -5989,7 +5989,7 @@ istanbul@^0.4.5:
 
 "jag-shuber-api@github:bcgov/jag-shuber-api":
   version "2.0.0"
-  resolved "https://codeload.github.com/bcgov/jag-shuber-api/tar.gz/58dd9da7d0c8929d24cd1834226722a583a70b4f"
+  resolved "https://codeload.github.com/bcgov/jag-shuber-api/tar.gz/a6a58b1fc7adcbc501e564ad897b9d3dca0d86d6"
   dependencies:
     jsonwebtoken "^8.3.0"
     jwt-decode "^2.2.0"
@@ -5997,13 +5997,13 @@ istanbul@^0.4.5:
     koa-bodyparser "^4.2.0"
     koa-morgan "^1.0.1"
     koa-router "^7.4.0"
-    moment "^2.22.1"
-    moment-timezone "^0.5.17"
+    moment "2.22.1"
+    moment-timezone "0.5.17"
     pg "^7.4.1"
     squel "^5.12.1"
-    superagent "^3.8.3"
+    superagent "3.8.3"
     superagent-prefix "^0.0.2"
-    superagent-use "^0.1.0"
+    superagent-use "0.1.0"
     tsoa "^2.1.8"
     typescript-ioc "^1.2.4"
     uuid "^3.2.1"
@@ -7196,6 +7196,10 @@ moment@2.22.1:
   version "2.25.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.25.1.tgz#1cb546dca1eccdd607c9324747842200b683465d"
   integrity sha512-nRKMf9wDS4Fkyd0C9LXh2FFXinD+iwbJ5p/lh3CHitW9kZbRbJ8hCruiadiIXZVbeAqKZzqcTvHnK3mRhFjb6w==
+
+moment@^2.22.2:
+  version "2.22.2"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.2.tgz#3c257f9839fc0e93ff53149632239eb90783ff66"
 
 morgan@^1.6.1:
   version "1.10.0"
@@ -10703,6 +10707,7 @@ superagent-use@0.1.0:
 superagent@3.8.3, superagent@^3.8.3:
   version "3.8.3"
   resolved "https://registry.yarnpkg.com/superagent/-/superagent-3.8.3.tgz#460ea0dbdb7d5b11bc4f78deba565f86a178e128"
+  integrity sha512-GLQtLMCoEIK4eDv6OGtkOoSMt3D+oq0y3dsxMuYuDvaNUvuT8eFBuLmfR0iYYzHC1e8hpzC6ZsxbuP6DIalMFA==
   dependencies:
     component-emitter "^1.2.0"
     cookiejar "^2.1.0"

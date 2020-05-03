@@ -6,7 +6,6 @@
   "scripts": {
     "start": "node scripts/start.js",
     "start:dev": "API_URL=http://localhost:3001/ yarn start",
-    "start:remote-api": "API_URL=http://localhost:8080/ yarn start",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
     "test:coverage": "node scripts/test.js --env=jsdom --coverage",
@@ -42,7 +41,7 @@
     "jag-shuber-api": "github:bcgov/jag-shuber-api",
     "jest": "20.0.4",
     "map": "^1.0.1",
-    "moment": "2.22.1",
+    "moment": "^2.22.2",
     "object-assign": "4.1.1",
     "object-diff": "^0.0.4",
     "open-iconic": "^1.1.1",
