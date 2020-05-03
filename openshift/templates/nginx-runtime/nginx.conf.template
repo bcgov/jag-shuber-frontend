@@ -52,6 +52,10 @@ http {
             proxy_set_header    SMGOV_USERDISPLAYNAME  $http_smgov_userdisplayname;
             proxy_set_header    SMGOV_USERTYPE  $http_smgov_usertype;
             proxy_set_header    SMGOV_USERIDENTIFIER  $http_smgov_useridentifier;
+
+            proxy_buffer_size          128k;
+            proxy_buffers              4 256k;
+            proxy_busy_buffers_size    256k;
         }
 
         # serve our app here
