@@ -14,12 +14,12 @@ class UserTokenRequest extends RequestActionBase<void, TokenPayload | undefined,
         return decodeJwt<TokenPayload>(tokenString);
     }
 
-    dispatchSuccess(dispatch: Dispatch<any>, response: TokenPayload | undefined, actionConfig: RequestActionConfig<TokenPayload | undefined> = {}) {
+    async dispatchSuccess(dispatch: Dispatch<any>, response: TokenPayload | undefined, actionConfig: RequestActionConfig<TokenPayload | undefined> = {}) {
         // if a token has been retrieved, then initialize our application
         if (response !== undefined) {
-            dispatch(initializeApplication());
+            await dispatch(initializeApplication());
+            await super.dispatchSuccess(dispatch, response, actionConfig);
         }
-        // super.dispatchSuccess(dispatch, response, actionConfig);
     }
 
     get updateUserTokenActionCreator() {
