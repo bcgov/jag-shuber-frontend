@@ -87,9 +87,10 @@ const enhancers = composeEnhancers(
 const store = createStore(rootReducer, enhancers);
 
 // Wire up the Token change event to the store
-(api as Client).onTokenChanged.on(t => {
-    store.dispatch(updateUserToken(t));
+(api as Client).onTokenChanged.on(async (t) => {
+    await store.dispatch(updateUserToken(t));
 });
+
 // Request the initial token
 store.dispatch(getUserToken());
 
