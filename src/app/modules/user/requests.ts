@@ -19,7 +19,7 @@ class UserTokenRequest extends RequestActionBase<void, TokenPayload | undefined,
         if (response !== undefined) {
             dispatch(initializeApplication());
         }
-        super.dispatchSuccess(dispatch, response, actionConfig);
+        // super.dispatchSuccess(dispatch, response, actionConfig);
     }
 
     get updateUserTokenActionCreator() {
