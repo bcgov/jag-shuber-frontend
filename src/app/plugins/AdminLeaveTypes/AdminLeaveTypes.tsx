@@ -63,7 +63,7 @@ export default class AdminLeaveTypes extends FormContainerBase<AdminLeaveTypesPr
     // This key maps to the [appScope: FrontendScope] (in the token)
     // To set permissions for a new plugin, add a corresponding entry under System Settings > Components
     // with the name as defined as the plugin's name.
-    name = 'ADMIN_PLUGIN_LEAVE_TYPES';
+    name = 'ADMIN_LEAVE_TYPES';
     // END NOTICE
     reduxFormKey = 'leaves';
     formFieldNames = {

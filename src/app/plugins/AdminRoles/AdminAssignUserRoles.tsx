@@ -155,7 +155,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
     // This key maps to the [appScope: FrontendScope] (in the token)
     // To set permissions for a new plugin, add a corresponding entry under System Settings > Components
     // with the name as defined as the plugin's name.
-    name = 'ADMIN_PLUGIN_USER_ROLES';
+    name = 'ADMIN_USER_ROLES';
     // END NOTICE
     reduxFormKey = 'roles';
     formFieldNames = {

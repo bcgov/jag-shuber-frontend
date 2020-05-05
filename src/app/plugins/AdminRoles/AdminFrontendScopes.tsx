@@ -165,7 +165,7 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
     // This key maps to the [appScope: FrontendScope] (in the token)
     // To set permissions for a new plugin, add a corresponding entry under System Settings > Components
     // with the name as defined as the plugin's name.
-    name = 'ADMIN_PLUGIN_FRONTEND_SCOPES';
+    name = 'ADMIN_FRONTEND_SCOPES';
     // END NOTICE
     reduxFormKey = 'roles';
     formFieldNames = {

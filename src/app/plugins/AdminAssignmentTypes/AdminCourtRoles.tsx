@@ -69,7 +69,7 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
     // This key maps to the [appScope: FrontendScope] (in the token)
     // To set permissions for a new plugin, add a corresponding entry under System Settings > Components
     // with the name as defined as the plugin's name.
-    name = 'ADMIN_PLUGIN_COURT_ROLES';
+    name = 'ADMIN_COURT_ROLES';
     // END NOTICE
     reduxFormKey = 'assignments';
     formFieldNames = {

@@ -16,16 +16,16 @@ export default (props: any) => {
     } = props;
 
     const leaveTypesPlugin = sectionPlugins
-        .find((p: any) => p.name === 'ADMIN_PLUGIN_LEAVE_TYPES');
+        .find((p: any) => p.name === 'ADMIN_LEAVE_TYPES');
 
     const trainingTypes = sectionPlugins
-        .find((p: any) => p.name === 'ADMIN_PLUGIN_TRAINING_TYPES');
+        .find((p: any) => p.name === 'ADMIN_TRAINING_TYPES');
 
     // TODO: Fix me! This console log should explain exactly what's going on...
     // console.log('WorkSectionsLayout selectedSection: ' + selectedSection);
 
-    const validSections = ['ADMIN_PLUGIN_LEAVE_TYPES', 'ADMIN_PLUGIN_TRAINING_TYPES'];
-    selectedSection = (validSections.indexOf(selectedSection) > -1) ? selectedSection : 'ADMIN_PLUGIN_LEAVE_TYPES';
+    const validSections = ['ADMIN_LEAVE_TYPES', 'ADMIN_TRAINING_TYPES'];
+    selectedSection = (validSections.indexOf(selectedSection) > -1) ? selectedSection : 'ADMIN_LEAVE_TYPES';
 
     return (
         <Tab.Container
@@ -40,7 +40,7 @@ export default (props: any) => {
             <Row className="clearfix">
                 <Col sm={12}>
                     <Tab.Content animation={false}>
-                        <Tab.Pane key={'ADMIN_PLUGIN_LEAVE_TYPES'} eventKey={'ADMIN_PLUGIN_LEAVE_TYPES'}>
+                        <Tab.Pane key={'ADMIN_LEAVE_TYPES'} eventKey={'ADMIN_LEAVE_TYPES'}>
                             <Row className="clearfix">
                                 <Col sm={12} lg={6} lgPush={3}>
                                     <PageTitle title={({}: any) => `Leave Types`} />
@@ -48,7 +48,7 @@ export default (props: any) => {
                                 </Col>
                             </Row>
                         </Tab.Pane>
-                        <Tab.Pane key={'ADMIN_PLUGIN_TRAINING_TYPES'} eventKey={'ADMIN_PLUGIN_TRAINING_TYPES'}>
+                        <Tab.Pane key={'ADMIN_TRAINING_TYPES'} eventKey={'ADMIN_TRAINING_TYPES'}>
                             <Row className="clearfix">
                                 <Col sm={12} lg={6} lgPush={3}>
                                     <PageTitle title={({}: any) => `Training Types`} />

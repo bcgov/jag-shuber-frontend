@@ -170,20 +170,20 @@ export const linkSheriff: ThunkAction<AssignmentDuty, void> = (duty: AssignmentD
 
 type IActionMap = {
     'ADMIN_COURTROOMS_SELECT_SECTION': string | undefined;
-    'ADMIN_COURTROOMS_SET_PLUGIN_SUBMIT_ERRORS': ErrorMap | undefined;
-    'ADMIN_COURTROOMS_SET_PLUGIN_FILTERS': {} | undefined;
+    'ADMIN_COURTROOMS_SET_SUBMIT_ERRORS': ErrorMap | undefined;
+    'ADMIN_COURTROOMS_SET_FILTERS': {} | undefined;
     'ADMIN_COURT_ROLES_SELECT_SECTION': string | undefined;
-    'ADMIN_COURT_ROLES_SET_PLUGIN_SUBMIT_ERRORS': ErrorMap | undefined;
-    'ADMIN_COURT_ROLES_SET_PLUGIN_FILTERS': {} | undefined;
+    'ADMIN_COURT_ROLES_SET_SUBMIT_ERRORS': ErrorMap | undefined;
+    'ADMIN_COURT_ROLES_SET_FILTERS': {} | undefined;
     'ADMIN_JAIL_ROLES_SELECT_SECTION': string | undefined;
-    'ADMIN_JAIL_ROLES_SET_PLUGIN_SUBMIT_ERRORS': ErrorMap | undefined;
-    'ADMIN_JAIL_ROLES_SET_PLUGIN_FILTERS': {} | undefined;
+    'ADMIN_JAIL_ROLES_SET_SUBMIT_ERRORS': ErrorMap | undefined;
+    'ADMIN_JAIL_ROLES_SET_FILTERS': {} | undefined;
     'ADMIN_ESCORT_TYPES_SELECT_SECTION': string | undefined;
-    'ADMIN_ESCORT_TYPES_SET_PLUGIN_SUBMIT_ERRORS': ErrorMap | undefined;
-    'ADMIN_ESCORT_TYPES_SET_PLUGIN_FILTERS': {} | undefined;
+    'ADMIN_ESCORT_TYPES_SET_SUBMIT_ERRORS': ErrorMap | undefined;
+    'ADMIN_ESCORT_TYPES_SET_FILTERS': {} | undefined;
     'ADMIN_OTHER_TYPES_SELECT_SECTION': string | undefined;
-    'ADMIN_OTHER_TYPES_SET_PLUGIN_SUBMIT_ERRORS': ErrorMap | undefined;
-    'ADMIN_OTHER_TYPES_SET_PLUGIN_FILTERS': {} | undefined;
+    'ADMIN_OTHER_TYPES_SET_SUBMIT_ERRORS': ErrorMap | undefined;
+    'ADMIN_OTHER_TYPES_SET_FILTERS': {} | undefined;
 };
 
 export type IActionType = keyof IActionMap;
@@ -209,11 +209,11 @@ export const selectAdminCourtroomsPluginSection = (sectionName?: string) => (
 );
 
 export const setAdminCourtroomsPluginSubmitErrors = (errors?: ErrorMap) => (
-    actionCreator('ADMIN_COURTROOMS_SET_PLUGIN_SUBMIT_ERRORS')(errors)
+    actionCreator('ADMIN_COURTROOMS_SET_SUBMIT_ERRORS')(errors)
 );
 
 export const setAdminCourtroomsPluginFilters = (filters: {}) => (
-    actionCreator('ADMIN_COURTROOMS_SET_PLUGIN_FILTERS')(filters)
+    actionCreator('ADMIN_COURTROOMS_SET_FILTERS')(filters)
 );
 
 export const selectAdminCourtRolesPluginSection = (sectionName?: string) => (
@@ -221,11 +221,11 @@ export const selectAdminCourtRolesPluginSection = (sectionName?: string) => (
 );
 
 export const setAdminCourtRolesPluginSubmitErrors = (errors?: ErrorMap) => (
-    actionCreator('ADMIN_COURT_ROLES_SET_PLUGIN_SUBMIT_ERRORS')(errors)
+    actionCreator('ADMIN_COURT_ROLES_SET_SUBMIT_ERRORS')(errors)
 );
 
 export const setAdminCourtRolesPluginFilters = (filters: {}) => (
-    actionCreator('ADMIN_COURT_ROLES_SET_PLUGIN_FILTERS')(filters)
+    actionCreator('ADMIN_COURT_ROLES_SET_FILTERS')(filters)
 );
 
 export const selectAdminJailRolesPluginSection = (sectionName?: string) => (
@@ -233,11 +233,11 @@ export const selectAdminJailRolesPluginSection = (sectionName?: string) => (
 );
 
 export const setAdminJailRolesPluginSubmitErrors = (errors?: ErrorMap) => (
-    actionCreator('ADMIN_JAIL_ROLES_SET_PLUGIN_SUBMIT_ERRORS')(errors)
+    actionCreator('ADMIN_JAIL_ROLES_SET_SUBMIT_ERRORS')(errors)
 );
 
 export const setAdminJailRolesPluginFilters = (filters: {}) => (
-    actionCreator('ADMIN_JAIL_ROLES_SET_PLUGIN_FILTERS')(filters)
+    actionCreator('ADMIN_JAIL_ROLES_SET_FILTERS')(filters)
 );
 
 export const selectAdminEscortTypesPluginSection = (sectionName?: string) => (
@@ -245,11 +245,11 @@ export const selectAdminEscortTypesPluginSection = (sectionName?: string) => (
 );
 
 export const setAdminEscortTypesPluginSubmitErrors = (errors?: ErrorMap) => (
-    actionCreator('ADMIN_ESCORT_TYPES_SET_PLUGIN_SUBMIT_ERRORS')(errors)
+    actionCreator('ADMIN_ESCORT_TYPES_SET_SUBMIT_ERRORS')(errors)
 );
 
 export const setAdminEscortTypesPluginFilters = (filters: {}) => (
-    actionCreator('ADMIN_ESCORT_TYPES_SET_PLUGIN_FILTERS')(filters)
+    actionCreator('ADMIN_ESCORT_TYPES_SET_FILTERS')(filters)
 );
 
 export const selectAdminOtherTypesPluginSection = (sectionName?: string) => (
@@ -257,9 +257,9 @@ export const selectAdminOtherTypesPluginSection = (sectionName?: string) => (
 );
 
 export const setAdminOtherTypesPluginSubmitErrors = (errors?: ErrorMap) => (
-    actionCreator('ADMIN_OTHER_TYPES_SET_PLUGIN_SUBMIT_ERRORS')(errors)
+    actionCreator('ADMIN_OTHER_TYPES_SET_SUBMIT_ERRORS')(errors)
 );
 
 export const setAdminOtherTypesPluginFilters = (filters: {}) => (
-    actionCreator('ADMIN_OTHER_TYPES_SET_PLUGIN_FILTERS')(filters)
+    actionCreator('ADMIN_OTHER_TYPES_SET_FILTERS')(filters)
 );

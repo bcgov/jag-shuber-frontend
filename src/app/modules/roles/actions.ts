@@ -76,8 +76,8 @@ export const unexpireUserRoles = userRoleRequests.unexpireUserRolesRequest.actio
 
 type IActionMap = {
     'ADMIN_ROLES_SELECT_SECTION': string | undefined;
-    'ADMIN_ROLES_SET_PLUGIN_SUBMIT_ERRORS': ErrorMap | undefined;
-    'ADMIN_ROLES_SET_PLUGIN_FILTERS': {} | undefined;
+    'ADMIN_ROLES_SET_SUBMIT_ERRORS': ErrorMap | undefined;
+    'ADMIN_ROLES_SET_FILTERS': {} | undefined;
 };
 
 export type IActionType = keyof IActionMap;
@@ -103,9 +103,9 @@ export const selectAdminRolesPluginSection = (sectionName?: string) => (
 );
 
 export const setAdminRolesPluginSubmitErrors = (errors?: ErrorMap) => (
-    actionCreator('ADMIN_ROLES_SET_PLUGIN_SUBMIT_ERRORS')(errors)
+    actionCreator('ADMIN_ROLES_SET_SUBMIT_ERRORS')(errors)
 );
 
 export const setAdminRolesPluginFilters = (filters: {}) => (
-    actionCreator('ADMIN_ROLES_SET_PLUGIN_FILTERS')(filters)
+    actionCreator('ADMIN_ROLES_SET_FILTERS')(filters)
 );

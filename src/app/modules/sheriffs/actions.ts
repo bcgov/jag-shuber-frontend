@@ -10,7 +10,7 @@ export const getSheriffRankCodes = sheriffRequests.sheriffRankCodeMapRequest.act
 // TODO: Basically duped in roles/actions, make something generic
 type IActionMap = {
     'SHERIFF_PROFILE_SELECT_SECTION': string | undefined;
-    'SHERIFF_PROFILE_SET_PLUGIN_SUBMIT_ERRORS': ErrorMap | undefined;
+    'SHERIFF_PROFILE_SET_SUBMIT_ERRORS': ErrorMap | undefined;
 };
 
 export type IActionType = keyof IActionMap;
@@ -36,5 +36,5 @@ export const selectSheriffProfileSection = (sectionName?: string) => (
 );
 
 export const setSheriffProfilePluginSubmitErrors = (errors?: ErrorMap) => (
-    actionCreator('SHERIFF_PROFILE_SET_PLUGIN_SUBMIT_ERRORS')(errors)
+    actionCreator('SHERIFF_PROFILE_SET_SUBMIT_ERRORS')(errors)
 );

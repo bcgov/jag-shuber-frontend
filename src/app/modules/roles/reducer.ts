@@ -51,10 +51,10 @@ const actionReducer = createReducer<RoleModuleState>({
   ADMIN_ROLES_SELECT_SECTION: (state, sectionName) => {
     return { ...state, selectedProfileSection: sectionName };
   },
-  ADMIN_ROLES_SET_PLUGIN_SUBMIT_ERRORS: (state, pluginErrors) => {
+  ADMIN_ROLES_SET_SUBMIT_ERRORS: (state, pluginErrors) => {
     return { ...state, pluginSubmitErrors: pluginErrors };
   },
-  ADMIN_ROLES_SET_PLUGIN_FILTERS: (state, filters) => {
+  ADMIN_ROLES_SET_FILTERS: (state, filters) => {
     return { ...state, pluginFilters: filters };
   }
 });

@@ -13,11 +13,11 @@ export const unexpireLeaveSubCodes = leaveRequests.unexpireLeaveSubCodesRequest.
 
 type IActionMap = {
     'ADMIN_LEAVE_TYPES_SELECT_SECTION': string | undefined;
-    'ADMIN_LEAVE_TYPES_SET_PLUGIN_SUBMIT_ERRORS': ErrorMap | undefined;
-    'ADMIN_LEAVE_TYPES_SET_PLUGIN_FILTERS': {} | undefined;
+    'ADMIN_LEAVE_TYPES_SET_SUBMIT_ERRORS': ErrorMap | undefined;
+    'ADMIN_LEAVE_TYPES_SET_FILTERS': {} | undefined;
     'ADMIN_TRAINING_TYPES_SELECT_SECTION': string | undefined;
-    'ADMIN_TRAINING_TYPES_SET_PLUGIN_SUBMIT_ERRORS': ErrorMap | undefined;
-    'ADMIN_TRAINING_TYPES_SET_PLUGIN_FILTERS': {} | undefined;
+    'ADMIN_TRAINING_TYPES_SET_SUBMIT_ERRORS': ErrorMap | undefined;
+    'ADMIN_TRAINING_TYPES_SET_FILTERS': {} | undefined;
 };
 
 export type IActionType = keyof IActionMap;
@@ -43,11 +43,11 @@ export const selectAdminLeaveTypesPluginSection = (sectionName?: string) => (
 );
 
 export const setAdminLeaveTypesPluginSubmitErrors = (errors?: ErrorMap) => (
-    actionCreator('ADMIN_LEAVE_TYPES_SET_PLUGIN_SUBMIT_ERRORS')(errors)
+    actionCreator('ADMIN_LEAVE_TYPES_SET_SUBMIT_ERRORS')(errors)
 );
 
 export const setAdminLeaveTypesPluginFilters = (filters: {}) => (
-    actionCreator('ADMIN_LEAVE_TYPES_SET_PLUGIN_FILTERS')(filters)
+    actionCreator('ADMIN_LEAVE_TYPES_SET_FILTERS')(filters)
 );
 
 export const selectAdminTrainingTypesPluginSection = (sectionName?: string) => (
@@ -55,11 +55,11 @@ export const selectAdminTrainingTypesPluginSection = (sectionName?: string) => (
 );
 
 export const setAdminTrainingTypesPluginSubmitErrors = (errors?: ErrorMap) => (
-    actionCreator('ADMIN_TRAINING_TYPES_SET_PLUGIN_SUBMIT_ERRORS')(errors)
+    actionCreator('ADMIN_TRAINING_TYPES_SET_SUBMIT_ERRORS')(errors)
 );
 
 export const setAdminTrainingTypesPluginFilters = (filters: {}) => {
     return (
-        actionCreator('ADMIN_TRAINING_TYPES_SET_PLUGIN_FILTERS')(filters)
+        actionCreator('ADMIN_TRAINING_TYPES_SET_FILTERS')(filters)
     );
 }

@@ -38,7 +38,7 @@ export interface ManageLeaveTypesProps extends
 
 class ManageLeaveTypes extends React.PureComponent<AdminFormProps & ManageLeaveTypesProps> {
     static defaultProps: Partial<ManageLeaveTypesProps> = {
-        selectedSection: 'ADMIN_PLUGIN_LEAVE_TYPES:ADMIN_PLUGIN_TRAINING_TYPES'
+        selectedSection: 'ADMIN_LEAVE_TYPES:ADMIN_TRAINING_TYPES'
     };
 
     state = {
@@ -62,7 +62,7 @@ class ManageLeaveTypes extends React.PureComponent<AdminFormProps & ManageLeaveT
 
         const {
             selectAdminFormSection,
-            selectedSection = 'ADMIN_PLUGIN_LEAVE_TYPES:ADMIN_PLUGIN_TRAINING_TYPES'
+            selectedSection = 'ADMIN_LEAVE_TYPES:ADMIN_TRAINING_TYPES'
         } = this.props;
 
         return (
@@ -79,11 +79,11 @@ class ManageLeaveTypes extends React.PureComponent<AdminFormProps & ManageLeaveT
                                     <div style={{ display: 'flex', alignItems: 'center', marginRight: '15px' }}>
                                         <h6 style={{ color: 'white', fontWeight: 'bold', marginBottom: '3px' }}>Choose Type: </h6>
                                     </div>
-                                    <div className={`admin-form-filters-toggle admin-form-page-tab${selectedSection === 'ADMIN_PLUGIN_LEAVE_TYPES' ? ' is-active' : ''}`} onClick={() => selectAdminFormSection('ADMIN_PLUGIN_LEAVE_TYPES')}>
+                                    <div className={`admin-form-filters-toggle admin-form-page-tab${selectedSection === 'ADMIN_LEAVE_TYPES' ? ' is-active' : ''}`} onClick={() => selectAdminFormSection('ADMIN_LEAVE_TYPES')}>
                                         {/* <Glyphicon glyph="chevron-down" /> */}Leave<span className="visible-lg">&nbsp; Types</span>
                                     </div>
                                     &nbsp;&nbsp;
-                                    <div className={`admin-form-filters-toggle admin-form-page-tab${selectedSection === 'ADMIN_PLUGIN_TRAINING_TYPES' ? ' is-active' : ''}`} onClick={() => selectAdminFormSection('ADMIN_PLUGIN_TRAINING_TYPES')}>
+                                    <div className={`admin-form-filters-toggle admin-form-page-tab${selectedSection === 'ADMIN_TRAINING_TYPES' ? ' is-active' : ''}`} onClick={() => selectAdminFormSection('ADMIN_TRAINING_TYPES')}>
                                         {/* <Glyphicon glyph="chevron-down" /> */}Training<span className="visible-lg">&nbsp; Types</span>
                                     </div>
                                 </div>

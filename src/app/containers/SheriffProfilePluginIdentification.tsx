@@ -22,7 +22,7 @@ export default class SheriffProfilePluginId
     // This key maps to the [appScope: FrontendScope] (in the token)
     // To set permissions for a new plugin, add a corresponding entry under System Settings > Components
     // with the name as defined as the plugin's name.
-    name = 'SHERIFF_PROFILE_PLUGIN_IDENT';
+    name = 'SHERIFF_PROFILE_IDENT';
     // END NOTICE
     reduxFormKey = 'identification';
     formFieldNames = {

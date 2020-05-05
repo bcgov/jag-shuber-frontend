@@ -1,7 +1,7 @@
 import RequestActionBase, { RequestActionConfig } from '../../infrastructure/Requests/RequestActionBase';
 import { TokenPayload, decodeJwt } from 'jag-shuber-api';
 import { UserState, STATE_KEY } from './common';
-import { ThunkExtra } from '../../store';
+import store, { ThunkExtra } from '../../store';
 import { Dispatch } from 'redux';
 import { initializeApplication } from '../system/action';
 
@@ -9,18 +9,33 @@ class UserTokenRequest extends RequestActionBase<void, TokenPayload | undefined,
     constructor() {
         super({ namespace: STATE_KEY, actionName: 'userToken', toasts: {} });
     }
-    public async doWork(request: void, { api }: ThunkExtra) {
+    public async doWork(request: void, { api }: ThunkExtra, getState: any) {
+        console.log('Is there an existing getToken request underway? ' + getState().user.userToken.isBusy);
+        // if (!(getState().user.userToken.isBusy)) {
+        console.log('If not, grab a new token from the API');
         let tokenString = await api.getToken();
         return decodeJwt<TokenPayload>(tokenString);
+        // }
+
+        // return undefined;
     }
 
     async dispatchSuccess(dispatch: Dispatch<any>, response: TokenPayload | undefined, actionConfig: RequestActionConfig<TokenPayload | undefined> = {}) {
         // If a token has been retrieved, then initialize our application
+        console.log('--------------------------------------------------------------');
+        console.log('UserTokenRequest.dispatchSuccess');
+        console.log('If a token has been retrieved, then initialize our application');
+        console.log(response);
+        console.log(actionConfig);
+
         if (response !== undefined) {
             await dispatch(initializeApplication());
+            console.log('Success! Application initialized');
 
-            await super.dispatchSuccess(dispatch, response, actionConfig);
         }
+
+        await super.dispatchSuccess(dispatch, response, actionConfig);
+        console.log('--------------------------------------------------------------');
     }
     get updateUserTokenActionCreator() {
         return this.getSuccessAction.bind(this);

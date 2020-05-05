@@ -33,10 +33,5 @@ const initialActions: any[] = [
     getGenderCodes
 ];
 export const initializeApplication: ThunkAction<void> = () => async (dispatch, getState, extra) => {
-    console.log('Check store state, make sure we actually have a token');
-    console.log(getState());
-    if (!store.getState().user.userToken.isBusy) {
-        console.log('Token exists, initialize the application');
-        initialActions.forEach(actionCreator => dispatch(actionCreator()));
-    }
+    initialActions.forEach(actionCreator => dispatch(actionCreator()));
 };

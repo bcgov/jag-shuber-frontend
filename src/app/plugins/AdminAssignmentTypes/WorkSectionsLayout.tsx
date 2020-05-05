@@ -16,28 +16,28 @@ export default (props: any) => {
     } = props;
 
     const courtroomsPlugin = sectionPlugins
-        .find((p: any) => p.name === 'ADMIN_PLUGIN_COURTROOMS');
+        .find((p: any) => p.name === 'ADMIN_COURTROOMS');
 
     const courtRolesPlugin = sectionPlugins
-        .find((p: any) => p.name === 'ADMIN_PLUGIN_COURT_ROLES');
+        .find((p: any) => p.name === 'ADMIN_COURT_ROLES');
 
     const jailroomsPlugin = sectionPlugins
-        .find((p: any) => p.name === 'ADMIN_PLUGIN_JAILROOMS');
+        .find((p: any) => p.name === 'ADMIN_JAILROOMS');
 
     const jailRolesPlugin = sectionPlugins
-        .find((p: any) => p.name === 'ADMIN_PLUGIN_JAIL_ROLES');
+        .find((p: any) => p.name === 'ADMIN_JAIL_ROLES');
 
     const escortTypesPlugin = sectionPlugins
-        .find((p: any) => p.name === 'ADMIN_PLUGIN_ESCORT_TYPES');
+        .find((p: any) => p.name === 'ADMIN_ESCORT_TYPES');
 
     const otherTypesPlugin = sectionPlugins
-        .find((p: any) => p.name === 'ADMIN_PLUGIN_OTHER_TYPES');
+        .find((p: any) => p.name === 'ADMIN_OTHER_TYPES');
 
     // TODO: Fix me! This console log should explain exactly what's going on...
     // console.log('WorkSectionsLayout selectedSection: ' + selectedSection);
 
-    const validSections = ['ADMIN_PLUGIN_COURTROOMS', 'ADMIN_PLUGIN_COURT_ROLES', 'ADMIN_PLUGIN_JAIL_ROLES', 'ADMIN_PLUGIN_ESCORT_TYPES', 'ADMIN_PLUGIN_OTHER_TYPES'];
-    selectedSection = (validSections.indexOf(selectedSection) > -1) ? selectedSection : 'ADMIN_PLUGIN_COURTROOMS';
+    const validSections = ['ADMIN_COURTROOMS', 'ADMIN_COURT_ROLES', 'ADMIN_JAIL_ROLES', 'ADMIN_ESCORT_TYPES', 'ADMIN_OTHER_TYPES'];
+    selectedSection = (validSections.indexOf(selectedSection) > -1) ? selectedSection : 'ADMIN_COURTROOMS';
 
     return (
         <Tab.Container
@@ -53,7 +53,7 @@ export default (props: any) => {
                 <Col sm={12}>
                     <Tab.Content animation={false}>
                         {/* Use className if you want to use col-xl-* prefixed columns, react-bootstrap doesn't support xl cols */}
-                        <Tab.Pane key={'ADMIN_PLUGIN_COURTROOMS'} eventKey={'ADMIN_PLUGIN_COURTROOMS'}>
+                        <Tab.Pane key={'ADMIN_COURTROOMS'} eventKey={'ADMIN_COURTROOMS'}>
                             <Row className="clearfix">
                                 <Col sm={12} lg={8} lgPush={2}>
                                     <PageTitle title={({ currentLocationName }: any) => `${currentLocationName} Courtrooms`} />
@@ -61,7 +61,7 @@ export default (props: any) => {
                                 </Col>
                             </Row>
                         </Tab.Pane>
-                        <Tab.Pane key={'ADMIN_PLUGIN_COURT_ROLES'} eventKey={'ADMIN_PLUGIN_COURT_ROLES'}>
+                        <Tab.Pane key={'ADMIN_COURT_ROLES'} eventKey={'ADMIN_COURT_ROLES'}>
                             <Row className="clearfix">
 
                                 <Col sm={12} lg={8} lgPush={2}>
@@ -70,7 +70,7 @@ export default (props: any) => {
                                 </Col>
                             </Row>
                         </Tab.Pane>
-                        <Tab.Pane key={'ADMIN_PLUGIN_JAIL_ROLES'} eventKey={'ADMIN_PLUGIN_JAIL_ROLES'}>
+                        <Tab.Pane key={'ADMIN_JAIL_ROLES'} eventKey={'ADMIN_JAIL_ROLES'}>
                             <Row className="clearfix">
                                 <Col sm={12} lg={8} lgPush={2}>
                                     <PageTitle title={({ currentLocationName }: any) => `${currentLocationName} Jail Roles`} />
@@ -78,7 +78,7 @@ export default (props: any) => {
                                 </Col>
                             </Row>
                         </Tab.Pane>
-                        <Tab.Pane key={'ADMIN_PLUGIN_ESCORT_TYPES'} eventKey={'ADMIN_PLUGIN_ESCORT_TYPES'}>
+                        <Tab.Pane key={'ADMIN_ESCORT_TYPES'} eventKey={'ADMIN_ESCORT_TYPES'}>
                             <Row className="clearfix">
                                 <Col sm={12} lg={8} lgPush={2}>
                                     <PageTitle title={({ currentLocationName }: any) => `${currentLocationName} Escort Runs`} />
@@ -86,7 +86,7 @@ export default (props: any) => {
                                 </Col>
                             </Row>
                         </Tab.Pane>
-                        <Tab.Pane key={'ADMIN_PLUGIN_OTHER_TYPES'} eventKey={'ADMIN_PLUGIN_OTHER_TYPES'}>
+                        <Tab.Pane key={'ADMIN_OTHER_TYPES'} eventKey={'ADMIN_OTHER_TYPES'}>
                             <Row className="clearfix">
                                 <Col sm={12} lg={8} lgPush={2}>
                                     <PageTitle title={({ currentLocationName }: any) => `${currentLocationName} Other Assignments`} />
