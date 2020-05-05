@@ -26,6 +26,7 @@ class UserTokenRequest extends RequestActionBase<void, TokenPayload | undefined,
         console.log('UserTokenRequest.dispatchSuccess');
         console.log('If a token has been retrieved, then initialize our application');
         console.log(response);
+
         console.log(actionConfig);
 
         if (response !== undefined) {
