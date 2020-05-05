@@ -1,4 +1,5 @@
 import * as ShuberApi from 'jag-shuber-api';
+import * as superAgent from 'superagent';
 import moment from 'moment';
 import {
     API,
@@ -99,6 +100,10 @@ export default class Client implements API {
         this._client.requestInterceptor = (req: any) => {
             return req;
         };
+    }
+
+    get agent(): superAgent.SuperAgent<any> | undefined {
+        return this._client.agent;
     }
 
     get onTokenChanged(): ShuberApi.TypedEvent<string | undefined> {

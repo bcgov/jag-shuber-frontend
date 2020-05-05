@@ -1,5 +1,12 @@
 import RequestActionBase, { RequestActionConfig } from '../../infrastructure/Requests/RequestActionBase';
-import { TokenPayload, decodeJwt } from 'jag-shuber-api';
+import {
+    TokenPayload,
+    retreiveCookieValue,
+    decodeJwt,
+    SMSESSION_COOKIE_NAME,
+    TOKEN_COOKIE_NAME
+} from 'jag-shuber-api';
+
 import { UserState, STATE_KEY } from './common';
 import store, { ThunkExtra } from '../../store';
 import { Dispatch } from 'redux';
@@ -13,11 +20,25 @@ class UserTokenRequest extends RequestActionBase<void, TokenPayload | undefined,
         console.log('Is there an existing getToken request underway? ' + getState().user.userToken.isBusy);
         // if (!(getState().user.userToken.isBusy)) {
         console.log('If not, grab a new token from the API');
-        let tokenString = await api.getToken();
-        return decodeJwt<TokenPayload>(tokenString);
-        // }
 
-        // return undefined;
+        console.log('Ensuring token exists...');
+        const { agent } = api;
+
+        let smsessionCookie = retreiveCookieValue(SMSESSION_COOKIE_NAME, agent);
+        console.log('DUMP SMSESSION Cookie value');
+        console.log(smsessionCookie);
+
+        if (!smsessionCookie) {
+            let token = retreiveCookieValue(TOKEN_COOKIE_NAME, agent);
+
+            console.log('Token retrieved from cookie:');
+            console.log(decodeJwt(token));
+
+            let tokenString = await api.getToken();
+            return decodeJwt<TokenPayload>(tokenString);
+        }
+
+        return undefined;
     }
 
     async dispatchSuccess(dispatch: Dispatch<any>, response: TokenPayload | undefined, actionConfig: RequestActionConfig<TokenPayload | undefined> = {}) {

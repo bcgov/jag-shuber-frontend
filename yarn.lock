@@ -5989,7 +5989,7 @@ istanbul@^0.4.5:
 
 "jag-shuber-api@github:bcgov/jag-shuber-api#feature/roles-and-access":
   version "2.0.0"
-  resolved "https://codeload.github.com/bcgov/jag-shuber-api/tar.gz/bc14055593c3838a166fa1cbe7087bf93646116f"
+  resolved "https://codeload.github.com/bcgov/jag-shuber-api/tar.gz/20d1c0c2acbe1b803e857f5edb849e8644fad2a7"
   dependencies:
     jsonwebtoken "^8.3.0"
     jwt-decode "^2.2.0"

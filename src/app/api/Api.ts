@@ -2,6 +2,7 @@ import moment from 'moment';
 import { displayEnum } from '../infrastructure/EnumUtils';
 import avatarImg from '../assets/images/avatar.png';
 import * as ApiTypes from 'jag-shuber-api/dist/common/types';
+import * as superAgent from 'superagent';
 
 export type MapType<T> = { [key: string]: T };
 export type DateType = ApiTypes.DateType;
@@ -666,6 +667,8 @@ export interface ApiScopeQuery extends ScopeQuery {}
 export interface FrontendScopeQuery extends ScopeQuery {}
 
 export interface API {
+    agent: superAgent.SuperAgent<any> | undefined;
+
     // Sheriffs
     getSheriffs(): Promise<Sheriff[]>;
     createSheriff(newSheriff: Sheriff): Promise<Sheriff>;
