@@ -15,13 +15,13 @@ class UserTokenRequest extends RequestActionBase<void, TokenPayload | undefined,
     }
 
     async dispatchSuccess(dispatch: Dispatch<any>, response: TokenPayload | undefined, actionConfig: RequestActionConfig<TokenPayload | undefined> = {}) {
-        // if a token has been retrieved, then initialize our application
+        // If a token has been retrieved, then initialize our application
         if (response !== undefined) {
             await dispatch(initializeApplication());
+
             await super.dispatchSuccess(dispatch, response, actionConfig);
         }
     }
-
     get updateUserTokenActionCreator() {
         return this.getSuccessAction.bind(this);
     }

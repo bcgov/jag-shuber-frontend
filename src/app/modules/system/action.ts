@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { ThunkAction } from '../../store';
+import store, { ThunkAction } from '../../store';
 import * as TimeUtils from '../../infrastructure/TimeRangeUtils';
 import * as genderCodeRequests from './requests/genders';
 import * as locationRequests from './requests/locations';
@@ -33,5 +33,10 @@ const initialActions: any[] = [
     getGenderCodes
 ];
 export const initializeApplication: ThunkAction<void> = () => async (dispatch, getState, extra) => {
-    initialActions.forEach(actionCreator => dispatch(actionCreator()));
+    console.log('Check store state, make sure we actually have a token');
+    console.log(getState());
+    if (!store.getState().user.userToken.isBusy) {
+        console.log('Token exists, initialize the application');
+        initialActions.forEach(actionCreator => dispatch(actionCreator()));
+    }
 };

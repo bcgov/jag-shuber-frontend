@@ -88,12 +88,9 @@ const store = createStore(rootReducer, enhancers);
 
 // Wire up the Token change event to the store
 (api as Client).onTokenChanged.on(async (t) => {
-    if (store.getState().user.userToken.isBusy) {
-        console.log('Attempted token update while there is an active GetToken request');
-        return;
+    if (!store.getState().user.userToken.isBusy) {
+        await store.dispatch(updateUserToken(t));
     }
-
-    await store.dispatch(updateUserToken(t));
 });
 
 // Request the initial token
