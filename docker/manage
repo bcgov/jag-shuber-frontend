@@ -131,6 +131,7 @@ build-frontend() {
 
   echoGreen "\n\nBuilding frontend artifacts ...\n"
   ${S2I_EXE} build \
+    --copy \
     -s 'file://../.s2i/bin' \
     '../' \
     'yarn-builder' \
