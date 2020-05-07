@@ -46,17 +46,31 @@ http {
         add_header X-XSS-Protection 1;
         add_header X-Frame-Options DENY;
 
-        location /api {
+        %DEV_SM_VARIABLES%
+
+        location /sheriff-scheduling/api {
             proxy_pass          %API_URL%;
             proxy_set_header    SMGOV_USERGUID  $http_smgov_userguid;
             proxy_set_header    SMGOV_USERDISPLAYNAME  $http_smgov_userdisplayname;
             proxy_set_header    SMGOV_USERTYPE  $http_smgov_usertype;
             proxy_set_header    SMGOV_USERIDENTIFIER  $http_smgov_useridentifier;
+            proxy_set_header    SM_UNIVERSALID $http_sm_universalid;
+            proxy_set_header    SM_USER $http_sm_user;
 
             proxy_buffer_size       16k;
             proxy_buffers           32 16k;
             client_body_buffer_size 128k;
             proxy_busy_buffers_size 64k;
+        }
+
+        location /sheriff-scheduling {
+            proxy_pass          http://localhost:8080/;
+            proxy_set_header    SMGOV_USERGUID  $http_smgov_userguid;
+            proxy_set_header    SMGOV_USERDISPLAYNAME  $http_smgov_userdisplayname;
+            proxy_set_header    SMGOV_USERTYPE  $http_smgov_usertype;
+            proxy_set_header    SMGOV_USERIDENTIFIER  $http_smgov_useridentifier;
+            proxy_set_header    SM_UNIVERSALID $http_sm_universalid;
+            proxy_set_header    SM_USER $http_sm_user;
         }
 
         # serve our app here
@@ -75,6 +89,8 @@ http {
             add_header  SMGOV_USERDISPLAYNAME  $http_smgov_userdisplayname;
             add_header  SMGOV_USERTYPE  $http_smgov_usertype;
             add_header  SMGOV_USERIDENTIFIER  $http_smgov_useridentifier;
+            add_header  SM_UNIVERSALID $http_sm_universalid;
+            add_header  SM_USER $http_sm_user;
         }
 
         # redirect server error pages to the static page /50x.html

@@ -9,6 +9,11 @@ The notes on the projects architecture as well as other development notes can be
 
 ## Getting Started
 
+### Running Locally in Docker
+
+Refer to the [Running the Sheriff-Scheduling Frontend in Docker
+](./docker/README.md) docuemntation for details.
+
 ### Development Environment
 * Install the following:
     - [Node.js](https://nodejs.org/en/)
