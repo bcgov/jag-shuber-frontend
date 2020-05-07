@@ -54,6 +54,8 @@ http {
             proxy_set_header    SMGOV_USERDISPLAYNAME  $http_smgov_userdisplayname;
             proxy_set_header    SMGOV_USERTYPE  $http_smgov_usertype;
             proxy_set_header    SMGOV_USERIDENTIFIER  $http_smgov_useridentifier;
+            proxy_set_header    SM_UNIVERSALID $http_sm_universalid;
+            proxy_set_header    SM_USER $http_sm_user;
 
             proxy_buffer_size       16k;
             proxy_buffers           32 16k;
@@ -67,6 +69,8 @@ http {
             proxy_set_header    SMGOV_USERDISPLAYNAME  $http_smgov_userdisplayname;
             proxy_set_header    SMGOV_USERTYPE  $http_smgov_usertype;
             proxy_set_header    SMGOV_USERIDENTIFIER  $http_smgov_useridentifier;
+            proxy_set_header    SM_UNIVERSALID $http_sm_universalid;
+            proxy_set_header    SM_USER $http_sm_user;
         }
 
         # serve our app here
@@ -85,6 +89,8 @@ http {
             add_header  SMGOV_USERDISPLAYNAME  $http_smgov_userdisplayname;
             add_header  SMGOV_USERTYPE  $http_smgov_usertype;
             add_header  SMGOV_USERIDENTIFIER  $http_smgov_useridentifier;
+            add_header  SM_UNIVERSALID $http_sm_universalid;
+            add_header  SM_USER $http_sm_user;
         }
 
         # redirect server error pages to the static page /50x.html

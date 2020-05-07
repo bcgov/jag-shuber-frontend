@@ -11,6 +11,8 @@ services:
       - SMGOV_USERDISPLAYNAME=${SMGOV_USERDISPLAYNAME}
       - SMGOV_USERTYPE=${SMGOV_USERTYPE}
       - SMGOV_USERIDENTIFIER=${SMGOV_USERIDENTIFIER}
+      - SM_UNIVERSALID=${SM_UNIVERSALID}
+      - SM_USER=${SM_USER}
     networks:
       - sheriff-scheduling
     ports:

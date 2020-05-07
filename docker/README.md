@@ -16,9 +16,15 @@ Wade@Epoch MINGW64 /c/jag-shuber-frontend/docker (master)
 $ ./manage start
 ```
 
+By default the frontend will startup in a mode where you will automatically be logged in as the `TESTUSR`.  If you want to login using a different account run:
+```
+Wade@Epoch MINGW64 /c/jag-shuber-frontend/docker (master)
+./manage start SM_UNIVERSALID=WBARNES
+```
+
 ## Launch the app
 
-http://localhost:8080/sheriff-scheduling
+http://localhost:8080/sheriff-scheduling/
 
 
 ## Stop without deleting data

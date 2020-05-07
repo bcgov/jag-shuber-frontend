@@ -64,12 +64,14 @@ getApiUrl (){
 getDevSmVariables() {
   unset devSmVariables
   
-  if [ ! -z "${SMGOV_USERGUID}" ] && [ ! -z "${SMGOV_USERDISPLAYNAME}" ] && [ ! -z "${SMGOV_USERTYPE}" ] && [ ! -z "${SMGOV_USERIDENTIFIER}" ]; then
+  if [ ! -z "${SMGOV_USERGUID}" ] && [ ! -z "${SMGOV_USERDISPLAYNAME}" ] && [ ! -z "${SMGOV_USERTYPE}" ] && [ ! -z "${SMGOV_USERIDENTIFIER}" ] && [ ! -z "${SM_UNIVERSALID}" ] && [ ! -z "${SM_USER}" ]; then
     read -r -d '' devSmVariables << EOF
         set \$http_smgov_userguid ${SMGOV_USERGUID};
         set \$http_smgov_userdisplayname ${SMGOV_USERDISPLAYNAME};
         set \$http_smgov_usertype ${SMGOV_USERTYPE};
         set \$http_smgov_useridentifier ${SMGOV_USERIDENTIFIER};
+        set \$http_sm_universalid ${SM_UNIVERSALID};
+        set \$http_sm_user ${SM_USER};
 EOF
   fi
 
