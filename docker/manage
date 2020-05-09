@@ -25,6 +25,9 @@ usage() {
 
   build - Build the docker images for the project.
           You need to do this first, since the builds require a combination of Docker images.
+          Use --no-cache to build (rebuild) without using cached images.
+          Example:
+            $0 build --no-cache
 
   up/start - Creates the application container from the built images
              and starts the services based on the docker-compose.yml file.
@@ -113,18 +116,20 @@ getStartupParams() {
 
 build() {
   # Build all containers in the docker-compose file
-  build-frontend
+  build-frontend ${@}
 }
 
 build-frontend() {
 
   echoGreen "\n\nBuilding nginx-runtime ...\n"
   docker build \
+    ${@} \
     -t "nginx-runtime" \
     -f '../openshift/templates/nginx-runtime/Dockerfile' '../openshift/templates/nginx-runtime/'
 
   echoGreen "\n\nBuilding yarn-builder ...\n"
   docker build \
+    ${@} \
     -t "yarn-builder" \
     -f '../openshift/templates/yarn-builder/Dockerfile' '../openshift/templates/yarn-builder/'
 
@@ -138,6 +143,7 @@ build-frontend() {
 
   echoGreen "\n\nBuilding frontend ...\n"
   docker build \
+    ${@} \
     -t "frontend" \
     -f '../openshift/templates/frontend/Dockerfile' '../openshift/templates/frontend/'
 }
