@@ -102,8 +102,8 @@ export default class SheriffProfilePluginLocation
                     title={<h3>Partial Day</h3>}
                     columns={[
                         LocationFieldTable.LocationColumn(),
-                        LocationFieldTable.DateColumn('Start Date', 'startDate'),
-                        LocationFieldTable.DateColumn('End Date', 'endDate'),
+                        LocationFieldTable.TimeColumn('Start Time', 'Start', 'startTime'),
+                        LocationFieldTable.TimeColumn('End Time', 'End', 'endTime'),
                         LocationFieldTable.CancelColumn
                     ]}
                 />
