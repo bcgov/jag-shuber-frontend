@@ -283,7 +283,10 @@ export default class AdminUsers extends FormContainerBase<AdminUsersProps> {
                 setPluginFilters({
                     users: {
                         sheriff: {
-                            rankCode: newValue
+                            rankCode: {
+                                value: newValue,
+                                exact: true
+                            }
                         }
                     }
                 }, setAdminRolesPluginFilters);
@@ -297,7 +300,10 @@ export default class AdminUsers extends FormContainerBase<AdminUsersProps> {
                 setPluginFilters({
                     users: {
                         sheriff: {
-                            genderCode: newValue
+                            genderCode: {
+                                value: newValue,
+                                exact: true
+                            }
                         }
                     }
                 }, setAdminRolesPluginFilters);

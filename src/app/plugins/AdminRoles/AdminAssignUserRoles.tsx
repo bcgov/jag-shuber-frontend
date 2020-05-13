@@ -290,7 +290,10 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                 setPluginFilters({
                     users: {
                         sheriff: {
-                            rankCode: newValue
+                            rankCode: {
+                                value: newValue,
+                                exact: true
+                            }
                         }
                     }
                 }, setAdminRolesPluginFilters);
@@ -304,7 +307,10 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
                 setPluginFilters({
                     users: {
                         sheriff: {
-                            genderCode: newValue
+                            genderCode: {
+                                value: newValue,
+                                exact: true
+                            }
                         }
                     }
                 }, setAdminRolesPluginFilters);
