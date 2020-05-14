@@ -35,6 +35,7 @@ class UserTokenRequest extends RequestActionBase<void, TokenPayload | undefined,
             console.log(decodeJwt(token));
 
             let tokenString = await api.getToken();
+            sessionStorage.setItem(TOKEN_COOKIE_NAME, tokenString);
             return decodeJwt<TokenPayload>(tokenString);
         }
 
