@@ -29,11 +29,6 @@ class UserTokenRequest extends RequestActionBase<void, TokenPayload | undefined,
         console.log(smsessionCookie);
 
         if (!smsessionCookie) {
-            let token = retreiveCookieValue(TOKEN_COOKIE_NAME, agent);
-
-            console.log('Token retrieved from cookie:');
-            console.log(decodeJwt(token));
-
             let tokenString = await api.getToken();
             sessionStorage.setItem(TOKEN_COOKIE_NAME, tokenString);
             return decodeJwt<TokenPayload>(tokenString);
