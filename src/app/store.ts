@@ -24,11 +24,13 @@ import { default as uploadApi, UploadAPI } from './api/UploadApi';
 import Client from './api/Client';
 import UploadClient from './api/UploadClient';
 
+import { getUserToken, updateUserToken } from './modules/user/actions';
+import { initializeApplication } from './modules/system/action';
+
+import resolveAppUrl from './infrastructure/resolveAppUrl';
+
 // TODO: Resolve URL not being used yet
 const uploadClient = new UploadClient(resolveAppUrl('/api/v1'));
-
-import { getUserToken, updateUserToken } from './modules/user/actions';
-import resolveAppUrl from './infrastructure/resolveAppUrl';
 
 export interface ThunkExtra {
     api: API;

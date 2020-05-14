@@ -100,13 +100,37 @@ export const findAllUsers = (filters: any) => (state: RootState) => {
         if (filters && filters.sheriff) {
             const sheriffFilters = filters.sheriff;
             Object.keys(sheriffFilters).forEach(key => {
+                let filterValue = '';
+                let exactMatch = false;
+
                 if (filters.sheriff[key]) {
-                    users = users.filter(u => {
-                        return (u.sheriff && u.sheriff[key] && u.sheriff[key] !== '')
-                            ? u.sheriff[key].toLowerCase().includes(`${filters.sheriff[key].toLowerCase()}`)
-                            : false;
-                    });
+                    switch (typeof filters.sheriff[key]) {
+                        case 'string':
+                            filterValue = filters.sheriff[key];
+                            break;
+                        case 'number':
+                            filterValue = filters.sheriff[key].toString();
+                            break;
+                        case 'object':
+                            // TODO: We could ensure that these exist...
+                            filterValue = filters.sheriff[key].value || '';
+                            exactMatch = filters.sheriff[key].exact || false;
+                            break;
+                        default:
+                            break;
+                    }
                 }
+
+                let testMatchFn = (u: any) => true;
+                if (filterValue && exactMatch) {
+                    testMatchFn = (u: any) => u.sheriff[key].toLowerCase() === (`${filterValue.toLowerCase()}`);
+                } else if (filterValue && !exactMatch) {
+                    testMatchFn = (u: any) => u.sheriff[key].toLowerCase().includes(`${filterValue.toLowerCase()}`);
+                }
+
+                users = users.filter(u => {
+                    return (u.sheriff && u.sheriff[key] && u.sheriff[key] !== '') ? testMatchFn(u) : false;
+                });
             });
         }
 

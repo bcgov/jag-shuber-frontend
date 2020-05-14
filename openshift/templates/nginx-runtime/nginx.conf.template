@@ -48,6 +48,23 @@ http {
 
         %DEV_SM_VARIABLES%
 
+        # For deployment
+        location /api {
+            proxy_pass          %API_URL%;
+            proxy_set_header    SMGOV_USERGUID  $http_smgov_userguid;
+            proxy_set_header    SMGOV_USERDISPLAYNAME  $http_smgov_userdisplayname;
+            proxy_set_header    SMGOV_USERTYPE  $http_smgov_usertype;
+            proxy_set_header    SMGOV_USERIDENTIFIER  $http_smgov_useridentifier;
+            proxy_set_header    SM_UNIVERSALID $http_sm_universalid;
+            proxy_set_header    SM_USER $http_sm_user;
+
+            proxy_buffer_size       16k;
+            proxy_buffers           32 16k;
+            client_body_buffer_size 128k;
+            proxy_busy_buffers_size 64k;
+        }
+
+        # For local dev with docker
         location /sheriff-scheduling/api {
             proxy_pass          %API_URL%;
             proxy_set_header    SMGOV_USERGUID  $http_smgov_userguid;
@@ -63,6 +80,7 @@ http {
             proxy_busy_buffers_size 64k;
         }
 
+        # For local dev with docker
         location /sheriff-scheduling {
             proxy_pass          http://localhost:8080/;
             proxy_set_header    SMGOV_USERGUID  $http_smgov_userguid;

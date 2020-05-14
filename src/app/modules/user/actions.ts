@@ -80,8 +80,9 @@ export const updateCurrentLocation: ThunkAction<string> =
 };
 
 export const updateUserToken: ThunkAction<string> = (token?: string) => async (dispatch, getState, extra) => {
-  const payload = decodeJwt(token);
-  await userTokenRequest.dispatchSuccess(dispatch, payload);
+    console.log('Update user token');
+    const payload = decodeJwt(token);
+    await userTokenRequest.dispatchSuccess(dispatch, payload);
 };
 
 export const getUserToken = userTokenRequest.actionCreator;
