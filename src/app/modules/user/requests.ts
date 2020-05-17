@@ -67,7 +67,6 @@ class LogoutRequest extends RequestActionBase<void, TokenPayload | undefined, Us
         super({ namespace: STATE_KEY, actionName: 'logout', toasts: {} });
     }
     public async doWork(request: void, { api }: ThunkExtra) {
-        //await api.logout();
         // Clear the token
         sessionStorage.clear();
         return undefined;

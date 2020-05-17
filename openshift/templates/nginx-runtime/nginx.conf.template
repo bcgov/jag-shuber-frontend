@@ -48,7 +48,6 @@ http {
 
         %DEV_SM_VARIABLES%
 
-        # For deployment
         location /api {
             proxy_pass          %API_URL%;
             proxy_set_header    SMGOV_USERGUID  $http_smgov_userguid;
