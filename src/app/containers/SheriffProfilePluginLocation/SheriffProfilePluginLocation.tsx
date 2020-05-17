@@ -102,6 +102,7 @@ export default class SheriffProfilePluginLocation
                     title={<h3>Partial Day</h3>}
                     columns={[
                         LocationFieldTable.LocationColumn(),
+                        LocationFieldTable.DateColumn('Date', 'startDate'),
                         LocationFieldTable.TimeColumn('Start Time', 'Start', 'startTime'),
                         LocationFieldTable.TimeColumn('End Time', 'End', 'endTime'),
                         LocationFieldTable.CancelColumn
@@ -249,17 +250,31 @@ export default class SheriffProfilePluginLocation
             ...deletedFullDaySheriffLocations, ...deletedPartialDaySheriffLocations
         ];
 
-        const fullDayLocations = data.fullDayLocations.map(l => ({ ...l, sheriffId, isPartial: 0 }));
-        const partialDayLocations = data.partialDayLocations.map(l => ({ ...l, sheriffId, isPartial: 1 }));
+        const fullDayLocations = data.fullDayLocations.map(l => (
+            {
+                ...l,
+                sheriffId,
+                isPartial: 0,
+                startDate: (l.startDate) ? l.startDate : new Date().toISOString(),
+                endDate: (l.endDate) ? l.endDate : new Date().toISOString()
+            }
+        ));
 
-        let allLocations = [...fullDayLocations, ...partialDayLocations] as SheriffLocation[];
+        const partialDayLocations = data.partialDayLocations.map(l => (
+            {
+                ...l,
+                sheriffId,
+                isPartial: 1,
+                startDate: l.startDate,
+                endDate: l.startDate
+            }
+        ));
+
+        // let allLocations = [...fullDayLocations, ...partialDayLocations] as SheriffLocation[];
+        let allLocations = [...fullDayLocations] as SheriffLocation[];
 
         allLocations = allLocations.map(l => ({
-            ...l as SheriffLocation,
-            // startTime: toTimeString(l.startTime),
-            // endTime: toTimeString(l.endTime),
-            startDate: (l.startDate) ? l.startDate : new Date().toISOString(),
-            endDate: (l.endDate) ? l.endDate : new Date().toISOString()
+            ...l as SheriffLocation
         }));
 
         if (deletedSheriffLocations.length > 0) {
