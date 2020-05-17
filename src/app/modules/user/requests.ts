@@ -17,22 +17,22 @@ class UserTokenRequest extends RequestActionBase<void, TokenPayload | undefined,
         super({ namespace: STATE_KEY, actionName: 'userToken', toasts: {} });
     }
     public async doWork(request: void, { api }: ThunkExtra, getState: any) {
-        console.log('Is there an existing getToken request underway? ' + getState().user.userToken.isBusy);
+        // console.log('Is there an existing getToken request underway? ' + getState().user.userToken.isBusy);
         // if (!(getState().user.userToken.isBusy)) {
-        console.log('If not, grab a new token from the API');
+        // console.log('If not, grab a new token from the API');
 
-        console.log('Ensuring token exists...');
+        // console.log('Ensuring token exists...');
         const { agent } = api;
 
         let smsessionCookie = retreiveCookieValue(SMSESSION_COOKIE_NAME, agent);
-        console.log('DUMP SMSESSION Cookie value');
-        console.log(smsessionCookie);
+        // console.log('DUMP SMSESSION Cookie value');
+        // console.log(smsessionCookie);
 
         if (!smsessionCookie) {
             let token = retreiveCookieValue(TOKEN_COOKIE_NAME, agent);
 
-            console.log('Token retrieved from cookie:');
-            console.log(decodeJwt(token));
+            // console.log('Token retrieved from cookie:');
+            // console.log(decodeJwt(token));
 
             let tokenString = await api.getToken();
             return decodeJwt<TokenPayload>(tokenString);

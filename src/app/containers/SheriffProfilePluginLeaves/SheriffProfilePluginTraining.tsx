@@ -141,6 +141,7 @@ export default class SheriffProfilePluginTraining
         const data = this.getDataFromFormValues(formValues);
         const partialLeaves = data.partialDay.map(pl => ({ ...pl, sheriffId, isPartial: true }));
         const fullLeaves = data.fullDay.map(fl => ({ ...fl, sheriffId, isPartial: false }));
+
         const allLeaves = partialLeaves.concat(fullLeaves).map(l => ({
             ...l,
             leaveCode: LEAVE_CODE_TRAINING,
