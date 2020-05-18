@@ -76,7 +76,7 @@ import {
 import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../components/Table/DataTable';
 
 import FrontendScopeSelector from './containers/FrontendScopeSelector';
-import AdminScopePermissionsModal from './components/AdminScopePermissionsModal';
+import AdminScopePermissionsModal from './containers/AdminScopePermissionsModal';
 import { createOrUpdateFrontendScopePermissionsRequest } from '../../modules/roles/requests/frontendScopePermissions';
 import DeleteRow from '../../components/TableColumnActions/DeleteRow';
 import ExpireRow from '../../components/TableColumnActions/ExpireRow';
@@ -85,7 +85,7 @@ import RoleSelector from './containers/RoleSelector';
 import ApiScopeSelector from './containers/ApiScopeSelector';
 import ApiScopeCodeDisplay from './containers/ApiScopeCodeDisplay';
 import ApiScopeDescriptionDisplay from './containers/ApiScopeDescriptionDisplay';
-import AdminRoleScopeAccessModal from './components/AdminRoleScopeAccessModal';
+import AdminRoleScopeAccessModal from './containers/AdminRoleScopeAccessModal';
 import FrontendScopeCodeDisplay from './containers/FrontendScopeCodeDisplay';
 import FrontendScopeDescriptionDisplay from './containers/FrontendScopeDescriptionDisplay';
 import { RoleFrontendScopePermission } from '../../api/Api';

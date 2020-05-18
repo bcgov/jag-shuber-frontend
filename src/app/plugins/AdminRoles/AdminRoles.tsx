@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+    Alert,
     Button,
     Col, Glyphicon,
     Row, Tab,
@@ -73,25 +74,17 @@ import {
 } from '../../components/Form/FormContainer';
 
 import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../components/Table/DataTable';
-import AdminRoleScopeAccessModal from './components/AdminRoleScopeAccessModal';
-import AdminEffectivePermissionsModal from './components/AdminEffectivePermissionsModal';
+import AdminRoleScopeAccessModal from './containers/AdminRoleScopeAccessModal';
+import AdminEffectivePermissionsModal from './containers/AdminEffectivePermissionsModal';
 
-// import RoleSelector from './RoleSelector';
-// import FrontendScopeDisplay from './FrontendScopeDisplay';
-import FrontendScopeCodeDisplay from './containers/FrontendScopeCodeDisplay';
-import FrontendScopeDescriptionDisplay from './containers/FrontendScopeDescriptionDisplay';
-// import ApiScopeDisplay from './ApiScopeDisplay';
-import ApiScopeCodeDisplay from './containers/ApiScopeCodeDisplay';
-import ApiScopeDescriptionDisplay from './containers/ApiScopeDescriptionDisplay';
 import FrontendScopeSelector from './containers/FrontendScopeSelector';
-import ApiScopeSelector from './containers/ApiScopeSelector';
+import FrontendScopeDescriptionDisplay from './containers/FrontendScopeDescriptionDisplay';
 
 import { RoleFrontendScopePermission } from '../../api/Api';
 
 import DeleteRow from '../../components/TableColumnActions/DeleteRow';
 import RemoveRow from '../../components/TableColumnActions/RemoveRow';
-import ExpireRow from '../../components/TableColumnActions/ExpireRow';
-import PageTitle from '../../containers/PageTitle';
+
 import { ActionProps } from '../../components/TableColumnCell/Actions';
 
 import { buildPluginPermissions, userCan } from '../permissionUtils';
@@ -158,9 +151,7 @@ class AdminRolesDisplay extends React.PureComponent<AdminRolesDisplayProps, {}> 
 
 class RolesDataTable extends DataTable<Role> {}
 class RoleFrontendScopesDataTable extends DataTable<RoleFrontendScope> {}
-class RoleApiScopesDataTable extends DataTable<RoleApiScope> {}
-
-let RENDER_COUNT = 0;
+// class RoleApiScopesDataTable extends DataTable<RoleApiScope> {}
 
 export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
     // NOTICE!
@@ -206,7 +197,9 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
             ({ fields, index, model }) => {
                 return (model && model.id && model.id !== '')
                     ? (
-                        <Button bsStyle="primary" onClick={(ev) => onButtonClicked(ev, dataTableInstance, model)}>
+                        <Button
+                            bsStyle="primary"
+                            onClick={(ev) => onButtonClicked(ev, dataTableInstance, model)}>
                             <Glyphicon glyph="wrench" />
                         </Button>
                     )
@@ -217,32 +210,41 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
         ] as React.ReactType<ActionProps>[];
 
         return (
-            <RoleFrontendScopesDataTable
-                ref={(dt) => dataTableInstance = dt}
-                fieldName={`${this.formFieldNames.roleFrontendScopesGrouped}['${parentModelId}']`}
-                title={''} // Leave this blank
-                buttonLabel={'Grant Application Access'}
-                displayHeaderActions={!(parentModel.systemRoleInd === 1)}
-                displayHeaderSave={false}
-                actionsColumn={DataTable.ActionsColumn({
-                    actions: roleFrontendScopeActions
-                })}
-                columns={[
-                    DataTable.SelectorFieldColumn('Application Access', { fieldName: 'scopeId', colStyle: { width: '16%' }, selectorComponent: FrontendScopeSelector, displayInfo: true, disabled: true }),
-                    // DataTable.MappedTextColumn('Component Code', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: FrontendScopeCodeDisplay, displayInfo: false }),
-                    DataTable.MappedTextColumn('Description', { fieldName: 'scopeId', colStyle: { width: '30%' }, selectorComponent: FrontendScopeDescriptionDisplay, displayInfo: false }),
-                    DataTable.StaticDateColumn('Last Modified', { fieldName: 'updatedDtm', colStyle: { width: '16%' }, displayInfo: false }),
-                    DataTable.StaticTextColumn('Assigned By', { fieldName: 'updatedBy', colStyle: { width: '15%' }, displayInfo: false }),
-                    // DataTable.ButtonColumn('Configure Access', 'list', { displayInfo: true }, onButtonClicked)
-                ]}
-                rowComponent={EmptyDetailRow}
-                shouldDisableRow={() => parentModel.systemRoleInd === 1}
-                initialValue={{
-                    roleId: parentModelId
-                }}
-                modalProps={{ roleId: parentModelId }}
-                modalComponent={AdminRoleScopeAccessModal}
-            />
+            <>
+                <Alert bsStyle="info" style={{ marginTop: 0, marginBottom: 0, borderRadius: 0 }}>
+                    <p>
+                        Select / remove the components that you would like to grant access to. Default access is read-only.
+                        To deny read access remove the plugin from the role. To configure other plugin permissions for this role,
+                        click the <Glyphicon glyph="wrench" /> button.
+                    </p>
+                </Alert>
+                <RoleFrontendScopesDataTable
+                    ref={(dt) => dataTableInstance = dt}
+                    fieldName={`${this.formFieldNames.roleFrontendScopesGrouped}['${parentModelId}']`}
+                    title={''} // Leave this blank
+                    buttonLabel={'Grant Application Access'}
+                    displayHeaderActions={!(parentModel.systemRoleInd === 1)}
+                    displayHeaderSave={false}
+                    actionsColumn={DataTable.ActionsColumn({
+                        actions: roleFrontendScopeActions
+                    })}
+                    columns={[
+                        DataTable.SelectorFieldColumn('Application Access', { fieldName: 'scopeId', colStyle: { width: '16%' }, selectorComponent: FrontendScopeSelector, displayInfo: true, disabled: true }),
+                        // DataTable.MappedTextColumn('Component Code', { fieldName: 'scopeId', colStyle: { width: '300px' }, selectorComponent: FrontendScopeCodeDisplay, displayInfo: false }),
+                        DataTable.MappedTextColumn('Description', { fieldName: 'scopeId', colStyle: { width: '30%' }, selectorComponent: FrontendScopeDescriptionDisplay, displayInfo: false }),
+                        DataTable.StaticDateColumn('Last Modified', { fieldName: 'updatedDtm', colStyle: { width: '16%' }, displayInfo: false }),
+                        DataTable.StaticTextColumn('Assigned By', { fieldName: 'updatedBy', colStyle: { width: '15%' }, displayInfo: false }),
+                        // DataTable.ButtonColumn('Configure Access', 'list', { displayInfo: true }, onButtonClicked)
+                    ]}
+                    rowComponent={EmptyDetailRow}
+                    shouldDisableRow={() => parentModel.systemRoleInd === 1}
+                    initialValue={{
+                        roleId: parentModelId
+                    }}
+                    modalProps={{ roleId: parentModelId,  }}
+                    modalComponent={AdminRoleScopeAccessModal}
+                />
+            </>
         );
     }
 
