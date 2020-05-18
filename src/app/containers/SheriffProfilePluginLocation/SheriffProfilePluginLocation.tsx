@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React from 'react';
 import { DateType, IdType, SheriffLocation } from '../../api/Api';
 import {
@@ -23,16 +24,14 @@ import { getSheriffFullDayLocations, getSheriffPartialDayLocations } from '../..
 import LocationsDisplay from '../../components/SheriffLocationsDisplay';
 import * as Validators from '../../infrastructure/Validators';
 import LocationFieldTable from './LocationFieldTable';
-import { toTimeString } from 'jag-shuber-api';
 import LocationDisplay from '../LocationDisplay';
 import SheriffDisplay from '../SheriffDisplay';
 import SelectorField from '../../components/FormElements/SelectorField';
 import LocationSelector from '../LocationSelector';
 
 export interface SheriffProfilePluginLocationProps {
-    locations: SheriffLocation[];
-    fullDayLocations: SheriffLocation[],
-    partialDayLocations: SheriffLocation[]
+    fullDayLocations: SheriffLocation[];
+    partialDayLocations: SheriffLocation[];
 }
 
 export default class SheriffProfilePluginLocation
@@ -47,7 +46,6 @@ export default class SheriffProfilePluginLocation
     formFieldNames = {
         currentLocation: 'sheriff.currentLocationId',
         homeLocation: 'sheriff.homeLocationId',
-        locations: 'locations',
         fullDayLocations: 'sheriffLocations.fullDayLocations',
         partialDayLocations: 'sheriffLocations.partialDayLocations'
 
@@ -115,7 +113,6 @@ export default class SheriffProfilePluginLocation
         {
             sheriffId,
             data = {
-                locations: [],
                 fullDayLocations: [],
                 partialDayLocations: []
             }
@@ -145,41 +142,70 @@ export default class SheriffProfilePluginLocation
                         )
                     }
                 />
-                {data && data.locations.length > 0 && (
-                    <LocationsDisplay locations={data.locations}/>
+                {data && data.fullDayLocations.length > 0 && (
+                    <LocationsDisplay locations={data.fullDayLocations}/>
                 )}
-                {!data || data.locations.length > 0 && (
-                    <Alert> No Locations </Alert>
+                {!data || data.fullDayLocations.length > 0 && (
+                    <Alert> No Full Day Locations </Alert>
+                )}
+
+                {data && data.partialDayLocations.length > 0 && (
+                    <LocationsDisplay locations={data.fullDayLocations}/>
+                )}
+                {!data || data.partialDayLocations.length > 0 && (
+                    <Alert> No Partial Day Locations </Alert>
                 )}
             </>
         );
     }
 
     validate(values: SheriffProfilePluginLocationProps = {
-        locations: [],
         fullDayLocations: [],
         partialDayLocations: []
     }): FormErrors | undefined {
-        let locationErrors: any = [];
+        let fullDayLocationErrors: any = [];
 
-        if (values.locations) {
-            locationErrors = values.locations.map(l => (
-                {
+        if (values.fullDayLocations) {
+            fullDayLocationErrors = values.fullDayLocations.map(l => {
+                return ({
+                    locationId: Validators.required(l.locationId),
                     startDate: Validators.validateWith(
                         Validators.required,
                         Validators.isSameOrBefore(l.endDate, 'End Date')
-                    )(l.startDate),
+                    )(l.startDate || undefined),
                     endDate: Validators.validateWith(
                         Validators.required,
                         Validators.isSameOrAfter(l.startDate, 'Start Date')
-                    )(l.endDate)
-                }
-            ));
+                    )(l.endDate || undefined)
+                });
+            });
         }
 
-        const errors = { locations: locationErrors };
+        let partialDayLocationErrors: any = [];
 
-        return (errors.locations.length > 0 ) ? errors : undefined;
+        if (values.partialDayLocations) {
+            partialDayLocationErrors = values.partialDayLocations.map(l => {
+                return ({
+                    locationId: Validators.required(l.locationId),
+                    startDate: Validators.validateWith(
+                        Validators.required,
+                        Validators.isSameOrAfter(moment(new Date()).format('YYYY-MM-DD'), 'Today\'s Date')
+                    )(l.startDate || undefined),
+                    startTime: Validators.validateWith(
+                        Validators.required,
+                        Validators.isTimeBefore(l.endTime, 'End Time')
+                    )(l.startTime || undefined),
+                    endTime: Validators.validateWith(
+                        Validators.required,
+                        Validators.isTimeAfter(l.startTime, 'Start Time')
+                    )(l.endTime || undefined)
+                });
+            });
+        }
+
+        const errors = { fullDayLocations: fullDayLocationErrors, partialDayLocations: partialDayLocationErrors };
+
+        return (errors.fullDayLocations.length > 0 || errors.partialDayLocations.length > 0) ? errors : undefined;
     }
 
     fetchData(sheriffId: IdType, dispatch: Dispatch<any>) {
@@ -190,17 +216,13 @@ export default class SheriffProfilePluginLocation
         const sheriffFullDayLocations = getSheriffFullDayLocations(sheriffId)(state);
         const sheriffPartialDayLocations = getSheriffPartialDayLocations(sheriffId)(state);
         return {
-            locations: [...sheriffFullDayLocations, ...sheriffPartialDayLocations],
             fullDayLocations: sheriffFullDayLocations,
             partialDayLocations: sheriffPartialDayLocations
-            // fullDayLocations: sheriffFullDayLocations,
-            // partialDayLocations: sheriffPartialDayLocations
         };
     }
 
     getDataFromFormValues(formValues: any): SheriffProfilePluginLocationProps {
         return super.getDataFromFormValues(formValues) || {
-            // locations: [],
             fullDayLocations: [],
             partialDayLocations: []
         };
@@ -270,8 +292,7 @@ export default class SheriffProfilePluginLocation
             }
         ));
 
-        // let allLocations = [...fullDayLocations, ...partialDayLocations] as SheriffLocation[];
-        let allLocations = [...fullDayLocations] as SheriffLocation[];
+        let allLocations = [...fullDayLocations, ...partialDayLocations] as SheriffLocation[];
 
         allLocations = allLocations.map(l => ({
             ...l as SheriffLocation
