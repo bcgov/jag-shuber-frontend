@@ -55,7 +55,12 @@ export default (props: any) => {
                         {/* Use className if you want to use col-xl-* prefixed columns, react-bootstrap doesn't support xl cols */}
                         <Tab.Pane key={'ADMIN_COURTROOMS'} eventKey={'ADMIN_COURTROOMS'}>
                             <Row className="clearfix">
-                                <Col sm={12} lg={8} lgPush={2}>
+                                {/* Use className, react-bootstrap doesn't support xl cols */}
+                                <Col sm={12} className="col-xl-7">
+                                    <PageTitle title={({ currentLocationName }: any) => `${currentLocationName} Court Roles`} />
+                                    {courtRolesPlugin && renderPlugin(courtRolesPlugin)}
+                                </Col>
+                                <Col sm={12} className="col-xl-5">
                                     <PageTitle title={({ currentLocationName }: any) => `${currentLocationName} Courtrooms`} />
                                     {courtroomsPlugin && renderPlugin(courtroomsPlugin)}
                                 </Col>

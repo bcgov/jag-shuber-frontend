@@ -38,7 +38,9 @@ import RemoveRow from '../../components/TableColumnActions/RemoveRow';
 import UnexpireRow from '../../components/TableColumnActions/UnexpireRow';
 
 import { ActionProps } from '../../components/TableColumnCell/Actions';
-import { buildPluginPermissions, userCan } from '../permissionUtils';
+import { buildPluginPermissions } from '../permissionUtils';
+import RemoveRow from '../../components/TableColumnActions/RemoveRow';
+import UnexpireRow from '../../components/TableColumnActions/UnexpireRow';
 
 export interface AdminLeaveTypesProps extends FormContainerProps {
     leaveTypes?: any[];
@@ -75,10 +77,7 @@ export default class AdminLeaveTypes extends FormContainerBase<AdminLeaveTypesPr
 
     FormComponent = (props: FormContainerProps<AdminLeaveTypesProps>) => {
         const { getPluginPermissions, setPluginFilters } = props;
-        const { grantAll, permissions = [] } = buildPluginPermissions(getPluginPermissions);
-
-        const canManage = userCan(permissions, 'MANAGE_ALL');
-        const canDelete = userCan(permissions, 'DELETE');
+        const { grantAll, permissions } = buildPluginPermissions(getPluginPermissions);
 
         // We can't use React hooks yet, and not sure if this project will ever be upgraded to 16.8
         // This is a quick n' dirty way to achieve the same thing
@@ -150,19 +149,19 @@ export default class AdminLeaveTypes extends FormContainerBase<AdminLeaveTypesPr
         const leaveTypeActions = [
             ({ fields, index, model }) => {
                 return (model && !model.id || model && model.id === '')
-                    ? (<RemoveRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage || canDelete)} />)
+                    ? (<RemoveRow fields={fields} index={index} model={model} showComponent={true} />)
                     : null;
             },
             ({ fields, index, model }) => {
                 return (model && model.id && model.id !== '' && !model.isExpired)
-                    ? (<ExpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance.forceUpdate()} />)
+                    ? (<ExpireRow fields={fields} index={index} model={model} showComponent={true} onClick={() => dataTableInstance.forceUpdate()} />)
                     : (model && model.isExpired)
-                    ? (<UnexpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance.forceUpdate()} />)
+                    ? (<UnexpireRow fields={fields} index={index} model={model} showComponent={true} onClick={() => dataTableInstance.forceUpdate()} />)
                     : null;
             },
             ({ fields, index, model }) => {
                 return (model && model.id && model.id !== '')
-                    ? (<DeleteRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage || canDelete)} />)
+                    ? (<DeleteRow fields={fields} index={index} model={model} showComponent={grantAll} />)
                     : null;
             }
         ] as React.ReactType<ActionProps>[];
@@ -191,7 +190,6 @@ export default class AdminLeaveTypes extends FormContainerBase<AdminLeaveTypesPr
                         // DataTable.DateColumn('Expiry Date', 'expiryDate', { colStyle: { width: '15%'}, displayInfo: true, filterable: true, filterColumn: onFilterExpiryDate })
                     ]}
                     filterable={true}
-                    showExpiredFilter={true}
                     expandable={false}
                     // expandedRows={[1, 2]}
                     // TODO: Only display if the user has appropriate permissions

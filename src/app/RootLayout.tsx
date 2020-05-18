@@ -101,57 +101,51 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
             }
         }
     }
+  }
 
-    render() {
-        const {
-            isLocationSet = false,
-            tokenLoadingError,
-            isLoggedIn,
-            isLoadingToken = true,
-            logout,
-            // tslint:disable-next-line:no-shadowed-variable
-            currentUserRoleScopes = {
-                appScopes: {},
-                authScopes: []
-            }
-        } = this.props;
-
-        if (isLoadingToken) {
-            return null;
-        }
-
-        const userHasBasicAuthorization = userHasBasicAuth(currentUserRoleScopes);
-
-        if (!isLoggedIn && tokenLoadingError) {
-            return (
-                <div style={{ width: 300, margin: 'auto', marginTop: 200, position: 'absolute', top: 0, bottom: 0, right: 0, left: 0 }}>
-                    <Alert bsStyle="danger">
-                        Looks like your session may have expired, please reload the page.
-                        <br/>
-                        <Button style={{marginTop: 10}} onClick={() => window.location.reload()} >Click to reload</Button>
-                    </Alert>
-                </div>
-            );
-        } // Use this if you want to ONLY show the unauthorized message
-        /* else if (!userHasBasicAuthorization) {
-            return (
-                <div className="mainArea">
-                    <Well
-                        style={{
-                            backgroundColor: 'white',
-                            maxWidth: '85%',
-                            height: '100%',
-                            margin: 'auto',
-                            borderRadius: 0
-                        }}
-                    >
-                        <div style={{ paddingTop: 10 }}>
-                            <Alert bsStyle="danger">
-                                <h3 style={{ color: '#d2322d' }}>Unauthorized</h3>
-                                <p>Sorry, you do not have the required access to view this content. Please contact your system administrator.</p>
-                            </Alert>
-                        </div>
-                    </Well>
+  render() {
+    const {
+      isLocationSet = false,
+      tokenLoadingError,
+      isLoggedIn,
+      isLoadingToken = true
+    } = this.props;
+    if (isLoadingToken) {
+      return null;
+    }
+    if (!isLoggedIn && tokenLoadingError) {
+      return (
+        <div style={{ width: 300, margin: 'auto', marginTop: 200, position: 'absolute', top: 0, bottom: 0, right: 0, left: 0 }}>
+          <Alert bsStyle="danger">
+            Looks like your session may have expired, please reload the page.
+            <br/>
+            <Button style={{marginTop:10}} onClick={() => window.location.reload()} >Click to reload</Button>
+          </Alert>
+        </div>
+      );
+    }
+    return (
+      <Router basename={resolveAppUrl('')}>
+        <div className="App">
+          <CustomDragLayer/>
+          <ToastManager />
+          <div className="headerArea">
+            <Navigation />
+          </div>
+          {!isLocationSet && (
+            <div className="mainArea">
+              <Well
+                style={{
+                  backgroundColor: 'white',
+                  maxWidth: '85%',
+                  height: '100%',
+                  margin: 'auto',
+                  borderRadius: 0
+                }}
+              >
+                <div style={{ paddingTop: 10 }}>
+                  <h1>Select your Location</h1>
+                  <LocationSelector.Current />
                 </div>
             );
         } */

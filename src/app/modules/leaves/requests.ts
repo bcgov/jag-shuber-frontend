@@ -178,9 +178,9 @@ class ExpireLeaveSubCodesRequest extends RequestAction<IdType[], IdType[], Leave
     }
 
     setRequestData(moduleState: LeaveModuleState, leaveSubCodeIds: IdType[]) {
-        const newMap = { ...leaveTypeMapRequest.getRequestData(moduleState) };
+        const newMap = { ...leaveSubCodeMapRequest.getRequestData(moduleState) };
         leaveSubCodeIds.forEach(id => newMap[id]);
-        return leaveTypeMapRequest.setRequestData(moduleState, newMap);
+        return  leaveSubCodeMapRequest.setRequestData(moduleState, newMap);
     }
 }
 
@@ -203,9 +203,9 @@ class UnexpireLeaveSubCodesRequest extends RequestAction<IdType[], IdType[], Lea
     }
 
     setRequestData(moduleState: LeaveModuleState, leaveSubCodeIds: IdType[]) {
-        const newMap = { ...leaveTypeMapRequest.getRequestData(moduleState) };
+        const newMap = { ...leaveSubCodeMapRequest.getRequestData(moduleState) };
         leaveSubCodeIds.forEach(id => newMap[id]);
-        return leaveTypeMapRequest.setRequestData(moduleState, newMap);
+        return  leaveSubCodeMapRequest.setRequestData(moduleState, newMap);
     }
 }
 

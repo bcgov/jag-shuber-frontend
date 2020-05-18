@@ -21,7 +21,6 @@ import avatarImg from '../../assets/images/avatar.png';
 import { Dispatch } from 'redux';
 
 import { uploadUserImage } from '../../modules/users/actions';
-import { updateSheriff } from '../../modules/sheriffs/actions';
 
 export default class SheriffProfilePluginHeader extends SheriffProfilePluginBase<Sheriff> {
     // NOTICE!
@@ -144,18 +143,10 @@ export default class SheriffProfilePluginHeader extends SheriffProfilePluginBase
 
     protected getDataFromFormValues(formValues: any): any {
         // We need the Identification plugin stuff too!
-        const data = {
-            header: {},
+        return {
+            header: { ...formValues[this.name] },
             sheriff: { ...formValues.sheriff }
         };
-
-        let imageData;
-        if (formValues[this.reduxFormKey] && formValues[this.reduxFormKey].imageData) {
-            imageData = formValues[this.reduxFormKey].imageData;
-            data.header = { imageData };
-        }
-
-        return data;
     }
 
     // We eventually want to move the image to the user... for now this will do
@@ -163,52 +154,23 @@ export default class SheriffProfilePluginHeader extends SheriffProfilePluginBase
         return sheriff.user ? sheriff.user as User : null;
     }
 
-    async onSubmit(sheriffId: IdType, formValues: any, initialValues: any, dispatch: Dispatch<any>) {
+    async onSubmit(sheriffId: IdType, formValues: any, dispatch: Dispatch<any>): Promise<any> {
         const data  = this.getDataFromFormValues(formValues);
 
         const { header, sheriff } = data;
 
         let user = undefined;
         let userId = undefined;
-        let image = undefined;
-
+        let imageData = undefined;
         if (sheriff) {
             user = this.getSheriffUser(sheriff) as Partial<User>;
             userId = user.id as IdType;
-
-            const { imageData } = header;
-
-            if (imageData) {
-                image = {
-                    name: imageData.name,
-                    // mimetype: 'image/jpeg',
-                    data: await header.imageData.getBase64Img()
-                };
-            }
+            imageData = header.imageData;
         }
 
-        // TODO: For now only sheriffs can have images
-        if (userId && image && sheriff) {
-            // TODO: Leave this in for now... I'll need it later.
+        if (userId && imageData) {
             // @ts-ignore
-            /* const uploadedImageResponse = await dispatch(uploadUserImage({ id: userId, image }));
-            console.log('dumping image upload response');
-            console.log(uploadedImageResponse); */
-
-            /* const toBase64 = (arr: any) => {
-               // arr = new Uint8Array(arr);
-               return btoa(
-                   arr.reduce((imgData: any, byte: any) => imgData + String.fromCharCode(byte), '')
-               );
-            };
-
-            let imageStr = toBase64(uploadedImageResponse.data.data);
-            console.log(imageStr); */
-
-            sheriff.imageUrl = image.data;
-
-            // Temporary mechanism to update sheriff image
-            const updatedSheriff = await dispatch(updateSheriff(sheriff));
+            await dispatch(uploadUserImage({ id: userId, image: imageData }));
         }
     }
 }

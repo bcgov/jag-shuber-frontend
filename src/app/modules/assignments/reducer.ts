@@ -55,7 +55,7 @@ const actionReducer = createReducer<AssignmentModuleState>({
   ADMIN_COURTROOMS_SET_SUBMIT_ERRORS: (state, pluginErrors) => {
     return { ...state, pluginSubmitErrors: pluginErrors };
   },
-  ADMIN_COURTROOMS_SET_FILTERS: (state, filters) => {
+  ADMIN_COURTROOMS_SET_PLUGIN_FILTERS: (state, filters) => {
     const mergedFilters = mergeFilters(state.pluginFilters, filters, 'courtrooms');
     return {...state, pluginFilters: mergedFilters};
   },
@@ -65,7 +65,7 @@ const actionReducer = createReducer<AssignmentModuleState>({
   ADMIN_COURT_ROLES_SET_SUBMIT_ERRORS: (state, pluginErrors) => {
     return { ...state, pluginSubmitErrors: pluginErrors };
   },
-  ADMIN_COURT_ROLES_SET_FILTERS: (state, filters) => {
+  ADMIN_COURT_ROLES_SET_PLUGIN_FILTERS: (state, filters) => {
     const mergedFilters = mergeFilters(state.pluginFilters, filters, 'courtRoles');
     return {...state, pluginFilters: mergedFilters};
   },
@@ -75,7 +75,7 @@ const actionReducer = createReducer<AssignmentModuleState>({
   ADMIN_JAIL_ROLES_SET_SUBMIT_ERRORS: (state, pluginErrors) => {
     return { ...state, pluginSubmitErrors: pluginErrors };
   },
-  ADMIN_JAIL_ROLES_SET_FILTERS: (state, filters) => {
+  ADMIN_JAIL_ROLES_SET_PLUGIN_FILTERS: (state, filters) => {
     const mergedFilters = mergeFilters(state.pluginFilters, filters, 'jailRoles');
     return {...state, pluginFilters: mergedFilters};
   },
@@ -85,7 +85,7 @@ const actionReducer = createReducer<AssignmentModuleState>({
   ADMIN_ESCORT_TYPES_SET_SUBMIT_ERRORS: (state, pluginErrors) => {
     return { ...state, pluginSubmitErrors: pluginErrors };
   },
-  ADMIN_ESCORT_TYPES_SET_FILTERS: (state, filters) => {
+  ADMIN_ESCORT_TYPES_SET_PLUGIN_FILTERS: (state, filters) => {
     const mergedFilters = mergeFilters(state.pluginFilters, filters, 'escortTypes');
     return {...state, pluginFilters: mergedFilters};
   },
@@ -95,7 +95,7 @@ const actionReducer = createReducer<AssignmentModuleState>({
   ADMIN_OTHER_TYPES_SET_SUBMIT_ERRORS: (state, pluginErrors) => {
     return { ...state, pluginSubmitErrors: pluginErrors };
   },
-  ADMIN_OTHER_TYPES_SET_FILTERS: (state, filters: { otherTypes: {} }) => {
+  ADMIN_OTHER_TYPES_SET_PLUGIN_FILTERS: (state, filters: { otherTypes: {} }) => {
     const mergedFilters = mergeFilters(state.pluginFilters, filters, 'otherTypes');
     return {...state, pluginFilters: mergedFilters};
   }
@@ -113,31 +113,26 @@ const nestedReducer = new NestedReducer([
   alternateAssignmentTypeRequests.createOrUpdateAlternateAssignmentTypesRequest.reducer,
   alternateAssignmentTypeRequests.deleteAlternateAssignmentTypesRequest.reducer,
   alternateAssignmentTypeRequests.expireAlternateAssignmentTypesRequest.reducer,
-  alternateAssignmentTypeRequests.unexpireAlternateAssignmentTypesRequest.reducer,
   // Assignment Types - Court Roles
   courtRoleRequests.courtRoleMapRequest.reducer,
   courtRoleRequests.createOrUpdateCourtRolesRequest.reducer,
   courtRoleRequests.deleteCourtRolesRequest.reducer,
   courtRoleRequests.expireCourtRolesRequest.reducer,
-  courtRoleRequests.unexpireCourtRolesRequest.reducer,
   // Assignment Types - Courtrooms
   courtroomRequests.courtroomMapRequest.reducer,
   courtroomRequests.createOrUpdateCourtroomsRequest.reducer,
   courtroomRequests.deleteCourtroomsRequest.reducer,
   courtroomRequests.expireCourtroomsRequest.reducer,
-  courtroomRequests.unexpireCourtroomsRequest.reducer,
   // Assignment Types - Jail Roles
   jailRoleRequests.jailRoleMapRequest.reducer,
   jailRoleRequests.createOrUpdateJailRolesRequest.reducer,
   jailRoleRequests.deleteJailRolesRequest.reducer,
   jailRoleRequests.expireJailRolesRequest.reducer,
-  jailRoleRequests.unexpireJailRolesRequest.reducer,
   // Assignment Types - Escort Runs
   runRequests.runMapRequest.reducer,
   runRequests.createOrUpdateEscortRunsRequest.reducer,
   runRequests.deleteEscortRunsRequest.reducer,
   runRequests.expireEscortRunsRequest.reducer,
-  runRequests.unexpireEscortRunsRequest.reducer,
   // Assignment Duties
   assignmentDutyRequests.assignmentDutyMapRequest.reducer,
   assignmentDutyRequests.createAssignmentDutyRequest.reducer,

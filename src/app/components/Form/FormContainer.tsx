@@ -231,7 +231,6 @@ export abstract class FormContainerBase<T = any> implements FormContainer<T> {
         return this.mapExpiredFromFormValues(map, isExpired);
     }
 
-    // TODO: At some point, we should consolidate common functions between FormContainer and SheriffProfilePlugin
     containsPropertyPath(errors: Object = {}, propertyPath: string = '') {
         const propertyNames = propertyPath.split('.');
         let propertyError = errors;

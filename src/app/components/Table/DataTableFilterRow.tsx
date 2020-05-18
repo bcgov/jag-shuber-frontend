@@ -127,13 +127,11 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
                                             <Glyphicon glyph="remove-sign" /> Clear
                                         </Button>
                                     </FormGroup>
-                                    {showExpiredFilter && (
                                     <FormGroup style={{ position: 'relative', top: '-4px', flex: '0', marginLeft: '5px', marginRight: '5px', display: 'flex', flexDirection: 'column' }}>
                                         {/* <Button bsStyle="default" onClick={onToggleExpiredClicked as any}>
                                             <Glyphicon glyph="time" /> Toggle Expired
                                         </Button> */}
                                         <label style={{ fontSize: '0.8rem', marginBottom: '0' }}>View Expired</label>
-
                                         <Toggle
                                             key={showExpired.toString()}
                                             defaultChecked={showExpired}

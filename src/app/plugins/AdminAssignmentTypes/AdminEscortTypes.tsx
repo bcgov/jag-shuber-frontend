@@ -85,10 +85,7 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
 
     FormComponent = (props: FormContainerProps<AdminEscortTypesProps>) => {
         const { getPluginPermissions, setPluginFilters } = props;
-        const { grantAll, permissions = [] } = buildPluginPermissions(getPluginPermissions);
-
-        const canManage = userCan(permissions, 'MANAGE_ALL');
-        const canDelete = userCan(permissions, 'DELETE');
+        const { grantAll, permissions } = buildPluginPermissions(getPluginPermissions);
 
         // We can't use React hooks yet, and not sure if this project will ever be upgraded to 16.8
         // This is a quick n' dirty way to achieve the same thing
@@ -166,15 +163,15 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
             ? [
                 // DataTable.SelectorFieldColumn('Location', { fieldName: 'locationId', selectorComponent: LocationSelector, displayInfo: false, filterable: true, filterColumn: onFilterLocation }),
                 DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false }),
-                DataTable.TextFieldColumn('Type', { fieldName: 'title', displayInfo: false, filterable: true, filterColumn: onFilterEscortType, required: true }),
-                DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: false, filterable: true, filterColumn: onFilterEscortTypeCode, required: true }),
-                DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, filterSelectorComponent: CodeScopeSelector, displayInfo: false, filterable: true })
+                DataTable.TextFieldColumn('Type', { fieldName: 'title', displayInfo: false, filterable: true, filterColumn: onFilterEscortType }),
+                DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: false, filterable: true, filterColumn: onFilterEscortTypeCode }),
+                DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, filterSelectorComponent: CodeScopeSelector, displayInfo: false, filterable: false })
             ]
             : [
                 DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false }),
-                DataTable.TextFieldColumn('Type', { fieldName: 'title', displayInfo: false, filterable: true, filterColumn: onFilterEscortType, required: true }),
-                DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: false, filterable: true, filterColumn: onFilterEscortTypeCode, required: true }),
-                DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, filterSelectorComponent: CodeScopeSelector, displayInfo: false, filterable: true })
+                DataTable.TextFieldColumn('Type', { fieldName: 'title', displayInfo: false, filterable: true, filterColumn: onFilterEscortType }),
+                DataTable.TextFieldColumn('Code', { fieldName: 'code', displayInfo: false, filterable: true, filterColumn: onFilterEscortTypeCode }),
+                DataTable.SelectorFieldColumn('Scope', { fieldName: 'isProvincialCode', selectorComponent: CodeScopeSelector, filterSelectorComponent: CodeScopeSelector, displayInfo: false, filterable: false })
             ];
 
         const escortTypeActions = [
@@ -185,9 +182,9 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
             },
             ({ fields, index, model }) => {
                 return (model && model.id && model.id !== '' && !model.isExpired)
-                    ? (<ExpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance.forceUpdate()} />)
+                    ? (<ExpireRow fields={fields} index={index} model={model} showComponent={true} onClick={() => dataTableInstance.forceUpdate()} />)
                     : (model && model.isExpired)
-                    ? (<UnexpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance.forceUpdate()} />)
+                    ? (<UnexpireRow fields={fields} index={index} model={model} showComponent={true} onClick={() => dataTableInstance.forceUpdate()} />)
                     : null;
             },
             ({ fields, index, model }) => {
@@ -260,27 +257,12 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
     )
 
     validate(values: AdminEscortTypesProps = {}): FormErrors | undefined {
-        let errors: any = {};
-
-        const formKeys = Object.keys(this.formFieldNames);
-
-        if (formKeys) {
-            formKeys.forEach((key) => {
-                if (!values[key]) return;
-                errors[key] = values[key].map((row: any) => (
-                    {
-                        title: Validators.validateWith(
-                            Validators.required
-                        )(row.title),
-                        /* code: Validators.validateWith(
-                            Validators.required
-                        )(row.code) */
-                    }
-                ));
-            });
+        const escortTypeValues = values.escortTypes;
+        if (escortTypeValues) {
+            // Validate that sort orders are unique
         }
 
-        return (errors && Object.keys(errors).length > 0) ? errors : undefined;
+        return undefined;
     }
 
     fetchData(dispatch: Dispatch<{}>, filters: {} | undefined) {

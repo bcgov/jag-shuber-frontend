@@ -20,14 +20,8 @@ import LeaveTypesLayout from '../plugins/AdminLeaveTypes/LeaveTypesLayout';
 import AdminLeaveTypesPlugin from '../plugins/AdminLeaveTypes/AdminLeaveTypes';
 import AdminTrainingTypesPlugin from '../plugins/AdminLeaveTypes/AdminTrainingTypes';
 
-import {
-    selectAdminLeaveTypesPluginSection,
-    selectAdminTrainingTypesPluginSection
-} from '../modules/leaves/actions';
-
-import {
-    selectedAdminLeaveTypesSection
-} from '../modules/leaves/selectors';
+import { selectedAdminRolesSection as selectedAdminFormSection } from '../modules/roles/selectors';
+import { selectAdminRolesPluginSection } from '../modules/roles/actions';
 
 import { RootState } from '../store';
 
@@ -36,8 +30,7 @@ export interface ManageLeaveTypesStateProps {
 }
 
 export interface ManageLeaveTypesDispatchProps {
-    selectAdminLeaveTypesPluginSection: (sectionName: string) => any;
-    selectAdminTrainingTypesPluginSection: (sectionName: string) => any;
+    selectAdminFormSection: (sectionName: string) => any;
 }
 
 export interface ManageLeaveTypesProps extends
@@ -45,7 +38,7 @@ export interface ManageLeaveTypesProps extends
 
 class ManageLeaveTypes extends React.PureComponent<AdminFormProps & ManageLeaveTypesProps> {
     static defaultProps: Partial<ManageLeaveTypesProps> = {
-        selectedSection: 'ADMIN_LEAVE_TYPES'
+        selectedSection: 'ADMIN_PLUGIN_LEAVE_TYPES:ADMIN_PLUGIN_TRAINING_TYPES'
     };
 
     state = {
@@ -68,21 +61,33 @@ class ManageLeaveTypes extends React.PureComponent<AdminFormProps & ManageLeaveT
         const { isEditing } = this.state;
 
         const {
-            // tslint:disable-next-line:no-shadowed-variable
-            selectAdminLeaveTypesPluginSection,
-            // tslint:disable-next-line:no-shadowed-variable
-            selectAdminTrainingTypesPluginSection,
-            selectedSection = 'ADMIN_LEAVE_TYPES'
+            selectAdminFormSection,
+            selectedSection = 'ADMIN_PLUGIN_LEAVE_TYPES:ADMIN_PLUGIN_TRAINING_TYPES'
         } = this.props;
 
         return (
             <Page
-                key={selectedSection}
-                disableLocations={true}
+                disableLocations={false}
                 toolbar={
                     <PageToolbar
                         left={(
                             <div style={{ flex: 1, display: 'flex', position: 'relative', justifyContent: 'center', paddingTop: '10px' }} />
+                        )}
+                        middle={(
+                            <>
+                                <div style={{ flex: 1, display: 'flex', position: 'relative', justifyContent: 'center', paddingTop: '10px' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', marginRight: '15px' }}>
+                                        <h6 style={{ color: 'white', fontWeight: 'bold', marginBottom: '3px' }}>Choose Type: </h6>
+                                    </div>
+                                    <div className={`admin-form-filters-toggle admin-form-page-tab${selectedSection === 'ADMIN_PLUGIN_LEAVE_TYPES' ? ' is-active' : ''}`} onClick={() => selectAdminFormSection('ADMIN_PLUGIN_LEAVE_TYPES')}>
+                                        {/* <Glyphicon glyph="chevron-down" /> */}Leave<span className="visible-lg">&nbsp; Types</span>
+                                    </div>
+                                    &nbsp;&nbsp;
+                                    <div className={`admin-form-filters-toggle admin-form-page-tab${selectedSection === 'ADMIN_PLUGIN_TRAINING_TYPES' ? ' is-active' : ''}`} onClick={() => selectAdminFormSection('ADMIN_PLUGIN_TRAINING_TYPES')}>
+                                        {/* <Glyphicon glyph="chevron-down" /> */}Training<span className="visible-lg">&nbsp; Types</span>
+                                    </div>
+                                </div>
+                            </>
                         )}
                         right={(
                             <div style={{ marginTop: 3, paddingTop: '10px' }}>
@@ -91,29 +96,7 @@ class ManageLeaveTypes extends React.PureComponent<AdminFormProps & ManageLeaveT
                                 <HeaderCancelButton formName={'AdminForm'} /> */}
                             </div>
                         )}
-                    >
-                        {/* Center */}
-                        <div>
-                            <div style={{ flex: 1, display: 'flex', position: 'relative', justifyContent: 'center', paddingTop: '10px' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', marginRight: '15px' }}>
-                                    <h6 style={{ color: 'white', fontWeight: 'bold', marginBottom: '3px' }}>Choose Type: </h6>
-                                </div>
-                                <div
-                                    className={`admin-form-filters-toggle admin-form-page-tab${selectedSection === 'ADMIN_LEAVE_TYPES' ? ' is-active' : ''}`}
-                                    onClick={() => selectAdminLeaveTypesPluginSection('ADMIN_LEAVE_TYPES')}>
-                                    {/* <Glyphicon glyph="chevron-down" /> */}
-                                    Leave<span className="visible-lg">&nbsp; Types</span>
-                                </div>
-                                &nbsp;&nbsp;
-                                <div
-                                    className={`admin-form-filters-toggle admin-form-page-tab${selectedSection === 'ADMIN_TRAINING_TYPES' ? ' is-active' : ''}`}
-                                    onClick={() => selectAdminTrainingTypesPluginSection('ADMIN_TRAINING_TYPES')}>
-                                    {/* <Glyphicon glyph="chevron-down" /> */}
-                                    Training<span className="visible-lg">&nbsp; Types</span>
-                                </div>
-                            </div>
-                        </div>
-                    </PageToolbar>
+                    />
                 }
             >
                 <Well
@@ -130,6 +113,7 @@ class ManageLeaveTypes extends React.PureComponent<AdminFormProps & ManageLeaveT
                 >
                     {/* <PageTitle title={({}: any) => `Manage Leave & Training Types`} /> */}
                     <AdminForm
+                        key={'admin-code-types-grid'}
                         templateComponent={LeaveTypesLayout}
                         showTabs={false}
                         plugins={[
@@ -147,17 +131,16 @@ class ManageLeaveTypes extends React.PureComponent<AdminFormProps & ManageLeaveT
 
 const mapStateToProps = (state: RootState) => {
     return {
-        selectedSection: selectedAdminLeaveTypesSection(state)
+        selectedSection: selectedAdminFormSection(state)
     };
 };
 
 const mapDispatchToProps = {
-    selectAdminLeaveTypesPluginSection,
-    selectAdminTrainingTypesPluginSection
+  selectAdminFormSection: selectAdminRolesPluginSection
 };
 
 // tslint:disable-next-line:max-line-length
 export default connect<ManageLeaveTypesStateProps, ManageLeaveTypesDispatchProps>(
-    mapStateToProps,
-    mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(ManageLeaveTypes);

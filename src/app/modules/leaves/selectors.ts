@@ -237,8 +237,3 @@ export const findAllEffectiveTrainingLeaveSubCodes = (filters: any) => (state: R
     }
     return undefined;
 };
-
-export const selectedAdminLeaveTypesSection = (state: RootState) => {
-    const { leaves: { selectedSection = undefined } = {} } = state;
-    return selectedSection;
-};

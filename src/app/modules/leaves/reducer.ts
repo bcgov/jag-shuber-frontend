@@ -43,22 +43,22 @@ export function createReducer<State>(
 
 const actionReducer = createReducer<LeaveModuleState>({
   ADMIN_LEAVE_TYPES_SELECT_SECTION: (state, sectionName) => {
-    return {...state, selectedSection: sectionName};
+    return {...state, selectedProfileSection: sectionName};
   },
-  ADMIN_LEAVE_TYPES_SET_SUBMIT_ERRORS: (state, pluginErrors) => {
+  ADMIN_LEAVE_TYPES_SET_PLUGIN_SUBMIT_ERRORS: (state, pluginErrors) => {
     return {...state, pluginSubmitErrors: pluginErrors};
   },
-  ADMIN_LEAVE_TYPES_SET_FILTERS: (state, filters: { personalLeaveTypes: {} }) => {
+  ADMIN_LEAVE_TYPES_SET_PLUGIN_FILTERS: (state, filters: { personalLeaveTypes: {} }) => {
     const mergedFilters = mergeFilters(state.pluginFilters, filters, 'personalLeaveTypes');
     return {...state, pluginFilters: mergedFilters};
   },
   ADMIN_TRAINING_TYPES_SELECT_SECTION: (state, sectionName) => {
-    return {...state, selectedSection: sectionName};
+    return {...state, selectedProfileSection: sectionName};
   },
-  ADMIN_TRAINING_TYPES_SET_SUBMIT_ERRORS: (state, pluginErrors) => {
+  ADMIN_TRAINING_TYPES_SET_PLUGIN_SUBMIT_ERRORS: (state, pluginErrors) => {
     return {...state, pluginSubmitErrors: pluginErrors};
   },
-  ADMIN_TRAINING_TYPES_SET_FILTERS: (state, filters: { trainingLeaveTypes: {} }) => {
+  ADMIN_TRAINING_TYPES_SET_PLUGIN_FILTERS: (state, filters: { trainingLeaveTypes: {} }) => {
     const mergedFilters = mergeFilters(state.pluginFilters, filters, 'trainingLeaveTypes');
     return {...state, pluginFilters: mergedFilters};
   }
@@ -72,8 +72,6 @@ const nestedReducer = new NestedReducer([
   leaveRequests.createOrUpdateLeavesRequest.reducer,
   leaveRequests.createOrUpdateLeaveSubCodesRequest.reducer,
   leaveRequests.deleteLeaveSubCodesRequest.reducer,
-  leaveRequests.expireLeaveSubCodesRequest.reducer,
-  leaveRequests.unexpireLeaveSubCodesRequest.reducer,
   // Actions
   actionReducer
 ]);

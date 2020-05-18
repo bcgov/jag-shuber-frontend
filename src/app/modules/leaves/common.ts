@@ -13,7 +13,7 @@ export interface LeaveModuleState {
     leaveSubCodeMap?: RequestActionState<MapType<LeaveSubCode>>;
     leaveCancelCodeMap?: RequestActionState<MapType<LeaveCancelCode>>;
 
-    selectedSection?: string;
+    selectedProfileSection?: string;
     pluginSubmitErrors?: ErrorMap;
     pluginFilters?: {}; // TODO: We could type this a bit better...
 }
