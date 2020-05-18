@@ -231,6 +231,7 @@ export abstract class FormContainerBase<T = any> implements FormContainer<T> {
         return this.mapExpiredFromFormValues(map, isExpired);
     }
 
+    // TODO: At some point, we should consolidate common functions between FormContainer and SheriffProfilePlugin
     containsPropertyPath(errors: Object = {}, propertyPath: string = '') {
         const propertyNames = propertyPath.split('.');
         let propertyError = errors;
@@ -248,7 +249,15 @@ export abstract class FormContainerBase<T = any> implements FormContainer<T> {
 
             propertyError = propertyError[propertyName];
         }
-        // we've traversed the whole property string finding each piece, there is an error
+
+        // If we're dealing with a plugin that has nested redux forms,
+        // we need to make an extra check to handle FormArrays
+        if (containsPath && Array.isArray(propertyError)) {
+            // Filter out any undefined values they are just in the error array to maintain the row index
+            containsPath = propertyError.filter(error => error).length > 0;
+        }
+
+        // We've traversed the whole property string finding each piece, there is an error
         return containsPath;
     }
 

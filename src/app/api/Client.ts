@@ -1384,11 +1384,12 @@ export default class Client implements API {
     }
     // END! Methods for roles
 
-    getToken(): Promise<string> {
+    async getToken(): Promise<string> {
         return this._client.GetToken();
     }
-    logout(): Promise<void> {
-        return this._client.Logout();
+
+    async logout(): Promise<void> {
+        return; // this._client.Logout();
     }
 
 }
