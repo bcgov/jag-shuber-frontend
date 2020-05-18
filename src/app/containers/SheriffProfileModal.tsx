@@ -28,10 +28,16 @@ interface SheriffProfileModalStateProps {
 
 export interface SheriffProfileModalDispatchProps {
     showSheriffProfileModal: (sheriffId: IdType, isEditing: boolean, sectionName: string) => void;
+    hideSheriffProfileModal: () => void;
 }
 
 type CompositeProps =
     SheriffProfileModalProps & SheriffProfileModalDispatchProps & SheriffProfileModalStateProps & IModalInjectedProps;
+
+const modalConfig = {
+    name: 'SheriffProfileModal'
+};
+
 class SheriffProfileModal extends React.PureComponent<CompositeProps> {
     render() {
         const {
@@ -41,6 +47,7 @@ class SheriffProfileModal extends React.PureComponent<CompositeProps> {
             // TODO: Turn off forced editing if we implement a read-only view for DataTables
             // isEditing = false,
             showSheriffProfileModal,
+            hideSheriffProfileModal,
             sheriffId
         } = this.props;
 
@@ -74,32 +81,33 @@ class SheriffProfileModal extends React.PureComponent<CompositeProps> {
                         // TODO: We temp disable button we only want edit mode for now
                         isEditing={true}
                         sheriffId={sheriffId}
-                        onSubmitSuccess={() => showSheriffProfileModal(sheriffId, false, 'leaves')}
+                        onSubmitSuccess={() => showSheriffProfileModal(sheriffId, false, 'id')}
                     />
                 </Modal.Body>
                 {isEditing &&
                     <Modal.Footer>
-                        <div>
-                            <Button onClick={() => showSheriffProfileModal(sheriffId, false, 'leaves')}>
-                                Cancel
+                        <>
+                            <Button bsStyle={`default`} onClick={() => hideSheriffProfileModal()}>
+                                <Glyphicon glyph="ban-circle" /> Cancel
                             </Button>
+                            &nbsp;
                             <SheriffProfile.SubmitButton>
-                                Save
+                                <Glyphicon glyph="ok" /> Save
                             </SheriffProfile.SubmitButton>
-                        </div>
+                        </>
                     </Modal.Footer>}
             </Modal>
         );
     }
 }
 
-const modalConfig = {
-    name: 'SheriffProfileModal'
-};
-
 const showAction = (sheriffId: IdType, isEditing: boolean = false, sectionName?: string) => {
     const modalProps = { sheriffId, isEditing, sectionName };
     return showModal(modalConfig.name, modalProps);
+};
+
+const hideAction = () => {
+    return hideModal(modalConfig.name);
 };
 
 const mapStateToModalProps = (state: RootState, { sheriffId }: SheriffProfileModalProps) => {
@@ -107,13 +115,13 @@ const mapStateToModalProps = (state: RootState, { sheriffId }: SheriffProfileMod
 };
 
 const mapDispatchToModalProps = {
-    showSheriffProfileModal: showAction
+    showSheriffProfileModal: showAction,
+    hideSheriffProfileModal: hideAction
 };
 
-const ConnectedModal = connect<
-    SheriffProfileModalStateProps, SheriffProfileModalDispatchProps, SheriffProfileModalProps, RootState>(
-        mapStateToModalProps,
-        mapDispatchToModalProps
+const ConnectedModal = connect<SheriffProfileModalStateProps, SheriffProfileModalDispatchProps, SheriffProfileModalProps, RootState>(
+    mapStateToModalProps,
+    mapDispatchToModalProps
 )(SheriffProfileModal) as any;
 
 const ReduxModal = connectModal(modalConfig)(ConnectedModal);
@@ -125,5 +133,5 @@ export default class extends ReduxModal {
         return <ConnectedShowModalButton modalName={modalConfig.name} modalProps={props} />;
     };
 
-    static HideAction = () => hideModal(modalConfig.name);
+    static HideAction = () => hideAction();
 }
