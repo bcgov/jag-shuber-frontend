@@ -15,7 +15,7 @@ export interface SheriffModuleState {
     updateSheriff?: RequestActionState<Sheriff>;
     createSheriffProfile?: RequestActionState<SheriffProfile>;
     updateSheriffProfile?: RequestActionState<SheriffProfile>;
-    selectedProfileSection?: string;
+    selectedSection?: string;
     pluginSubmitErrors?: ErrorMap;
 }
 

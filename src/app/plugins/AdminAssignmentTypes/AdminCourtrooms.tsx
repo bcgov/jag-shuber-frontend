@@ -37,7 +37,6 @@ import {
 } from '../../components/Form/FormContainer';
 
 import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
-import { AdminCourtroomsProps } from './AdminCourtrooms';
 import LocationSelector from '../../containers/LocationSelector';
 import RemoveRow from '../../components/TableColumnActions/RemoveRow';
 import ExpireRow from '../../components/TableColumnActions/ExpireRow';
@@ -81,6 +80,7 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
     showExpired = false;
 
     FormComponent = (props: FormContainerProps<AdminCourtroomsProps>) => {
+        console.log('Re-render AdminCourtrooms');
         const { getPluginPermissions, setPluginFilters } = props;
         const { grantAll, permissions = [] } = buildPluginPermissions(getPluginPermissions);
 

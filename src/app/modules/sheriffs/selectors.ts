@@ -157,8 +157,8 @@ export function isSheriffLoanedIn(sheriffId: string) {
 }
 
 export const selectedSheriffProfileSection = (state: RootState) => {
-    const { sheriffs: { selectedProfileSection = undefined } = {} } = state;
-    return selectedProfileSection;
+    const { sheriffs: { selectedSection = undefined } = {} } = state;
+    return selectedSection;
 };
 
 export const getSheriffProfilePluginErrors = (state: RootState) => {

@@ -38,8 +38,8 @@ export const groupByKey = (key: string, arr: any[]): MapType<any> => {
 };
 
 export const selectedAdminRolesSection = (state: RootState) => {
-    const { roles: { selectedProfileSection = undefined } = {} } = state;
-    return selectedProfileSection;
+    const { roles: { selectedSection = undefined } = {} } = state;
+    return selectedSection;
 };
 
 export const getAdminRolesPluginErrors = (state: RootState) => {

@@ -49,7 +49,7 @@ export function createReducer<State>(
 
 const actionReducer = createReducer<RoleModuleState>({
   ADMIN_ROLES_SELECT_SECTION: (state, sectionName) => {
-    return { ...state, selectedProfileSection: sectionName };
+    return { ...state, selectedSection: sectionName };
   },
   ADMIN_ROLES_SET_SUBMIT_ERRORS: (state, pluginErrors) => {
     return { ...state, pluginSubmitErrors: pluginErrors };

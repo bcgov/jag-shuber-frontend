@@ -56,7 +56,6 @@ const SelectorFieldColumn = (label?: string, options?: Types.FieldColumnOptions)
                 label={label}
                 onChange={(ev, newValue, previousValue) => {
                     if (ev) {
-                        // TODO: No idea why this doesn't act the same as Field in say, the TextField column... ugh.
                         onChange(ev.nativeEvent as Event, newValue, previousValue, `${fieldInstanceName}.${fieldName}`);
                     }
                 }}

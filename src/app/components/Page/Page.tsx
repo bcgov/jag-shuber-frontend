@@ -20,7 +20,7 @@ export interface PageToolbarProps {
 
 export class PageToolbar extends React.PureComponent<PageToolbarProps>{
     render() {
-        const { style, left, middle, right } = this.props;
+        const { style, left, middle, right, children } = this.props;
         return (
             <div
                 style={{
@@ -40,6 +40,7 @@ export class PageToolbar extends React.PureComponent<PageToolbarProps>{
                 </div>
                 <div style={{ textAlign: 'center' }}>
                     {middle}
+                    {children}
                 </div>
             </div>
         );

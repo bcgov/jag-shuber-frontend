@@ -34,14 +34,18 @@ import {
 } from '../modules/user/selectors';
 
 import {
-    selectedAdminRolesSection as selectedAdminFormSection,
+    selectedAdminFormSection
+} from '../modules/adminForm/selectors';
+
+// TODO: Replace these too
+import {
     getAdminRolesPluginErrors as getAdminFormPluginErrors
 } from '../modules/roles/selectors';
+
 import {
     // TODO: We can almost pull these out now...
     selectAdminRolesPluginSection as selectAdminFormSection,
     setAdminRolesPluginSubmitErrors as setAdminFormPluginSubmitErrors,
-    setAdminRolesPluginFilters
 } from '../modules/roles/actions'; // TODO: This is not generic!
 
 import AdminFormComponent, { AdminFormProps } from '../components/AdminForm/AdminForm';
@@ -122,16 +126,16 @@ function collectPluginErrors(state: any, formName: string, plugins: FormContaine
 const formConfig: ConfigProps<{}, AdminFormProps> = {
     form: 'AdminForm',
     enableReinitialize: true,
+    touchOnBlur: false,
+    touchOnChange: false,
     validate: (values: any, { plugins = [], selectedSection }) => {
-        console.log(`selected section: ${selectedSection}`);
         const validationErrors = plugins.reduce((errors, plugin) => {
             const pluginValues = values[plugin.reduxFormKey];
             const pluginErrors = plugin.validate(pluginValues);
             if (pluginErrors) {
                 errors[plugin.reduxFormKey] = {...errors[plugin.reduxFormKey], ...pluginErrors};
             }
-            // console.log('dump admin form errors');
-            // console.log(errors);
+
             return errors;
         }, {} as FormErrors);
         return {...validationErrors};
@@ -278,7 +282,6 @@ const combineMerge = (target, source, options) => {
 
 export default class extends
     connect<AdminFormContainerStateProps, AdminFormContainerDispatchProps, AdminFormProps, RootState>(
-        // TODO: Type this?
         (state, { plugins, selectedSection }) => {
             let initialValues: any = {};
 
@@ -335,12 +338,12 @@ export default class extends
                 plugins: pluginsToRender,
                 currentLocation: currentLocationSelector(state),
                 isLocationSet: isLocationSetSelector(state),
-                initialValues,
+                initialValues: initialValues,
                 pluginPermissions: { ...appScopes },
                 pluginAuth: authScopes,
                 pluginState: { ...initialValues },
                 pluginFilters: pluginFilters,
-                selectedSection: selectedAdminFormSection(state) || selectedSection,
+                selectedSection: selectedSection,
                 ...collectPluginErrors(state, formConfig.form, plugins)
             };
         },
@@ -359,10 +362,11 @@ export default class extends
             return {
                 dispatch, // Just pass dispatch through so we can use it in plugins
                 initialize: () => {
+                    // TODO: This needs to go?
                     dispatch(selectAdminFormSection());
                     dispatch(setAdminFormPluginSubmitErrors());
                     plugins.forEach(p => {
-                        // TODO: Get rid of this first param, unless we're implementing location specific roles...
+
                         p.fetchData(dispatch, {}); // TODO: {} denotes an empty set of filters
                         p.dispatch = dispatch;
                     });
@@ -370,13 +374,8 @@ export default class extends
                 onSelectSection: onSelectSection,
                 // TODO: Restrict scope to the current section / plugin, live with onSelectSection!
                 setPluginFilters: (filters: {}, action: any) => {
-                    // TODO: Can we type this action better?
-                    // TODO: We're just passing down dispatch now, refactor this method.
                     if (filters && action) dispatch(action(filters));
                 },
-                // TODO: It would be nice if we could somehow pass in showSheriffProfileModal some other way that was more declarative, and from the plugin...
-                //  This is easy and works for now though.
-                // TODO: We're just passing down dispatch now, refactor this method.
                 showSheriffProfileModal: (sheriffId: IdType, isEditing: boolean = false, sectionName?: string) => {
                     dispatch(SheriffProfileModal.ShowAction(sheriffId, isEditing, sectionName));
                 }
