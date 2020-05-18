@@ -50,7 +50,7 @@ export function createReducer<State>(
 
 const actionReducer = createReducer<AssignmentModuleState>({
   ADMIN_COURTROOMS_SELECT_SECTION: (state, sectionName) => {
-    return { ...state, selectedProfileSection: sectionName };
+    return { ...state, selectedSection: sectionName };
   },
   ADMIN_COURTROOMS_SET_SUBMIT_ERRORS: (state, pluginErrors) => {
     return { ...state, pluginSubmitErrors: pluginErrors };
@@ -60,7 +60,7 @@ const actionReducer = createReducer<AssignmentModuleState>({
     return {...state, pluginFilters: mergedFilters};
   },
   ADMIN_COURT_ROLES_SELECT_SECTION: (state, sectionName) => {
-    return { ...state, selectedProfileSection: sectionName };
+    return { ...state, selectedSection: sectionName };
   },
   ADMIN_COURT_ROLES_SET_SUBMIT_ERRORS: (state, pluginErrors) => {
     return { ...state, pluginSubmitErrors: pluginErrors };
@@ -70,7 +70,7 @@ const actionReducer = createReducer<AssignmentModuleState>({
     return {...state, pluginFilters: mergedFilters};
   },
   ADMIN_JAIL_ROLES_SELECT_SECTION: (state, sectionName) => {
-    return { ...state, selectedProfileSection: sectionName };
+    return { ...state, selectedSection: sectionName };
   },
   ADMIN_JAIL_ROLES_SET_SUBMIT_ERRORS: (state, pluginErrors) => {
     return { ...state, pluginSubmitErrors: pluginErrors };
@@ -80,7 +80,7 @@ const actionReducer = createReducer<AssignmentModuleState>({
     return {...state, pluginFilters: mergedFilters};
   },
   ADMIN_ESCORT_TYPES_SELECT_SECTION: (state, sectionName) => {
-    return { ...state, selectedProfileSection: sectionName };
+    return { ...state, selectedSection: sectionName };
   },
   ADMIN_ESCORT_TYPES_SET_SUBMIT_ERRORS: (state, pluginErrors) => {
     return { ...state, pluginSubmitErrors: pluginErrors };
@@ -90,7 +90,7 @@ const actionReducer = createReducer<AssignmentModuleState>({
     return {...state, pluginFilters: mergedFilters};
   },
   ADMIN_OTHER_TYPES_SELECT_SECTION: (state, sectionName) => {
-    return { ...state, selectedProfileSection: sectionName };
+    return { ...state, selectedSection: sectionName };
   },
   ADMIN_OTHER_TYPES_SET_SUBMIT_ERRORS: (state, pluginErrors) => {
     return { ...state, pluginSubmitErrors: pluginErrors };

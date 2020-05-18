@@ -38,7 +38,7 @@ export function createReducer<State>(
 
 const actionReducer = createReducer<SheriffModuleState>({
   SHERIFF_PROFILE_SELECT_SECTION: (state, sectionName) => {
-    return { ...state, selectedProfileSection: sectionName };
+    return { ...state, selectedSection: sectionName };
   },
   SHERIFF_PROFILE_SET_SUBMIT_ERRORS: (state, pluginErrors) => {
     return { ...state, pluginSubmitErrors: pluginErrors };

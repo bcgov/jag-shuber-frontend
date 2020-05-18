@@ -283,3 +283,8 @@ export const findAllEffectiveEscortRunTypes = (filters: any) => (state: RootStat
     }
     return undefined;
 };
+
+export const selectedAdminAssignmentTypesSection = (state: RootState) => {
+    const { assignments: { selectedSection = undefined } = {} } = state;
+    return selectedSection;
+};

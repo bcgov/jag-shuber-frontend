@@ -43,7 +43,7 @@ export function createReducer<State>(
 
 const actionReducer = createReducer<LeaveModuleState>({
   ADMIN_LEAVE_TYPES_SELECT_SECTION: (state, sectionName) => {
-    return {...state, selectedProfileSection: sectionName};
+    return {...state, selectedSection: sectionName};
   },
   ADMIN_LEAVE_TYPES_SET_SUBMIT_ERRORS: (state, pluginErrors) => {
     return {...state, pluginSubmitErrors: pluginErrors};
@@ -53,7 +53,7 @@ const actionReducer = createReducer<LeaveModuleState>({
     return {...state, pluginFilters: mergedFilters};
   },
   ADMIN_TRAINING_TYPES_SELECT_SECTION: (state, sectionName) => {
-    return {...state, selectedProfileSection: sectionName};
+    return {...state, selectedSection: sectionName};
   },
   ADMIN_TRAINING_TYPES_SET_SUBMIT_ERRORS: (state, pluginErrors) => {
     return {...state, pluginSubmitErrors: pluginErrors};

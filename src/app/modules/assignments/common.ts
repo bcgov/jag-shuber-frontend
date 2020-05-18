@@ -35,7 +35,7 @@ export interface AssignmentModuleState {
     // Sheriff Duties
     deleteSheriffDuty?: RequestActionState<void>;
 
-    selectedProfileSection?: string;
+    selectedSection?: string;
     pluginSubmitErrors?: ErrorMap;
     pluginFilters?: {}; // TODO: We could type this a bit better...
 }

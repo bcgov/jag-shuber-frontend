@@ -10,7 +10,7 @@ export interface UserModuleState {
     userMap?: RequestActionState<UserMap>;
     createUser?: RequestActionState<User>;
     updateUser?: RequestActionState<User>;
-    selectedProfileSection?: string;
+    selectedSection?: string;
     pluginSubmitErrors?: ErrorMap;
 }
 

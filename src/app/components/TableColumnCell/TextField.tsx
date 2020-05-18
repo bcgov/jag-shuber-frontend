@@ -67,9 +67,13 @@ const TextFieldColumn = (label?: string, options?: Types.FieldColumnOptions): Ty
                 name={`${fieldInstanceName}.${fieldName}`}
                 component={FieldRenderer}
                 label={label}
-                onChange={onChange}
+                onChange={(ev, newValue, previousValue) => {
+                    if (ev) {
+                        onChange(ev.nativeEvent as Event, newValue, previousValue, `${fieldInstanceName}.${fieldName}`);
+                    }
+                }}
                 disabled={disabled}
-                validate={validators}
+                // validate={validators}
             />
         ),
         CanceledRender: () => (<div>TextField Cancelled Display</div>)

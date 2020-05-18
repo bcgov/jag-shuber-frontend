@@ -62,4 +62,4 @@ export const setAdminTrainingTypesPluginFilters = (filters: {}) => {
     return (
         actionCreator('ADMIN_TRAINING_TYPES_SET_FILTERS')(filters)
     );
-}
+};
