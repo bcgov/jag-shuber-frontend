@@ -659,6 +659,12 @@ table .form-group {
     opacity: 1;
 }
 
+@media (min-width: 768px) {
+    .modal-dialog {
+        margin: 147px auto;
+    }
+}
+
 /* Action buttons */
 .action-buttons > button,
 .action-buttons .action-button {
