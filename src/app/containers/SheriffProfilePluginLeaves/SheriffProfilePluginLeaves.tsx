@@ -79,8 +79,8 @@ export default class SheriffProfilePluginLeaves
         let fullDayErrors: any = [];
 
         if (values.fullDay) {
-            fullDayErrors = values.fullDay.map(l => (
-                {
+            fullDayErrors = values.fullDay.map(l => {
+                const validationErrors = {
                     startDate: Validators.validateWith(
                         Validators.required,
                         Validators.isSameOrBefore(l.endDate, 'End Date')
@@ -90,14 +90,19 @@ export default class SheriffProfilePluginLeaves
                         Validators.isSameOrAfter(l.startDate, 'Start Date')
                     )(l.endDate),
                     leaveSubCode: Validators.required(l.leaveSubCode)
-                }
-            ));
+                };
+
+                const isValid = !(Object.keys(validationErrors)
+                    .some(key => validationErrors[key] !== undefined));
+
+                return (!isValid) ? validationErrors : undefined;
+            });
         }
 
         let partialDayErrors: any = [];
         if (values.partialDay) {
-            partialDayErrors = values.partialDay.map(l => (
-                {
+            partialDayErrors = values.partialDay.map(l => {
+                const validationErrors = {
                     startDate: Validators.validateWith(
                         Validators.required
                     )(l.startDate),
@@ -110,8 +115,13 @@ export default class SheriffProfilePluginLeaves
                         Validators.isTimeAfter(l.startTime, 'Start Time')
                     )(l.endTime),
                     leaveSubCode: Validators.required(l.leaveSubCode)
-                }
-            ));
+                };
+
+                const isValid = !(Object.keys(validationErrors)
+                    .some(key => validationErrors[key] !== undefined));
+
+                return (!isValid) ? validationErrors : undefined;
+            });
         }
 
         const errors = { fullDay: fullDayErrors, partialDay: partialDayErrors };

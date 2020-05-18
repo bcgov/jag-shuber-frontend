@@ -1,6 +1,6 @@
 import moment from 'moment';
 import React from 'react';
-import { DateType, IdType, SheriffLocation } from '../../api/Api';
+import { DateType, IdType, SheriffLocation } from '../../api';
 import {
     SheriffProfilePluginProps,
     SheriffProfileSectionPlugin
@@ -167,17 +167,22 @@ export default class SheriffProfilePluginLocation
 
         if (values.fullDayLocations) {
             fullDayLocationErrors = values.fullDayLocations.map(l => {
-                return ({
+                const validationErrors = {
                     locationId: Validators.required(l.locationId),
                     startDate: Validators.validateWith(
                         Validators.required,
                         Validators.isSameOrBefore(l.endDate, 'End Date')
-                    )(l.startDate || undefined),
+                    )(l.startDate),
                     endDate: Validators.validateWith(
                         Validators.required,
                         Validators.isSameOrAfter(l.startDate, 'Start Date')
-                    )(l.endDate || undefined)
-                });
+                    )(l.endDate)
+                };
+
+                const isValid = !(Object.keys(validationErrors)
+                    .some(key => validationErrors[key] !== undefined));
+
+                return (!isValid) ? validationErrors : undefined;
             });
         }
 
@@ -185,21 +190,26 @@ export default class SheriffProfilePluginLocation
 
         if (values.partialDayLocations) {
             partialDayLocationErrors = values.partialDayLocations.map(l => {
-                return ({
+                const validationErrors = {
                     locationId: Validators.required(l.locationId),
                     startDate: Validators.validateWith(
                         Validators.required,
                         Validators.isSameOrAfter(moment(new Date()).format('YYYY-MM-DD'), 'Today\'s Date')
-                    )(l.startDate || undefined),
+                    )(l.startDate),
                     startTime: Validators.validateWith(
                         Validators.required,
                         Validators.isTimeBefore(l.endTime, 'End Time')
-                    )(l.startTime || undefined),
+                    )(l.startTime),
                     endTime: Validators.validateWith(
                         Validators.required,
                         Validators.isTimeAfter(l.startTime, 'Start Time')
-                    )(l.endTime || undefined)
-                });
+                    )(l.endTime)
+                };
+
+                const isValid = !(Object.keys(validationErrors)
+                    .some(key => validationErrors[key] !== undefined));
+
+                return (!isValid) ? validationErrors : undefined;
             });
         }
 

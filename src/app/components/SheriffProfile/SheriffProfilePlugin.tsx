@@ -201,7 +201,15 @@ export abstract class SheriffProfilePluginBase<T = any> implements SheriffProfil
 
             propertyError = propertyError[propertyName];
         }
-        // we've traversed the whole property string finding each piece, there is an error
+
+        // If we're dealing with a plugin that has nested redux forms,
+        // we need to make an extra check to handle FormArrays
+        if (containsPath && Array.isArray(propertyError)) {
+            // Filter out any undefined values they are just in the error array to maintain the row index
+            containsPath = propertyError.filter(error => error).length > 0;
+        }
+
+        // We've traversed the whole property string finding each piece, there is an error
         return containsPath;
     }
 
@@ -226,16 +234,23 @@ export abstract class SheriffProfilePluginBase<T = any> implements SheriffProfil
         );
     }
 
-    async onSubmit(sheriffid: IdType | undefined, formValues: any, initialValues: any, dispatch: Dispatch<any>): Promise<any | void> {
+    async onSubmit(
+        sheriffid: IdType | undefined,
+        formValues: any,
+        initialValues: any,
+        dispatch: Dispatch<any>
+    ): Promise<any | void> {
         // does nothing
     }
 
     hasErrors(errors: any) {
         // Traverse first nodes of error object checking for errors on each
         return Object.keys(errors).some(eKey => (
-            Object.keys(this.formFieldNames).some(key => (
-                this.containsPropertyPath(errors[eKey], this.formFieldNames[key])
-            ))
+            Object.keys(this.formFieldNames).some(key => {
+                const formErrors = errors[eKey];
+                const formPath = this.formFieldNames[key];
+                return this.containsPropertyPath(formErrors, formPath);
+            })
         ));
     }
 
