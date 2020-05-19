@@ -74,7 +74,7 @@ import {
 } from '../../components/Form/FormContainer';
 
 import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../components/Table/DataTable';
-import AdminRoleScopeAccessModal from './containers/AdminRoleScopeAccessModal';
+import AdminRoleScopeAccessModal, { AdminRoleScopeAccessModalProps } from './containers/AdminRoleScopeAccessModal';
 import AdminEffectivePermissionsModal from './containers/AdminEffectivePermissionsModal';
 
 import FrontendScopeSelector from './containers/FrontendScopeSelector';
@@ -84,6 +84,7 @@ import { RoleFrontendScopePermission } from '../../api/Api';
 
 import DeleteRow from '../../components/TableColumnActions/DeleteRow';
 import RemoveRow from '../../components/TableColumnActions/RemoveRow';
+import ConfigureRoleFrontendScopeButton from '../../components/TableColumnActions/ConfigureRoleFrontendScopeButton';
 
 import { ActionProps } from '../../components/TableColumnCell/Actions';
 
@@ -197,25 +198,34 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
             ({ fields, index, model }) => {
                 return (model && model.id && model.id !== '')
                     ? (
-                        <Button
-                            bsStyle="primary"
-                            onClick={(ev) => onButtonClicked(ev, dataTableInstance, model)}>
-                            <Glyphicon glyph="wrench" />
-                        </Button>
+                        <ConfigureRoleFrontendScopeButton
+                            frontendScopeId={model.scopeId}
+                            fields={fields}
+                            index={index}
+                            model={model}
+                            showComponent={(grantAll || canManage || canDelete)}
+                            onButtonClicked={(ev: any) => onButtonClicked(ev, dataTableInstance, model)}
+                        />
                     )
                     : null;
             },
-            ({ fields, index, model }) => <DeleteRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage || canDelete)} />,
-            // ({ fields, index, model }) => { return (model && model.id) ? (<ExpireRow fields={fields} index={index} model={model} />) : null; }
+            ({ fields, index, model }) => (
+                <DeleteRow
+                    fields={fields}
+                    index={index}
+                    model={model}
+                    showComponent={(grantAll || canManage || canDelete)}
+                />
+            )
         ] as React.ReactType<ActionProps>[];
 
         return (
             <>
                 <Alert bsStyle="info" style={{ marginTop: 0, marginBottom: 0, borderRadius: 0 }}>
                     <p>
-                        Select / remove the components that you would like to grant access to. Default access is read-only.
-                        To deny read access remove the plugin from the role. To configure other plugin permissions for this role,
-                        click the <Glyphicon glyph="wrench" /> button.
+                        Select / remove the components that you would like to grant access to.
+                        To configure plugin permissions for this role, click the <Glyphicon glyph="wrench" /> button.
+                        To deny access remove the plugin from the role.
                     </p>
                 </Alert>
                 <RoleFrontendScopesDataTable
@@ -326,7 +336,9 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
             ({ fields, index, model }) => {
                 return (model && model.id && model.id !== '')
                     ? (
-                        <Button bsStyle="default" onClick={(ev) => onButtonClicked(ev, dataTableInstance, model)}>
+                        <Button
+                            bsStyle="default"
+                            onClick={(ev) => onButtonClicked(ev, dataTableInstance, model)}>
                             <Glyphicon glyph="lock" />
                         </Button>
                     )
