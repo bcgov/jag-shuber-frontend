@@ -1,19 +1,26 @@
 import React from 'react';
-import { Field } from 'redux-form';
+import { connect } from 'react-redux';
+
 import {
+    Alert,
     Button,
     Glyphicon
 } from 'react-bootstrap';
 
+import { FrontendScope, Role } from '../../../api';
+
+import { RootState } from '../../../store';
+import { getAllFrontendScopes, getAllRoles } from '../../../modules/roles/selectors';
+
 import ModalWrapper from '../../../containers/ModalWrapper/ModalWrapper';
 import DataTable, { EmptyDetailRow } from '../../../components/Table/DataTable';
 
-import SelectorField from '../../../components/FormElements/SelectorField';
-import FrontendScopeSelector from '../containers/FrontendScopeSelector';
-import RemoveRow from '../../../components/TableColumnActions/RemoveRow';
-import ExpireRow from '../../../components/TableColumnActions/ExpireRow';
+interface AdminRoleScopeAccessModalStateProps {
+    roles?: Role[];
+    frontendScopes?: FrontendScope[];
+}
 
-export interface AdminRoleScopeAccessModalProps {
+export interface AdminRoleScopeAccessModalProps extends AdminRoleScopeAccessModalStateProps {
     isOpen?: boolean;
     isDefaultTemplate?: boolean;
     roleId?: any;
@@ -22,7 +29,7 @@ export interface AdminRoleScopeAccessModalProps {
     onClose?: () => void;
 }
 
-export default class AdminRoleScopeAccessModal extends React.Component<AdminRoleScopeAccessModalProps>{
+class AdminRoleScopeAccessModal extends React.Component<AdminRoleScopeAccessModalProps>{
     private modalWrapper?: any;
 
     constructor(props: AdminRoleScopeAccessModalProps) {
@@ -38,10 +45,24 @@ export default class AdminRoleScopeAccessModal extends React.Component<AdminRole
         return (this.modalWrapper) ? this.modalWrapper.handleClose(onClose) : undefined;
     }
 
+    getScope(): FrontendScope {
+        const { frontendScopes = [], parentModel } = this.props;
+        return frontendScopes.find((item) => item.id === parentModel.scopeId) || {} as FrontendScope;
+    }
+
+    getRole(): Role {
+        const { roles = [], parentModel } = this.props;
+        return roles.find((item) => item.id === parentModel.roleId) || {} as Role;
+    }
+
     // @ts-ignore
     render() {
         const { isDefaultTemplate = false, isOpen, roleId, parentModel, parentModelId } = this.props;
-        const title = `Edit ${isDefaultTemplate === true ? 'Default ' : ''}Application Access`;
+
+        const { scopeName = '' }: FrontendScope = this.getScope();
+        const { roleName = '' }: Role = this.getRole();
+
+        const title = `Edit ${isDefaultTemplate ? 'Default' : roleName} Access [${scopeName} Plugin]`;
 
         return (
             <div>
@@ -53,32 +74,15 @@ export default class AdminRoleScopeAccessModal extends React.Component<AdminRole
                     title={title}
                     body={({ handleClose }: any) => (
                         <>
-                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                <div style={{ display: 'flex', alignItems: 'center' }}>
-                                    {/* TODO: Finish implementing this selector if we have time */}
-                                    {/* <Field
-                                        name={`component`}
-                                        component={(p) =>
-                                            <SelectorField
-                                                {...p}
-                                                style={{ minWidth: '100%' }}
-                                                showLabel={true}
-                                                // TODO: Provide this via props or something so we can use custom codes...
-                                                SelectorComponent={
-                                                    (sp) =>
-                                                        <FrontendScopeSelector {...sp} value={parentModel.id} />
-                                                    }
-                                            />
-                                        }
-                                        label={'Component / API Scope'}
-                                    /> */}
-                                    {/* This wrapper just adds equal spacing to the previous form group */}
-                                    {/* TODO: Where are the spacing utils? */}
-                                    {/* <div className="form-group" style={{ marginLeft: '0.5rem' }}>
-                                        <Glyphicon glyph="info-sign" />
-                                    </div> */}
-                                </div>
-                            </div>
+                            <Alert bsStyle="info">
+                                <p>
+                                    Select / remove any <b>{scopeName} Plugin</b> permissions assigned to the <b>{roleName}</b> role.
+                                    Default access is read-only.
+                                </p>
+                                <p>
+                                    To deny read access for the <b>{roleName}</b> role, close this window and remove the [{scopeName}] plugin from the role.
+                                </p>
+                            </Alert>
                             {parentModelId && (
                             <DataTable
                                 fieldName={`roles.roleFrontendScopePermissionsGrouped['${roleId}']['${parentModel.id}']`}
@@ -115,3 +119,14 @@ export default class AdminRoleScopeAccessModal extends React.Component<AdminRole
         );
     }
 }
+
+const mapStateToProps = (state: RootState) => {
+    return {
+        roles: getAllRoles(state),
+        frontendScopes: getAllFrontendScopes(state)
+    };
+};
+
+export default connect<AdminRoleScopeAccessModalProps>(
+    mapStateToProps
+)(AdminRoleScopeAccessModal);
