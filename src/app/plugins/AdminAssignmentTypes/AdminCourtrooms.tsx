@@ -80,7 +80,7 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
     showExpired = false;
 
     FormComponent = (props: FormContainerProps<AdminCourtroomsProps>) => {
-        console.log('Re-render AdminCourtrooms');
+        // console.log('Re-render AdminCourtrooms');
         const { getPluginPermissions, setPluginFilters } = props;
         const { grantAll, permissions = [] } = buildPluginPermissions(getPluginPermissions);
 

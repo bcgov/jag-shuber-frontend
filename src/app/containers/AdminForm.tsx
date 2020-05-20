@@ -126,8 +126,8 @@ function collectPluginErrors(state: any, formName: string, plugins: FormContaine
 const formConfig: ConfigProps<{}, AdminFormProps> = {
     form: 'AdminForm',
     enableReinitialize: true,
-    touchOnBlur: false,
-    touchOnChange: false,
+    touchOnBlur: true,
+    touchOnChange: true,
     validate: (values: any, { plugins = [], selectedSection }) => {
         const validationErrors = plugins.reduce((errors, plugin) => {
             const pluginValues = values[plugin.reduxFormKey];
