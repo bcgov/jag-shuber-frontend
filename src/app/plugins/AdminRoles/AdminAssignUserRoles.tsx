@@ -29,6 +29,10 @@ import {
 } from '../../modules/sheriffs/actions';
 
 import {
+    getSheriffLocations
+} from '../../modules/sheriffLocations/actions';
+
+import {
     getAllSheriffs,
     // findAllSheriffs
 } from '../../modules/sheriffs/selectors';
@@ -534,6 +538,7 @@ export default class AdminAssignUserRoles extends FormContainerBase<AdminAssignU
     fetchData(dispatch: Dispatch<{}>, filters: {} | undefined) {
         dispatch(getLocations()); // This data needs to always be available for select lists
         dispatch(getSheriffs()); // This data needs to always be available for select lists
+        dispatch(getSheriffLocations()); // This data needs to always be available for select lists
         dispatch(getUsers());
         dispatch(getUserRoles());
         dispatch(getRoles()); // This data needs to always be available for select lists

@@ -1,17 +1,22 @@
 import React from 'react';
 import { connect } from 'react-redux';
+
 import {
   Sheriff, IdType
 } from '../api';
 import { RootState } from '../store';
-import { getSheriffList } from '../modules/sheriffs/actions';
+
+import { getSheriffList as getSheriffs } from '../modules/sheriffs/actions';
+import { getSheriffLocations } from '../modules/sheriffLocations/actions';
+
 import {
   sheriffsForCurrentLocation,
   sheriffListLoading
 } from '../modules/sheriffs/selectors';
+
+import Loading from '../components/Loading';
 import SheriffCard from '../components/SheriffCard/SheriffCard';
 import SheriffProfileModal from './SheriffProfileModal';
-import Loading from '../components/Loading';
 
 export interface SheriffListProps {
   sheriffs?: Sheriff[];
@@ -21,20 +26,20 @@ export interface SheriffListProps {
   sheriffsSelector?: (state: RootState) => Sheriff[];
 }
 
-export interface SheriffListStateProps {
-
-}
+export interface SheriffListStateProps {}
 
 interface SheriffListDispatchProps {
   showSheriffProfileModal: (sheriffId: IdType) => void;
-  fetchSheriffList: () => void;
+  fetchSheriffs: () => void;
+  fetchSheriffLocations: () => void;
 }
 
 type CompositeProps = SheriffListProps & SheriffListDispatchProps & SheriffListStateProps;
 class SheriffList extends React.Component<CompositeProps> {
   componentWillMount() {
-    const { fetchSheriffList } = this.props;
-    fetchSheriffList();
+    const { fetchSheriffs, fetchSheriffLocations } = this.props;
+    fetchSheriffs();
+    fetchSheriffLocations();
   }
 
   render() {
@@ -79,7 +84,8 @@ export default connect<SheriffListStateProps, SheriffListDispatchProps, SheriffL
     loading: sheriffListLoading(state)
   }),
   {
-    fetchSheriffList: getSheriffList,
+    fetchSheriffs: getSheriffs,
+    fetchSheriffLocations: getSheriffLocations,
     showSheriffProfileModal: SheriffProfileModal.ShowAction
   }
 )(SheriffList);
