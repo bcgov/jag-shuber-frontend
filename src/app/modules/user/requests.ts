@@ -17,17 +17,10 @@ class UserTokenRequest extends RequestActionBase<void, TokenPayload | undefined,
         super({ namespace: STATE_KEY, actionName: 'userToken', toasts: {} });
     }
     public async doWork(request: void, { api }: ThunkExtra, getState: any) {
-        const { agent } = api;
-
-        let smsessionCookie = retreiveCookieValue(SMSESSION_COOKIE_NAME, agent);
-        if (!smsessionCookie) {
-            let tokenString = await api.getToken();
-            console.log(`jwt ${TOKEN_COOKIE_NAME} retrieved from API, saving to sessionStorage`);
-            sessionStorage.setItem(TOKEN_COOKIE_NAME, tokenString);
-            return decodeJwt<TokenPayload>(tokenString);
-        }
-
-        return undefined;
+        let tokenString = await api.getToken();
+        console.log(`jwt ${TOKEN_COOKIE_NAME} retrieved from API, saving to sessionStorage`);
+        sessionStorage.setItem(TOKEN_COOKIE_NAME, tokenString);
+        return decodeJwt<TokenPayload>(tokenString);
     }
 
     async dispatchSuccess(dispatch: Dispatch<any>, response: TokenPayload | undefined, actionConfig: RequestActionConfig<TokenPayload | undefined> = {}) {
