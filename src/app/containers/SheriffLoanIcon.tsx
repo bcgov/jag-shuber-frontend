@@ -1,16 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
+
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+
 import {
     IdType,
     Location
-} from '../api/Api';
+} from '../api';
+
 import {
     getSheriffLoanStatus,
     SheriffLoanStatus,
     getSheriffCurrentLocation,
     getSheriffHomeLocation
 } from '../modules/sheriffs/selectors';
+
 import SheriffLoanInIcon from '../components/Icons/SheriffLoanInIcon';
 import SheriffLoanOutIcon from '../components/Icons/SheriffLoanOutIcon';
 
@@ -31,19 +36,33 @@ class SheriffLoanIcon extends React.PureComponent<
 
     render() {
         const {
-            status: { isLoanedIn, isLoanedOut },
+            status: { isLoanedIn, isLoanedOut, startDate, endDate, startTime, endTime },
             homeLocation = { name: '' },
             currentLocation = { name: '' },
-            style={}
+            style = {}
         } = this.props;
 
         let icon = isLoanedIn ? <SheriffLoanInIcon /> : isLoanedOut ? <SheriffLoanOutIcon /> : null;
-        const title = isLoanedIn ? `loaned from ${homeLocation.name}` :
-            isLoanedOut ? `loaned to ${currentLocation.name}` : undefined;
 
+        const locationName = isLoanedIn ? `${homeLocation.name}` :
+            isLoanedOut ? `${currentLocation.name}` : undefined;
 
         return (
-            <span title={title} style={style} >{icon}</span>
+            <OverlayTrigger
+                overlay={(
+                    <Tooltip>
+                        <p>
+                            On loan to <b>{locationName}</b>
+                            <br/>
+                            <b>Date: {`${startDate}`}</b> to <b>{`${endDate}`}</b>
+                            <br/>
+                            <b>Time: {`${startTime}`}</b> to <b>{`${endTime}`}</b>
+                        </p>
+                    </Tooltip>
+                )}
+                placement={'right'}>
+                <span style={style} >{icon}</span>
+            </OverlayTrigger>
         );
     }
 }

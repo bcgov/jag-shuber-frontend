@@ -41,7 +41,6 @@ const modalConfig = {
 class SheriffProfileModal extends React.PureComponent<CompositeProps> {
     render() {
         const {
-            // sheriff,
             show,
             handleHide,
             // TODO: Turn off forced editing if we implement a read-only view for DataTables
