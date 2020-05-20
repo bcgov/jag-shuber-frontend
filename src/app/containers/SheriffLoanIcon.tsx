@@ -52,11 +52,24 @@ class SheriffLoanIcon extends React.PureComponent<
                 overlay={(
                     <Tooltip>
                         <p>
-                            On loan to <b>{locationName}</b>
+                            {isLoanedIn || isLoanedOut && (
+                            <>On loan {isLoanedIn ? 'from' : isLoanedOut ? 'to' : ''} <b>{locationName}</b></>
+                            )}
+
                             <br/>
-                            <b>Date: {`${startDate}`}</b> to <b>{`${endDate}`}</b>
-                            <br/>
-                            <b>Time: {`${startTime}`}</b> to <b>{`${endTime}`}</b>
+
+                            {startDate === endDate && (
+                            <>
+                                <b>Date: {`${startDate}`}</b>
+                                <br/>
+                                <b>Time: {`${startTime}`}</b> to <b>{`${endTime}`}</b>
+                            </>
+                            )}
+                            {startDate !== endDate && (
+                                <>
+                                    <b>Date: {`${startDate}`}</b> to <b>{`${endDate}`}</b>
+                                </>
+                            )}
                         </p>
                     </Tooltip>
                 )}
