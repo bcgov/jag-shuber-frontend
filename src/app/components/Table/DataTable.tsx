@@ -419,7 +419,7 @@ export default class DataTable<T> extends React.Component<DataTableProps> {
                     </div>
                 )}
                 <FieldArray<Partial<any & T>>
-                    key={updateKey}
+                    key={Math.random()}
                     name={fieldName}
                     component={this.renderTable}
                 />
