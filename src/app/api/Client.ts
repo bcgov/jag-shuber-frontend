@@ -104,7 +104,7 @@ export default class Client implements API {
         this._client.requestInterceptor = (req: any) => {
             let authToken = sessionStorage.getItem(TOKEN_COOKIE_NAME);
             if (authToken) {
-                console.log(`intercepting request: ${req.method} ${req.url}`);
+                // console.log(`intercepting request: ${req.method} ${req.url}`);
                 // console.log(`${TOKEN_COOKIE_NAME} found in sessionStorage, applying authorization token`);
                 req.header = {
                     ...req.header,
