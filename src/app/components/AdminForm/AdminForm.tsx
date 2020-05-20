@@ -39,7 +39,7 @@ export default class AdminForm extends React.PureComponent<InjectedFormProps<any
 
     shouldComponentUpdate(nextProps: any, nextState: any) {
         const { props } = this;
-        console.log(`should admin form update? ${props.selectedSection} !== ${nextProps.selectedSection}`);
+        // console.log(`should admin form update? ${props.selectedSection} !== ${nextProps.selectedSection}`);
 
         return (
             props.selectedSection !== nextProps.selectedSection ||
