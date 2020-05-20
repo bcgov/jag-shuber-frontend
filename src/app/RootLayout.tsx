@@ -74,7 +74,7 @@ import SheriffProfileCreateModal from './containers/SheriffProfileCreateModal';
 import ManageWorkSectionRoles from './pages/ManageWorkSectionRoles';
 import { IdType, User } from './api';
 import { getUserByAuthId } from './modules/users/selectors';
-import { TokenPayload } from 'jag-shuber-api';
+import { TOKEN_COOKIE_NAME, TokenPayload } from 'jag-shuber-api';
 
 export interface LayoutStateProps {
     isLocationSet?: boolean;
@@ -250,16 +250,27 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
 }
 
 const mapStateToProps = (state: RootState) => {
-    return {
-        isLocationSet: isCurrentLocationSet(state),
-        isLoggedIn: isUserLoggedIn(state),
-        isLoadingToken: isLoadingUserToken(state),
-        tokenLoadingError: loadingTokenError(state),
-        currentUserRoleScopes: currentUserRoleScopes(state),
-        currentUserToken: getCurrentUserToken(state),
-        currentUser: getCurrentUser(state),
-        // getUserByAuthId: (userAuthId: IdType) => getUserByAuthId(userAuthId)(state)
-    };
+    return (!sessionStorage.getItem(TOKEN_COOKIE_NAME))
+        ? {
+            isLocationSet: isCurrentLocationSet(state),
+            isLoggedIn: isUserLoggedIn(state),
+            isLoadingToken: isLoadingUserToken(state),
+            tokenLoadingError: loadingTokenError(state),
+            currentUserRoleScopes: currentUserRoleScopes(state),
+            currentUserToken: getCurrentUserToken(state),
+            // tslint:disable-next-line:no-shadowed-variable
+            currentUser: {} as User
+        }
+        : {
+            isLocationSet: isCurrentLocationSet(state),
+            isLoggedIn: isUserLoggedIn(state),
+            isLoadingToken: isLoadingUserToken(state),
+            tokenLoadingError: loadingTokenError(state),
+            currentUserRoleScopes: currentUserRoleScopes(state),
+            currentUserToken: getCurrentUserToken(state),
+            // Don't get the current user unless there's a token!
+            currentUser: getCurrentUser(state),
+        };
 };
 
 const mapDispatchToProps = {

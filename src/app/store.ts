@@ -24,8 +24,7 @@ import { default as uploadApi, UploadAPI } from './api/UploadApi';
 import Client from './api/Client';
 import UploadClient from './api/UploadClient';
 
-import { getUserToken, updateUserToken } from './modules/user/actions';
-import { initializeApplication } from './modules/system/action';
+import { getCurrentUser, getUserToken, updateUserToken } from './modules/user/actions';
 
 import resolveAppUrl from './infrastructure/resolveAppUrl';
 
@@ -88,12 +87,19 @@ const enhancers = composeEnhancers(
 
 const store = createStore(rootReducer, enhancers);
 
-// Wire up the Token change event to the store
-(api as Client).onTokenChanged.on(async (t) => {
-    await store.dispatch(updateUserToken(t));
-});
+export const initStore = async () => {
+    // Wire up the Token change event to the store
+    (api as Client).onTokenChanged.on(async (t) => {
+        console.log('[token changed] dispatch updateUserToken and await...');
+        await store.dispatch(updateUserToken(t));
+        console.log('[token changed] dispatch getCurrentUser and await...');
+        await store.dispatch(getCurrentUser());
+        console.log('... done!');
+    });
 
-// Request the initial token
-store.dispatch(getUserToken());
+    // Request the initial token
+    console.log('[init] dispatch getUserToken');
+    await store.dispatch(getUserToken());
+};
 
 export default store;
