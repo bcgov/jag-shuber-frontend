@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { render } from 'react-dom';
 import { unregister } from './registerServiceWorker';
-import store from './store';
+import store, { initStore } from './store';
 import { Provider } from 'react-redux';
 // Import our resources and assets before our RootLayout
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -9,6 +9,8 @@ import './assets/styles/bcgov-theme.css';
 import './assets/styles/glyphicons.css';
 import './index.css';
 import RootLayout from './RootLayout';
+
+initStore();
 
 render(
   <Provider store={store}>

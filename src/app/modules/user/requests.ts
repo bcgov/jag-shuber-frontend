@@ -22,6 +22,7 @@ class UserTokenRequest extends RequestActionBase<void, TokenPayload | undefined,
         let smsessionCookie = retreiveCookieValue(SMSESSION_COOKIE_NAME, agent);
         if (!smsessionCookie) {
             let tokenString = await api.getToken();
+            console.log(`jwt ${TOKEN_COOKIE_NAME} retrieved from API, saving to sessionStorage`);
             sessionStorage.setItem(TOKEN_COOKIE_NAME, tokenString);
             return decodeJwt<TokenPayload>(tokenString);
         }
@@ -31,11 +32,13 @@ class UserTokenRequest extends RequestActionBase<void, TokenPayload | undefined,
 
     async dispatchSuccess(dispatch: Dispatch<any>, response: TokenPayload | undefined, actionConfig: RequestActionConfig<TokenPayload | undefined> = {}) {
         if (response !== undefined) {
+            console.log('dispatching initializeApplication...');
             await dispatch(initializeApplication());
-        }
 
-        await super.dispatchSuccess(dispatch, response, actionConfig);
+            await super.dispatchSuccess(dispatch, response, actionConfig);
+        }
     }
+
     get updateUserTokenActionCreator() {
         return this.getSuccessAction.bind(this);
     }

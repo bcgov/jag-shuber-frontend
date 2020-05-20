@@ -145,13 +145,6 @@ export default class Navigation extends React.Component<NavigationProps & Naviga
         this.toggleMenu.bind(this);
     }
 
-    componentDidMount(): void {
-        const { dispatch } = this.props;
-        if (dispatch) {
-            Promise.resolve(dispatch(getCurrentUser()));
-        }
-    }
-
     toggleMenu = (e: any) => {
         const { menuIsActive } = this.state;
         this.setState({ menuIsActive: !menuIsActive });

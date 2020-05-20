@@ -11,6 +11,8 @@ import { updateVisibleTime as updateTimelineVisibleTime } from '../dutyRoster/ac
 import { updateVisibleTime as updateScheduleVisibleTime } from '../schedule/actions';
 import { updateVisibleTime as updateAssignmentScheduleVisibleTime } from '../assignmentSchedule/actions';
 
+import { TOKEN_COOKIE_NAME } from 'jag-shuber-api';
+
 // Gender Codes
 export const getGenderCodes = genderCodeRequests.genderCodeMapRequest.actionCreator;
 
@@ -32,6 +34,11 @@ const initialActions: any[] = [
     getCourtRoles,
     getGenderCodes
 ];
+
 export const initializeApplication: ThunkAction<void> = () => async (dispatch, getState, extra) => {
-    initialActions.forEach(actionCreator => dispatch(actionCreator()));
+    if (sessionStorage.getItem(TOKEN_COOKIE_NAME)) {
+        initialActions.forEach(actionCreator => dispatch(actionCreator()));
+    } else {
+        console.log(`[error] attempting to dispatch initializeApplication before ${TOKEN_COOKIE_NAME} exists in sessionStorage is not allowed`);
+    }
 };
