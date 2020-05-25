@@ -365,7 +365,7 @@ export default class AdminUsers extends FormContainerBase<AdminUsersProps> {
             /* ({ fields, index, model }) => {
                 return (model && model.id && model.id !== '')
                     ? (
-                        <Button bsStyle="default" onClick={(ev) => onButtonClicked(ev, dataTableInstance.component, model)}>
+                        <Button bsStyle="default" onClick={(ev) => dataTableInstance && dataTableInstance.component && onButtonClicked(ev, dataTableInstance.component, model)}>
                             <Glyphicon glyph="lock" />
                         </Button>
                     )

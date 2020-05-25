@@ -285,7 +285,7 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
             ({ fields, index, model }) => {
                 return (model && model.id && model.id !== '')
                     ? (
-                        <Button bsStyle="primary" onClick={(ev) => onButtonClicked(ev, dataTableInstance.component, model)}>
+                        <Button bsStyle="primary" onClick={(ev) => dataTableInstance && dataTableInstance.component && onButtonClicked(ev, dataTableInstance.component, model)}>
                             <Glyphicon glyph="lock" />
                         </Button>
                     )
