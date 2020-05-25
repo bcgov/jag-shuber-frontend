@@ -205,7 +205,7 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
                             index={index}
                             model={model}
                             showComponent={(grantAll || canManage || canDelete)}
-                            onButtonClicked={(ev: any) => onButtonClicked(ev, dataTableInstance.component, model)}
+                            onButtonClicked={(ev: any) => dataTableInstance && dataTableInstance.component && onButtonClicked(ev, dataTableInstance.component, model)}
                         />
                     )
                     : null;
@@ -336,7 +336,7 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
                     ? (
                         <Button
                             bsStyle="default"
-                            onClick={(ev) => onButtonClicked(ev, dataTableInstance.component, model)}>
+                            onClick={(ev) => dataTableInstance && dataTableInstance.component && onButtonClicked(ev, dataTableInstance.component, model)}>
                             <Glyphicon glyph="lock" />
                         </Button>
                     )
