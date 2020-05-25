@@ -10,12 +10,12 @@ import PageTitle from '../containers/PageTitle';
 import { AdminFormProps } from '../components/AdminForm/AdminForm';
 
 // Import plugins
-import AdminUsersPlugin from '../plugins/AdminUsers/AdminUsers';
+// import AdminUsersPlugin from '../plugins/AdminRoles/AdminUsers';
 
 import SheriffListComposable from '../containers/SheriffListComposable';
 import SheriffProfileCreateModal from '../containers/SheriffProfileCreateModal';
-import HeaderSaveButton from '../plugins/AdminRoles/containers/HeaderSaveButton';
-import HeaderCancelButton from '../plugins/AdminRoles/containers/HeaderCancelButton';
+// import HeaderSaveButton from '../plugins/AdminRoles/containers/HeaderSaveButton';
+// import HeaderCancelButton from '../plugins/AdminRoles/containers/HeaderCancelButton';
 
 export interface ManageTeamProps extends RouteComponentProps<any>{}
 

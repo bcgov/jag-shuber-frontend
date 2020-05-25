@@ -131,8 +131,7 @@ const formConfig: ConfigProps<any, SheriffProfileProps> = {
             if (pluginErrors) {
                 errors[plugin.reduxFormKey] = {...pluginErrors};
             }
-            // console.log('dump sheriff profile form errors');
-            // console.log(errors);
+
             return errors;
         }, {} as FormErrors);
 
@@ -239,10 +238,6 @@ export default class extends
             // Filter out any plugins that the user doesn't have permission to access
             // TODO: A cleaner way to get the data off the token?
             const { appScopes = {}, authScopes } = currentUserRoleScopes(state);
-            // if (appScopes) debugger;
-
-            // console.log(appScopes);
-            // console.log(authScopes);
 
             // Filter out plugins that don't have scopes assigned
             const pluginsToRender = (plugins)

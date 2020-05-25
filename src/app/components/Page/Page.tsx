@@ -58,7 +58,7 @@ export interface PageProps {
     dispatchResetCurrentLocation?: any;
 }
 
-export class Page extends React.PureComponent<PageProps & PageStateProps & PageDispatchProps> {
+export class Page extends React.Component<PageProps & PageStateProps & PageDispatchProps> {
     static Toolbar = PageToolbar;
     constructor(props: PageProps & PageStateProps & PageDispatchProps) {
         super(props);

@@ -73,7 +73,8 @@ import {
     FormContainerProps,
 } from '../../components/Form/FormContainer';
 
-import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../components/Table/DataTable';
+import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
+import { DataTableDetailComponentProps as DetailComponentProps } from '../../components/Table/DataTableDetail';
 import AdminRoleScopeAccessModal, { AdminRoleScopeAccessModalProps } from './containers/AdminRoleScopeAccessModal';
 import AdminEffectivePermissionsModal from './containers/AdminEffectivePermissionsModal';
 
@@ -82,11 +83,11 @@ import FrontendScopeDescriptionDisplay from './containers/FrontendScopeDescripti
 
 import { RoleFrontendScopePermission } from '../../api/Api';
 
-import DeleteRow from '../../components/TableColumnActions/DeleteRow';
-import RemoveRow from '../../components/TableColumnActions/RemoveRow';
-import ConfigureRoleFrontendScopeButton from '../../components/TableColumnActions/ConfigureRoleFrontendScopeButton';
+import DeleteRow from '../../components/Table/TableColumnActions/DeleteRow';
+import RemoveRow from '../../components/Table/TableColumnActions/RemoveRow';
+import ConfigureRoleFrontendScopeButton from '../../components/Table/TableColumnActions/ConfigureRoleFrontendScopeButton';
 
-import { ActionProps } from '../../components/TableColumnCell/Actions';
+import { ActionProps } from '../../components/Table/TableColumnCell/Actions';
 
 import { buildPluginPermissions, userCan } from '../permissionUtils';
 
@@ -204,7 +205,7 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
                             index={index}
                             model={model}
                             showComponent={(grantAll || canManage || canDelete)}
-                            onButtonClicked={(ev: any) => onButtonClicked(ev, dataTableInstance, model)}
+                            onButtonClicked={(ev: any) => onButtonClicked(ev, dataTableInstance.component, model)}
                         />
                     )
                     : null;
@@ -236,7 +237,8 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
                     displayHeaderActions={!(parentModel.systemRoleInd === 1)}
                     displayHeaderSave={false}
                     actionsColumn={DataTable.ActionsColumn({
-                        actions: roleFrontendScopeActions
+                        actions: roleFrontendScopeActions,
+                        trace: `[${this.name}] DetailComponent -> RoleFrontendScopesDataTable` // Just for debugging
                     })}
                     columns={[
                         DataTable.SelectorFieldColumn('Application Access', { fieldName: 'scopeId', colStyle: { width: '16%' }, selectorComponent: FrontendScopeSelector, displayInfo: true, disabled: true }),
@@ -251,7 +253,7 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
                     initialValue={{
                         roleId: parentModelId
                     }}
-                    modalProps={{ roleId: parentModelId,  }}
+                    modalProps={{ roleId: parentModelId }}
                     modalComponent={AdminRoleScopeAccessModal}
                 />
             </>
@@ -322,15 +324,11 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
         const onResetFilters = () => {
             const { setPluginFilters } = props;
             if (setPluginFilters) {
-                // console.log('reset plugin filters');
                 setPluginFilters({
                     roles: {}
                 }, setAdminRolesPluginFilters);
             }
         };
-
-        // RENDER_COUNT++;
-        // console.log('ADMINROLESGRID RENDER COUNT: ' + RENDER_COUNT);
 
         const roleActions = [
             ({ fields, index, model }) => {
@@ -338,7 +336,7 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
                     ? (
                         <Button
                             bsStyle="default"
-                            onClick={(ev) => onButtonClicked(ev, dataTableInstance, model)}>
+                            onClick={(ev) => onButtonClicked(ev, dataTableInstance.component, model)}>
                             <Glyphicon glyph="lock" />
                         </Button>
                     )
@@ -369,7 +367,8 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
                     onResetClicked={onResetFilters}
                     displayActionsColumn={true}
                     actionsColumn={DataTable.ActionsColumn({
-                        actions: roleActions
+                        actions: roleActions,
+                        trace: `[${this.name}] FormComponent -> RolesDataTable` // Just for debugging
                     })}
                     columns={[
                         DataTable.TextFieldColumn('Role Name', { fieldName: 'roleName', colStyle: { width: '15%' }, displayInfo: true, filterable: true, filterColumn: onFilterRoleName }),
@@ -383,6 +382,7 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
                     expandable={true}
                     // expandedRows={[1, 2]}
                     rowComponent={this.renderDetail()}
+                    // rowComponent={EmptyDetailRow}
                     // Don't render or show system roles unless user is a Super Administrator
                     shouldRenderRow={(model) => model.systemRoleInd !== 1}
                     shouldDisableRow={(model) => {
@@ -421,7 +421,6 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
     getData(state: RootState, filters: any | undefined) {
         // Get filter data
         const filterData = this.getFilterData(filters);
-        // console.log(filterData);
 
         // Get form data
         const roles = (filters && filters.roles)

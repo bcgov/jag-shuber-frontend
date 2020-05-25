@@ -7,7 +7,7 @@ import {
 import { Leave } from '../../api';
 import { Table, Button, Glyphicon } from 'react-bootstrap';
 
-import * as CellTypes from '../../components/TableColumnCell';
+import * as CellTypes from '../../components/Table/TableColumnCell';
 
 export interface DataTableProps {
     title: React.ReactNode;

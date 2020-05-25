@@ -29,10 +29,10 @@ import {
 } from '../../components/Form/FormContainer';
 
 import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
-import DeleteRow from '../../components/TableColumnActions/DeleteRow';
-import ExpireRow from '../../components/TableColumnActions/ExpireRow';
+import DeleteRow from '../../components/Table/TableColumnActions/DeleteRow';
+import ExpireRow from '../../components/Table/TableColumnActions/ExpireRow';
 import { buildPluginPermissions, userCan } from '../permissionUtils';
-import { ActionProps } from '../../components/TableColumnCell/Actions';
+import { ActionProps } from '../../components/Table/TableColumnCell/Actions';
 
 // import ApiScopeSelector from './ApiScopeSelector';
 // import AdminScopePermissionsModal from './AdminScopePermissionsModal';
@@ -149,7 +149,8 @@ export default class AdminApiScopes extends FormContainerBase<AdminApiScopesProp
                     displayHeaderActions={true}
                     onResetClicked={onResetFilters}
                     actionsColumn={DataTable.ActionsColumn({
-                        actions: apiScopeActions
+                        actions: apiScopeActions,
+                        trace: `[${this.name}] FormComponent -> DataTable` // Just for debugging
                     })}
                     columns={[
                         DataTable.TextFieldColumn('Scope Name', { fieldName: 'scopeName', displayInfo: true, filterable: true, filterColumn: onFilterName }),

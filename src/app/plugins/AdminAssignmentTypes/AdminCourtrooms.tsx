@@ -38,11 +38,11 @@ import {
 
 import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
 import LocationSelector from '../../containers/LocationSelector';
-import RemoveRow from '../../components/TableColumnActions/RemoveRow';
-import ExpireRow from '../../components/TableColumnActions/ExpireRow';
-import UnexpireRow from '../../components/TableColumnActions/UnexpireRow';
-import DeleteRow from '../../components/TableColumnActions/DeleteRow';
-import { ActionProps } from '../../components/TableColumnCell/Actions';
+import RemoveRow from '../../components/Table/TableColumnActions/RemoveRow';
+import ExpireRow from '../../components/Table/TableColumnActions/ExpireRow';
+import UnexpireRow from '../../components/Table/TableColumnActions/UnexpireRow';
+import DeleteRow from '../../components/Table/TableColumnActions/DeleteRow';
+import { ActionProps } from '../../components/Table/TableColumnCell/Actions';
 import { buildPluginPermissions, userCan } from '../permissionUtils';
 
 import * as Validators from '../../infrastructure/Validators';
@@ -168,9 +168,9 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
             },
             ({ fields, index, model }) => {
                 return (model && model.id && model.id !== '' && !model.isExpired)
-                    ? (<ExpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance.forceUpdate()} />)
+                    ? (<ExpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance && dataTableInstance.component && dataTableInstance.component.forceUpdate()} />)
                     : (model && model.isExpired)
-                    ? (<UnexpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance.forceUpdate()} />)
+                    ? (<UnexpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance && dataTableInstance.component && dataTableInstance.component.forceUpdate()} />)
                     : null;
             },
             ({ fields, index, model }) => {
@@ -195,7 +195,8 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
                     onToggleExpiredClicked={onToggleExpiredClicked}
                     displayActionsColumn={true}
                     actionsColumn={DataTable.ActionsColumn({
-                        actions: courtroomActions
+                        actions: courtroomActions,
+                        trace: `[${this.name}] FormComponent -> DataTable` // Just for debugging
                     })}
                     columns={courtroomColumns}
                     filterable={true}

@@ -21,9 +21,6 @@ export default (props: any) => {
     const trainingTypes = sectionPlugins
         .find((p: any) => p.name === 'ADMIN_TRAINING_TYPES');
 
-    // TODO: Fix me! This console log should explain exactly what's going on...
-    // console.log('WorkSectionsLayout selectedSection: ' + selectedSection);
-
     const validSections = ['ADMIN_LEAVE_TYPES', 'ADMIN_TRAINING_TYPES'];
     selectedSection = (validSections.indexOf(selectedSection) > -1) ? selectedSection : 'ADMIN_LEAVE_TYPES';
 

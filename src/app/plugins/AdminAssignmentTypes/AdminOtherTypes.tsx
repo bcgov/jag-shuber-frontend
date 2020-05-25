@@ -33,17 +33,17 @@ import {
     FormContainerProps,
 } from '../../components/Form/FormContainer';
 
-import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../components/Table/DataTable';
+import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
 import { AdminOtherTypesProps } from './AdminOtherTypes';
 import LocationSelector from '../../containers/LocationSelector';
-import RemoveRow from '../../components/TableColumnActions/RemoveRow';
-import ExpireRow from '../../components/TableColumnActions/ExpireRow';
-import UnexpireRow from '../../components/TableColumnActions/UnexpireRow';
-import DeleteRow from '../../components/TableColumnActions/DeleteRow';
+import RemoveRow from '../../components/Table/TableColumnActions/RemoveRow';
+import ExpireRow from '../../components/Table/TableColumnActions/ExpireRow';
+import UnexpireRow from '../../components/Table/TableColumnActions/UnexpireRow';
+import DeleteRow from '../../components/Table/TableColumnActions/DeleteRow';
 import { setAdminRolesPluginFilters } from '../../modules/roles/actions';
 import CodeScopeSelector from '../../containers/CodeScopeSelector';
 import { currentLocation as getCurrentLocation } from '../../modules/user/selectors';
-import { ActionProps } from '../../components/TableColumnCell/Actions';
+import { ActionProps } from '../../components/Table/TableColumnCell/Actions';
 import { buildPluginPermissions, userCan } from '../permissionUtils';
 import * as Validators from '../../infrastructure/Validators';
 // import { createOrUpdateAlternateAssignmentTypes } from '../../modules/assignments/actions';
@@ -174,9 +174,9 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
             },
             ({ fields, index, model }) => {
                 return (model && model.id && model.id !== '' && !model.isExpired)
-                    ? (<ExpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance.forceUpdate()} />)
+                    ? (<ExpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance && dataTableInstance.component && dataTableInstance.component.forceUpdate()} />)
                     : (model && model.isExpired)
-                    ? (<UnexpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance.forceUpdate()} />)
+                    ? (<UnexpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance && dataTableInstance.component && dataTableInstance.component.forceUpdate()} />)
                     : null;
             },
             ({ fields, index, model }) => {
@@ -201,7 +201,8 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
                     onToggleExpiredClicked={onToggleExpiredClicked}
                     displayActionsColumn={true}
                     actionsColumn={DataTable.ActionsColumn({
-                        actions: otherTypeActions
+                        actions: otherTypeActions,
+                        trace: `[${this.name}] FormComponent -> DataTable` // Just for debugging
                     })}
                     columns={assignmentTypeColumns}
                     filterable={true}
