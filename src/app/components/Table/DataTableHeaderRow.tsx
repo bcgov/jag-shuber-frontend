@@ -3,7 +3,7 @@ import { FieldsProps } from 'redux-form';
 
 import { Button, FormGroup, Glyphicon, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
-import * as CellTypes from '../../components/TableColumnCell';
+import * as CellTypes from './TableColumnCell';
 
 import HeaderSaveButton from '../../plugins/AdminRoles/containers/HeaderSaveButton';
 

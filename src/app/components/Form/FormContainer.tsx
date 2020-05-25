@@ -4,7 +4,6 @@ import { RootState } from '../../store';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { deletedDiff, detailedDiff } from 'deep-object-diff';
-import { DetailComponentProps } from '../Table/DataTable';
 
 export interface FormContainerProps<T = any> {
     // TODO: We aren't really using objectId anymore, we should remove it...

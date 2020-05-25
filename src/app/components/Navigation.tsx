@@ -205,7 +205,6 @@ export default class Navigation extends React.Component<NavigationProps & Naviga
                                 {currentUserRoleScopes.authScopes
                                 && currentUserRoleScopes.authScopes.indexOf('roles:manage') > -1 && (
                                     <>
-                                        <NavigationLink {...Navigation.Routes.team.children.userRoles} onSelect={this.toggleMenu} />
                                         <NavigationLink {...Navigation.Routes.team.children.roles} onSelect={this.toggleMenu} />
                                     </>
                                 )}

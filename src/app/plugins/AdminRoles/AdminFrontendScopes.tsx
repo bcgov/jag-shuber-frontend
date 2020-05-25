@@ -73,14 +73,15 @@ import {
     FormContainerProps,
 } from '../../components/Form/FormContainer';
 
-import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../components/Table/DataTable';
+import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
+import { DataTableDetailComponentProps as DetailComponentProps } from '../../components/Table/DataTableDetail';
 
 import FrontendScopeSelector from './containers/FrontendScopeSelector';
 import AdminScopePermissionsModal from './containers/AdminScopePermissionsModal';
 import { createOrUpdateFrontendScopePermissionsRequest } from '../../modules/roles/requests/frontendScopePermissions';
-import DeleteRow from '../../components/TableColumnActions/DeleteRow';
-import ExpireRow from '../../components/TableColumnActions/ExpireRow';
-import RemoveRow from '../../components/TableColumnActions/RemoveRow';
+import DeleteRow from '../../components/Table/TableColumnActions/DeleteRow';
+import ExpireRow from '../../components/Table/TableColumnActions/ExpireRow';
+import RemoveRow from '../../components/Table/TableColumnActions/RemoveRow';
 import RoleSelector from './containers/RoleSelector';
 import ApiScopeSelector from './containers/ApiScopeSelector';
 import ApiScopeCodeDisplay from './containers/ApiScopeCodeDisplay';
@@ -90,7 +91,7 @@ import FrontendScopeCodeDisplay from './containers/FrontendScopeCodeDisplay';
 import FrontendScopeDescriptionDisplay from './containers/FrontendScopeDescriptionDisplay';
 import { RoleFrontendScopePermission } from '../../api/Api';
 import { buildPluginPermissions, userCan } from '../permissionUtils';
-import { ActionProps } from '../../components/TableColumnCell/Actions';
+import { ActionProps } from '../../components/Table/TableColumnCell/Actions';
 
 // THESE ROLES ARE REQUIRED BY THE SYSTEM FOR BASIC API ACCESS, THEY APPLY TO ALL USERS
 // TODO: Make this configurable in OpenShift!
@@ -218,7 +219,8 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
                 displayHeaderActions={true}
                 displayHeaderSave={false}
                 actionsColumn={DataTable.ActionsColumn({
-                    actions: frontendScopeApiActions
+                    actions: frontendScopeApiActions,
+                    trace: `[${this.name}] FormComponent -> DataTable` // Just for debugging
                 })}
                 columns={[
                     DataTable.SelectorFieldColumn('Api Scope', { fieldName: 'apiScopeId', colStyle: { width: '300px' }, selectorComponent: ApiScopeSelector, displayInfo: true }),
@@ -283,7 +285,7 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
             ({ fields, index, model }) => {
                 return (model && model.id && model.id !== '')
                     ? (
-                        <Button bsStyle="primary" onClick={(ev) => onButtonClicked(ev, dataTableInstance, model)}>
+                        <Button bsStyle="primary" onClick={(ev) => onButtonClicked(ev, dataTableInstance.component, model)}>
                             <Glyphicon glyph="lock" />
                         </Button>
                     )
@@ -304,7 +306,8 @@ export default class AdminFrontendScopes extends FormContainerBase<AdminFrontend
                     displayHeaderActions={true}
                     onResetClicked={onResetFilters}
                     actionsColumn={DataTable.ActionsColumn({
-                        actions: frontendScopeActions
+                        actions: frontendScopeActions,
+                        trace: `[${this.name}] FormComponent -> DataTable` // Just for debugging
                     })}
                     columns={[
                         DataTable.TextFieldColumn('Component', { fieldName: 'scopeName', displayInfo: true, filterable: true, filterColumn: onFilterName }),

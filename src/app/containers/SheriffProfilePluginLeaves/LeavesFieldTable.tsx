@@ -15,7 +15,7 @@ import { fromTimeString, toTimeString } from 'jag-shuber-api';
 import LeaveSubCodeDisplay from '../LeaveSubCodeDisplay';
 import LeaveTrainingSubCodeSelector from '../LeaveTrainingSubCodeSelector';
 
-import { ColumnRendererProps } from '../../components/TableColumn';
+import { ColumnRendererProps } from '../../components/Table/TableColumn';
 
 export type ColumnRenderer = React.ComponentType<ColumnRendererProps & { leave: Partial<Leave> }>;
 

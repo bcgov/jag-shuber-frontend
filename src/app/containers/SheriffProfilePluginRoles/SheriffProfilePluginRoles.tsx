@@ -26,8 +26,8 @@ import { toTimeString } from 'jag-shuber-api';
 import RoleSelector from '../../plugins/AdminRoles/containers/RoleSelector';
 import { getAllRoles } from '../../modules/roles/selectors';
 import { getRoles } from '../../modules/roles/actions';
-import RemoveRow from '../../components/TableColumnActions/RemoveRow';
-import ExpireRow from '../../components/TableColumnActions/ExpireRow';
+import RemoveRow from '../../components/Table/TableColumnActions/RemoveRow';
+import ExpireRow from '../../components/Table/TableColumnActions/ExpireRow';
 
 export interface SheriffProfilePluginRolesProps {
     partialDay: Leave[];
@@ -55,7 +55,8 @@ export default class SheriffProfilePluginRoles extends SheriffProfileSectionPlug
                     actions: [
                         ({ fields, index, model }) => <RemoveRow fields={fields} index={index} model={model} />,
                         ({ fields, index, model }) => { return (model && model.id) ? (<ExpireRow fields={fields} index={index} model={model} />) : null; }
-                    ]
+                    ],
+                    trace: `[${this.name}] FormComponent -> DataTable` // Just for debugging
                 })}
                 columns={[
                     DataTable.SelectorFieldColumn('Role Name', { fieldName: 'id', selectorComponent: RoleSelector, displayInfo: true, disabled: true }),

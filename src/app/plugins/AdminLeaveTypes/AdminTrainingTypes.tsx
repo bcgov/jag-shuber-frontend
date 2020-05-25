@@ -30,14 +30,14 @@ import {
     FormContainerProps,
 } from '../../components/Form/FormContainer';
 
-import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../components/Table/DataTable';
+import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
 import { AdminTrainingTypesProps } from './AdminTrainingTypes';
-import DeleteRow from '../../components/TableColumnActions/DeleteRow';
-import ExpireRow from '../../components/TableColumnActions/ExpireRow';
-import RemoveRow from '../../components/TableColumnActions/RemoveRow';
-import UnexpireRow from '../../components/TableColumnActions/UnexpireRow';
+import DeleteRow from '../../components/Table/TableColumnActions/DeleteRow';
+import ExpireRow from '../../components/Table/TableColumnActions/ExpireRow';
+import RemoveRow from '../../components/Table/TableColumnActions/RemoveRow';
+import UnexpireRow from '../../components/Table/TableColumnActions/UnexpireRow';
 
-import { ActionProps } from '../../components/TableColumnCell/Actions';
+import { ActionProps } from '../../components/Table/TableColumnCell/Actions';
 
 import { buildPluginPermissions, userCan } from '../permissionUtils';
 
@@ -156,9 +156,9 @@ export default class AdminTrainingTypes extends FormContainerBase<AdminTrainingT
             },
             ({ fields, index, model }) => {
                 return (model && model.id && model.id !== '' && !model.isExpired)
-                    ? (<ExpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance.forceUpdate()} />)
+                    ? (<ExpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance && dataTableInstance.component && dataTableInstance.component.forceUpdate()} />)
                     : (model && model.isExpired)
-                    ? (<UnexpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance.forceUpdate()} />)
+                    ? (<UnexpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance && dataTableInstance.component && dataTableInstance.component.forceUpdate()} />)
                     : null;
             },
             ({ fields, index, model }) => {
@@ -182,7 +182,8 @@ export default class AdminTrainingTypes extends FormContainerBase<AdminTrainingT
                     onToggleExpiredClicked={onToggleExpiredClicked}
                     displayActionsColumn={true}
                     actionsColumn={DataTable.ActionsColumn({
-                        actions: trainingTypeActions
+                        actions: trainingTypeActions,
+                        trace: `[${this.name}] FormComponent -> DataTable` // Just for debugging
                     })}
                     columns={[
                         DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false }),
@@ -229,7 +230,6 @@ export default class AdminTrainingTypes extends FormContainerBase<AdminTrainingT
     getData(state: RootState, filters: any | undefined) {
         // Get filter data
         const filterData = this.getFilterData(filters);
-        // console.log(filterData);
 
         // Get form data
         const leaveTypes = (filters && filters.trainingLeaveTypes !== undefined)
