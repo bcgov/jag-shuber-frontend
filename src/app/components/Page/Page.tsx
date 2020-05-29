@@ -88,7 +88,6 @@ export class Page extends React.Component<PageProps & PageStateProps & PageDispa
     }
 
     shouldComponentUpdate(nextProps: Readonly<PageProps & PageStateProps & PageDispatchProps>, nextState: Readonly<{}>, nextContext: any): boolean {
-        // console.log(nextProps);
         return false; // This prevents infinite loop on props change
     }
 
@@ -109,9 +108,6 @@ export class Page extends React.Component<PageProps & PageStateProps & PageDispa
             currentLocation !== '');
 
         const shouldRenderChildren = ((disableLocations !== false) || (!disableLocations && isCurrentLocationSet));
-        // console.log('should we render the page contents?');
-        // console.log('current location is: ' + currentLocation);
-        // console.log(shouldRenderChildren);
 
         return (
             <div className="pageContainer" style={style} key={currentLocation}>

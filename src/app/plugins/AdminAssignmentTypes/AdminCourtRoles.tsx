@@ -31,6 +31,7 @@ import { CourtRoleCode, IdType } from '../../api';
 import {
     FormContainerBase,
     FormContainerProps,
+    FormValuesDiff,
 } from '../../components/Form/FormContainer';
 
 import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
@@ -51,13 +52,10 @@ export interface AdminCourtRolesProps extends FormContainerProps {
     courtRoles?: any[];
 }
 
-export interface AdminCourtRolesDisplayProps extends FormContainerProps {
-
-}
+export interface AdminCourtRolesDisplayProps extends FormContainerProps {}
 
 class AdminCourtRolesDisplay extends React.PureComponent<AdminCourtRolesDisplayProps, any> {
     render() {
-        const { data = [] } = this.props;
         return (
             <div />
         );
@@ -305,67 +303,20 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
         };
     }
 
-    getDataFromFormValues(formValues: {}, initialValues: {}): FormContainerProps {
-        return super.getDataFromFormValues(formValues) || {
-        };
-    }
-
-    mapDeletesFromFormValues(map: any) {
-        const deletedCourtRoleIds: IdType[] = [];
-
-        if (map.courtRoles) {
-            const initialValues = map.courtRoles.initialValues;
-            const existingIds = map.courtRoles.values.map((val: any) => val.id);
-
-            const removeCourtRoleIds = initialValues
-                .filter((val: any) => (existingIds.indexOf(val.id) === -1))
-                .map((val: any) => val.id);
-
-            deletedCourtRoleIds.push(...removeCourtRoleIds);
-        }
-
-        return {
-            courtRoles: deletedCourtRoleIds
-        };
-    }
-
-    mapExpiredFromFormValues(map: any, isExpired?: boolean) {
-        isExpired = isExpired || false;
-        const expiredCourtRoleIds: IdType[] = [];
-
-        if (map.courtRoles) {
-            const values = map.courtRoles.values;
-
-            const courtRoleIds = values
-                .filter((val: any) => val.isExpired === isExpired)
-                .map((val: any) => val.id);
-
-            expiredCourtRoleIds.push(...courtRoleIds);
-        }
-
-        return {
-            courtRoles: expiredCourtRoleIds
-        };
-    }
-
     async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>) {
-        const data: any = this.getDataFromFormValues(formValues, initialValues);
-        const dataToExpire: any = this.getDataToExpireFromFormValues(formValues, initialValues, true) || {};
-        const dataToUnexpire: any = this.getDataToExpireFromFormValues(formValues, initialValues, false) || {};
-        const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
+        const data: FormValuesDiff = this.getDataFromFormValues(formValues, initialValues) as FormValuesDiff;
 
         // Grab the currentLocation off of the formValues.assignments object
         const { currentLocation } = formValues.assignments;
 
-        // Delete records before saving new ones!
-        const deletedCourtRoles: IdType[] = dataToDelete.courtRoles as IdType[];
+        const deletedCourtRoles: IdType[] = data.courtRoles.deletedIds as IdType[];
+        const expiredCourtRoles: IdType[] = data.courtRoles.expiredIds as IdType[];
+        const unexpiredCourtRoles: IdType[] = data.courtRoles.unexpiredIds as IdType[];
 
-        // Expire records before saving new ones!
-        const expiredCourtRoles: IdType[] = dataToExpire.courtRoles as IdType[];
-        const unexpiredCourtRoles: IdType[] = dataToUnexpire.courtRoles as IdType[];
-
-        let courtRoles: Partial<CourtRoleCode>[];
-        courtRoles = data.courtRoles.map((c: Partial<CourtRoleCode>) => ({
+        let courtRoles: Partial<CourtRoleCode>[] = [
+            ...data.courtRoles.added,
+            ...data.courtRoles.updated
+        ].map((c: Partial<CourtRoleCode>) => ({
             ...c,
             createdBy: 'DEV - FRONTEND',
             updatedBy: 'DEV - FRONTEND',

@@ -275,7 +275,6 @@ export default class SheriffProfilePluginLocation
         const data = this.getDataFromFormValues(formValues);
         const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
 
-        // Delete records before saving new ones!
         const deletedFullDaySheriffLocations: IdType[] = dataToDelete.fullDayLocations as IdType[];
         const deletedPartialDaySheriffLocations: IdType[] = dataToDelete.partialDayLocations as IdType[];
         const deletedSheriffLocations: IdType[] = [

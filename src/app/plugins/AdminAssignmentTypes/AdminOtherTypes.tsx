@@ -30,7 +30,7 @@ import { AlternateAssignment as OtherType, IdType, JailRoleCode } from '../../ap
 
 import {
     FormContainerBase,
-    FormContainerProps,
+    FormContainerProps, FormValuesDiff,
 } from '../../components/Form/FormContainer';
 
 import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
@@ -52,13 +52,10 @@ export interface AdminOtherTypesProps extends FormContainerProps {
     otherTypes?: any[];
 }
 
-export interface AdminOtherTypesDisplayProps extends FormContainerProps {
-
-}
+export interface AdminOtherTypesDisplayProps extends FormContainerProps {}
 
 class AdminOtherTypesDisplay extends React.PureComponent<AdminOtherTypesDisplayProps, any> {
     render() {
-        const { data = [] } = this.props;
         return (
             <div />
         );
@@ -148,7 +145,6 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
 
         const onResetFilters = () => {
             if (setPluginFilters) {
-                // console.log('reset plugin filters');
                 setPluginFilters({
                     otherTypes: {
                         locationId: undefined,
@@ -307,67 +303,20 @@ export default class AdminOtherTypes extends FormContainerBase<AdminOtherTypesPr
         };
     }
 
-    getDataFromFormValues(formValues: {}, initialValues: {}): FormContainerProps {
-        return super.getDataFromFormValues(formValues) || {
-        };
-    }
-
-    mapDeletesFromFormValues(map: any) {
-        const deletedOtherTypeIds: IdType[] = [];
-
-        if (map.otherTypes) {
-            const initialValues = map.otherTypes.initialValues;
-            const existingIds = map.otherTypes.values.map((val: any) => val.id);
-
-            const removeOtherTypeIds = initialValues
-                .filter((val: any) => (existingIds.indexOf(val.id) === -1))
-                .map((val: any) => val.id);
-
-            deletedOtherTypeIds.push(...removeOtherTypeIds);
-        }
-
-        return {
-            otherTypes: deletedOtherTypeIds
-        };
-    }
-
-    mapExpiredFromFormValues(map: any, isExpired?: boolean) {
-        isExpired = isExpired || false;
-        const expiredOtherTypeIds: IdType[] = [];
-
-        if (map.otherTypes) {
-            const values = map.otherTypes.values;
-
-            const otherTypeIds = values
-                .filter((val: any) => val.isExpired === isExpired)
-                .map((val: any) => val.id);
-
-            expiredOtherTypeIds.push(...otherTypeIds);
-        }
-
-        return {
-            otherTypes: expiredOtherTypeIds
-        };
-    }
-
     async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>) {
-        const data: any = this.getDataFromFormValues(formValues, initialValues);
-        const dataToExpire: any = this.getDataToExpireFromFormValues(formValues, initialValues, true) || {};
-        const dataToUnexpire: any = this.getDataToExpireFromFormValues(formValues, initialValues, false) || {};
-        const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
+        const data: FormValuesDiff = this.getDataFromFormValues(formValues, initialValues) as FormValuesDiff;
 
         // Grab the currentLocation off of the formValues.assignments object
         const { currentLocation } = formValues.assignments;
 
-        // Delete records before saving new ones!
-        const deletedOtherTypes: IdType[] = dataToDelete.otherTypes as IdType[];
+        const deletedOtherTypes: IdType[] = data.otherTypes.deletedIds as IdType[];
+        const expiredOtherTypes: IdType[] = data.otherTypes.expiredIds as IdType[];
+        const unexpiredOtherTypes: IdType[] = data.otherTypes.unexpiredIds as IdType[];
 
-        // Expire records before saving new ones!
-        const expiredOtherTypes: IdType[] = dataToExpire.otherTypes as IdType[];
-        const unexpiredOtherTypes: IdType[] = dataToUnexpire.otherTypes as IdType[];
-
-        let otherTypes: Partial<OtherType>[];
-        otherTypes = data.otherTypes.map((c: Partial<OtherType>) => ({
+        let otherTypes: Partial<OtherType>[] = [
+            ...data.otherTypes.added,
+            ...data.otherTypes.updated
+        ].map((c: Partial<OtherType>) => ({
             ...c,
             createdBy: 'DEV - FRONTEND',
             updatedBy: 'DEV - FRONTEND',
