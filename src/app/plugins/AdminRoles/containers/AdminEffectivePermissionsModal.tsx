@@ -41,16 +41,8 @@ export interface AdminEffectivePermissionsModalProps extends AdminEffectivePermi
 class AdminEffectivePermissionsModal extends React.Component<AdminEffectivePermissionsModalProps> {
     reduxFormKey = 'roles';
     formFieldNames = {
-        roles: 'roles.roles',
-        apiScopes: 'roles.apiScopes',
-        frontendScopes: 'roles.frontendScopes',
         roleApiScopesGrouped: 'roles.roleApiScopesGrouped',
-        roleFrontendScopesGrouped: 'roles.roleFrontendScopesGrouped',
-        rolePermissionsGrouped: 'roles.rolePermissions',
-        roleApiPermissionsGrouped: 'roles.roleApiPermissionsGrouped',
-        roleFrontendPermissionsGrouped: 'roles.roleFrontendPermissionsGrouped',
-        roleApiScopePermissionsGrouped: 'roles.roleApiScopePermissionsGrouped',
-        roleFrontendScopePermissionsGrouped: 'roles.roleFrontendScopePermissionsGrouped'
+        roleFrontendScopesGrouped: 'roles.roleFrontendScopesGrouped'
     };
 
     private modalWrapper?: any;

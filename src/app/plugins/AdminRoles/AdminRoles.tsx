@@ -70,7 +70,7 @@ import { IdType } from '../../api';
 
 import {
     FormContainerBase,
-    FormContainerProps,
+    FormContainerProps, FormValues, FormValuesDiff,
 } from '../../components/Form/FormContainer';
 
 import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
@@ -109,44 +109,10 @@ export interface AdminRolesProps extends FormContainerProps {
 
 export interface AdminRolesDisplayProps extends FormContainerProps {}
 
-class AdminRolesDisplay extends React.PureComponent<AdminRolesDisplayProps, {}> {
+class AdminRolesDisplay extends React.PureComponent<AdminRolesDisplayProps, any> {
     render() {
-        const { data = [] } = this.props;
-
-        // TODO: Rip out dummy data
-        const testData = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }];
         return (
-            <div>
-                {/*<h3>Roles</h3>*/}
-                <Table responsive={true} striped={true} >
-                    <thead>
-                        <tr>
-                            <th className="text-left">Role Name</th>
-                            <th className="text-left">Role Code</th>
-                            <th className="text-left">Description</th>
-                            <th className="text-left">Last Modified</th>
-                            <th className="text-left">Status</th>
-                            <th />
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {testData.map(r => {
-                            return (
-                                <tr key={r.id}>
-                                    <td>Test Role</td>
-                                    <td>TEST_ROLE</td>
-                                    <td>Ipsum Lorem Dolor</td>
-                                    <td>{new Date().toLocaleDateString()}</td>
-                                    <td>
-                                        Active
-                                    </td>
-                                </tr>
-                            );
-                        })}
-
-                    </tbody>
-                </Table>
-            </div>
+            <div />
         );
     }
 }
@@ -165,14 +131,8 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
     reduxFormKey = 'roles';
     formFieldNames = {
         roles: 'roles.roles',
-        apiScopes: 'roles.apiScopes',
-        frontendScopes: 'roles.frontendScopes',
-        roleApiScopesGrouped: 'roles.roleApiScopesGrouped',
         roleFrontendScopesGrouped: 'roles.roleFrontendScopesGrouped',
-        rolePermissionsGrouped: 'roles.rolePermissions',
-        roleApiPermissionsGrouped: 'roles.roleApiPermissionsGrouped',
-        roleFrontendPermissionsGrouped: 'roles.roleFrontendPermissionsGrouped',
-        roleApiScopePermissionsGrouped: 'roles.roleApiScopePermissionsGrouped',
+        // This form is in the modal component, we process its data in this plugin
         roleFrontendScopePermissionsGrouped: 'roles.roleFrontendScopePermissionsGrouped'
     };
     title: string = ' Manage Roles & Access';
@@ -468,60 +428,11 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
         };
     }
 
-    getDataFromFormValues(formValues: {}, initialValues: {}): FormContainerProps {
-        return super.getDataFromFormValues(formValues, initialValues) || {};
-    }
-
-    mapDeletesFromFormValues(map: any) {
+    /* mapDeletesFromFormValues(map: any) {
         const deletedRoleIds: IdType[] = [];
         const deletedRoleFrontendScopeIds: IdType[] = [];
         const deletedRoleApiScopeIds: IdType[] = [];
         const deletedRolePermissionIds: IdType[] = [];
-
-        if (map.roles) {
-            const initialValues = map.roles.initialValues;
-            const existingIds = map.roles.values.map((val: any) => val.id);
-
-            const removeRoleIds = initialValues
-                .filter((val: any) => (existingIds.indexOf(val.id) === -1))
-                .map((val: any) => val.id);
-
-            deletedRoleIds.push(...removeRoleIds);
-        }
-
-        if (map.roleFrontendScopesGrouped) {
-            const initialValues = map.roleFrontendScopesGrouped.initialValues;
-
-            const removeRoleFrontendScopeIds = Object.keys(initialValues).reduce((acc: any, cur: any) => {
-                const initValues = map.roleFrontendScopesGrouped.initialValues[cur];
-                const existingIds = map.roleFrontendScopesGrouped.values[cur].map((val: any) => val.id);
-
-                const removeIds = initValues
-                    .filter((val: any) => (existingIds.indexOf(val.id) === -1))
-                    .map((val: any) => val.id);
-
-                return acc.concat(removeIds);
-            }, []);
-
-            deletedRoleFrontendScopeIds.push(...removeRoleFrontendScopeIds);
-        }
-
-        if (map.roleApiScopesGrouped) {
-            const initialValues = map.roleApiScopesGrouped.initialValues;
-
-            const removeRoleApiScopeIds = Object.keys(initialValues).reduce((acc: any, cur: any) => {
-                const initValues = map.roleApiScopesGrouped.initialValues[cur];
-                const existingIds = map.roleApiScopesGrouped.values[cur].map((val: any) => val.id);
-
-                const removeIds = initValues
-                    .filter((val: any) => (existingIds.indexOf(val.id) === -1))
-                    .map((val: any) => val.id);
-
-                return acc.concat(removeIds);
-            }, []);
-
-            deletedRoleApiScopeIds.push(...removeRoleApiScopeIds);
-        }
 
         return {
             roles: deletedRoleIds,
@@ -529,37 +440,54 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
             roleApiScopes: deletedRoleApiScopeIds,
             deletedRolePermissionIds: deletedRolePermissionIds
         };
-    }
+    } */
 
     async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>) {
-        const data: any = this.getDataFromFormValues(formValues, initialValues) || {};
-        const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
+        const data: FormValuesDiff = this.getDataFromFormValues(
+            formValues,
+            initialValues,
+            [
+                'roleFrontendScopesGrouped',
+                'roleFrontendScopePermissionsGrouped'
+            ]
+        ) as FormValuesDiff;
 
-        // Delete records before saving new ones!
-        const deletedRoles: IdType[] = dataToDelete.roles as IdType[];
-        const deletedRoleFrontendScopes: IdType[] = dataToDelete.roleFrontendScopes as IdType[];
-        const deletedRoleApiScopes: IdType[] = dataToDelete.roleApiScopes as IdType[];
+        const deletedRoles: IdType[] = data.roles.deletedIds as IdType[];
+        const deletedRoleFrontendScopes: IdType[] = data.roleFrontendScopesGrouped.deletedIds as IdType[];
+        // const deletedRoleApiScopes: IdType[] = data.roleFrontendScopesGrouped.deletedIds as IdType[];
         // Important! We don't handle permissions the same way as the other deletes!
         const deletedRolePermissions: IdType[] = [] as IdType[];
 
-        const roles: Partial<Role>[] = (data.roles) ? data.roles.map((r: Role) => ({
-            ...r,
-            systemCodeInd: 0, // TODO: Ability to set this - we haven't implemented system codes yet but it will be needed
-            // TODO: Need a way to set this stuff... createdBy, updated by fields should really be set in the backend using the current user
-            // We're just going to set the fields here temporarily to quickly check if things are working in the meantime...
-            createdBy: 'DEV - FRONTEND',
-            updatedBy: 'DEV - FRONTEND',
-            createdDtm: new Date().toISOString(),
-            updatedDtm: new Date().toISOString(),
-            revisionCount: 0 // TODO: Is there entity versioning anywhere in this project???
-        })) : [];
+        const rolesData = [
+            ...data.roles.added,
+            ...data.roles.updated
+        ];
 
-        const roleFrontendScopes: Partial<RoleFrontendScope>[] = (data.roleFrontendScopesGrouped)
-            ? Object.keys(data.roleFrontendScopesGrouped)
+        const roles: Partial<Role>[] = (rolesData)
+            ? rolesData.map((r: Role) => ({
+                ...r,
+                systemCodeInd: 0, // TODO: Ability to set this - we haven't implemented system codes yet but it will be needed
+                // TODO: Need a way to set this stuff... createdBy, updated by fields should really be set in the backend using the current user
+                // We're just going to set the fields here temporarily to quickly check if things are working in the meantime...
+                createdBy: 'DEV - FRONTEND',
+                updatedBy: 'DEV - FRONTEND',
+                createdDtm: new Date().toISOString(),
+                updatedDtm: new Date().toISOString(),
+                revisionCount: 0 // TODO: Is there entity versioning anywhere in this project???
+            }))
+            : [];
+
+        const roleFrontendScopesData = {
+            ...data.roleFrontendScopesGrouped.added,
+            ...data.roleFrontendScopesGrouped.updated
+        };
+
+        const roleFrontendScopes: Partial<RoleFrontendScope>[] = (roleFrontendScopesData)
+            ? Object.keys(roleFrontendScopesData)
                 .reduce((acc, cur, idx) => {
                     return acc
                         .concat(
-                            data.roleFrontendScopesGrouped[cur]
+                            roleFrontendScopesData[cur]
                                 .map((rs: RoleFrontendScope) => {
                                     rs.roleId = cur; // Set role ids on all rows
                                     return rs;
@@ -576,14 +504,19 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
                 }))
             : [];
 
+        const roleFrontendScopePermissionsData = {
+            ...data.roleFrontendScopePermissionsGrouped.added,
+            ...data.roleFrontendScopePermissionsGrouped.updated
+        };
+
         let roleFrontendScopePermissions: Partial<RolePermission>[] = [];
 
-        if (data.roleFrontendScopePermissionsGrouped) {
-            const roleFrontendScopeKeys = Object.keys(data.roleFrontendScopePermissionsGrouped);
+        if (roleFrontendScopePermissionsData) {
+            const roleFrontendScopeKeys = Object.keys(roleFrontendScopePermissionsData);
 
             const roleFrontendScopePermissionsGrouped = roleFrontendScopeKeys
                 .reduce((acc, cur, idx: number) => {
-                    const roleScopes = data.roleFrontendScopePermissionsGrouped[cur];
+                    const roleScopes = roleFrontendScopePermissionsData[cur];
                     return Object.assign({}, acc, roleScopes);
                 }, {});
 
@@ -619,12 +552,17 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
                 .filter(rp => rp) as Partial<RolePermission>[];
         }
 
-        const roleApiScopes: Partial<RoleApiScope>[] = (data.roleApiScopesGrouped)
-            ? Object.keys(data.roleApiScopesGrouped)
+        /* const roleApiScopesData = {
+            ...data.roleApiScopesGrouped.added,
+            ...data.roleApiScopesGrouped.updated
+        };
+
+        const roleApiScopes: Partial<RoleApiScope>[] = (roleApiScopesData)
+            ? Object.keys(roleApiScopesData)
                 .reduce((acc, cur, idx) => {
                     return acc
                         .concat(
-                            data.roleApiScopesGrouped[cur]
+                            roleApiScopesData[cur]
                                 .map((rs: RoleApiScope) => {
                                     rs.roleId = cur; // Set role ids on all rows, we need it set on new rows
                                     return rs;
@@ -639,9 +577,8 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
                     updatedDtm: new Date().toISOString(),
                     revisionCount: 0
                 }))
-            : [];
+            : []; */
 
-        // These have to be deleted in sequence
         if (deletedRolePermissions.length > 0) {
             console.log('deleting role permissions');
             console.log(deletedRolePermissions);
@@ -652,11 +589,11 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
             console.log(deletedRoleFrontendScopes);
             await dispatch(deleteRoleFrontendScopes(deletedRoleFrontendScopes));
         }
-        if (deletedRoleApiScopes.length > 0) {
+        /* if (deletedRoleApiScopes.length > 0) {
             console.log('deleting role api scopes');
             console.log(deletedRoleApiScopes);
             await dispatch(deleteRoleApiScopes(deletedRoleApiScopes));
-        }
+        } */
         if (deletedRoles.length > 0) {
             console.log('deleting roles');
             console.log(deletedRoles);
@@ -677,10 +614,10 @@ export default class AdminRoles extends FormContainerBase<AdminRolesProps> {
             console.log(roleFrontendScopePermissions);
             await dispatch(createOrUpdateRolePermissions(roleFrontendScopePermissions));
         }
-        if (roleApiScopes.length > 0) {
+        /* if (roleApiScopes.length > 0) {
             console.log('updating role api scopes');
             console.log(roles);
             await dispatch(createOrUpdateRoleApiScopes(roleApiScopes));
-        }
+        } */
     }
 }

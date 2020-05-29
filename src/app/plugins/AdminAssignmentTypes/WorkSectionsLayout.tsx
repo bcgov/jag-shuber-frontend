@@ -33,9 +33,6 @@ export default (props: any) => {
     const otherTypesPlugin = sectionPlugins
         .find((p: any) => p.name === 'ADMIN_OTHER_TYPES');
 
-    // TODO: Fix me! This console log should explain exactly what's going on...
-    // console.log('WorkSectionsLayout selectedSection: ' + selectedSection);
-
     const validSections = ['ADMIN_COURTROOMS', 'ADMIN_COURT_ROLES', 'ADMIN_JAIL_ROLES', 'ADMIN_ESCORT_TYPES', 'ADMIN_OTHER_TYPES'];
     selectedSection = (validSections.indexOf(selectedSection) > -1) ? selectedSection : 'ADMIN_COURTROOMS';
 

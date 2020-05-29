@@ -27,7 +27,7 @@ import { IdType, LeaveSubCode } from '../../api';
 
 import {
     FormContainerBase,
-    FormContainerProps,
+    FormContainerProps, FormValuesDiff,
 } from '../../components/Form/FormContainer';
 
 import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
@@ -46,13 +46,10 @@ export interface AdminTrainingTypesProps extends FormContainerProps {
     trainingLeaveTypes?: any[];
 }
 
-export interface AdminTrainingTypesDisplayProps extends FormContainerProps {
-
-}
+export interface AdminTrainingTypesDisplayProps extends FormContainerProps {}
 
 class AdminTrainingTypesDisplay extends React.PureComponent<AdminTrainingTypesDisplayProps, any> {
     render() {
-        const { data = [] } = this.props;
         return (
             <div />
         );
@@ -173,7 +170,9 @@ export default class AdminTrainingTypes extends FormContainerBase<AdminTrainingT
                 <DataTable
                     ref={(dt) => dataTableInstance = dt}
                     fieldName={this.formFieldNames.trainingLeaveTypes}
-                    filterFieldName={(this.filterFieldNames) ? `${this.filterFieldNames.trainingLeaveTypes}` : undefined}
+                    filterFieldName={(this.filterFieldNames)
+                        ? `${this.filterFieldNames.trainingLeaveTypes}` : undefined
+                    }
                     title={''} // Leave this blank
                     buttonLabel={'Add Training Type'}
                     // TODO: Only display if the user has appropriate permissions
@@ -186,16 +185,30 @@ export default class AdminTrainingTypes extends FormContainerBase<AdminTrainingT
                         trace: `[${this.name}] FormComponent -> DataTable` // Just for debugging
                     })}
                     columns={[
-                        DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false }),
-                        DataTable.TextFieldColumn('Type', { fieldName: 'description', colStyle: { width: '25%' }, displayInfo: false, filterable: true, filterColumn: onFilterSubCode }),
-                        DataTable.TextFieldColumn('Code', { fieldName: 'subCode', colStyle: { width: '15%' }, displayInfo: true, filterable: true, filterColumn: onFilterSubCodeCode }),
-                        // DataTable.DateColumn('Effective Date', 'effectiveDate', { colStyle: { width: '15%'}, displayInfo: true, filterable: true, filterColumn: onFilterEffectiveDate }),
-                        // DataTable.DateColumn('Expiry Date', 'expiryDate', { colStyle: { width: '15%'}, displayInfo: true, filterable: true, filterColumn: onFilterExpiryDate })
+                        DataTable.SortOrderColumn('Sort Order', {
+                            fieldName: 'sortOrder',
+                            colStyle: { width: '100px' },
+                            displayInfo: false,
+                            filterable: false
+                        }),
+                        DataTable.TextFieldColumn('Type', {
+                            fieldName: 'description',
+                            colStyle: { width: '25%' },
+                            displayInfo: false,
+                            filterable: true,
+                            filterColumn: onFilterSubCode
+                        }),
+                        DataTable.TextFieldColumn('Code', {
+                            fieldName: 'subCode',
+                            colStyle: { width: '15%' },
+                            displayInfo: true,
+                            filterable: true,
+                            filterColumn: onFilterSubCodeCode
+                        })
                     ]}
                     filterable={true}
                     showExpiredFilter={true}
                     expandable={false}
-                    // expandedRows={[1, 2]}
                     // TODO: Only display if the user has appropriate permissions
                     shouldDisableRow={(model) => {
                         // TODO: Only disable if the user doesn't have permission to edit provincial codes
@@ -255,63 +268,17 @@ export default class AdminTrainingTypes extends FormContainerBase<AdminTrainingT
         };
     }
 
-    getDataFromFormValues(formValues: {}, initialValues: {}): FormContainerProps {
-        return super.getDataFromFormValues(formValues) || {
-        };
-    }
-
-    mapDeletesFromFormValues(map: any) {
-        const deletedLeaveTypeIds: IdType[] = [];
-
-        if (map.trainingLeaveTypes) {
-            const initialValues = map.trainingLeaveTypes.initialValues;
-            const existingIds = map.trainingLeaveTypes.values.map((val: any) => val.id);
-
-            const removeLeaveTypeIds = initialValues
-                .filter((val: any) => (existingIds.indexOf(val.id) === -1))
-                .map((val: any) => val.id);
-
-            deletedLeaveTypeIds.push(...removeLeaveTypeIds);
-        }
-
-        return {
-            trainingLeaveTypes: deletedLeaveTypeIds
-        };
-    }
-
-    mapExpiredFromFormValues(map: any, isExpired?: boolean) {
-        isExpired = isExpired || false;
-        const expiredLeaveTypeIds: IdType[] = [];
-
-        if (map.trainingLeaveTypes) {
-            const values = map.trainingLeaveTypes.values;
-
-            const courtRoleIds = values
-                .filter((val: any) => val.isExpired === isExpired)
-                .map((val: any) => val.id);
-
-            expiredLeaveTypeIds.push(...courtRoleIds);
-        }
-
-        return {
-            trainingLeaveTypes: expiredLeaveTypeIds
-        };
-    }
-
     async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>) {
-        const data: any = this.getDataFromFormValues(formValues, initialValues);
-        const dataToExpire: any = this.getDataToExpireFromFormValues(formValues, initialValues, true) || {};
-        const dataToUnexpire: any = this.getDataToExpireFromFormValues(formValues, initialValues, false) || {};
-        const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
+        const data: FormValuesDiff = this.getDataFromFormValues(formValues, initialValues) as FormValuesDiff;
 
-        // Delete records before saving new ones!
-        const deletedLeaveTypes: IdType[] = dataToDelete.trainingLeaveTypes as IdType[];
+        const deletedLeaveTypes: IdType[] = data.trainingLeaveTypes.deletedIds as IdType[];
+        const expiredLeaveTypes: IdType[] = data.trainingLeaveTypes.expiredIds as IdType[];
+        const unexpiredLeaveTypes: IdType[] = data.trainingLeaveTypes.unexpiredIds as IdType[];
 
-        // Expire records before saving new ones!
-        const expiredLeaveTypes: IdType[] = dataToExpire.trainingLeaveTypes as IdType[];
-        const unexpiredLeaveTypes: IdType[] = dataToUnexpire.trainingLeaveTypes as IdType[];
-
-        const leaveTypes: Partial<LeaveSubCode>[] = data.trainingLeaveTypes.map((c: LeaveSubCode) => ({
+        const leaveTypes: Partial<LeaveSubCode>[] = [
+            ...data.trainingLeaveTypes.added,
+            ...data.trainingTypes.updated
+        ].map((c: LeaveSubCode) => ({
             // ...c, // Don't just spread the operator, we need to replace the id GUID used on client side with a code
             // Just an alias used for updates, save method relies on the existence of an ID to determine whether or not
             // to create or update a particular record...

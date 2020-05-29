@@ -81,11 +81,7 @@ export const getUserRolesGroupedByUserId = (state: RootState) => {
 
 export const findAllUsers = (filters: any) => (state: RootState) => {
     if (state) {
-        // console.log('finding all users (findAllUsers) using filters');
-        // console.log(filters);
         let users = allUsers(state);
-            /*.sort((a: any, b: any) =>
-            (a.lastName < b.lastName) ? -1 : (a.lastName > b.lastName) ? 1 : 0);*/
 
         // User contains a sheriff reference, break into two sets of filters
         // eg: user: { sheriff: {...} }
@@ -179,9 +175,6 @@ export const getUser = (id?: IdType) => (state: RootState) => {
 export const getUserByAuthId = (userAuthId?: IdType) => (state: RootState) => {
     if (state && userAuthId !== undefined) {
         const users = allUsers(state);
-        if (users && users.length > 0) {
-            console.log('we have users');
-        }
         return users.find((user: User) => user.userAuthId === userAuthId as string);
     }
     return undefined;
