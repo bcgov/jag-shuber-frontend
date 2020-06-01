@@ -68,6 +68,9 @@ export function getSheriffHomeLocation(sheriffId: IdType) {
 export function getSheriffCurrentLocation(sheriffId: IdType) {
     return (state: RootState) => {
         const sheriff = getSheriff(sheriffId)(state) as Sheriff;
+        /* if (sheriff.id === '') {
+            console.log('getSheriffCurrentLocation')
+        } */
         const { currentLocationId, homeLocationId } = sheriff;
         return currentLocationId === undefined ?
             getLocationById(homeLocationId)(state) :
@@ -153,10 +156,12 @@ export const sheriffLoanMap = createSelector(
             if (matchingLocations && matchingLocations[0]) {
                 matchingLocations.sort((a: any, b: any) => b.isPartial - a.isPartial); // Prioritize partial days
                 sheriffLocation = matchingLocations[0];
-                console.log(`${matchingLocations.length} matching locations:`);
-                console.log(matchingLocations);
-                console.log('sheriff is on loan:');
-                console.log(sheriffLocation);
+                /* if (id === '') {
+                    console.log(`${matchingLocations.length} matching locations:`);
+                    console.log(matchingLocations);
+                    console.log('sheriff is on loan:');
+                    console.log(sheriffLocation);
+                } */
             }
 
             return {
