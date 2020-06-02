@@ -217,14 +217,6 @@ export default class Navigation extends React.Component<NavigationProps & Naviga
                                     <NavigationLink {...Navigation.Routes.types.children.leaveTypes} onSelect={this.toggleMenu} />
                                 </NavigationDropDown>
                             )}
-
-                            {currentUserRoleScopes.authScopes
-                            && currentUserRoleScopes.authScopes.indexOf('system:scopes') > -1 && (
-                                <NavigationDropDown title={Navigation.Routes.system.label} id="system_dropdown">
-                                    <NavigationLink {...Navigation.Routes.system.children.components} onSelect={this.toggleMenu} />
-                                    <NavigationLink {...Navigation.Routes.system.children.apis} onSelect={this.toggleMenu} />
-                                </NavigationDropDown>
-                            )}
                             {/*<NavigationLink {...Navigation.Routes.audit} />*/}
                         </>
                         )}
@@ -250,14 +242,14 @@ export default class Navigation extends React.Component<NavigationProps & Naviga
                                         <SheriffDisplay
                                             sheriffId={currentUser.sheriffId}
                                             RenderComponent={({
-                                                                  sheriff: {
-                                                                      firstName = '',
-                                                                      lastName = '',
-                                                                      imageUrl = '',
-                                                                      badgeNo = '',
-                                                                      rankCode = ''
-                                                                  } = currentUser.sheriff as Sheriff
-                                                              }) => {
+                                                  sheriff: {
+                                                      firstName = '',
+                                                      lastName = '',
+                                                      imageUrl = '',
+                                                      badgeNo = '',
+                                                      rankCode = ''
+                                                  } = currentUser.sheriff as Sheriff
+                                              }) => {
                                                 return (
                                                     <div className="sheriff-profile-header">
                                                         {/* <Image
@@ -289,6 +281,21 @@ export default class Navigation extends React.Component<NavigationProps & Naviga
                                     </MenuItem>
                                 </Dropdown.Menu>
                             </Dropdown>
+                            {currentUserRoleScopes.authScopes
+                            && currentUserRoleScopes.authScopes.indexOf('system:types') > -1 && (
+                            <Dropdown id="user-profile-menu" className="">
+                                <Dropdown.Toggle className="user-profile-menu-toggle btn-transparent">
+                                    <Glyphicon
+                                        glyph="cog"
+                                        style={{ color: 'white', fontSize: '32px', marginLeft: '15px' }}
+                                    />
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                    <NavigationLink {...Navigation.Routes.system.children.components} onSelect={this.toggleMenu} />
+                                    <NavigationLink {...Navigation.Routes.system.children.apis} onSelect={this.toggleMenu} />
+                                </Dropdown.Menu>
+                            </Dropdown>
+                            )}
                             <div>
                                 {/* Just a flex container so we don't stretch the button */}
                                 <Button
