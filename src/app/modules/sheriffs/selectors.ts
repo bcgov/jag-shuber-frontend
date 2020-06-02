@@ -128,12 +128,11 @@ export const sheriffLoanMap = createSelector(
                         const currentMoment = moment().utc().startOf('day');
                         const startMoment = moment(startDate).utc().startOf('day');
                         const endMoment = moment(endDate).utc().startOf('day');
-                        const pendingStartOffsetMoment = moment(startDate)
+                        const pendingStartOffsetMoment = moment()
                             .utc().startOf('day').add(1, 'week');
 
                         const startDateIsSameOrBeforeStart = startMoment.isSameOrBefore(pendingStartOffsetMoment);
                         const endDateIsSameOrAfterNow = endMoment.isSameOrAfter(currentMoment);
-
 
                         return (startDateIsSameOrBeforeStart && endDateIsSameOrAfterNow);
                     })
