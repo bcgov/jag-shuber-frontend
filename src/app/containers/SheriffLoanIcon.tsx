@@ -37,7 +37,7 @@ class SheriffLoanIcon extends React.PureComponent<
     render() {
         const {
             sheriffId,
-            status: { isLoanedIn, isLoanedOut, startDate, endDate, startTime, endTime },
+            status: { isLoanPendingOrActive, isLoanedIn, isLoanedOut, startDate, endDate, startTime, endTime },
             homeLocation = { name: '' },
             currentLocation = { name: '' },
             style = {}
