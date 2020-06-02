@@ -8,7 +8,7 @@ export interface DateFieldProps {
     closeOnSelect?: boolean;
 }
 
-export default class DateField extends React.PureComponent<FormFieldWrapperProps & DateFieldProps>{
+export default class DateField extends React.PureComponent<FormFieldWrapperProps & DateFieldProps> {
     onChange(ev: any) {
         let newValue = ev;
         if (moment.isMoment(ev)) {
@@ -22,7 +22,7 @@ export default class DateField extends React.PureComponent<FormFieldWrapperProps
     render() {
         const { input: { value }, label, closeOnSelect = true} = this.props;
         return (
-            <FormFieldWrapper {...this.props} showLabel={false} >
+            <FormFieldWrapper {...this.props} showLabel={false}>
                 <DateTime
                     dateFormat={'MMM DD YYYY'}
                     utc={true}
@@ -31,7 +31,6 @@ export default class DateField extends React.PureComponent<FormFieldWrapperProps
                     value={moment(value)}
                     // value={value}
                     onChange={(e) => this.onChange(e)}
-                    // TODO: Why was this readonly?
                     // inputProps={{readOnly: true, placeholder: `Select ${label}` }}
                     inputProps={{placeholder: `Select ${label}` }}
                 />

@@ -16,13 +16,19 @@ import {
     getSheriffHomeLocation
 } from '../modules/sheriffs/selectors';
 
+import {
+    getLocationById
+} from '../modules/system/selectors';
+
 import SheriffLoanInIcon from '../components/Icons/SheriffLoanInIcon';
 import SheriffLoanOutIcon from '../components/Icons/SheriffLoanOutIcon';
+import { getAllLocations } from '../modules/system/selectors';
 
 interface SheriffLoanIconStateProps {
     status: SheriffLoanStatus;
     homeLocation?: Location;
-    currentLocation?: Location;
+    getLocation: (locationId: string) => any;
+    // currentLocation?: Location;
 }
 
 interface SheriffLoanIconProps {
@@ -36,31 +42,32 @@ class SheriffLoanIcon extends React.PureComponent<
 
     render() {
         const {
-            sheriffId,
-            status: { isLoanPendingOrActive, isLoanedIn, isLoanedOut, startDate, endDate, startTime, endTime },
+            // sheriffId,
+            status: { isLoanedIn, isLoanedOut, startDate, endDate, startTime, endTime, location },
             homeLocation = { name: '' },
-            currentLocation = { name: '' },
+            getLocation,
+            // currentLocation = { name: '' },
             style = {}
         } = this.props;
 
-        /* if (sheriffId === '') {
-            console.log('re-rendering sheriffloanicon');
-            console.log(homeLocation);
-            console.log(currentLocation);
-        } */
-
         let icon = isLoanedIn ? <SheriffLoanInIcon /> : isLoanedOut ? <SheriffLoanOutIcon /> : null;
 
+        const currentLocation = location && location.locationId ? getLocation(location.locationId) : undefined;
+
         const locationName = isLoanedIn ? `${homeLocation.name}` :
-            isLoanedOut ? `${currentLocation.name}` : undefined;
+            isLoanedOut && currentLocation ? `${currentLocation.name}` : undefined;
 
         return (
             <OverlayTrigger
                 overlay={(
                     <Tooltip>
                         <p>
-                            {isLoanedIn || isLoanedOut && (
-                            <>On loan {isLoanedIn ? 'from' : isLoanedOut ? 'to' : ''} <b>{locationName}</b></>
+                            {isLoanedIn && (
+                            <>On loan from <b>{locationName}</b></>
+                            )}
+
+                            {isLoanedOut && (
+                            <>On loan to <b>{locationName}</b></>
                             )}
 
                             <br/>
@@ -92,8 +99,9 @@ export default connect<SheriffLoanIconStateProps, {}, SheriffLoanIconProps, Root
     (state, { sheriffId }) => (
         {
             status: getSheriffLoanStatus(sheriffId)(state),
-            currentLocation: getSheriffCurrentLocation(sheriffId)(state),
+            // currentLocation: getSheriffCurrentLocation(sheriffId)(state),
             homeLocation: getSheriffHomeLocation(sheriffId)(state),
+            getLocation: (locationId: string) => getLocationById(locationId)(state)
         }
     )
 )(SheriffLoanIcon);
