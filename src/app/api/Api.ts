@@ -224,17 +224,19 @@ export interface CourtAssignment extends BaseAssignment {
 
 export interface JailAssignment extends BaseAssignment {
     workSectionId: 'JAIL';
-    jailRoleCode: IdType;
+    jailRoleCode?: IdType; // Deprecated
+    jailRoleId?: IdType;
 }
 
 export interface EscortAssignment extends BaseAssignment {
     workSectionId: 'ESCORTS';
-    escortRunId: IdType;
+    escortRunId?: IdType;
 }
 
 export interface OtherAssignment extends BaseAssignment {
     workSectionId: 'OTHER';
-    otherAssignCode: IdType;
+    otherAssignCode?: IdType; // Deprecated
+    otherAssignId?: IdType;
 }
 
 export interface AssignmentDuty {

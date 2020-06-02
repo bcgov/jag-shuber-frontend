@@ -256,6 +256,7 @@ const jailAssingments: JailAssignment[] = [
         workSectionId: 'JAIL',
         locationId: '1',
         jailRoleCode: '1',
+        jailRoleId: '1',
         startDateTime: moment().startOf('week').subtract(1, 'week'),
         dutyRecurrences: DEFAULT_RECURRENCE
     },
@@ -265,6 +266,7 @@ const jailAssingments: JailAssignment[] = [
         workSectionId: 'JAIL',
         locationId: '1',
         jailRoleCode: '1',
+        jailRoleId: '1',
         startDateTime: moment().startOf('week').subtract(1, 'week'),
         dutyRecurrences: DEFAULT_RECURRENCE
     }
@@ -298,6 +300,7 @@ const otherAssignments: OtherAssignment[] = [
         workSectionId: 'OTHER',
         locationId: '1',
         otherAssignCode: '1',
+        otherAssignId: '1',
         startDateTime: moment().startOf('week').subtract(1, 'week'),
         dutyRecurrences: DEFAULT_RECURRENCE
     },
@@ -307,6 +310,7 @@ const otherAssignments: OtherAssignment[] = [
         workSectionId: 'OTHER',
         locationId: '1',
         otherAssignCode: '3',
+        otherAssignId: '3',
         startDateTime: moment().startOf('week').subtract(1, 'week'),
         dutyRecurrences: DEFAULT_RECURRENCE
     }

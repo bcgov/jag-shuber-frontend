@@ -1273,3 +1273,12 @@ label.file-upload {
 .table > thead > tr > td, .table > thead > tr > th {
     vertical-align: top;
 }
+
+/* Fix for react calendar */
+.react-calendar-timeline > .rct-sidebar {
+    width: 200px;
+}
+
+.react-calendar-timeline > .rct-sidebar + div {
+    width: calc(100% - 200px);
+}

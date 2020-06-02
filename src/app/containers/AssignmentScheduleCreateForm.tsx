@@ -6,7 +6,7 @@ import {
 import { default as FormSubmitButton, SubmitButtonProps } from '../components/FormElements/SubmitButton';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
-import { 
+import {
     DaysOfWeek, Assignment, CourtAssignment, JailAssignment, EscortAssignment, OtherAssignment,
 } from '../api/Api';
 import * as TimeUtils from '../infrastructure/TimeRangeUtils';
@@ -21,47 +21,49 @@ const formConfig: ConfigProps<any, AssignmentFormProps> = {
     form: 'CreateAssignmentSchedule',
     onSubmit: async (values, dispatch, props) => {
         const { workSectionId } = props;
-        //const { timeRange, assignmentId } = values;
+        // const { timeRange, assignmentId } = values;
         let assignments: Assignment[] = [];
-        //const updatedAssignment = AssignmentForm.parseAssignmentFromValues(values);
-        const { 
-            jailRoleCode,
+        // const updatedAssignment = AssignmentForm.parseAssignmentFromValues(values);
+        const {
+            // jailRoleCode,
+            jailRoleId,
             courtAssignmentId,
             escortRunId,
-            otherAssignCode,
+            // otherAssignCode,
+            otherAssignId,
         } = values;
-        
+
         const courtAssignment = CourtSecurityFields.courtAssignmentIdToAssignmentValue(courtAssignmentId);
         const isCourtroomAssignment = CourtSecurityFields.isCourtAssignmentIdCourtroom(courtAssignmentId);
         const courtroomId = (isCourtroomAssignment ? courtAssignment : undefined);
         const courtRoleId = (!isCourtroomAssignment ? courtAssignment : undefined);
 
         let assignment: Assignment | undefined;
-        let workSectionAssignments = assignments!.filter(a => a.workSectionId == workSectionId); 
+        let workSectionAssignments = assignments!.filter(a => a.workSectionId === workSectionId);
         switch (workSectionId)
         {
             case 'COURTS':
             {
-                assignment = workSectionAssignments.find((a) => (a as CourtAssignment).courtRoleId == courtRoleId && (a as CourtAssignment).courtroomId == courtroomId);
+                assignment = workSectionAssignments.find((a) => (a as CourtAssignment).courtRoleId === courtRoleId && (a as CourtAssignment).courtroomId == courtroomId);
                 assignment = assignment || { courtroomId, courtRoleId, workSectionId: 'COURTS' } as CourtAssignment;
                 break;
             }
             case 'JAIL':
             {
-                assignment = workSectionAssignments.find((a) => (a as JailAssignment).jailRoleCode == jailRoleCode);
-                assignment = assignment || { jailRoleCode, workSectionId: 'JAIL' } as JailAssignment;
+                assignment = workSectionAssignments.find((a) => (a as JailAssignment).jailRoleId === jailRoleId);
+                assignment = assignment || { jailRoleId, workSectionId: 'JAIL' } as JailAssignment;
                 break;
             }
             case 'ESCORTS':
             {
-                assignment = workSectionAssignments.find((a) => (a as EscortAssignment).escortRunId == escortRunId);
+                assignment = workSectionAssignments.find((a) => (a as EscortAssignment).escortRunId === escortRunId);
                 assignment = assignment || { escortRunId, workSectionId: 'ESCORTS' } as EscortAssignment;
                 break;
             }
             default:
             {
-                assignment = workSectionAssignments.find((a) => (a as OtherAssignment).otherAssignCode == otherAssignCode);
-                assignment = assignment || { otherAssignCode, workSectionId: 'OTHER' } as OtherAssignment;
+                assignment = workSectionAssignments.find((a) => (a as OtherAssignment).otherAssignId === otherAssignId);
+                assignment = assignment || { otherAssignId, workSectionId: 'OTHER' } as OtherAssignment;
             }
         }
         if (!assignment.id)
@@ -93,7 +95,7 @@ const mapStateToProps = (state: RootState, props: AssignmentScheduleCreateFormPr
 
 // Here we create a class that extends the configured assignment form so that we
 // can add a static SubmitButton member to it to make the API cleaner
-export default class AssignmentScheduleCreateForm extends 
+export default class AssignmentScheduleCreateForm extends
     connect<any, {}, AssignmentScheduleCreateFormProps>
     (mapStateToProps)(reduxForm(formConfig)(AssignmentForm)) {
         static SubmitButton = (props: Partial<SubmitButtonProps>) => (

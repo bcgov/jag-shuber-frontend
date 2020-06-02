@@ -43,18 +43,20 @@ export const allAssignments = createSelector(
     courtRoleRequests.courtRoleMapRequest.getData,
     (map = {}, courtRooms = {}, jailRoles = {}, runs = {}, altAssignmentTypes = {}, courtRoles = {}): Assignment[] => {
         return mapToArray(map)
-            .map(a => {
+            .map((a: any) => {
                 if (isCourtAssignment(a)) {
-                    a.title = a.courtroomId
-                        ? (courtRooms[a.courtroomId] ? courtRooms[a.courtroomId].code : 'Courtroom Not Found')
-                        : (a.courtRoleId && courtRoles[a.courtRoleId] ? courtRoles[a.courtRoleId].description : 'Court Role Not Found');
-                } else if (isJailAssignment(a)) {
-                    a.title = jailRoles[a.jailRoleCode] ? jailRoles[a.jailRoleCode].description : 'Jail Role Not Found';
-                } else if (isEscortAssignment(a)) {
+                    if (a.courtroomId) {
+                        a.title = (courtRooms[a.courtroomId] ? courtRooms[a.courtroomId].code : 'Courtroom Not Found');
+                    } else if (a.courtRoleId) {
+                        a.title = (a.courtRoleId && courtRoles[a.courtRoleId] ? courtRoles[a.courtRoleId].description : 'Court Role Not Found');
+                    }
+                } else if (isJailAssignment(a) && a.jailRoleId) {
+                    a.title = jailRoles[a.jailRoleId] ? jailRoles[a.jailRoleId].description : 'Jail Role Not Found';
+                } else if (isEscortAssignment(a) && a.escortRunId) {
                     a.title = runs[a.escortRunId] ? runs[a.escortRunId].title : 'Run Not Found';
-                } else if (isOtherAssignment(a)) {
-                    a.title = altAssignmentTypes[a.otherAssignCode]
-                        ? altAssignmentTypes[a.otherAssignCode].description : 'Other Type Not Found';
+                } else if (isOtherAssignment(a) && a.otherAssignId) {
+                    a.title = altAssignmentTypes[a.otherAssignId]
+                        ? altAssignmentTypes[a.otherAssignId].description : 'Other Type Not Found';
                 }
                 return a;
             })
