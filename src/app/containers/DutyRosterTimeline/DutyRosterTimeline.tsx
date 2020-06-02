@@ -108,8 +108,11 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
         let header = document.getElementsByClassName('rct-header')[0];
         let scroll = document.getElementsByClassName('rct-scroll')[0];
         // resize timeline component with correct width if scrollbar is visible
-        (scroll as HTMLElement).style.width = `${timeline.clientWidth - 200}px`;
-        header.parentElement!.style.width = `${header.parentElement!.parentElement!.clientWidth - 200}px`;
+
+        if (scroll && header) {
+            (scroll as HTMLElement).style.width = `${timeline.clientWidth - 200}px`;
+            header.parentElement!.style.width = `${header.parentElement!.parentElement!.clientWidth - 200}px`;
+        }
     }
 
     componentWillReceiveProps(nextProps: CompositeProps) {
