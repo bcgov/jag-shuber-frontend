@@ -41,7 +41,7 @@ export class OtherFields extends React.PureComponent {
         return (
             <div>
                 <Field
-                    name="otherAssignCode"
+                    name="otherAssignId"
                     label="Assignment"
                     component={
                         (p) => <SelectorField
@@ -75,12 +75,12 @@ export class EscortsFields extends React.PureComponent {
     }
 }
 
-export class JailFeilds extends React.PureComponent {
+export class JailFields extends React.PureComponent {
     render() {
         return (
             <div>
                 <Field
-                    name="jailRoleCode"
+                    name="jailRoleId"
                     component={(p) => <SelectorField
                         {...p}
                         SelectorComponent={
@@ -220,10 +220,12 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
 
     static duplicateCheck(values: any, assignments: Assignment[]) {
         const {
-            jailRoleCode,
+            jailRoleId,
+            // jailRoleCode,
             courtAssignmentId,
             escortRunId,
-            otherAssignCode,
+            // otherAssignCode,
+            otherAssignId,
             workSectionId,
             id
         } = values;
@@ -234,31 +236,31 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
         const courtRoleId = (!isCourtroomAssignment ? courtAssignment : undefined);
 
         let assignment: Assignment | undefined;
-        let workSectionAssignments = assignments!.filter(a => a.workSectionId == workSectionId && a.id !== id);
+        let workSectionAssignments = assignments!.filter(a => a.workSectionId === workSectionId && a.id !== id);
         switch (workSectionId)
         {
             case 'COURTS':
             {
-                assignment = workSectionAssignments.find((a) => (a as CourtAssignment).courtRoleId == courtRoleId && (a as CourtAssignment).courtroomId == courtroomId);
+                assignment = workSectionAssignments.find((a) => (a as CourtAssignment).courtRoleId === courtRoleId && (a as CourtAssignment).courtroomId == courtroomId);
                 assignment = assignment || { courtroomId, courtRoleId, workSectionId: 'COURTS' } as CourtAssignment;
                 break;
             }
             case 'JAIL':
             {
-                assignment = workSectionAssignments.find((a) => (a as JailAssignment).jailRoleCode == jailRoleCode);
-                assignment = assignment || { jailRoleCode, workSectionId: 'JAIL' } as JailAssignment;
+                assignment = workSectionAssignments.find((a) => (a as JailAssignment).jailRoleId === jailRoleId);
+                assignment = assignment || { jailRoleId, workSectionId: 'JAIL' } as JailAssignment;
                 break;
             }
             case 'ESCORTS':
             {
-                assignment = workSectionAssignments.find((a) => (a as EscortAssignment).escortRunId == escortRunId);
+                assignment = workSectionAssignments.find((a) => (a as EscortAssignment).escortRunId === escortRunId);
                 assignment = assignment || { escortRunId, workSectionId: 'ESCORTS' } as EscortAssignment;
                 break;
             }
             default:
             {
-                assignment = workSectionAssignments.find((a) => (a as OtherAssignment).otherAssignCode == otherAssignCode);
-                assignment = assignment || { otherAssignCode, workSectionId: 'OTHER' } as OtherAssignment;
+                assignment = workSectionAssignments.find((a) => (a as OtherAssignment).otherAssignId === otherAssignId);
+                assignment = assignment || { otherAssignId, workSectionId: 'OTHER' } as OtherAssignment;
             }
         }
         return !!assignment.id;
@@ -320,7 +322,7 @@ export default class AssignmentForm extends React.Component<AssignmentFormProps 
                     returnFields = <CourtSecurityFields />;
                     break;
                 case WORK_SECTIONS.JAIL:
-                    returnFields = <JailFeilds />;
+                    returnFields = <JailFields />;
                     break;
                 case WORK_SECTIONS.ESCORTS:
                     returnFields = <EscortsFields />;

@@ -5984,7 +5984,7 @@ istanbul@^0.4.5:
 
 "jag-shuber-api@github:bcgov/jag-shuber-api":
   version "2.0.0"
-  resolved "https://codeload.github.com/bcgov/jag-shuber-api/tar.gz/00be97544ab83dcc075842652c815223a5fa5d19"
+  resolved "https://codeload.github.com/bcgov/jag-shuber-api/tar.gz/8d1563938b3a0c7886e6a27fd15e5050210a7674"
   dependencies:
     jsonwebtoken "^8.3.0"
     jwt-decode "^2.2.0"
@@ -7187,9 +7187,9 @@ moment@2.22.1:
   integrity sha512-shJkRTSebXvsVqk56I+lkb2latjBs8I+pc2TzWc545y2iFnSjm7Wg0QMh+ZWcdSLQyGEau5jI8ocnmkyTgr9YQ==
 
 "moment@>= 2.9.0", moment@^2.24.0:
-  version "2.25.3"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.25.3.tgz#252ff41319cf41e47761a1a88cab30edfe9808c0"
-  integrity sha512-PuYv0PHxZvzc15Sp8ybUCoQ+xpyPWvjOuK72a5ovzp2LI32rJXOiIfyoFoYvG3s6EwwrdkMyWuRiEHSZRLJNdg==
+  version "2.26.0"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.26.0.tgz#5e1f82c6bafca6e83e808b30c8705eed0dcbd39a"
+  integrity sha512-oIixUO+OamkUkwjhAVE18rAMfRJNsNe/Stid/gwHSOfHrOtw9EhAY2AHvdKZ/k/MggcYELFCJz/Sn2pL8b8JMw==
 
 moment@^2.22.2:
   version "2.22.2"
@@ -11205,9 +11205,9 @@ uglify-js@^3.0.13:
     source-map "~0.6.1"
 
 uglify-js@^3.1.4:
-  version "3.9.3"
-  resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.9.3.tgz#4a285d1658b8a2ebaef9e51366b3a0f7acd79ec2"
-  integrity sha512-r5ImcL6QyzQGVimQoov3aL2ZScywrOgBXGndbWrdehKoSvGe/RmiE5Jpw/v+GvxODt6l2tpBXwA7n+qZVlHBMA==
+  version "3.9.4"
+  resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.9.4.tgz#867402377e043c1fc7b102253a22b64e5862401b"
+  integrity sha512-8RZBJq5smLOa7KslsNsVcSH+KOXf1uDU8yqLeNuVKwmT0T3FA0ZoXlinQfRad7SDcbZZRZE4ov+2v71EnxNyCA==
   dependencies:
     commander "~2.20.3"
 
