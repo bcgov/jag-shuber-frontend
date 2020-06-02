@@ -82,10 +82,6 @@ export default class AdminTrainingTypes extends FormContainerBase<AdminTrainingT
         // This is a quick n' dirty way to achieve the same thing
         let dataTableInstance: any;
 
-        // We can't use React hooks yet, and not sure if this project will ever be upgraded to 16.8
-        // This is a quick n' dirty way to achieve the same thing
-        let dataTableInstance: any;
-
         const onFilterSubCode = (event: Event, newValue: any, previousValue: any, name: string) => {
             if (setPluginFilters) {
                 setPluginFilters({
