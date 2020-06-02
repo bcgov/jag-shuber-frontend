@@ -34,19 +34,19 @@ import { EscortRun as EscortType, IdType, JailRoleCode } from '../../api';
 
 import {
     FormContainerBase,
-    FormContainerProps,
+    FormContainerProps, FormValuesDiff,
 } from '../../components/Form/FormContainer';
 
-import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../components/Table/DataTable';
+import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
 import { AdminEscortTypesProps } from './AdminEscortTypes';
 import LocationSelector from '../../containers/LocationSelector';
-import RemoveRow from '../../components/TableColumnActions/RemoveRow';
-import ExpireRow from '../../components/TableColumnActions/ExpireRow';
-import UnexpireRow from '../../components/TableColumnActions/UnexpireRow';
-import DeleteRow from '../../components/TableColumnActions/DeleteRow';
+import RemoveRow from '../../components/Table/TableColumnActions/RemoveRow';
+import ExpireRow from '../../components/Table/TableColumnActions/ExpireRow';
+import UnexpireRow from '../../components/Table/TableColumnActions/UnexpireRow';
+import DeleteRow from '../../components/Table/TableColumnActions/DeleteRow';
 import { setAdminRolesPluginFilters } from '../../modules/roles/actions';
 import CodeScopeSelector from '../../containers/CodeScopeSelector';
-import { ActionProps } from '../../components/TableColumnCell/Actions';
+import { ActionProps } from '../../components/Table/TableColumnCell/Actions';
 import { buildPluginPermissions, userCan } from '../permissionUtils';
 import * as Validators from '../../infrastructure/Validators';
 // import { createOrUpdateEscortTypes } from '../../modules/assignments/actions';
@@ -55,13 +55,10 @@ export interface AdminEscortTypesProps extends FormContainerProps {
     escortTypes?: any[];
 }
 
-export interface AdminEscortTypesDisplayProps extends FormContainerProps {
-
-}
+export interface AdminEscortTypesDisplayProps extends FormContainerProps {}
 
 class AdminEscortTypesDisplay extends React.PureComponent<AdminEscortTypesDisplayProps, any> {
     render() {
-        const { data = [] } = this.props;
         return (
             <div />
         );
@@ -155,7 +152,6 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
 
         const onResetFilters = () => {
             if (setPluginFilters) {
-                // console.log('reset plugin filters');
                 setPluginFilters({
                     escortTypes: {
                         locationId: undefined,
@@ -189,9 +185,9 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
             },
             ({ fields, index, model }) => {
                 return (model && model.id && model.id !== '' && !model.isExpired)
-                    ? (<ExpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance.forceUpdate()} />)
+                    ? (<ExpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance && dataTableInstance.component && dataTableInstance.component.forceUpdate()} />)
                     : (model && model.isExpired)
-                    ? (<UnexpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance.forceUpdate()} />)
+                    ? (<UnexpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance && dataTableInstance.component && dataTableInstance.component.forceUpdate()} />)
                     : null;
             },
             ({ fields, index, model }) => {
@@ -216,7 +212,8 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
                     onToggleExpiredClicked={onToggleExpiredClicked}
                     displayActionsColumn={true}
                     actionsColumn={DataTable.ActionsColumn({
-                        actions: escortTypeActions
+                        actions: escortTypeActions,
+                        trace: `[${this.name}] FormComponent -> DataTable` // Just for debugging
                     })}
                     columns={escortTypeColumns}
                     filterable={true}
@@ -316,67 +313,20 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
         };
     }
 
-    getDataFromFormValues(formValues: {}, initialValues: {}): FormContainerProps {
-        return super.getDataFromFormValues(formValues) || {
-        };
-    }
-
-    mapDeletesFromFormValues(map: any) {
-        const deletedEscortTypeIds: IdType[] = [];
-
-        if (map.escortTypes) {
-            const initialValues = map.escortTypes.initialValues;
-            const existingIds = map.escortTypes.values.map((val: any) => val.id);
-
-            const removeEscortTypeIds = initialValues
-                .filter((val: any) => (existingIds.indexOf(val.id) === -1))
-                .map((val: any) => val.id);
-
-            deletedEscortTypeIds.push(...removeEscortTypeIds);
-        }
-
-        return {
-            escortTypes: deletedEscortTypeIds
-        };
-    }
-
-    mapExpiredFromFormValues(map: any, isExpired?: boolean) {
-        isExpired = isExpired || false;
-        const expiredEscortTypeIds: IdType[] = [];
-
-        if (map.escortTypes) {
-            const values = map.escortTypes.values;
-
-            const escortTypeIds = values
-                .filter((val: any) => val.isExpired === isExpired)
-                .map((val: any) => val.id);
-
-            expiredEscortTypeIds.push(...escortTypeIds);
-        }
-
-        return {
-            escortTypes: expiredEscortTypeIds
-        };
-    }
-
     async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>) {
-        const data: any = this.getDataFromFormValues(formValues, initialValues);
-        const dataToExpire: any = this.getDataToExpireFromFormValues(formValues, initialValues, true) || {};
-        const dataToUnexpire: any = this.getDataToExpireFromFormValues(formValues, initialValues, false) || {};
-        const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
+        const data: FormValuesDiff = this.getDataFromFormValues(formValues, initialValues) as FormValuesDiff;
 
         // Grab the currentLocation off of the formValues.assignments object
         const { currentLocation } = formValues.assignments;
 
-        // Delete records before saving new ones!
-        const deletedEscortTypes: IdType[] = dataToDelete.escortTypes as IdType[];
+        const deletedEscortTypes: IdType[] = data.escortTypes.deletedIds as IdType[];
+        const expiredEscortTypes: IdType[] = data.escortTypes.expiredIds as IdType[];
+        const unexpiredEscortTypes: IdType[] = data.escortTypes.unexpiredIds as IdType[];
 
-        // Expire records before saving new ones!
-        const expiredEscortTypes: IdType[] = dataToExpire.escortTypes as IdType[];
-        const unexpiredEscortTypes: IdType[] = dataToUnexpire.escortTypes as IdType[];
-
-        let escortTypes: Partial<EscortType>[];
-        escortTypes = data.escortTypes.map((c: Partial<EscortType>) => ({
+        let escortTypes: Partial<EscortType>[] = [
+            ...data.escortTypes.added,
+            ...data.escortTypes.updated
+        ].map((c: Partial<EscortType>) => ({
             ...c,
             createdBy: 'DEV - FRONTEND',
             updatedBy: 'DEV - FRONTEND',

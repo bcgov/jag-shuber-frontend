@@ -1,6 +1,9 @@
 import * as ShuberApi from 'jag-shuber-api';
 import * as superAgent from 'superagent';
 import moment from 'moment';
+
+import { TOKEN_COOKIE_NAME } from 'jag-shuber-api';
+
 import {
     API,
     AlternateAssignment,
@@ -42,6 +45,7 @@ import {
     RoleApiScope,
     UserRole
 } from './Api';
+
 import { SubmissionError } from 'redux-form';
 
 export function extractWorksectionCode(workSectionCodePath: string): WorkSectionCode {
@@ -98,12 +102,16 @@ export default class Client implements API {
     constructor(baseUrl: string = '/') {
         this._client = new ShuberApiClient(baseUrl);
         this._client.requestInterceptor = (req: any) => {
-            let authToken = sessionStorage.getItem('app_token');
-            if(authToken) {
-                req.header=  {
+            let authToken = sessionStorage.getItem(TOKEN_COOKIE_NAME);
+            if (authToken) {
+                // console.log(`intercepting request: ${req.method} ${req.url}`);
+                // console.log(`${TOKEN_COOKIE_NAME} found in sessionStorage, applying authorization token`);
+                req.header = {
                     ...req.header,
-                 Authorization: authToken };
+                    Authorization: authToken
+                };
             }
+
             return req;
         };
     }

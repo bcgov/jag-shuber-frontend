@@ -27,17 +27,17 @@ import { LeaveSubCode, IdType } from '../../api';
 
 import {
     FormContainerBase,
-    FormContainerProps,
+    FormContainerProps, FormValuesDiff,
 } from '../../components/Form/FormContainer';
 
-import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../components/Table/DataTable';
+import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
 import { AdminLeaveTypesProps } from './AdminLeaveTypes';
-import DeleteRow from '../../components/TableColumnActions/DeleteRow';
-import ExpireRow from '../../components/TableColumnActions/ExpireRow';
-import RemoveRow from '../../components/TableColumnActions/RemoveRow';
-import UnexpireRow from '../../components/TableColumnActions/UnexpireRow';
+import DeleteRow from '../../components/Table/TableColumnActions/DeleteRow';
+import ExpireRow from '../../components/Table/TableColumnActions/ExpireRow';
+import RemoveRow from '../../components/Table/TableColumnActions/RemoveRow';
+import UnexpireRow from '../../components/Table/TableColumnActions/UnexpireRow';
 
-import { ActionProps } from '../../components/TableColumnCell/Actions';
+import { ActionProps } from '../../components/Table/TableColumnCell/Actions';
 import { buildPluginPermissions, userCan } from '../permissionUtils';
 
 export interface AdminLeaveTypesProps extends FormContainerProps {
@@ -45,13 +45,10 @@ export interface AdminLeaveTypesProps extends FormContainerProps {
     personalLeaveTypes?: any[];
 }
 
-export interface AdminLeaveTypesDisplayProps extends FormContainerProps {
-
-}
+export interface AdminLeaveTypesDisplayProps extends FormContainerProps {}
 
 class AdminLeaveTypesDisplay extends React.PureComponent<AdminLeaveTypesDisplayProps, any> {
     render() {
-        const { data = [] } = this.props;
         return (
             <div />
         );
@@ -159,9 +156,9 @@ export default class AdminLeaveTypes extends FormContainerBase<AdminLeaveTypesPr
             },
             ({ fields, index, model }) => {
                 return (model && model.id && model.id !== '' && !model.isExpired)
-                    ? (<ExpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance.forceUpdate()} />)
+                    ? (<ExpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance && dataTableInstance.component && dataTableInstance.component.forceUpdate()} />)
                     : (model && model.isExpired)
-                    ? (<UnexpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance.forceUpdate()} />)
+                    ? (<UnexpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance && dataTableInstance.component && dataTableInstance.component.forceUpdate()} />)
                     : null;
             },
             ({ fields, index, model }) => {
@@ -185,7 +182,8 @@ export default class AdminLeaveTypes extends FormContainerBase<AdminLeaveTypesPr
                     onToggleExpiredClicked={onToggleExpiredClicked}
                     displayActionsColumn={true}
                     actionsColumn={DataTable.ActionsColumn({
-                        actions: leaveTypeActions
+                        actions: leaveTypeActions,
+                        trace: `[${this.name}] FormComponent -> DataTable` // Just for debugging
                     })}
                     columns={[
                         DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false }),
@@ -232,7 +230,6 @@ export default class AdminLeaveTypes extends FormContainerBase<AdminLeaveTypesPr
     getData(state: RootState, filters: any | undefined) {
         // Get filter data
         const filterData = this.getFilterData(filters);
-        // console.log(filterData);
 
         // Get form data
         const leaveTypes = (filters && filters.personalLeaveTypes !== undefined)
@@ -258,63 +255,17 @@ export default class AdminLeaveTypes extends FormContainerBase<AdminLeaveTypesPr
         };
     }
 
-    getDataFromFormValues(formValues: {}, initialValues: {}): FormContainerProps {
-        return super.getDataFromFormValues(formValues) || {
-        };
-    }
-
-    mapDeletesFromFormValues(map: any) {
-        const deletedLeaveTypeIds: IdType[] = [];
-
-        if (map.personalLeaveTypes) {
-            const initialValues = map.personalLeaveTypes.initialValues;
-            const existingIds = map.personalLeaveTypes.values.map((val: any) => val.id);
-
-            const removeLeaveTypeIds = initialValues
-                .filter((val: any) => (existingIds.indexOf(val.id) === -1))
-                .map((val: any) => val.id);
-
-            deletedLeaveTypeIds.push(...removeLeaveTypeIds);
-        }
-
-        return {
-            personalLeaveTypes: deletedLeaveTypeIds
-        };
-    }
-
-    mapExpiredFromFormValues(map: any, isExpired?: boolean) {
-        isExpired = isExpired || false;
-        const expiredLeaveTypeIds: IdType[] = [];
-
-        if (map.personalLeaveTypes) {
-            const values = map.personalLeaveTypes.values;
-
-            const courtRoleIds = values
-                .filter((val: any) => val.isExpired === isExpired)
-                .map((val: any) => val.id);
-
-            expiredLeaveTypeIds.push(...courtRoleIds);
-        }
-
-        return {
-            personalLeaveTypes: expiredLeaveTypeIds
-        };
-    }
-
     async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>) {
-        const data: any = this.getDataFromFormValues(formValues, initialValues);
-        const dataToExpire: any = this.getDataToExpireFromFormValues(formValues, initialValues, true) || {};
-        const dataToUnexpire: any = this.getDataToExpireFromFormValues(formValues, initialValues, false) || {};
-        const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
+        const data: FormValuesDiff = this.getDataFromFormValues(formValues, initialValues) as FormValuesDiff;
 
-        // Delete records before saving new ones!
-        const deletedLeaveTypes: IdType[] = dataToDelete.personalLeaveTypes as IdType[];
+        const deletedLeaveTypes: IdType[] = data.personalLeaveTypes.deletedIds as IdType[];
+        const expiredLeaveTypes: IdType[] = data.personalLeaveTypes.expiredIds as IdType[];
+        const unexpiredLeaveTypes: IdType[] = data.personalLeaveTypes.unexpiredIds as IdType[];
 
-        // Expire records before saving new ones!
-        const expiredLeaveTypes: IdType[] = dataToExpire.personalLeaveTypes as IdType[];
-        const unexpiredLeaveTypes: IdType[] = dataToUnexpire.personalLeaveTypes as IdType[];
-
-        const leaveTypes: Partial<LeaveSubCode>[] = data.personalLeaveTypes.map((c: LeaveSubCode) => ({
+        const leaveTypes: Partial<LeaveSubCode>[] = [
+            ...data.personalLeaveTypes.added,
+            ...data.personalLeaveTypes.updated
+        ].map((c: LeaveSubCode) => ({
             // ...c, // Don't just spread the operator, we need to replace the id GUID used on client side with a code
             // Just an alias used for updates, save method relies on the existence of an ID to determine whether or not
             // to create or update a particular record...

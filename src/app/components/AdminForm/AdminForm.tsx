@@ -29,7 +29,7 @@ export interface AdminFormProps {
     templateComponent?: any;
 }
 
-export default class AdminForm extends React.PureComponent<InjectedFormProps<any, AdminFormProps> & AdminFormProps> {
+export default class AdminForm extends React.Component<InjectedFormProps<any, AdminFormProps> & AdminFormProps> {
     private handleSelectSection(sectionName: string) {
         const {onSelectSection} = this.props;
         if (onSelectSection) {
@@ -39,15 +39,12 @@ export default class AdminForm extends React.PureComponent<InjectedFormProps<any
 
     shouldComponentUpdate(nextProps: any, nextState: any) {
         const { props } = this;
-        console.log(`should admin form update? ${props.selectedSection} !== ${nextProps.selectedSection}`);
+        // console.log(`should admin form update? ${props.selectedSection} !== ${nextProps.selectedSection}`);
 
         return (
             props.selectedSection !== nextProps.selectedSection ||
             props.displayFilters !== nextProps.displayFilters ||
-            props.currentLocation !== props.currentLocation ||
-            JSON.stringify(props.pluginAuth) !== JSON.stringify(nextProps.pluginAuth) ||
-            JSON.stringify(props.pluginFilters) !== JSON.stringify(nextProps.pluginFilters) ||
-            JSON.stringify(props.initialValues) !== JSON.stringify(nextProps.initialValues)
+            props.currentLocation !== props.currentLocation
         );
     }
 

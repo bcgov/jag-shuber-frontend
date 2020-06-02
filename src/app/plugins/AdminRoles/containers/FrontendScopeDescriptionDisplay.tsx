@@ -49,7 +49,6 @@ const mapStateToProps = (state: RootState) => {
     };
 };
 
-// tslint:disable-next-line:max-line-length
 export default connect<FrontendScopeDescriptionDisplayStateProps, {}, SelectorProps>(
     mapStateToProps
 )(FrontendScopeDescriptionDisplay);

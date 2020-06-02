@@ -30,20 +30,20 @@ import { JailRoleCode, IdType, CourtRoleCode } from '../../api';
 
 import {
     FormContainerBase,
-    FormContainerProps,
+    FormContainerProps, FormValuesDiff,
 } from '../../components/Form/FormContainer';
 
-import DataTable, { DetailComponentProps, EmptyDetailRow } from '../../components/Table/DataTable';
+import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
 import { AdminJailRolesProps } from './AdminJailRoles';
 import LocationSelector from '../../containers/LocationSelector';
-import RemoveRow from '../../components/TableColumnActions/RemoveRow';
-import ExpireRow from '../../components/TableColumnActions/ExpireRow';
-import UnexpireRow from '../../components/TableColumnActions/UnexpireRow';
-import DeleteRow from '../../components/TableColumnActions/DeleteRow';
+import RemoveRow from '../../components/Table/TableColumnActions/RemoveRow';
+import ExpireRow from '../../components/Table/TableColumnActions/ExpireRow';
+import UnexpireRow from '../../components/Table/TableColumnActions/UnexpireRow';
+import DeleteRow from '../../components/Table/TableColumnActions/DeleteRow';
 import { setAdminRolesPluginFilters } from '../../modules/roles/actions';
 import CodeScopeSelector from '../../containers/CodeScopeSelector';
 import { currentLocation as getCurrentLocation } from '../../modules/user/selectors';
-import { ActionProps } from '../../components/TableColumnCell/Actions';
+import { ActionProps } from '../../components/Table/TableColumnCell/Actions';
 
 import { buildPluginPermissions, userCan } from '../permissionUtils';
 
@@ -54,13 +54,10 @@ export interface AdminJailRolesProps extends FormContainerProps {
     jailRoles?: any[];
 }
 
-export interface AdminJailRolesDisplayProps extends FormContainerProps {
-
-}
+export interface AdminJailRolesDisplayProps extends FormContainerProps {}
 
 class AdminJailRolesDisplay extends React.PureComponent<AdminJailRolesDisplayProps, any> {
     render() {
-        const { data = [] } = this.props;
         return (
             <div />
         );
@@ -172,9 +169,9 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
             },
             ({ fields, index, model }) => {
                 return (model && model.id && model.id !== '' && !model.isExpired)
-                    ? (<ExpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance.forceUpdate()} />)
+                    ? (<ExpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance && dataTableInstance.component && dataTableInstance.component.forceUpdate()} />)
                     : (model && model.isExpired)
-                    ? (<UnexpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance.forceUpdate()} />)
+                    ? (<UnexpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance && dataTableInstance.component && dataTableInstance.component.forceUpdate()} />)
                     : null;
             },
             ({ fields, index, model }) => {
@@ -199,7 +196,8 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
                     onToggleExpiredClicked={onToggleExpiredClicked}
                     displayActionsColumn={true}
                     actionsColumn={DataTable.ActionsColumn({
-                        actions: jailRoleActions
+                        actions: jailRoleActions,
+                        trace: `[${this.name}] FormComponent -> DataTable` // Just for debugging
                     })}
                     columns={[
                         DataTable.SortOrderColumn('Sort Order', { fieldName: 'sortOrder', colStyle: { width: '100px' }, displayInfo: false, filterable: false }),
@@ -309,67 +307,20 @@ export default class AdminJailRoles extends FormContainerBase<AdminJailRolesProp
         };
     }
 
-    getDataFromFormValues(formValues: {}, initialValues: {}): FormContainerProps {
-        return super.getDataFromFormValues(formValues) || {
-        };
-    }
-
-    mapDeletesFromFormValues(map: any) {
-        const deletedJailRoleIds: IdType[] = [];
-
-        if (map.jailRoles) {
-            const initialValues = map.jailRoles.initialValues;
-            const existingIds = map.jailRoles.values.map((val: any) => val.id);
-
-            const removeJailRoleIds = initialValues
-                .filter((val: any) => (existingIds.indexOf(val.id) === -1))
-                .map((val: any) => val.id);
-
-            deletedJailRoleIds.push(...removeJailRoleIds);
-        }
-
-        return {
-            jailRoles: deletedJailRoleIds
-        };
-    }
-
-    mapExpiredFromFormValues(map: any, isExpired?: boolean) {
-        isExpired = isExpired || false;
-        const expiredJailRoleIds: IdType[] = [];
-
-        if (map.jailRoles) {
-            const values = map.jailRoles.values;
-
-            const jailRoleIds = values
-                .filter((val: any) => val.isExpired === isExpired)
-                .map((val: any) => val.id);
-
-            expiredJailRoleIds.push(...jailRoleIds);
-        }
-
-        return {
-            jailRoles: expiredJailRoleIds
-        };
-    }
-
     async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>) {
-        const data: any = this.getDataFromFormValues(formValues, initialValues);
-        const dataToExpire: any = this.getDataToExpireFromFormValues(formValues, initialValues, true) || {};
-        const dataToUnexpire: any = this.getDataToExpireFromFormValues(formValues, initialValues, false) || {};
-        const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
+        const data: FormValuesDiff = this.getDataFromFormValues(formValues, initialValues) as FormValuesDiff;
 
         // Grab the currentLocation off of the formValues.assignments object
         const { currentLocation } = formValues.assignments;
 
-        // Delete records before saving new ones!
-        const deletedJailRoles: IdType[] = dataToDelete.jailRoles as IdType[];
+        const deletedJailRoles: IdType[] = data.jailRoles.deletedIds as IdType[];
+        const expiredJailRoles: IdType[] = data.jailRoles.expiredIds as IdType[];
+        const unexpiredJailRoles: IdType[] = data.jailRoles.unexpiredIds as IdType[];
 
-        // Expire records before saving new ones!
-        const expiredJailRoles: IdType[] = dataToExpire.jailRoles as IdType[];
-        const unexpiredJailRoles: IdType[] = dataToUnexpire.jailRoles as IdType[];
-
-        let jailRoles: Partial<JailRoleCode>[];
-        jailRoles = data.jailRoles.map((c: Partial<JailRoleCode>) => ({
+        let jailRoles: Partial<JailRoleCode>[] = [
+            ...data.jailRoles.added,
+            ...data.jailRoles.updated
+        ].map((c: Partial<JailRoleCode>) => ({
             ...c,
             createdBy: 'DEV - FRONTEND',
             updatedBy: 'DEV - FRONTEND',

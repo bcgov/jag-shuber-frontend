@@ -33,16 +33,16 @@ import { Courtroom, IdType, JailRoleCode } from '../../api';
 
 import {
     FormContainerBase,
-    FormContainerProps,
+    FormContainerProps, FormValuesDiff,
 } from '../../components/Form/FormContainer';
 
 import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
 import LocationSelector from '../../containers/LocationSelector';
-import RemoveRow from '../../components/TableColumnActions/RemoveRow';
-import ExpireRow from '../../components/TableColumnActions/ExpireRow';
-import UnexpireRow from '../../components/TableColumnActions/UnexpireRow';
-import DeleteRow from '../../components/TableColumnActions/DeleteRow';
-import { ActionProps } from '../../components/TableColumnCell/Actions';
+import RemoveRow from '../../components/Table/TableColumnActions/RemoveRow';
+import ExpireRow from '../../components/Table/TableColumnActions/ExpireRow';
+import UnexpireRow from '../../components/Table/TableColumnActions/UnexpireRow';
+import DeleteRow from '../../components/Table/TableColumnActions/DeleteRow';
+import { ActionProps } from '../../components/Table/TableColumnCell/Actions';
 import { buildPluginPermissions, userCan } from '../permissionUtils';
 
 import * as Validators from '../../infrastructure/Validators';
@@ -51,13 +51,10 @@ export interface AdminCourtroomsProps extends FormContainerProps {
     courtrooms?: any[];
 }
 
-export interface AdminCourtroomsDisplayProps extends FormContainerProps {
-
-}
+export interface AdminCourtroomsDisplayProps extends FormContainerProps {}
 
 class AdminCourtroomsDisplay extends React.PureComponent<AdminCourtroomsDisplayProps, any> {
     render() {
-        const { data = [] } = this.props;
         return (
             <div />
         );
@@ -80,7 +77,6 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
     showExpired = false;
 
     FormComponent = (props: FormContainerProps<AdminCourtroomsProps>) => {
-        console.log('Re-render AdminCourtrooms');
         const { getPluginPermissions, setPluginFilters } = props;
         const { grantAll, permissions = [] } = buildPluginPermissions(getPluginPermissions);
 
@@ -172,9 +168,9 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
             },
             ({ fields, index, model }) => {
                 return (model && model.id && model.id !== '' && !model.isExpired)
-                    ? (<ExpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance.forceUpdate()} />)
+                    ? (<ExpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance && dataTableInstance.component && dataTableInstance.component.forceUpdate()} />)
                     : (model && model.isExpired)
-                    ? (<UnexpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance.forceUpdate()} />)
+                    ? (<UnexpireRow fields={fields} index={index} model={model} showComponent={(grantAll || canManage)} onClick={() => dataTableInstance && dataTableInstance.component && dataTableInstance.component.forceUpdate()} />)
                     : null;
             },
             ({ fields, index, model }) => {
@@ -199,7 +195,8 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
                     onToggleExpiredClicked={onToggleExpiredClicked}
                     displayActionsColumn={true}
                     actionsColumn={DataTable.ActionsColumn({
-                        actions: courtroomActions
+                        actions: courtroomActions,
+                        trace: `[${this.name}] FormComponent -> DataTable` // Just for debugging
                     })}
                     columns={courtroomColumns}
                     filterable={true}
@@ -269,67 +266,20 @@ export default class AdminCourtrooms extends FormContainerBase<AdminCourtroomsPr
         };
     }
 
-    getDataFromFormValues(formValues: {}, initialValues: {}): FormContainerProps {
-        return super.getDataFromFormValues(formValues) || {
-        };
-    }
-
-    mapDeletesFromFormValues(map: any) {
-        const deletedCourtroomIds: IdType[] = [];
-
-        if (map.courtrooms) {
-            const initialValues = map.courtrooms.initialValues;
-            const existingIds = map.courtrooms.values.map((val: any) => val.id);
-
-            const removeCourtroomIds = initialValues
-                .filter((val: any) => (existingIds.indexOf(val.id) === -1))
-                .map((val: any) => val.id);
-
-            deletedCourtroomIds.push(...removeCourtroomIds);
-        }
-
-        return {
-            courtrooms: deletedCourtroomIds
-        };
-    }
-
-    mapExpiredFromFormValues(map: any, isExpired?: boolean) {
-        isExpired = isExpired || false;
-        const expiredCourtroomIds: IdType[] = [];
-
-        if (map.courtrooms) {
-            const values = map.courtrooms.values;
-
-            const courtroomIds = values
-                .filter((val: any) => val.isExpired === isExpired)
-                .map((val: any) => val.id);
-
-            expiredCourtroomIds.push(...courtroomIds);
-        }
-
-        return {
-            courtrooms: expiredCourtroomIds
-        };
-    }
-
     async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>) {
-        const data: any = this.getDataFromFormValues(formValues, initialValues);
-        const dataToExpire: any = this.getDataToExpireFromFormValues(formValues, initialValues, true) || {};
-        const dataToUnexpire: any = this.getDataToExpireFromFormValues(formValues, initialValues, false) || {};
-        const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
+        const data: FormValuesDiff = this.getDataFromFormValues(formValues, initialValues) as FormValuesDiff;
 
-        // Delete records before saving new ones!
-        const deletedCourtrooms: IdType[] = dataToDelete.courtrooms as IdType[];
-
-        // Expire records before saving new ones!
-        const expiredCourtrooms: IdType[] = dataToExpire.courtrooms as IdType[];
-        const unexpiredCourtrooms: IdType[] = dataToUnexpire.courtrooms as IdType[];
+        const deletedCourtrooms: IdType[] = data.courtrooms.deletedIds as IdType[];
+        const expiredCourtrooms: IdType[] = data.courtrooms.expiredIds as IdType[];
+        const unexpiredCourtrooms: IdType[] = data.courtrooms.unexpiredIds as IdType[];
 
         // Grab the currentLocation off of the formValues.assignments object
         const { currentLocation } = formValues.assignments;
 
-        let courtrooms: Partial<Courtroom>[];
-        courtrooms = data.courtrooms.map((c: Partial<Courtroom>) => ({
+        let courtrooms: Partial<Courtroom>[] = [
+            ...data.courtrooms.added,
+            ...data.courtrooms.updated
+        ].map((c: Partial<Courtroom>) => ({
             ...c,
             createdBy: 'DEV - FRONTEND',
             updatedBy: 'DEV - FRONTEND',

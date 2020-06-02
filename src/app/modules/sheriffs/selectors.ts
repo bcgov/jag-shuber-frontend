@@ -1,14 +1,20 @@
+import moment from 'moment';
 import { createSelector } from 'reselect';
 import * as requests from './requests';
 import { RootState } from '../../store';
+
 import {
-    IdType, Sheriff
-} from '../../api/Api';
-import mapToArray from '../../infrastructure/mapToArray';
-import { currentLocation as currentLocationSelector } from '../user/selectors';
-import arrayToMap from '../../infrastructure/arrayToMap';
+    IdType, DateType, Sheriff, SheriffLocation
+} from '../../api';
+
 import { ErrorMap } from './common';
+
+import mapToArray from '../../infrastructure/mapToArray';
+import arrayToMap from '../../infrastructure/arrayToMap';
 import { CodeSelector } from '../../infrastructure/CodeSelector';
+
+import { allLocations as allSheriffLocationsSelector } from '../sheriffLocations/selectors';
+import { currentLocation as currentLocationSelector } from '../user/selectors';
 import { getLocationById } from '../system/selectors';
 
 export const DEFAULT_SHERIFF_SORTER = createSelector(
@@ -55,14 +61,27 @@ export const getSheriff = (id?: IdType) => (state: RootState) => {
 export function getSheriffHomeLocation(sheriffId: IdType) {
     return (state: RootState) => {
         const { homeLocationId } = getSheriff(sheriffId)(state) as Sheriff;
-        return homeLocationId == undefined ? undefined : getLocationById(homeLocationId)(state);
+        return homeLocationId === undefined ? undefined : getLocationById(homeLocationId)(state);
     };
 }
 
 export function getSheriffCurrentLocation(sheriffId: IdType) {
     return (state: RootState) => {
+        const sheriff = getSheriff(sheriffId)(state) as Sheriff;
+        /* if (sheriff.id === '') {
+            console.log('getSheriffCurrentLocation')
+        } */
+        const { currentLocationId, homeLocationId } = sheriff;
+        return currentLocationId === undefined ?
+            getLocationById(homeLocationId)(state) :
+            getLocationById(currentLocationId)(state);
+    };
+}
+
+export function getSheriffCurrentLocationDuration(sheriffId: IdType) {
+    return (state: RootState) => {
         const { currentLocationId, homeLocationId } = getSheriff(sheriffId)(state) as Sheriff;
-        return currentLocationId == undefined ?
+        return currentLocationId === undefined ?
             getLocationById(homeLocationId)(state) :
             getLocationById(currentLocationId)(state);
     };
@@ -75,17 +94,25 @@ export interface SheriffLoanStatus {
     isLoanedOut: boolean;
     isLoanedIn: boolean;
     sheriffId: string;
+    startDate?: string;
+    endDate?: string;
+    startTime?: string;
+    endTime?: string;
 }
 
 export const sheriffLoanMap = createSelector(
     requests.sheriffMapRequest.getData,
     currentLocationSelector,
-    (map = {}, currentSystemLocation) => {
+    allSheriffLocationsSelector,
+    (map = {}, currentSystemLocation, sheriffLocations) => {
         const loanInOutArray = Object.keys(map).map(id => {
             const {
                 homeLocationId: homeLocation,
                 currentLocationId: currentSheriffLocation
             } = map[id];
+
+            let sheriffLocation: SheriffLocation | undefined = undefined;
+            let matchingLocations: SheriffLocation[] = [];
             let isLoanedIn = false;
             let isLoanedOut = false;
 
@@ -101,10 +128,50 @@ export const sheriffLoanMap = createSelector(
                 }
             }
 
+            if (isLoanedIn || isLoanedOut) {
+                // Load up the start and end dates from the sheriffLocations module
+                matchingLocations = sheriffLocations
+                    .filter((location) => location.sheriffId === id)
+                    .filter((location) => {
+                        const { startDate, endDate, startTime, endTime } = location as SheriffLocation;
+                        const currentMoment = moment().startOf('day');
+                        const startMoment = moment(startDate).startOf('day');
+                        const endMoment = moment(endDate).startOf('day');
+                        const startTimeMoment = moment(startTime, 'hh:mm:ss');
+                        const endTimeMoment = moment(endTime, 'hh:mm:ss');
+
+                        if (startTime) {
+                            // console.log(`Time Range: [${startMoment.format('YYYY-MM-DD')}] ${startTimeMoment.format('hh:mm')} -> ${endTimeMoment.format('hh:mm')}`);
+                        } else {
+                            // console.log(`Date Range: [${startMoment.format('YYYY-MM-DD')} - ${endMoment.format('YYYY-MM-DD')}]`);
+                        }
+
+                        const startDateIsSameOrBeforeNow = startMoment.isSameOrBefore(currentMoment);
+                        const endDateIsSameOrAfterNow = endMoment.isSameOrAfter(currentMoment);
+
+                        return (startDateIsSameOrBeforeNow && endDateIsSameOrAfterNow);
+                    });
+            }
+
+            if (matchingLocations && matchingLocations[0]) {
+                matchingLocations.sort((a: any, b: any) => b.isPartial - a.isPartial); // Prioritize partial days
+                sheriffLocation = matchingLocations[0];
+                /* if (id === '') {
+                    console.log(`${matchingLocations.length} matching locations:`);
+                    console.log(matchingLocations);
+                    console.log('sheriff is on loan:');
+                    console.log(sheriffLocation);
+                } */
+            }
+
             return {
                 sheriffId: id,
                 isLoanedIn: isLoanedIn,
-                isLoanedOut: isLoanedOut
+                isLoanedOut: isLoanedOut,
+                startDate: (sheriffLocation) ? moment(sheriffLocation.startDate).format('YYYY-MM-DD') : undefined,
+                endDate: (sheriffLocation) ? moment(sheriffLocation.endDate).format('YYYY-MM-DD') : undefined,
+                startTime: (sheriffLocation && sheriffLocation.startTime) ? moment(sheriffLocation.startTime, 'hh:mm:ss').format('hh:mm') : undefined,
+                endTime: (sheriffLocation && sheriffLocation.endTime) ? moment(sheriffLocation.endTime, 'hh:mm:ss').format('hh:mm') : undefined
             } as SheriffLoanStatus;
         });
         return arrayToMap(loanInOutArray, (lio) => lio.sheriffId) as { [sheriffId: string]: SheriffLoanStatus };

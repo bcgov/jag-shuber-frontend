@@ -13,16 +13,24 @@ import {
     FormErrors
 } from 'redux-form';
 import { Dispatch } from 'redux';
+
+import { RootState } from '../../store';
+
 import {
     getSheriffLocations,
     createOrUpdateSheriffLocations,
     deleteSheriffLocations
 } from '../../modules/sheriffLocations/actions';
 
-import { RootState } from '../../store';
+import {
+    getSheriffList as getSheriffs
+} from '../../modules/sheriffs/actions';
+
 import { getSheriffFullDayLocations, getSheriffPartialDayLocations } from '../../modules/sheriffLocations/selectors';
-import LocationsDisplay from '../../components/SheriffLocationsDisplay';
+
 import * as Validators from '../../infrastructure/Validators';
+
+import LocationsDisplay from '../../components/SheriffLocationsDisplay';
 import LocationFieldTable from './LocationFieldTable';
 import LocationDisplay from '../LocationDisplay';
 import SheriffDisplay from '../SheriffDisplay';
@@ -275,7 +283,6 @@ export default class SheriffProfilePluginLocation
         const data = this.getDataFromFormValues(formValues);
         const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
 
-        // Delete records before saving new ones!
         const deletedFullDaySheriffLocations: IdType[] = dataToDelete.fullDayLocations as IdType[];
         const deletedPartialDaySheriffLocations: IdType[] = dataToDelete.partialDayLocations as IdType[];
         const deletedSheriffLocations: IdType[] = [
@@ -308,12 +315,20 @@ export default class SheriffProfilePluginLocation
             ...l as SheriffLocation
         }));
 
+        let reloadSheriffs = false;
         if (deletedSheriffLocations.length > 0) {
             await dispatch(deleteSheriffLocations(deletedSheriffLocations));
+            reloadSheriffs = true;
         }
 
         if (allLocations.length > 0) {
             await dispatch(createOrUpdateSheriffLocations(allLocations, { toasts: {} }));
+            reloadSheriffs = true;
+        }
+
+        if (reloadSheriffs) {
+            // We need to refresh the sheriffs, after updating sheriff locations, so current_location_id is updated
+            await dispatch(getSheriffs());
         }
     }
 }

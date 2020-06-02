@@ -47,7 +47,7 @@ import ManageAssignmentTypesPage from './pages/ManageAssignmentTypes';
 import ManageComponentsPage from './pages/ManageComponents';
 import ManageApisPage from './pages/ManageApis';
 import ManageRolesPage from './pages/ManageRoles';
-import ManageUserRolesPage from './pages/ManageUserRoles';
+import ManageUserRolesPage from './pages/ManageUsers';
 import ManageSheriffsPage from './pages/ManageSheriffs';
 import ManageTeamPage from './pages/ManageTeam';
 import ManageUsersPage from './pages/ManageUsers';
@@ -74,7 +74,7 @@ import SheriffProfileCreateModal from './containers/SheriffProfileCreateModal';
 import ManageWorkSectionRoles from './pages/ManageWorkSectionRoles';
 import { IdType, User } from './api';
 import { getUserByAuthId } from './modules/users/selectors';
-import { TokenPayload } from 'jag-shuber-api';
+import { TOKEN_COOKIE_NAME, TokenPayload } from 'jag-shuber-api';
 
 export interface LayoutStateProps {
     isLocationSet?: boolean;
@@ -221,7 +221,6 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
                             <Route path={NavigationComponent.Routes.team.children.roles.path} component={ManageRolesPage} />
                             <Route path={NavigationComponent.Routes.team.children.team.path} component={ManageTeamPage} />
                             <Route path={NavigationComponent.Routes.team.children.users.path} component={ManageUsersPage} />
-                            <Route path={NavigationComponent.Routes.team.children.userRoles.path} component={ManageUserRolesPage} />
                             <Route path={NavigationComponent.Routes.types.children.leaveTypes.path} component={ManageLeaveTypesPage} />
                             <Route path={NavigationComponent.Routes.types.children.assignmentTypes.path} component={ManageAssignmentTypesPage} />
                             <Route path={NavigationComponent.Routes.system.children.components.path} component={ManageComponentsPage} />
@@ -250,16 +249,27 @@ class Layout extends React.Component<LayoutStateProps & LayoutDispatchProps> {
 }
 
 const mapStateToProps = (state: RootState) => {
-    return {
-        isLocationSet: isCurrentLocationSet(state),
-        isLoggedIn: isUserLoggedIn(state),
-        isLoadingToken: isLoadingUserToken(state),
-        tokenLoadingError: loadingTokenError(state),
-        currentUserRoleScopes: currentUserRoleScopes(state),
-        currentUserToken: getCurrentUserToken(state),
-        currentUser: getCurrentUser(state),
-        // getUserByAuthId: (userAuthId: IdType) => getUserByAuthId(userAuthId)(state)
-    };
+    return (!sessionStorage.getItem(TOKEN_COOKIE_NAME))
+        ? {
+            isLocationSet: isCurrentLocationSet(state),
+            isLoggedIn: isUserLoggedIn(state),
+            isLoadingToken: isLoadingUserToken(state),
+            tokenLoadingError: loadingTokenError(state),
+            currentUserRoleScopes: currentUserRoleScopes(state),
+            currentUserToken: getCurrentUserToken(state),
+            // tslint:disable-next-line:no-shadowed-variable
+            currentUser: {} as User
+        }
+        : {
+            isLocationSet: isCurrentLocationSet(state),
+            isLoggedIn: isUserLoggedIn(state),
+            isLoadingToken: isLoadingUserToken(state),
+            tokenLoadingError: loadingTokenError(state),
+            currentUserRoleScopes: currentUserRoleScopes(state),
+            currentUserToken: getCurrentUserToken(state),
+            // Don't get the current user unless there's a token!
+            currentUser: getCurrentUser(state),
+        };
 };
 
 const mapDispatchToProps = {

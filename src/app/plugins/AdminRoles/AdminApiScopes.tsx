@@ -25,14 +25,14 @@ import { ApiScope, IdType } from '../../api';
 
 import {
     FormContainerBase,
-    FormContainerProps,
+    FormContainerProps, FormValuesDiff,
 } from '../../components/Form/FormContainer';
 
 import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
-import DeleteRow from '../../components/TableColumnActions/DeleteRow';
-import ExpireRow from '../../components/TableColumnActions/ExpireRow';
+import DeleteRow from '../../components/Table/TableColumnActions/DeleteRow';
+import ExpireRow from '../../components/Table/TableColumnActions/ExpireRow';
 import { buildPluginPermissions, userCan } from '../permissionUtils';
-import { ActionProps } from '../../components/TableColumnCell/Actions';
+import { ActionProps } from '../../components/Table/TableColumnCell/Actions';
 
 // import ApiScopeSelector from './ApiScopeSelector';
 // import AdminScopePermissionsModal from './AdminScopePermissionsModal';
@@ -45,41 +45,8 @@ export interface AdminApiScopesDisplayProps extends FormContainerProps {}
 
 class AdminApiScopesDisplay extends React.PureComponent<AdminApiScopesDisplayProps, any> {
     render() {
-        const { data = [] } = this.props;
-
-        // TODO: Rip out dummy data
-        const testData = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }];
         return (
-            <div>
-                <Table responsive={true} striped={true} >
-                    <thead>
-                        <tr>
-                            <th className="text-left">Role Name</th>
-                            <th className="text-left">Role Code</th>
-                            <th className="text-left">Description</th>
-                            <th className="text-left">Last Modified</th>
-                            <th className="text-left">Status</th>
-                            <th />
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {testData.map(r => {
-                            return (
-                                <tr key={r.id}>
-                                    <td>Test Role</td>
-                                    <td>TEST_ROLE</td>
-                                    <td>Ipsum Lorem Dolor</td>
-                                    <td>{new Date().toLocaleDateString()}</td>
-                                    <td>
-                                        Active
-                                    </td>
-                                </tr>
-                            );
-                        })}
-
-                    </tbody>
-                </Table>
-            </div>
+            <div />
         );
     }
 }
@@ -126,7 +93,6 @@ export default class AdminApiScopes extends FormContainerBase<AdminApiScopesProp
         const onResetFilters = () => {
             const { setPluginFilters } = props;
             if (setPluginFilters) {
-                // console.log('reset plugin filters');
                 setPluginFilters({
                     apiScopes: {}
                 }, setAdminRolesPluginFilters);
@@ -149,7 +115,8 @@ export default class AdminApiScopes extends FormContainerBase<AdminApiScopesProp
                     displayHeaderActions={true}
                     onResetClicked={onResetFilters}
                     actionsColumn={DataTable.ActionsColumn({
-                        actions: apiScopeActions
+                        actions: apiScopeActions,
+                        trace: `[${this.name}] FormComponent -> DataTable` // Just for debugging
                     })}
                     columns={[
                         DataTable.TextFieldColumn('Scope Name', { fieldName: 'scopeName', displayInfo: true, filterable: true, filterColumn: onFilterName }),
@@ -184,7 +151,6 @@ export default class AdminApiScopes extends FormContainerBase<AdminApiScopesProp
     getData(state: RootState, filters: any | undefined) {
         // Get filter data
         const filterData = this.getFilterData(filters);
-        // console.log(filterData);
 
         // Get form data
         const apiScopes = (filters && filters.apiScopes)
@@ -197,39 +163,17 @@ export default class AdminApiScopes extends FormContainerBase<AdminApiScopesProp
         };
     }
 
-    getDataFromFormValues(formValues: {}, initialValues: {}): FormContainerProps {
-        return super.getDataFromFormValues(formValues) || {
-        };
-    }
-
-    mapDeletesFromFormValues(map: any) {
-        const deletedApiScopeIds: IdType[] = [];
-
-        // TODO: This isn't going to work...
-        if (map.apiScopes) {
-            const initialValues = map.apiScopes.initialValues;
-            const existingIds = map.apiScopes.values.map((val: any) => val.id);
-
-            const removeApiScopeIds = initialValues
-                .filter((val: any) => (existingIds.indexOf(val.id) === -1))
-                .map((val: any) => val.id);
-
-            deletedApiScopeIds.push(...removeApiScopeIds);
-        }
-
-        return {
-            apiScopes: deletedApiScopeIds
-        };
-    }
-
     async onSubmit(formValues: any, initialValues: any, dispatch: Dispatch<any>) {
-        const data: any = this.getDataFromFormValues(formValues, initialValues);
-        const dataToDelete: any = this.getDataToDeleteFromFormValues(formValues, initialValues) || {};
+        const data: FormValuesDiff = this.getDataFromFormValues(formValues, initialValues) as FormValuesDiff;
 
-        // Delete records before saving new ones!
-        const deletedScopes: IdType[] = dataToDelete.apiScopes as IdType[];
+        const deletedScopes: IdType[] = data.apiScopes.deletedIds as IdType[];
 
-        const scopes: Partial<ApiScope>[] = data.apiScopes.map((s: ApiScope) => ({
+        const scopesData = [
+            ...data.apiScopes.added,
+            ...data.apiScopes.updated
+        ];
+
+        const scopes: Partial<ApiScope>[] = scopesData.map((s: ApiScope) => ({
             ...s,
             // TODO: In some places there's a systemCodeInd which is a number... maybe a good idea to use the same type?
             systemScopeInd: false, // TODO: Ability to set this - we haven't implemented system codes yet but it will be needed

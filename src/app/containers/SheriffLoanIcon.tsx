@@ -1,16 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { RootState } from '../store';
+
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+
 import {
     IdType,
     Location
-} from '../api/Api';
+} from '../api';
+
 import {
     getSheriffLoanStatus,
     SheriffLoanStatus,
     getSheriffCurrentLocation,
     getSheriffHomeLocation
 } from '../modules/sheriffs/selectors';
+
 import SheriffLoanInIcon from '../components/Icons/SheriffLoanInIcon';
 import SheriffLoanOutIcon from '../components/Icons/SheriffLoanOutIcon';
 
@@ -31,19 +36,53 @@ class SheriffLoanIcon extends React.PureComponent<
 
     render() {
         const {
-            status: { isLoanedIn, isLoanedOut },
+            sheriffId,
+            status: { isLoanedIn, isLoanedOut, startDate, endDate, startTime, endTime },
             homeLocation = { name: '' },
             currentLocation = { name: '' },
-            style={}
+            style = {}
         } = this.props;
 
-        let icon = isLoanedIn ? <SheriffLoanInIcon /> : isLoanedOut ? <SheriffLoanOutIcon /> : null;
-        const title = isLoanedIn ? `loaned from ${homeLocation.name}` :
-            isLoanedOut ? `loaned to ${currentLocation.name}` : undefined;
+        /* if (sheriffId === '') {
+            console.log('re-rendering sheriffloanicon');
+            console.log(homeLocation);
+            console.log(currentLocation);
+        } */
 
+        let icon = isLoanedIn ? <SheriffLoanInIcon /> : isLoanedOut ? <SheriffLoanOutIcon /> : null;
+
+        const locationName = isLoanedIn ? `${homeLocation.name}` :
+            isLoanedOut ? `${currentLocation.name}` : undefined;
 
         return (
-            <span title={title} style={style} >{icon}</span>
+            <OverlayTrigger
+                overlay={(
+                    <Tooltip>
+                        <p>
+                            {isLoanedIn || isLoanedOut && (
+                            <>On loan {isLoanedIn ? 'from' : isLoanedOut ? 'to' : ''} <b>{locationName}</b></>
+                            )}
+
+                            <br/>
+
+                            {startDate === endDate && (
+                            <>
+                                <b>Date: {`${startDate}`}</b>
+                                <br/>
+                                <b>Time: {`${startTime}`}</b> to <b>{`${endTime}`}</b>
+                            </>
+                            )}
+                            {startDate !== endDate && (
+                                <>
+                                    <b>Date: {`${startDate}`}</b> to <b>{`${endDate}`}</b>
+                                </>
+                            )}
+                        </p>
+                    </Tooltip>
+                )}
+                placement={'right'}>
+                <span style={style} >{icon}</span>
+            </OverlayTrigger>
         );
     }
 }

@@ -3,12 +3,13 @@ import { Fields, FieldArray, FieldsProps } from 'redux-form';
 
 import { Button, FormGroup, Glyphicon } from 'react-bootstrap';
 
-import * as CellTypes from '../../components/TableColumnCell';
+import * as CellTypes from './TableColumnCell';
 import ToggleField from '../FormElements/ToggleField';
 import Toggle from '../Toggle/Toggle';
 
 export interface DataTableFilterRowProps {
-    fieldName: string;
+    dataTableInstance?: any;
+    fieldName?: string;
     columns: CellTypes.Types.TableColumnCell[];
     actionsColumn?: CellTypes.Types.TableColumnCell;
     displayHeaderActions?: boolean;
@@ -47,9 +48,8 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
 
     // @ts-ignore
     render() {
-        const componentInstance = this;
-
         const {
+            dataTableInstance,
             fieldName,
             columns = [],
             displayActionsColumn = true,
@@ -92,7 +92,7 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
                                     key={col.fieldName}
                                     style={col.colStyle}
                                 >
-                                    {col.filterable && (
+                                    {col.filterable && fieldName && (
                                         <div
                                             style={{display: 'flex', alignItems: 'center'}}>
                                             <Column
@@ -100,7 +100,7 @@ export default class DataTableFilterRow<T> extends React.Component<DataTableFilt
                                                 fieldInstanceName={fieldName}
                                                 fields={fields}
                                                 index={colIndex}
-                                                callbackContext={componentInstance}
+                                                callbackContext={dataTableInstance}
                                             />
                                             {/*
                                             <div className="form-group"

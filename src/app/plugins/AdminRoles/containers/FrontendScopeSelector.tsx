@@ -20,11 +20,12 @@ class FrontendScopeSelector extends React.PureComponent<
             frontendScopes = [],
             ...restProps
         } = this.props;
-        // console.log('frontend scopes');
-        // console.log(frontendScopes);
-        const selectorValues = frontendScopes.map(frontendScope => ({ key: frontendScope.id as string, value: frontendScope.scopeName as string }));
-        // console.log('selector values');
-        // console.log(selectorValues);
+
+        const selectorValues = frontendScopes.map(frontendScope => ({
+            key: frontendScope.id as string,
+            value: frontendScope.scopeName as string
+        }));
+        
         return (
             <Selector {...restProps} data={selectorValues} />
         );

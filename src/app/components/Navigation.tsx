@@ -145,13 +145,6 @@ export default class Navigation extends React.Component<NavigationProps & Naviga
         this.toggleMenu.bind(this);
     }
 
-    componentDidMount(): void {
-        const { dispatch } = this.props;
-        if (dispatch) {
-            Promise.resolve(dispatch(getCurrentUser()));
-        }
-    }
-
     toggleMenu = (e: any) => {
         const { menuIsActive } = this.state;
         this.setState({ menuIsActive: !menuIsActive });
@@ -194,26 +187,25 @@ export default class Navigation extends React.Component<NavigationProps & Naviga
                         {userHasBasicAuthorization && (
                         <>
                             <NavigationDropDown title="Duty Roster" id="duty_roster_dropdown">
-                                <NavigationLink exactMatch={true} {...Navigation.Routes.dutyRoster.timeline} />
-                                <NavigationLink {...Navigation.Routes.dutyRoster.setup} />
+                                <NavigationLink exactMatch={true} {...Navigation.Routes.dutyRoster.timeline} onSelect={this.toggleMenu} />
+                                <NavigationLink {...Navigation.Routes.dutyRoster.setup} onSelect={this.toggleMenu} />
                             </NavigationDropDown>
                             <NavigationLink {...Navigation.Routes.assignment} />
                             <NavigationDropDown title="Shift Schedule" id="schedule_dropdown">
-                                <NavigationLink {...Navigation.Routes.schedule.manage} />
-                                <NavigationLink {...Navigation.Routes.schedule.distribute} />
+                                <NavigationLink {...Navigation.Routes.schedule.manage} onSelect={this.toggleMenu} />
+                                <NavigationLink {...Navigation.Routes.schedule.distribute} onSelect={this.toggleMenu} />
                             </NavigationDropDown>
 
                             <NavigationDropDown title={Navigation.Routes.team.label} id="admin_dropdown">
-                                <NavigationLink {...Navigation.Routes.team.children.team} />
+                                <NavigationLink {...Navigation.Routes.team.children.team} onSelect={this.toggleMenu} />
                                 {currentUserRoleScopes.authScopes
                                 && currentUserRoleScopes.authScopes.indexOf('users:manage') > -1 && (
-                                    <NavigationLink {...Navigation.Routes.team.children.users} />
+                                    <NavigationLink {...Navigation.Routes.team.children.users} onSelect={this.toggleMenu} />
                                 )}
                                 {currentUserRoleScopes.authScopes
                                 && currentUserRoleScopes.authScopes.indexOf('roles:manage') > -1 && (
                                     <>
-                                        <NavigationLink {...Navigation.Routes.team.children.userRoles} />
-                                        <NavigationLink {...Navigation.Routes.team.children.roles} />
+                                        <NavigationLink {...Navigation.Routes.team.children.roles} onSelect={this.toggleMenu} />
                                     </>
                                 )}
                             </NavigationDropDown>
@@ -221,16 +213,16 @@ export default class Navigation extends React.Component<NavigationProps & Naviga
                             {currentUserRoleScopes.authScopes
                             && currentUserRoleScopes.authScopes.indexOf('system:types') > -1 && (
                                 <NavigationDropDown title={Navigation.Routes.types.label} id="types_dropdown">
-                                    <NavigationLink {...Navigation.Routes.types.children.assignmentTypes} />
-                                    <NavigationLink {...Navigation.Routes.types.children.leaveTypes} />
+                                    <NavigationLink {...Navigation.Routes.types.children.assignmentTypes} onSelect={this.toggleMenu} />
+                                    <NavigationLink {...Navigation.Routes.types.children.leaveTypes} onSelect={this.toggleMenu} />
                                 </NavigationDropDown>
                             )}
 
                             {currentUserRoleScopes.authScopes
                             && currentUserRoleScopes.authScopes.indexOf('system:scopes') > -1 && (
                                 <NavigationDropDown title={Navigation.Routes.system.label} id="system_dropdown">
-                                    <NavigationLink {...Navigation.Routes.system.children.components} />
-                                    <NavigationLink {...Navigation.Routes.system.children.apis} />
+                                    <NavigationLink {...Navigation.Routes.system.children.components} onSelect={this.toggleMenu} />
+                                    <NavigationLink {...Navigation.Routes.system.children.apis} onSelect={this.toggleMenu} />
                                 </NavigationDropDown>
                             )}
                             {/*<NavigationLink {...Navigation.Routes.audit} />*/}

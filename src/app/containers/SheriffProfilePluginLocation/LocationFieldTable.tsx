@@ -12,7 +12,7 @@ import { fromTimeString, toTimeString } from 'jag-shuber-api';
 import LocationDisplay from '../LocationDisplay';
 import LocationSelector from '../LocationSelector';
 
-import { ColumnRendererProps } from '../../components/TableColumn';
+import { ColumnRendererProps } from '../../components/Table/TableColumn';
 import CancelLeaveButton from '../CancelLeaveButton';
 
 export type ColumnRenderer = React.ComponentType<ColumnRendererProps & { location: Partial<SheriffLocation> }>;
