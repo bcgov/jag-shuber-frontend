@@ -91,10 +91,6 @@ export default class AdminEscortTypes extends FormContainerBase<AdminEscortTypes
         // This is a quick n' dirty way to achieve the same thing
         let dataTableInstance: any;
 
-        // We can't use React hooks yet, and not sure if this project will ever be upgraded to 16.8
-        // This is a quick n' dirty way to achieve the same thing
-        let dataTableInstance: any;
-
         const { currentLocation, isLocationSet } = props;
         const loc = currentLocation;
 
