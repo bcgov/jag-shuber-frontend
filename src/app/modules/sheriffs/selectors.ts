@@ -91,6 +91,7 @@ export const sheriffListLoading = requests.sheriffMapRequest.getIsBusy;
 export const sheriffListError = requests.sheriffMapRequest.getError;
 
 export interface SheriffLoanStatus {
+    location?: SheriffLocation;
     isLoanPendingOrActive: boolean;
     isLoanedOut: boolean;
     isLoanedIn: boolean;
@@ -123,24 +124,25 @@ export const sheriffLoanMap = createSelector(
                     .filter((location) => location.sheriffId === id)
                     .filter((location) => {
                         const { startDate, endDate, startTime, endTime } = location as SheriffLocation;
-                        const currentMoment = moment().startOf('day');
-                        const startMoment = moment(startDate).startOf('day');
-
                         // We need to show sheriffs the sheriff loan in / loan out icons 7 days prior to the actual assignment
-                        const startDateIsSameOrBeforeNow = startMoment.isSameOrBefore(currentMoment.add(1, 'week'));
-                        return (startDateIsSameOrBeforeNow);
+                        const currentMoment = moment().utc().startOf('day');
+                        const startMoment = moment(startDate).utc().startOf('day');
+                        const endMoment = moment(endDate).utc().startOf('day');
+                        const pendingStartOffsetMoment = moment(startDate)
+                            .utc().startOf('day').add(1, 'week');
+
+                        const startDateIsSameOrBeforeStart = startMoment.isSameOrBefore(pendingStartOffsetMoment);
+                        const endDateIsSameOrAfterNow = endMoment.isSameOrAfter(currentMoment);
+
+
+                        return (startDateIsSameOrBeforeStart && endDateIsSameOrAfterNow);
                     })
                 : [];
 
             if (matchingLocations && matchingLocations[0]) {
                 matchingLocations.sort((a: any, b: any) => b.startDate - a.startDate); // Prioritize partial days
-                sheriffLocation = matchingLocations[0];
 
-                if (currentSystemLocation !== homeLocation) {
-                    if (sheriffLocation && sheriffLocation.id === currentSystemLocation) {
-                        isLoanedIn = true;
-                    }
-                }
+                sheriffLocation = matchingLocations[0];
 
                 if (currentSystemLocation === homeLocation) {
                     if (sheriffLocation && sheriffLocation.id !== homeLocation) {
@@ -148,20 +150,30 @@ export const sheriffLoanMap = createSelector(
                     }
                 }
 
-                /* if (id === '') {
-                    console.log(`${matchingLocations.length} matching locations:`);
-                    console.log(matchingLocations);
+                if (currentSystemLocation !== homeLocation) {
+                    if (sheriffLocation && sheriffLocation.id !== currentSystemLocation) {
+                        isLoanedIn = true;
+                    }
+                }
+
+                /* if (id === '') { */
+                console.log(`${matchingLocations.length} matching locations:`);
+                console.log(matchingLocations);
+
+                if (sheriffLocation) {
                     console.log('sheriff is on loan:');
                     console.log(sheriffLocation);
-                } */
+                }
+                /* } */
             }
 
             return {
                 sheriffId: id,
+                location: sheriffLocation,
                 isLoanedIn: isLoanedIn,
                 isLoanedOut: isLoanedOut,
-                startDate: (sheriffLocation) ? moment(sheriffLocation.startDate).format('YYYY-MM-DD') : undefined,
-                endDate: (sheriffLocation) ? moment(sheriffLocation.endDate).format('YYYY-MM-DD') : undefined,
+                startDate: (sheriffLocation) ? moment(sheriffLocation.startDate).utc().format('YYYY-MM-DD') : undefined,
+                endDate: (sheriffLocation) ? moment(sheriffLocation.endDate).utc().format('YYYY-MM-DD') : undefined,
                 startTime: (sheriffLocation && sheriffLocation.startTime) ? moment(sheriffLocation.startTime, 'HH:mm:ss').format('HH:mm') : undefined,
                 endTime: (sheriffLocation && sheriffLocation.endTime) ? moment(sheriffLocation.endTime, 'HH:mm:ss').format('HH:mm') : undefined
             } as SheriffLoanStatus;

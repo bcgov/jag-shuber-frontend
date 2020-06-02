@@ -304,11 +304,11 @@ export default class extends
     )(SheriffProfileContainer as any) {
     static defaultProps: Partial<SheriffProfileProps & { children?: React.ReactNode }> = {
         plugins: [
-            // new SheriffProfilePluginHeader(),
-            // new SheriffProfilePluginIdentification(),
+            new SheriffProfilePluginHeader(),
+            new SheriffProfilePluginIdentification(),
             new SheriffProfilePluginLocation(),
-            // new SheriffProfilePluginLeaves(),
-            // new SheriffProfilePluginTraining(),
+            new SheriffProfilePluginLeaves(),
+            new SheriffProfilePluginTraining(),
             // new SheriffProfilePluginRoles()
         ]
     };

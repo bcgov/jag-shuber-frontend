@@ -202,15 +202,15 @@ export default class SheriffProfilePluginLocation
                     locationId: Validators.required(l.locationId),
                     startDate: Validators.validateWith(
                         Validators.required,
-                        Validators.isSameOrAfter(moment(new Date()).format('YYYY-MM-DD'), 'Today\'s Date')
+                        // Validators.isSameOrAfter(moment().startOf('day').format('YYYY-MM-DD'), 'Today\'s Date')
                     )(l.startDate),
                     startTime: Validators.validateWith(
                         Validators.required,
-                        Validators.isTimeBefore(l.endTime, 'End Time')
+                        Validators.isTimeSameOrBefore(l.endTime, 'End Time')
                     )(l.startTime),
                     endTime: Validators.validateWith(
                         Validators.required,
-                        Validators.isTimeAfter(l.startTime, 'Start Time')
+                        Validators.isTimeSameOrAfter(l.startTime, 'Start Time')
                     )(l.endTime)
                 };
 

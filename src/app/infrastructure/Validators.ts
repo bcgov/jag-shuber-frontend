@@ -6,10 +6,14 @@ export const VALIDATOR_MESSAGES = {
     INVALID_NUMBER: 'Must be a number',
     REQUIRED_VALUE: 'This is a required field',
     INVALID_INTEGER_RANGE: 'Must be an integer between 1 and 50',
-    DATE_MUST_BE_BEFORE: 'Must be before',
-    DATE_MUST_BE_AFTER: 'Must be after',
-    DATE_MUST_BE_ON_OR_BEFORE: 'Must be on or before',
-    DATE_MUST_BE_ON_OR_AFTER: 'Must be on or after'
+    TIME_MUST_BE_BEFORE: 'Time must be before',
+    TIME_MUST_BE_AFTER: 'Time must be after',
+    TIME_MUST_BE_ON_OR_BEFORE: 'Time must be on or before',
+    TIME_MUST_BE_ON_OR_AFTER: 'Time must be on or after',
+    DATE_MUST_BE_BEFORE: 'Date must be before',
+    DATE_MUST_BE_AFTER: 'Date must be after',
+    DATE_MUST_BE_ON_OR_BEFORE: 'Date must be on or before',
+    DATE_MUST_BE_ON_OR_AFTER: 'Date must be on or after'
 };
 
 type Validator = (value: any) => string | undefined;
@@ -59,55 +63,90 @@ export const maxLengthValidator = (maxLengthValue: number) => (
 
 export const maxLength200 = maxLengthValidator(200);
 
-export const isTimeBefore = (otherDateValue: any, otherDateName: string) => {
-    return (dateValue: any) => {
-        if (!fromTimeString(dateValue).isBefore(fromTimeString(otherDateValue))) {
+export const isTimeBefore = (otherValue: any, otherDateName: string) => {
+    return (value: any) => {
+        const timeValue = fromTimeString(value);
+        const otherTimeValue = fromTimeString(otherValue);
+        if (!timeValue.isBefore(otherTimeValue)) {
+            return `${VALIDATOR_MESSAGES.TIME_MUST_BE_BEFORE} ${otherDateName}`;
+        }
+
+        return;
+    };
+};
+
+export const isTimeSameOrBefore = (otherValue: any, otherDateName: string) => {
+    return (value: any) => {
+        const timeValue = fromTimeString(value);
+        const otherTimeValue = fromTimeString(otherValue);
+        if (!timeValue.isSameOrBefore(otherTimeValue)) {
+            return `${VALIDATOR_MESSAGES.TIME_MUST_BE_BEFORE} ${otherDateName}`;
+        }
+
+        return;
+    };
+};
+
+export const isTimeAfter = (otherValue: any, otherDateName: string) => {
+    return (value: any) => {
+        const timeValue = fromTimeString(value);
+        const otherTimeValue = fromTimeString(otherValue);
+        if (!timeValue.isAfter(otherTimeValue)) {
+            return `${VALIDATOR_MESSAGES.TIME_MUST_BE_AFTER} ${otherDateName}`;
+        }
+        return;
+    };
+};
+
+export const isTimeSameOrAfter = (otherValue: any, otherDateName: string) => {
+    return (value: any) => {
+        const timeValue = fromTimeString(value);
+        const otherTimeValue = fromTimeString(otherValue);
+        if (!timeValue.isSameOrAfter(otherTimeValue)) {
+            return `${VALIDATOR_MESSAGES.TIME_MUST_BE_AFTER} ${otherDateName}`;
+        }
+        return;
+    };
+};
+
+export const isBefore = (otherValue: any, otherDateName: string) => {
+    return (value: any) => {
+        const dateValue = moment(value);
+        const otherDateValue = moment(otherValue);
+        if (!dateValue.isBefore(otherDateValue)) {
             return `${VALIDATOR_MESSAGES.DATE_MUST_BE_BEFORE} ${otherDateName}`;
         }
-
         return;
     };
 };
 
-export const isTimeAfter = (otherDateValue: any, otherDateName: string) => {
-    return (dateValue: any) => {
-        if (!fromTimeString(dateValue).isAfter(fromTimeString(otherDateValue))) {
-            return `${VALIDATOR_MESSAGES.DATE_MUST_BE_AFTER} ${otherDateName}`;
-        }
-        return;
-    };
-};
-
-export const isBefore = (otherDateValue: any, otherDateName: string) => {
-    return (dateValue: any) => {
-        if (!moment(dateValue).isBefore(moment(otherDateValue))) {
-            return `${VALIDATOR_MESSAGES.DATE_MUST_BE_BEFORE} ${otherDateName}`;
-        }
-        return;
-    };
-};
-
-export const isSameOrBefore = (otherDateValue: any, otherDateName: string) => {
-    return (dateValue: any) => {
-        if (!moment(dateValue).isSameOrBefore(moment(otherDateValue))) {
+export const isSameOrBefore = (otherValue: any, otherDateName: string) => {
+    return (value: any) => {
+        const dateValue = moment(value);
+        const otherDateValue = moment(otherValue);
+        if (!dateValue.isSameOrBefore(otherDateValue)) {
             return `${VALIDATOR_MESSAGES.DATE_MUST_BE_ON_OR_BEFORE} ${otherDateName}`;
         }
         return;
     };
 };
 
-export const isAfter = (otherDateValue: any, otherDateName: string) => {
-    return (dateValue: any) => {
-        if (!moment(dateValue).isAfter(moment(otherDateValue))) {
+export const isAfter = (otherValue: any, otherDateName: string) => {
+    return (value: any) => {
+        const dateValue = moment(value);
+        const otherDateValue = moment(otherValue);
+        if (!dateValue.isAfter(otherDateValue)) {
             return `${VALIDATOR_MESSAGES.DATE_MUST_BE_BEFORE} ${otherDateName}`;
         }
         return;
     };
 };
 
-export const isSameOrAfter = (otherDateValue: any, otherDateName: string) => {
-    return (dateValue: any) => {
-        if (!moment(dateValue).isSameOrAfter(moment(otherDateValue))) {
+export const isSameOrAfter = (otherValue: any, otherDateName: string) => {
+    return (value: any) => {
+        const dateValue = moment(value);
+        const otherDateValue = moment(otherValue);
+        if (!dateValue.isSameOrAfter(otherDateValue)) {
             return `${VALIDATOR_MESSAGES.DATE_MUST_BE_ON_OR_AFTER} ${otherDateName}`;
         }
         return;
