@@ -162,8 +162,8 @@ export const sheriffLoanMap = createSelector(
                 isLoanedOut: isLoanedOut,
                 startDate: (sheriffLocation) ? moment(sheriffLocation.startDate).format('YYYY-MM-DD') : undefined,
                 endDate: (sheriffLocation) ? moment(sheriffLocation.endDate).format('YYYY-MM-DD') : undefined,
-                startTime: (sheriffLocation && sheriffLocation.startTime) ? moment(sheriffLocation.startTime, 'hh:mm:ss').format('hh:mm') : undefined,
-                endTime: (sheriffLocation && sheriffLocation.endTime) ? moment(sheriffLocation.endTime, 'hh:mm:ss').format('hh:mm') : undefined
+                startTime: (sheriffLocation && sheriffLocation.startTime) ? moment(sheriffLocation.startTime, 'HH:mm:ss').format('HH:mm') : undefined,
+                endTime: (sheriffLocation && sheriffLocation.endTime) ? moment(sheriffLocation.endTime, 'HH:mm:ss').format('HH:mm') : undefined
             } as SheriffLoanStatus;
         });
         return arrayToMap(loanInOutArray, (lio) => lio.sheriffId) as { [sheriffId: string]: SheriffLoanStatus };
