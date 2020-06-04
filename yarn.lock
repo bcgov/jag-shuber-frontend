@@ -5982,9 +5982,9 @@ istanbul@^0.4.5:
     which "^1.1.1"
     wordwrap "^1.0.0"
 
-"jag-shuber-api@github:bcgov/jag-shuber-api#feature/sheriff-locations":
+"jag-shuber-api@github:bcgov/jag-shuber-api":
   version "2.0.0"
-  resolved "https://codeload.github.com/bcgov/jag-shuber-api/tar.gz/e7174bf1d3d8d028e470144a1d6c9a6d2e969072"
+  resolved "https://codeload.github.com/bcgov/jag-shuber-api/tar.gz/a7621260b1a62675c6a759197c89dfca05814e13"
   dependencies:
     jsonwebtoken "^8.3.0"
     jwt-decode "^2.2.0"
@@ -11155,9 +11155,9 @@ typescript@^2.9.2:
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.9.2.tgz#1cbf61d05d6b96269244eb6a3bce4bd914e0f00c"
 
 typescript@^3.5.3:
-  version "3.9.3"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.9.3.tgz#d3ac8883a97c26139e42df5e93eeece33d610b8a"
-  integrity sha512-D/wqnB2xzNFIcoBG9FG8cXRDjiqSTbG2wd8DMZeQyJlP1vfTkIxH4GKveWaEBYySKIg+USu+E+EDIR47SqnaMQ==
+  version "3.9.5"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.9.5.tgz#586f0dba300cde8be52dd1ac4f7e1009c1b13f36"
+  integrity sha512-hSAifV3k+i6lEoCJ2k6R2Z/rp/H3+8sdmcn5NrS3/3kE7+RyZXm9aqvxWqjEXHAd8b0pShatpcdMTvEdvAJltQ==
 
 ua-parser-js@^0.7.18:
   version "0.7.18"

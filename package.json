@@ -38,7 +38,7 @@
     "interact.js": "^1.2.8",
     "interactjs": "^1.3.4",
     "istanbul": "^0.4.5",
-    "jag-shuber-api": "github:bcgov/jag-shuber-api#feature/sheriff-locations",
+    "jag-shuber-api": "github:bcgov/jag-shuber-api",
     "jest": "20.0.4",
     "map": "^1.0.1",
     "moment": "^2.22.2",
