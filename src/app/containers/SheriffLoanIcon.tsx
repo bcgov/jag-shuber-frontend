@@ -10,25 +10,17 @@ import {
 } from '../api';
 
 import {
+    getSheriffHomeLocation,
     getSheriffLoanStatus,
     SheriffLoanStatus,
-    getSheriffCurrentLocation,
-    getSheriffHomeLocation
 } from '../modules/sheriffs/selectors';
-
-import {
-    getLocationById
-} from '../modules/system/selectors';
 
 import SheriffLoanInIcon from '../components/Icons/SheriffLoanInIcon';
 import SheriffLoanOutIcon from '../components/Icons/SheriffLoanOutIcon';
-import { getAllLocations } from '../modules/system/selectors';
 
 interface SheriffLoanIconStateProps {
     status: SheriffLoanStatus;
     homeLocation?: Location;
-    getLocation: (locationId: string) => any;
-    // currentLocation?: Location;
 }
 
 interface SheriffLoanIconProps {
@@ -42,25 +34,21 @@ class SheriffLoanIcon extends React.PureComponent<
 
     render() {
         const {
-            // sheriffId,
-            status: { isLoanedIn, isLoanedOut, startDate, endDate, startTime, endTime, location },
+            status: { isLoanedIn, isLoanedOut, startDate, endDate, startTime, endTime, location = { name: '' } },
             homeLocation = { name: '' },
-            getLocation,
-            // currentLocation = { name: '' },
             style = {}
         } = this.props;
 
         let icon = isLoanedIn ? <SheriffLoanInIcon /> : isLoanedOut ? <SheriffLoanOutIcon /> : null;
 
-        const currentLocation = location && location.locationId ? getLocation(location.locationId) : undefined;
-
         const locationName = isLoanedIn ? `${homeLocation.name}` :
-            isLoanedOut && currentLocation ? `${currentLocation.name}` : undefined;
+            isLoanedOut && location ? `${location.name}` : undefined;
 
         return (
             <OverlayTrigger
                 overlay={(
                     <Tooltip>
+                        {locationName && (
                         <p>
                             {isLoanedIn && (
                             <>On loan from <b>{locationName}</b></>
@@ -85,6 +73,7 @@ class SheriffLoanIcon extends React.PureComponent<
                                 </>
                             )}
                         </p>
+                        )}
                     </Tooltip>
                 )}
                 placement={'right'}>
@@ -101,7 +90,7 @@ export default connect<SheriffLoanIconStateProps, {}, SheriffLoanIconProps, Root
             status: getSheriffLoanStatus(sheriffId)(state),
             // currentLocation: getSheriffCurrentLocation(sheriffId)(state),
             homeLocation: getSheriffHomeLocation(sheriffId)(state),
-            getLocation: (locationId: string) => getLocationById(locationId)(state)
+            // getLocation: (locationId: string) => getLocationById(locationId)(state)
         }
     )
 )(SheriffLoanIcon);

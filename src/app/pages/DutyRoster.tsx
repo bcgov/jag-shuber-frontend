@@ -7,7 +7,7 @@ import { ListGroup } from 'react-bootstrap';
 import DutyRosterControls from '../containers/DutyRosterControls';
 import Page from '../components/Page/Page';
 import DutyRosterSheriff from '../containers/DutyRosterSheriff';
-import { sheriffsOnShift,sheriffsOffShift } from '../modules/dutyRoster/selectors';
+import { sheriffsOnShift, sheriffsOffShift } from '../modules/dutyRoster/selectors';
 
 class DutyRoster extends React.PureComponent {
     render() {
