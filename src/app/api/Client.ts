@@ -136,14 +136,14 @@ export default class Client implements API {
         return this._locationId;
     }
 
-    async getSheriffs(): Promise<Sheriff[]> {
-        // TODO: Not sure if this is the best solution, but it gets things working they way we want to for now...
+    async getSheriffs(dateRange: DateRange = {}): Promise<Sheriff[]> {
+        const { startDate, endDate } = dateRange;
         //  ALL_LOCATIONS key is added to selectorValues in LocationSelector.
         const currentLocation = (this.currentLocation && this.currentLocation !== 'ALL_LOCATIONS')
             ? this.currentLocation
             : undefined;
 
-        const sheriffList = (await this._client.GetSheriffs(currentLocation) as Sheriff[]);
+        const sheriffList = (await this._client.GetSheriffs(currentLocation, startDate, endDate) as Sheriff[]);
         return sheriffList;
     }
 

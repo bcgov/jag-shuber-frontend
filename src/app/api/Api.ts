@@ -188,7 +188,9 @@ export interface Sheriff {
     genderCode?: string;
     rankCode?: string;
     homeLocationId?: IdType;
+    homeLocation?: Location;
     currentLocationId?: IdType;
+    currentLocation?: SheriffLocation;
     user?: Partial<User>; // Only used on client-side
 }
 
@@ -649,6 +651,7 @@ export interface SheriffLocation {
     id?: IdType;
     sheriffId?: string;
     locationId?: string;
+    location?: Location;
     startDate?: string;
     endDate?: string;
     startTime?: string;
@@ -672,7 +675,7 @@ export interface API {
     agent: superAgent.SuperAgent<any> | undefined;
 
     // Sheriffs
-    getSheriffs(): Promise<Sheriff[]>;
+    getSheriffs(dateRange?: DateRange): Promise<Sheriff[]>;
     createSheriff(newSheriff: Sheriff): Promise<Sheriff>;
     updateSheriff(sheriffToUpdate: Partial<Sheriff>): Promise<Sheriff>;
 

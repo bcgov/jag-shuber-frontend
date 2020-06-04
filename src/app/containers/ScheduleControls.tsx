@@ -17,11 +17,12 @@ import {
     clearSelectedShifts,
     selectShifts
 } from '../modules/schedule/actions';
+import { getSheriffList } from '../modules/sheriffs/actions';
 import { deleteShift as deleteShiftAction } from '../modules/shifts/actions';
 import ScheduleShiftMultiEditForm from './ScheduleShiftMultiEditForm';
 import ScheduleShiftAddModal from './ScheduleShiftAddModal';
 import ScheduleShiftCopyModal from './ScheduleShiftCopyModal';
-import { IdType, Shift, WorkSectionCode } from '../api/Api';
+import { DateRange, IdType, Shift, WorkSectionCode } from '../api/Api';
 import DateRangeControls from '../components/DateRangeControls';
 import { allShifts } from '../modules/shifts/selectors';
 import { ConfirmationModal } from '../components/ConfirmationModal';
@@ -42,15 +43,16 @@ interface ScheduleControlsProps {
     shifts?: Shift[];
 }
 
-interface ScheduleDistpatchProps {
+interface ScheduleDispatchProps {
     updateVisibleTime: (startTime: any, endTime: any) => void;
+    fetchSheriffs: (dateRange?: DateRange) => void;
     showShiftCopyModal: () => void;
     showShiftAddModal: (workSectionId?: WorkSectionCode) => void;
     showMultiShiftEditModal: (selectedShiftIds: IdType[]) => void;
 }
 
 class ScheduleControls extends React.PureComponent<
-    ScheduleControlsProps & ScheduleControlsStateProps & ScheduleDistpatchProps> {
+    ScheduleControlsProps & ScheduleControlsStateProps & ScheduleDispatchProps> {
 
     allVisibleShiftIds() {
         const { visibleTimeStart, visibleTimeEnd, shifts = [] } = this.props;
@@ -64,6 +66,7 @@ class ScheduleControls extends React.PureComponent<
             visibleTimeStart,
             visibleTimeEnd,
             updateVisibleTime,
+            fetchSheriffs,
             showShiftCopyModal,
             showShiftAddModal,
             showMultiShiftEditModal,
@@ -86,22 +89,42 @@ class ScheduleControls extends React.PureComponent<
                 <div className="toolbar-calendar-control">
                     <DateRangeControls
                         defaultDate={moment(visibleTimeStart)}
-                        onNext={() => updateVisibleTime(
-                            moment(visibleTimeStart).add('week', 1),
-                            moment(visibleTimeEnd).add('week', 1)
-                        )}
-                        onPrevious={() => updateVisibleTime(
-                            moment(visibleTimeStart).subtract('week', 1),
-                            moment(visibleTimeEnd).subtract('week', 1)
-                        )}
-                        onSelect={(selectedDate) => updateVisibleTime(
-                            moment(selectedDate).startOf('week').add(1, 'day'),
-                            moment(selectedDate).endOf('week').subtract(1, 'day')
-                        )}
-                        onToday={() => updateVisibleTime(
-                            moment().startOf('week').add(1, 'day'),
-                            moment().endOf('week').subtract(1, 'day')
-                        )}
+                        onNext={async () => {
+                            const dateRange = { startDate: visibleTimeStart, endDate: visibleTimeEnd };
+                            await fetchSheriffs(dateRange);
+
+                            updateVisibleTime(
+                                moment(visibleTimeStart).add('week', 1),
+                                moment(visibleTimeEnd).add('week', 1)
+                            );
+                        }}
+                        onPrevious={async () => {
+                            const dateRange = { startDate: visibleTimeStart, endDate: visibleTimeEnd };
+                            await fetchSheriffs(dateRange);
+
+                            updateVisibleTime(
+                                moment(visibleTimeStart).subtract('week', 1),
+                                moment(visibleTimeEnd).subtract('week', 1)
+                            );
+                        }}
+                        onSelect={async (selectedDate) => {
+                            const dateRange = { startDate: visibleTimeStart, endDate: visibleTimeEnd };
+                            await fetchSheriffs(dateRange);
+
+                            updateVisibleTime(
+                                moment(selectedDate).startOf('week').add(1, 'day'),
+                                moment(selectedDate).endOf('week').subtract(1, 'day')
+                            );
+                        }}
+                        onToday={async () => {
+                            const dateRange = { startDate: visibleTimeStart, endDate: visibleTimeEnd };
+                            await fetchSheriffs(dateRange);
+
+                            updateVisibleTime(
+                                moment().startOf('week').add(1, 'day'),
+                                moment().endOf('week').subtract(1, 'day')
+                            );
+                        }}
                     />
                 </div>
 
@@ -212,6 +235,7 @@ const mapStateToProps = (state: RootState) => {
 
 const mapDispatchToProps = {
     updateVisibleTime: setVisibleTime,
+    fetchSheriffs: getSheriffList,
     showShiftCopyModal: () => ScheduleShiftCopyModal.ShowAction(),
     showShiftAddModal: (workSectionId?: WorkSectionCode) => ScheduleShiftAddModal.ShowAction(workSectionId),
     submit: ScheduleShiftMultiEditForm.submitAction,
@@ -222,7 +246,7 @@ const mapDispatchToProps = {
 };
 
 // tslint:disable-next-line:max-line-length
-export default connect<ScheduleControlsStateProps, ScheduleDistpatchProps, ScheduleControlsProps>(
+export default connect<ScheduleControlsStateProps, ScheduleDispatchProps, ScheduleControlsProps>(
     mapStateToProps,
     mapDispatchToProps
 )(ScheduleControls);

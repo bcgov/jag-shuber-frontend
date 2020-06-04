@@ -11,10 +11,10 @@ import GetEntityMapRequest from '../../infrastructure/Requests/GetEntityMapReque
 import CreateEntityRequest from '../../infrastructure/Requests/CreateEntityRequest';
 import UpdateEntityRequest from '../../infrastructure/Requests/UpdateEntityRequest';
 import toTitleCase from '../../infrastructure/toTitleCase';
-import { SheriffRank } from '../../api/Api';
+import { DateRange, SheriffRank } from '../../api/Api';
 
 // Sheriff Map
-class SheriffMapRequest extends GetEntityMapRequest<void, Sheriff, SheriffModuleState> {
+class SheriffMapRequest extends GetEntityMapRequest<Partial<DateRange>, Sheriff, SheriffModuleState> {
     constructor() {
         super({
             namespace: STATE_KEY,
@@ -25,8 +25,8 @@ class SheriffMapRequest extends GetEntityMapRequest<void, Sheriff, SheriffModule
             }
         });
     }
-    public async doWork(request: void, { api }: ThunkExtra) {
-        let sheriffs = await api.getSheriffs();
+    public async doWork(request: DateRange, { api }: ThunkExtra) {
+        let sheriffs = await api.getSheriffs(request);
         return arrayToMap(sheriffs, t => t.id);
     }
 }

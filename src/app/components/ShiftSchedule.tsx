@@ -70,15 +70,15 @@ export default class ShiftSchedule extends React.PureComponent<ShiftScheduleProp
                     {item.sheriffId}
                 </ShiftCard>
             ),
-            allowTimeChange = false
+            allowTimeChange = true
         } = this.props;
 
         const groups: Group[] = [];
-        shifts.filter(s => 
+        shifts.filter(s =>
             // Create groups for visible shifts only
-            moment(s.startDateTime).valueOf() >= moment(visibleTimeStart).valueOf() && 
+            moment(s.startDateTime).valueOf() >= moment(visibleTimeStart).valueOf() &&
             moment(s.startDateTime).valueOf() <= moment(visibleTimeEnd).valueOf())
-        .forEach(s => { 
+        .forEach(s => {
             const id = getShiftGroupId(s);
             // Unique groups only
             if (!groups.find(g => g.id == id)) {
@@ -88,7 +88,7 @@ export default class ShiftSchedule extends React.PureComponent<ShiftScheduleProp
 
         return (
             <ShiftScheduleTimeline
-                allowChangeTime={allowTimeChange}
+                allowChangeTime={true}
                 groups={groups}
                 items={shifts}
                 mapItem={(item, groupList) => {

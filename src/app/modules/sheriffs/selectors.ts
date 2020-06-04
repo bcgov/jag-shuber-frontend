@@ -4,7 +4,7 @@ import * as requests from './requests';
 import { RootState } from '../../store';
 
 import {
-    IdType, DateType, Sheriff, SheriffLocation
+    IdType, DateType, Sheriff, SheriffLocation, Location
 } from '../../api';
 
 import { ErrorMap } from './common';
@@ -68,19 +68,7 @@ export function getSheriffHomeLocation(sheriffId: IdType) {
 export function getSheriffCurrentLocation(sheriffId: IdType) {
     return (state: RootState) => {
         const sheriff = getSheriff(sheriffId)(state) as Sheriff;
-        /* if (sheriff.id === '') {
-            console.log('getSheriffCurrentLocation')
-        } */
         const { currentLocationId, homeLocationId } = sheriff;
-        return currentLocationId === undefined ?
-            getLocationById(homeLocationId)(state) :
-            getLocationById(currentLocationId)(state);
-    };
-}
-
-export function getSheriffCurrentLocationDuration(sheriffId: IdType) {
-    return (state: RootState) => {
-        const { currentLocationId, homeLocationId } = getSheriff(sheriffId)(state) as Sheriff;
         return currentLocationId === undefined ?
             getLocationById(homeLocationId)(state) :
             getLocationById(currentLocationId)(state);
@@ -91,7 +79,7 @@ export const sheriffListLoading = requests.sheriffMapRequest.getIsBusy;
 export const sheriffListError = requests.sheriffMapRequest.getError;
 
 export interface SheriffLoanStatus {
-    location?: SheriffLocation;
+    location?: Location;
     isLoanPendingOrActive: boolean;
     isLoanedOut: boolean;
     isLoanedIn: boolean;
@@ -109,72 +97,46 @@ export const sheriffLoanMap = createSelector(
     (map = {}, currentSystemLocation, sheriffLocations) => {
         const loanInOutArray = Object.keys(map).map(id => {
             const {
-                homeLocationId: homeLocation,
-                currentLocationId: currentSheriffLocation
+                homeLocationId,
+                homeLocation,
+                currentLocationId,
+                currentLocation
             } = map[id];
 
-            let sheriffLocation: SheriffLocation | undefined = undefined;
-            let matchingLocations: SheriffLocation[] = [];
+            let loanInfo: SheriffLocation | undefined = undefined;
+            let location: Location | undefined = undefined;
             let isLoanedIn = false;
             let isLoanedOut = false;
 
-            // Load up the start and end dates from the sheriffLocations module
-            matchingLocations = (sheriffLocations && sheriffLocations.length > 0)
-                ? sheriffLocations
-                    .filter((location) => location.sheriffId === id)
-                    .filter((location) => {
-                        const { startDate, endDate, startTime, endTime } = location as SheriffLocation;
-                        // We need to show sheriffs the sheriff loan in / loan out icons 7 days prior to the actual assignment
-                        const currentMoment = moment().utc().startOf('day');
-                        const startMoment = moment(startDate).utc().startOf('day');
-                        const endMoment = moment(endDate).utc().startOf('day');
-                        const pendingStartOffsetMoment = moment()
-                            .utc().startOf('day').add(1, 'week');
+            if (currentLocationId && currentLocation) {
+                // Location will be wrapped in a SheriffLoanStatus
+                loanInfo = currentLocation as SheriffLocation;
+                location = loanInfo.location;
+            }
 
-                        const startDateIsSameOrBeforeStart = startMoment.isSameOrBefore(pendingStartOffsetMoment);
-                        const endDateIsSameOrAfterNow = endMoment.isSameOrAfter(currentMoment);
-
-                        return (startDateIsSameOrBeforeStart && endDateIsSameOrAfterNow);
-                    })
-                : [];
-
-            if (matchingLocations && matchingLocations[0]) {
-                matchingLocations.sort((a: any, b: any) => b.startDate - a.startDate); // Prioritize partial days
-
-                sheriffLocation = matchingLocations[0];
-
-                if (currentSystemLocation === homeLocation) {
-                    if (sheriffLocation && sheriffLocation.id !== homeLocation) {
+            if (location) {
+                if (currentSystemLocation === homeLocationId) {
+                    if (location.id !== homeLocationId) {
                         isLoanedOut = true;
                     }
                 }
 
-                if (currentSystemLocation !== homeLocation) {
-                    if (sheriffLocation && sheriffLocation.id !== currentSystemLocation) {
+                if (currentSystemLocation !== homeLocationId) {
+                    if (location.id === currentSystemLocation) {
                         isLoanedIn = true;
                     }
                 }
-
-                /* if (id === '') { */
-                console.log(`${matchingLocations.length} matching locations:`);
-                console.log(matchingLocations);
-
-                if (sheriffLocation) {
-                    console.log('sheriff is on loan:');
-                    console.log(sheriffLocation);
-                }
-                /* } */
             }
 
             return {
                 sheriffId: id,
-                location: sheriffLocation,
-                isLoanedIn: isLoanedIn,
-                isLoanedOut: isLoanedOut,
-                startDate: (sheriffLocation) ? moment(sheriffLocation.startDate).utc().format('YYYY-MM-DD') : undefined,
-                endDate: (sheriffLocation) ? moment(sheriffLocation.endDate).utc().format('YYYY-MM-DD') : undefined,
-                startTime: (sheriffLocation && sheriffLocation.startTime) ? moment(sheriffLocation.startTime, 'HH:mm:ss').format('HH:mm') : undefined,
-                endTime: (sheriffLocation && sheriffLocation.endTime) ? moment(sheriffLocation.endTime, 'HH:mm:ss').format('HH:mm') : undefined
+                location: (location) ? location : undefined,
+                isLoanedIn: (location) ? isLoanedIn : false,
+                isLoanedOut: (location) ? isLoanedOut : false,
+                startDate: (loanInfo) ? moment(loanInfo.startDate).utc().format('YYYY-MM-DD') : undefined,
+                endDate: (loanInfo) ? moment(loanInfo.endDate).utc().format('YYYY-MM-DD') : undefined,
+                startTime: (loanInfo && loanInfo.startTime) ? moment(loanInfo.startTime, 'HH:mm:ss').format('HH:mm') : undefined,
+                endTime: (loanInfo && loanInfo.endTime) ? moment(loanInfo.endTime, 'HH:mm:ss').format('HH:mm') : undefined
             } as SheriffLoanStatus;
         });
         return arrayToMap(loanInOutArray, (lio) => lio.sheriffId) as { [sheriffId: string]: SheriffLoanStatus };
