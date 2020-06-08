@@ -15,60 +15,103 @@ interface DutyRosterControlsStateProps {
     visibleTimeEnd: any;
 }
 
-interface DutyRosterControlsProps {
-}
-
-interface DutyRosterDistpatchProps {
+interface DutyRosterDispatchProps {
     updateVisibleTime: (startTime: any, endTime: any) => void;
     fetchSheriffs: (dateRange?: DateRange) => void;
 }
 
-class DutyRosterControls extends React.PureComponent<
-    DutyRosterControlsProps & DutyRosterControlsStateProps & DutyRosterDistpatchProps> {
+interface DutyRosterControlsProps {}
+
+class DutyRosterControls
+    extends React.PureComponent<
+        DutyRosterControlsProps &
+        DutyRosterControlsStateProps &
+        DutyRosterDispatchProps> {
+
+    constructor(props: DutyRosterControlsProps & DutyRosterControlsStateProps & DutyRosterDispatchProps) {
+        super(props);
+
+        this.onPrevious = this.onPrevious.bind(this);
+        this.onNext = this.onNext.bind(this);
+        this.onToday = this.onToday.bind(this);
+        this.onSelect = this.onSelect.bind(this);
+    }
+
+    componentWillReceiveProps(
+        nextProps: DutyRosterControlsProps & DutyRosterControlsStateProps & DutyRosterDispatchProps,
+        nextContext: any
+    ): void {
+        const {
+            visibleTimeStart,
+            visibleTimeEnd,
+            fetchSheriffs
+        } = this.props;
+
+        if (nextProps.visibleTimeStart !== visibleTimeStart || nextProps.visibleTimeEnd !== visibleTimeEnd) {
+            const dateRange = { startDate: nextProps.visibleTimeStart, endDate: nextProps.visibleTimeEnd };
+            fetchSheriffs(dateRange);
+        }
+    }
+
+    async onPrevious() {
+        const {
+            visibleTimeStart,
+            visibleTimeEnd,
+            updateVisibleTime,
+        } = this.props;
+
+        updateVisibleTime(
+            moment(visibleTimeStart).subtract('week', 1),
+            moment(visibleTimeEnd).subtract('week', 1)
+        );
+    }
+
+    async onNext() {
+        const {
+            visibleTimeStart,
+            visibleTimeEnd,
+            updateVisibleTime,
+        } = this.props;
+
+        updateVisibleTime(
+            moment(visibleTimeStart).add('week', 1),
+            moment(visibleTimeEnd).add('week', 1)
+        );
+    }
+
+    async onSelect(selectedDate: any) {
+        const {
+            updateVisibleTime,
+        } = this.props;
+
+        updateVisibleTime(
+            moment(selectedDate).startOf('week').add(1, 'day'),
+            moment(selectedDate).endOf('week').subtract(1, 'day')
+        );
+    }
+
+    async onToday() {
+        const {
+            updateVisibleTime
+        } = this.props;
+
+        updateVisibleTime(
+            moment().startOf('week').add(1, 'day'),
+            moment().endOf('week').subtract(1, 'day')
+        );
+    }
 
     render() {
-        const { visibleTimeStart, visibleTimeEnd, updateVisibleTime, fetchSheriffs } = this.props;
+        const { visibleTimeStart } = this.props;
         return (
             <div style={{ display: 'flex' }}>
                 <div className="toolbar-calendar-control">
                     <DateRangeControls
                         defaultDate={moment(visibleTimeStart)}
-                        onNext={async () => {
-                            const dateRange = { startDate: visibleTimeStart, endDate: visibleTimeEnd };
-                            await fetchSheriffs(dateRange);
-
-                            updateVisibleTime(
-                                moment(visibleTimeStart).add('day', 1),
-                                moment(visibleTimeEnd).add('day', 1)
-                            );
-                        }}
-                        onPrevious={async () => {
-                            const dateRange = { startDate: visibleTimeStart, endDate: visibleTimeEnd };
-                            await fetchSheriffs(dateRange);
-
-                            updateVisibleTime(
-                                moment(visibleTimeStart).subtract('day', 1),
-                                moment(visibleTimeEnd).subtract('day', 1)
-                            );
-                        }}
-                        onSelect={async (selectedDate) => {
-                            const dateRange = { startDate: visibleTimeStart, endDate: visibleTimeEnd };
-                            await fetchSheriffs(dateRange);
-
-                            updateVisibleTime(
-                                TimeUtils.getDefaultStartTime(moment(selectedDate)),
-                                TimeUtils.getDefaultEndTime(moment(selectedDate))
-                            );
-                        }}
-                        onToday={async () => {
-                            const dateRange = { startDate: visibleTimeStart, endDate: visibleTimeEnd };
-                            await fetchSheriffs(dateRange);
-
-                            updateVisibleTime(
-                                TimeUtils.getDefaultStartTime(),
-                                TimeUtils.getDefaultEndTime()
-                            );
-                        }}
+                        onNext={this.onNext}
+                        onPrevious={this.onPrevious}
+                        onSelect={this.onSelect}
+                        onToday={this.onToday}
                     />
                 </div>
                 <div style={{ position: 'absolute', right: 2 }}>
@@ -91,7 +134,7 @@ const mapDispatchToProps = {
 };
 
 // tslint:disable-next-line:max-line-length
-export default connect<DutyRosterControlsStateProps, DutyRosterDistpatchProps, DutyRosterControlsProps>(
+export default connect<DutyRosterControlsStateProps, DutyRosterDispatchProps, DutyRosterControlsProps>(
     mapStateToProps,
     mapDispatchToProps
 )(DutyRosterControls);

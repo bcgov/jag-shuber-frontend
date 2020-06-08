@@ -12,7 +12,7 @@ import LocationSelector from './LocationSelector';
 import LocationDisplay from './LocationDisplay';
 import SelectorField from '../components/FormElements/SelectorField';
 
-export default class SheriffProfilePluginLocation extends SheriffProfileSectionPlugin<Sheriff> {
+export default class SheriffProfilePluginLocationBak extends SheriffProfileSectionPlugin<Sheriff> {
     // NOTICE!
     // This key maps to the [appScope: FrontendScope] (in the token)
     // To set permissions for a new plugin, add a corresponding entry under System Settings > Components

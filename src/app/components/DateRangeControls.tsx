@@ -12,7 +12,7 @@ export interface DateRangeControlProps {
     onPrevious: () => void;
     onToday: () => void;
     onSelect: (date: DateType) => void;
-    defaultDate: DateType;
+    defaultDate: any;
 }
 
 export default class DateControlRange extends React.Component<DateRangeControlProps, any> {
@@ -36,11 +36,11 @@ export default class DateControlRange extends React.Component<DateRangeControlPr
                 </Button>
 
                 <CalendarButton
-                    onChange={(selectedDate) => onSelect && onSelect(selectedDate)}
+                    onChange={(selectedDate) => onSelect && onSelect(selectedDate as any)}
                     defaultValue={moment(defaultDate)}
                     todayOnClick={() => onToday && onToday()}
                 />
-                
+
                 <Button
                     onClick={() => onNext && onNext()}
                     bsStyle="link"

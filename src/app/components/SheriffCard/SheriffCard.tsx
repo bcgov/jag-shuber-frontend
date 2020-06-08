@@ -31,7 +31,7 @@ export default class SheriffCard extends React.PureComponent<SheriffCardProps, a
             <div
                 key={badgeNo}
                 className="sheriff-card drop-shadow-hover"
-                onMouseDown={() => onClick && onClick()}
+                onClick={() => onClick && onClick()}
             >
                 <div style={{ position: 'relative', marginTop: 10, marginLeft: 10 }}>
                     <div style={{ width: 23, height: 23 }}>

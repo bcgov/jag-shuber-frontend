@@ -22,6 +22,7 @@ import { getLeaves } from '../modules/leaves/actions';
 import { getActiveSheriffFullDayLeaves, getActiveSheriffPartialLeaves } from '../modules/leaves/selectors';
 import PartialLeavePopover from '../components/PartialLeavePopover';
 import SheriffLoanIcon from './SheriffLoanIcon';
+import SheriffProfileModal from './SheriffProfileModal';
 
 interface ConnectedDutyRosterSheriffCardProps {
     sheriff: Sheriff;
@@ -30,6 +31,7 @@ interface ConnectedDutyRosterSheriffCardProps {
 interface ConnectedDutyRosterSheriffCardDispatchProps {
     fetchShifts: () => void;
     fetchLeaves: () => void;
+    showSheriffProfileModal: (sheriffId: IdType) => void;
 }
 
 interface ConnectedDutyRosterSheriffCardStateProps {
@@ -49,7 +51,7 @@ class ConnectedDutyRosterSheriffCard extends React.Component<ConnectedDutyRoster
     getShiftDisplayForDate(date: TimeType): { shiftTime: string, workSectionId?: WorkSectionCode } {
         const { shifts, currentLocationId } = this.props;
         const shiftsForDay =
-            shifts.filter(s => s.locationId == currentLocationId)
+            shifts.filter(s => s.locationId === currentLocationId)
                 .filter(s => moment(date).isSame(s.startDateTime, 'day'));
         if (shiftsForDay.length > 1) {
             return {
@@ -86,7 +88,8 @@ class ConnectedDutyRosterSheriffCard extends React.Component<ConnectedDutyRoster
             sheriff,
             sheriff: { id, currentLocationId },
             isLoanedOut = false,
-            isLoanedIn = false
+            isLoanedIn = false,
+            showSheriffProfileModal
         } = this.props;
         const { shiftTime, workSectionId } = this.getShiftDisplayForDate(moment(visibleTimeStart).toISOString());
         const hasShift = shiftTime !== '';
@@ -96,7 +99,13 @@ class ConnectedDutyRosterSheriffCard extends React.Component<ConnectedDutyRoster
         const isOnLeaveForPartialDay = partialDayLeave !== undefined;
         const showScheduleDeatils = isLoanedIn || isLoanedOut || hasShift || isOnLeaveForDay || isOnLeaveForPartialDay;
         return (
-            <SheriffListCard sheriff={sheriff} disabled={!hasShift} >
+            <SheriffListCard
+                sheriff={sheriff}
+                disabled={!hasShift}
+                onClick={() => {
+                    showSheriffProfileModal(sheriff.id);
+                }}
+            >
                 <div
                     style={{
                         fontSize: 14,
@@ -140,7 +149,8 @@ const mapStateToProps = (state: RootState, { sheriff }: ConnectedDutyRosterSheri
 
 const mapDispatchToProps = {
     fetchShifts: getShifts,
-    fetchLeaves: getLeaves
+    fetchLeaves: getLeaves,
+    showSheriffProfileModal: SheriffProfileModal.ShowAction
 };
 
 // tslint:disable-next-line:max-line-length

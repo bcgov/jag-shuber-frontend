@@ -1,29 +1,53 @@
 import React from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
+
+import { doTimeRangesOverlap } from 'jag-shuber-api';
+
+import {
+    MapType,
+    IdType,
+    DateType,
+    TimeType,
+    Leave,
+    Shift,
+    SheriffLocation
+} from '../api';
+
 import { RootState } from '../store';
-import { getSheriffShifts } from '../modules/shifts/selectors';
-import { getActiveSheriffFullDayLeaves, getActiveSheriffPartialLeaves } from '../modules/leaves/selectors';
-import { getShifts } from '../modules/shifts/actions';
-import { getLeaves } from '../modules/leaves/actions';
+
+import {
+    getSheriffShifts
+} from '../modules/shifts/selectors';
+
 import {
     visibleTime
 } from '../modules/schedule/selectors';
+
+import {
+    getActiveSheriffFullDayLeaves,
+    getActiveSheriffPartialLeaves
+} from '../modules/leaves/selectors';
+
+import {
+    sheriffLoanMap as sheriffLoanMapSelector
+} from '../modules/sheriffs/selectors';
+
+import {
+    getSheriffFullDayLocations,
+    getSheriffPartialDayLocations
+} from '../modules/sheriffLocations/selectors';
+
+import { getShifts } from '../modules/shifts/actions';
+import { getLeaves } from '../modules/leaves/actions';
+
 import {
     default as ScheduleSummary,
     StatusEnum
 } from '../components/ScheduleSummary/ScheduleSummary';
-import { sheriffLoanMap as sheriffLoanMapSelector } from '../modules/sheriffs/selectors';
-import {
-    Leave,
-    Shift,
-    IdType,
-    TimeType
-} from '../api';
-import { MapType } from '../api/Api';
-import { doTimeRangesOverlap } from 'jag-shuber-api';
 import PartialLeavePopover from '../components/PartialLeavePopover';
 import AlertIcon from '../components/Icons/Alert';
+import { Handle } from 'rc-slider';
 
 interface ConnectedScheduleSummaryProps {
     sheriffId: IdType;
@@ -37,10 +61,23 @@ interface ConnectedScheduleSummaryDispatchProps {
 }
 
 interface ConnectedScheduleSummaryStateProps {
+    sheriffLoanMap?: MapType<{ isLoanedIn: boolean, isLoanedOut: boolean }>;
+    fullDayLoans: SheriffLocation[];
+    partialDayLoans: SheriffLocation[];
     fullDayLeaves: Leave[];
     partialDayLeaves: Leave[];
     shifts: Shift[];
-    sheriffLoanMap?: MapType<{ isLoanedIn: boolean, isLoanedOut: boolean }>;
+}
+
+interface HandleDayParams {
+    dayOfTheWeekMoment: moment.Moment,
+    visibleTimeStart: TimeType;
+    visibleTimeEnd: TimeType;
+    fullDayLoans?: SheriffLocation[];
+    partialDayLoans?: SheriffLocation[];
+    fullDayLeaves?: Leave[];
+    partialDayLeaves?: Leave[];
+    shifts?: Shift[];
 }
 
 class ConnectedScheduleSummary extends React.Component<ConnectedScheduleSummaryProps
@@ -68,34 +105,135 @@ class ConnectedScheduleSummary extends React.Component<ConnectedScheduleSummaryP
         }
     }
 
-    isDayDuringLeave(day: moment.Moment, leave: Leave): boolean {
-        return moment(day).isBetween(leave.startDate, leave.endDate, 'days', '[]');
+    getDayMoment(day: string, visibleTimeStart: any) {
+        let dayMoment = undefined;
+        switch (day) {
+            case 'monday':
+                dayMoment = moment(visibleTimeStart).utc().startOf('day');
+                break;
+            case 'tuesday':
+                dayMoment = moment(visibleTimeStart).utc().startOf('day').add(1, 'day');
+                break;
+            case 'wednesday':
+                dayMoment = moment(visibleTimeStart).utc().startOf('day').add(2, 'day');
+                break;
+            case 'thursday':
+                dayMoment = moment(visibleTimeStart).utc().startOf('day').add(3, 'day');
+                break;
+            case 'friday':
+                dayMoment = moment(visibleTimeStart).utc().startOf('day').add(4, 'day');
+                break;
+            case 'saturday':
+                dayMoment = moment(visibleTimeStart).utc().startOf('day').add(5, 'day');
+                break;
+            case 'sunday':
+                dayMoment = moment(visibleTimeStart).utc().startOf('day').add(6, 'day');
+                break;
+            default:
+                dayMoment = '';
+        }
+
+        return dayMoment;
+    }
+
+    isOnDate(date: moment.Moment, dateTimeStart: any, dateTimeEnd: any): boolean {
+        const result = date.isBetween(dateTimeStart, dateTimeEnd, 'days', '[]');
+        return result;
+    }
+
+    getStatusForDayOfWeek(params: HandleDayParams) {
+        const {
+            dayOfTheWeekMoment,
+            visibleTimeStart,
+            visibleTimeEnd,
+            fullDayLoans = [],
+            partialDayLoans = [],
+            fullDayLeaves = [],
+            partialDayLeaves = [],
+            shifts = []
+        } = params;
+
+        const onLeave = fullDayLeaves
+            .filter(i => {
+                const include = doTimeRangesOverlap(
+                    { startTime: moment(i.startDate).toISOString(), endTime: moment(i.endDate).toISOString() },
+                    { startTime: moment(visibleTimeStart).toISOString(), endTime: moment(visibleTimeEnd).toISOString() })
+                    || moment(i.endDate).isSame(moment(visibleTimeStart));
+
+                return include;
+            })
+            .filter((i) => {
+                const include = this.isOnDate(dayOfTheWeekMoment, i.startDate, i.endDate);
+                return include;
+            });
+
+        const onLoan = fullDayLoans
+            .filter(i => {
+                const include = doTimeRangesOverlap(
+                    { startTime: moment(i.startDate).toISOString(), endTime: moment(i.endDate).toISOString() },
+                    { startTime: moment(visibleTimeStart).toISOString(), endTime: moment(visibleTimeEnd).toISOString() })
+                || moment(i.endDate).isSame(moment(visibleTimeStart));
+
+                return include;
+            })
+            .filter((i) => {
+                const include = this.isOnDate(dayOfTheWeekMoment, i.startDate, i.endDate);
+                return include;
+            });
+
+        const onPartialLeave = partialDayLeaves.filter((i) => {
+            const include = this.isOnDate(dayOfTheWeekMoment, i.startDate, i.endDate);
+            return include;
+        });
+        const onPartialLoan = partialDayLoans.filter((i) => {
+            const include = this.isOnDate(dayOfTheWeekMoment, i.startDate, i.endDate);
+            return include;
+        });
+
+        const onShift = shifts.filter(i => {
+            const include = this.isOnDate(dayOfTheWeekMoment, i.startDateTime, i.endDateTime);
+            return include;
+        });
+
+        /*
+        const shiftsForWeek = shifts
+            .filter(s => moment(s.startDateTime).isBetween(visibleTimeStart, visibleTimeEnd, 'days', '[]'));
+
+        shiftsForWeek.forEach(shift => {
+            let day = this.getDay(moment(shift.startDateTime));
+            weekStatus[day] = StatusEnum.GOOD;
+        });
+        */
+
+        // Handle full days first
+        let status = (onLeave.length > 0 || onLoan.length > 0) ? StatusEnum.BAD : StatusEnum.EMPTY;
+        // Next handle partials
+        status = (onPartialLeave.length > 0 || onPartialLoan.length > 0) ? StatusEnum.WARNING : status;
+        // Finally handle shifts
+        status = (onShift.length > 0) ? StatusEnum.GOOD : status;
+
+        return status;
     }
 
     createWeekStatus() {
         const {
-            fullDayLeaves = [],
-            shifts,
+            sheriffId,
             visibleTimeStart,
             visibleTimeEnd,
             sheriffLoanMap = {},
-            sheriffId,
-            partialDayLeaves = []
+            fullDayLeaves = [],
+            partialDayLeaves = [],
+            fullDayLoans = [],
+            partialDayLoans = [],
+            shifts
         } = this.props;
 
         const { isLoanedIn, isLoanedOut } = sheriffLoanMap[sheriffId];
         const today = moment().format('dddd').toLowerCase();
-        const fullDayLeavesForWeek = fullDayLeaves
-            .filter(l => doTimeRangesOverlap(
-                { startTime: moment(l.startDate).toISOString(), endTime: moment(l.endDate).toISOString() },
-                { startTime: moment(visibleTimeStart).toISOString(), endTime: moment(visibleTimeEnd).toISOString() })
-                ||
-                moment(l.endDate).isSame(moment(visibleTimeStart))
-            );
-        const partialDayLeavesForWeek = partialDayLeaves
-            .filter(l => moment(l.startDate).isBetween(visibleTimeStart, visibleTimeEnd, 'days', '[]'));
-        const shiftsForWeek = shifts
-            .filter(s => moment(s.startDateTime).isBetween(visibleTimeStart, visibleTimeEnd, 'days', '[]'));
+
+        if (fullDayLoans && fullDayLoans.length > 0) {
+            console.log('sheriff has full day loans!');
+        }
 
         let weekStatus = {
             monday: StatusEnum.EMPTY,
@@ -109,33 +247,22 @@ class ConnectedScheduleSummary extends React.Component<ConnectedScheduleSummaryP
             weekStatus[today] = StatusEnum.LOANED_IN;
         }
 
-        fullDayLeavesForWeek.forEach(leave => {
-            weekStatus.monday =
-                this.isDayDuringLeave(moment(visibleTimeStart), leave)
-                    ? StatusEnum.BAD : StatusEnum.EMPTY;
-            weekStatus.tuesday =
-                this.isDayDuringLeave(moment(visibleTimeStart).add(1, 'day'), leave)
-                    ? StatusEnum.BAD : StatusEnum.EMPTY;
-            weekStatus.wednesday =
-                this.isDayDuringLeave(moment(visibleTimeStart).add(2, 'day'), leave)
-                    ? StatusEnum.BAD : StatusEnum.EMPTY;
-            weekStatus.thursday =
-                this.isDayDuringLeave(moment(visibleTimeStart).add(3, 'day'), leave)
-                    ? StatusEnum.BAD : StatusEnum.EMPTY;
-            weekStatus.friday =
-                this.isDayDuringLeave(moment(visibleTimeStart).add(4, 'day'), leave)
-                    ? StatusEnum.BAD : StatusEnum.EMPTY;
-        });
+        Object.keys(weekStatus).reduce((status: { [key: string]: any }, dayOfWeek: string) => {
+            const params: Partial<HandleDayParams> = {
+                visibleTimeStart,
+                visibleTimeEnd,
+                fullDayLoans,
+                partialDayLoans,
+                fullDayLeaves,
+                partialDayLeaves,
+                shifts
+            };
 
-        partialDayLeavesForWeek.forEach(leave => {
-            let day = this.getDay(moment(leave.startDate));
-            weekStatus[day] = StatusEnum.WARNING;
-        });
+            params.dayOfTheWeekMoment = this.getDayMoment(dayOfWeek, visibleTimeStart) as moment.Moment;
+            status[dayOfWeek] = this.getStatusForDayOfWeek(params as HandleDayParams);
 
-        shiftsForWeek.forEach(shift => {
-            let day = this.getDay(moment(shift.startDateTime));
-            weekStatus[day] = StatusEnum.GOOD;
-        });
+            return status;
+        }, weekStatus);
 
         if (isLoanedOut) {
             weekStatus[today] = StatusEnum.LOANED_OUT;
@@ -175,10 +302,12 @@ const mapStateToProps = (state: RootState, { sheriffId }: ConnectedScheduleSumma
     const currentVisibleTime = visibleTime(state);
     return {
         ...currentVisibleTime,
+        sheriffLoanMap: sheriffLoanMapSelector(state),
         shifts: getSheriffShifts(sheriffId)(state),
         fullDayLeaves: getActiveSheriffFullDayLeaves(sheriffId)(state),
         partialDayLeaves: getActiveSheriffPartialLeaves(sheriffId)(state),
-        sheriffLoanMap: sheriffLoanMapSelector(state)
+        fullDayLoans: getSheriffFullDayLocations(sheriffId)(state),
+        partialDayLoans: getSheriffPartialDayLocations(sheriffId)(state)
     };
 };
 

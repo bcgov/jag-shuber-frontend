@@ -13,7 +13,7 @@ import {
     clearSelectedAssignments,
     selectAssignments
 } from '../modules/assignmentSchedule/actions';
-import { IdType, WorkSectionCode, AssignmentScheduleItem, DateType, Assignment } from '../api/Api';
+import { IdType, WorkSectionCode, AssignmentScheduleItem, DateType, Assignment, DateRange } from '../api/Api';
 import DateRangeControls from '../components/DateRangeControls';
 import { ConfirmationModal } from '../components/ConfirmationModal';
 import { WORK_SECTIONS } from '../api';
@@ -24,6 +24,7 @@ import { allScheduledAssignments } from '../modules/assignmentSchedule/selectors
 import AssignmentScheduleEditModal from './AssignmentScheduleEditModal';
 import AssignmentEditForm from './AssignmentEditForm';
 import { allAssignments } from '../modules/assignments/selectors';
+import { getSheriffList } from '../modules/sheriffs/actions';
 
 interface AssignmentControlsStateProps {
     visibleTimeStart: any;
@@ -40,19 +41,84 @@ interface AssignmentControlsProps {
     allAssignments?: Assignment[];
 }
 
-interface AssignmentDistpatchProps {
+interface AssignmentDispatchProps {
     updateVisibleTime: (startTime: any, endTime: any) => void;
+    fetchSheriffs: (dateRange?: DateRange) => void;
     showAddModal: (workSectionId: WorkSectionCode, startDateTime: any, endDateTime: any, assigmnets: Assignment[]) => void;
     showEditModal: (id: IdType, assignments: Assignment[]) => void;
 }
 
 class AssignmentControls extends React.PureComponent<
-    AssignmentControlsProps & AssignmentControlsStateProps & AssignmentDistpatchProps> {
+    AssignmentControlsProps & AssignmentControlsStateProps & AssignmentDispatchProps> {
+
+    componentWillReceiveProps(
+        nextProps: AssignmentControlsProps & AssignmentControlsStateProps & AssignmentDispatchProps,
+        nextContext: any
+    ): void {
+        const {
+            visibleTimeStart,
+            visibleTimeEnd,
+            fetchSheriffs
+        } = this.props;
+
+        if (nextProps.visibleTimeStart !== visibleTimeStart || nextProps.visibleTimeEnd !== visibleTimeEnd) {
+            const dateRange = { startDate: nextProps.visibleTimeStart, endDate: nextProps.visibleTimeEnd };
+            fetchSheriffs(dateRange);
+        }
+    }
+
+    async onPrevious() {
+        const {
+            visibleTimeStart,
+            visibleTimeEnd,
+            updateVisibleTime,
+        } = this.props;
+
+        updateVisibleTime(
+            moment(visibleTimeStart).subtract('week', 1),
+            moment(visibleTimeEnd).subtract('week', 1)
+        );
+    }
+
+    async onNext() {
+        const {
+            visibleTimeStart,
+            visibleTimeEnd,
+            updateVisibleTime,
+        } = this.props;
+
+        updateVisibleTime(
+            moment(visibleTimeStart).add('week', 1),
+            moment(visibleTimeEnd).add('week', 1)
+        );
+    }
+
+    async onSelect(selectedDate: any) {
+        const {
+            updateVisibleTime,
+        } = this.props;
+
+        updateVisibleTime(
+            moment(selectedDate).startOf('week').add(1, 'day'),
+            moment(selectedDate).endOf('week').subtract(1, 'day')
+        );
+    }
+
+    async onToday() {
+        const {
+            updateVisibleTime
+        } = this.props;
+
+        updateVisibleTime(
+            moment().startOf('week').add(1, 'day'),
+            moment().endOf('week').subtract(1, 'day')
+        );
+    }
 
     allVisibleAssignmentIds() {
         const { visibleTimeStart, visibleTimeEnd, assignments = [] } = this.props;
         return assignments
-            .filter(s => moment(s.startDateTime).isBetween(visibleTimeStart, visibleTimeEnd, 'days', '[]'))
+            .filter(s => moment(s.startDateTime as string).isBetween(visibleTimeStart, visibleTimeEnd, 'days', '[]'))
             .map(vs => vs.assignmentId);
     }
 
@@ -83,22 +149,10 @@ class AssignmentControls extends React.PureComponent<
                 <div className="toolbar-calendar-control">
                     <DateRangeControls
                         defaultDate={moment(visibleTimeStart)}
-                        onNext={() => updateVisibleTime(
-                            moment(visibleTimeStart).add('week', 1),
-                            moment(visibleTimeEnd).add('week', 1)
-                        )}
-                        onPrevious={() => updateVisibleTime(
-                            moment(visibleTimeStart).subtract('week', 1),
-                            moment(visibleTimeEnd).subtract('week', 1)
-                        )}
-                        onSelect={(selectedDate) => updateVisibleTime(
-                            moment(selectedDate).startOf('week').add(1, 'day'),
-                            moment(selectedDate).endOf('week').subtract(1, 'day')
-                        )}
-                        onToday={() => updateVisibleTime(
-                            moment().startOf('week').add(1, 'day'),
-                            moment().endOf('week').subtract(1, 'day')
-                        )}
+                        onNext={this.onNext}
+                        onPrevious={this.onPrevious}
+                        onSelect={this.onSelect}
+                        onToday={this.onToday}
                     />
                 </div>
 
@@ -202,6 +256,7 @@ const mapStateToProps = (state: RootState) => {
 
 const mapDispatchToProps = {
     updateVisibleTime: setVisibleTime,
+    fetchSheriffs: getSheriffList,
     showAddModal: (workSectionId: WorkSectionCode, startDateTime: DateType, endDateTime: DateType, assignments: Assignment[]) => AssignmentScheduleAddModal.ShowAction({workSectionId, startDateTime, endDateTime, assignments}),
     submit: AssignmentEditForm.submitAction,
     clear: clearSelectedAssignments,
@@ -211,7 +266,7 @@ const mapDispatchToProps = {
 };
 
 // tslint:disable-next-line:max-line-length
-export default connect<AssignmentControlsStateProps, AssignmentDistpatchProps, AssignmentControlsProps>(
+export default connect<AssignmentControlsStateProps, AssignmentDispatchProps, AssignmentControlsProps>(
     mapStateToProps,
     mapDispatchToProps
 )(AssignmentControls);

@@ -4,18 +4,12 @@ import { Button, Glyphicon, Table, Well } from 'react-bootstrap';
 import { reduxForm } from 'redux-form';
 
 import Page, { PageToolbar } from '../components/Page/Page';
-import AdminForm from '../containers/AdminForm';
 import PageTitle from '../containers/PageTitle';
 
 import { AdminFormProps } from '../components/AdminForm/AdminForm';
 
-// Import plugins
-// import AdminUsersPlugin from '../plugins/AdminRoles/AdminUsers';
-
-import SheriffListComposable from '../containers/SheriffListComposable';
+import SheriffListGrid from '../containers/SheriffListGrid';
 import SheriffProfileCreateModal from '../containers/SheriffProfileCreateModal';
-// import HeaderSaveButton from '../plugins/AdminRoles/containers/HeaderSaveButton';
-// import HeaderCancelButton from '../plugins/AdminRoles/containers/HeaderCancelButton';
 
 export interface ManageTeamProps extends RouteComponentProps<any>{}
 
@@ -88,7 +82,7 @@ class ManageTeam extends React.PureComponent<AdminFormProps & Partial<ManageTeam
                     }}
                 >
                     <PageTitle title={({ currentLocationName }: any) => `My Team - ${currentLocationName}`} />
-                    <SheriffListComposable />
+                    <SheriffListGrid />
                 </Well>
             </Page>
         );

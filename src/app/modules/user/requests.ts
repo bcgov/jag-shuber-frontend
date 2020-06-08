@@ -1,9 +1,9 @@
 import RequestActionBase, { RequestActionConfig } from '../../infrastructure/Requests/RequestActionBase';
 import {
     TokenPayload,
-    retreiveCookieValue,
+    // retreiveCookieValue,
     decodeJwt,
-    SMSESSION_COOKIE_NAME,
+    // SMSESSION_COOKIE_NAME,
     TOKEN_COOKIE_NAME
 } from 'jag-shuber-api';
 
