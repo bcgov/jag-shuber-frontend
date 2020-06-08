@@ -22,7 +22,7 @@ export const allLocations = createSelector(
     }
 );
 
-export const getSheriffLocation = (id?: IdType) => (state: RootState) => {
+/*export const getSheriffLocation = (id?: IdType) => (state: RootState) => {
     if (state && id) {
         const map: SheriffLocationMap = sheriffLocationRequests.sheriffLocationMapRequest.getData(state);
         return map[id];
@@ -42,7 +42,7 @@ export const getFullDaySheriffLocations = (state: RootState) => {
         return allLocations(state).filter(l => !l.isPartial);
     }
     return [];
-};
+}; */
 
 export const getSheriffAllLocations = (sheriffId?: IdType) => (state: RootState) => {
     if (state && sheriffId !== null) {

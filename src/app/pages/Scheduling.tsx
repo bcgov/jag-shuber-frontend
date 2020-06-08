@@ -1,14 +1,16 @@
 import * as React from 'react';
-import SchedulingTimeline from '../containers/LongTermSchedule/LongTermSchedule';
-import TimelineToolsPanel from '../components/TimelineToolsPanel/TimelineToolsPanel';
-import SheriffList from '../containers/SheriffList';
-import { Sheriff } from '../api';
-import SheriffListCard from '../components/SheriffListCard/SheriffListCard';
 import { ListGroup } from 'react-bootstrap';
-import SheriffDragSource from '../containers/SheriffDragSource';
-import ScheduleSummary from '../containers/ScheduleSummary';
-import ScheduleControls from '../containers/ScheduleControls';
+
+import { Sheriff } from '../api';
+
 import Page from '../components/Page/Page';
+import TimelineToolsPanel from '../components/TimelineToolsPanel/TimelineToolsPanel';
+
+import SchedulingTimeline from '../containers/LongTermSchedule/LongTermSchedule';
+import SheriffDragSource from '../containers/SheriffDragSource';
+import SheriffList from '../containers/SheriffList';
+import SchedulingSheriffCard from '../containers/SchedulingSheriffCard';
+import ScheduleControls from '../containers/ScheduleControls';
 
 class SchedulingPage extends React.PureComponent {
     render() {
@@ -29,9 +31,7 @@ class SchedulingPage extends React.PureComponent {
                             <SheriffList
                                 SheriffRenderer={(s: Sheriff) => (
                                     <SheriffDragSource sheriff={s}>
-                                        <SheriffListCard sheriff={s} >
-                                            <div style={{ paddingLeft: 25 }}><ScheduleSummary sheriffId={s.id} /></div>
-                                        </SheriffListCard>
+                                        <SchedulingSheriffCard sheriff={s} />
                                     </SheriffDragSource>
                                 )}
                             />
