@@ -70,9 +70,10 @@ interface ConnectedScheduleSummaryStateProps {
 }
 
 interface HandleDayParams {
-    dayOfTheWeekMoment: moment.Moment,
+    dayOfTheWeekMoment: moment.Moment;
     visibleTimeStart: TimeType;
     visibleTimeEnd: TimeType;
+    currentLoan?: any;
     fullDayLoans?: SheriffLocation[];
     partialDayLoans?: SheriffLocation[];
     fullDayLeaves?: Leave[];
@@ -143,6 +144,7 @@ class ConnectedScheduleSummary extends React.Component<ConnectedScheduleSummaryP
 
     getStatusForDayOfWeek(params: HandleDayParams) {
         const {
+            currentLoan,
             dayOfTheWeekMoment,
             visibleTimeStart,
             visibleTimeEnd,
@@ -152,6 +154,8 @@ class ConnectedScheduleSummary extends React.Component<ConnectedScheduleSummaryP
             partialDayLeaves = [],
             shifts = []
         } = params;
+
+        const { isLoanedIn, isLoanedOut } = currentLoan;
 
         const onLeave = fullDayLeaves
             .filter(i => {
@@ -185,6 +189,7 @@ class ConnectedScheduleSummary extends React.Component<ConnectedScheduleSummaryP
             const include = this.isOnDate(dayOfTheWeekMoment, i.startDate, i.endDate);
             return include;
         });
+
         const onPartialLoan = partialDayLoans.filter((i) => {
             const include = this.isOnDate(dayOfTheWeekMoment, i.startDate, i.endDate);
             return include;
@@ -195,22 +200,28 @@ class ConnectedScheduleSummary extends React.Component<ConnectedScheduleSummaryP
             return include;
         });
 
-        /*
-        const shiftsForWeek = shifts
-            .filter(s => moment(s.startDateTime).isBetween(visibleTimeStart, visibleTimeEnd, 'days', '[]'));
-
-        shiftsForWeek.forEach(shift => {
-            let day = this.getDay(moment(shift.startDateTime));
-            weekStatus[day] = StatusEnum.GOOD;
-        });
-        */
+        let status;
 
         // Handle full days first
-        let status = (onLeave.length > 0 || onLoan.length > 0) ? StatusEnum.BAD : StatusEnum.EMPTY;
-        // Next handle partials
-        status = (onPartialLeave.length > 0 || onPartialLoan.length > 0) ? StatusEnum.WARNING : status;
-        // Finally handle shifts
-        status = (onShift.length > 0) ? StatusEnum.GOOD : status;
+        if (isLoanedIn) {
+            status = (onLeave.length > 0 || onLoan.length > 0) ? StatusEnum.EMPTY : StatusEnum.BAD;
+            // Next handle partials
+            status = (onPartialLeave.length > 0 || onPartialLoan.length > 0) ? StatusEnum.WARNING : status;
+            // Finally handle shifts
+            status = (onShift.length > 0) ? StatusEnum.GOOD : status;
+        } else if (isLoanedOut) {
+            status = (onLeave.length > 0 || onLoan.length > 0) ? StatusEnum.BAD : StatusEnum.EMPTY;
+            // Next handle partials
+            status = (onPartialLeave.length > 0 || onPartialLoan.length > 0) ? StatusEnum.WARNING : status;
+            // Finally handle shifts
+            status = (onShift.length > 0) ? StatusEnum.GOOD : status;
+        } else {
+            status = (onLeave.length > 0) ? StatusEnum.BAD : StatusEnum.EMPTY;
+            // Next handle partials
+            status = (onPartialLeave.length > 0) ? StatusEnum.WARNING : status;
+            // Finally handle shifts
+            status = (onShift.length > 0) ? StatusEnum.GOOD : status;
+        }
 
         return status;
     }
@@ -228,7 +239,8 @@ class ConnectedScheduleSummary extends React.Component<ConnectedScheduleSummaryP
             shifts
         } = this.props;
 
-        const { isLoanedIn, isLoanedOut } = sheriffLoanMap[sheriffId];
+        const currentLoan = sheriffLoanMap[sheriffId];
+        const { isLoanedIn, isLoanedOut } = currentLoan;
         const today = moment().format('dddd').toLowerCase();
 
         if (fullDayLoans && fullDayLoans.length > 0) {
@@ -251,6 +263,7 @@ class ConnectedScheduleSummary extends React.Component<ConnectedScheduleSummaryP
             const params: Partial<HandleDayParams> = {
                 visibleTimeStart,
                 visibleTimeEnd,
+                currentLoan,
                 fullDayLoans,
                 partialDayLoans,
                 fullDayLeaves,
