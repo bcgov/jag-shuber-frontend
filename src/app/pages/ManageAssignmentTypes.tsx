@@ -32,6 +32,7 @@ import {
 } from '../modules/assignments/selectors';
 
 import { RootState } from '../store';
+import { withContentRect } from 'react-measure';
 
 export interface ManageAssignmentTypesStateProps {
     selectedSection?: {}; // TODO: Think it's a string, always though?
@@ -50,7 +51,7 @@ export interface ManageAssignmentTypesProps extends
 
 class ManageCodeTypes extends React.PureComponent<AdminFormProps & ManageAssignmentTypesProps> {
     static defaultProps: Partial<ManageAssignmentTypesProps> = {
-        selectedSection: 'ADMIN_COURTROOMS'
+        selectedSection: 'ADMIN_COURT'
     };
 
     state = {
@@ -121,6 +122,7 @@ class ManageCodeTypes extends React.PureComponent<AdminFormProps & ManageAssignm
                                 <div className={`hidden-xs`} style={{ display: 'flex', alignItems: 'center', marginRight: '15px' }}>
                                     <h6 style={{ color: 'white', fontWeight: 'bold', marginBottom: '3px' }}>Choose Work Section</h6>
                                 </div>
+                                &nbsp;&nbsp;
                                 <div
                                     className={`admin-form-filters-toggle admin-form-page-tab${selectedSection === 'ADMIN_COURTROOMS' ? ' is-active' : ''}`}
                                     onClick={() => selectAdminCourtroomsPluginSection('ADMIN_COURTROOMS')}>

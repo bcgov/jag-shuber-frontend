@@ -71,7 +71,7 @@ class DataTableTable<T> extends React.Component<DataTableTableProps<T> & Wrapped
     };
 
     state = {
-        expandedRows: new Set(),
+        expandedRows: new Set<number>(),
         activeRowId: undefined,
         isModalOpen: false
     };

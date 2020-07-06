@@ -15,6 +15,9 @@ export default (props: any) => {
        selectedSection
     } = props;
 
+    const courtPlugin = sectionPlugins
+        .find((p: any) => p.name === 'ADMIN_COURT');
+
     const courtroomsPlugin = sectionPlugins
         .find((p: any) => p.name === 'ADMIN_COURTROOMS');
 
@@ -34,7 +37,7 @@ export default (props: any) => {
         .find((p: any) => p.name === 'ADMIN_OTHER_TYPES');
 
     const validSections = ['ADMIN_COURTROOMS', 'ADMIN_COURT_ROLES', 'ADMIN_JAIL_ROLES', 'ADMIN_ESCORT_TYPES', 'ADMIN_OTHER_TYPES'];
-    selectedSection = (validSections.indexOf(selectedSection) > -1) ? selectedSection : 'ADMIN_COURTROOMS';
+    selectedSection = (validSections.indexOf(selectedSection) > -1) ? selectedSection : 'ADMIN_COURT';
 
     return (
         <Tab.Container
@@ -50,6 +53,14 @@ export default (props: any) => {
                 <Col sm={12}>
                     <Tab.Content animation={false}>
                         {/* Use className if you want to use col-xl-* prefixed columns, react-bootstrap doesn't support xl cols */}
+                        <Tab.Pane key={'ADMIN_COURT'} eventKey={'ADMIN_COURT'}>
+                            <Row className="clearfix">
+                                <Col sm={12} lg={8} lgPush={2}>
+                                    <PageTitle title={({ currentLocationName }: any) => `${currentLocationName}`} />
+                                    <h6>  Please select a Tab </h6>
+                                </Col>
+                            </Row>
+                        </Tab.Pane>
                         <Tab.Pane key={'ADMIN_COURTROOMS'} eventKey={'ADMIN_COURTROOMS'}>
                             <Row className="clearfix">
                                 <Col sm={12} lg={8} lgPush={2}>

@@ -35,7 +35,7 @@ import {
 } from '../../components/Form/FormContainer';
 
 import DataTable, { EmptyDetailRow } from '../../components/Table/DataTable';
-import { AdminCourtRolesProps } from './AdminCourtRoles';
+//import { AdminCourtRolesProps } from './AdminCourtRoles';
 
 import RemoveRow from '../../components/Table/TableColumnActions/RemoveRow';
 import ExpireRow from '../../components/Table/TableColumnActions/ExpireRow';
@@ -262,7 +262,8 @@ export default class AdminCourtRoles extends FormContainerBase<AdminCourtRolesPr
                     {
                         description: Validators.validateWith(
                             Validators.required
-                        )(row.description),
+                        //)(row.description), 
+                        )(row.code),
                         code: Validators.validateWith(
                             Validators.required
                         )(row.code)
