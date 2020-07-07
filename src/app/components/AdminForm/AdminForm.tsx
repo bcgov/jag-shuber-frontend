@@ -61,6 +61,8 @@ export default class AdminForm extends React.Component<InjectedFormProps<any, Ad
             currentLocation
         } = this.props;
 
+        this.props.touch();
+
         const pluginProps: FormContainerProps = {
             // sheriffId,
             currentLocation: currentLocation,
